@@ -1,7 +1,13 @@
+require "asm/arm/instruction_tools"
+require "asm/arm/builder_a"
+require "asm/arm/builder_b"
+require "asm/arm/builder_d"
+
 module Asm
   module Arm
-    class Asm::ARM::Instruction
-      include Asm::ARM::InstructionTools
+
+    class Instruction
+      include InstructionTools
 
       COND_POSTFIXES = Regexp.union(%w(eq ne cs cc mi pl vs vc hi ls ge lt gt le al)).source
       def initialize(node, ast_asm = nil)
@@ -63,7 +69,7 @@ module Asm
         :vs => 0b0110
       }
 
-      RelocHandler = Asm::ARM.method(:write_resolved_relocation)
+      RelocHandler = Asm::Arm.method(:write_resolved_relocation)
 
       def assemble(io, as)
         s = @s ? 1 : 0
@@ -123,7 +129,7 @@ module Asm
             io << packed[0,3]
           elsif (arg.is_a?(Asm::LabelObject) or arg.is_a?(Asm::Parser::LabelRefArgNode))
             arg = @ast_asm.object_for_label(arg.label, self) if arg.is_a?(Asm::Parser::LabelRefArgNode)
-            as.add_relocation(io.tell, arg, Asm::ARM::R_ARM_PC24, RelocHandler)
+            as.add_relocation(io.tell, arg, Asm::Arm::R_ARM_PC24, RelocHandler)
             io << "\x00\x00\x00"
           end
           io.write_uint8 OPCODES[opcode] | (COND_BITS[@cond] << 4)

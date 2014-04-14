@@ -2,11 +2,11 @@ module Asm
   module Arm
     # ADDRESSING MODE 4
     class BuilderD
-      include Asm::ARM::InstructionTools
+      include Asm::Arm::InstructionTools
 
       def initialize
         @cond = 0b1110
-        @inst_class = Asm::ARM::Instruction::OPC_STACK
+        @inst_class = Asm::Arm::Instruction::OPC_STACK
         @pre_post_index = 0
         @up_down = 0
         @s = 0

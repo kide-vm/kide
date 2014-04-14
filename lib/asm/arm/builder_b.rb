@@ -1,9 +1,11 @@
+require "asm/parser"
+
 module Asm
   module Arm
     # ADDRESSING MODE 2
     # Implemented: immediate offset with offset=0
     class BuilderB
-      include Asm::ARM::InstructionTools
+      include Asm::Arm::InstructionTools
 
       def initialize
         @cond = 0b1110
@@ -96,15 +98,15 @@ module Asm
               (pre_post_index << 12+4+4+1+1+1+1) | (i << 12+4+4+1+1+1+1+1) |
               (inst_class << 12+4+4+1+1+1+1+1+1) | (cond << 12+4+4+1+1+1+1+1+1+2)
         if (@use_addrtable_reloc)
-          closest_addrtable = Asm::ARM.closest_addrtable(as)
+          closest_addrtable = Asm::Arm.closest_addrtable(as)
           if (@addrtable_reloc_target.is_a?(Asm::Parser::LabelEquivAddrArgNode))
             obj = ast_asm.object_for_label(@addrtable_reloc_target.label, inst)
             ref_label = closest_addrtable.add_label(obj)
           elsif (@addrtable_reloc_target.is_a?(Asm::Parser::NumEquivAddrArgNode))
             ref_label = closest_addrtable.add_const(@addrtable_reloc_target.value)
           end
-          as.add_relocation io.tell, ref_label, Asm::ARM::R_ARM_PC12,
-                            Asm::ARM::Instruction::RelocHandler
+          as.add_relocation io.tell, ref_label, Asm::Arm::R_ARM_PC12,
+                            Asm::Arm::Instruction::RelocHandler
         end
         io.write_uint32 val
       end

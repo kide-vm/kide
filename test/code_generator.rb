@@ -1,6 +1,6 @@
 
 if (__FILE__ == $0)
-  gen = Asm::ARMCodeGenerator.new
+  gen = Asm::ArmCodeGenerator.new
 
   gen.instance_eval {
     mov r0, 5

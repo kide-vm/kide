@@ -86,7 +86,7 @@ module Asm
       case options.target
       when :arm
         require_relative 'arm_assembler.rb'
-        as_module = Asm::ARM
+        as_module = Asm::Arm
         as_target = Elf::Constants::TARGET_ARM
       when :ttk91
         require_relative 'ttk91_assembler.rb'

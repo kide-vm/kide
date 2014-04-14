@@ -3,7 +3,7 @@ module Asm
     # ADDRESSING MODE 1
     # Complete!
     class BuilderA
-      include Asm::ARM::InstructionTools
+      include Asm::Arm::InstructionTools
 
       def initialize
         @cond = 0b1110

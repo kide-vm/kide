@@ -1,4 +1,4 @@
-class Asm::ARM::AddrTableObject
+class Asm::Arm::AddrTableObject
   def initialize
     @table = []
     @const = []
@@ -21,8 +21,8 @@ class Asm::ARM::AddrTableObject
     @table.each do |pair|
       target_label, here_label = *pair
       here_label.assemble io, as
-      as.add_relocation io.tell, target_label, Asm::ARM::R_ARM_ABS32,
-                        Asm::ARM::Instruction::RelocHandler
+      as.add_relocation io.tell, target_label, Asm::Arm::R_ARM_ABS32,
+                        Asm::Arm::Instruction::RelocHandler
       io.write_uint32 0
     end
     @const.each do |pair|

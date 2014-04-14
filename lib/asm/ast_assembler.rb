@@ -39,8 +39,8 @@ module Asm
           elsif (cmd.name == "asciz")
             str = eval(cmd.value) + "\x00"
             @asm.add_object Asm::DataObject.new(str)
-          elsif (defined?(Asm::ARM) and cmd.name == 'addrtable')
-            @asm.add_object Asm::ARM::AddrTableObject.new
+          elsif (defined?(Asm::Arm) and cmd.name == 'addrtable')
+            @asm.add_object Asm::Arm::AddrTableObject.new
           else
             raise Asm::AssemblyError.new('unknown directive', cmd)
           end

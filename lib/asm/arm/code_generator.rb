@@ -1,5 +1,8 @@
-require_relative 'arm_assembler'
-require_relative 'parser'
+require 'asm/arm/arm_assembler'
+require 'asm/arm/instruction'
+require 'asm/label_object'
+require 'asm/parser'
+require 'stream_reader'
 require 'stringio'
 
 module Asm
@@ -51,7 +54,7 @@ module Asm
           end
         }
 
-        @asm.add_object Asm::ARM::Instruction.new(node)
+        @asm.add_object Asm::Arm::Instruction.new(node)
       end
 
       %w(adc add and bic eor orr rsb rsc sbc sub
