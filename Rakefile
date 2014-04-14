@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "crystal"
   gem.homepage = "http://github.com/crystal-ruby/crystal"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Create fast code}
+  gem.description = %Q{A long way to china and back}
   gem.email = "torsten@villataika.fi"
   gem.authors = ["Torsten Ruger"]
   # dependencies defined in Gemfile
