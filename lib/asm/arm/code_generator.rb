@@ -1,7 +1,7 @@
 require 'asm/arm/arm_assembler'
 require 'asm/arm/instruction'
 require 'asm/label_object'
-require 'asm/parser'
+require 'asm/nodes'
 require 'stream_reader'
 require 'stringio'
 

@@ -1,4 +1,4 @@
-require "asm/parser"
+require "asm/nodes"
 
 module Asm
   module Arm
