@@ -12,7 +12,7 @@ class TestAsm < MiniTest::Test
     assert_equal :mov ,  m.opcode
     binary = @generator.assemble
     assert_equal 4 , binary.length
-    should = [5,0,160,227]
+    should = [0x05,0x00,0xa0,0xe3]
     index = 0
     binary.each_byte do |byte |
       assert_equal byte , should[index]
