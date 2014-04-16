@@ -5,6 +5,58 @@ Small steps on a long road, will nevertheless lead to the destination
 
 Sorry about the Zen, but it feels like i'm about to walk to China.
 
+Step 1
+------
+
+Produce binary that represent code. Traditionally called assembling, but there is no need for an external file
+representation. 
+
+Ie only in ruby code do i want to create machine code.
+
+First instructions are in fact assembling correctly. Meaning i have tests, and i can use objbump to verify the correct assembler code is disasembled
+
+Step 2
+------
+
+Package the code into an executable. Run that and verufy it's output.
+
+Currently hangin on the elf format.
+
+Step 3
+-------
+
+Start parsing some simple code. Using Parslet.
+
+Get the parse - compile - execute -verify cycle going.
+
+Step 4
+-------
+
+Implement function calling to modularise.
+Implement a way to call libc
+
+Step 5
+------
+
+Implement classes,  implement Core library of arrays/hash
+
+Step 6
+------
+
+Implement Blocks
+
+Step 7
+------
+
+Implement Exceptions
+
+Step 8
+-------
+
+
+Celebrate New year 2020
+
+
 
 Contributing to crystal
 -----------------------
