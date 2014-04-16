@@ -121,14 +121,14 @@ module Asm
           a.write io, as
         when :b, :bl
           arg = args[0]
-          if (arg.is_a?(Asm::Parser::NumLiteralArgNode))
+          if (arg.is_a?(Asm::NumLiteralArgNode))
             jmp_val = arg.value >> 2
             packed = [jmp_val].pack('l')
             # signed 32-bit, condense to 24-bit
             # TODO add check that the value fits into 24 bits
             io << packed[0,3]
-          elsif (arg.is_a?(Asm::LabelObject) or arg.is_a?(Asm::Parser::LabelRefArgNode))
-            arg = @ast_asm.object_for_label(arg.label, self) if arg.is_a?(Asm::Parser::LabelRefArgNode)
+          elsif (arg.is_a?(Asm::LabelObject) or arg.is_a?(Asm::LabelRefArgNode))
+            arg = @ast_asm.object_for_label(arg.label, self) if arg.is_a?(Asm::LabelRefArgNode)
             as.add_relocation(io.tell, arg, Asm::Arm::R_ARM_PC24, RelocHandler)
             io << "\x00\x00\x00"
           end
@@ -139,7 +139,7 @@ module Asm
                           (COND_BITS[@cond] << 16+4+8)
         when :swi
           arg = args[0]
-          if (arg.is_a?(Asm::Parser::NumLiteralArgNode))
+          if (arg.is_a?(Asm::NumLiteralArgNode))
             packed = [arg.value].pack('L')[0,3]
             io << packed
             io.write_uint8 0b1111 | (COND_BITS[@cond] << 4)

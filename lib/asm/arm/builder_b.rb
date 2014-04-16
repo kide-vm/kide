@@ -31,13 +31,13 @@ module Asm
         a
       end
 
-      class MathReferenceArgNode < Asm::Parser::ReferenceArgNode
+      class MathReferenceArgNode < Asm::ReferenceArgNode
         attr_accessor :op, :right
       end
       def simplify_reference(arg)
         node = MathReferenceArgNode.new
 
-        if (arg.is_a?(Asm::Parser::MathNode))
+        if (arg.is_a?(Asm::MathNode))
           node.argument = arg.left
           node.op = arg.op
           node.right = arg.right
@@ -50,17 +50,17 @@ module Asm
 
       # Build representation for target address
       def build_operand(arg1)
-        if (arg1.is_a?(Asm::Parser::ReferenceArgNode))
+        if (arg1.is_a?(Asm::ReferenceArgNode))
           argr = simplify_reference(arg1.argument)
           arg = argr.argument
-          if (arg.is_a?(Asm::Parser::RegisterArgNode))
+          if (arg.is_a?(Asm::RegisterArgNode))
             @i = 0
             @pre_post_index = 1
             @w = 0
             @rn = reg_ref(arg)
             @operand = 0
     
-            if (argr.op and argr.right.is_a?(Asm::Parser::NumLiteralArgNode))
+            if (argr.op and argr.right.is_a?(Asm::NumLiteralArgNode))
               val = argr.right.value
               if (val < 0)
                 @add_offset = 0
@@ -78,7 +78,7 @@ module Asm
           else
             raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg)
           end
-        elsif (arg1.is_a?(Asm::Parser::LabelEquivAddrArgNode) or arg1.is_a?(Asm::Parser::NumEquivAddrArgNode))
+        elsif (arg1.is_a?(Asm::LabelEquivAddrArgNode) or arg1.is_a?(Asm::NumEquivAddrArgNode))
           @i = 0
           @pre_post_index = 1
           @w = 0
@@ -99,10 +99,10 @@ module Asm
               (inst_class << 12+4+4+1+1+1+1+1+1) | (cond << 12+4+4+1+1+1+1+1+1+2)
         if (@use_addrtable_reloc)
           closest_addrtable = Asm::Arm.closest_addrtable(as)
-          if (@addrtable_reloc_target.is_a?(Asm::Parser::LabelEquivAddrArgNode))
+          if (@addrtable_reloc_target.is_a?(Asm::LabelEquivAddrArgNode))
             obj = ast_asm.object_for_label(@addrtable_reloc_target.label, inst)
             ref_label = closest_addrtable.add_label(obj)
-          elsif (@addrtable_reloc_target.is_a?(Asm::Parser::NumEquivAddrArgNode))
+          elsif (@addrtable_reloc_target.is_a?(Asm::NumEquivAddrArgNode))
             ref_label = closest_addrtable.add_const(@addrtable_reloc_target.value)
           end
           as.add_relocation io.tell, ref_label, Asm::Arm::R_ARM_PC12,

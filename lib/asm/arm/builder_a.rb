@@ -50,7 +50,7 @@ module Asm
 
       # Build representation for source value
       def build_operand(arg)
-        if (arg.is_a?(Asm::Parser::NumLiteralArgNode))
+        if (arg.is_a?(Asm::NumLiteralArgNode))
           if (arg.value.fits_u8?)
             # no shifting needed
             @operand = arg.value
@@ -61,10 +61,10 @@ module Asm
           else
             raise Asm::AssemblyError.new(Asm::ERRSTR_NUMERIC_TOO_LARGE, arg)
           end
-        elsif (arg.is_a?(Asm::Parser::RegisterArgNode))
+        elsif (arg.is_a?(Asm::RegisterArgNode))
           @operand = reg_ref(arg)
           @i = 0
-        elsif (arg.is_a?(Asm::Parser::ShiftNode))
+        elsif (arg.is_a?(Asm::ShiftNode))
           rm_ref = reg_ref(arg.argument)
           @i = 0
           shift_op = {'lsl' => 0b000, 'lsr' => 0b010, 'asr' => 0b100,
@@ -75,12 +75,12 @@ module Asm
           end
       
           arg1 = arg.value
-          if (arg1.is_a?(Asm::Parser::NumLiteralArgNode))
+          if (arg1.is_a?(Asm::NumLiteralArgNode))
             if (arg1.value >= 32)
               raise Asm::AssemblyError.new('cannot shift by more than 31', arg1)
             end
             shift_imm = arg1.value
-          elsif (arg1.is_a?(Asm::Parser::RegisterArgNode))
+          elsif (arg1.is_a?(Asm::RegisterArgNode))
             shift_op |= 0x1;
             shift_imm = reg_ref(arg1) << 1
           elsif (arg.type == 'rrx')

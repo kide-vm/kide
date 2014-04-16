@@ -29,7 +29,7 @@ module Asm
 
       # Build representation for source value
       def build_operand(arg)
-        if (arg.is_a?(Asm::Parser::RegisterListArgNode))
+        if (arg.is_a?(Asm::RegisterListArgNode))
           @operand = 0
           arg.registers.each do |reg_node|
             reg = reg_ref(reg_node)

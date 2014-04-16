@@ -16,17 +16,17 @@ module Asm
     def load_ast(ast)
       label_breadcrumb = []
       ast.children.each do |cmd|
-        if (cmd.is_a?(Asm::Parser::LabelNode))
+        if (cmd.is_a?(Asm::LabelNode))
           m = /^\/+/.match(cmd.name)
           count = m ? m[0].length : 0
           label_breadcrumb = label_breadcrumb[0,count]
           label_breadcrumb << cmd.name[count..-1]
           @asm.add_object object_for_label(label_breadcrumb.join('/'))
-        elsif (cmd.is_a?(Asm::Parser::InstructionNode))
+        elsif (cmd.is_a?(Asm::InstructionNode))
           inst = @asm_arch::Instruction.new(cmd, self)
           @asm.add_object inst
           @inst_label_context[inst] = label_breadcrumb
-        elsif (cmd.is_a?(Asm::Parser::DirectiveNode))
+        elsif (cmd.is_a?(Asm::DirectiveNode))
           if (cmd.name == 'global')
             symbol_for_label(cmd.value)[:linkage] = Elf::Constants::STB_GLOBAL
           elsif (cmd.name == 'extern')

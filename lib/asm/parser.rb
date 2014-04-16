@@ -1,16 +1,7 @@
 require_relative 'str_scanner'
+require_relative 'nodes'
 
 module Asm
-  class ParseError < StandardError
-    def initialize(message, s)
-      super(message)
-
-      @line = s.line
-      @column = s.column
-    end
-    attr_reader :line, :column
-  end
-
   class Parser
     def initialize(str)
       scanner = Asm::Scanner.new(str)
@@ -23,24 +14,6 @@ module Asm
       new(str).ast
     end
 
-    class Node
-      def initialize(s = nil)
-        if (s)
-          @line = s.prev_line
-          @column = s.prev_column
-        else
-          @line = 0
-          @column = 0
-        end
-
-        yield self if block_given?
-      end
-      attr_reader :line, :column
-    end
-
-    class ToplevelNode < Node
-      attr_accessor :children
-    end
     def parse_toplevel(s)
       node = ToplevelNode.new(s)
       node.children = []
@@ -63,16 +36,12 @@ module Asm
       node
     end
 
-    class CommentNode < Node; end
     def parse_comment(s)
       if (s.scan(/;.*?$/))
         CommentNode.new(s)
       end
     end
 
-    class DirectiveNode < Node
-      attr_accessor :name, :value
-    end
     def parse_directive(s)
       if (m = s.scan(/\.(\w+)(?:(?!$)\s+(.+)\s*?$)?/))
         DirectiveNode.new(s) { |n|
@@ -82,9 +51,6 @@ module Asm
       end
     end
 
-    class LabelNode < Node
-      attr_accessor :name
-    end
     def parse_label(s)
       if (m = s.scan(/(\/*\w+):/))
         LabelNode.new(s) { |n|
@@ -93,9 +59,6 @@ module Asm
       end
     end
 
-    class InstructionNode < Node
-      attr_accessor :opcode, :args
-    end
     def parse_instruction(s)
       if (m = s.scan(/(\w+)/))
         node = InstructionNode.new(s) { |n|
@@ -113,8 +76,6 @@ module Asm
       end
     end
 
-    class ArgNode < Node
-    end
     def parse_arg(s)
       s.scan /\s*/
       node = nil
@@ -146,9 +107,6 @@ module Asm
       node
     end
 
-    class ShiftNode < Node
-      attr_accessor :type, :value, :argument
-    end
     def parse_shift(s)
       if (m = s.scan(/(lsl|lsr|asr|ror|rrx)\s+/i))
         op = m[0].downcase
@@ -163,11 +121,6 @@ module Asm
       end
     end
   
-    class MathNode < Node
-      attr_accessor :left, :right, :op
-      alias_method :argument, :left
-      alias_method :argument=, :left=
-    end
     def parse_math(s)
       if (m = s.scan_str(/[\+\-]/))
         if (arg1 = parse_arg(s))
@@ -185,9 +138,6 @@ module Asm
        r13 r14 r15 a1 a2 a3 a4 v1 v2 v3 v4 v5 v6
        rfp sl fp ip sp lr pc
     ))
-    class RegisterArgNode < ArgNode
-      attr_accessor :name
-    end
     def parse_register(s)
       if (m = s.scan_str(REGISTER_REGEXP))
         RegisterArgNode.new(s) { |n|
@@ -196,9 +146,6 @@ module Asm
       end
     end
   
-    class RegisterListArgNode < ArgNode
-      attr_accessor :registers
-    end
     def parse_register_list(s)
       if (m = s.scan(/\{/))
         node = RegisterListArgNode.new(s) do |n|
@@ -222,11 +169,6 @@ module Asm
       end
     end
 
-    class NumLiteralArgNode < ArgNode
-      attr_accessor :value
-    end
-    class NumEquivAddrArgNode < NumLiteralArgNode
-    end
     def parse_num_literal(s)
       if (m = s.scan(/(=?)#(-?(?:0x)?[0-9A-Fa-f]+)/))
         (m[0] == '=' ? NumEquivAddrArgNode : NumLiteralArgNode).new(s) { |n|
@@ -235,11 +177,6 @@ module Asm
       end
     end
 
-    class LabelRefArgNode < ArgNode
-      attr_accessor :label, :label_object
-    end
-    class LabelEquivAddrArgNode < LabelRefArgNode
-    end
     def parse_label_ref(s)
       if (m = s.scan(/(=?)(\/*\w+)/))
         (m[0] == '=' ? LabelEquivAddrArgNode : LabelRefArgNode).new(s) { |n|
@@ -248,9 +185,6 @@ module Asm
       end
     end
   
-    class ReferenceArgNode < ArgNode
-      attr_accessor :argument
-    end
     def parse_reference(s)
       if (m = s.scan(/\[/))
         arg = parse_arg(s)
