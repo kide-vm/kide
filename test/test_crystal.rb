@@ -10,12 +10,27 @@ class TestAsm < MiniTest::Test
   def test_mov
     m = @generator.instance_eval { mov r0, 5 }.first
     assert_equal :mov ,  m.opcode
+    assert ! m.affect_status #no s at the end, silly for mov anyway
     binary = @generator.assemble
     assert_equal 4 , binary.length
     should = [0x05,0x00,0xa0,0xe3]
     index = 0
     binary.each_byte do |byte |
-      assert_equal byte , should[index]
+      assert_equal should[index] , byte 
+      index += 1
+    end
+  end
+
+  def test_sub
+    m = @generator.instance_eval { subs r2, r0, 1 }.first
+    assert_equal :sub ,  m.opcode
+    assert m.affect_status #the s at the end
+    binary = @generator.assemble
+    assert_equal 4 , binary.length
+    should = [0x01,0x20,0x50,0xe2]
+    index = 0
+    binary.each_byte do |byte |
+      assert_equal should[index] , byte 
       index += 1
     end
   end
