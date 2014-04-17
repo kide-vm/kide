@@ -33,6 +33,10 @@ module Asm
       end
       attr_reader :opcode, :args
 
+      def affect_status
+        @s
+      end
+
       OPC_DATA_PROCESSING = 0b00
       OPC_MEMORY_ACCESS = 0b01
       OPC_STACK = 0b10
