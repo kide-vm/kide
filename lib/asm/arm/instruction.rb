@@ -1,3 +1,4 @@
+require "asm/assembly_error"
 require "asm/arm/instruction_tools"
 require "asm/arm/builder_a"
 require "asm/arm/builder_b"

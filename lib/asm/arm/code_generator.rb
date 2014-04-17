@@ -1,6 +1,6 @@
 require 'asm/arm/arm_assembler'
 require 'asm/arm/instruction'
-require 'asm/label_object'
+require_relative 'generator_label'
 require 'asm/nodes'
 require 'stream_reader'
 require 'stringio'
@@ -45,7 +45,7 @@ class Asm::Arm::CodeGenerator
         node.args << Asm::LabelRefArgNode.new { |n|
           n.label = arg.to_s
         }
-      elsif (arg.is_a?(GeneratorLabel) or arg.is_a?(GeneratorExternLabel))
+      elsif (arg.is_a?(Asm::Arm::GeneratorLabel) or arg.is_a?(Asm::Arm::GeneratorExternLabel))
         node.args << arg
       else
         raise 'Invalid argument `%s\' for instruction' % arg.inspect
@@ -75,11 +75,11 @@ class Asm::Arm::CodeGenerator
   }
 
   def label
-    GeneratorLabel.new(@asm)
+    Asm::Arm::GeneratorLabel.new(@asm)
   end
 
   def label!
-    lbl = GeneratorLabel.new(@asm)
+    lbl = Asm::Arm::GeneratorLabel.new(@asm)
     lbl.set!
     lbl
   end
