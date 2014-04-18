@@ -2,17 +2,8 @@ module Asm
 
   class Node
     def initialize(s = nil)
-      if (s)
-        @line = s.prev_line
-        @column = s.prev_column
-      else
-        @line = 0
-        @column = 0
-      end
-
       yield self if block_given?
     end
-    attr_reader :line, :column
   end
 
   class ToplevelNode < Node
@@ -71,10 +62,6 @@ module Asm
   class ParseError < StandardError
     def initialize(message, s)
       super(message)
-
-      @line = s.line
-      @column = s.column
     end
-    attr_reader :line, :column
   end
 end
