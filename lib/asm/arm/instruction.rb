@@ -22,7 +22,7 @@ module Asm
         if (opcode =~ /(#{COND_POSTFIXES})$/)
           @cond = $1.to_sym
           opcode = opcode[0..-3]
-        end
+        end unless opcode == 'teq'
         if (opcode =~ /s$/)
           @s = true
           opcode = opcode[0..-2]

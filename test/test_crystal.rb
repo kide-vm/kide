@@ -77,6 +77,10 @@ class TestArmAsm < MiniTest::Test
     code = @generator.instance_eval { swi	0x05 }.first
     assert_code code , :swi , [0x05,0x00,0x00,0xef]#ef 00 00 05
   end
+  def test_teq
+    code = @generator.teq(	[:reg , 'r1'] , [:reg , 'r2'] ).first
+    assert_code code , :teq , [0x02,0x00,0x31,0xe1] #e1 31 00 02
+  end
   def test_mov
     code = @generator.instance_eval { mov r0, 5 }.first
     assert_code code , :mov , [0x05,0x00,0xa0,0xe3] #e3 a0 10 05
