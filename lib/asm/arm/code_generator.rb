@@ -33,18 +33,12 @@ class Asm::Arm::CodeGenerator
     args.each { |arg|
       if (arg.is_a?(Array))
         if (arg[0] == :reg)
-          node.args << Asm::RegisterArgNode.new { |n|
-            n.name = arg[1]
-          }
+          node.args << Asm::RegisterArgNode.new(arg[1])
         end
       elsif (arg.is_a?(Integer))
-        node.args << Asm::NumLiteralArgNode.new { |n|
-          n.value = arg
-        }
+        node.args << Asm::NumLiteralArgNode.new(arg)
       elsif (arg.is_a?(Symbol))
-        node.args << Asm::LabelRefArgNode.new { |n|
-          n.label = arg.to_s
-        }
+        node.args << Asm::LabelRefArgNode.new(arg.to_s)
       elsif (arg.is_a?(Asm::Arm::GeneratorLabel) or arg.is_a?(Asm::Arm::GeneratorExternLabel))
         node.args << arg
       else
@@ -55,7 +49,7 @@ class Asm::Arm::CodeGenerator
     @asm.add_object Asm::Arm::Instruction.new(node)
   end
 
-  %w(adc add and bic eor orr rsb rsc sbc sub mov mvn cmn cmp teq tst b bl bx swi strb
+  %w(adc add and bic eor orr rsb rsc sbc sub mov mvn cmn cmp teq tst b bl bx swi str strb ldr ldrb 
   ).each { |inst|
     define_method(inst) { |*args|
       instruction inst.to_sym, *args

@@ -37,6 +37,9 @@ module Asm
 
   class RegisterArgNode < ArgNode
     attr_accessor :name
+    def initialize name
+      @name = name
+    end
   end
 
   class RegisterListArgNode < ArgNode
@@ -45,18 +48,28 @@ module Asm
 
   class NumLiteralArgNode < ArgNode
     attr_accessor :value
+    def initialize val
+      @value = val
+    end
   end
 
   class NumEquivAddrArgNode < NumLiteralArgNode
   end
   class LabelRefArgNode < ArgNode
     attr_accessor :label, :label_object
+    def initialize label , object = nil
+      @label = label
+      @label_object = object
+    end
   end
   class LabelEquivAddrArgNode < LabelRefArgNode
   end
 
   class ReferenceArgNode < ArgNode
     attr_accessor :argument
+    def initilize arg
+      @argument = arg
+    end
   end
 
   class ParseError < StandardError

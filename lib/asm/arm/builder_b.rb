@@ -87,7 +87,8 @@ module Asm
           @use_addrtable_reloc = true
           @addrtable_reloc_target = arg1
         else
-          raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg1)
+          puts "Invalid #{arg1.inspect}"
+          raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg1.inspect)
         end
       end
 
