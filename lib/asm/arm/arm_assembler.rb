@@ -25,6 +25,9 @@ module Asm
       case type
       when R_ARM_PC24
         diff = addr - io.tell - 8
+        if (diff.abs > (1 << 25))
+          raise Asm::AssemblyError.new('offset too large for R_ARM_PC24 relocation', nil)
+        end
         packed = [diff >> 2].pack('l')
         io << packed[0,3]
       when R_ARM_ABS32
@@ -33,8 +36,7 @@ module Asm
       when R_ARM_PC12
         diff = addr - io.tell - 8
         if (diff.abs > 2047)
-          raise Asm::AssemblyError.new('offset too large for R_ARM_PC12 relocation',
-                                      nil)
+          raise Asm::AssemblyError.new('offset too large for R_ARM_PC12 relocation', nil)
         end
       
         val = diff.abs

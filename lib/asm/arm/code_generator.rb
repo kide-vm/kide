@@ -4,7 +4,7 @@ require_relative 'generator_label'
 require 'asm/nodes'
 require 'stream_reader'
 require 'stringio'
-
+require "asm/data_object"
     
 class Asm::Arm::CodeGenerator
   def initialize
@@ -82,7 +82,7 @@ class Asm::Arm::CodeGenerator
     if (lbl = @externs.find { |extern| extern.name == sym })
       lbl
     else
-      @externs << lbl = GeneratorExternLabel.new(sym)
+      @externs << lbl = Asm::Arm::GeneratorExternLabel.new(sym)
       @asm.add_object lbl
       lbl
     end

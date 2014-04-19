@@ -8,7 +8,6 @@ module Asm
     def initialize
       @objects = []
       @label_objects = []
-      @label_callbacks = []
       @relocations = []
     end
     attr_reader :relocations, :objects
@@ -19,10 +18,6 @@ module Asm
 
     def add_relocation(*args)
       @relocations << Asm::Relocation.new(*args)
-    end
-
-    def register_label_callback(label, io_pos, &block)
-      @label_callbacks << [label, io_pos, block]
     end
 
     def assemble(io)
