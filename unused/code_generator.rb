@@ -9,7 +9,8 @@ if (__FILE__ == $0)
     loop_start.set!
     subs r0, r0, 1
     bne loop_start
-    bx lr
+  	mov r7, 1
+  	swi 0
   }
 
   require 'asm/object_writer'
