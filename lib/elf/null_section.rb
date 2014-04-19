@@ -1,3 +1,5 @@
+require_relative "section"
+
 module Elf
   class NullSection < Section
     def initialize

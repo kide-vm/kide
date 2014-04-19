@@ -1,6 +1,9 @@
+require_relative "constants"
+require_relative "null_section"
+
 module Elf
   class ObjectFile
-    include ELF
+    include Constants
 
     def initialize(target)
       @target = target

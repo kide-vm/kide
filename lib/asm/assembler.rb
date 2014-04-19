@@ -1,3 +1,5 @@
+require_relative "relocation"
+
 module Asm
   ERRSTR_NUMERIC_TOO_LARGE = 'cannot fit numeric literal argument in operand'
   ERRSTR_INVALID_ARG = 'invalid operand argument'

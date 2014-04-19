@@ -1,4 +1,4 @@
-module ELF
+module Elf
   module Constants
     ET_NONE = 0
     ET_REL = 1
@@ -23,9 +23,9 @@ module ELF
     ELFCLASS32 = 1
     ELFCLASS64 = 2
 
-    ELFDATANONE = 0
-    ELFDATA2LSB = 1
-    ELFDATA2MSB = 2
+    Elf::DATANONE = 0
+    Elf::DATA2LSB = 1
+    Elf::DATA2MSB = 2
 
     SHT_NULL = 0
     SHT_PROGBITS = 1
@@ -53,7 +53,7 @@ module ELF
 
     ARM_INFLOOP = "\x08\xf0\x4f\xe2"
 
-    TARGET_ARM = [ELFCLASS32, ELFDATA2LSB, ABI_ARM, EM_ARM]
-    TARGET_X86 = [ELFCLASS32, ELFDATA2LSB, ABI_SYSTEMV, EM_386]
+    TARGET_ARM = [ELFCLASS32, Elf::DATA2LSB, ABI_ARM, EM_ARM]
+    TARGET_X86 = [ELFCLASS32, Elf::DATA2LSB, ABI_SYSTEMV, EM_386]
   end
 end

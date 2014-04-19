@@ -1,6 +1,7 @@
+require "asm/arm/code_generator"
 
 if (__FILE__ == $0)
-  gen = Asm::ArmCodeGenerator.new
+  gen = Asm::Arm::CodeGenerator.new
 
   gen.instance_eval {
     mov r0, 5
@@ -11,8 +12,7 @@ if (__FILE__ == $0)
     bx lr
   }
 
-  require 'objectwriter'
-  require 'tempfile'
+  require 'asm/object_writer'
   writer = Asm::ObjectWriter.new(Elf::Constants::TARGET_ARM)
   writer.set_text gen.assemble
 

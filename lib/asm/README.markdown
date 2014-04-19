@@ -3,7 +3,7 @@ Assembler in Ruby
 
 Supporting arm, but aimed quite specifically at raspberry pi, arm v7, floating point included
 
-Outputs ELF object files, with relocation support.
+Outputs Elf object files, with relocation support.
 
 Constant table support exists but isn't very good. Some addressing modes
 are not supported or only partially supported.

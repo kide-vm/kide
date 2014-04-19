@@ -1,20 +1,24 @@
-require_relative 'elfobject'
+require 'elf/object_file'
+require 'elf/symbol_table_section'
+require 'elf/text_section'
+require 'elf/string_table_section'
+require 'elf/relocation_table_section'
 
 module Asm
 
   class ObjectWriter
     def initialize(target)
-      @object = ELF::ObjectFile.new(target)
+      @object = Elf::ObjectFile.new(target)
 
-      sym_strtab = ELF::StringTableSection.new(".strtab")
+      sym_strtab = Elf::StringTableSection.new(".strtab")
       @object.add_section sym_strtab
-      @symbol_table = ELF::SymbolTableSection.new(".symtab", sym_strtab)
+      @symbol_table = Elf::SymbolTableSection.new(".symtab", sym_strtab)
       @object.add_section @symbol_table
 
-      @text = ELF::TextSection.new(".text")
+      @text = Elf::TextSection.new(".text")
       @object.add_section @text
 
-      @reloc_table = ELF::RelocationTableSection.new(".text.rel", @symbol_table, @text)
+      @reloc_table = Elf::RelocationTableSection.new(".text.rel", @symbol_table, @text)
       @object.add_section @reloc_table
     end
 

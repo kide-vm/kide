@@ -1,3 +1,9 @@
+class Numeric
+  def fits_u8?
+    self >= 0 and self <= 255
+  end
+end
+
 module StreamReader
   def read_binary(size, count, type)
     d = __sr_read(size*count)
