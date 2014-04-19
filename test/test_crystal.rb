@@ -64,6 +64,14 @@ class TestArmAsm < MiniTest::Test
     code = @generator.instance_eval { eor	r2 , r2 , r3 }.first
     assert_code code , :eor , [0x03,0x20,0x22,0xe0] #e0 22 20 03
   end
+  def test_ldr
+    code = @generator.instance_eval { ldr r0, r0 }.first
+    assert_code code, :ldr ,  [0x00,0x00,0x90,0xe5] #e5 90 00 00
+  end
+  def test_ldrb
+    code = @generator.instance_eval { ldrb r0, r0 }.first
+    assert_code code, :ldrb ,  [0x00,0x00,0xd0,0xe5] #e5 d0 00 00
+  end
   def test_orr
     code = @generator.instance_eval { orr	r2 , r2 , r3 }.first
     assert_code code , :orr , [0x03,0x20,0x82,0xe1] #e1 82 20 03
@@ -83,6 +91,10 @@ class TestArmAsm < MiniTest::Test
   def test_str
     code = @generator.instance_eval { str r0, r0 }.first
     assert_code code, :str ,  [0x00,0x00,0x80,0xe5] #e5 81 00 00
+  end
+  def test_strb
+    code = @generator.instance_eval { strb r0, r0 }.first
+    assert_code code, :strb ,  [0x00,0x00,0xc0,0xe5] #e5 c0 00 00
   end
   def test_sub
     code = @generator.instance_eval { sub r2, r0, 1 }.first
