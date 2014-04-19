@@ -65,13 +65,6 @@ module Asm
   class LabelEquivAddrArgNode < LabelRefArgNode
   end
 
-  class ReferenceArgNode < ArgNode
-    attr_accessor :argument
-    def initilize arg
-      @argument = arg
-    end
-  end
-
   class ParseError < StandardError
     def initialize(message, s)
       super(message)

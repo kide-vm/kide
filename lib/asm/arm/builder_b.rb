@@ -31,69 +31,56 @@ module Asm
         a
       end
 
-      class MathReferenceArgNode < Asm::ReferenceArgNode
-        attr_accessor :op, :right
-      end
-      def simplify_reference(arg)
-        node = MathReferenceArgNode.new
-
-        if (arg.is_a?(Asm::MathNode))
-          node.argument = arg.left
-          node.op = arg.op
-          node.right = arg.right
-        else
-          node.argument = arg
-        end
-
-        node
-      end
-
       # Build representation for target address
-      def build_operand(arg1)
-        if (arg1.is_a?(Asm::ReferenceArgNode))
-          argr = simplify_reference(arg1.argument)
-          arg = argr.argument
-          if (arg.is_a?(Asm::RegisterArgNode))
-            @i = 0
-            @pre_post_index = 1
-            @w = 0
-            @rn = reg_ref(arg)
-            @operand = 0
-    
-            if (argr.op and argr.right.is_a?(Asm::NumLiteralArgNode))
-              val = argr.right.value
-              if (val < 0)
-                @add_offset = 0
-                val *= -1
-              else
-                @add_offset = 1
-              end
-              if (val.abs > 4095)
-                raise Asm::AssemblyError.new('reference offset too large/small (max 4095)', argr.right)
-              end
-              @operand = val
-            elsif (argr.op)
-              raise Asm::AssemblyError.new('reference offset must be an integer literal', argr.right)
+      def build_operand(arg)
+        #str / ldr are _seruous instructions. With BIG possibilities no half are implemented
+        if (arg.is_a?(Asm::RegisterArgNode))
+          @i = 0
+          @pre_post_index = 0
+          @w = 0
+          @rn = reg_ref(arg)
+          @operand = 0
+  
+          if (false ) #argr.op and argr.right.is_a?(Asm::NumLiteralArgNode))
+  
+            # this if was buggy even before
+            # but as mentioned here we'd have to implement the options
+            # though a better syntax will have to be found
+            val = argr.right.value
+            if (val < 0)
+              @add_offset = 0
+              val *= -1
+            else
+              @add_offset = 1
             end
+            if (val.abs > 4095)
+              raise Asm::AssemblyError.new('reference offset too large/small (max 4095)', argr.right)
+            end
+            @operand = val
           else
-            raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg)
+            # raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg)
           end
-        elsif (arg1.is_a?(Asm::LabelEquivAddrArgNode) or arg1.is_a?(Asm::NumEquivAddrArgNode))
+        elsif (arg.is_a?(Asm::LabelEquivAddrArgNode) or arg.is_a?(Asm::NumEquivAddrArgNode))
           @i = 0
           @pre_post_index = 1
           @w = 0
           @rn = 15 # pc
           @operand = 0
           @use_addrtable_reloc = true
-          @addrtable_reloc_target = arg1
+          @addrtable_reloc_target = arg
         else
-          puts "Invalid #{arg1.inspect}"
-          raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg1.inspect)
+          puts "Invalid #{arg.inspect}"
+          raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg.inspect)
         end
       end
 
       def write(io, as, ast_asm, inst)
-        val = operand | (rd << 12) | (rn << 12+4) |
+        #not sure about these 2 constants. They produce the correct output for str r0 , r1
+        # but i can't help thinking that that is because they are not used in that instruction and
+        # so it doesn't matter. Will see
+        @add_offset = 1
+        @pre_post_index = 1
+        val = operand | (rd << 12 ) | (rn << 12 + 4) |
               (load_store << 12+4+4) | (w << 12+4+4+1) |
               (byte_access << 12+4+4+1+1) | (add_offset << 12+4+4+1+1+1) |
               (pre_post_index << 12+4+4+1+1+1+1) | (i << 12+4+4+1+1+1+1+1) |

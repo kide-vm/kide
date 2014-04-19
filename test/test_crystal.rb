@@ -37,6 +37,17 @@ class TestArmAsm < MiniTest::Test
     code = @generator.and(	[:reg , 'r1'] , [:reg , 'r2'] , [:reg , 'r3']).first
     assert_code code , :and , [0x03,0x10,0x02,0xe0] #e0 01 10 03
   end
+  def test_b
+    # the address is what an assembler calculates (a signed number for the amount of instructions), 
+    # ie the relative (to pc) address -8 (pipeline) /4 so save space
+    # so the cpu adds the value*4 and starts loading that (load, decode, execute)
+    code = @generator.instance_eval { b	-1 }.first #this jumps to the next instruction
+    assert_code code , :b , [0xff,0xff,0xff,0xea] #ea ff ff fe
+  end
+  def test_bl #see comment above. bx not implemented (as it means into thumb, and no thumb here)
+    code = @generator.instance_eval { bl	-1 }.first #this jumps to the next instruction
+    assert_code code , :bl , [0xff,0xff,0xff,0xeb] #ea ff ff fe
+  end
   def test_bic
     code = @generator.instance_eval { bic	r2 , r2 , r3 }.first
     assert_code code , :bic , [0x03,0x20,0xc2,0xe1] #e3 c2 20 44
@@ -69,17 +80,25 @@ class TestArmAsm < MiniTest::Test
     code = @generator.instance_eval { sbc	r3, r4 , r5 }.first
     assert_code code , :sbc , [0x05,0x30,0xc4,0xe0]#e0 c4 30 05
   end
+  def test_str
+    code = @generator.instance_eval { str r0, r0 }.first
+    assert_code code, :str ,  [0x00,0x00,0x80,0xe5] #e5 81 00 00
+  end
   def test_sub
     code = @generator.instance_eval { sub r2, r0, 1 }.first
-    assert_code code, :sub ,  [0x01,0x20,0x40,0xe2] 
+    assert_code code, :sub ,  [0x01,0x20,0x40,0xe2] #e2 40 20 01 
   end
   def test_swi
     code = @generator.instance_eval { swi	0x05 }.first
     assert_code code , :swi , [0x05,0x00,0x00,0xef]#ef 00 00 05
   end
   def test_teq
-    code = @generator.teq(	[:reg , 'r1'] , [:reg , 'r2'] ).first
+    code = @generator.instance_eval{	teq r1 , r2}.first
     assert_code code , :teq , [0x02,0x00,0x31,0xe1] #e1 31 00 02
+  end
+  def test_tst
+    code = @generator.instance_eval{	tst r1 , r2}.first
+    assert_code code , :tst , [0x02,0x00,0x11,0xe1] #e1 11 00 02
   end
   def test_mov
     code = @generator.instance_eval { mov r0, 5 }.first
@@ -89,7 +108,6 @@ class TestArmAsm < MiniTest::Test
     code = @generator.instance_eval { mvn r1, 5 }.first
     assert_code code , :mvn , [0x05,0x10,0xe0,0xe3] #e3 e0 10 05
   end
-  #       tst b bl bx  strb
   def saved_other
     @generator.instance_eval do
       mov r0, 5
