@@ -122,7 +122,8 @@ module Asm
           end
           a.cond = COND_BITS[@cond]
           a.rn = 13 # sp
-          a.build_operand args[0]
+          puts "ARGS #{args.inspect}"
+          a.build_operand args
           a.write io, as
         when :b, :bl
           arg = args[0]

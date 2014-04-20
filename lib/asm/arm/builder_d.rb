@@ -29,14 +29,16 @@ module Asm
 
       # Build representation for source value
       def build_operand(arg)
-        if (arg.is_a?(Asm::RegisterListArgNode))
+        if (arg.is_a?(Array))
           @operand = 0
-          arg.registers.each do |reg_node|
-            reg = reg_ref(reg_node)
+          arg.each do |sym , reg |
+            #allow an array of reg (strings), or the [:reg , name] produced by the instruction functions
+            reg = sym == :reg ? reg : sym
+            reg = reg_ref(reg)
             @operand |= (1 << reg)
           end
         else
-          raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg)
+          raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG + " " + arg.inspect , arg)
         end
       end
 

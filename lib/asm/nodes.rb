@@ -42,8 +42,13 @@ module Asm
     end
   end
 
+  #maybe not used at all as code_gen::instruction raises if used.
+  # instead now using Arrays
   class RegisterListArgNode < ArgNode
     attr_accessor :registers
+    def initialize regs
+      @registers = regs.collect{ |sym , reg| (sym == :reg) ? reg :  "not a reg #{sym} , #{reg}" }
+    end
   end
 
   class NumLiteralArgNode < ArgNode

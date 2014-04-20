@@ -49,7 +49,8 @@ class Asm::Arm::CodeGenerator
     @asm.add_object Asm::Arm::Instruction.new(node)
   end
 
-  %w(adc add and bic eor orr rsb rsc sbc sub mov mvn cmn cmp teq tst b bl bx swi str strb ldr ldrb 
+  %w(adc add and bic eor orr rsb rsc sbc sub mov mvn cmn cmp teq tst b bl bx 
+    push pop swi str strb ldr ldrb 
   ).each { |inst|
     define_method(inst) { |*args|
       instruction inst.to_sym, *args

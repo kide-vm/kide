@@ -76,6 +76,15 @@ class TestArmAsm < MiniTest::Test
     code = @generator.instance_eval { orr	r2 , r2 , r3 }.first
     assert_code code , :orr , [0x03,0x20,0x82,0xe1] #e1 82 20 03
   end
+  def test_push
+    code = @generator.instance_eval { push lr }.first
+    assert_code code , :push ,  [0x00,0x40,0x2d,0xe9] #e9 2d 40 00
+  end
+  def test_pop
+    code = @generator.instance_eval { pop	pc }.first
+    assert_code code , :pop , [0x00,0x80,0xbd,0xe8] #e8 bd 80 00
+  end
+  
   def test_rsb
     code = @generator.instance_eval { rsb	r1 , r2 , r3 }.first
     assert_code code , :rsb , [0x03,0x10,0x62,0xe0]#e0 62 10 03
