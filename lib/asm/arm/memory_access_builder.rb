@@ -4,10 +4,10 @@ module Asm
   module Arm
     # ADDRESSING MODE 2
     # Implemented: immediate offset with offset=0
-    class BuilderB
+    class MemoryAccessBuilder
       include Asm::Arm::InstructionTools
 
-      def initialize
+      def initialize(inst_class, byte_access, load_store)
         @cond = 0b1110
         @inst_class = 0
         @i = 0 #I flag (third bit)
@@ -19,17 +19,12 @@ module Asm
         @rn = 0
         @rd = 0
         @operand = 0
+        @inst_class = inst_class
+        @byte_access = byte_access
+        @load_store = load_store
       end
       attr_accessor :cond, :inst_class, :i, :pre_post_index, :add_offset,
                     :byte_access, :w, :load_store, :rn, :rd, :operand
-
-      def self.make(inst_class, byte_access, load_store)
-        a = new
-        a.inst_class = inst_class
-        a.byte_access = byte_access
-        a.load_store = load_store
-        a
-      end
 
       # Build representation for target address
       def build_operand(arg)

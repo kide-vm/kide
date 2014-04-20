@@ -1,8 +1,8 @@
 require "asm/assembly_error"
 require "asm/arm/instruction_tools"
-require "asm/arm/builder_a"
-require "asm/arm/builder_b"
-require "asm/arm/builder_d"
+require "asm/arm/normal_builder"
+require "asm/arm/memory_access_builder"
+require "asm/arm/stack_builder"
 
 module Asm
   module Arm
@@ -80,34 +80,34 @@ module Asm
         s = @s ? 1 : 0
         case opcode
         when :adc, :add, :and, :bic, :eor, :orr, :rsb, :rsc, :sbc, :sub
-          a = BuilderA.make(OPC_DATA_PROCESSING, OPCODES[opcode], s)
+          a = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], s)
           a.cond = COND_BITS[@cond]
           a.rd = reg_ref(args[0])
           a.rn = reg_ref(args[1])
           a.build_operand args[2]
           a.write io, as
         when :cmn, :cmp, :teq, :tst
-          a = BuilderA.make(OPC_DATA_PROCESSING, OPCODES[opcode], 1)
+          a = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], 1)
           a.cond = COND_BITS[@cond]
           a.rn = reg_ref(args[0])
           a.rd = 0
           a.build_operand args[1]
           a.write io, as
         when :mov, :mvn
-          a = BuilderA.make(OPC_DATA_PROCESSING, OPCODES[opcode], s)
+          a = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], s)
           a.cond = COND_BITS[@cond]
           a.rn = 0
           a.rd = reg_ref(args[0])
           a.build_operand args[1]
           a.write io, as
         when :strb, :str
-          a = BuilderB.make(OPC_MEMORY_ACCESS, (opcode == :strb ? 1 : 0), 0)
+          a = MemoryAccessBuilder.new(OPC_MEMORY_ACCESS, (opcode == :strb ? 1 : 0), 0)
           a.cond = COND_BITS[@cond]
           a.rd = reg_ref(args[1])
           a.build_operand args[0]
           a.write io, as, @ast_asm, self
         when :ldrb, :ldr
-          a = BuilderB.make(OPC_MEMORY_ACCESS, (opcode == :ldrb ? 1 : 0), 1)
+          a = MemoryAccessBuilder.new(OPC_MEMORY_ACCESS, (opcode == :ldrb ? 1 : 0), 1)
           a.cond = COND_BITS[@cond]
           a.rd = reg_ref(args[0])
           a.build_operand args[1]
@@ -116,13 +116,12 @@ module Asm
           # downward growing, decrement before memory access
           # official ARM style stack as used by gas
           if (opcode == :push)
-            a = BuilderD.make(1,0,1,0) 
+            a = StackBuilder.new(1,0,1,0) 
           else
-            a = BuilderD.make(0,1,1,1)
+            a = StackBuilder.new(0,1,1,1)
           end
           a.cond = COND_BITS[@cond]
           a.rn = 13 # sp
-          puts "ARGS #{args.inspect}"
           a.build_operand args
           a.write io, as
         when :b, :bl

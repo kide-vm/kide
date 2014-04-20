@@ -1,10 +1,10 @@
 module Asm
   module Arm
     # ADDRESSING MODE 4
-    class BuilderD
+    class StackBuilder
       include Asm::Arm::InstructionTools
 
-      def initialize
+      def initialize(pre_post, up_down, write, store_load)
         @cond = 0b1110
         @inst_class = Asm::Arm::Instruction::OPC_STACK
         @pre_post_index = 0
@@ -14,18 +14,13 @@ module Asm
         @store_load = 0
         @rn = 0
         @operand = 0
+        @pre_post_index = pre_post
+        @up_down = up_down
+        @write_base = write
+        @store_load = store_load
       end
       attr_accessor :cond, :inst_class, :pre_post_index, :up_down,
                     :s, :write_base, :store_load, :rn, :operand
-
-      def self.make(pre_post, up_down, write, store_load)
-        a = new
-        a.pre_post_index = pre_post
-        a.up_down = up_down
-        a.write_base = write
-        a.store_load = store_load
-        a
-      end
 
       # Build representation for source value
       def build_operand(arg)

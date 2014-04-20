@@ -2,10 +2,10 @@ module Asm
   module Arm
     # ADDRESSING MODE 1
     # Complete!
-    class BuilderA
+    class NormalBuilder
       include Asm::Arm::InstructionTools
 
-      def initialize
+      def initialize(inst_class, opcode, s)
         @cond = 0b1110
         @inst_class = 0
         @i = 0
@@ -14,18 +14,13 @@ module Asm
         @rn = 0
         @rd = 0
         @operand = 0
+        @inst_class = inst_class
+        @opcode = opcode
+        @s = s
       end
       attr_accessor :cond, :inst_class, :i, :opcode, :s,
                     :rn, :rd, :operand
 
-      def self.make(inst_class, opcode, s)
-        a = new
-        a.inst_class = inst_class
-        a.opcode = opcode
-        a.s = s
-        a
-      end
-  
       def calculate_u8_with_rr(arg)
         parts = arg.value.to_s(2).rjust(32,'0').scan(/^(0*)(.+?)0*$/).flatten
         pre_zeros = parts[0].length
