@@ -45,5 +45,5 @@ pkg
 # For redcar:
 #.redcar
 
-# For rubinius:
-#*.rbc
+# Object files
+*.o
