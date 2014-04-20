@@ -80,50 +80,50 @@ module Asm
         s = @s ? 1 : 0
         case opcode
         when :adc, :add, :and, :bic, :eor, :orr, :rsb, :rsc, :sbc, :sub
-          a = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], s)
-          a.cond = COND_BITS[@cond]
-          a.rd = reg_ref(args[0])
-          a.rn = reg_ref(args[1])
-          a.build_operand args[2]
-          a.write io, as
+          builder = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], s)
+          builder.cond = COND_BITS[@cond]
+          builder.rd = reg_ref(args[0])
+          builder.rn = reg_ref(args[1])
+          builder.build_operand args[2]
+          builder.write io, as
         when :cmn, :cmp, :teq, :tst
-          a = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], 1)
-          a.cond = COND_BITS[@cond]
-          a.rn = reg_ref(args[0])
-          a.rd = 0
-          a.build_operand args[1]
-          a.write io, as
+          builder = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], 1)
+          builder.cond = COND_BITS[@cond]
+          builder.rn = reg_ref(args[0])
+          builder.rd = 0
+          builder.build_operand args[1]
+          builder.write io, as
         when :mov, :mvn
-          a = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], s)
-          a.cond = COND_BITS[@cond]
-          a.rn = 0
-          a.rd = reg_ref(args[0])
-          a.build_operand args[1]
-          a.write io, as
+          builder = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], s)
+          builder.cond = COND_BITS[@cond]
+          builder.rn = 0
+          builder.rd = reg_ref(args[0])
+          builder.build_operand args[1]
+          builder.write io, as
         when :strb, :str
-          a = MemoryAccessBuilder.new(OPC_MEMORY_ACCESS, (opcode == :strb ? 1 : 0), 0)
-          a.cond = COND_BITS[@cond]
-          a.rd = reg_ref(args[1])
-          a.build_operand args[0]
-          a.write io, as, @ast_asm, self
+          builder = MemoryAccessBuilder.new(OPC_MEMORY_ACCESS, (opcode == :strb ? 1 : 0), 0)
+          builder.cond = COND_BITS[@cond]
+          builder.rd = reg_ref(args[1])
+          builder.build_operand args[0]
+          builder.write io, as, @ast_asm, self
         when :ldrb, :ldr
-          a = MemoryAccessBuilder.new(OPC_MEMORY_ACCESS, (opcode == :ldrb ? 1 : 0), 1)
-          a.cond = COND_BITS[@cond]
-          a.rd = reg_ref(args[0])
-          a.build_operand args[1]
-          a.write io, as, @ast_asm, self
+          builder = MemoryAccessBuilder.new(OPC_MEMORY_ACCESS, (opcode == :ldrb ? 1 : 0), 1)
+          builder.cond = COND_BITS[@cond]
+          builder.rd = reg_ref(args[0])
+          builder.build_operand args[1]
+          builder.write io, as, @ast_asm, self
         when :push, :pop
           # downward growing, decrement before memory access
           # official ARM style stack as used by gas
           if (opcode == :push)
-            a = StackBuilder.new(1,0,1,0) 
+            builder = StackBuilder.new(1,0,1,0) 
           else
-            a = StackBuilder.new(0,1,1,1)
+            builder = StackBuilder.new(0,1,1,1)
           end
-          a.cond = COND_BITS[@cond]
-          a.rn = 13 # sp
-          a.build_operand args
-          a.write io, as
+          builder.cond = COND_BITS[@cond]
+          builder.rn = 13 # sp
+          builder.build_operand args
+          builder.write io, as
         when :b, :bl
           arg = args[0]
           if (arg.is_a?(Asm::NumLiteralArgNode))
@@ -135,7 +135,10 @@ module Asm
           elsif (arg.is_a?(Asm::LabelObject) or arg.is_a?(Asm::LabelRefArgNode))
             arg = @ast_asm.object_for_label(arg.label, self) if arg.is_a?(Asm::LabelRefArgNode)
             as.add_relocation(io.tell, arg, Asm::Arm::R_ARM_PC24, RelocHandler)
+            #write 0 "for now" and let relocation happen
             io << "\x00\x00\x00"
+          else
+            raise "else not coded #{arg.inspect}"
           end
           io.write_uint8 OPCODES[opcode] | (COND_BITS[@cond] << 4)
         when :bx
