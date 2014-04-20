@@ -1,10 +1,9 @@
 require_relative 'helper'
-require "asm/arm/code_generator"
 
-# try  to test that the generation of basic instructions works
-# one instruction at a time, reverse testing from objdump --demangle -Sfghxp
-# tests are named as per assembler code, ie test_mov testing mov instruction
-#  adc add and bic eor orr rsb rsc sbc sub mov mvn cmn cmp teq tst b bl bx swi strb
+# test the generation of a whole program
+# not many asserts, but assume all is  well (ho ho)
+# linking and running does not produce seqmentation fault, ie it works
+# moving on to calling external functions to get some output
 
 class TestSmallProg < MiniTest::Test
   # need a code generator, for arm 
