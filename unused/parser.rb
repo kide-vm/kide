@@ -1,5 +1,19 @@
 require_relative 'str_scanner'
 require_relative 'nodes'
+class NumEquivAddrArgNode < NumLiteralArgNode
+end
+class LabelEquivAddrArgNode < LabelRefArgNode
+end
+class ToplevelNode < Node
+  attr_accessor :children
+end
+class DirectiveNode < Node
+  attr_accessor :name, :value
+end
+class LabelNode < Node
+  attr_accessor :name
+end
+
 
 module Asm
   class Parser

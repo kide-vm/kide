@@ -1,21 +1,6 @@
 module Asm
 
   class Node
-    def initialize(s = nil)
-      yield self if block_given?
-    end
-  end
-
-  class ToplevelNode < Node
-    attr_accessor :children
-  end
-
-  class DirectiveNode < Node
-    attr_accessor :name, :value
-  end
-
-  class LabelNode < Node
-    attr_accessor :name
   end
 
   class InstructionNode < Node
@@ -58,16 +43,12 @@ module Asm
     end
   end
 
-  class NumEquivAddrArgNode < NumLiteralArgNode
-  end
   class LabelRefArgNode < ArgNode
     attr_accessor :label, :label_object
     def initialize label , object = nil
       @label = label
       @label_object = object
     end
-  end
-  class LabelEquivAddrArgNode < LabelRefArgNode
   end
 
   class ParseError < StandardError
