@@ -2,7 +2,7 @@ module Asm
   module Arm
     module InstructionTools
       def reg_ref(arg)
-        if (not arg.is_a?(Asm::RegisterArgNode))
+        if (not arg.is_a?(Asm::RegisterNode))
           raise Asm::AssemblyError.new('argument must be a register', arg)
         end
 

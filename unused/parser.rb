@@ -1,8 +1,8 @@
 require_relative 'str_scanner'
 require_relative 'nodes'
-class NumEquivAddrArgNode < NumLiteralArgNode
+class NumEquivAddrNode < NumLiteralNode
 end
-class LabelEquivAddrArgNode < LabelRefArgNode
+class LabelEquivAddrNode < LabelRefNode
 end
 class ToplevelNode < Node
   attr_accessor :children
@@ -154,7 +154,7 @@ module Asm
     ))
     def parse_register(s)
       if (m = s.scan_str(REGISTER_REGEXP))
-        RegisterArgNode.new(s) { |n|
+        RegisterNode.new(s) { |n|
           n.name = m
         }
       end
@@ -162,7 +162,7 @@ module Asm
   
     def parse_register_list(s)
       if (m = s.scan(/\{/))
-        node = RegisterListArgNode.new(s) do |n|
+        node = RegisterListNode.new(s) do |n|
           n.registers = []
         end
         loop do
@@ -185,7 +185,7 @@ module Asm
 
     def parse_num_literal(s)
       if (m = s.scan(/(=?)#(-?(?:0x)?[0-9A-Fa-f]+)/))
-        (m[0] == '=' ? NumEquivAddrArgNode : NumLiteralArgNode).new(s) { |n|
+        (m[0] == '=' ? NumEquivAddrNode : NumLiteralNode).new(s) { |n|
           n.value = Integer(m[1])
         }
       end
@@ -193,7 +193,7 @@ module Asm
 
     def parse_label_ref(s)
       if (m = s.scan(/(=?)(\/*\w+)/))
-        (m[0] == '=' ? LabelEquivAddrArgNode : LabelRefArgNode).new(s) { |n|
+        (m[0] == '=' ? LabelEquivAddrNode : LabelRefNode).new(s) { |n|
           n.label = m[1]
         }
       end
@@ -203,7 +203,7 @@ module Asm
       if (m = s.scan(/\[/))
         arg = parse_arg(s)
         if (arg and s.scan(/\]/))
-          ReferenceArgNode.new(s) do |n|
+          ReferenceNode.new(s) do |n|
             n.argument = arg
           end
         end

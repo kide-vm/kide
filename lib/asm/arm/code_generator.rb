@@ -33,12 +33,12 @@ class Asm::Arm::CodeGenerator
     args.each { |arg|
       if (arg.is_a?(Array))
         if (arg[0] == :reg)
-          node.args << Asm::RegisterArgNode.new(arg[1])
+          node.args << Asm::RegisterNode.new(arg[1])
         end
       elsif (arg.is_a?(Integer))
-        node.args << Asm::NumLiteralArgNode.new(arg)
+        node.args << Asm::NumLiteralNode.new(arg)
       elsif (arg.is_a?(Symbol))
-        node.args << Asm::LabelRefArgNode.new(arg.to_s)
+        node.args << Asm::LabelRefNode.new(arg.to_s)
       elsif (arg.is_a?(Asm::Arm::GeneratorLabel) or arg.is_a?(Asm::Arm::GeneratorExternLabel))
         node.args << arg
       else

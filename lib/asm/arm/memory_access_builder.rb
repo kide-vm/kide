@@ -33,10 +33,10 @@ module Asm
         @pre_post_index = 0
         @w = 0
         @operand = 0
-        if (arg.is_a?(Asm::RegisterArgNode))
+        if (arg.is_a?(Asm::RegisterNode))
           @rn = reg_ref(arg)
   
-          if (false ) #argr.op and argr.right.is_a?(Asm::NumLiteralArgNode))
+          if (false ) #argr.op and argr.right.is_a?(Asm::NumLiteralNode))
   
             # this if was buggy even before
             # but as mentioned here we'd have to implement the options
@@ -55,7 +55,7 @@ module Asm
           else
             # raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg)
           end
-        elsif (arg.is_a?(Asm::LabelRefArgNode) or arg.is_a?(Asm::NumLiteralArgNode))
+        elsif (arg.is_a?(Asm::LabelRefNode) or arg.is_a?(Asm::NumLiteralNode))
           @pre_post_index = 1
           @rn = 15 # pc
           @use_addrtable_reloc = true
@@ -78,10 +78,10 @@ module Asm
               (inst_class << 12+4+4+1+1+1+1+1+1) | (cond << 12+4+4+1+1+1+1+1+1+2)
         if (@use_addrtable_reloc)
 #          closest_addrtable = Asm::Arm.closest_addrtable(as)
-          if (@addrtable_reloc_target.is_a?(Asm::LabelRefArgNode))
+          if (@addrtable_reloc_target.is_a?(Asm::LabelRefNode))
             obj = ast_asm.object_for_label(@addrtable_reloc_target.label, inst)
             ref_label = closest_addrtable.add_label(obj)
-          elsif (@addrtable_reloc_target.is_a?(Asm::NumLiteralArgNode))
+          elsif (@addrtable_reloc_target.is_a?(Asm::NumLiteralNode))
             ref_label = closest_addrtable.add_const(@addrtable_reloc_target.value)
           end
           as.add_relocation io.tell, ref_label, Asm::Arm::R_ARM_PC12,
