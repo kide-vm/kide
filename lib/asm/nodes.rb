@@ -11,12 +11,6 @@ module Asm
     attr_accessor :type, :value, :argument
   end
 
-  class MathNode < Node
-    attr_accessor :left, :right, :op
-    alias_method :argument, :left
-    alias_method :argument=, :left=
-  end
-
   class RegisterNode < Node
     attr_accessor :name
     def initialize name

@@ -13,6 +13,11 @@ end
 class LabelNode < Node
   attr_accessor :name
 end
+class MathNode < Node
+  attr_accessor :left, :right, :op
+  alias_method :argument, :left
+  alias_method :argument=, :left=
+end
 
 
 module Asm
