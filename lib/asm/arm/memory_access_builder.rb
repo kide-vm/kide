@@ -29,12 +29,12 @@ module Asm
       # Build representation for target address
       def build_operand(arg)
         #str / ldr are _seruous instructions. With BIG possibilities no half are implemented
+        @i = 0
+        @pre_post_index = 0
+        @w = 0
+        @operand = 0
         if (arg.is_a?(Asm::RegisterArgNode))
-          @i = 0
-          @pre_post_index = 0
-          @w = 0
           @rn = reg_ref(arg)
-          @operand = 0
   
           if (false ) #argr.op and argr.right.is_a?(Asm::NumLiteralArgNode))
   
@@ -55,17 +55,13 @@ module Asm
           else
             # raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg)
           end
-        elsif (arg.is_a?(Asm::LabelEquivAddrArgNode) or arg.is_a?(Asm::NumEquivAddrArgNode))
-          @i = 0
+        elsif (arg.is_a?(Asm::LabelRefArgNode) or arg.is_a?(Asm::NumEquivAddrArgNode))
           @pre_post_index = 1
-          @w = 0
           @rn = 15 # pc
-          @operand = 0
           @use_addrtable_reloc = true
           @addrtable_reloc_target = arg
         else
-          puts "Invalid #{arg.inspect}"
-          raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg.inspect)
+          raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG + " " + arg.inspect, arg.inspect)
         end
       end
 
@@ -81,7 +77,7 @@ module Asm
               (pre_post_index << 12+4+4+1+1+1+1) | (i << 12+4+4+1+1+1+1+1) |
               (inst_class << 12+4+4+1+1+1+1+1+1) | (cond << 12+4+4+1+1+1+1+1+1+2)
         if (@use_addrtable_reloc)
-          closest_addrtable = Asm::Arm.closest_addrtable(as)
+#          closest_addrtable = Asm::Arm.closest_addrtable(as)
           if (@addrtable_reloc_target.is_a?(Asm::LabelEquivAddrArgNode))
             obj = ast_asm.object_for_label(@addrtable_reloc_target.label, inst)
             ref_label = closest_addrtable.add_label(obj)

@@ -17,7 +17,9 @@ module Asm
     end
 
     def add_relocation(*args)
-      @relocations << Asm::Relocation.new(*args)
+      reloc = Asm::Relocation.new(*args)
+      raise "reloc #{reloc.inspect}"
+      @relocations << reloc
     end
 
     def assemble(io)
@@ -27,6 +29,7 @@ module Asm
 
       @relocations.delete_if do |reloc|
         io.seek reloc.position
+        puts "reloc #{reloc.inspect}"
         if (reloc.label.extern?)
           reloc.handler.call(io, io.tell, reloc.type)
         else

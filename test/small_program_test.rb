@@ -15,8 +15,7 @@ class TestSmallProg < MiniTest::Test
   def test_generate_small
     @generator.instance_eval {
       mov r0, 5                #1
-      loop_start = label
-      loop_start.set!
+      loop_start = label!
       subs r0, r0, 1          #2
       bne loop_start          #3
     	mov r7, 1               #4
@@ -48,6 +47,6 @@ class TestSmallProg < MiniTest::Test
     assembly = @generator.assemble
     assert_equal len * 4 , assembly.length 
     writer.set_text assembly
-    writer.save('#{name}_test.o')    
+    writer.save("#{name}_test.o")    
   end
 end

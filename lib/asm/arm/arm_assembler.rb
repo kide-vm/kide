@@ -1,5 +1,5 @@
 require 'asm/assembler'
-
+require "asm/arm/addr_table_object"
 module Asm
   module Arm
     

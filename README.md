@@ -18,9 +18,15 @@ First instructions are in fact assembling correctly. Meaning i have tests, and i
 Step 2
 ------
 
-Package the code into an executable. Run that and verufy it's output.
+Package the code into an executable. Run that and verify it's output. But full elf support (including externs) is eluding me for now.
 
-Currently hangin on the elf format.
+Still, this has proven to be a good review point for the arcitecture and means no libc for now.
+Full rationale on the web (pages rep for now), but it means starting an extra step
+
+Step 2.1
+--------
+
+Start implementing syscalls and the functionality we actually need from c (basic io only really)
 
 Step 3
 -------
