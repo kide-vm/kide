@@ -65,7 +65,7 @@ module Asm
         end
       end
 
-      def assemble(io, as, generator, inst)
+      def assemble(io, as, inst)
         #not sure about these 2 constants. They produce the correct output for str r0 , r1
         # but i can't help thinking that that is because they are not used in that instruction and
         # so it doesn't matter. Will see

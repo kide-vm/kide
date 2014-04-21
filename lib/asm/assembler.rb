@@ -7,15 +7,18 @@ module Asm
   class Assembler
     def initialize
       @objects = []
+      @position = 0
       @label_objects = []
       @relocations = []
     end
     attr_reader :relocations, :objects
 
     def add_object(obj)
+      obj.at(@position)
+      @position += obj.length
       @objects << obj
     end
-
+    
     def add_relocation(*args)
       reloc = Asm::Relocation.new(*args)
       #raise "reloc #{reloc.inspect}"

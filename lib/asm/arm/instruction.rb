@@ -11,9 +11,8 @@ module Asm
       include InstructionTools
 
       COND_POSTFIXES = Regexp.union(%w(eq ne cs cc mi pl vs vc hi ls ge lt gt le al)).source
-      def initialize(node, ast_asm = nil)
+      def initialize(node)
         @node = node
-        @ast_asm = ast_asm
         opcode = node.opcode
         args = node.args
 
@@ -38,6 +37,14 @@ module Asm
         @s
       end
 
+      def at position 
+        @position = position
+      end
+      
+      def length
+        4
+      end
+      
       OPC_DATA_PROCESSING = 0b00
       OPC_MEMORY_ACCESS = 0b01
       OPC_STACK = 0b10
@@ -105,13 +112,13 @@ module Asm
           builder.cond = COND_BITS[@cond]
           builder.rd = reg_ref(args[1])
           builder.build_operand args[0]
-          builder.assemble io, as, @ast_asm, self
+          builder.assemble io, as, self
         when :ldrb, :ldr
           builder = MemoryAccessBuilder.new(OPC_MEMORY_ACCESS, (opcode == :ldrb ? 1 : 0), 1)
           builder.cond = COND_BITS[@cond]
           builder.rd = reg_ref(args[0])
           builder.build_operand args[1]
-          builder.assemble io, as, @ast_asm, self
+          builder.assemble io, as, self
         when :push, :pop
           # downward growing, decrement before memory access
           # official ARM style stack as used by gas
@@ -133,6 +140,7 @@ module Asm
             # TODO add check that the value fits into 24 bits
             io << packed[0,3]
           elsif (arg.is_a?(Asm::LabelObject) or arg.is_a?(Asm::LabelRefNode))
+            #not yet tested/supported
             arg = @ast_asm.object_for_label(arg.label, self) if arg.is_a?(Asm::LabelRefNode)
             as.add_relocation(io.tell, arg, Asm::Arm::R_ARM_PC24, RelocHandler)
             #write 0 "for now" and let relocation happen
