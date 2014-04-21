@@ -85,33 +85,33 @@ module Asm
           builder.rd = reg_ref(args[0])
           builder.rn = reg_ref(args[1])
           builder.build_operand args[2]
-          builder.write io, as
+          builder.assemble io, as
         when :cmn, :cmp, :teq, :tst
           builder = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], 1)
           builder.cond = COND_BITS[@cond]
           builder.rn = reg_ref(args[0])
           builder.rd = 0
           builder.build_operand args[1]
-          builder.write io, as
+          builder.assemble io, as
         when :mov, :mvn
           builder = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], s)
           builder.cond = COND_BITS[@cond]
           builder.rn = 0
           builder.rd = reg_ref(args[0])
           builder.build_operand args[1]
-          builder.write io, as
+          builder.assemble io, as
         when :strb, :str
           builder = MemoryAccessBuilder.new(OPC_MEMORY_ACCESS, (opcode == :strb ? 1 : 0), 0)
           builder.cond = COND_BITS[@cond]
           builder.rd = reg_ref(args[1])
           builder.build_operand args[0]
-          builder.write io, as, @ast_asm, self
+          builder.assemble io, as, @ast_asm, self
         when :ldrb, :ldr
           builder = MemoryAccessBuilder.new(OPC_MEMORY_ACCESS, (opcode == :ldrb ? 1 : 0), 1)
           builder.cond = COND_BITS[@cond]
           builder.rd = reg_ref(args[0])
           builder.build_operand args[1]
-          builder.write io, as, @ast_asm, self
+          builder.assemble io, as, @ast_asm, self
         when :push, :pop
           # downward growing, decrement before memory access
           # official ARM style stack as used by gas
@@ -123,7 +123,7 @@ module Asm
           builder.cond = COND_BITS[@cond]
           builder.rn = 13 # sp
           builder.build_operand args
-          builder.write io, as
+          builder.assemble io, as
         when :b, :bl
           arg = args[0]
           if (arg.is_a?(Asm::NumLiteralNode))

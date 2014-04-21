@@ -65,7 +65,7 @@ module Asm
         end
       end
 
-      def write(io, as, ast_asm, inst)
+      def assemble(io, as, generator, inst)
         #not sure about these 2 constants. They produce the correct output for str r0 , r1
         # but i can't help thinking that that is because they are not used in that instruction and
         # so it doesn't matter. Will see
@@ -79,7 +79,7 @@ module Asm
         if (@use_addrtable_reloc)
 #          closest_addrtable = Asm::Arm.closest_addrtable(as)
           if (@addrtable_reloc_target.is_a?(Asm::LabelRefNode))
-            obj = ast_asm.object_for_label(@addrtable_reloc_target.label, inst)
+            obj = generator.object_for_label(@addrtable_reloc_target.label, inst)
             ref_label = closest_addrtable.add_label(obj)
           elsif (@addrtable_reloc_target.is_a?(Asm::NumLiteralNode))
             ref_label = closest_addrtable.add_const(@addrtable_reloc_target.value)

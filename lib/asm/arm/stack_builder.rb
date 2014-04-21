@@ -37,7 +37,7 @@ module Asm
         end
       end
 
-      def write(io, as)
+      def assemble(io, as)
         val = operand | (rn << 16) | (store_load << 16+4) | 
               (write_base << 16+4+1) | (s << 16+4+1+1) | (up_down << 16+4+1+1+1) |
               (pre_post_index << 16+4+1+1+1+1) | (inst_class << 16+4+1+1+1+1+2) |

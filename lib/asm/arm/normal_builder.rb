@@ -88,7 +88,7 @@ module Asm
         end
       end
 
-      def write(io, as)
+      def assemble(io, as)
         val = operand | (rd << 12) | (rn << 12+4) |
               (s << 12+4+4) | (opcode << 12+4+4+1) |
               (i << 12+4+4+1+4) | (inst_class << 12+4+4+1+4+1) |
