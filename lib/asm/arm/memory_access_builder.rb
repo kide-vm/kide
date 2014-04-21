@@ -76,13 +76,14 @@ module Asm
               (byte_access << 12+4+4+1+1) | (add_offset << 12+4+4+1+1+1) |
               (pre_post_index << 12+4+4+1+1+1+1) | (i << 12+4+4+1+1+1+1+1) |
               (inst_class << 12+4+4+1+1+1+1+1+1) | (cond << 12+4+4+1+1+1+1+1+1+2)
+        # move towards simpler model
         if (@use_addrtable_reloc)
 #          closest_addrtable = Asm::Arm.closest_addrtable(as)
           if (@addrtable_reloc_target.is_a?(Asm::LabelRefNode))
             obj = generator.object_for_label(@addrtable_reloc_target.label, inst)
-            ref_label = closest_addrtable.add_label(obj)
+#            ref_label = closest_addrtable.add_label(obj)
           elsif (@addrtable_reloc_target.is_a?(Asm::NumLiteralNode))
-            ref_label = closest_addrtable.add_const(@addrtable_reloc_target.value)
+#            ref_label = closest_addrtable.add_const(@addrtable_reloc_target.value)
           end
           as.add_relocation io.tell, ref_label, Asm::Arm::R_ARM_PC12,
                             Asm::Arm::Instruction::RelocHandler

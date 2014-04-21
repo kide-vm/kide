@@ -14,13 +14,6 @@ module Asm
     # Unofficial (cant be used for extern relocations)
     R_ARM_PC12 = 0xF0
   
-    # TODO actually find the closest somehow
-    def self.closest_addrtable(as)
-      as.objects.find do |obj|
-        obj.is_a?(Asm::Arm::AddrTableObject)
-      end || (raise Asm::AssemblyError.new('could not find addrtable to use', nil))
-    end
-
     def self.write_resolved_relocation(io, addr, type)
       case type
       when R_ARM_PC24

@@ -1,6 +1,15 @@
 module Asm
   module Arm
     
+    # TODO actually find the closest somehow (DROPPED for now)
+    def self.closest_addrtable(as)
+      as.objects.find do |obj|
+        obj.is_a?(Asm::Arm::AddrTableObject)
+      end || (raise Asm::AssemblyError.new('could not find addrtable to use', nil))
+    end
+    
+    
+    #this has been DROPPED for now (didn't work) and we can do without it
     class AddrTableObject
       def initialize
         @table = []
