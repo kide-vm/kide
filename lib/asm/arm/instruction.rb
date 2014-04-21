@@ -141,8 +141,8 @@ module Asm
             io << packed[0,3]
           elsif (arg.is_a?(Asm::LabelObject) or arg.is_a?(Asm::LabelRefNode))
             #not yet tested/supported
-            arg = @ast_asm.object_for_label(arg.label, self) if arg.is_a?(Asm::LabelRefNode)
-            as.add_relocation(io.tell, arg, Asm::Arm::R_ARM_PC24, RelocHandler)
+#            arg = @ast_asm.object_for_label(arg.label, self) if arg.is_a?(Asm::LabelRefNode)
+#            as.add_relocation(io.tell, arg, Asm::Arm::R_ARM_PC24, RelocHandler)
             #write 0 "for now" and let relocation happen
             io << "\x00\x00\x00"
           else

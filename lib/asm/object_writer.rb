@@ -18,8 +18,8 @@ module Asm
       @text = Elf::TextSection.new(".text")
       @object.add_section @text
 
-      @reloc_table = Elf::RelocationTableSection.new(".text.rel", @symbol_table, @text)
-      @object.add_section @reloc_table
+#      @reloc_table = Elf::RelocationTableSection.new(".text.rel", @symbol_table, @text)
+#      @object.add_section @reloc_table
     end
 
     def set_text(text)
@@ -31,22 +31,19 @@ module Asm
       @symbol_table.add_func_symbol name, offset, @text, linkage
     end
 
-    def add_reloc_symbol(name)
-      @symbol_table.add_func_symbol name, 0, nil, Elf::Constants::STB_GLOBAL
-    end
+#   def add_reloc_symbol(name)
+#      @symbol_table.add_func_symbol name, 0, nil, Elf::Constants::STB_GLOBAL
+#    end
 
-    def add_reloc(offset, label, type)
-      @reloc_table.add_reloc offset, label, type
-    end
+#    def add_reloc(offset, label, type)
+#      @reloc_table.add_reloc offset, label, type
+#    end
 
     def save(filename)
-      File.open(filename, 'wb') { |fp|
-        write fp
-      }
+      to = File.open(filename, 'wb') 
+      @object.write to
+      to.close
     end
 
-    def write(io)
-      @object.write io
-    end
   end
 end
