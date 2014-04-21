@@ -9,7 +9,7 @@ require_relative 'helper'
 class TestSmallProg < MiniTest::Test
   # need a code generator, for arm 
   def setup
-    @generator = Asm::Arm::CodeGenerator.new
+    @generator = Asm::Arm::ArmAssembler.new
   end
 
   def test_generate_small
@@ -45,7 +45,7 @@ class TestSmallProg < MiniTest::Test
   #helper to write the file
   def write len ,name
     writer = Asm::ObjectWriter.new(Elf::Constants::TARGET_ARM)
-    assembly = @generator.assemble
+    assembly = @generator.assemble_to_string
     assert_equal len * 4 , assembly.length 
     writer.set_text assembly
     writer.save("#{name}_test.o")    

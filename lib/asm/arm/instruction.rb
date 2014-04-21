@@ -74,7 +74,7 @@ module Asm
         :vs => 0b0110
       }
 
-      RelocHandler = Asm::Arm.method(:write_resolved_relocation)
+      RelocHandler = nil # Asm::Arm.method(:write_resolved_relocation)
 
       def assemble(io, as)
         s = @s ? 1 : 0

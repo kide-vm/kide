@@ -1,5 +1,5 @@
 require_relative 'helper'
-require "asm/arm/code_generator"
+require "asm/arm/arm_assembler"
 
 # try  to test that the generation of basic instructions works
 # one instruction at a time, reverse testing from objdump --demangle -Sfghxp
@@ -9,7 +9,7 @@ require "asm/arm/code_generator"
 class TestArmAsm < MiniTest::Test
   # need a code generator, for arm 
   def setup
-    @generator = Asm::Arm::CodeGenerator.new
+    @generator = Asm::Arm::ArmAssembler.new
   end
 
   # code is what the generator spits out, at least one instruction worth (.first)
@@ -17,7 +17,7 @@ class TestArmAsm < MiniTest::Test
   # is reversed and in 4 bytes as ruby can only do 31 bits and so we can't test with just one int (?)
   def assert_code code , op , should 
     assert_equal op ,  code.opcode
-    binary = @generator.assemble
+    binary = @generator.assemble_to_string
     assert_equal 4 , binary.length
     index = 0
     binary.each_byte do |byte |
