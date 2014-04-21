@@ -9,7 +9,7 @@ require "asm/data_object"
 class Asm::Arm::CodeGenerator
   def initialize
     @asm = Asm::Assembler.new
-    @externs = []
+#    @externs = []
   end
 
   def data(str)
@@ -79,6 +79,7 @@ class Asm::Arm::CodeGenerator
     lbl
   end
 
+  #externs dropped for now
   def extern(sym)
     if (lbl = @externs.find { |extern| extern.name == sym })
       lbl

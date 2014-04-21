@@ -24,7 +24,8 @@ class TestSmallProg < MiniTest::Test
     write( 5 , "small" )
   end
   
-  def test_extern
+  #test dropped along with functionality, didn't work and not needed (yet?) TODO
+  def no_test_extern
     @generator.instance_eval {
       mov r0 , 50             #1
       push lr                 #2
