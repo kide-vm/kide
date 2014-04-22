@@ -46,7 +46,7 @@ module Asm
       def build_operand(arg , position = 0) 
         #position only needed for calculating relative addresses to data objects
         #there is a design stink here which makes my head ache. But shanti shanti
-        if arg.is_a?(Asm::DataObject)
+        if arg.is_a?(Asm::StringNode)
           # do pc relative addressing with the difference to the instuction
           # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
           arg = Asm::NumLiteralNode.new( arg.position - position - 8 )

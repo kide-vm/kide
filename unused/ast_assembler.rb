@@ -35,10 +35,10 @@ module Asm
             bytes = cmd.value.strip.split(/\s+/).map do |hex|
               hex.to_i(16)
             end.pack('C*')
-            @asm.add_value Asm::DataObject.new(bytes)
+            @asm.add_value Asm::StringNode.new(bytes)
           elsif (cmd.name == "asciz")
             str = eval(cmd.value) + "\x00"
-            @asm.add_value Asm::DataObject.new(str)
+            @asm.add_value Asm::StringNode.new(str)
           elsif (defined?(Asm::Arm) and cmd.name == 'addrtable')
             @asm.add_value Asm::Arm::AddrTableObject.new
           else

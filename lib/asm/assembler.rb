@@ -16,7 +16,7 @@ module Asm
     def add_string str
       value = @string_table[str]
       return value if value
-      data = Asm::DataObject.new(str)
+      data = Asm::StringNode.new(str)
       @string_table[str] = data
     end
     
@@ -27,8 +27,6 @@ module Asm
     def add_value(val)
       val.at(@position)
       length = val.length
-      #rounding up to the next 4
-      length = (((length - 1 ) / 4 ) + 1 ) * 4 
       @position += length
       @values << val
     end

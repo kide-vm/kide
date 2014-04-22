@@ -25,7 +25,7 @@ class TestSmallProg < MiniTest::Test
   end
 
   def test_hello
-    hello = "Hello Raisa"+ "\n\x00"
+    hello = "Hello Raisa\n"
     @generator.instance_eval {
       mov r7, 4     # 4 == write
       mov r0 , 1    # stdout
@@ -35,7 +35,7 @@ class TestSmallProg < MiniTest::Test
       mov r7, 1     # 1 == exit
     	swi 0
     }
-    write(7 , 'label') 
+    write(7 + hello.length/4 + 1 , 'hello') 
   end
 
   #test dropped along with functionality, didn't work and not needed (yet?) TODO

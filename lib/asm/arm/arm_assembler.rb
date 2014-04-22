@@ -6,7 +6,7 @@ require 'asm/arm/generator_label'
 require 'asm/nodes'
 require 'stream_reader'
 require 'stringio'
-require "asm/data_object"
+require "asm/string_node"
 
 module Asm
   module Arm
