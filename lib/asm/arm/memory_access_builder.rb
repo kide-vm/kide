@@ -28,32 +28,25 @@ module Asm
 
       # Build representation for target address
       def build_operand(arg)
-        #str / ldr are _seruous instructions. With BIG possibilities no half are implemented
+        #str / ldr are _serious instructions. With BIG possibilities not half are implemented
         @i = 0
         @pre_post_index = 0
         @w = 0
         @operand = 0
         if (arg.is_a?(Asm::RegisterNode))
           @rn = reg_ref(arg)
-  
-          if (false ) #argr.op and argr.right.is_a?(Asm::NumLiteralNode))
-  
-            # this if was buggy even before
-            # but as mentioned here we'd have to implement the options
-            # though a better syntax will have to be found
-            val = argr.right.value
-            if (val < 0)
+          if(arg.offset != 0) 
+            @operand = arg.offset
+            if (@operand < 0)
               @add_offset = 0
-              val *= -1
+              #TODO test/check/understand
+              @operand *= -1
             else
               @add_offset = 1
             end
-            if (val.abs > 4095)
+            if (@operand.abs > 4095)
               raise Asm::AssemblyError.new('reference offset too large/small (max 4095)', argr.right)
             end
-            @operand = val
-          else
-            # raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg)
           end
         elsif (arg.is_a?(Asm::LabelRefNode) or arg.is_a?(Asm::NumLiteralNode))
           @pre_post_index = 1

@@ -70,7 +70,7 @@ class TestArmAsm < MiniTest::Test
   end
   def test_ldr2
     code = @generator.instance_eval { ldr r0, r0 + 4 }.first
-    assert_code code, :ldr ,  [0x00,0x00,0x90,0xe5] #e5 90 00 00
+    assert_code code, :ldr ,  [0x04,0x00,0x90,0xe5] #e5 90 00 04
   end
   def test_ldrb
     code = @generator.instance_eval { ldrb r0, r0 }.first
