@@ -45,42 +45,6 @@ module Asm
         4
       end
       
-      OPC_DATA_PROCESSING = 0b00
-      OPC_MEMORY_ACCESS = 0b01
-      OPC_STACK = 0b10
-      # These are used differently in the
-      # instruction encoders
-      OPCODES = {
-        :adc => 0b0101, :add => 0b0100,
-        :and => 0b0000, :bic => 0b1110,
-        :eor => 0b0001, :orr => 0b1100,
-        :rsb => 0b0011, :rsc => 0b0111,
-        :sbc => 0b0110, :sub => 0b0010,
-
-        # for these Rn is sbz (should be zero)
-        :mov => 0b1101,
-        :mvn => 0b1111,
-        # for these Rd is sbz and S=1
-        :cmn => 0b1011,
-        :cmp => 0b1010,
-        :teq => 0b1001,
-        :tst => 0b1000,
-
-        :b => 0b1010,
-        :bl => 0b1011,
-        :bx => 0b00010010
-      }
-      COND_BITS = {
-        :al => 0b1110, :eq => 0b0000,
-        :ne => 0b0001, :cs => 0b0010,
-        :mi => 0b0100, :hi => 0b1000,
-        :cc => 0b0011, :pl => 0b0101,
-        :ls => 0b1001, :vc => 0b0111,
-        :lt => 0b1011, :le => 0b1101,
-        :ge => 0b1010, :gt => 0b1100,
-        :vs => 0b0110
-      }
-
       RelocHandler = nil # Asm::Arm.method(:write_resolved_relocation)
 
       def assemble(io, as)
@@ -88,34 +52,34 @@ module Asm
         case opcode
         when :adc, :add, :and, :bic, :eor, :orr, :rsb, :rsc, :sbc, :sub
           builder = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], s)
-          builder.cond = COND_BITS[@cond]
+          builder.cond = COND_CODES[@cond]
           builder.rd = reg_ref(args[0])
           builder.rn = reg_ref(args[1])
           builder.build_operand args[2]
           builder.assemble io, as
         when :cmn, :cmp, :teq, :tst
           builder = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], 1)
-          builder.cond = COND_BITS[@cond]
+          builder.cond = COND_CODES[@cond]
           builder.rn = reg_ref(args[0])
           builder.rd = 0
           builder.build_operand args[1]
           builder.assemble io, as
         when :mov, :mvn
           builder = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], s)
-          builder.cond = COND_BITS[@cond]
+          builder.cond = COND_CODES[@cond]
           builder.rn = 0
           builder.rd = reg_ref(args[0])
           builder.build_operand args[1]
           builder.assemble io, as
         when :strb, :str
           builder = MemoryAccessBuilder.new(OPC_MEMORY_ACCESS, (opcode == :strb ? 1 : 0), 0)
-          builder.cond = COND_BITS[@cond]
+          builder.cond = COND_CODES[@cond]
           builder.rd = reg_ref(args[1])
           builder.build_operand args[0]
           builder.assemble io, as, self
         when :ldrb, :ldr
           builder = MemoryAccessBuilder.new(OPC_MEMORY_ACCESS, (opcode == :ldrb ? 1 : 0), 1)
-          builder.cond = COND_BITS[@cond]
+          builder.cond = COND_CODES[@cond]
           builder.rd = reg_ref(args[0])
           builder.build_operand args[1]
           builder.assemble io, as, self
@@ -127,7 +91,7 @@ module Asm
           else
             builder = StackBuilder.new(0,1,1,1)
           end
-          builder.cond = COND_BITS[@cond]
+          builder.cond = COND_CODES[@cond]
           builder.rn = 13 # sp
           builder.build_operand args
           builder.assemble io, as
@@ -148,17 +112,13 @@ module Asm
           else
             raise "else not coded #{arg.inspect}"
           end
-          io.write_uint8 OPCODES[opcode] | (COND_BITS[@cond] << 4)
-        when :bx
-          rm = reg_ref(args[0])
-          io.write_uint32 rm | (0b1111111111110001 << 4) | (OPCODES[:bx] << 16+4) |
-                          (COND_BITS[@cond] << 16+4+8)
+          io.write_uint8 OPCODES[opcode] | (COND_CODES[@cond] << 4)
         when :swi
           arg = args[0]
           if (arg.is_a?(Asm::NumLiteralNode))
             packed = [arg.value].pack('L')[0,3]
             io << packed
-            io.write_uint8 0b1111 | (COND_BITS[@cond] << 4)
+            io.write_uint8 0b1111 | (COND_CODES[@cond] << 4)
           else
             raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg)
           end

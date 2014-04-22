@@ -9,7 +9,6 @@ module Asm
         @cond = 0b1110
         @inst_class = 0
         @i = 0
-        @opcode = 0
         @s = 0
         @rn = 0
         @rd = 0
@@ -83,7 +82,10 @@ module Asm
           end
       
           @operand = rm_ref | (shift_op << 4) | (shift_imm << 4+3)
+        elsif arg.is_a?(Asm::DataObject)
+          # do pc relative addressing with the difference to the instuction
         else
+          puts "#{self.inspect}"
           raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG + " " + arg.inspect, arg)
         end
       end

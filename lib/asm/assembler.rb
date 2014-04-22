@@ -6,7 +6,7 @@ module Asm
   class Assembler
     def initialize
       @values = []
-      @position = -1 # marks not set
+      @position = 0 # marks not set
       @labels = []
       @string_table = {}
       #@relocations = []
@@ -17,7 +17,6 @@ module Asm
       value = @string_table[str]
       return value if value
       data = Asm::DataObject.new(str)
-      add_value data
       @string_table[str] = data
     end
     
@@ -27,7 +26,10 @@ module Asm
     
     def add_value(val)
       val.at(@position)
-      @position += val.length
+      length = val.length
+      #rounding up to the next 4
+      length = (((length - 1 ) / 4 ) + 1 ) * 4 
+      @position += length
       @values << val
     end
     

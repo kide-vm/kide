@@ -1,6 +1,40 @@
 module Asm
   module Arm
     module InstructionTools
+      OPCODES = {
+        :adc => 0b0101, :add => 0b0100,
+        :and => 0b0000, :bic => 0b1110,
+        :eor => 0b0001, :orr => 0b1100,
+        :rsb => 0b0011, :rsc => 0b0111,
+        :sbc => 0b0110, :sub => 0b0010,
+
+        # for these Rn is sbz (should be zero)
+        :mov => 0b1101,
+        :mvn => 0b1111,
+        # for these Rd is sbz and S=1
+        :cmn => 0b1011,
+        :cmp => 0b1010,
+        :teq => 0b1001,
+        :tst => 0b1000,
+
+        :b => 0b1010,
+        :bl => 0b1011,
+        :bx => 0b00010010
+      }
+      COND_CODES = {
+        :al => 0b1110, :eq => 0b0000,
+        :ne => 0b0001, :cs => 0b0010,
+        :mi => 0b0100, :hi => 0b1000,
+        :cc => 0b0011, :pl => 0b0101,
+        :ls => 0b1001, :vc => 0b0111,
+        :lt => 0b1011, :le => 0b1101,
+        :ge => 0b1010, :gt => 0b1100,
+        :vs => 0b0110
+      }
+      OPC_DATA_PROCESSING = 0b00
+      OPC_MEMORY_ACCESS = 0b01
+      OPC_STACK = 0b10
+      
       def reg_ref(arg)
         if (not arg.is_a?(Asm::RegisterNode))
           raise Asm::AssemblyError.new('argument must be a register', arg)

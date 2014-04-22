@@ -78,6 +78,11 @@ module Asm
       end
 
       def assemble_to_string
+        #put the strings at the end of the assembled code.
+        # adding them will fix their position and make them assemble after
+        @string_table.values.each do |data|
+          add_value data
+        end
         io = StringIO.new
         assemble(io)
         io.string
