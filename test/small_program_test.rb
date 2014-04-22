@@ -12,7 +12,7 @@ class TestSmallProg < MiniTest::Test
     @generator = Asm::Arm::ArmAssembler.new
   end
 
-  def test_generate_small
+  def test_loop
     @generator.instance_eval {
       mov r0, 5                #1
       loop_start = label!
@@ -21,9 +21,23 @@ class TestSmallProg < MiniTest::Test
     	mov r7, 1               #4
     	swi 0                   #5  5 instructions
     }
-    write( 5 , "small" )
+    write( 5 , "loop" )
   end
-  
+
+  def test_hello
+    hello = "Hello Raisa"+ "\n\x00"
+    @generator.instance_eval {
+      mov r7, 4     # 4 == write
+      mov r0 , 1    # stdout
+      add r1 , pc , hello   # address of "hello Raisa"
+      mov r2 , hello.length
+    	swi 0         #software interupt, ie kernel syscall
+      mov r7, 1     # 1 == exit
+    	swi 0
+    }
+    write(7 , 'label') 
+  end
+
   #test dropped along with functionality, didn't work and not needed (yet?) TODO
   def no_test_extern
     @generator.instance_eval {
@@ -51,3 +65,12 @@ class TestSmallProg < MiniTest::Test
     writer.save("#{name}_test.o")    
   end
 end
+# _start copied from dietc
+#  	mov	fp, #0			@ clear the frame pointer
+#  	ldr	a1, [sp]		@ argc
+#  	add	a2, sp, #4		@ argv
+#  	ldr	ip, .L3
+#  	add	a3, a2, a1, lsl #2	@ &argv[argc]
+#  	add	a3, a3, #4		@ envp	
+#  	str	a3, [ip, #0]		@ environ = envp
+#  	bl	main

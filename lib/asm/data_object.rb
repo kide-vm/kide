@@ -4,6 +4,10 @@ module Asm
       @data = data
     end
     
+    def position
+      throw "Not set" unless @address
+      @address 
+    end
     def at address
       @address = address
     end

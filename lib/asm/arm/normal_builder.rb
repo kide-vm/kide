@@ -43,7 +43,14 @@ module Asm
       end
 
       # Build representation for source value
-      def build_operand(arg)
+      def build_operand(arg , position = 0) 
+        #position only needed for calculating relative addresses to data objects
+        #there is a design stink here which makes my head ache. But shanti shanti
+        if arg.is_a?(Asm::DataObject)
+          # do pc relative addressing with the difference to the instuction
+          # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
+          arg = Asm::NumLiteralNode.new( arg.position - position - 8 )
+        end
         if (arg.is_a?(Asm::NumLiteralNode))
           if (arg.value.fits_u8?)
             # no shifting needed
@@ -82,10 +89,7 @@ module Asm
           end
       
           @operand = rm_ref | (shift_op << 4) | (shift_imm << 4+3)
-        elsif arg.is_a?(Asm::DataObject)
-          # do pc relative addressing with the difference to the instuction
         else
-          puts "#{self.inspect}"
           raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG + " " + arg.inspect, arg)
         end
       end

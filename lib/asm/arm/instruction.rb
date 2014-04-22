@@ -31,7 +31,7 @@ module Asm
         @opcode = opcode.downcase.to_sym
         @args = args
       end
-      attr_reader :opcode, :args
+      attr_reader :opcode, :args , :position
 
       def affect_status
         @s
@@ -55,7 +55,7 @@ module Asm
           builder.cond = COND_CODES[@cond]
           builder.rd = reg_ref(args[0])
           builder.rn = reg_ref(args[1])
-          builder.build_operand args[2]
+          builder.build_operand args[2] , self.position
           builder.assemble io, as
         when :cmn, :cmp, :teq, :tst
           builder = NormalBuilder.new(OPC_DATA_PROCESSING, OPCODES[opcode], 1)
