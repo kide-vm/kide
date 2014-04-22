@@ -22,7 +22,7 @@ module Asm
          rfp sl fp ip sp lr pc
       ).each { |reg|
         define_method(reg) {
-          [:reg, reg]
+          Asm::RegisterNode.new(reg)
         }
       }
 
@@ -32,10 +32,8 @@ module Asm
         node.args = []
 
         args.each { |arg|
-          if (arg.is_a?(Array))
-            if (arg[0] == :reg)
-              node.args << Asm::RegisterNode.new(arg[1])
-            end
+          if (arg.is_a?(Asm::RegisterNode))
+            node.args << arg
           elsif (arg.is_a?(Integer))
             node.args << Asm::NumLiteralNode.new(arg)
           elsif (arg.is_a?(Symbol))

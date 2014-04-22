@@ -26,9 +26,7 @@ module Asm
       def build_operand(arg)
         if (arg.is_a?(Array))
           @operand = 0
-          arg.each do |sym , reg |
-            #allow an array of reg (strings), or the [:reg , name] produced by the instruction functions
-            reg = sym == :reg ? reg : sym
+          arg.each do |reg |
             reg = reg_ref(reg)
             @operand |= (1 << reg)
           end

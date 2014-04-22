@@ -23,7 +23,8 @@ module Asm
   class RegisterListNode < Node
     attr_accessor :registers
     def initialize regs
-      @registers = regs.collect{ |sym , reg| (sym == :reg) ? reg :  "not a reg #{sym} , #{reg}" }
+      @registers = regs
+      regs.each{ |reg| raise  "not a reg #{sym} , #{reg}" unless reg.is_a?(Asm::RegisterNode) }
     end
   end
 

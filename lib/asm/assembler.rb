@@ -8,7 +8,7 @@ module Asm
       @objects = []
       @position = -1 # marks not set
       @label_objects = []
-      @relocations = []
+      #@relocations = []
     end
     attr_reader :relocations, :objects , :position
 

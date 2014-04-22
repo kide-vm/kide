@@ -34,7 +34,7 @@ class TestArmAsm < MiniTest::Test
     assert_code code , :add , [0x03,0x10,0x81,0xe0] #e0 81 10 03
   end
   def test_and # inst eval doesn't really work with and
-    code = @generator.and(	[:reg , 'r1'] , [:reg , 'r2'] , [:reg , 'r3']).first
+    code = @generator.and(	 @generator.r1 , @generator.r2 , @generator.r3).first
     assert_code code , :and , [0x03,0x10,0x02,0xe0] #e0 01 10 03
   end
   def test_b
@@ -66,6 +66,10 @@ class TestArmAsm < MiniTest::Test
   end
   def test_ldr
     code = @generator.instance_eval { ldr r0, r0 }.first
+    assert_code code, :ldr ,  [0x00,0x00,0x90,0xe5] #e5 90 00 00
+  end
+  def test_ldr2
+    code = @generator.instance_eval { ldr r0, r0 + 4 }.first
     assert_code code, :ldr ,  [0x00,0x00,0x90,0xe5] #e5 90 00 00
   end
   def test_ldrb
