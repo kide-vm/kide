@@ -11,7 +11,8 @@ class Asm::Arm::GeneratorLabel < Asm::LabelObject
     0
   end
   def set!
-    @asm.add_object self
+    @asm.add_value self
+    self
   end
 end
 

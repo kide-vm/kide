@@ -84,7 +84,7 @@ module Asm
       
           @operand = rm_ref | (shift_op << 4) | (shift_imm << 4+3)
         else
-          raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg)
+          raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG + " " + arg.inspect, arg)
         end
       end
 

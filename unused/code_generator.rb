@@ -13,7 +13,7 @@ if (__FILE__ == $0)
   	swi 0
   }
 
-  gen.add_data("printf"+ "\x00")
+  gen.add_string("printf"+ "\x00")
   require 'asm/object_writer'
   writer = Asm::ObjectWriter.new(Elf::Constants::TARGET_ARM)
   writer.set_text gen.assemble_to_string

@@ -9,16 +9,17 @@ class TestExtern < MiniTest::Test
   end
 
   def test_extern
+    hello = "Hello Raisa"+ "\n\x00"
     @generator.instance_eval {
       mov r7, 4 #4 == write
       mov r0 , 1     #stdout
-      add r1 , pc , 12   # address of "hello Raisa"
+      add r1 , pc , hello   # address of "hello Raisa"
       mov r2 , 12 # length of hello
     	swi 0
       mov r7, 1   #1 == exit
     	swi 0
     }
-    @generator.add_data("Hello Raisa"+ "\n\x00")
+    @generator.add_string(hello)
     write(7 , 'label') 
   end
   #helper to write the file

@@ -21,10 +21,10 @@ module Asm
           count = m ? m[0].length : 0
           label_breadcrumb = label_breadcrumb[0,count]
           label_breadcrumb << cmd.name[count..-1]
-          @asm.add_object object_for_label(label_breadcrumb.join('/'))
+          @asm.add_value object_for_label(label_breadcrumb.join('/'))
         elsif (cmd.is_a?(Asm::InstructionNode))
           inst = @asm_arch::Instruction.new(cmd, self)
-          @asm.add_object inst
+          @asm.add_value inst
           @inst_label_context[inst] = label_breadcrumb
         elsif (cmd.is_a?(Asm::DirectiveNode))
           if (cmd.name == 'global')
@@ -35,12 +35,12 @@ module Asm
             bytes = cmd.value.strip.split(/\s+/).map do |hex|
               hex.to_i(16)
             end.pack('C*')
-            @asm.add_object Asm::DataObject.new(bytes)
+            @asm.add_value Asm::DataObject.new(bytes)
           elsif (cmd.name == "asciz")
             str = eval(cmd.value) + "\x00"
-            @asm.add_object Asm::DataObject.new(str)
+            @asm.add_value Asm::DataObject.new(str)
           elsif (defined?(Asm::Arm) and cmd.name == 'addrtable')
-            @asm.add_object Asm::Arm::AddrTableObject.new
+            @asm.add_value Asm::Arm::AddrTableObject.new
           else
             raise Asm::AssemblyError.new('unknown directive', cmd)
           end

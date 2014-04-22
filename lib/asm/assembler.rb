@@ -5,22 +5,44 @@ module Asm
 
   class Assembler
     def initialize
-      @objects = []
+      @values = []
       @position = -1 # marks not set
-      @label_objects = []
+      @labels = []
+      @string_table = {}
       #@relocations = []
     end
-    attr_reader :relocations, :objects , :position
+    attr_reader :relocations, :values , :position 
 
-    def add_object(obj)
-      obj.at(@position)
-      @position += obj.length
-      @objects << obj
+    def add_string str
+      value = @string_table[str]
+      return value if value
+      data = Asm::DataObject.new(str)
+      add_value data
+      @string_table[str] = data
     end
     
+    def strings
+      @string_table.values
+    end
+    
+    def add_value(val)
+      val.at(@position)
+      @position += val.length
+      @values << val
+    end
+    
+    def label
+      label = Asm::Arm::GeneratorLabel.new(self)
+      @labels << label
+      label 
+    end
+
+    def label!
+      label.set!
+    end
 
     def assemble(io)
-      @objects.each do |obj|
+      @values.each do |obj|
         obj.assemble io, self
       end
     end
@@ -38,7 +60,7 @@ module Asm
 
 #old assemble function
 #def assemble(io)
-#  @objects.each do |obj|
+#  @values.each do |obj|
 #    obj.assemble io, self
 #  end
 #  @relocations.delete_if do |reloc|

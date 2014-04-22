@@ -13,10 +13,6 @@ module Asm
     
     class ArmAssembler < Asm::Assembler
 
-      def add_data(str)
-        add_object Asm::DataObject.new(str)
-      end
-
       %w(r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12
          r13 r14 r15 a1 a2 a3 a4 v1 v2 v3 v4 v5 v6
          rfp sl fp ip sp lr pc
@@ -36,6 +32,8 @@ module Asm
             node.args << arg
           elsif (arg.is_a?(Integer))
             node.args << Asm::NumLiteralNode.new(arg)
+          elsif (arg.is_a?(String))
+            node.args << add_string(arg)
           elsif (arg.is_a?(Symbol))
             node.args << Asm::LabelRefNode.new(arg.to_s)
           elsif (arg.is_a?(Asm::Arm::GeneratorLabel) or arg.is_a?(Asm::Arm::GeneratorExternLabel))
@@ -45,7 +43,7 @@ module Asm
           end
         }
 
-        add_object Asm::Arm::Instruction.new(node)
+        add_value Asm::Arm::Instruction.new(node)
       end
 
       %w(adc add and bic eor orr rsb rsc sbc sub mov mvn cmn cmp teq tst b bl bx 
@@ -68,23 +66,13 @@ module Asm
         }
       }
 
-      def label
-        Asm::Arm::GeneratorLabel.new(self)
-      end
-
-      def label!
-        lbl = Asm::Arm::GeneratorLabel.new(self)
-        lbl.set!
-        lbl
-      end
-
       #externs dropped for now
       def extern(sym)
         if (lbl = @externs.find { |extern| extern.name == sym })
           lbl
         else
           @externs << lbl = Asm::Arm::GeneratorExternLabel.new(sym)
-          add_object lbl
+          add_value lbl
           lbl
         end
       end

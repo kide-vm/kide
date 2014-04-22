@@ -3,7 +3,7 @@ module Asm
     
     # TODO actually find the closest somehow (DROPPED for now)
     def self.closest_addrtable(as)
-      as.objects.find do |obj|
+      as.values.find do |obj|
         obj.is_a?(Asm::Arm::AddrTableObject)
       end || (raise Asm::AssemblyError.new('could not find addrtable to use', nil))
     end
