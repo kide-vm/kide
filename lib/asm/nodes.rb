@@ -1,13 +1,10 @@
 module Asm
 
-  class Node
-  end
-
-  class InstructionNode < Node
+  class Instruction
     attr_accessor :opcode, :args
   end
 
-  class ShiftNode < Node
+  class Shift 
     attr_accessor :type, :value, :argument
   end
 
@@ -15,7 +12,7 @@ module Asm
   # but also refer to an address. In other words they can be an operand for instructions.
   # Arm has addressing modes abound, and so can add to a register before actually using it
   # If can actually shift or indeed shift what it adds, but not implemented
-  class RegisterNode < Node
+  class Register 
     attr_accessor :name , :offset
     def initialize name
       @name = name
@@ -32,22 +29,22 @@ module Asm
 
   #maybe not used at all as code_gen::instruction raises if used.
   # instead now using Arrays
-  class RegisterListNode < Node
+  class RegisterList 
     attr_accessor :registers
     def initialize regs
       @registers = regs
-      regs.each{ |reg| raise  "not a reg #{sym} , #{reg}" unless reg.is_a?(Asm::RegisterNode) }
+      regs.each{ |reg| raise  "not a reg #{sym} , #{reg}" unless reg.is_a?(Asm::Register) }
     end
   end
 
-  class NumLiteralNode < Node
+  class NumLiteral 
     attr_accessor :value
     def initialize val
       @value = val
     end
   end
 
-  class LabelRefNode < Node
+  class Label 
     attr_accessor :label, :label_object
     def initialize label , object = nil
       @label = label

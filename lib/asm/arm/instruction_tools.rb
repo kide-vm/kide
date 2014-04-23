@@ -36,7 +36,7 @@ module Asm
       OPC_STACK = 0b10
       
       def reg_ref(arg)
-        if (not arg.is_a?(Asm::RegisterNode))
+        if (not arg.is_a?(Asm::Register))
           raise Asm::AssemblyError.new('argument must be a register', arg)
         end
 

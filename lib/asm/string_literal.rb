@@ -1,5 +1,5 @@
 module Asm
-  class StringNode
+  class StringLiteral
     def initialize(str)
       #align
       length = str.length 

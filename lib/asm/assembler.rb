@@ -16,7 +16,7 @@ module Asm
     def add_string str
       value = @string_table[str]
       return value if value
-      data = Asm::StringNode.new(str)
+      data = Asm::StringLiteral.new(str)
       @string_table[str] = data
     end
     

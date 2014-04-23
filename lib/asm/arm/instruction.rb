@@ -97,15 +97,15 @@ module Asm
           builder.assemble io, as
         when :b, :bl
           arg = args[0]
-          if (arg.is_a?(Asm::NumLiteralNode))
+          if (arg.is_a?(Asm::NumLiteral))
             jmp_val = arg.value >> 2
             packed = [jmp_val].pack('l')
             # signed 32-bit, condense to 24-bit
             # TODO add check that the value fits into 24 bits
             io << packed[0,3]
-          elsif (arg.is_a?(Asm::LabelObject) or arg.is_a?(Asm::LabelRefNode))
+          elsif (arg.is_a?(Asm::LabelObject) or arg.is_a?(Asm::Label))
             #not yet tested/supported
-#            arg = @ast_asm.object_for_label(arg.label, self) if arg.is_a?(Asm::LabelRefNode)
+#            arg = @ast_asm.object_for_label(arg.label, self) if arg.is_a?(Asm::Label)
 #            as.add_relocation(io.tell, arg, Asm::Arm::R_ARM_PC24, RelocHandler)
             #write 0 "for now" and let relocation happen
             io << "\x00\x00\x00"
@@ -115,7 +115,7 @@ module Asm
           io.write_uint8 OPCODES[opcode] | (COND_CODES[@cond] << 4)
         when :swi
           arg = args[0]
-          if (arg.is_a?(Asm::NumLiteralNode))
+          if (arg.is_a?(Asm::NumLiteral))
             packed = [arg.value].pack('L')[0,3]
             io << packed
             io.write_uint8 0b1111 | (COND_CODES[@cond] << 4)

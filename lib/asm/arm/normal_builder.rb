@@ -46,12 +46,12 @@ module Asm
       def build_operand(arg , position = 0) 
         #position only needed for calculating relative addresses to data objects
         #there is a design stink here which makes my head ache. But shanti shanti
-        if arg.is_a?(Asm::StringNode)
+        if arg.is_a?(Asm::StringLiteral)
           # do pc relative addressing with the difference to the instuction
           # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
-          arg = Asm::NumLiteralNode.new( arg.position - position - 8 )
+          arg = Asm::NumLiteral.new( arg.position - position - 8 )
         end
-        if (arg.is_a?(Asm::NumLiteralNode))
+        if (arg.is_a?(Asm::NumLiteral))
           if (arg.value.fits_u8?)
             # no shifting needed
             @operand = arg.value
@@ -62,10 +62,10 @@ module Asm
           else
             raise Asm::AssemblyError.new(Asm::ERRSTR_NUMERIC_TOO_LARGE, arg)
           end
-        elsif (arg.is_a?(Asm::RegisterNode))
+        elsif (arg.is_a?(Asm::Register))
           @operand = reg_ref(arg)
           @i = 0
-        elsif (arg.is_a?(Asm::ShiftNode))
+        elsif (arg.is_a?(Asm::Shift))
           rm_ref = reg_ref(arg.argument)
           @i = 0
           shift_op = {'lsl' => 0b000, 'lsr' => 0b010, 'asr' => 0b100,
@@ -76,12 +76,12 @@ module Asm
           end
       
           arg1 = arg.value
-          if (arg1.is_a?(Asm::NumLiteralNode))
+          if (arg1.is_a?(Asm::NumLiteral))
             if (arg1.value >= 32)
               raise Asm::AssemblyError.new('cannot shift by more than 31', arg1)
             end
             shift_imm = arg1.value
-          elsif (arg1.is_a?(Asm::RegisterNode))
+          elsif (arg1.is_a?(Asm::Register))
             shift_op |= 0x1;
             shift_imm = reg_ref(arg1) << 1
           elsif (arg.type == 'rrx')

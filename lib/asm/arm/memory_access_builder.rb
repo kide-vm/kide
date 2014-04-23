@@ -33,7 +33,7 @@ module Asm
         @pre_post_index = 0
         @w = 0
         @operand = 0
-        if (arg.is_a?(Asm::RegisterNode))
+        if (arg.is_a?(Asm::Register))
           @rn = reg_ref(arg)
           if(arg.offset != 0) 
             @operand = arg.offset
@@ -48,7 +48,7 @@ module Asm
               raise Asm::AssemblyError.new('reference offset too large/small (max 4095)', argr.right)
             end
           end
-        elsif (arg.is_a?(Asm::LabelRefNode) or arg.is_a?(Asm::NumLiteralNode))
+        elsif (arg.is_a?(Asm::Label) or arg.is_a?(Asm::NumLiteral))
           @pre_post_index = 1
           @rn = 15 # pc
           @use_addrtable_reloc = true
@@ -72,10 +72,10 @@ module Asm
         # move towards simpler model
         if (@use_addrtable_reloc)
 #          closest_addrtable = Asm::Arm.closest_addrtable(as)
-          if (@addrtable_reloc_target.is_a?(Asm::LabelRefNode))
+          if (@addrtable_reloc_target.is_a?(Asm::Label))
             obj = generator.object_for_label(@addrtable_reloc_target.label, inst)
 #            ref_label = closest_addrtable.add_label(obj)
-          elsif (@addrtable_reloc_target.is_a?(Asm::NumLiteralNode))
+          elsif (@addrtable_reloc_target.is_a?(Asm::NumLiteral))
 #            ref_label = closest_addrtable.add_const(@addrtable_reloc_target.value)
           end
           as.add_relocation io.tell, ref_label, Asm::Arm::R_ARM_PC12,

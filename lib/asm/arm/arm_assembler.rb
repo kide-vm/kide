@@ -17,24 +17,24 @@ module Asm
          rfp sl fp ip sp lr pc
       ).each { |reg|
         define_method(reg) {
-          Asm::RegisterNode.new(reg)
+          Asm::Register.new(reg)
         }
       }
 
       def instruction(name, *args)
-        node = Asm::InstructionNode.new
+        node = Asm::Instruction.new
         node.opcode = name.to_s
         node.args = []
 
         args.each { |arg|
-          if (arg.is_a?(Asm::RegisterNode))
+          if (arg.is_a?(Asm::Register))
             node.args << arg
           elsif (arg.is_a?(Integer))
-            node.args << Asm::NumLiteralNode.new(arg)
+            node.args << Asm::NumLiteral.new(arg)
           elsif (arg.is_a?(String))
             node.args << add_string(arg)
           elsif (arg.is_a?(Symbol))
-            node.args << Asm::LabelRefNode.new(arg.to_s)
+            node.args << Asm::Label.new(arg.to_s)
           elsif (arg.is_a?(Asm::Arm::GeneratorLabel))
             node.args << arg
           else
