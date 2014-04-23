@@ -17,7 +17,6 @@ module Asm
       @position
     end
     def at pos
-      puts "called #{self}"
       @position = pos
     end
     def length 
