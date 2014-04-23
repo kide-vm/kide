@@ -1,4 +1,3 @@
-require 'asm/assembler'
 require 'asm/arm_assembler'
 require 'asm/instruction'
 require 'asm/generator_label'
@@ -9,7 +8,7 @@ require "asm/string_literal"
 
 module Asm
     
-    class ArmAssembler < Asm::Assembler
+    class ArmAssembler
 
       %w(r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12
          r13 r14 r15 a1 a2 a3 a4 v1 v2 v3 v4 v5 v6
@@ -19,6 +18,14 @@ module Asm
           Asm::Register.new(reg)
         }
       }
+
+      def initialize
+        @values = []
+        @position = 0 # marks not set
+        @labels = []
+        @string_table = {}
+      end
+      attr_reader  :values , :position 
 
       def instruction(name, *args)
         opcode = name.to_s
@@ -74,6 +81,40 @@ module Asm
         io.string
       end
 
+      def add_string str
+        value = @string_table[str]
+        return value if value
+        data = Asm::StringLiteral.new(str)
+        @string_table[str] = data
+      end
+    
+      def strings
+        @string_table.values
+      end
+    
+      def add_value(val)
+        val.at(@position)
+        length = val.length
+        @position += length
+        @values << val
+      end
+    
+      def label
+        label = Asm::GeneratorLabel.new(self)
+        @labels << label
+        label 
+      end
+
+      def label!
+        label.set!
+      end
+
+      def assemble(io)
+        @values.each do |obj|
+          obj.assemble io, self
+        end
+      end
+
     end
 
     # Relocation constants
@@ -92,7 +133,7 @@ module Asm
       when R_ARM_PC24
         diff = addr - io.tell - 8
         if (diff.abs > (1 << 25))
-          raise Asm::AssemblyError.new('offset too large for R_ARM_PC24 relocation', nil)
+          raise Asm::AssemblyError.new('offset too large for R_ARM_PC24 relocation')
         end
         packed = [diff >> 2].pack('l')
         io << packed[0,3]
@@ -102,7 +143,7 @@ module Asm
       when R_ARM_PC12
         diff = addr - io.tell - 8
         if (diff.abs > 2047)
-          raise Asm::AssemblyError.new('offset too large for R_ARM_PC12 relocation', nil)
+          raise Asm::AssemblyError.new('offset too large for R_ARM_PC12 relocation')
         end
       
         val = diff.abs
