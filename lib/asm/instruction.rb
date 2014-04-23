@@ -3,6 +3,7 @@ require "asm/instruction_tools"
 require "asm/normal_builder"
 require "asm/memory_access_builder"
 require "asm/stack_builder"
+require "asm/label"
 
 module Asm
 
@@ -91,18 +92,16 @@ module Asm
           builder.assemble io, as
         when :b, :bl
           arg = args[0]
+          if arg.is_a? Label
+            diff = arg.position - self.position - 8
+            arg = NumLiteral.new(diff)
+          end
           if (arg.is_a?(Asm::NumLiteral))
             jmp_val = arg.value >> 2
             packed = [jmp_val].pack('l')
             # signed 32-bit, condense to 24-bit
             # TODO add check that the value fits into 24 bits
             io << packed[0,3]
-          elsif (arg.is_a?(Asm::LabelObject) or arg.is_a?(Asm::Label))
-            #not yet tested/supported
-#            arg = @ast_asm.object_for_label(arg.label, self) if arg.is_a?(Asm::Label)
-            #write 0 "for now" and let relocation happen
-            raise "not coded #{arg.inspect}"
-            io << "\x00\x00\x00"
           else
             raise "else not coded #{arg.inspect}"
           end

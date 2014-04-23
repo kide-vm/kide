@@ -15,9 +15,9 @@ class TestSmallProg < MiniTest::Test
   def test_loop
     @generator.instance_eval {
       mov r0, 5                #1
-      loop_start = label!
+      start = label!(:loop_start)
       subs r0, r0, 1          #2
-      bne loop_start          #3
+      bne start         #3
     	mov r7, 1               #4
     	swi 0                   #5  5 instructions
     }

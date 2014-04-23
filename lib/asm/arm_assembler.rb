@@ -1,6 +1,5 @@
 require 'asm/arm_assembler'
 require 'asm/instruction'
-require 'asm/generator_label'
 require 'asm/nodes'
 require 'stream_reader'
 require 'stringio'
@@ -38,9 +37,7 @@ module Asm
             arg_nodes << Asm::NumLiteral.new(arg)
           elsif (arg.is_a?(String))
             arg_nodes << add_string(arg)
-          elsif (arg.is_a?(Symbol))
-            arg_nodes << Asm::Label.new(arg.to_s)
-          elsif (arg.is_a?(Asm::GeneratorLabel))
+          elsif (arg.is_a?(Asm::Label))
             arg_nodes << arg
           else
             raise 'Invalid argument `%s\' for instruction' % arg.inspect
@@ -99,14 +96,14 @@ module Asm
         @values << val
       end
     
-      def label
-        label = Asm::GeneratorLabel.new(self)
+      def label name
+        label = Label.new(name , self)
         @labels << label
         label 
       end
 
-      def label!
-        label.set!
+      def label! name
+        label(name).set!
       end
 
       def assemble(io)

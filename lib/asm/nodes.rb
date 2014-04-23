@@ -23,7 +23,7 @@ module Asm
     end
   end
 
-  #maybe not used at all as code_gen::instruction raises if used.
+  # maybe not used at all as code_gen::instruction raises if used.
   # instead now using Arrays
   class RegisterList 
     attr_accessor :registers
@@ -40,17 +40,4 @@ module Asm
     end
   end
 
-  class Label 
-    attr_accessor :label, :label_object
-    def initialize label , object = nil
-      @label = label
-      @label_object = object
-    end
-  end
-
-  class ParseError < StandardError
-    def initialize(message, s)
-      super(message)
-    end
-  end
 end
