@@ -9,9 +9,10 @@ module Asm
   # Arm has addressing modes abound, and so can add to a register before actually using it
   # If can actually shift or indeed shift what it adds, but not implemented
   class Register 
-    attr_accessor :name , :offset
-    def initialize name
+    attr_accessor :name , :offset , :bits
+    def initialize name , bits
       @name = name
+      @bits = bits
       @offset = 0 
     end
     
