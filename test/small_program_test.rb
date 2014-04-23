@@ -40,7 +40,7 @@ class TestSmallProg < MiniTest::Test
 
   #helper to write the file
   def write len ,name
-    writer = Asm::ObjectWriter.new(Elf::Constants::TARGET_ARM)
+    writer = Elf::ObjectWriter.new(Elf::Constants::TARGET_ARM)
     assembly = @generator.assemble_to_string
     assert_equal len * 4 , assembly.length 
     writer.set_text assembly

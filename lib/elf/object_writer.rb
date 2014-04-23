@@ -3,7 +3,7 @@ require 'elf/symbol_table_section'
 require 'elf/text_section'
 require 'elf/string_table_section'
 
-module Asm
+module Elf
 
   class ObjectWriter
     def initialize(target)

@@ -1,4 +1,3 @@
-require 'asm/arm_assembler'
 require 'asm/instruction'
 require 'asm/nodes'
 require 'stream_reader'

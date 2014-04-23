@@ -29,5 +29,3 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'test'))
 
 require 'crystal'
-require 'asm/object_writer'
-require "asm/arm_assembler"

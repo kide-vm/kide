@@ -1,5 +1,4 @@
 require_relative 'helper'
-require "asm/arm_assembler"
 
 # try  to test that the generation of basic instructions works
 # one instruction at a time, reverse testing from objdump --demangle -Sfghxp
