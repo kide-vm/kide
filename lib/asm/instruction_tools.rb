@@ -55,4 +55,27 @@ module Asm
         ref
       end
     end
+    
+    def calculate_u8_with_rr(arg)
+      parts = arg.value.to_s(2).rjust(32,'0').scan(/^(0*)(.+?)0*$/).flatten
+      pre_zeros = parts[0].length
+      imm_len = parts[1].length
+      if ((pre_zeros+imm_len) % 2 == 1)
+        u8_imm = (parts[1]+'0').to_i(2)
+        imm_len += 1
+      else
+        u8_imm = parts[1].to_i(2)
+      end
+      if (u8_imm.fits_u8?)
+        # can do!
+        rot_imm = (pre_zeros+imm_len) / 2
+        if (rot_imm > 15)
+          return nil
+        end
+        return u8_imm | (rot_imm << 8)
+      else
+        return nil
+      end
+    end
+    
 end
