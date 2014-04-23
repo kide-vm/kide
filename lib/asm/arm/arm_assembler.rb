@@ -1,5 +1,4 @@
 require 'asm/assembler'
-require "asm/arm/addr_table_object"
 require 'asm/arm/arm_assembler'
 require 'asm/arm/instruction'
 require 'asm/arm/generator_label'
