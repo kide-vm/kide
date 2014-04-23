@@ -1,12 +1,11 @@
 module Asm
-  module Arm
     # ADDRESSING MODE 4
     class StackBuilder
-      include Asm::Arm::InstructionTools
+      include Asm::InstructionTools
 
       def initialize(pre_post, up_down, write, store_load)
         @cond = 0b1110
-        @inst_class = Asm::Arm::Instruction::OPC_STACK
+        @inst_class = Asm::Instruction::OPC_STACK
         @pre_post_index = 0
         @up_down = 0
         @s = 0
@@ -43,5 +42,4 @@ module Asm
         io.write_uint32 val
       end
     end
-  end
 end

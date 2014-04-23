@@ -1,14 +1,13 @@
 require 'asm/assembler'
-require 'asm/arm/arm_assembler'
-require 'asm/arm/instruction'
-require 'asm/arm/generator_label'
+require 'asm/arm_assembler'
+require 'asm/instruction'
+require 'asm/generator_label'
 require 'asm/nodes'
 require 'stream_reader'
 require 'stringio'
-require "asm/string_node"
+require "asm/string_literal"
 
 module Asm
-  module Arm
     
     class ArmAssembler < Asm::Assembler
 
@@ -22,27 +21,26 @@ module Asm
       }
 
       def instruction(name, *args)
-        node = Asm::Instruction.new
-        node.opcode = name.to_s
-        node.args = []
+        opcode = name.to_s
+        arg_nodes = []
 
         args.each { |arg|
           if (arg.is_a?(Asm::Register))
-            node.args << arg
+            arg_nodes << arg
           elsif (arg.is_a?(Integer))
-            node.args << Asm::NumLiteral.new(arg)
+            arg_nodes << Asm::NumLiteral.new(arg)
           elsif (arg.is_a?(String))
-            node.args << add_string(arg)
+            arg_nodes << add_string(arg)
           elsif (arg.is_a?(Symbol))
-            node.args << Asm::Label.new(arg.to_s)
-          elsif (arg.is_a?(Asm::Arm::GeneratorLabel))
-            node.args << arg
+            arg_nodes << Asm::Label.new(arg.to_s)
+          elsif (arg.is_a?(Asm::GeneratorLabel))
+            arg_nodes << arg
           else
             raise 'Invalid argument `%s\' for instruction' % arg.inspect
           end
         }
 
-        add_value Asm::Arm::Instruction.new(node)
+        add_value Asm::Instruction.new(opcode , arg_nodes)
       end
 
       %w(adc add and bic eor orr rsb rsc sbc sub mov mvn cmn cmp teq tst b bl bx 
@@ -119,6 +117,5 @@ module Asm
         raise 'unknown relocation type'
       end
     end
-  end
 end
 

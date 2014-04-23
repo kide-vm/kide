@@ -9,7 +9,7 @@ require_relative 'helper'
 class TestSmallProg < MiniTest::Test
   # need a code generator, for arm 
   def setup
-    @generator = Asm::Arm::ArmAssembler.new
+    @generator = Asm::ArmAssembler.new
   end
 
   def test_loop

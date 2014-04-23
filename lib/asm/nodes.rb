@@ -1,9 +1,5 @@
 module Asm
 
-  class Instruction
-    attr_accessor :opcode, :args
-  end
-
   class Shift 
     attr_accessor :type, :value, :argument
   end

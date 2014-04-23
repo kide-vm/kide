@@ -1,11 +1,10 @@
 require "asm/nodes"
 
 module Asm
-  module Arm
     # ADDRESSING MODE 2
     # Implemented: immediate offset with offset=0
     class MemoryAccessBuilder
-      include Asm::Arm::InstructionTools
+      include Asm::InstructionTools
 
       def initialize(inst_class, byte_access, load_store)
         @cond = 0b1110
@@ -78,11 +77,10 @@ module Asm
           elsif (@addrtable_reloc_target.is_a?(Asm::NumLiteral))
 #            ref_label = closest_addrtable.add_const(@addrtable_reloc_target.value)
           end
-          as.add_relocation io.tell, ref_label, Asm::Arm::R_ARM_PC12,
-                            Asm::Arm::Instruction::RelocHandler
+          as.add_relocation io.tell, ref_label, Asm::R_ARM_PC12,
+                            Asm::Instruction::RelocHandler
         end
         io.write_uint32 val
       end
     end
-  end
 end

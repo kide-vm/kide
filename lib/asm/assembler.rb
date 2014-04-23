@@ -32,7 +32,7 @@ module Asm
     end
     
     def label
-      label = Asm::Arm::GeneratorLabel.new(self)
+      label = Asm::GeneratorLabel.new(self)
       @labels << label
       label 
     end

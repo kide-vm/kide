@@ -1,6 +1,6 @@
 require "asm/label_object"
 
-class Asm::Arm::GeneratorLabel < Asm::LabelObject
+class Asm::GeneratorLabel < Asm::LabelObject
   def initialize(asm)
     @asm = asm
   end

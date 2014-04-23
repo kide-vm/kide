@@ -1,5 +1,5 @@
 module Asm
-  module Arm
+
     module InstructionTools
       OPCODES = {
         :adc => 0b0101, :add => 0b0100,
@@ -55,5 +55,4 @@ module Asm
         ref
       end
     end
-  end
 end

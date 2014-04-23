@@ -1,5 +1,5 @@
 require_relative 'helper'
-require "asm/arm/arm_assembler"
+require "asm/arm_assembler"
 
 # try  to test that the generation of basic instructions works
 # one instruction at a time, reverse testing from objdump --demangle -Sfghxp
@@ -9,7 +9,7 @@ require "asm/arm/arm_assembler"
 class TestArmAsm < MiniTest::Test
   # need a code generator, for arm 
   def setup
-    @assembler = Asm::Arm::ArmAssembler.new
+    @assembler = Asm::ArmAssembler.new
   end
 
   # code is what the generator spits out, at least one instruction worth (.first)

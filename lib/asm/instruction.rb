@@ -1,20 +1,16 @@
 require "asm/assembly_error"
-require "asm/arm/instruction_tools"
-require "asm/arm/normal_builder"
-require "asm/arm/memory_access_builder"
-require "asm/arm/stack_builder"
+require "asm/instruction_tools"
+require "asm/normal_builder"
+require "asm/memory_access_builder"
+require "asm/stack_builder"
 
 module Asm
-  module Arm
 
     class Instruction
       include InstructionTools
 
       COND_POSTFIXES = Regexp.union(%w(eq ne cs cc mi pl vs vc hi ls ge lt gt le al)).source
-      def initialize(node)
-        @node = node
-        opcode = node.opcode
-        args = node.args
+      def initialize(opcode , args)
 
         opcode = opcode.downcase
         @cond = :al
@@ -106,7 +102,7 @@ module Asm
           elsif (arg.is_a?(Asm::LabelObject) or arg.is_a?(Asm::Label))
             #not yet tested/supported
 #            arg = @ast_asm.object_for_label(arg.label, self) if arg.is_a?(Asm::Label)
-#            as.add_relocation(io.tell, arg, Asm::Arm::R_ARM_PC24, RelocHandler)
+#            as.add_relocation(io.tell, arg, Asm::R_ARM_PC24, RelocHandler)
             #write 0 "for now" and let relocation happen
             io << "\x00\x00\x00"
           else
@@ -123,9 +119,8 @@ module Asm
             raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg)
           end
         else
-          raise Asm::AssemblyError.new("unknown instruction #{opcode}", @node)
+          raise Asm::AssemblyError.new("unknown instruction #{opcode}", self)
         end
       end
     end
-  end
 end

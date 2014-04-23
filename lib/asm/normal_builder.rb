@@ -1,9 +1,8 @@
 module Asm
-  module Arm
     # ADDRESSING MODE 1
     # Complete!
     class NormalBuilder
-      include Asm::Arm::InstructionTools
+      include Asm::InstructionTools
 
       def initialize(inst_class, opcode, s)
         @cond = 0b1110
@@ -102,6 +101,4 @@ module Asm
         io.write_uint32 val
       end
     end
-
-  end
 end
