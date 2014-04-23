@@ -2,7 +2,6 @@ require "asm/assembly_error"
 require "asm/instruction_tools"
 require "asm/normal_builder"
 require "asm/memory_access_builder"
-require "asm/stack_builder"
 require "asm/label"
 
 module Asm
@@ -14,7 +13,7 @@ module Asm
       def initialize(opcode , args)
 
         opcode = opcode.downcase
-        @cond = :al
+        @cond = 0b1011
         if (opcode =~ /(#{COND_POSTFIXES})$/)
           @cond = $1.to_sym
           opcode = opcode[0..-3]
@@ -78,18 +77,6 @@ module Asm
           builder.rd = reg_ref(args[0])
           builder.build_operand args[1]
           builder.assemble io, as, self
-        when :push, :pop
-          # downward growing, decrement before memory access
-          # official ARM style stack as used by gas
-          if (opcode == :push)
-            builder = StackBuilder.new(1,0,1,0) 
-          else
-            builder = StackBuilder.new(0,1,1,1)
-          end
-          builder.cond = COND_CODES[@cond]
-          builder.rn = 13 # sp
-          builder.build_operand args
-          builder.assemble io, as
         when :b, :bl
           arg = args[0]
           if arg.is_a? Label
