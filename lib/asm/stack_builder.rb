@@ -30,7 +30,7 @@ module Asm
             @operand |= (1 << reg)
           end
         else
-          raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG + " " + arg.inspect , arg)
+          raise Asm::AssemblyError.new("invalid operand argument  #{arg.inspect}")
         end
       end
 

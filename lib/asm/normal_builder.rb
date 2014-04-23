@@ -59,7 +59,7 @@ module Asm
             @operand = op_with_rot
             @i = 1
           else
-            raise Asm::AssemblyError.new(Asm::ERRSTR_NUMERIC_TOO_LARGE, arg)
+            raise Asm::AssemblyError.new("cannot fit numeric literal argument in operand #{arg}")
           end
         elsif (arg.is_a?(Asm::Register))
           @operand = reg_ref(arg)
@@ -89,7 +89,7 @@ module Asm
       
           @operand = rm_ref | (shift_op << 4) | (shift_imm << 4+3)
         else
-          raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG + " " + arg.inspect, arg)
+          raise Asm::AssemblyError.new("invalid operand argument #{arg.inspect}")
         end
       end
 

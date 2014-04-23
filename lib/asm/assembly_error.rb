@@ -1,12 +1,8 @@
 module Asm
   class AssemblyError < StandardError
-    def initialize(message, node)
+    def initialize(message)
       super(message)
-
-      @node = node
     end
-    attr_reader :node
   end
-  
 end
   

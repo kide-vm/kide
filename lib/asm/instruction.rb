@@ -116,10 +116,10 @@ module Asm
             io << packed
             io.write_uint8 0b1111 | (COND_CODES[@cond] << 4)
           else
-            raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG, arg)
+            raise Asm::AssemblyError.new("invalid operand argument expected literal not #{arg}")
           end
         else
-          raise Asm::AssemblyError.new("unknown instruction #{opcode}", self)
+          raise Asm::AssemblyError.new("unknown instruction #{opcode} #{self}")
         end
       end
     end

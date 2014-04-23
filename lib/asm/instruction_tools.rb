@@ -37,7 +37,7 @@ module Asm
       
       def reg_ref(arg)
         if (not arg.is_a?(Asm::Register))
-          raise Asm::AssemblyError.new('argument must be a register', arg)
+          raise Asm::AssemblyError.new("argument must be a register not #{arg}")
         end
 
         ref =
@@ -49,7 +49,7 @@ module Asm
          'lr' => 14, 'pc' => 15}[arg.name.downcase]
 
         if (not ref)
-          raise Asm::AssemblyError.new('unknown register %s' % arg.name.downcase, arg)
+          raise Asm::AssemblyError.new("unknown register #{arg}")
         end
 
         ref

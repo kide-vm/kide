@@ -44,7 +44,7 @@ module Asm
               @add_offset = 1
             end
             if (@operand.abs > 4095)
-              raise Asm::AssemblyError.new('reference offset too large/small (max 4095)', argr.right)
+              raise Asm::AssemblyError.new("reference offset too large/small (max 4095) #{argr.right}" )
             end
           end
         elsif (arg.is_a?(Asm::Label) or arg.is_a?(Asm::NumLiteral))
@@ -53,7 +53,7 @@ module Asm
           @use_addrtable_reloc = true
           @addrtable_reloc_target = arg
         else
-          raise Asm::AssemblyError.new(Asm::ERRSTR_INVALID_ARG + " " + arg.inspect, arg.inspect)
+          raise Asm::AssemblyError.new("invalid operand argument #{arg.inspect}")
         end
       end
 
