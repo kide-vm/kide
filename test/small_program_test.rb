@@ -38,24 +38,6 @@ class TestSmallProg < MiniTest::Test
     write(7 + hello.length/4 + 1 , 'hello') 
   end
 
-  #test dropped along with functionality, didn't work and not needed (yet?) TODO
-  def no_test_extern
-    @generator.instance_eval {
-      mov r0 , 50             #1
-      push lr                 #2
-      bl extern(:putchar)     #3
-    	pop pc                  #4 
-      mov r7, 1               #5
-    	swi 0                   #6  6 instructions
-    }
-    #this actually seems to get an extern symbol out there and linker is ok (but doesnt run, hmm)
-    @generator.relocations.each { |reloc|
-      #puts "reloc #{reloc.inspect}"
-      writer.add_reloc_symbol reloc.label.name.to_s
-    }
-    write( 6 , "extern")
-  end
-
   #helper to write the file
   def write len ,name
     writer = Asm::ObjectWriter.new(Elf::Constants::TARGET_ARM)

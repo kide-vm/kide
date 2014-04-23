@@ -35,7 +35,7 @@ module Asm
             node.args << add_string(arg)
           elsif (arg.is_a?(Symbol))
             node.args << Asm::LabelRefNode.new(arg.to_s)
-          elsif (arg.is_a?(Asm::Arm::GeneratorLabel) or arg.is_a?(Asm::Arm::GeneratorExternLabel))
+          elsif (arg.is_a?(Asm::Arm::GeneratorLabel))
             node.args << arg
           else
             raise 'Invalid argument `%s\' for instruction' % arg.inspect
@@ -64,17 +64,6 @@ module Asm
           }
         }
       }
-
-      #externs dropped for now
-      def extern(sym)
-        if (lbl = @externs.find { |extern| extern.name == sym })
-          lbl
-        else
-          @externs << lbl = Asm::Arm::GeneratorExternLabel.new(sym)
-          add_value lbl
-          lbl
-        end
-      end
 
       def assemble_to_string
         #put the strings at the end of the assembled code.

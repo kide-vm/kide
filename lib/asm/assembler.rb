@@ -48,37 +48,5 @@ module Asm
     end
   end
 
-#  class Relocation
-#    def initialize(pos, label, type, handler)
-#      @position = pos
-#      @label = label
-#      @type = type
-#      @handler = handler
-#    end
-#    attr_reader :position, :label, :type, :handler
-#  end
-
-#old assemble function
-#def assemble(io)
-#  @values.each do |obj|
-#    obj.assemble io, self
-#  end
-#  @relocations.delete_if do |reloc|
-#    io.seek reloc.position
-#    #puts "reloc #{reloc.inspect}"
-#    if (reloc.label.extern?)
-#      reloc.handler.call(io, io.tell, reloc.type)
-#    else
-#      reloc.handler.call(io, reloc.label.address, reloc.type)
-#    end
-#   not reloc.label.extern?
-   #end  
-#end
-#def add_relocation(*args)
-#  reloc = Asm::Relocation.new(*args)
-#  #raise "reloc #{reloc.inspect}"
-#  @relocations << reloc
-#end
-
 end
 

@@ -15,11 +15,3 @@ class Asm::Arm::GeneratorLabel < Asm::LabelObject
     self
   end
 end
-
-class Asm::Arm::GeneratorExternLabel < Asm::LabelObject
-  def initialize(name)
-    @name = name
-    extern!
-  end
-  attr_reader :name
-end
