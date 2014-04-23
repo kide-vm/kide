@@ -41,8 +41,6 @@ module Asm
         4
       end
       
-      RelocHandler = nil # Asm::Arm.method(:write_resolved_relocation)
-
       def assemble(io, as)
         s = @s ? 1 : 0
         case opcode
@@ -102,8 +100,8 @@ module Asm
           elsif (arg.is_a?(Asm::LabelObject) or arg.is_a?(Asm::Label))
             #not yet tested/supported
 #            arg = @ast_asm.object_for_label(arg.label, self) if arg.is_a?(Asm::Label)
-#            as.add_relocation(io.tell, arg, Asm::R_ARM_PC24, RelocHandler)
             #write 0 "for now" and let relocation happen
+            raise "not coded #{arg.inspect}"
             io << "\x00\x00\x00"
           else
             raise "else not coded #{arg.inspect}"

@@ -2,7 +2,6 @@ require 'elf/object_file'
 require 'elf/symbol_table_section'
 require 'elf/text_section'
 require 'elf/string_table_section'
-require 'elf/relocation_table_section'
 
 module Asm
 
@@ -17,9 +16,6 @@ module Asm
 
       @text = Elf::TextSection.new(".text")
       @object.add_section @text
-
-#      @reloc_table = Elf::RelocationTableSection.new(".text.rel", @symbol_table, @text)
-#      @object.add_section @reloc_table
     end
 
     def set_text(text)
@@ -30,14 +26,6 @@ module Asm
     def add_symbol(name, offset, linkage = Elf::Constants::STB_GLOBAL)
       @symbol_table.add_func_symbol name, offset, @text, linkage
     end
-
-#   def add_reloc_symbol(name)
-#      @symbol_table.add_func_symbol name, 0, nil, Elf::Constants::STB_GLOBAL
-#    end
-
-#    def add_reloc(offset, label, type)
-#      @reloc_table.add_reloc offset, label, type
-#    end
 
     def save(filename)
       to = File.open(filename, 'wb') 
