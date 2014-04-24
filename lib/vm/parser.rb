@@ -45,7 +45,6 @@ module Vm
         ((name.as(:param) >> (comma >> name.as(:param)).repeat(0)).maybe).as(:params) >>
       rparen
     }
-    root :args
-#    rule(:root)   { func.repeat(0) >> expression }
+    rule(:root){ func.repeat(0) >> expression | expression | args }
   end
 end
