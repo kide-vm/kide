@@ -1,4 +1,4 @@
-module Thnad
+module Vm
   class Number < Struct.new :value
     def eval(context, builder)
       builder.ldc value

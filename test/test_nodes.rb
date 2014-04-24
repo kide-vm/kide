@@ -3,10 +3,10 @@ $: << File.expand_path(File.dirname(__FILE__))
 
 require 'minitest/autorun'
 require 'minitest/spec'
-require 'thnad/nodes'
+require 'vm/nodes'
 require 'fake_builder'
 
-include Thnad
+include Vm
 
 describe 'Nodes' do
   before do
@@ -15,7 +15,7 @@ describe 'Nodes' do
   end
 
   it 'emits a number' do
-    input    = Thnad::Number.new 42
+    input    = Vm::Number.new 42
     expected = <<HERE
 ldc 42
 HERE
@@ -27,8 +27,8 @@ HERE
   it 'emits a function call' do
     @context[:params] = ['foo']
 
-    input    = Thnad::Funcall.new 'baz', [Thnad::Number.new(42),
-                                          Thnad::Name.new('foo')]
+    input    = Vm::Funcall.new 'baz', [Vm::Number.new(42),
+                                          Vm::Name.new('foo')]
     expected = <<HERE
 ldc 42
 iload 0
@@ -41,10 +41,10 @@ HERE
   end
 
   it 'emits a conditional' do
-    input    = Thnad::Conditional.new \
-      Thnad::Number.new(0),
-      Thnad::Number.new(42),
-      Thnad::Number.new(667)
+    input    = Vm::Conditional.new \
+      Vm::Number.new(0),
+      Vm::Number.new(42),
+      Vm::Number.new(667)
     expected = <<HERE
 ldc 0
 ifeq else
@@ -60,10 +60,10 @@ HERE
   end
 
   it 'emits a function definition' do
-    input    = Thnad::Function.new \
+    input    = Vm::Function.new \
       'foo',
-      Thnad::Name.new('x'),
-      Thnad::Number.new(5)
+      Vm::Name.new('x'),
+      Vm::Number.new(5)
 
     expected = <<HERE
 public_static_method foo, int, int

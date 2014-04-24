@@ -1,7 +1,7 @@
 require 'parslet'
-require 'thnad/nodes'
+require 'vm/nodes'
 
-module Thnad
+module Vm
   class Transform < Parslet::Transform
     rule(:number => simple(:value)) { Number.new(value.to_i) }
     rule(:name   => simple(:name))  { Name.new(name.to_s) }

@@ -1,14 +1,11 @@
-$: << File.expand_path(File.dirname(__FILE__) + '/../lib')
-
-require 'minitest/autorun'
+require_relative 'helper'
 require 'minitest/spec'
-require 'thnad/parser'
 
-include Thnad
+include Vm
 
 describe Parser do
   before do
-    @parser = Thnad::Parser.new
+    @parser = Vm::Parser.new
   end
 
   it 'reads a number' do

@@ -2,7 +2,7 @@ require 'java'
 java_import java.lang.System
 java_import java.io.PrintStream
 
-module Thnad
+module Vm
   module Builtins
     def add_builtins
       public_static_method 'print', [], int, int do

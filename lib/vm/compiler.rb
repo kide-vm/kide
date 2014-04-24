@@ -1,13 +1,13 @@
 require 'bitescript'
-require 'thnad/parser'
-require 'thnad/transform'
-require 'thnad/builtins'
+require 'vm/parser'
+require 'vm/transform'
+require 'vm/builtins'
 
-module Thnad
+module Vm
   class Compiler
     def initialize(filename)
       @filename  = filename
-      @classname = File.basename(@filename, '.thnad')
+      @classname = File.basename(@filename, '.vm')
     end
 
     def compile
