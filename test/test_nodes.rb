@@ -1,14 +1,14 @@
-$: << File.expand_path(File.dirname(__FILE__) + '/../lib')
-$: << File.expand_path(File.dirname(__FILE__))
-
-require 'minitest/autorun'
+require_relative "helper"
 require 'minitest/spec'
-require 'vm/nodes'
 
 include Vm
 
 class FakeBuilder
   attr_reader :result
+
+  Asm::InstructionTools::REGISTERS.each do |reg , number|
+    define_method(reg) { Asm::Register.new(reg , number) }
+  end
 
   def initialize
     @result = ''
@@ -36,7 +36,7 @@ describe 'Nodes' do
   end
 
   it 'emits a number' do
-    input    = Vm::Number.new 42
+    input    = Vm::NumberExpression.new 42
     expected = <<HERE
 mov r0, 42
 HERE
@@ -48,8 +48,8 @@ HERE
   it 'emits a function call' do
     @context[:params] = ['foo']
 
-    input    = Vm::Funcall.new 'baz', [Vm::Number.new(42),
-                                          Vm::Name.new('foo')]
+    input    = Vm::FuncallExpression.new 'baz', [Vm::NumberExpression.new(42),
+                                          Vm::NameExpression.new('foo')]
     expected = <<HERE
 mov r0, 42
 iload 0
@@ -62,10 +62,10 @@ HERE
   end
 
   it 'emits a conditional' do
-    input    = Vm::Conditional.new \
-      Vm::Number.new(0),
-      Vm::Number.new(42),
-      Vm::Number.new(667)
+    input    = Vm::ConditionalExpression.new \
+      Vm::NumberExpression.new(0),
+      Vm::NumberExpression.new(42),
+      Vm::NumberExpression.new(667)
     expected = <<HERE
 mov r0, 0
 ifeq else
@@ -81,10 +81,10 @@ HERE
   end
 
   it 'emits a function definition' do
-    input    = Vm::Function.new \
+    input    = Vm::FunctionExpression.new \
       'foo',
-      Vm::Name.new('x'),
-      Vm::Number.new(5)
+      Vm::NameExpression.new('x'),
+      Vm::NumberExpression.new(5)
 
     expected = <<HERE
 public_static_method foo, int, int

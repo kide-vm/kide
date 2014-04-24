@@ -54,7 +54,7 @@ module Vm
     end
 
     def split_functions(tree)
-      first_expr = tree.index { |t| ! t.is_a?(Function) }
+      first_expr = tree.index { |t| ! t.is_a?(FunctionExpression) }
       funcs = first_expr ? tree[0...first_expr] : tree
       exprs = first_expr ? tree[first_expr..-1] : []
 

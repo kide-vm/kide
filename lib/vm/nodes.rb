@@ -1,11 +1,27 @@
 module Vm
-  class Number < Struct.new :value
+  
+  class Expression
+    # evey Expression has a eval function that returns a value
+    def eval 
+      raise "abstract"
+    end
+  end
+
+  class NumberExpression < Expression
+    attr_reader :value
+    def initialize val
+      @value = val
+    end
     def eval(context, builder)
       builder.mov "r0" , value
     end
   end
 
-  class Name < Struct.new :name
+  class NameExpression < Expression
+    attr_reader  :name
+    def initialize name
+      @name = name
+    end
     def eval(context, builder)
       param_names = context[:params] || []
       position    = param_names.index(name)
@@ -15,7 +31,11 @@ module Vm
     end
   end
 
-  class Funcall < Struct.new :name, :args
+  class FuncallExpression < Expression
+    attr_reader  :name, :args
+    def initialize name, args
+      @name , @args = name , args
+    end
     def eval(context, builder)
       args.each { |a| a.eval(context, builder) }
       types = [builder.int] * (args.length + 1)
@@ -23,7 +43,11 @@ module Vm
     end
   end
 
-  class Conditional < Struct.new :cond, :if_true, :if_false
+  class ConditionalExpression < Expression
+    attr_reader  :cond, :if_true, :if_false
+    def initialize cond, if_true, if_false
+      @cond, @if_true, @if_false = cond, if_true, if_false
+    end
     def eval(context, builder)
       cond.eval context, builder
 
@@ -39,7 +63,11 @@ module Vm
     end
   end
 
-  class Function < Struct.new :name, :params, :body
+  class FunctionExpression < Expression
+    attr_reader  :name, :params, :body
+    def initialize name, params, body
+      @name, @params, @body = name, params, body
+    end
     def eval(context, builder)
       param_names = [params].flatten.map(&:name)
       context[:params] = param_names
