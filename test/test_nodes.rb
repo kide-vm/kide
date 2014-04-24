@@ -4,9 +4,30 @@ $: << File.expand_path(File.dirname(__FILE__))
 require 'minitest/autorun'
 require 'minitest/spec'
 require 'vm/nodes'
-require 'fake_builder'
 
 include Vm
+
+class FakeBuilder
+  attr_reader :result
+
+  def initialize
+    @result = ''
+  end
+
+  def class_builder
+    'example'
+  end
+
+  def int
+    'int'
+  end
+
+  def method_missing(name, *args, &block)
+    @result += ([name] + args.flatten).join(', ').sub(',', '')
+    @result += "\n"
+    block.call(self) if name.to_s == 'public_static_method'
+  end
+end
 
 describe 'Nodes' do
   before do
@@ -17,7 +38,7 @@ describe 'Nodes' do
   it 'emits a number' do
     input    = Vm::Number.new 42
     expected = <<HERE
-ldc 42
+mov r0, 42
 HERE
     input.eval @context, @builder
 
@@ -30,7 +51,7 @@ HERE
     input    = Vm::Funcall.new 'baz', [Vm::Number.new(42),
                                           Vm::Name.new('foo')]
     expected = <<HERE
-ldc 42
+mov r0, 42
 iload 0
 invokestatic example, baz, int, int, int
 HERE
@@ -46,12 +67,12 @@ HERE
       Vm::Number.new(42),
       Vm::Number.new(667)
     expected = <<HERE
-ldc 0
+mov r0, 0
 ifeq else
-ldc 42
+mov r0, 42
 goto endif
 label else
-ldc 667
+mov r0, 667
 label endif
 HERE
 
@@ -67,7 +88,7 @@ HERE
 
     expected = <<HERE
 public_static_method foo, int, int
-ldc 5
+mov r0, 5
 ireturn
 HERE
 
