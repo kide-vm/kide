@@ -11,7 +11,7 @@ module Asm
     
   class ArmAssembler
 
-    InstructionTools::REGISTERS.each do |reg , number|
+    ArmMachine::REGISTERS.each do |reg , number|
       define_method(reg) { Asm::Register.new(reg , number) }
     end
 
@@ -50,7 +50,7 @@ module Asm
       define_method(inst.to_s+'s') do |*args|
         instruction clazz , inst.to_s+'s' , *args
       end
-      InstructionTools::COND_CODES.keys.each do |cond_suffix|
+      ArmMachine::COND_CODES.keys.each do |cond_suffix|
         suffix = cond_suffix.to_s
         define_method(inst.to_s + suffix) do |*args|
           instruction clazz , inst + suffix , *args

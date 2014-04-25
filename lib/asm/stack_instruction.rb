@@ -3,7 +3,6 @@ require "asm/instruction"
 module Asm
   # ADDRESSING MODE 4
   class StackInstruction < Instruction
-    include Asm::InstructionTools
 
     def initialize(opcode , args)
       super(opcode,args)

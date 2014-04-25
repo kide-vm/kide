@@ -1,6 +1,6 @@
 require_relative "label"
 require_relative "assembly_error"
-require_relative "instruction_tools"
+require_relative "arm_machine"
 
 module Asm
 
@@ -13,7 +13,7 @@ module Asm
   # Argurments are registers or labels or string/num Literals
   
   class Instruction < Code
-    include InstructionTools
+    include ArmMachine
 
     COND_POSTFIXES = Regexp.union( COND_CODES.keys.collect{|k|k.to_s} ).source
 
@@ -37,7 +37,7 @@ module Asm
     
     attr_reader :opcode, :args 
     # Many arm instructions may be conditional, where the default condition is always (al)
-    # InstructionTools::COND_CODES names them, and this attribute reflects it
+    # ArmMachine::COND_CODES names them, and this attribute reflects it
     attr_reader :cond
     attr_reader :operand
 

@@ -4,7 +4,6 @@ module Asm
   # ADDRESSING MODE 2
   # Implemented: immediate offset with offset=0
   class MemoryInstruction < Instruction
-    include Asm::InstructionTools
 
     def initialize(opcode , args)
       super( opcode , args )

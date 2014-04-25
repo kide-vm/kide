@@ -1,6 +1,6 @@
 module Asm
 
-  module InstructionTools
+  module ArmMachine
     OPCODES = {
       :adc => 0b0101, :add => 0b0100,
       :and => 0b0000, :bic => 0b1110,

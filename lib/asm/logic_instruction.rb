@@ -3,7 +3,6 @@ module Asm
   # Logic ,Maths, Move and compare instructions (last three below)
   
   class LogicInstruction < Instruction
-    include Asm::InstructionTools
 
     def initialize( opcode , args)
       super(opcode , args)
