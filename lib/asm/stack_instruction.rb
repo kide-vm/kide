@@ -26,7 +26,7 @@ module Asm
     attr_accessor :cond, :inst_class, :pre_post_index, :up_down,
                   :update_status_flag, :write_base, :is_pop, :rn, :operand
                   
-    def assemble(io, as)
+    def assemble(io)
       build
       cond = @cond.is_a?(Symbol) ?  COND_CODES[@cond]   : @cond
       rn = reg "sp" # sp register

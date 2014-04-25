@@ -40,7 +40,7 @@ module Asm
       4
     end
     
-    def assemble(io, as)
+    def assemble(io)
       raise "Abstract class, should not be called/instantiated #{self.inspect}"
     end
   end

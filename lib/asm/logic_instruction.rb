@@ -69,7 +69,7 @@ module Asm
       end
     end
 
-    def assemble(io, as)
+    def assemble(io)
       build
       val = operand.is_a?(Register) ? operand.bits : operand 
       val |= (rd.bits <<            12) 

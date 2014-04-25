@@ -19,7 +19,7 @@ module Asm
     def length
       @string.length
     end
-    def assemble(io, as)
+    def assemble(io)
       io << @string
     end
   end

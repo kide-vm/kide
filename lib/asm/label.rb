@@ -2,7 +2,6 @@ module Asm
 
   class Label
     def initialize(name , asm)
-      @@oh = 1
       @name = name
       @asm = asm
       @position = nil
@@ -23,7 +22,7 @@ module Asm
       0
     end
 
-    def assemble(io, as)
+    def assemble(io)
       self.position = io.tell
     end
     def set!

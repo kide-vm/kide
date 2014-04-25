@@ -28,6 +28,13 @@ class NodesCase < MiniTest::Test
     assert tree[:args].is_a? Vm::NumberExpression
     assert_equal 42 , tree[:args].value 
   end
+  def test_arg_list
+    @parser = @parser.args
+    tree = parse "(42, foo)"
+    assert_equal Array , tree.class
+    assert_equal 42 , tree.first.value 
+    assert_equal "foo" , tree.last.name 
+  end
 end
 
 

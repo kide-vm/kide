@@ -8,7 +8,7 @@ module Asm
       super(opcode,args)
     end
     
-    def assemble(io, as)
+    def assemble(io)
       s = @update_status_flag? 1 : 0
       case opcode
       when :b, :bl

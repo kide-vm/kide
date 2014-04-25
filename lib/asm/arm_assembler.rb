@@ -122,7 +122,7 @@ module Asm
 
     def assemble(io)
       @values.each do |obj|
-        obj.assemble io, self
+        obj.assemble io
       end
     end
 

@@ -56,7 +56,7 @@ module Asm
       end
     end
 
-    def assemble(io, as)
+    def assemble(io)
       build
       #not sure about these 2 constants. They produce the correct output for str r0 , r1
       # but i can't help thinking that that is because they are not used in that instruction and
