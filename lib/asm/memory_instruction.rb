@@ -8,7 +8,6 @@ module Asm
 
     def initialize(opcode , args)
       super( opcode , args )
-      @inst_class = OPC_MEMORY_ACCESS
       @i = 0 #I flag (third bit)
       @pre_post_index = 0 #P flag
       @add_offset = 0 #U flag
@@ -18,7 +17,7 @@ module Asm
       @rn = reg "r0" # register zero = zero bit pattern
       @rd = reg "r0" # register zero = zero bit pattern
     end
-    attr_accessor :inst_class, :i, :pre_post_index, :add_offset,
+    attr_accessor :i, :pre_post_index, :add_offset,
                   :byte_access, :w, :is_load, :rn, :rd
 
     # Build representation for target address
@@ -63,6 +62,7 @@ module Asm
       # so it doesn't matter. Will see
       @add_offset = 1
       @pre_post_index = 1
+      instuction_class =  0b01 # OPC_MEMORY_ACCESS
       val = operand  
       val |= (rd.bits <<        12 )  
       val |= (rn.bits <<        12+4) #16  
@@ -72,7 +72,7 @@ module Asm
       val |= (add_offset <<     12+4  +4+1+1+1)
       val |= (pre_post_index << 12+4  +4+1+1+1+1)#24
       val |= (i <<              12+4  +4+1+1+1+1  +1) 
-      val |= (inst_class <<     12+4  +4+1+1+1+1  +1+1)  
+      val |= (instuction_class<<12+4  +4+1+1+1+1  +1+1)  
       val |= (cond_bit_code <<  12+4  +4+1+1+1+1  +1+1+2)
       io.write_uint32 val
     end

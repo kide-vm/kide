@@ -44,10 +44,6 @@ module Asm
       COND_CODES[@cond] or throw "no code found for #{@cond}"
     end
     
-    OPC_DATA_PROCESSING = 0b00
-    OPC_MEMORY_ACCESS = 0b01
-    OPC_STACK = 0b10
-    
     REGISTERS = { 'r0' => 0, 'r1' => 1, 'r2' => 2, 'r3' => 3, 'r4' => 4, 'r5' => 5,
                   'r6' => 6, 'r7' => 7, 'r8' => 8, 'r9' => 9, 'r10' => 10, 'r11' => 11,
                   'r12' => 12, 'r13' => 13, 'r14' => 14, 'r15' => 15, 'a1' => 0, 'a2' => 1,
@@ -60,7 +56,7 @@ module Asm
     end
                       
             
-                 
+
    def calculate_u8_with_rr(arg)
      parts = arg.value.to_s(2).rjust(32,'0').scan(/^(0*)(.+?)0*$/).flatten
      pre_zeros = parts[0].length

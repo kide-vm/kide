@@ -7,11 +7,11 @@ module Asm
 
     def initialize( opcode , args)
       super(opcode , args)
-      @inst_class = OPC_DATA_PROCESSING
+      @rn = nil
       @i = 0
       @rd = args[0]
     end
-    attr_accessor :inst_class, :i, :rn, :rd
+    attr_accessor :i, :rn, :rd
 
     # Build representation for source value 
     def build
@@ -71,13 +71,14 @@ module Asm
 
     def assemble(io)
       build
+      instuction_class = 0b00 # OPC_DATA_PROCESSING
       val = operand.is_a?(Register) ? operand.bits : operand 
       val |= (rd.bits <<            12) 
       val |= (rn.bits <<            12+4)  
       val |= (update_status_flag << 12+4+4)#20 
       val |= (op_bit_code <<        12+4+4  +1)
       val |= (i <<                  12+4+4  +1+4) 
-      val |= (inst_class <<         12+4+4  +1+4+1) 
+      val |= (instuction_class <<   12+4+4  +1+4+1) 
       val |= (cond_bit_code <<      12+4+4  +1+4+1+2)
       io.write_uint32 val
     end

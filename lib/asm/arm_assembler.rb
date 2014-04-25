@@ -16,12 +16,12 @@ module Asm
     end
 
     def initialize
-      @values = []
+      @codes = []
       @position = 0 # marks not set
       @labels = []
       @string_table = {}
     end
-    attr_reader  :values , :position 
+    attr_reader  :codes , :position 
 
     def instruction(clazz,name, *args)
       opcode = name.to_s
@@ -39,7 +39,7 @@ module Asm
           raise "Invalid argument #{arg.inspect} for instruction"
         end
       end
-      add_value clazz.new(opcode , arg_nodes)
+      add_code clazz.new(opcode , arg_nodes)
     end
     
     
@@ -85,7 +85,7 @@ module Asm
       #put the strings at the end of the assembled code.
       # adding them will fix their position and make them assemble after
       @string_table.values.each do |data|
-        add_value data
+        add_code data
       end
       io = StringIO.new
       assemble(io)
@@ -93,8 +93,8 @@ module Asm
     end
 
     def add_string str
-      value = @string_table[str]
-      return value if value
+      code = @string_table[str]
+      return code if code
       data = Asm::StringLiteral.new(str)
       @string_table[str] = data
     end
@@ -103,11 +103,11 @@ module Asm
       @string_table.values
     end
   
-    def add_value(val)
-      val.at(@position)
-      length = val.length
+    def add_code(kode)
+      kode.at(@position)
+      length = kode.length
       @position += length
-      @values << val
+      @codes << kode
     end
   
     def label name
@@ -116,12 +116,8 @@ module Asm
       label 
     end
 
-    def label! name
-      label(name).set!
-    end
-
     def assemble(io)
-      @values.each do |obj|
+      @codes.each do |obj|
         obj.assemble io
       end
     end

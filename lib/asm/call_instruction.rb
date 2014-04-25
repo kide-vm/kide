@@ -1,15 +1,23 @@
 module Asm
-  # ADDRESSING MODE 4 ,  Calling
+  # There are only three call instructions in arm branch (b), call (bl) and syscall (swi)
+  
+  # A branch could be called a jump as it has no notion of returning
+  
+  # A call has the bl code as someone thought "branch with link" is a useful name.
+  # The pc is put into the link register to make a return possible
+  # a return is affected by moving the stored link register into the pc, effectively a branch
+  
+  # swi (SoftWareInterrupt) or system call is how we call the kernel.
+  # in Arm the register layout is different and so we have to place the syscall code into register 7
+  # Registers 0-6 hold the call values as for a normal c call
   
   class CallInstruction < Instruction
-    include Asm::InstructionTools
 
     def initialize(opcode , args)
       super(opcode,args)
     end
     
     def assemble(io)
-      s = @update_status_flag? 1 : 0
       case opcode
       when :b, :bl
         arg = args[0]
