@@ -1,33 +1,32 @@
-module Asm
+require_relative "code"
 
-  class Label
+module Asm
+  
+  # Labels are, like in assembler, a point to jump/branch to. An address in the stream.
+  # To allow for forward branches creation does not fix the position. Set does that.
+  class Label < Code
     def initialize(name , asm)
+      super
       @name = name
       @asm = asm
-      @position = nil
     end
-    
-    attr_writer :position , :name
 
-    def position
-      if (@position.nil?)
-        raise 'Tried to use label object that has not been set'
-      end
-      @position
+    # setting a label fixes it's position in the stream. 
+    # For backwards jumps, positions of labels are known at creation, but for forward off course not.
+    # So then one can create a label, branch to it and set it later. 
+    def set!
+      @asm.add_value self
+      self
     end
-    def at pos
-      @position = pos
-    end
+
+    # Label has no length , 0
     def length 
       0
     end
 
+    # nothing to write, we check that the position is what was set
     def assemble(io)
-      self.position = io.tell
-    end
-    def set!
-      @asm.add_value self
-      self
+      raise "Hmm hmm hmm, me thinks i should be somewhere else" if self.position != io.tell
     end
 
   end

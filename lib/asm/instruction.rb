@@ -1,10 +1,18 @@
-require "asm/assembly_error"
-require "asm/instruction_tools"
-require "asm/label"
+require_relative "label"
+require_relative "assembly_error"
+require_relative "instruction_tools"
 
 module Asm
 
-  class Instruction
+  # Not surprisingly represents an cpu instruction. 
+  # This is an abstract base class, with derived classes 
+  # Logic / Move / Compare / Stack / Memory (see there)
+  # 
+  # Opcode is a (<= three) letter accronym (same as in assembly code). Though in arm, suffixes can
+  # make the opcode longer, we chop those off in the constructor
+  # Argurments are registers or labels or string/num Literals
+  
+  class Instruction < Code
     include InstructionTools
 
     COND_POSTFIXES = Regexp.union( COND_CODES.keys.collect{|k|k.to_s} ).source
@@ -31,17 +39,10 @@ module Asm
     def affect_status
       @s
     end
-
-    def at position 
-      @position = position
-    end
     
+    # arm intrucioons are pretty sensible, and always 4 bytes (thumb not supported)
     def length
       4
-    end
-    
-    def assemble(io)
-      raise "Abstract class, should not be called/instantiated #{self.inspect}"
     end
   end
 end

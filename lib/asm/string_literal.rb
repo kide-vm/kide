@@ -1,7 +1,15 @@
+require_relative "code"
+
 module Asm
+  # The name really says it all.
+  # The only interesting thing is storage.
+  # Currently string are stored "inline" , ie in the code segment. 
+  # Mainly because that works an i aint no elf expert.
+  
   class StringLiteral
+    
+    # currently aligned to 4 (ie padded with 0) and off course 0 at the end
     def initialize(str)
-      #align
       length = str.length 
       # rounding up to the next 4 (always adding one for zero pad)
       pad =  ((length / 4 ) + 1 ) * 4 - length
@@ -9,16 +17,12 @@ module Asm
       @string = str + "\x00" * pad 
     end
     
-    def position
-      throw "Not set" unless @address
-      @address 
-    end
-    def at address
-      @address = address
-    end
+    # the strings length plus padding
     def length
       @string.length
     end
+    
+    # just writing the string
     def assemble(io)
       io << @string
     end
