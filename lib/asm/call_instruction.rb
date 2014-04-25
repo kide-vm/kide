@@ -12,10 +12,6 @@ module Asm
   # Registers 0-6 hold the call values as for a normal c call
   
   class CallInstruction < Instruction
-
-    def initialize(opcode , args)
-      super(opcode,args)
-    end
     
     def assemble(io)
       case opcode
@@ -34,13 +30,13 @@ module Asm
         else
           raise "else not coded #{arg.inspect}"
         end
-        io.write_uint8 OPCODES[opcode] | (COND_CODES[@cond] << 4)
+        io.write_uint8 OPCODES[opcode] | (COND_CODES[@condition_code] << 4)
       when :swi
         arg = args[0]
         if (arg.is_a?(Asm::NumLiteral))
           packed = [arg.value].pack('L')[0,3]
           io << packed
-          io.write_uint8 0b1111 | (COND_CODES[@cond] << 4)
+          io.write_uint8 0b1111 | (COND_CODES[@condition_code] << 4)
         else
           raise Asm::AssemblyError.new("invalid operand argument expected literal not #{arg}")
         end

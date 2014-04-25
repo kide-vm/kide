@@ -23,8 +23,7 @@ module Asm
     end
     attr_reader  :codes , :position 
 
-    def instruction(clazz,name, *args)
-      opcode = name.to_s
+    def instruction(clazz, opcode , condition_code , update_status , *args)
       arg_nodes = []
       args.each do |arg|
         if (arg.is_a?(Asm::Register))
@@ -39,24 +38,23 @@ module Asm
           raise "Invalid argument #{arg.inspect} for instruction"
         end
       end
-      add_code clazz.new(opcode , arg_nodes)
+      add_code clazz.new(opcode , condition_code , update_status , arg_nodes)
     end
     
     
     def self.define_instruction(inst , clazz )
       define_method(inst) do |*args|
-        instruction clazz , inst , *args
+        instruction clazz , inst , :al , 0 , *args
       end
-      define_method(inst.to_s+'s') do |*args|
-        instruction clazz , inst.to_s+'s' , *args
+      define_method("#{inst}s") do |*args|
+        instruction clazz , inst , :al , 1 , *args
       end
-      ArmMachine::COND_CODES.keys.each do |cond_suffix|
-        suffix = cond_suffix.to_s
-        define_method(inst.to_s + suffix) do |*args|
-          instruction clazz , inst + suffix , *args
+      ArmMachine::COND_CODES.keys.each do |suffix|
+        define_method("#{inst}#{suffix}") do |*args|
+          instruction clazz , inst , suffix , 0 , *args
         end
-        define_method(inst.to_s + 's'+ suffix) do |*args|
-          instruction clazz , inst.to_s + 's' + suffix, *args
+        define_method("#{inst}s#{suffix}") do |*args|
+          instruction clazz , inst , suffix , 1 , *args
         end
       end
     end

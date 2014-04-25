@@ -4,10 +4,10 @@ module Asm
   
   class LogicInstruction < Instruction
 
-    def initialize( opcode , args)
-      super(opcode , args)
+    def initialize(opcode , condition_code , update_status , args)
+      super(opcode , condition_code , update_status , args)
       @rn = nil
-      @i = 0
+      @i = 0      
       @rd = args[0]
     end
     attr_accessor :i, :rn, :rd
@@ -19,7 +19,7 @@ module Asm
     end
     
     #(stays in subclases, while build is overriden to provide different arguments)
-    def do_build(arg)
+    def do_build(arg)      
       if arg.is_a?(Asm::StringLiteral)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
@@ -72,8 +72,8 @@ module Asm
       build
       instuction_class = 0b00 # OPC_DATA_PROCESSING
       val = operand.is_a?(Register) ? operand.bits : operand 
-      val |= (rd.bits <<            12) 
-      val |= (rn.bits <<            12+4)  
+      val |= (rd.bits <<            12)     
+      val |= (rn.bits <<            12+4)   
       val |= (update_status_flag << 12+4+4)#20 
       val |= (op_bit_code <<        12+4+4  +1)
       val |= (i <<                  12+4+4  +1+4) 
@@ -83,8 +83,8 @@ module Asm
     end
   end
   class CompareInstruction < LogicInstruction
-    def initialize( opcode , args)
-      super(opcode , args)
+    def initialize(opcode , condition_code , update_status , args)
+      super(opcode , condition_code , update_status , args)
       @update_status_flag = 1
       @rn = args[0]
       @rd = reg "r0"
@@ -94,8 +94,8 @@ module Asm
     end
   end
   class MoveInstruction < LogicInstruction
-    def initialize( opcode , args)
-      super(opcode , args)
+    def initialize(opcode , condition_code , update_status , args)
+      super(opcode , condition_code , update_status , args)
       @rn = reg "r0" # register zero = zero bit pattern
     end
     def build

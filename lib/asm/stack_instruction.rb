@@ -4,8 +4,8 @@ module Asm
   # ADDRESSING MODE 4
   class StackInstruction < Instruction
 
-    def initialize(opcode , args)
-      super(opcode,args)
+    def initialize(opcode , condition_code , update_status , args)
+      super(opcode , condition_code , update_status , args)
       @update_status_flag= 0
       @rn = reg "r0" # register zero = zero bit pattern
       # downward growing, decrement before memory access
@@ -27,7 +27,7 @@ module Asm
     def assemble(io)
       build
       instuction_class = 0b10 # OPC_STACK
-      cond = @cond.is_a?(Symbol) ?  COND_CODES[@cond]   : @cond
+      cond = @condition_code.is_a?(Symbol) ?  COND_CODES[@condition_code]   : @condition_code
       rn = reg "sp" # sp register
       #assemble of old
       val = operand

@@ -39,9 +39,9 @@ module Asm
       :ge => 0b1010, :gt => 0b1100,
       :vs => 0b0110
     }
-    #return the bit pattern for the @cond variable, which signals the conditional code
+    #return the bit pattern for the @condition_code variable, which signals the conditional code
     def cond_bit_code
-      COND_CODES[@cond] or throw "no code found for #{@cond}"
+      COND_CODES[@condition_code] or throw "no code found for #{@condition_code}"
     end
     
     REGISTERS = { 'r0' => 0, 'r1' => 1, 'r2' => 2, 'r3' => 3, 'r4' => 4, 'r5' => 5,

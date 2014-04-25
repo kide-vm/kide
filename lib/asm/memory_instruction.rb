@@ -5,8 +5,8 @@ module Asm
   # Implemented: immediate offset with offset=0
   class MemoryInstruction < Instruction
 
-    def initialize(opcode , args)
-      super( opcode , args )
+    def initialize(opcode , condition_code , update_status , args)
+      super(opcode , condition_code , update_status , args)
       @i = 0 #I flag (third bit)
       @pre_post_index = 0 #P flag
       @add_offset = 0 #U flag

@@ -17,20 +17,10 @@ module Asm
 
     COND_POSTFIXES = Regexp.union( COND_CODES.keys.collect{|k|k.to_s} ).source
 
-    def initialize(opcode , args)
-      opcode = opcode.to_s.downcase
-      @cond = :al
-      if (opcode =~ /(#{COND_POSTFIXES})$/)
-        @cond = $1.to_sym
-        opcode = opcode[0..-3]
-      end unless opcode == 'teq'
-      if (opcode =~ /s$/)
-        @update_status_flag= 1
-        opcode = opcode[0..-2]
-      else
-        @update_status_flag= 0
-      end
-      @opcode = opcode.downcase.to_sym
+    def initialize(opcode , condition_code , update_status , args)
+      @update_status_flag = update_status
+      @condition_code = condition_code.to_sym
+      @opcode = opcode
       @args = args
       @operand = 0
     end
@@ -38,7 +28,7 @@ module Asm
     attr_reader :opcode, :args 
     # Many arm instructions may be conditional, where the default condition is always (al)
     # ArmMachine::COND_CODES names them, and this attribute reflects it
-    attr_reader :cond
+    attr_reader :condition_code
     attr_reader :operand
 
     # Logic instructions may be executed with or without affecting the status register
