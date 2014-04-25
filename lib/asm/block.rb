@@ -14,12 +14,14 @@ module Asm
   # Blocks are also used to create instructions, and so Block has functions for every cpu instruction
   # and to make using the apu function easier, there are functions that create registers as well
   class Block < Code
+    extend Forwardable  # forward block call back to program
+    def_delegator :@program, :block
 
     def initialize(asm)
       super()
       @codes = []
       @position = 0
-      @asm = asm
+      @program = asm
     end
 
     ArmMachine::REGISTERS.each do |reg , number|
@@ -34,8 +36,8 @@ module Asm
         elsif (arg.is_a?(Integer))
           arg_nodes << Asm::NumLiteral.new(arg)
         elsif (arg.is_a?(String))
-          arg_nodes << @asm.add_string(arg)
-        elsif (arg.is_a?(Asm::Label))
+          arg_nodes << @program.add_string(arg)
+        elsif (arg.is_a?(Asm::Block))
           arg_nodes << arg
         else
           raise "Invalid argument #{arg.inspect} for instruction"
@@ -86,13 +88,14 @@ module Asm
     # For backwards jumps, positions of blocks are known at creation, but for forward off course not.
     # So then one can create a block, branch to it and set it later. 
     def set!
-      @asm.add_block self
+      @program.add_block self
       self
     end
 
-    # Label has no length , 0
+    # length of the codes. In arm it would be the length * 4
+    # (strings are stored globally in the Program)
     def length 
-      @codes.sum :length
+      @codes.inject(0) {| sum  , item | sum + item.length}
     end
 
     def add_code(kode)
