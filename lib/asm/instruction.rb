@@ -1,9 +1,10 @@
-require_relative "label"
 require_relative "assembly_error"
 require_relative "arm_machine"
 
 module Asm
 
+  class Code ; end
+  
   # Not surprisingly represents an cpu instruction. 
   # This is an abstract base class, with derived classes 
   # Logic / Move / Compare / Stack / Memory (see there)

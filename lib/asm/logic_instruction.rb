@@ -1,3 +1,5 @@
+require_relative "instruction"
+
 module Asm
   # ADDRESSING MODE 1 
   # Logic ,Maths, Move and compare instructions (last three below)

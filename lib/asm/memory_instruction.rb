@@ -1,4 +1,5 @@
 require "asm/nodes"
+require_relative "instruction"
 
 module Asm
   # ADDRESSING MODE 2

@@ -1,3 +1,5 @@
+require_relative "instruction"
+
 module Asm
   # There are only three call instructions in arm branch (b), call (bl) and syscall (swi)
   
@@ -17,7 +19,7 @@ module Asm
       case opcode
       when :b, :bl
         arg = args[0]
-        if arg.is_a? Label
+        if arg.is_a? Block
           diff = arg.position - self.position - 8
           arg = NumLiteral.new(diff)
         end

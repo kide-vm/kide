@@ -1,4 +1,4 @@
-require "asm/instruction"
+require_relative "instruction"
 
 module Asm
   # ADDRESSING MODE 4
