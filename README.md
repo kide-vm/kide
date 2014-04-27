@@ -1,19 +1,31 @@
 Crystal
 =======
 
-Small steps on a long road, will nevertheless lead to the destination
-
-Sorry about the Zen, but it feels like i'm about to walk to China.
+Crystal is about native code generation in and of ruby. In is done.
 
 Step 1
 ------
 
-Produce binary that represent code. Traditionally called assembling, but there is no need for an external file
-representation. 
+Produce binary that represents code. 
+Traditionally called assembling, but there is no need for an external file representation. 
 
 Ie only in ruby code do i want to create machine code.
 
-First instructions are in fact assembling correctly. Meaning i have tests, and i can use objbump to verify the correct assembler code is disasembled
+Most instructions are in fact assembling correctly. Meaning i have tests, and i can use objbump to verify the correct assembler code is disasembled
+
+I even polished the dsl an so (from the tests), this is a valid hello world:
+
+    hello = "Hello World\n"
+    @program.main do 
+      mov r7, 4     # 4 == write
+      mov r0 , 1    # stdout
+      add r1 , pc , hello   # address of "hello World"
+      mov r2 , hello.length
+    	swi 0         #software interupt, ie kernel syscall
+      mov r7, 1     # 1 == exit
+    	swi 0
+    end
+    write(7 + hello.length/4 + 1 , 'hello') 
 
 Step 2
 ------
@@ -23,15 +35,21 @@ Package the code into an executable. Run that and verify it's output. But full e
 Still, this has proven to be a good review point for the arcitecture and means no libc for now.
 Full rationale on the web (pages rep for now), but it means starting an extra step
 
+Above Hello World can ne linked and run. And will say its thing.
+
 Step 2.1
 --------
 
-Start implementing syscalls and the functionality we actually need from c (basic io only really)
+Start implementing syscalls and add the functionality we actually need from c (basic io only really)
 
 Step 3
 -------
 
 Start parsing some simple code. Using Parslet.
+
+This is where it is at. Simple things transform nicely with parslet. 
+
+But the glue is eluding me.
 
 Get the parse - compile - execute -verify cycle going.
 
@@ -67,13 +85,11 @@ Celebrate New year 2020
 Contributing to crystal
 -----------------------
  
-* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
-* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
-* Fork the project.
-* Start a feature/bugfix branch.
-* Commit and push until you are happy with your contribution.
-* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
-* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+Probably best to talk to me, if it's not a typo or so.
+
+I do have a todo, for the adventurous.
+
+Fork and create a branch before sending pulls.
 
 == Copyright
 
