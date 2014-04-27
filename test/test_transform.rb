@@ -26,25 +26,25 @@ class TransformTest <  MiniTest::Test
   end
 
   def test_argument_list
-    @input    = {:args => [{:arg => {:integer => '42'}},
-                          {:arg => {:name   => 'foo'}}]}
+    @input    = {:argument_list => [{:argument => {:integer => '42'}},
+                          {:argument => {:name   => 'foo'}}]}
     @expected = [Vm::IntegerExpression.new(42),
                 Vm::NameExpression.new('foo')]
     check_equals
   end
 
   def test_single_argument
-    @input = {:funcall => {:name => 'foo'},
-             :args    => [{:arg => {:integer => '42'}}]}
+    @input = {:function_call => {:name => 'foo'},
+             :argument_list    => [{:argument => {:integer => '42'}}]}
     @expected = Vm::FuncallExpression.new 'foo', [Vm::IntegerExpression.new(42)]
 
     check_equals
   end
 
   def test_multi_argument
-    @input = {:funcall => {:name => 'baz'},
-             :args    => [{:arg => {:integer => '42'}},
-                          {:arg => {:name => 'foo'}}]}
+    @input = {:function_call => {:name => 'baz'},
+             :argument_list    => [{:argument => {:integer => '42'}},
+                          {:argument => {:name => 'foo'}}]}
     @expected = Vm::FuncallExpression.new 'baz', [Vm::IntegerExpression.new(42),
                                           Vm::NameExpression.new('foo')]
 
@@ -53,25 +53,31 @@ class TransformTest <  MiniTest::Test
 
   def test_conditional
     @input = {:cond     => {:integer => '0'},
-             :if_true  => {:body => {:integer => '42'}},
-             :if_false => {:body => {:integer => '667'}}}
+             :if_true  => {:block => {:integer => '42'}},
+             :if_false => {:block => {:integer => '667'}}}
     @expected = Vm::ConditionalExpression.new \
       Vm::IntegerExpression.new(0),
       Vm::IntegerExpression.new(42),
       Vm::IntegerExpression.new(667)
-
     check_equals
   end
 
-  def test__function_definition
-    @input = {:func   => {:name => 'foo'},
-             :params => {:param => {:name => 'x'}},
-             :body   => {:integer => '5'}}
-    @expected = Vm::FunctionExpression.new \
-      'foo',
-      [Vm::NameExpression.new('x')],
-      Vm::IntegerExpression.new(5)
-
-      check_equals
+  def test_param
+    @input = {:param => { :name => "foo"}} 
+    @expected = Vm::NameExpression.new('foo')
+    check_equals
+  end
+  def test_params
+    @input = {:params => [{:param => { :name => "foo"}}]}
+    @expected = [Vm::NameExpression.new('foo')]
+    check_equals
+  end
+  
+  def test_function_definition
+    @input = {:function_definition => { :name => "foo"}, 
+      :params => [{ :param => { :name => "x" }}] , 
+      :block => { :integer => "5" }}
+    @expected = Vm::FunctionExpression.new('foo', [Vm::NameExpression.new('x')], Vm::IntegerExpression.new(5))
+    check_equals
   end
 end

@@ -25,15 +25,25 @@ class TestNodes < MiniTest::Test
   def test_args
     tree = parse "( 42 )"
     assert_kind_of Hash , tree
-    assert_kind_of Vm::IntegerExpression ,  tree[:args]
-    assert_equal 42 , tree[:args].value 
+    assert_kind_of Vm::IntegerExpression ,  tree[:argument_list]
+    assert_equal 42 , tree[:argument_list].value 
   end
   def test_arg_list
-    @parser = @parser.args
+    @parser = @parser.argument_list
     tree = parse "(42, foo)"
     assert_instance_of Array , tree
     assert_equal 42 , tree.first.value 
     assert_equal "foo" , tree.last.name 
+  end
+  def test_definition
+    input    = <<HERE
+def foo(x) {
+  5
+}
+HERE
+    @parser = @parser.function_definition
+    tree = parse(input)
+    assert_kind_of Vm::IntegerExpression ,  tree
   end
 end
 

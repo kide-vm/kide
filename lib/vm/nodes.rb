@@ -64,9 +64,9 @@ module Vm
   end
 
   class FunctionExpression < Expression
-    attr_reader  :name, :params, :body
-    def initialize name, params, body
-      @name, @params, @body = name, params, body
+    attr_reader  :name, :params, :block
+    def initialize name, params, block
+      @name, @params, @block = name, params, block
     end
     def eval(context, builder)
       param_names = [params].flatten.map(&:name)
@@ -74,7 +74,7 @@ module Vm
       types = [builder.int] * (param_names.count + 1)
 
       builder.public_static_method(self.name, [], *types) do |method|
-        self.body.eval(context, method)
+        self.block.eval(context, method)
         method.ireturn
       end
     end

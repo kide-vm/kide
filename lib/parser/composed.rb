@@ -1,5 +1,6 @@
 require_relative "basic_types"
 require_relative "tokens"
+require_relative "keywords"
 
 module Parser
   
@@ -9,39 +10,36 @@ module Parser
   class Composed < Parslet::Parser
     include BasicTypes
     include Tokens
+    include Keywords
     
-    rule(:args) {
+    rule(:argument_list) {
       left_parenthesis >>
-      ((expression.as(:arg) >> (comma >> expression.as(:arg)).repeat(0)).maybe).as(:args) >>
+      ((expression.as(:argument) >> (comma >> expression.as(:argument)).repeat(0)).maybe).as(:argument_list) >>
       right_parenthesis
     }
 
-    rule(:funcall) { name.as(:funcall) >> args }
+    rule(:function_call) { name.as(:function_call) >> argument_list }
 
-    rule(:expression) { cond | funcall | integer | name }
+    rule(:expression) { cond | function_call | integer | name }
 
     rule(:cond) {
-      if_kw >> left_parenthesis >> expression.as(:cond) >> right_parenthesis >>
-        body.as(:if_true) >>
-        else_kw >>
-        body.as(:if_false)
+      keyword_if >> left_parenthesis >> expression.as(:cond) >> right_parenthesis >>
+        block.as(:if_true) >>
+        keyword_else >>
+        block.as(:if_false)
     }
 
-    rule(:body)    { left_brace >> expression.as(:body) >> right_brace }
-    rule(:if_kw)   { str('if')   >> space? }
-    rule(:else_kw) { str('else') >> space? }
+    rule(:block)    { left_brace >> expression.as(:block) >> right_brace }
 
-    rule(:func) {
-      func_kw >> name.as(:func) >> params >> body
+    rule(:function_definition) {
+      keyword_def >> name.as(:function_definition) >> params >> block
     }
-
-    rule(:func_kw) { str('function') >> space? }
 
     rule(:params) {
       left_parenthesis >>
         ((name.as(:param) >> (comma >> name.as(:param)).repeat(0)).maybe).as(:params) >>
       right_parenthesis
     }
-    rule(:root){ func.repeat(0) >> expression | expression | args }
+    rule(:root){ function_definition.repeat(0) >> expression | expression | argument_list }
   end
 end
