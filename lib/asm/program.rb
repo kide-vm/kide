@@ -53,30 +53,38 @@ module Asm
       @blocks.inject(0) {| sum  , item | sum + item.length}
     end
 
-    # call block to create a new (code) block. The simple way is to do this with a block and 
-    # use the yielded block to add code, ie something like:
-    #   prog.block do |loop|
-    #         loop.instance_eval do           #this part you can acheive with calls too
-    #                   mov r0 , 10
-    #                   subs r0 , 1
-    #                   bne block
-    #         end
-    #   end
-    # Easy, because it's a backward jump. For forward branches that doesn't work and so you have to 
-    # create the block without a ruby block. You can then jumpt to it immediately
-    # But the block is not part of the program (since we don't know where) and so you have to add it later
-    def block
-      block = Block.new(self)
-      yield block.set! if block_given? #yield the block (which set returns)
-      block
-    end
-
     # This is how you add a forward declared block. This is called automatically when you 
     # call block with ruby block, but has to be done manually if not
     def add_block block
       block.at self.length
       @blocks << block
     end
+
+    # return the block of the given name
+    # or raise an exception, as this is meant to be called when the block is available 
+    def get_block name
+      block = @blocks.find {|b| b.name == name}
+      raise "No block found for #{name} (in #{blocks.collect{|b|b.name}.join(':')})" unless block
+      block
+    end
+    # this is used to create blocks. 
+    # All functions that have no args are interpreted as block names
+    # and if a block is provided, it is evaluated in the (ruby)blocks scope and the block added to the 
+    # program immediately. 
+    # If no block is provided (forward declaration), you must call code on it later 
+    def method_missing(meth, *args, &block)
+      if args.length == 0
+        code = Block.new(meth.to_s , self )
+        if block_given?
+          add_block code
+          code.instance_eval(&block)
+        end
+        return code
+      else
+        super
+      end
+    end
+    
 
     private
     

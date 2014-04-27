@@ -13,17 +13,13 @@ class TestSmallProg < MiniTest::Test
   end
 
   def test_loop
-    @program.block do |main|
-      main.instance_eval do
-        mov r0, 5                #1
-        main.block do |start|
-          start.instance_eval do
-            subs r0, r0, 1       #2
-            bne start           #3
-          end
-          mov r7, 1               #4
-        	swi 0                   #5  5 instructions
-        end
+    @program.main do
+      mov r0, 5                #1
+      start do
+        subs r0, r0, 1       #2
+        bne :start           #3
+        mov r7, 1               #4
+      	swi 0                   #5  5 instructions
       end
     end
     write( 5 , "loop" )
@@ -31,16 +27,14 @@ class TestSmallProg < MiniTest::Test
 
   def test_hello
     hello = "Hello Raisa\n"
-    @program.block do |main|
-      main.instance_eval do
-        mov r7, 4     # 4 == write
-        mov r0 , 1    # stdout
-        add r1 , pc , hello   # address of "hello Raisa"
-        mov r2 , hello.length
-      	swi 0         #software interupt, ie kernel syscall
-        mov r7, 1     # 1 == exit
-      	swi 0
-      end
+    @program.main do 
+      mov r7, 4     # 4 == write
+      mov r0 , 1    # stdout
+      add r1 , pc , hello   # address of "hello Raisa"
+      mov r2 , hello.length
+    	swi 0         #software interupt, ie kernel syscall
+      mov r7, 1     # 1 == exit
+    	swi 0
     end
     write(7 + hello.length/4 + 1 , 'hello') 
   end
