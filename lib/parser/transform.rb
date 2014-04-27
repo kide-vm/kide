@@ -9,6 +9,7 @@ module Parser
     rule(:argument  => simple(:argument))    { argument  }
     rule(:argument_list => sequence(:argument_list)) { argument_list }
 
+    # need TWO transform rules, for one/many arguments (see the[] wrapping in the first)
     rule(:function_call => simple(:function_call),
           :argument_list    => simple(:argument))   do
             Vm::FuncallExpression.new(function_call.name, [argument]) 
@@ -25,6 +26,7 @@ module Parser
     rule(:parmeter  => simple(:parmeter))    { parmeter  }
     rule(:parmeter_list => sequence(:parmeter_list)) { parmeter_list }
 
+    # need TWO transform rules, for one/many arguments (see the[] wrapping in the first)
     rule(:function_definition   => simple(:function_definition),
          :parmeter_list => simple(:parmeter),
          :block   => simple(:block)) do

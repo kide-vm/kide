@@ -12,6 +12,11 @@ module Parser
     include Tokens
     include Keywords
     
+    # Note about the lists (argument and parameter)
+    # Beause of the maybe for the comma ...  part , the rules may return either 
+    # - a single simple version with one element 
+    # a sequence with many element. 
+    # This leads to the fact that two transform rules are needed for either 
     rule(:argument_list) {
       left_parenthesis >>
       ((expression.as(:argument) >> (comma >> expression.as(:argument)).repeat(0)).maybe).as(:argument_list) >>
