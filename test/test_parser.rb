@@ -1,5 +1,4 @@
 require_relative 'helper'
-require 'minitest/spec'
 
 class ParserTest < MiniTest::Test
 
