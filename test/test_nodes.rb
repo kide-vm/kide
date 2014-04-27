@@ -4,7 +4,7 @@ require_relative "helper"
 #testing that parsing strings that we know to be correct returns the nodes we expect
 # in a way the combination of test_parser and test_transform
 
-class NodesCase < MiniTest::Test
+class TestNodes < MiniTest::Test
 
   def setup
     @parser    = Parser::Parser.new
