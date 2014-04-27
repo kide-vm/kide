@@ -25,6 +25,13 @@ class ParserTest < MiniTest::Test
     check
   end
 
+  def test_one_argument
+    @input    = '(42)'
+    @expected = {:argument_list => {:argument => {:integer => '42'}} }
+    @parser = @parser.argument_list
+    check
+  end
+
   def test_argument_list
     @input    = '(42, foo)'
     @expected = {:argument_list => [{:argument => {:integer => '42'}},
@@ -51,10 +58,10 @@ if (0) {
   667
 }
 HERE
-    @expected = {:cond     => {:integer => '0'},
+    @expected = {:conditional     => {:integer => '0'},
                 :if_true  => {:block => {:integer => '42'}},
                 :if_false => {:block => {:integer => '667'}}}
-    @parser = @parser.cond
+    @parser = @parser.conditional
     check
   end
 
@@ -65,7 +72,7 @@ def foo(x) {
 }
 HERE
     @expected = {:function_definition   => {:name => 'foo'},
-                :params => {:param => {:name => 'x'}},
+                :parmeter_list => {:parmeter => {:name => 'x'}},
                 :block   => {:integer => '5'}}
     @parser = @parser.function_definition
     check

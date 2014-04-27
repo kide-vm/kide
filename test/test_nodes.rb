@@ -43,7 +43,7 @@ def foo(x) {
 HERE
     @parser = @parser.function_definition
     tree = parse(input)
-    assert_kind_of Vm::IntegerExpression ,  tree
+    assert_kind_of Vm::FunctionExpression ,  tree
   end
 end
 

@@ -20,10 +20,10 @@ module Parser
 
     rule(:function_call) { name.as(:function_call) >> argument_list }
 
-    rule(:expression) { cond | function_call | integer | name }
+    rule(:expression) { conditional | function_call | integer | name }
 
-    rule(:cond) {
-      keyword_if >> left_parenthesis >> expression.as(:cond) >> right_parenthesis >>
+    rule(:conditional) {
+      keyword_if >> left_parenthesis >> expression.as(:conditional) >> right_parenthesis >>
         block.as(:if_true) >>
         keyword_else >>
         block.as(:if_false)
@@ -32,12 +32,12 @@ module Parser
     rule(:block)    { left_brace >> expression.as(:block) >> right_brace }
 
     rule(:function_definition) {
-      keyword_def >> name.as(:function_definition) >> params >> block
+      keyword_def >> name.as(:function_definition) >> parmeter_list >> block
     }
 
-    rule(:params) {
+    rule(:parmeter_list) {
       left_parenthesis >>
-        ((name.as(:param) >> (comma >> name.as(:param)).repeat(0)).maybe).as(:params) >>
+        ((name.as(:parmeter) >> (comma >> name.as(:parmeter)).repeat(0)).maybe).as(:parmeter_list) >>
       right_parenthesis
     }
     rule(:root){ function_definition.repeat(0) >> expression | expression | argument_list }

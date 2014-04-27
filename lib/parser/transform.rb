@@ -9,21 +9,32 @@ module Parser
     rule(:argument  => simple(:argument))    { argument  }
     rule(:argument_list => sequence(:argument_list)) { argument_list }
 
-    rule(:function_call => simple(:function_call), :argument_list    => sequence(:argument_list)) do
+    rule(:function_call => simple(:function_call),
+          :argument_list    => simple(:argument))   do
+            Vm::FuncallExpression.new(function_call.name, [argument]) 
+          end
+    rule( :function_call => simple(:function_call), 
+          :argument_list    => sequence(:argument_list)) do
            Vm::FuncallExpression.new(function_call.name, argument_list) 
     end
 
-    rule(:cond     => simple(:cond),
+    rule(:conditional     => simple(:conditional),
          :if_true  => {:block => simple(:if_true)},
-         :if_false => {:block => simple(:if_false)}) { Vm::ConditionalExpression.new(cond, if_true, if_false) }
+         :if_false => {:block => simple(:if_false)}) { Vm::ConditionalExpression.new(conditional, if_true, if_false) }
 
-    rule(:param  => simple(:param))    { param  }
-    rule(:params => sequence(:params)) { params }
+    rule(:parmeter  => simple(:parmeter))    { parmeter  }
+    rule(:parmeter_list => sequence(:parmeter_list)) { parmeter_list }
 
     rule(:function_definition   => simple(:function_definition),
-         :params => sequence(:params),
+         :parmeter_list => simple(:parmeter),
          :block   => simple(:block)) do
-            Vm::FunctionExpression.new(function_definition.name, params, block) 
+            Vm::FunctionExpression.new(function_definition.name, [parmeter], block) 
+          end
+
+    rule(:function_definition   => simple(:function_definition),
+         :parmeter_list => sequence(:parmeter_list),
+         :block   => simple(:block)) do
+            Vm::FunctionExpression.new(function_definition.name, parmeter_list, block) 
           end
     
     #shortcut to get the ast tree for a given string
