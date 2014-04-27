@@ -19,13 +19,13 @@ class TestNodes < MiniTest::Test
   
   def test_number
     tree = parse "42"
-    assert_kind_of Vm::NumberExpression ,  tree
+    assert_kind_of Vm::IntegerExpression ,  tree
     assert_equal 42 , tree.value 
   end
   def test_args
     tree = parse "( 42 )"
     assert_kind_of Hash , tree
-    assert_kind_of Vm::NumberExpression ,  tree[:args]
+    assert_kind_of Vm::IntegerExpression ,  tree[:args]
     assert_equal 42 , tree[:args].value 
   end
   def test_arg_list

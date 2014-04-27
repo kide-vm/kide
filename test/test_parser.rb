@@ -13,8 +13,8 @@ class ParserTest < MiniTest::Test
   end
   def test_number
     @input    = '42 '
-    @expected = {:number => '42'}
-    @parser = @parser.number
+    @expected = {:integer => '42'}
+    @parser = @parser.integer
   end
 
   def test_name
@@ -25,7 +25,7 @@ class ParserTest < MiniTest::Test
 
   def test_argument_list
     @input    = '(42, foo)'
-    @expected = {:args => [{:arg => {:number => '42'}},
+    @expected = {:args => [{:arg => {:integer => '42'}},
                           {:arg => {:name   => 'foo'}}]}
     @parser = @parser.args
   end
@@ -33,7 +33,7 @@ class ParserTest < MiniTest::Test
   def test_function_call
     @input = 'baz(42, foo)'
     @expected = {:funcall => {:name => 'baz' },
-                :args    => [{:arg => {:number => '42'}},
+                :args    => [{:arg => {:integer => '42'}},
                              {:arg => {:name => 'foo'}}]}
 
     @parser = @parser.funcall
@@ -47,9 +47,9 @@ if (0) {
   667
 }
 HERE
-    @expected = {:cond     => {:number => '0'},
-                :if_true  => {:body => {:number => '42'}},
-                :if_false => {:body => {:number => '667'}}}
+    @expected = {:cond     => {:integer => '0'},
+                :if_true  => {:body => {:integer => '42'}},
+                :if_false => {:body => {:integer => '667'}}}
     @parser = @parser.cond
   end
 
@@ -61,7 +61,7 @@ function foo(x) {
 HERE
     @expected = {:func   => {:name => 'foo'},
                 :params => {:param => {:name => 'x'}},
-                :body   => {:number => '5'}}
+                :body   => {:integer => '5'}}
     @parser = @parser.func
   end
 end

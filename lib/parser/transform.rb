@@ -3,7 +3,7 @@ require 'vm/nodes'
 
 module Parser
   class Transform < Parslet::Transform
-    rule(:number => simple(:value)) { Vm::NumberExpression.new(value.to_i) }
+    rule(:integer => simple(:value)) { Vm::IntegerExpression.new(value.to_i) }
     rule(:name   => simple(:name))  { Vm::NameExpression.new(name.to_s) }
 
     rule(:arg  => simple(:arg))    { arg  }

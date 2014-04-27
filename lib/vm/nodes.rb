@@ -7,7 +7,7 @@ module Vm
     end
   end
 
-  class NumberExpression < Expression
+  class IntegerExpression < Expression
     attr_reader :value
     def initialize val
       @value = val
