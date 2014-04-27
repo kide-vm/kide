@@ -29,5 +29,13 @@ module Parser
     rule(:func   => simple(:func),
          :params => sequence(:params),
          :body   => simple(:body)) { Vm::FunctionExpression.new(func.name, params, body) }
+    
+    #shortcut to get the ast tree for a given string
+    # optional second arguement specifies a rule that will be parsed (mainly for testing)     
+    def self.ast string , rule = :root
+      syntax    = Parser.new.send(rule).parse(string)
+      tree      = Transform.new.apply(syntax)
+      tree
+    end
   end
 end

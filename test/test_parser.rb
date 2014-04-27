@@ -3,7 +3,7 @@ require_relative 'helper'
 class ParserTest < MiniTest::Test
 
   def setup
-    @parser = Parser::Parser.new
+    @parser = Parser::Composed.new
   end
 
   def check

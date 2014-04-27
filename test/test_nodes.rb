@@ -7,7 +7,7 @@ require_relative "helper"
 class TestNodes < MiniTest::Test
 
   def setup
-    @parser    = Parser::Parser.new
+    @parser    = Parser::Composed.new
     @transform = Parser::Transform.new
   end
   

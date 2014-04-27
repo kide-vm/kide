@@ -1,10 +1,8 @@
+require_relative "basic_types"
 
 module Parser
-  class Parser < Parslet::Parser
-    rule(:name)   { match('[a-z]').repeat(1).as(:name) >> space? }
-    rule(:number) { match('[0-9]').repeat(1).as(:number) >> space? }
-    rule(:space)  { match('\s').repeat(1) }
-    rule(:space?) { space.maybe }
+  class Composed < Parslet::Parser
+    include BasicTypes
 
     rule(:args) {
       lparen >>
