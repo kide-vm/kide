@@ -7,8 +7,8 @@ require_relative "helper"
 class NodesCase < MiniTest::Test
 
   def setup
-    @parser    = Vm::Parser.new
-    @transform = Vm::Transform.new
+    @parser    = Parser::Parser.new
+    @transform = Parser::Transform.new
   end
   
   def parse string

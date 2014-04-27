@@ -5,7 +5,7 @@ include Vm
 
 describe Parser do
   before do
-    @parser = Vm::Parser.new
+    @parser = Parser::Parser.new
   end
 
   it 'reads a number' do

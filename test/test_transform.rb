@@ -1,12 +1,11 @@
 require_relative 'helper'
-require 'vm/transform'
 
 include Vm
 
 class TransformTest <  MiniTest::Test
 
   def setup
-    @transform = Vm::Transform.new
+    @transform = Parser::Transform.new
   end
 
   def check_equals

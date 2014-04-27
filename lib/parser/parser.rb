@@ -1,5 +1,5 @@
 
-module Vm
+module Parser
   class Parser < Parslet::Parser
     rule(:name)   { match('[a-z]').repeat(1).as(:name) >> space? }
     rule(:number) { match('[0-9]').repeat(1).as(:number) >> space? }
