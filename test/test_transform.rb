@@ -1,5 +1,7 @@
 require_relative 'helper'
 
+# Please read note in test_parser
+
 class TransformTest <  MiniTest::Test
 
   def setup
@@ -8,6 +10,7 @@ class TransformTest <  MiniTest::Test
 
   def check
     is = @transform.apply @input
+    #puts is.transform
     assert_equal @expected , is
   end
   def test_number
