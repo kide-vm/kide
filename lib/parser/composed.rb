@@ -27,17 +27,23 @@ module Parser
 
     rule(:expression) { conditional | function_call | integer | name }
 
+    def delimited_expressions( delimit )
+      ((delimit.absent? >> expression).repeat(1)).as(:expressions) >> delimit
+    end
+    
     rule(:conditional) {
       keyword_if >> left_parenthesis >> expression.as(:conditional) >> right_parenthesis >>
-        block.as(:if_true) >>
-        keyword_else >>
-        block.as(:if_false)
+        delimited_expressions(keyword_else).as(:if_true) >> 
+        delimited_expressions(keyword_end).as(:if_false)
     }
 
-    rule(:block)    { left_brace >> expression.as(:block) >> right_brace }
+    rule(:expressions_else)   { delimited_expressions(keyword_else) }
+    rule(:expressions_end)    { delimited_expressions(keyword_end) }
+
+#    rule(:expressions_end)    { ((keyword_end.absent? >> expression).repeat(1)).as(:expressions) >> keyword_end }
 
     rule(:function_definition) {
-      keyword_def >> name.as(:function_definition) >> parmeter_list >> block
+      keyword_def >> name.as(:function_definition) >> parmeter_list >> expressions_end
     }
 
     rule(:parmeter_list) {
@@ -45,6 +51,6 @@ module Parser
         ((name.as(:parmeter) >> (comma >> name.as(:parmeter)).repeat(0)).maybe).as(:parmeter_list) >>
       right_parenthesis
     }
-    rule(:root){ function_definition.repeat(0) >> expression | expression | argument_list }
+    rule(:root){ function_definition | expression }
   end
 end

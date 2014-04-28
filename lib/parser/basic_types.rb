@@ -6,7 +6,6 @@ module Parser
     include Parslet
     rule(:space)  { match('\s').repeat(1) }
     rule(:space?) { space.maybe }
-    rule(:name)   { match('[a-z]').repeat(1).as(:name) >> space? }
     rule(:double_quote){ str('"') }
     rule(:minus) { str('-') }
     rule(:plus) { str('+') }
@@ -16,17 +15,22 @@ module Parser
     rule(:exponent) { (str('e')| str('E')) }
     rule(:escaped_character)  { str('\\') >> (match('["\\\\/bfnrt]') | (str('u') >> hexdigit.repeat(4,4))) }
  
-    rule(:true) { str('true').as(:true) }
-    rule(:false) {      str('false').as(:false) }
-    rule(:nil) { str('null').as(:nil) }
+    rule(:true) { str('true').as(:true) >> space?}
+    rule(:false) {      str('false').as(:false) >> space?}
+    rule(:nil) { str('null').as(:nil) >> space?}
+    
+    # identifier must start with lower case
+    rule(:name)   { (match['a-z'] >> match['a-zA-Z0-9'].repeat).as(:name)  >> space? }
     
     #anything in double quotes
     rule(:string){
-      double_quote >> (escaped_character | double_quote.absent? >> any ).repeat.as(:string) >> double_quote
+      double_quote >> 
+      (escaped_character | double_quote.absent? >> any ).repeat.as(:string) >> 
+      double_quote >> space?
     }
     rule(:integer)    { sign.maybe >> digit.repeat(1).as(:integer) >> space? }
     
     rule(:float) { integer >>  dot >> integer >> 
-                            (exponent >> sign.maybe >> digit.repeat).maybe}
+                            (exponent >> sign.maybe >> digit.repeat).maybe >> space?}
   end
 end
