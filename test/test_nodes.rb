@@ -16,7 +16,7 @@ class TestNodes < MiniTest::Test
   def check
     syntax    = @parser.parse(@input)
     tree      = @transform.apply(syntax)
-    assert tree
+    # puts tree.inspect
     assert_equal @expected , tree
   end
   
@@ -108,6 +108,16 @@ HERE
                   [Parser::NameExpression.new('x')], 
                   [Parser::IntegerExpression.new(5)])
     @parser = @parser.function_definition
+    check
+  end
+  def test_function_assignment
+    @input    = <<HERE
+def foo(x) 
+ abba = 5 
+end
+HERE
+    @expected = Parser::FunctionExpression.new( "foo", [Parser::NameExpression.new("x")],
+                       [Parser::AssignmentExpression.new( "abba", Parser::IntegerExpression.new(5) ) ])
     check
   end
 end

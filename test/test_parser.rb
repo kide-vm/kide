@@ -106,6 +106,20 @@ HERE
     check
   end
 
+  def test_function_assignment
+    @input    = <<HERE
+def foo(x) 
+ abba = 5 
+end
+HERE
+    @expected = { :function_definition => { :name => "foo" } , 
+                  :parmeter_list => { :parmeter => { :name => "x" } }, 
+                  :expressions => [ { :asignee => { :name => "abba" }, :asigned => { :integer => "5" } } ]
+                }
+    @parser = @parser.function_definition
+    check
+  end
+
   def test_assignment
     @input    = "a = 5"
     @expected = { :asignee => { :name=>"a" } , :asigned => { :integer => "5" } }
