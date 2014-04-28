@@ -10,7 +10,7 @@ class TransformTest <  MiniTest::Test
 
   def check_equals
     is = @transform.apply @input
-    assert_equal @expected.class , is.class
+    assert_equal @expected , is
   end
   def test_number
     @input    = {:integer => '42'}
@@ -52,13 +52,15 @@ class TransformTest <  MiniTest::Test
   end
 
   def test_conditional
-    @input = {:conditional     => {:integer => '0'},
-             :if_true  => {:block => {:integer => '42'}},
-             :if_false => {:block => {:integer => '667'}}}
-    @expected = Vm::ConditionalExpression.new \
-      Vm::IntegerExpression.new(0),
-      Vm::IntegerExpression.new(42),
-      Vm::IntegerExpression.new(667)
+    @input = { :conditional => { :integer => "0"}, 
+                  :if_true => {  :expressions => [ { :integer => "42" } ] } , 
+                  :if_false => { :expressions => [ { :integer => "667" } ] } }
+   #  = {:conditional     => {:integer => '0'},
+  #           :if_true  => {:block => {:integer => '42'}},
+  #           :if_false => {:block => {:integer => '667'}}}
+    @expected = Vm::ConditionalExpression.new(  Vm::IntegerExpression.new(0),
+                                                [Vm::IntegerExpression.new(42)],
+                                                [Vm::IntegerExpression.new(667)])
     check_equals
   end
 
@@ -74,10 +76,12 @@ class TransformTest <  MiniTest::Test
   end
   
   def test_function_definition
-    @input = {:function_definition => { :name => "foo"}, 
-      :parmeter_list => { :parmeter => { :name => "x" }} , 
-      :block => { :integer => "5" }}
-    @expected = Vm::FunctionExpression.new('foo', [Vm::NameExpression.new('x')], Vm::IntegerExpression.new(5))
+    @input = {:function_definition   => {:name => 'foo'},
+                :parmeter_list => {:parmeter => {:name => 'x'}},
+                :expressions   => [{:integer => '5'}]}
+    @expected = Vm::FunctionExpression.new('foo', 
+                [Vm::NameExpression.new('x')], 
+                [Vm::IntegerExpression.new(5)])
     check_equals
   end
 end

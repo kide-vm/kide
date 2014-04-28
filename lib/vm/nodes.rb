@@ -5,12 +5,24 @@ module Vm
     def eval 
       raise "abstract"
     end
+    def compare other , attributes
+      attributes.each do |a|
+        left = send(a)
+        right = other.send( a)
+        return false unless left.class == right.class 
+        return false unless left == right
+      end
+      return true
+    end
   end
 
   class IntegerExpression < Expression
     attr_reader :value
     def initialize val
       @value = val
+    end
+    def == other
+      compare other , [:value]
     end
     def eval(context, builder)
       builder.mov "r0" , value
@@ -22,11 +34,13 @@ module Vm
     def initialize name
       @name = name
     end
+    def == other
+      compare other ,  [:name]
+    end
     def eval(context, builder)
       param_names = context[:params] || []
       position    = param_names.index(name)
       raise "Unknown parameter #{name}" unless position
-
       builder.iload position
     end
   end
@@ -35,6 +49,9 @@ module Vm
     attr_reader  :name, :args
     def initialize name, args
       @name , @args = name , args
+    end
+    def == other
+      compare other , [:name , :args]
     end
     def eval(context, builder)
       args.each { |a| a.eval(context, builder) }
@@ -47,6 +64,9 @@ module Vm
     attr_reader  :cond, :if_true, :if_false
     def initialize cond, if_true, if_false
       @cond, @if_true, @if_false = cond, if_true, if_false
+    end
+    def == other
+      compare other , [:cond, :if_true, :if_false]
     end
     def eval(context, builder)
       cond.eval context, builder
@@ -67,6 +87,9 @@ module Vm
     attr_reader  :name, :params, :block
     def initialize name, params, block
       @name, @params, @block = name, params, block
+    end
+    def == other
+      compare other , [:name, :params, :block]
     end
     def eval(context, builder)
       param_names = [params].flatten.map(&:name)

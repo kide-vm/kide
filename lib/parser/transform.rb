@@ -20,8 +20,10 @@ module Parser
     end
 
     rule(:conditional     => simple(:conditional),
-         :if_true  => {:block => simple(:if_true)},
-         :if_false => {:block => simple(:if_false)}) { Vm::ConditionalExpression.new(conditional, if_true, if_false) }
+         :if_true  => {:expressions => sequence(:if_true)},
+         :if_false => {:expressions => sequence(:if_false)}) do
+           Vm::ConditionalExpression.new(conditional, if_true, if_false) 
+         end
 
     rule(:parmeter  => simple(:parmeter))    { parmeter  }
     rule(:parmeter_list => sequence(:parmeter_list)) { parmeter_list }
@@ -29,14 +31,14 @@ module Parser
     # need TWO transform rules, for one/many arguments (see the[] wrapping in the first)
     rule(:function_definition   => simple(:function_definition),
          :parmeter_list => simple(:parmeter),
-         :block   => simple(:block)) do
-            Vm::FunctionExpression.new(function_definition.name, [parmeter], block) 
+         :expressions   => sequence(:expressions)) do
+            Vm::FunctionExpression.new(function_definition.name, [parmeter], expressions) 
           end
 
     rule(:function_definition   => simple(:function_definition),
          :parmeter_list => sequence(:parmeter_list),
-         :block   => simple(:block)) do
-            Vm::FunctionExpression.new(function_definition.name, parmeter_list, block) 
+         :expressions   => sequence(:expressions)) do
+            Vm::FunctionExpression.new(function_definition.name, parmeter_list, expressions) 
           end
     
     #shortcut to get the ast tree for a given string
