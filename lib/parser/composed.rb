@@ -25,6 +25,8 @@ module Parser
 
     rule(:function_call) { name.as(:function_call) >> argument_list }
 
+    rule(:assignment) { name.as(:asignee) >> equal_sign >> expression.as(:asigned) >> eol }
+
     rule(:expression) { conditional | function_call | integer | name }
 
     def delimited_expressions( delimit )
@@ -36,7 +38,7 @@ module Parser
         delimited_expressions(keyword_else).as(:if_true) >> 
         delimited_expressions(keyword_end).as(:if_false)
     }
-
+    
     rule(:expressions_else)   { delimited_expressions(keyword_else) }
     rule(:expressions_end)    { delimited_expressions(keyword_end) }
 
@@ -51,6 +53,6 @@ module Parser
         ((name.as(:parmeter) >> (comma >> name.as(:parmeter)).repeat(0)).maybe).as(:parmeter_list) >>
       right_parenthesis
     }
-    rule(:root){ function_definition | expression }
+    rule(:root){ function_definition | expression | assignment }
   end
 end

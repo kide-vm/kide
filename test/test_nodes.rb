@@ -22,37 +22,37 @@ class TestNodes < MiniTest::Test
   
   def test_number
     @input    = '42 '
-    @expected = Vm::IntegerExpression.new(42)
+    @expected = Parser::IntegerExpression.new(42)
     @parser = @parser.integer
     check
   end
 
   def test_name
     @input    = 'foo '
-    @expected = Vm::NameExpression.new('foo')
+    @expected = Parser::NameExpression.new('foo')
     @parser = @parser.name
     check
   end
 
   def test_one_argument
     @input    = '(42)'
-    @expected = { :argument_list => Vm::IntegerExpression.new(42) }
+    @expected = { :argument_list => Parser::IntegerExpression.new(42) }
     @parser = @parser.argument_list
     check
   end
 
   def test_argument_list
     @input    = '(42, foo)'
-    @expected = [Vm::IntegerExpression.new(42),
-                Vm::NameExpression.new('foo')]
+    @expected = [Parser::IntegerExpression.new(42),
+                Parser::NameExpression.new('foo')]
     @parser = @parser.argument_list
     check
   end
 
   def test_function_call
     @input = 'baz(42, foo)'
-    @expected = Vm::FuncallExpression.new 'baz', [Vm::IntegerExpression.new(42),
-                                          Vm::NameExpression.new('foo')]
+    @expected = Parser::FuncallExpression.new 'baz', [Parser::IntegerExpression.new(42),
+                                          Parser::NameExpression.new('foo')]
 
     @parser = @parser.function_call
     check
@@ -64,7 +64,7 @@ class TestNodes < MiniTest::Test
 5
 else
 HERE
-    @expected = {:expressions=>[ Vm::IntegerExpression.new(4), Vm::IntegerExpression.new(5)]}
+    @expected = {:expressions=>[ Parser::IntegerExpression.new(4), Parser::IntegerExpression.new(5)]}
     
     @parser = @parser.expressions_else
     check
@@ -77,8 +77,8 @@ name
 call(4,6)
 end
 HERE
-    @expected = {:expressions=> [Vm::IntegerExpression.new(5), Vm::NameExpression.new("name"),
-      Vm::FuncallExpression.new("call", [Vm::IntegerExpression.new(4), Vm::IntegerExpression.new(6) ]) ] }
+    @expected = {:expressions=> [Parser::IntegerExpression.new(5), Parser::NameExpression.new("name"),
+      Parser::FuncallExpression.new("call", [Parser::IntegerExpression.new(4), Parser::IntegerExpression.new(6) ]) ] }
     @parser = @parser.expressions_end
     check
   end
@@ -91,9 +91,9 @@ else
   667
 end
 HERE
-    @expected = Vm::ConditionalExpression.new(  Vm::IntegerExpression.new(0),
-                                            [Vm::IntegerExpression.new(42)],
-                                            [Vm::IntegerExpression.new(667)])
+    @expected = Parser::ConditionalExpression.new(  Parser::IntegerExpression.new(0),
+                                            [Parser::IntegerExpression.new(42)],
+                                            [Parser::IntegerExpression.new(667)])
     @parser = @parser.conditional
     check
   end
@@ -104,9 +104,9 @@ def foo(x)
   5
 end
 HERE
-    @expected = Vm::FunctionExpression.new('foo', 
-                  [Vm::NameExpression.new('x')], 
-                  [Vm::IntegerExpression.new(5)])
+    @expected = Parser::FunctionExpression.new('foo', 
+                  [Parser::NameExpression.new('x')], 
+                  [Parser::IntegerExpression.new(5)])
     @parser = @parser.function_definition
     check
   end

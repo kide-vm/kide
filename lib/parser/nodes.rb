@@ -1,7 +1,6 @@
-module Vm
-  
+# ast classes
+module Parser
   class Expression
-    # evey Expression has a eval function that returns a value
     def eval 
       raise "abstract"
     end
@@ -24,9 +23,6 @@ module Vm
     def == other
       compare other , [:value]
     end
-    def eval(context, builder)
-      builder.mov "r0" , value
-    end
   end
 
   class NameExpression < Expression
@@ -36,12 +32,6 @@ module Vm
     end
     def == other
       compare other ,  [:name]
-    end
-    def eval(context, builder)
-      param_names = context[:params] || []
-      position    = param_names.index(name)
-      raise "Unknown parameter #{name}" unless position
-      builder.iload position
     end
   end
 
@@ -53,11 +43,6 @@ module Vm
     def == other
       compare other , [:name , :args]
     end
-    def eval(context, builder)
-      args.each { |a| a.eval(context, builder) }
-      types = [builder.int] * (args.length + 1)
-      builder.invokestatic builder.class_builder, name, types
-    end
   end
 
   class ConditionalExpression < Expression
@@ -68,21 +53,17 @@ module Vm
     def == other
       compare other , [:cond, :if_true, :if_false]
     end
-    def eval(context, builder)
-      cond.eval context, builder
-
-      builder.ifeq :else
-
-      if_true.eval context, builder
-      builder.goto :endif
-
-      builder.label :else
-      if_false.eval context, builder
-
-      builder.label :endif
-    end
   end
 
+  class AssignmentExpression < Expression
+    attr_reader  :assignee, :assigned
+    def initialize assignee, assigned
+      @assignee, @assigned = assignee, assigned
+    end
+    def == other
+      compare other , [:assignee, :assigned]
+    end
+  end
   class FunctionExpression < Expression
     attr_reader  :name, :params, :block
     def initialize name, params, block
@@ -90,16 +71,6 @@ module Vm
     end
     def == other
       compare other , [:name, :params, :block]
-    end
-    def eval(context, builder)
-      param_names = [params].flatten.map(&:name)
-      context[:params] = param_names
-      types = [builder.int] * (param_names.count + 1)
-
-      builder.public_static_method(self.name, [], *types) do |method|
-        self.block.eval(context, method)
-        method.ireturn
-      end
     end
   end
 end

@@ -6,9 +6,12 @@ module Parser
     include Parslet
     rule(:space)  { match('\s').repeat(1) }
     rule(:space?) { space.maybe }
+    rule(:eol) { (str("\n") >> space?) | any.absent? }
+    
     rule(:double_quote){ str('"') }
     rule(:minus) { str('-') }
     rule(:plus) { str('+') }
+    rule(:equal_sign) { str('=') >> space?}
     rule(:sign) { plus | minus }
     rule(:dot) { str('.') }
     rule(:digit) { match('[0-9]') }

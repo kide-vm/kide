@@ -105,4 +105,12 @@ HERE
     @parser = @parser.function_definition
     check
   end
+
+  def test_assignment
+    @input    = "a = 5"
+    @expected = { :asignee => { :name=>"a" } , :asigned => { :integer => "5" } }
+    @parser = @parser.assignment
+    check
+  end
+
 end
