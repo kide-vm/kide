@@ -55,9 +55,6 @@ class TransformTest <  MiniTest::Test
     @input = { :conditional => { :integer => "0"}, 
                   :if_true => {  :expressions => [ { :integer => "42" } ] } , 
                   :if_false => { :expressions => [ { :integer => "667" } ] } }
-   #  = {:conditional     => {:integer => '0'},
-  #           :if_true  => {:block => {:integer => '42'}},
-  #           :if_false => {:block => {:integer => '667'}}}
     @expected = Vm::ConditionalExpression.new(  Vm::IntegerExpression.new(0),
                                                 [Vm::IntegerExpression.new(42)],
                                                 [Vm::IntegerExpression.new(667)])

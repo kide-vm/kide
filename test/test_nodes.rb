@@ -1,8 +1,10 @@
 require_relative "helper"
 
 
-#testing that parsing strings that we know to be correct returns the nodes we expect
+# testing that parsing strings that we know to be correct returns the nodes we expect
 # in a way the combination of test_parser and test_transform
+
+require_relative 'helper'
 
 class TestNodes < MiniTest::Test
 
@@ -10,41 +12,102 @@ class TestNodes < MiniTest::Test
     @parser    = Parser::Composed.new
     @transform = Parser::Transform.new
   end
-  
-  def parse string
-    syntax    = @parser.parse(string)
+
+  def check
+    syntax    = @parser.parse(@input)
     tree      = @transform.apply(syntax)
-    tree
+    assert tree
+    assert_equal @expected , tree
   end
   
   def test_number
-    tree = parse "42"
-    assert_kind_of Vm::IntegerExpression ,  tree
-    assert_equal 42 , tree.value 
+    @input    = '42 '
+    @expected = Vm::IntegerExpression.new(42)
+    @parser = @parser.integer
+    check
   end
-  def test_args
-    tree = parse "( 42 )"
-    assert_kind_of Hash , tree
-    assert_kind_of Vm::IntegerExpression ,  tree[:argument_list]
-    assert_equal 42 , tree[:argument_list].value 
+
+  def test_name
+    @input    = 'foo '
+    @expected = Vm::NameExpression.new('foo')
+    @parser = @parser.name
+    check
   end
-  def test_arg_list
+
+  def test_one_argument
+    @input    = '(42)'
+    @expected = { :argument_list => Vm::IntegerExpression.new(42) }
     @parser = @parser.argument_list
-    tree = parse "(42, foo)"
-    assert_instance_of Array , tree
-    assert_equal 42 , tree.first.value 
-    assert_equal "foo" , tree.last.name 
+    check
   end
-  def test_definition
-    input    = <<HERE
-def foo(x) {
-  5
-}
+
+  def test_argument_list
+    @input    = '(42, foo)'
+    @expected = [Vm::IntegerExpression.new(42),
+                Vm::NameExpression.new('foo')]
+    @parser = @parser.argument_list
+    check
+  end
+
+  def test_function_call
+    @input = 'baz(42, foo)'
+    @expected = Vm::FuncallExpression.new 'baz', [Vm::IntegerExpression.new(42),
+                                          Vm::NameExpression.new('foo')]
+
+    @parser = @parser.function_call
+    check
+  end
+
+  def test_expression_else
+    @input    = <<HERE
+4
+5
+else
 HERE
+    @expected = {:expressions=>[ Vm::IntegerExpression.new(4), Vm::IntegerExpression.new(5)]}
+    
+    @parser = @parser.expressions_else
+    check
+  end
+
+  def test_expression_end
+    @input    = <<HERE
+5
+name
+call(4,6)
+end
+HERE
+    @expected = {:expressions=> [Vm::IntegerExpression.new(5), Vm::NameExpression.new("name"),
+      Vm::FuncallExpression.new("call", [Vm::IntegerExpression.new(4), Vm::IntegerExpression.new(6) ]) ] }
+    @parser = @parser.expressions_end
+    check
+  end
+
+  def test_conditional
+    @input = <<HERE
+if (0) 
+  42
+else
+  667
+end
+HERE
+    @expected = Vm::ConditionalExpression.new(  Vm::IntegerExpression.new(0),
+                                            [Vm::IntegerExpression.new(42)],
+                                            [Vm::IntegerExpression.new(667)])
+    @parser = @parser.conditional
+    check
+  end
+  
+  def test_function_definition
+    @input    = <<HERE
+def foo(x) 
+  5
+end
+HERE
+    @expected = Vm::FunctionExpression.new('foo', 
+                  [Vm::NameExpression.new('x')], 
+                  [Vm::IntegerExpression.new(5)])
     @parser = @parser.function_definition
-    tree = parse(input)
-    assert_kind_of Vm::FunctionExpression ,  tree
+    check
   end
 end
-
-
