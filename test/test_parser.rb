@@ -32,28 +32,6 @@ class ParserTest < MiniTest::Test
     assert_equal @parse_output , is
   end
 
-  def test_function_call
-    @string_input = 'baz(42, foo)'
-    @parse_output = {:function_call => {:name => 'baz' },
-                :argument_list    => [{:argument => {:integer => '42'}},
-                             {:argument => {:name => 'foo'}}]}
-
-    @parser = @parser.function_call
-    check
-  end
-
-  def test_function_call_string
-    @string_input    = <<HERE
-    puts( "hello")
-HERE
-    @parse_output = {:function_call => {:name => 'baz' },
-                :argument_list    => [{:argument => {:integer => '42'}},
-                             {:argument => {:name => 'foo'}}]}
-
-    @parser = @parser.function_call
-    check
-  end
-
   def test_expression_else
     @string_input    = <<HERE
 4

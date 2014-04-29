@@ -14,24 +14,6 @@ class TransformTest <  MiniTest::Test
     assert_equal @transform_output , is
   end
 
-  def test_single_argument
-    @input = {:function_call => {:name => 'foo'},
-             :argument_list    => {:argument => {:integer => '42'} } }
-    @transform_output = Parser::FuncallExpression.new 'foo', [Parser::IntegerExpression.new(42)]
-
-    check
-  end
-
-  def test_multi_argument
-    @input = {:function_call => {:name => 'baz'},
-             :argument_list    => [{:argument => {:integer => '42'}},
-                          {:argument => {:name => 'foo'}}]}
-    @transform_output = Parser::FuncallExpression.new 'baz', [Parser::IntegerExpression.new(42),
-                                          Parser::NameExpression.new('foo')]
-
-    check
-  end
-
   def test_conditional
     @input = { :conditional => { :integer => "0"}, 
                   :if_true => {  :expressions => [ { :integer => "42" } ] } , 

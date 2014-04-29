@@ -18,15 +18,6 @@ class TestAst < MiniTest::Test
     assert_equal @transform_output , tree
   end
   
-  def test_function_call
-    @string_input = 'baz(42, foo)'
-    @transform_output = Parser::FuncallExpression.new 'baz', [Parser::IntegerExpression.new(42),
-                                          Parser::NameExpression.new('foo')]
-
-    @parser = @parser.function_call
-    check
-  end
-
   def test_expression_else
     @string_input    = <<HERE
 4
