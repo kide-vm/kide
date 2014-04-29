@@ -10,20 +10,20 @@ module ParserTest
   def check_parse
     is = @parser.parse(@input)
     #puts is.inspect
-    assert_equal @expected , is
+    assert_equal @parse_output , is
   end
 
   def check_transform
-    is = @transform.apply @input
+    is = @transform.apply @parse_output
     #puts is.transform
-    assert_equal @expected , is
+    assert_equal @transform_output , is
   end
 
   def check_ast
     syntax    = @parser.parse(@input)
     tree      = @transform.apply(syntax)
     # puts tree.inspect
-    assert_equal @expected , tree
+    assert_equal @transform_output , tree
   end
-  
+    
 end

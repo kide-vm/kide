@@ -31,28 +31,6 @@ class ParserTest < MiniTest::Test
     #puts is.inspect
     assert_equal @parse_output , is
   end
-  def test_number
-    @input    = '42 '
-    @parse_output = {:integer => '42'}
-    @parser = @parser.integer
-    check
-  end
-
-  def test_name
-    @input    = 'foo '
-    @parse_output = {:name => 'foo'}
-    @parser = @parser.name
-    check
-  end
-
-  def test_string
-    @input    = <<HERE
-"hello" 
-HERE
-    @parse_output =  {:string=>"hello"}
-    @parser = @parser.string
-    check
-  end
 
   def test_one_argument
     @input    = '(42)'

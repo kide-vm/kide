@@ -13,24 +13,6 @@ class TransformTest <  MiniTest::Test
     #puts is.transform
     assert_equal @transform_output , is
   end
-  def test_number
-    @input    = {:integer => '42'}
-    @transform_output = Parser::IntegerExpression.new(42)
-    check
-    assert_equal 42 , @transform_output.value
-  end
-
-  def test_name
-    @input    = {:name => 'foo'}
-    @transform_output = Parser::NameExpression.new('foo')
-    check
-  end
-
-  def test_string
-    @input    =  {:string=>"hello"}
-    @transform_output =  Parser::StringExpression.new('hello')
-    check
-  end
 
   def test_argument_list
     @input    = {:argument_list => [{:argument => {:integer => '42'}},

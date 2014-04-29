@@ -18,29 +18,6 @@ class TestAst < MiniTest::Test
     assert_equal @transform_output , tree
   end
   
-  def test_number
-    @input    = '42 '
-    @transform_output = Parser::IntegerExpression.new(42)
-    @parser = @parser.integer
-    check
-  end
-
-  def test_name
-    @input    = 'foo '
-    @transform_output = Parser::NameExpression.new('foo')
-    @parser = @parser.name
-    check
-  end
-
-  def test_string
-    @input    = <<HERE
-"hello" 
-HERE
-    @transform_output =  Parser::StringExpression.new('hello')
-    @parser = @parser.string
-    check
-  end
-
   def test_one_argument
     @input    = '(42)'
     @transform_output = { :argument_list => Parser::IntegerExpression.new(42) }
