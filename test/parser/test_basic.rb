@@ -4,21 +4,21 @@ class TestBasic < MiniTest::Test
   # include the magic (setup and parse -> test method translation), see there
   include ParserHelper
     
-  def parse_number
+  def test_number
     @string_input    = '42 '
     @parse_output = {:integer => '42'}
     @transform_output = Parser::IntegerExpression.new(42)
     @parser = @parser.integer
   end
 
-  def parse_name
+  def test_name
     @string_input    = 'foo '
     @parse_output = {:name => 'foo'}
     @transform_output = Parser::NameExpression.new('foo')
     @parser = @parser.name
   end
 
-  def parse_string
+  def test_string
     @string_input    = <<HERE
 "hello" 
 HERE

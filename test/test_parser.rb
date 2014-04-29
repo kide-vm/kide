@@ -12,7 +12,7 @@ require_relative 'helper'
 # Ast   tests both steps in one. Ie string input to ast classes output
 
 # All threee classes are layed out quite similarly in that they use a check method and 
-# each test assigns @input and @parse_output which the check methods then checks
+# each test assigns @string_input and @parse_output which the check methods then checks
 # The check methods have a pust in it (to be left) which is very handy for checking
 # also the output of parser.check can actually be used as the input of transform
 
@@ -27,28 +27,13 @@ class ParserTest < MiniTest::Test
   end
 
   def check
-    is = @parser.parse(@input)
+    is = @parser.parse(@string_input)
     #puts is.inspect
     assert_equal @parse_output , is
   end
 
-  def test_one_argument
-    @input    = '(42)'
-    @parse_output = {:argument_list => {:argument => {:integer => '42'}} }
-    @parser = @parser.argument_list
-    check
-  end
-
-  def test_argument_list
-    @input    = '(42, foo)'
-    @parse_output = {:argument_list => [{:argument => {:integer => '42'}},
-                          {:argument => {:name   => 'foo'}}]}
-    @parser = @parser.argument_list
-    check
-  end
-
   def test_function_call
-    @input = 'baz(42, foo)'
+    @string_input = 'baz(42, foo)'
     @parse_output = {:function_call => {:name => 'baz' },
                 :argument_list    => [{:argument => {:integer => '42'}},
                              {:argument => {:name => 'foo'}}]}
@@ -58,7 +43,7 @@ class ParserTest < MiniTest::Test
   end
 
   def test_function_call_string
-    @input    = <<HERE
+    @string_input    = <<HERE
     puts( "hello")
 HERE
     @parse_output = {:function_call => {:name => 'baz' },
@@ -70,7 +55,7 @@ HERE
   end
 
   def test_expression_else
-    @input    = <<HERE
+    @string_input    = <<HERE
 4
 5
 else
@@ -82,7 +67,7 @@ HERE
   end
 
   def test_expression_end
-    @input    = <<HERE
+    @string_input    = <<HERE
 5
 name
 call(4,6)
@@ -98,7 +83,7 @@ HERE
   end
 
   def test_conditional
-    @input = <<HERE
+    @string_input = <<HERE
 if (0) 
   42
 else
@@ -113,7 +98,7 @@ HERE
   end
   
   def test_function_definition
-    @input    = <<HERE
+    @string_input    = <<HERE
 def foo(x) 
   5
 end
@@ -126,7 +111,7 @@ HERE
   end
 
   def test_function_assignment
-    @input    = <<HERE
+    @string_input    = <<HERE
 def foo(x) 
  abba = 5 
 end
@@ -140,7 +125,7 @@ HERE
   end
 
   def test_assignment
-    @input    = "a = 5"
+    @string_input    = "a = 5"
     @parse_output = { :asignee => { :name=>"a" } , :asigned => { :integer => "5" } }
     @parser = @parser.assignment
     check

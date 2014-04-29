@@ -12,29 +12,14 @@ class TestAst < MiniTest::Test
   end
 
   def check
-    syntax    = @parser.parse(@input)
+    syntax    = @parser.parse(@string_input)
     tree      = @transform.apply(syntax)
     # puts tree.inspect
     assert_equal @transform_output , tree
   end
   
-  def test_one_argument
-    @input    = '(42)'
-    @transform_output = { :argument_list => Parser::IntegerExpression.new(42) }
-    @parser = @parser.argument_list
-    check
-  end
-
-  def test_argument_list
-    @input    = '(42, foo)'
-    @transform_output = [Parser::IntegerExpression.new(42),
-                Parser::NameExpression.new('foo')]
-    @parser = @parser.argument_list
-    check
-  end
-
   def test_function_call
-    @input = 'baz(42, foo)'
+    @string_input = 'baz(42, foo)'
     @transform_output = Parser::FuncallExpression.new 'baz', [Parser::IntegerExpression.new(42),
                                           Parser::NameExpression.new('foo')]
 
@@ -43,7 +28,7 @@ class TestAst < MiniTest::Test
   end
 
   def test_expression_else
-    @input    = <<HERE
+    @string_input    = <<HERE
 4
 5
 else
@@ -55,7 +40,7 @@ HERE
   end
 
   def test_expression_end
-    @input    = <<HERE
+    @string_input    = <<HERE
 5
 name
 call(4,6)
@@ -68,7 +53,7 @@ HERE
   end
 
   def test_conditional
-    @input = <<HERE
+    @string_input = <<HERE
 if (0) 
   42
 else
@@ -83,7 +68,7 @@ HERE
   end
   
   def test_function_definition
-    @input    = <<HERE
+    @string_input    = <<HERE
 def foo(x) 
   5
 end
@@ -95,7 +80,7 @@ HERE
     check
   end
   def test_function_assignment
-    @input    = <<HERE
+    @string_input    = <<HERE
 def foo(x) 
  abba = 5 
 end
