@@ -4,7 +4,7 @@ require_relative "keywords"
 
 module Parser
   
-  #obviously a work in progress !!
+  # obviously a work in progress !!
   # We "compose" the parser from bits, divide and hopefully conquer
    
   class Composed < Parslet::Parser
@@ -12,14 +12,14 @@ module Parser
     include Tokens
     include Keywords
     
-    # Note about the lists (argument and parameter)
-    # Beause of the maybe for the comma ...  part , the rules may return either 
-    # - a single simple version with one element 
-    # a sequence with many element. 
-    # This leads to the fact that two transform rules are needed for either 
+    # a note about .maybe : .maybe is almost every respect the same as .repeat(0,1)
+    # so either 0, or 1, in other words maybe. Nice feature, but there are strings attached:
+    # a maybe removes the 0  a sequence (array) to a single (hash). Thus 2 transformations are needed
+    # More work than the prettiness is worth, so only use .maybe on something that does not need capturing
+
     rule(:argument_list) {
       left_parenthesis >>
-      ((expression.as(:argument) >> (comma >> expression.as(:argument)).repeat(0)).maybe).as(:argument_list) >>
+      ((expression.as(:argument) >> (comma >> expression.as(:argument)).repeat(0)).repeat(0,1)).as(:argument_list) >>
       right_parenthesis
     }
 
@@ -48,7 +48,7 @@ module Parser
 
     rule(:parmeter_list) {
       left_parenthesis >>
-        ((name.as(:parmeter) >> (comma >> name.as(:parmeter)).repeat(0)).maybe).as(:parmeter_list) >>
+        ((name.as(:parmeter) >> (comma >> name.as(:parmeter)).repeat(0)).repeat(0,1)).as(:parmeter_list) >>
       right_parenthesis
     }
     rule(:root){ function_definition | expression | assignment }

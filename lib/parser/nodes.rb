@@ -5,6 +5,7 @@ module Parser
       raise "abstract"
     end
     def compare other , attributes
+      return false unless other.class == self.class 
       attributes.each do |a|
         left = send(a)
         right = other.send( a)
