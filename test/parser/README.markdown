@@ -14,6 +14,25 @@ Each test must thus specify (as instance variables):
 - the parse output
 - the transform output
 
-Test are grouped by functionality into cases and define methods parse_*
+Magic
+-----
+
+Test are grouped by functionality into cases (classes) and define methods test_*
 Test cases must include ParserHelper, which includes the magic to write the 3 test methods for each 
-parse method. See test_basic ofr easy example.
+test method. See test_basic for easy example.
+
+Example:
+
+  def test_number
+    @string_input    = '42 '
+    @test_output = {:integer => '42'}
+    @transform_output = Parser::IntegerExpression.new(42)
+    @parser = @parser.integer
+  end
+
+The first three lines define the data as described above.
+The last line tells the parser what to parse. This is off couse only needed when a non-root rule is tested
+and should be left out if possible.
+
+As can be seen, there are no asserts. All asserting is done by the created methods, which call 
+the check_* methods in helper.

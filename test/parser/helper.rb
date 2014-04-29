@@ -38,17 +38,17 @@ module ParserHelper
   end
 
   module ClassMethods
-    # this creates test methods dynamically. For each parse_* method we create 
-    # three test_* methods that in turn check the three phases.
-    # runnable_methods is called by minitest to determine which tests to run (ie normally test_*)
+    # this creates test methods dynamically. For each test_* method we create 
+    # three test_*[ast/parse/transf] methods that in turn check the three phases.
+    # runnable_methods is called by minitest to determine which tests to run
     def runnable_methods
       tests = []
-      public_instance_methods(true).grep(/^parse_/).map(&:to_s).each do |parse|
+      public_instance_methods(true).grep(/^test_/).map(&:to_s).each do |test|
         ["ast" , "transform" , "parse"].each do |what|
-          name = "parse_#{what}"
+          name = "#{test}_#{what}"
           tests << name
           self.send(:define_method, name ) do
-            send(parse)
+            send(test)
             send("check_#{what}")
           end
         end
