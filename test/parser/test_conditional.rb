@@ -1,6 +1,6 @@
 require_relative "helper"
 
-class TestBasic < MiniTest::Test
+class TestConditional < MiniTest::Test
   # include the magic (setup and parse -> test method translation), see there
   include ParserHelper
     
