@@ -1,6 +1,13 @@
 ToDo
 =====
 
+Some things that would be nice . . (if you did them :-) )
+
+- Better elf support. I think it should be relatively easy to produce an executable binary (so linking 
+    could be skipped). Off course the possibility to link in another library would be nice
+- utf8 support (string escaping)
+- more ruby grammar niceties. At the moment i am keeping it simple, so if there is a way around it
+    i won't implement it. Multi-assignments, all that chique where newline is used as expression demarcation
 
 Or the list of things i am not even planning of tackling at the moment
 
