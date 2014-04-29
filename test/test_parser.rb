@@ -32,49 +32,6 @@ class ParserTest < MiniTest::Test
     assert_equal @parse_output , is
   end
 
-  def test_expression_else
-    @string_input    = <<HERE
-4
-5
-else
-HERE
-    @parse_output = {:expressions=>[{:integer=>"4"}, {:integer=>"5"}]}
-    
-    @parser = @parser.expressions_else
-    check
-  end
-
-  def test_expression_end
-    @string_input    = <<HERE
-5
-name
-call(4,6)
-end
-HERE
-    @parse_output = {:expressions => [ { :integer => "5" }, 
-                  { :name => "name" }, 
-                  { :function_call => { :name => "call" } , 
-                    :argument_list => [ {:argument => { :integer => "4" } } , 
-                                        {:argument => { :integer => "6" } } ] } ]}
-    @parser = @parser.expressions_end
-    check
-  end
-
-  def test_conditional
-    @string_input = <<HERE
-if (0) 
-  42
-else
-  667
-end
-HERE
-    @parse_output = { :conditional => { :integer => "0"}, 
-                  :if_true => {  :expressions => [ { :integer => "42" } ] } , 
-                  :if_false => { :expressions => [ { :integer => "667" } ] } }
-    @parser = @parser.conditional
-    check
-  end
-  
   def test_function_definition
     @string_input    = <<HERE
 def foo(x) 

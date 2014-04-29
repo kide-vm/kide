@@ -13,16 +13,6 @@ class TransformTest <  MiniTest::Test
     #puts is.transform
     assert_equal @transform_output , is
   end
-
-  def test_conditional
-    @input = { :conditional => { :integer => "0"}, 
-                  :if_true => {  :expressions => [ { :integer => "42" } ] } , 
-                  :if_false => { :expressions => [ { :integer => "667" } ] } }
-    @transform_output = Parser::ConditionalExpression.new(  Parser::IntegerExpression.new(0),
-                                                [Parser::IntegerExpression.new(42)],
-                                                [Parser::IntegerExpression.new(667)])
-    check
-  end
   
   def test_function_definition
     @input = {:function_definition   => {:name => 'foo'},
