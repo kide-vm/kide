@@ -34,9 +34,4 @@ class TransformTest <  MiniTest::Test
     check
   end
 
-  def test_assignment
-    @input =   { :asignee => { :name=>"a" } , :asigned => { :integer => "5" } }
-    @transform_output = Parser::AssignmentExpression.new("a", Parser::IntegerExpression.new(5) )
-    check
-  end
 end

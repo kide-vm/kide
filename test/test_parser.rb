@@ -59,11 +59,4 @@ HERE
     check
   end
 
-  def test_assignment
-    @string_input    = "a = 5"
-    @parse_output = { :asignee => { :name=>"a" } , :asigned => { :integer => "5" } }
-    @parser = @parser.assignment
-    check
-  end
-
 end

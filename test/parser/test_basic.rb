@@ -27,4 +27,11 @@ HERE
     @parser = @parser.string
   end
 
+  def test_assignment
+    @string_input    = "a = 5"
+    @parse_output = { :asignee => { :name=>"a" } , :asigned => { :integer => "5" } }
+    @transform_output = Parser::AssignmentExpression.new("a", Parser::IntegerExpression.new(5) )
+    @parser = @parser.assignment
+  end
+
 end
