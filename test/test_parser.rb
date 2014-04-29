@@ -12,7 +12,7 @@ require_relative 'helper'
 # Ast   tests both steps in one. Ie string input to ast classes output
 
 # All threee classes are layed out quite similarly in that they use a check method and 
-# each test assigns @input and @expected which the check methods then checks
+# each test assigns @input and @parse_output which the check methods then checks
 # The check methods have a pust in it (to be left) which is very handy for checking
 # also the output of parser.check can actually be used as the input of transform
 
@@ -29,18 +29,18 @@ class ParserTest < MiniTest::Test
   def check
     is = @parser.parse(@input)
     #puts is.inspect
-    assert_equal @expected , is
+    assert_equal @parse_output , is
   end
   def test_number
     @input    = '42 '
-    @expected = {:integer => '42'}
+    @parse_output = {:integer => '42'}
     @parser = @parser.integer
     check
   end
 
   def test_name
     @input    = 'foo '
-    @expected = {:name => 'foo'}
+    @parse_output = {:name => 'foo'}
     @parser = @parser.name
     check
   end
@@ -49,21 +49,21 @@ class ParserTest < MiniTest::Test
     @input    = <<HERE
 "hello" 
 HERE
-    @expected =  {:string=>"hello"}
+    @parse_output =  {:string=>"hello"}
     @parser = @parser.string
     check
   end
 
   def test_one_argument
     @input    = '(42)'
-    @expected = {:argument_list => {:argument => {:integer => '42'}} }
+    @parse_output = {:argument_list => {:argument => {:integer => '42'}} }
     @parser = @parser.argument_list
     check
   end
 
   def test_argument_list
     @input    = '(42, foo)'
-    @expected = {:argument_list => [{:argument => {:integer => '42'}},
+    @parse_output = {:argument_list => [{:argument => {:integer => '42'}},
                           {:argument => {:name   => 'foo'}}]}
     @parser = @parser.argument_list
     check
@@ -71,7 +71,7 @@ HERE
 
   def test_function_call
     @input = 'baz(42, foo)'
-    @expected = {:function_call => {:name => 'baz' },
+    @parse_output = {:function_call => {:name => 'baz' },
                 :argument_list    => [{:argument => {:integer => '42'}},
                              {:argument => {:name => 'foo'}}]}
 
@@ -83,7 +83,7 @@ HERE
     @input    = <<HERE
     puts( "hello")
 HERE
-    @expected = {:function_call => {:name => 'baz' },
+    @parse_output = {:function_call => {:name => 'baz' },
                 :argument_list    => [{:argument => {:integer => '42'}},
                              {:argument => {:name => 'foo'}}]}
 
@@ -97,7 +97,7 @@ HERE
 5
 else
 HERE
-    @expected = {:expressions=>[{:integer=>"4"}, {:integer=>"5"}]}
+    @parse_output = {:expressions=>[{:integer=>"4"}, {:integer=>"5"}]}
     
     @parser = @parser.expressions_else
     check
@@ -110,7 +110,7 @@ name
 call(4,6)
 end
 HERE
-    @expected = {:expressions => [ { :integer => "5" }, 
+    @parse_output = {:expressions => [ { :integer => "5" }, 
                   { :name => "name" }, 
                   { :function_call => { :name => "call" } , 
                     :argument_list => [ {:argument => { :integer => "4" } } , 
@@ -127,7 +127,7 @@ else
   667
 end
 HERE
-    @expected = { :conditional => { :integer => "0"}, 
+    @parse_output = { :conditional => { :integer => "0"}, 
                   :if_true => {  :expressions => [ { :integer => "42" } ] } , 
                   :if_false => { :expressions => [ { :integer => "667" } ] } }
     @parser = @parser.conditional
@@ -140,7 +140,7 @@ def foo(x)
   5
 end
 HERE
-    @expected = {:function_definition   => {:name => 'foo'},
+    @parse_output = {:function_definition   => {:name => 'foo'},
                 :parmeter_list => {:parmeter => {:name => 'x'}},
                 :expressions   => [{:integer => '5'}]}
     @parser = @parser.function_definition
@@ -153,7 +153,7 @@ def foo(x)
  abba = 5 
 end
 HERE
-    @expected = { :function_definition => { :name => "foo" } , 
+    @parse_output = { :function_definition => { :name => "foo" } , 
                   :parmeter_list => { :parmeter => { :name => "x" } }, 
                   :expressions => [ { :asignee => { :name => "abba" }, :asigned => { :integer => "5" } } ]
                 }
@@ -163,7 +163,7 @@ HERE
 
   def test_assignment
     @input    = "a = 5"
-    @expected = { :asignee => { :name=>"a" } , :asigned => { :integer => "5" } }
+    @parse_output = { :asignee => { :name=>"a" } , :asigned => { :integer => "5" } }
     @parser = @parser.assignment
     check
   end

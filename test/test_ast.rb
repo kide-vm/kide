@@ -15,19 +15,19 @@ class TestAst < MiniTest::Test
     syntax    = @parser.parse(@input)
     tree      = @transform.apply(syntax)
     # puts tree.inspect
-    assert_equal @expected , tree
+    assert_equal @transform_output , tree
   end
   
   def test_number
     @input    = '42 '
-    @expected = Parser::IntegerExpression.new(42)
+    @transform_output = Parser::IntegerExpression.new(42)
     @parser = @parser.integer
     check
   end
 
   def test_name
     @input    = 'foo '
-    @expected = Parser::NameExpression.new('foo')
+    @transform_output = Parser::NameExpression.new('foo')
     @parser = @parser.name
     check
   end
@@ -36,21 +36,21 @@ class TestAst < MiniTest::Test
     @input    = <<HERE
 "hello" 
 HERE
-    @expected =  Parser::StringExpression.new('hello')
+    @transform_output =  Parser::StringExpression.new('hello')
     @parser = @parser.string
     check
   end
 
   def test_one_argument
     @input    = '(42)'
-    @expected = { :argument_list => Parser::IntegerExpression.new(42) }
+    @transform_output = { :argument_list => Parser::IntegerExpression.new(42) }
     @parser = @parser.argument_list
     check
   end
 
   def test_argument_list
     @input    = '(42, foo)'
-    @expected = [Parser::IntegerExpression.new(42),
+    @transform_output = [Parser::IntegerExpression.new(42),
                 Parser::NameExpression.new('foo')]
     @parser = @parser.argument_list
     check
@@ -58,7 +58,7 @@ HERE
 
   def test_function_call
     @input = 'baz(42, foo)'
-    @expected = Parser::FuncallExpression.new 'baz', [Parser::IntegerExpression.new(42),
+    @transform_output = Parser::FuncallExpression.new 'baz', [Parser::IntegerExpression.new(42),
                                           Parser::NameExpression.new('foo')]
 
     @parser = @parser.function_call
@@ -71,7 +71,7 @@ HERE
 5
 else
 HERE
-    @expected = {:expressions=>[ Parser::IntegerExpression.new(4), Parser::IntegerExpression.new(5)]}
+    @transform_output = {:expressions=>[ Parser::IntegerExpression.new(4), Parser::IntegerExpression.new(5)]}
     
     @parser = @parser.expressions_else
     check
@@ -84,7 +84,7 @@ name
 call(4,6)
 end
 HERE
-    @expected = {:expressions=> [Parser::IntegerExpression.new(5), Parser::NameExpression.new("name"),
+    @transform_output = {:expressions=> [Parser::IntegerExpression.new(5), Parser::NameExpression.new("name"),
       Parser::FuncallExpression.new("call", [Parser::IntegerExpression.new(4), Parser::IntegerExpression.new(6) ]) ] }
     @parser = @parser.expressions_end
     check
@@ -98,7 +98,7 @@ else
   667
 end
 HERE
-    @expected = Parser::ConditionalExpression.new(  Parser::IntegerExpression.new(0),
+    @transform_output = Parser::ConditionalExpression.new(  Parser::IntegerExpression.new(0),
                                             [Parser::IntegerExpression.new(42)],
                                             [Parser::IntegerExpression.new(667)])
     @parser = @parser.conditional
@@ -111,7 +111,7 @@ def foo(x)
   5
 end
 HERE
-    @expected = Parser::FunctionExpression.new('foo', 
+    @transform_output = Parser::FunctionExpression.new('foo', 
                   [Parser::NameExpression.new('x')], 
                   [Parser::IntegerExpression.new(5)])
     @parser = @parser.function_definition
@@ -123,7 +123,7 @@ def foo(x)
  abba = 5 
 end
 HERE
-    @expected = Parser::FunctionExpression.new( "foo", [Parser::NameExpression.new("x")],
+    @transform_output = Parser::FunctionExpression.new( "foo", [Parser::NameExpression.new("x")],
                        [Parser::AssignmentExpression.new( "abba", Parser::IntegerExpression.new(5) ) ])
     check
   end
