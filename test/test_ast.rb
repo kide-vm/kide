@@ -32,6 +32,15 @@ class TestAst < MiniTest::Test
     check
   end
 
+  def test_string
+    @input    = <<HERE
+"hello" 
+HERE
+    @expected =  Parser::StringExpression.new('hello')
+    @parser = @parser.string
+    check
+  end
+
   def test_one_argument
     @input    = '(42)'
     @expected = { :argument_list => Parser::IntegerExpression.new(42) }

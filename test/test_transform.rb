@@ -26,6 +26,13 @@ class TransformTest <  MiniTest::Test
     check
   end
 
+  def test_string
+    @input    =  {:string=>"hello"}
+    @expected =  Parser::StringExpression.new('hello')
+    @parser = @parser.string
+    check
+  end
+
   def test_argument_list
     @input    = {:argument_list => [{:argument => {:integer => '42'}},
                           {:argument => {:name   => 'foo'}}]}

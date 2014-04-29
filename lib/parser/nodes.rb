@@ -35,6 +35,16 @@ module Parser
     end
   end
 
+  class StringExpression < Expression
+    attr_reader  :string
+    def initialize str
+      @string = str
+    end
+    def == other
+      compare other ,  [:string]
+    end
+  end
+
   class FuncallExpression < Expression
     attr_reader  :name, :args
     def initialize name, args

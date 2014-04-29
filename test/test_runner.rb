@@ -25,6 +25,8 @@ class TestRunner < MiniTest::Test
     #link
     # execute
     # check result ?
+    puts string
+    puts " "
     puts tree.inspect
   end
 

@@ -27,7 +27,7 @@ module Parser
 
     rule(:assignment) { name.as(:asignee) >> equal_sign >> expression.as(:asigned)  }
 
-    rule(:expression) { conditional | function_call | integer | (name >> space? >> equal_sign.absent?) }
+    rule(:expression) { conditional | function_call | integer | string | (name >> space? >> equal_sign.absent?) }
 
     def delimited_expressions( delimit )
       ( space? >> (delimit.absent? >> (assignment | expression)).repeat(1)).as(:expressions) >> delimit

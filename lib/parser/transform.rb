@@ -5,6 +5,7 @@ module Parser
   class Transform < Parslet::Transform
     rule(:integer => simple(:value)) { IntegerExpression.new(value.to_i) }
     rule(:name   => simple(:name))  { NameExpression.new(name.to_s) }
+    rule(:string   => simple(:string))  { StringExpression.new(string.to_s) }
 
     rule(:argument  => simple(:argument))    { argument  }
     rule(:argument_list => sequence(:argument_list)) { argument_list }

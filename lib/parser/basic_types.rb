@@ -16,7 +16,6 @@ module Parser
     rule(:dot) { str('.') }
     rule(:digit) { match('[0-9]') }
     rule(:exponent) { (str('e')| str('E')) }
-    rule(:escaped_character)  { str('\\') >> (match('["\\\\/bfnrt]') | (str('u') >> hexdigit.repeat(4,4))) }
  
     rule(:true) { str('true').as(:true) >> space?}
     rule(:false) {      str('false').as(:false) >> space?}
@@ -28,7 +27,7 @@ module Parser
     #anything in double quotes
     rule(:string){
       double_quote >> 
-      (escaped_character | double_quote.absent? >> any ).repeat.as(:string) >> 
+      ( double_quote.absent? >> any ).repeat.as(:string) >> 
       double_quote >> space?
     }
     rule(:integer)    { sign.maybe >> digit.repeat(1).as(:integer) >> space? }

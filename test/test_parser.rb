@@ -45,6 +45,15 @@ class ParserTest < MiniTest::Test
     check
   end
 
+  def test_string
+    @input    = <<HERE
+"hello" 
+HERE
+    @expected =  {:string=>"hello"}
+    @parser = @parser.string
+    check
+  end
+
   def test_one_argument
     @input    = '(42)'
     @expected = {:argument_list => {:argument => {:integer => '42'}} }
@@ -62,6 +71,18 @@ class ParserTest < MiniTest::Test
 
   def test_function_call
     @input = 'baz(42, foo)'
+    @expected = {:function_call => {:name => 'baz' },
+                :argument_list    => [{:argument => {:integer => '42'}},
+                             {:argument => {:name => 'foo'}}]}
+
+    @parser = @parser.function_call
+    check
+  end
+
+  def test_function_call_string
+    @input    = <<HERE
+    puts( "hello")
+HERE
     @expected = {:function_call => {:name => 'baz' },
                 :argument_list    => [{:argument => {:integer => '42'}},
                              {:argument => {:name => 'foo'}}]}
