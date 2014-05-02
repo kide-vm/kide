@@ -25,9 +25,10 @@ class TestRunner < MiniTest::Test
     #link
     # execute
     # check result ?
-    puts string
-    puts " "
-    puts tree.inspect
+    context = Vm::Context.new
+    builder = Asm::Program.new
+    compiled = tree.compile( builder , context )
+    puts compiled.inspect
   end
 
 end
