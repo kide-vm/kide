@@ -1,6 +1,6 @@
 require 'parslet'
 
-require "asm/program"
+require "asm/assembler"
 require "elf/object_writer"
 require 'parser/composed'
 require 'parser/transform'

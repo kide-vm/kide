@@ -119,7 +119,7 @@ module Asm
     end
 
     # length of the codes. In arm it would be the length * 4
-    # (strings are stored globally in the Program)
+    # (strings are stored globally in the Assembler)
     def length 
       @codes.inject(0) {| sum  , item | sum + item.length}
     end

@@ -6,9 +6,9 @@ require_relative 'helper'
 #  adc add and bic eor orr rsb rsc sbc sub mov mvn cmn cmp teq tst b bl bx swi strb
 
 class TestArmAsm < MiniTest::Test
-  # need Program and a block (see those classes) 
+  # need Assembler and a block (see those classes) 
   def setup
-    @program = Asm::Program.new
+    @program = Asm::Assembler.new
     #no ruby block given, ie need to add this block later by hand
     @block = @program.block
   end

@@ -26,7 +26,7 @@ class TestRunner < MiniTest::Test
     # execute
     # check result ?
     context = Vm::Context.new
-    builder = Asm::Program.new
+    builder = Asm::Assembler.new
     compiled = tree.compile( builder , context )
     puts compiled.inspect
   end

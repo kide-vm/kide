@@ -6,14 +6,14 @@ require "asm/string_literal"
 
 module Asm
   
-  # Program is the the top-level of the code hierachy, except it is not derived from code
-  # instead a Program is a list of blocks (and string constants)
+  # Assembler is the the top-level of the code hierachy, except it is not derived from code
+  # instead a Assembler is a list of blocks (and string constants)
   
   # All code is created in blocks (see there) and there are two styles for that, for forward of backward
   # referencing. Read function block and add_block and Block.set
   
   
-  class Program
+  class Assembler
 
     def initialize
       @blocks = []
