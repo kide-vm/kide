@@ -21,8 +21,6 @@ class TestRunner < MiniTest::Test
     syntax    = Parser::Composed.new.parse(string)
     tree      = Parser::Transform.new.apply(syntax)
     
-    puts tree.to_yaml
-
     program = Vm::Program.new "Arm"
     expression = tree.to_value
     compiled = expression.compile( program.context )
@@ -30,7 +28,7 @@ class TestRunner < MiniTest::Test
     program.wrap_as_main compiled
     puts program.to_yaml
     program.verify
-    puts program.to_yaml
+#    puts program.to_yaml
   end
 
 end

@@ -1,10 +1,10 @@
 require "asm/nodes"
 require_relative "instruction"
 
-module Asm
+module Arm
   # ADDRESSING MODE 2
   # Implemented: immediate offset with offset=0
-  class MemoryInstruction < Instruction
+  class MemoryInstruction < Vm::MemoryInstruction
 
     def initialize(opcode , condition_code , update_status , args)
       super(opcode , condition_code , update_status , args)

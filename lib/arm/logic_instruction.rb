@@ -1,12 +1,12 @@
 require_relative "instruction"
 
-module Asm
+module Arm
   # ADDRESSING MODE 1 
   # Logic ,Maths, Move and compare instructions (last three below)
   
-  class LogicInstruction < Instruction
+  class LogicInstruction < Vm::LogicInstruction
 
-    def initialize(opcode , condition_code , update_status , args)
+    def initializ(opcode , condition_code , update_status , args)
       super(opcode , condition_code , update_status , args)
       @rn = nil
       @i = 0      
@@ -84,7 +84,7 @@ module Asm
       io.write_uint32 val
     end
   end
-  class CompareInstruction < LogicInstruction
+  class CompareInstruction < Vm::CompareInstruction
     def initialize(opcode , condition_code , update_status , args)
       super(opcode , condition_code , update_status , args)
       @update_status_flag = 1
@@ -95,11 +95,12 @@ module Asm
       do_build args[1]
     end
   end
-  class MoveInstruction < LogicInstruction
-    def initialize(opcode , condition_code , update_status , args)
+  class MoveInstruction < Vm::MoveInstruction
+    def initializ(opcode , condition_code , update_status , args)
       super(opcode , condition_code , update_status , args)
       @rn = reg "r0" # register zero = zero bit pattern
     end
+    
     def build
       do_build args[1]
     end

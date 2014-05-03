@@ -1,10 +1,10 @@
 require_relative "instruction"
 
-module Asm
+module Arm
   # ADDRESSING MODE 4
-  class StackInstruction < Instruction
+  class StackInstruction < Vm::StackInstruction
 
-    def initialize(opcode , condition_code , update_status , args)
+    def initializ(opcode , condition_code , update_status , args)
       super(opcode , condition_code , update_status , args)
       @update_status_flag= 0
       @rn = reg "r0" # register zero = zero bit pattern

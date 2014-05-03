@@ -1,24 +1,12 @@
-require_relative "assembly_error"
-require_relative "arm_machine"
+require "vm/instruction"
+require_relative "constants"
 
-module Asm
+  Vm::Instruction.class_eval do
+    include Arm::Constants
 
-  class Code ; end
-  
-  # Not surprisingly represents an cpu instruction. 
-  # This is an abstract base class, with derived classes 
-  # Logic / Move / Compare / Stack / Memory (see there)
-  # 
-  # Opcode is a (<= three) letter accronym (same as in assembly code). Though in arm, suffixes can
-  # make the opcode longer, we chop those off in the constructor
-  # Argurments are registers or labels or string/num Literals
-  
-  class Instruction < Code
-    include ArmMachine
+    COND_POSTFIXES = Regexp.union( Arm::Constants::COND_CODES.keys.collect{|k|k.to_s} ).source
 
-    COND_POSTFIXES = Regexp.union( COND_CODES.keys.collect{|k|k.to_s} ).source
-
-    def initialize(opcode , condition_code , update_status , args)
+    def initializ(opcode , condition_code , update_status , args)
       @update_status_flag = update_status
       @condition_code = condition_code.to_sym
       @opcode = opcode
@@ -43,4 +31,3 @@ module Asm
       4
     end
   end
-end

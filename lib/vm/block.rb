@@ -16,7 +16,7 @@ module Vm
 
   # See Value description on how to create code/instructions
   
-  class Block < Value
+  class Block < Code
 
     def initialize(name)
       super()
@@ -29,6 +29,20 @@ module Vm
     attr_reader :name , :previous , :next
 
     def verify
+    end
+
+    def add_code(kode)
+      kode.at(@position)
+      length = kode.length
+      puts "length #{length}"
+      @position += length
+      @codes << kode
+    end
+
+    def assemble(io)
+      @codes.each do |obj|
+        obj.assemble io
+      end
     end
 
     # set the next executed block after self.

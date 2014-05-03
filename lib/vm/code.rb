@@ -1,3 +1,5 @@
+require_relative "values"
+
 module Vm
   # Base class for anything that we can assemble
 
@@ -9,7 +11,7 @@ module Vm
   # All code is position independant once assembled.
   # But for jumps and calls two passes are neccessary. 
   # The first setting the position, the second assembling
-  class Code
+  class Code < Value
     
     # just sets position to nil, so we can sell that it has not been set
     def initialize
