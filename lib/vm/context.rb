@@ -1,53 +1,32 @@
 require_relative "kernel"
+require_relative "program"
 
 module Vm
+  
+  #currently just holding the program in here so we can have global access
   class Context
-    def initialize 
-      @locals = {}
+    def initialize program
+      @attributes = {}
+      @attributes["program"] = program
     end
-    def get name
-      @locals[name]
-    end
-  end
-end
-
-# ast classes
-module Parser
-  Expression.class_eval do
-    def compile builder , context
-      raise "abstract #{self.inspect}"
-    end
-  end
-
-  IntegerExpression.class_eval do
-  end
-
-  NameExpression.class_eval do
-  end
-
-  StringExpression.class_eval do
-    def compile builder , context
-      return string
-    end
-  end
-
-  FuncallExpression.class_eval do
-    def compile builder , context
-      arguments = args.collect{|arg| arg.compile(builder , context) }
-      function = context.get(name)
-      unless function
-        function = Vm::Kernel.send(name)
-        context.add_function( name , function )
+    
+    # map any function call to an attribute if possible
+    def method_missing name , *args , &block 
+      if args.length > 1 or block_given?
+        puts "NO -#{args.length} BLOCK #{block_given?}"
+        super 
+      else
+        name = name.to_s
+        if args.length == 1        #must be assignemnt for ir attr= val
+          if name.include? "="
+            return @attributes[name.chop] = args[0]
+          else 
+            super
+          end
+        else
+          return @attributes[name]
+        end
       end
-      
-    end    
-  end
-
-  ConditionalExpression.class_eval do
-  end
-
-  AssignmentExpression.class_eval do
-  end
-  FunctionExpression.class_eval do
+    end
   end
 end

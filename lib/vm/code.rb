@@ -1,8 +1,7 @@
-
-module Asm
+module Vm
   # Base class for anything that we can assemble
-  
-  # Derived classes include instrucitons, blocks and data(strings)
+
+  # Derived classes include instructions and data(strings)
   
   # The commonality abstracted here is the length and position
   # and the ability to assemble itself into the stream

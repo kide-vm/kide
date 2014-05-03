@@ -1,5 +1,5 @@
 require_relative 'helper'
-
+require "yaml"
 class TestRunner < MiniTest::Test
 
   # this creates test methods dynamically , one for each file in runners directory
@@ -25,10 +25,14 @@ class TestRunner < MiniTest::Test
     #link
     # execute
     # check result ?
-    context = Vm::Context.new
-    builder = Asm::Assembler.new
-    compiled = tree.compile( builder , context )
-    puts compiled.inspect
+    program = Vm::Program.new
+    expression = tree.to_value
+    compiled = expression.compile( program.context )
+    # do some stuff with mains and what not ??
+    program.wrap_as_main compiled
+    puts program.to_yaml
+    program.verify
+    puts program.to_yaml
   end
 
 end

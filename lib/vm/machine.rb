@@ -11,10 +11,18 @@ module Vm
   # * Note that register content is typed externally. Not as in mri, where int's are tagged. Floats can's
   #   be tagged and lambda should be it's own type, so tagging does not work
   
-  # Note: subclasses should/will be used once we have the basic architecture clear and working
+  # Programs are created by invoking methods on subclasses of Value. 
+  # But executable code is a sequence of Instructions and subclasses.
+  
+  # A Machines main responsibility in the framework is to instantiate Instruction
+  # Value functions are mapped to machines by concatenating the values class name + the methd name
+  # Example:  SignedValue.plus( value ) ->  Machine.signed_plus (value )
   
   class Machine
   
+    # hmm, not pretty but for now
+    @@instance = nil
+    
     attr_reader :registers
     attr_reader :scratch
     attr_reader :pc
@@ -23,5 +31,12 @@ module Vm
     # Still, using if to express tests makes sense, not just for 
     # consistency in this code, but also because that is what is actually done
     attr_reader :status  
+
+    def self.instance
+      @@instance
+    end
+    def self.instance= machine
+      @@instance = machine
+    end
   end
 end

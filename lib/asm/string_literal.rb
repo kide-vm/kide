@@ -1,4 +1,4 @@
-require_relative "code"
+require_relative "../vm/code"
 
 module Asm
   # The name really says it all.
@@ -6,7 +6,7 @@ module Asm
   # Currently string are stored "inline" , ie in the code segment. 
   # Mainly because that works an i aint no elf expert.
   
-  class StringLiteral < Code
+  class StringLiteral < Vm::Code
     
     # currently aligned to 4 (ie padded with 0) and off course 0 at the end
     def initialize(str)
