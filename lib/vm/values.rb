@@ -25,6 +25,11 @@ module Vm
       raise "abstract method called #{self.inspect}"
     end
     
+    # since we convert ast to values in conversion, value itself is responsible for compiling itself
+    # Compile must return a value, usually used in the next level up
+    def compile(context)
+      raise "abstract method called #{self.inspect}"
+    end
   end
 
   class Word < Value
@@ -36,19 +41,13 @@ module Vm
   class Unsigned < Word
     
     def plus unsigned
-      unless unsigned.is_a? Unsigned
-        unsigned = Conversion.new( unsigned , Unsigned )
-      end
-      UnsignedAdd.new( self  , unsigned )
+      Machine.instance.unsigned_plus self , unsigned
     end
   end
 
   class Signed < Word
     def plus signed
-      unless signed.is_a? Signed
-        signed = Conversion.new( signed , Signed )
-      end
-      SignedAdd.new( self  , signed )
+      Machine.instance.signed_plus self , signed
     end
   end
   

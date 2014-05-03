@@ -15,15 +15,14 @@ module Vm
   # in terms of variables and their visibility, things are simple. They are either local or global
   
   # throwing in a context for unspecified use (well one is to pass the programm/globals around)
-  
    
   class Program < Block
     
-    # should init for a machine and pass that on to start/exit / register alloc and the like
-    def initialize 
+    # Initialize with a string for cpu. Naming conventions are: for Machine XXX there exists a module XXX
+    #  with a XXXMachine in it that derives from Vm::Machine
+    def initialize machine
       super("start")
-      # this aint pretty. but i'll go soon enough
-      Machine.instance = Arm::ArmMachine.new
+      Machine.instance = eval("#{machine}::#{machine}Machine").new
       
       @context = Context.new(self)
       @functions = []
@@ -60,8 +59,6 @@ module Vm
       
     end
     def verify
-      main = @functions.find{|f| f.name == "main"}
-      raise "No main in Program" unless main
       @functions.each do |funct|
         funct.verify
       end

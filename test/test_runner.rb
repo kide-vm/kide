@@ -20,12 +20,10 @@ class TestRunner < MiniTest::Test
     string = File.read(file)
     syntax    = Parser::Composed.new.parse(string)
     tree      = Parser::Transform.new.apply(syntax)
-    #transform
-    # write
-    #link
-    # execute
-    # check result ?
-    program = Vm::Program.new
+    
+    puts tree.to_yaml
+
+    program = Vm::Program.new "Arm"
     expression = tree.to_value
     compiled = expression.compile( program.context )
     # do some stuff with mains and what not ??

@@ -46,7 +46,5 @@ module Vm
       # TODO check
       @args << value
     end
-    
   end
-
 end
