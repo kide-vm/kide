@@ -2,11 +2,10 @@ require_relative 'call_instruction'
 require_relative 'stack_instruction'
 require_relative 'logic_instruction'
 require_relative 'memory_instruction'
+require_relative "code"
 
 module Asm
-  
-  class Code ; end
-  
+    
   # A Block is the smalles unit of code, a list of instructions as it were
   # It is also a point to jump/branch to. An address in the final stream.
   # To allow for forward branches creation does not fix the position. 
