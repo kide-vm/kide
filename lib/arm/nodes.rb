@@ -1,4 +1,4 @@
-module Asm
+module Arm
 
   class Shift 
     attr_accessor :type, :value, :argument
@@ -30,7 +30,7 @@ module Asm
     attr_accessor :registers
     def initialize regs
       @registers = regs
-      regs.each{ |reg| raise  "not a reg #{sym} , #{reg}" unless reg.is_a?(Asm::Register) }
+      regs.each{ |reg| raise  "not a reg #{sym} , #{reg}" unless reg.is_a?(Arm::Register) }
     end
   end
 

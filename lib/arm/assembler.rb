@@ -1,10 +1,10 @@
-require 'asm/nodes'
-require 'asm/block'
+require 'arm/nodes'
+require 'arm/block'
 require 'stream_reader'
 require 'stringio'
-require "asm/string_literal"
+require "arm/string_literal"
 
-module Asm
+module Arm
   
   # Assembler is the the top-level of the code hierachy, except it is not derived from code
   # instead a Assembler is a list of blocks (and string constants)
@@ -43,7 +43,7 @@ module Asm
     def add_string str
       code = @string_table[str]
       return code if code
-      data = Asm::StringLiteral.new(str)
+      data = Arm::StringLiteral.new(str)
       @string_table[str] = data
     end
 

@@ -51,11 +51,13 @@ module Arm
                   'v6' => 9, 'rfp' => 9, 'sl' => 10, 'fp' => 11, 'ip' => 12, 'sp' => 13,
                   'lr' => 14, 'pc' => 15 }
     def reg name
-      raise "no such register #{reg}" unless REGISTERS[name]
-      Asm::Register.new(name , REGISTERS[name])
+      code = reg_code name
+      raise "no such register #{name}" unless code
+      Arm::Register.new(name.to_sym , code )
     end
-                      
-            
+    def reg_code name
+      REGISTERS[name.to_s]
+    end
 
    def calculate_u8_with_rr(arg)
      parts = arg.value.to_s(2).rjust(32,'0').scan(/^(0*)(.+?)0*$/).flatten

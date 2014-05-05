@@ -1,10 +1,11 @@
-require "asm/nodes"
+require_relative "nodes"
 require_relative "instruction"
 
 module Arm
   # ADDRESSING MODE 2
   # Implemented: immediate offset with offset=0
   class MemoryInstruction < Vm::MemoryInstruction
+    include Arm::Constants
 
     def initialize(opcode , condition_code , update_status , args)
       super(opcode , condition_code , update_status , args)
@@ -20,6 +21,11 @@ module Arm
     attr_accessor :i, :pre_post_index, :add_offset,
                   :byte_access, :w, :is_load, :rn, :rd
 
+    # arm intrucioons are pretty sensible, and always 4 bytes (thumb not supported)
+    def length
+      4
+    end
+                  
     # Build representation for target address
     def build
       if( @is_load )
@@ -30,7 +36,7 @@ module Arm
         arg = args[0]
       end
       #str / ldr are _serious instructions. With BIG possibilities not half are implemented
-      if (arg.is_a?(Asm::Register))
+      if (arg.is_a?(Arm::Register))
         @rn = arg
         if(arg.offset != 0) 
           @operand = arg.offset
@@ -42,16 +48,16 @@ module Arm
             @add_offset = 1
           end
           if (@operand.abs > 4095)
-            raise Asm::AssemblyError.new("reference offset too large/small (max 4095) #{argr.right}" )
+            raise "reference offset too large/small (max 4095) #{arg} #{inspect}"
           end
         end
-      elsif (arg.is_a?(Asm::Label) or arg.is_a?(Asm::NumLiteral))
+      elsif (arg.is_a?(Arm::Label) or arg.is_a?(Arm::NumLiteral))
         @pre_post_index = 1
         @rn = pc
         @use_addrtable_reloc = true
         @addrtable_reloc_target = arg
       else
-        raise Asm::AssemblyError.new("invalid operand argument #{arg.inspect}")
+        raise "invalid operand argument #{arg.inspect} #{inspect}"
       end
     end
 

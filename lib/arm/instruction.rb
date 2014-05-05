@@ -1,10 +1,7 @@
 require "vm/instruction"
 require_relative "constants"
 
-  Vm::Instruction.class_eval do
-    include Arm::Constants
-
-    COND_POSTFIXES = Regexp.union( Arm::Constants::COND_CODES.keys.collect{|k|k.to_s} ).source
+class Saved
 
     def initializ(opcode , condition_code , update_status , args)
       @update_status_flag = update_status

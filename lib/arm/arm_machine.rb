@@ -29,14 +29,14 @@ module Arm
         end
       end
     end
-  
+    
     def word_load value , reg
       e = Vm::Block.new("load_#{value}")
       e.add_code( MoveInstruction.new( :left => reg , :right => value ) )
     end
     def function_call call
       raise "Not FunctionCall #{call.inspect}" unless call.is_a? Vm::FunctionCall
-      bl( :function => call.function )
+      bl( :left => call.function )
     end
 
     def main_entry
@@ -47,7 +47,7 @@ module Arm
     end
     def syscall num
       mov( :left => 7 , :right => num ) 
-      swi( {} )
+      swi( :left => 0 )
     end
   end
 end

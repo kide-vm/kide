@@ -3,9 +3,21 @@ require_relative "instruction"
 module Arm
   # ADDRESSING MODE 4
   class StackInstruction < Vm::StackInstruction
+    include Arm::Constants
 
-    def initializ(opcode , condition_code , update_status , args)
-      super(opcode , condition_code , update_status , args)
+    # arm intrucioons are pretty sensible, and always 4 bytes (thumb not supported)
+    def length
+      4
+    end
+
+    def initialize(options)
+      super(options) 
+      @update_status_flag = 0
+      @condition_code = :al
+      @opcode = options[:opcode]
+      @args = [options[:left] , options[:right] , options[:extra]]
+      @operand = 0
+
       @update_status_flag= 0
       @rn = reg "r0" # register zero = zero bit pattern
       # downward growing, decrement before memory access
@@ -51,7 +63,7 @@ module Arm
           @operand |= (1 << reg.bits)
         end
       else
-        raise Asm::AssemblyError.new("invalid operand argument  #{args.inspect}")
+        raise "invalid operand argument  #{args.inspect}"
       end
     end
   end

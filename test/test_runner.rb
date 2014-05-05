@@ -33,8 +33,8 @@ class TestRunner < MiniTest::Test
 
     assembly = program.assemble(StringIO.new)
 
-    writer.set_text assembly
-    writer.save("#{file}_test.o")    
+    writer.set_text assembly.string
+    writer.save(file.gsub(".rb" , ".o"))
 
     puts program.to_yaml
   end

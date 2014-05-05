@@ -1,6 +1,6 @@
-require_relative "../vm/code"
+require "vm/code"
 
-module Asm
+module Arm
   # The name really says it all.
   # The only interesting thing is storage.
   # Currently string are stored "inline" , ie in the code segment. 

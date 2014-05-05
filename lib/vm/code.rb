@@ -13,7 +13,7 @@ module Vm
     
     # set the position to zero, will have to reset later
     def initialize
-      @position = 0
+      @address = 0
     end
 
     # the position in the stream. Think of it as an address if you want. The difference is small.
