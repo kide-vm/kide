@@ -19,13 +19,16 @@ class TestRunner < MiniTest::Test
   def execute file
     string = File.read(file)
     syntax    = Parser::Composed.new.parse(string)
-    tree      = Parser::Transform.new.apply(syntax)
+    main      = Parser::Transform.new.apply(syntax)
     
     program = Vm::Program.new "Arm"
-    value = tree.to_value
-    program.wrap_as_main value
-    compiled = program.compile( program.context )
-    program.verify
+
+    program.main = main.compile( program.context )
+
+    program.link_at( 0 , program.context )
+    
+    binary = program.assemble(StringIO.new )
+
     puts program.to_yaml
   end
 

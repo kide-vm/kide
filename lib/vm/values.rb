@@ -1,3 +1,5 @@
+require_relative "code"
+
 module Vm
   
   # Values represent the information as it is processed. Different subclasses for different types, 
@@ -16,28 +18,13 @@ module Vm
   # Word Values are what fits in a register. Derived classes
   # Float, Reference , Integer(s) must fit the same registers
   
-  class Value
-    def bit_size
-      8 * byte_size
-    end
-    
-    def byte_size
-      raise "abstract method called #{self.inspect}"
-    end
-    
-    # since we convert ast to values in conversion, value itself is responsible for compiling itself
-    # Compile must return a value, usually used in the next level up
-    def compile(context)
-      raise "abstract method called #{self.inspect}"
-    end
+  # just a base class for data. not sure how this will be usefull (may just have read too much llvm)
+  class Value < Code
   end
 
   class Word < Value
     def load reg
       Machine.instance.word_load self , reg
-    end
-    def compile context
-      #nothing to do here
     end
   end
   
@@ -63,14 +50,8 @@ module Vm
     def initialize string
       @string = string
     end
-    def at pos
-      @pos = pos
-    end
     def length
       @string.length + 3
-    end
-    def compile context
-      #nothing to do here
     end
     attr_reader :string
   end
@@ -84,7 +65,7 @@ module Vm
     end
     attr_reader :object
     
-    def compile context
+    def compiled context
       if object.is_a? StringValue
         context.program.add_object object
       else

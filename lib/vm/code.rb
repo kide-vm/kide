@@ -1,9 +1,7 @@
-require_relative "values"
-
 module Vm
   # Base class for anything that we can assemble
 
-  # Derived classes include instructions and data(strings)
+  # Derived classes include instructions and data(values)
   
   # The commonality abstracted here is the length and position
   # and the ability to assemble itself into the stream
@@ -11,7 +9,7 @@ module Vm
   # All code is position independant once assembled.
   # But for jumps and calls two passes are neccessary. 
   # The first setting the position, the second assembling
-  class Code < Value
+  class Code
     
     # set the position to zero, will have to reset later
     def initialize
@@ -29,7 +27,7 @@ module Vm
     
     # The containing class (assembler/function) call this to tell the instruction/data where it is in the
     # stream. During assembly the position is then used to calculate pc relative addresses.
-    def at address
+    def link_at address , context
       @address = address
     end
     

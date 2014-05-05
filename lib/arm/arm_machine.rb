@@ -36,23 +36,18 @@ module Arm
     end
     def function_call call
       raise "Not FunctionCall #{call.inspect}" unless call.is_a? Vm::FunctionCall
-      e = Vm::Block.new("call_#{call.name}")
-      e.add_code( bl( :function => call.function ))
+      bl( :function => call.function )
     end
 
     def main_entry
-      e = Vm::Block.new("main_entry")
-      e.add_code( mov( :left => :fp , :right => 0 ))
+      mov( :left => :fp , :right => 0 )
     end
     def main_exit
-      e = Vm::Block.new("main_exit")
-      e.join( syscall(0) )
+      syscall(0)
     end
     def syscall num
-      e = Vm::Block.new("syscall")
-      e.add_code( MoveInstruction.new( :left => 7 , :right => num ) )
-      e.add_code( CallInstruction.new( :swi  => 0 ) )
-      e
+      mov( :left => 7 , :right => num ) 
+      swi( {} )
     end
   end
 end

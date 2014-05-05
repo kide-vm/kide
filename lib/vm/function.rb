@@ -28,17 +28,12 @@ module Vm
       @entry.length + @exit.length + super
     end
     
-    def compile context
+    def compiled context
       function = context.program.get_function(name)
       unless function
         function = Vm::Kernel.send(name)
         context.program.get_or_create_function( name , function , arity )
       end
-    end
-    
-    def verify
-      @entry.verify
-      @exit.verify
     end
 
     private 

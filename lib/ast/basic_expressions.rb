@@ -1,4 +1,5 @@
 # collection of the simple ones, int and strings and such
+
 module Ast
 
   class IntegerExpression < Expression
@@ -29,7 +30,7 @@ module Ast
 
     def compile context
       # TODO check if needst to be added?
-      ObjectReference.new( StringValue.new(string) )
+      Vm::ObjectReference.new( Vm::StringValue.new(string) )
     end
     def == other
       compare other ,  [:string]

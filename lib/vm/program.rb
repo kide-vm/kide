@@ -23,24 +23,25 @@ module Vm
     def initialize machine
       super("start")
       Machine.instance = eval("#{machine}::#{machine}Machine").new
-      
       @context = Context.new(self)
+      #global objects (data)
       @objects = []
+      # global functions
+      @functions = []
       @entry = Vm::Kernel::start
+      #main gets executed between entry and exit
+      @main = nil
       @exit = Vm::Kernel::exit
     end
-    attr_reader :context
+    attr_reader :context , :main , :functions
     
-    def functions
-      @values
-    end
     def add_object o
       return if @objects.include? o
       @objects << o # TODO check type , no basic values allowed (must be wrapped)
     end
     
     def get_function name
-      @values.detect{ |f| (f.name == name) && (f.class == Function) }
+      @functions.detect{ |f| (f.name == name) && (f.class == Function) }
     end
 
     # preferred way of creating new functions (also forward declarations, will flag unresolved later)
@@ -48,57 +49,33 @@ module Vm
       fun = get_function name
       unless fun
         fun = Function.new(name)
-        @values << fun
+        @functions << fun
       end
       fun
     end
     
-    def compile(context)
-      @values.each do |function|
-        function.compile(context)
-      end
-      @entry.compile(context)
-      super(context)
-      @exit.compile(context)
-      #string_table
-      @objects.each do |o|
-        o.compile(context)
-      end
-      fix_positions
-      fix_positions # second time for forward references
-    end
-    
-    def fix_positions
-      @position = 0
-      @entry.at( @position )
-      @position += @entry.length
-      @values.each do |function|
-        function.at(@position)
-        @position += function.length
+    def link_at( start , context)
+      @position = start
+      @entry.link_at( start , context )
+      start += @entry.length
+      @main.link_at( start , context )
+      start += @main.length
+      @functions.each do |function|
+        function.link_at(start , context)
+        start += function.length
       end
       @objects.each do |o|
-        o.at(@position)
-        @position += o.length
+        o.link_at(start , context)
+        start += o.length
       end
-      @exit.at( @position )
-      @position += @exit.length
+      @exit.link_at( start , context)
+      start += @exit.length
     end
     
-    def wrap_as_main block
-      # #blockify
-      unless block.is_a? Block      
-        raise "No block, start coding torsten"
-      end
-      add_value block
-      @entry.next block
-      block.next @exit
+    def main= code
+      @main = code
     end
-    def verify
-      @values.each do |funct|
-        funct.verify
-      end
-    end
-    
+        
     private 
     # the main function
     def create_main
