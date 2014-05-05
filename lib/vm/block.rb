@@ -34,7 +34,11 @@ module Vm
     end
 
     def add_code(kode)
-      @codes << kode
+      if( kode.is_a? Array )
+        kode.each { |code| @codes << code }
+      else
+        @codes << kode
+      end
       self
     end
 

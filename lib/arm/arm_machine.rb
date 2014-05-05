@@ -40,14 +40,15 @@ module Arm
     end
 
     def main_entry
-      mov( :left => :fp , :right => 0 )
+      entry = Vm::Block.new("main_entry")
+      entry.add_code  mov( :left => :fp , :right => 0 )
     end
     def main_exit
-      syscall(0)
+      entry = Vm::Block.new("main_exit")
+      entry.add_code syscall(0)
     end
     def syscall num
-      mov( :left => 7 , :right => num ) 
-      swi( :left => 0 )
+      [mov( :left => :r7 , :right => num ) ,  swi( :left => 0 )]
     end
   end
 end

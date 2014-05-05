@@ -17,7 +17,7 @@ module Arm
 
     #(stays in subclases, while build is overriden to provide different arguments)
     def do_build(arg)      
-      if arg.is_a?(Arm::StringLiteral)
+      if arg.is_a?(Vm::StringLiteral)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
         arg = Arm::NumLiteral.new( arg.position - self.position - 8 )
@@ -71,6 +71,7 @@ module Arm
     def assemble(io)
       build
       instuction_class = 0b00 # OPC_DATA_PROCESSING
+      puts inspect
       val = @operand.is_a?(Symbol) ? reg_code(@operand) : @operand 
       val |= (reg_code(@rd) <<            12)     
       val |= (reg_code(@rn) <<            12+4)   

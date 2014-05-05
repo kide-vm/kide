@@ -1,5 +1,5 @@
 require 'arm/nodes'
-require 'arm/block'
+require 'vm/block'
 require 'stream_reader'
 require 'stringio'
 require "arm/string_literal"
@@ -43,7 +43,7 @@ module Arm
     def add_string str
       code = @string_table[str]
       return code if code
-      data = Arm::StringLiteral.new(str)
+      data = Vm::StringLiteral.new(str)
       @string_table[str] = data
     end
 

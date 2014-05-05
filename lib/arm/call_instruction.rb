@@ -35,6 +35,7 @@ module Arm
       case @opcode
       when :b, :bl
         arg = @args[0]
+        #puts "BLAB #{arg.inspect}"
         if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
           arg = Arm::NumLiteral.new( arg )
         end

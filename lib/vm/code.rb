@@ -13,7 +13,7 @@ module Vm
     
     # set the position to zero, will have to reset later
     def initialize
-      @address = 0
+      @position = 0
     end
 
     # the position in the stream. Think of it as an address if you want. The difference is small.
@@ -21,19 +21,19 @@ module Vm
     # in other words, during assembly the position _must_ be resolved into a pc relative address
     # and not used as is
     def position
-      throw "Not set" unless @address
-      @address 
+      throw "Not set" unless @position
+      @position 
     end
     
     # The containing class (assembler/function) call this to tell the instruction/data where it is in the
     # stream. During assembly the position is then used to calculate pc relative addresses.
     def link_at address , context
-      @address = address
+      @position = address
     end
     
     # length for this code in bytes
     def length
-      raise "Not implemented #{self}"
+      raise "Not implemented #{inspect}"
     end
     
     # so currently the interface passes the io (usually string_io) in for the code to assemble itself.

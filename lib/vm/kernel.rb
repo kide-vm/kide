@@ -5,7 +5,7 @@ module Vm
       Machine.instance.main_entry
     end
     def self.exit
-      # Machine.exit swi 0 
+      # Machine.exit mov r7 , 0  + swi 0 
       Machine.instance.main_exit
     end
     def self.puts string

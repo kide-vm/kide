@@ -77,3 +77,4 @@ module Vm
   end
 
 end
+require_relative "string_literal"

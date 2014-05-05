@@ -1,6 +1,6 @@
 require "vm/code"
 
-module Arm
+module Vm
   # The name really says it all.
   # The only interesting thing is storage.
   # Currently string are stored "inline" , ie in the code segment. 

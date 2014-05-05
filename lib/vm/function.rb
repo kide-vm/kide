@@ -24,16 +24,28 @@ module Vm
       @args.length
     end
 
+    def link_at address , context
+#      function = context.program.get_function(name)
+#      unless function
+#        function = Vm::Kernel.send(name)
+#        context.program.get_or_create_function( name , function , arity )
+#      end
+
+      @entry.link_at address , context
+      address += @entry.length
+      super(address , context)
+      address += @entry.length
+      @exit.link_at(address,context)
+    end
+    
     def length
       @entry.length + @exit.length + super
     end
     
-    def compiled context
-      function = context.program.get_function(name)
-      unless function
-        function = Vm::Kernel.send(name)
-        context.program.get_or_create_function( name , function , arity )
-      end
+    def assemble io
+      @entry.assemble io
+      super(io)
+      @exit.assemble(io)
     end
 
     private 
