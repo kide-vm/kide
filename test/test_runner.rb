@@ -22,13 +22,11 @@ class TestRunner < MiniTest::Test
     tree      = Parser::Transform.new.apply(syntax)
     
     program = Vm::Program.new "Arm"
-    expression = tree.to_value
-    compiled = expression.compile( program.context )
-    # do some stuff with mains and what not ??
-    program.wrap_as_main compiled
-    puts program.to_yaml
+    value = tree.to_value
+    program.wrap_as_main value
+    compiled = program.compile( program.context )
     program.verify
-#    puts program.to_yaml
+    puts program.to_yaml
   end
 
 end

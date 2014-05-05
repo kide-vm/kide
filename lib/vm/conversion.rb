@@ -14,7 +14,7 @@ module Vm
       FunctionCall.new( name , args.collect{ |a| a.to_value } )
     end
     def string_value
-      ObjectReference.new( string )
+      ObjectReference.new( StringValue.new(string) )
     end
   end
   

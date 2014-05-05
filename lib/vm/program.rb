@@ -25,19 +25,22 @@ module Vm
       Machine.instance = eval("#{machine}::#{machine}Machine").new
       
       @context = Context.new(self)
-      @functions = []
       @objects = []
       @entry = Vm::Kernel::start
       @exit = Vm::Kernel::exit
     end
     attr_reader :context
     
+    def functions
+      @values
+    end
     def add_object o
+      return if @objects.include? o
       @objects << o # TODO check type , no basic values allowed (must be wrapped)
     end
     
     def get_function name
-      @functions.detect{ |f| f.name == name }
+      @values.detect{ |f| (f.name == name) && (f.class == Function) }
     end
 
     # preferred way of creating new functions (also forward declarations, will flag unresolved later)
@@ -45,21 +48,53 @@ module Vm
       fun = get_function name
       unless fun
         fun = Function.new(name)
-        @functions << fun
+        @values << fun
       end
       fun
     end
     
-    def compile
-      super
-      string_table
+    def compile(context)
+      @values.each do |function|
+        function.compile(context)
+      end
+      @entry.compile(context)
+      super(context)
+      @exit.compile(context)
+      #string_table
+      @objects.each do |o|
+        o.compile(context)
+      end
+      fix_positions
+      fix_positions # second time for forward references
     end
     
-    def wrap_as_main value
-      
+    def fix_positions
+      @position = 0
+      @entry.at( @position )
+      @position += @entry.length
+      @values.each do |function|
+        function.at(@position)
+        @position += function.length
+      end
+      @objects.each do |o|
+        o.at(@position)
+        @position += o.length
+      end
+      @exit.at( @position )
+      @position += @exit.length
+    end
+    
+    def wrap_as_main block
+      # #blockify
+      unless block.is_a? Block      
+        raise "No block, start coding torsten"
+      end
+      add_value block
+      @entry.next block
+      block.next @exit
     end
     def verify
-      @functions.each do |funct|
+      @values.each do |funct|
         funct.verify
       end
     end

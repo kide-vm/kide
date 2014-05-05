@@ -10,25 +10,25 @@ module Vm
   # but there is no branch created between them, this must be done by the programmer.
   
 
-  class Function < Value
+  class Function < Block
 
     def initialize(name , args = [])
-      super()
-      @name = name
+      super(name)
       @args = args
       @entry = Block.new("entry_#{name}")
       @exit = Block.new("exit_#{name}")
     end
-    attr_reader :name , :args , :entry , :exit
+    attr_reader :args , :entry , :exit
     
     def arity
       @args.length
     end
 
-    def compile function_expression ,  context
-      arguments = function_expression.args.collect do |arg|
-        add_arg arg.to_value
-      end
+    def length
+      @entry.length + @exit.length + super
+    end
+    
+    def compile context
       function = context.program.get_function(name)
       unless function
         function = Vm::Kernel.send(name)

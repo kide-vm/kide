@@ -13,9 +13,9 @@ module Vm
   # The first setting the position, the second assembling
   class Code < Value
     
-    # just sets position to nil, so we can sell that it has not been set
+    # set the position to zero, will have to reset later
     def initialize
-      @position = nil
+      @position = 0
     end
 
     # the position in the stream. Think of it as an address if you want. The difference is small.
@@ -35,7 +35,7 @@ module Vm
     
     # length for this code in bytes
     def length
-      throw "Not implemented #{self}"
+      raise "Not implemented #{self}"
     end
     
     # so currently the interface passes the io (usually string_io) in for the code to assemble itself.

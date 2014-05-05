@@ -10,7 +10,7 @@ module Vm
     end
     def self.puts string
       # should unwrap from string to char*
-      Machine.instance.puts
+      Machine.instance.puts string
     end
   end
 end

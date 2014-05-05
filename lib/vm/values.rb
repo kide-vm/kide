@@ -33,8 +33,11 @@ module Vm
   end
 
   class Word < Value
-    def load
-      Machine.instance.word_load self
+    def load reg
+      Machine.instance.word_load self , reg
+    end
+    def compile context
+      #nothing to do here
     end
   end
   
@@ -56,6 +59,21 @@ module Vm
   
   class Reference < Word
   end
+  class StringValue < Value
+    def initialize string
+      @string = string
+    end
+    def at pos
+      @pos = pos
+    end
+    def length
+      @string.length + 3
+    end
+    def compile context
+      #nothing to do here
+    end
+    attr_reader :string
+  end
   
   class MemoryReference < Reference
   end
@@ -67,7 +85,7 @@ module Vm
     attr_reader :object
     
     def compile context
-      if object.is_a? String
+      if object.is_a? StringValue
         context.program.add_object object
       else
         #TODO define object layout more generally and let objects lay themselves out
