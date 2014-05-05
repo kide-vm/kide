@@ -11,12 +11,14 @@ module Support
         name = name.to_s
         if args.length == 1        #must be assignemnt for ir attr= val
           if name.include? "="
-            return @attributes[name.chop] = args[0]
+            #puts "setting :#{name.chop}:#{args[0]}"
+            return @attributes[name.chop.to_sym] = args[0]
           else 
             super
           end
         else
-          return @attributes[name]
+          #puts "getting :#{name}:#{@attributes[name.to_sym]}"
+          return @attributes[name.to_sym]
         end
       end
     end

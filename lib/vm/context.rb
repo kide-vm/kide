@@ -10,7 +10,7 @@ module Vm
     
     def initialize program
       @attributes = {}
-      @attributes["program"] = program
+      @attributes[:program] = program
     end
     
   end

@@ -54,12 +54,16 @@ module Vm
       fun
     end
     
+    # linking entry , main , exit
+    #         functions , objects
     def link_at( start , context)
       @position = start
       @entry.link_at( start , context )
       start += @entry.length
       @main.link_at( start , context )
       start += @main.length
+      @exit.link_at( start , context)
+      start += @exit.length
       @functions.each do |function|
         function.link_at(start , context)
         start += function.length
@@ -68,17 +72,26 @@ module Vm
         o.link_at(start , context)
         start += o.length
       end
-      @exit.link_at( start , context)
-      start += @exit.length
+    end
+
+    # assemble in the same order as linked
+    def assemble( io )
+      link_at( @position , {}) #second link in case of forward declarations
+      @entry.assemble( io )
+      @main.assemble( io )
+      @exit.assemble( io )
+      @functions.each do |function|
+        function.assemble(io)
+      end
+      @objects.each do |o|
+        o.assemble(io)
+      end
+      io
     end
     
     def main= code
       @main = code
     end
-        
-    private 
-    # the main function
-    def create_main
-    end
+
   end
 end

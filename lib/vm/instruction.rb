@@ -26,7 +26,7 @@ module Vm
     include Support::HashAttributes
     
     def initialize options
-      @options = options
+      @attributes = options
     end
   end
   

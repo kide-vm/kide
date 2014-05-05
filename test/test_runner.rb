@@ -29,6 +29,13 @@ class TestRunner < MiniTest::Test
     
     binary = program.assemble(StringIO.new )
 
+    writer = Elf::ObjectWriter.new(Elf::Constants::TARGET_ARM)
+
+    assembly = program.assemble(StringIO.new)
+
+    writer.set_text assembly
+    writer.save("#{file}_test.o")    
+
     puts program.to_yaml
   end
 

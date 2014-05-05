@@ -39,7 +39,7 @@ module Vm
     # so currently the interface passes the io (usually string_io) in for the code to assemble itself.
     # this may change as the writing is still done externally (or that will change)
     def assemble(io)
-      throw "Not implemented #{self}"
+      raise "Not implemented #{self.inspect}"
     end
   end
 end
