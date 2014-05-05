@@ -1,8 +1,19 @@
-# ast classes
+# abstract syntax tree (ast)
+# This Layer is semi automagically created by parslet using the transform
+
+# It in turn is responsible for the transformation to the next layer, vm code
+
+# This happens in the compile function which must return a Vm::Code derivative
+
+# PS: compare is only for tests and should be factored out to there
+
 module Ast
   class Expression
     def eval 
-      raise "abstract"
+      raise "abstract #{self}"
+    end
+    def compile context
+      raise "abstract #{self}"
     end
     def compare other , attributes
       return false unless other.class == self.class 
@@ -16,72 +27,9 @@ module Ast
     end
   end
 
-  class IntegerExpression < Expression
-    attr_reader :value
-    def initialize val
-      @value = val
-    end
-    def == other
-      compare other , [:value]
-    end
-  end
-
-  class NameExpression < Expression
-    attr_reader  :name
-    def initialize name
-      @name = name
-    end
-    def == other
-      compare other ,  [:name]
-    end
-  end
-
-  class StringExpression < Expression
-    attr_reader  :string
-    def initialize str
-      @string = str
-    end
-    def == other
-      compare other ,  [:string]
-    end
-  end
-
-  class FuncallExpression < Expression
-    attr_reader  :name, :args
-    def initialize name, args
-      @name , @args = name , args
-    end
-    def == other
-      compare other , [:name , :args]
-    end
-  end
-
-  class ConditionalExpression < Expression
-    attr_reader  :cond, :if_true, :if_false
-    def initialize cond, if_true, if_false
-      @cond, @if_true, @if_false = cond, if_true, if_false
-    end
-    def == other
-      compare other , [:cond, :if_true, :if_false]
-    end
-  end
-
-  class AssignmentExpression < Expression
-    attr_reader  :assignee, :assigned
-    def initialize assignee, assigned
-      @assignee, @assigned = assignee, assigned
-    end
-    def == other
-      compare other , [:assignee, :assigned]
-    end
-  end
-  class FunctionExpression < Expression
-    attr_reader  :name, :params, :block
-    def initialize name, params, block
-      @name, @params, @block = name, params, block
-    end
-    def == other
-      compare other , [:name, :params, :block]
-    end
-  end
 end
+
+require_relative "basic_expressions"
+require_relative "conditional_expression"
+require_relative "function_expression"
+require_relative "operator_expressions"
