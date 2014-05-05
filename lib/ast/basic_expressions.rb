@@ -26,9 +26,14 @@ module Ast
     def initialize str
       @string = str
     end
+
+    def compile context
+      # TODO check if needst to be added?
+      ObjectReference.new( StringValue.new(string) )
+    end
     def == other
       compare other ,  [:string]
     end
   end
-  
+
 end

@@ -96,5 +96,3 @@ module Vm
   end
 
 end
-
-require "ast/conversion"

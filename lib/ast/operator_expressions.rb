@@ -7,6 +7,15 @@ module Ast
     def initialize name, args
       @name , @args = name , args
     end
+  
+    def compile context
+      fun = Vm::FunctionCall.new( name , args.collect{ |a| a.compile(context) } )
+      fun.assign_function context
+      fun.load_args
+      #puts "funcall #{self.inspect}"
+      fun.do_call
+    end
+  
     def == other
       compare other , [:name , :args]
     end

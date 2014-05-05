@@ -6,32 +6,24 @@ module Vm
 
     def initialize(name , args)
       super(name)
-      @name = name
-      @values = args
+      @args = args
       @function = nil
     end
-    attr_reader  :function
-    def args
-      values
-    end
+    attr_reader  :function , :args
     
-    def compile context
+    def assign_function context
       @function = context.program.get_function @name
       if @function
-        raise "error #{self}" unless @function.arity != @values.length
+        raise "error #{self}" unless @function.arity != args.length
       else
         @function = context.program.get_or_create_function @name
       end
-      args.each_with_index do |arg |
-        arg.compile context
-      end
+    end
+    def load_args
       args.each_with_index do |arg , index|
         arg.load index
       end
-      #puts "funcall #{self.inspect}"
-      self.do_call
     end
-    
     def do_call
       Machine.instance.function_call self
     end
