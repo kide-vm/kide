@@ -97,4 +97,4 @@ module Vm
 
 end
 
-require_relative "conversion"
+require "ast/conversion"

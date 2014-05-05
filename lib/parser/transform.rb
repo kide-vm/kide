@@ -1,11 +1,11 @@
 require 'parslet'
-require_relative 'nodes'
+require 'ast/expression'
 
 module Parser
   class Transform < Parslet::Transform
-    rule(:integer => simple(:value)) { IntegerExpression.new(value.to_i) }
-    rule(:name   => simple(:name))  { NameExpression.new(name.to_s) }
-    rule(:string   => simple(:string))  { StringExpression.new(string.to_s) }
+    rule(:integer => simple(:value)) { Ast::IntegerExpression.new(value.to_i) }
+    rule(:name   => simple(:name))  { Ast::NameExpression.new(name.to_s) }
+    rule(:string   => simple(:string))  { Ast::StringExpression.new(string.to_s) }
 
     rule(:argument  => simple(:argument))    { argument  }
     rule(:argument_list => sequence(:argument_list)) { argument_list }
@@ -13,17 +13,17 @@ module Parser
     # need TWO transform rules, for one/many arguments (see the[] wrapping in the first)
     rule(:function_call => simple(:function_call),
           :argument_list    => simple(:argument))   do
-            FuncallExpression.new(function_call.name, [argument]) 
+            Ast::FuncallExpression.new(function_call.name, [argument]) 
           end
     rule( :function_call => simple(:function_call), 
           :argument_list    => sequence(:argument_list)) do
-           FuncallExpression.new(function_call.name, argument_list) 
+           Ast::FuncallExpression.new(function_call.name, argument_list) 
     end
 
     rule(:conditional     => simple(:conditional),
          :if_true  => {:expressions => sequence(:if_true)},
          :if_false => {:expressions => sequence(:if_false)}) do
-           ConditionalExpression.new(conditional, if_true, if_false) 
+           Ast::ConditionalExpression.new(conditional, if_true, if_false) 
          end
 
     rule(:parmeter  => simple(:parmeter))    { parmeter  }
@@ -33,17 +33,17 @@ module Parser
     rule(:function_definition   => simple(:function_definition),
          :parmeter_list => simple(:parmeter),
          :expressions   => sequence(:expressions)) do
-            FunctionExpression.new(function_definition.name, [parmeter], expressions) 
+            Ast::FunctionExpression.new(function_definition.name, [parmeter], expressions) 
           end
 
     rule(:function_definition   => simple(:function_definition),
          :parmeter_list => sequence(:parmeter_list),
          :expressions   => sequence(:expressions)) do
-            FunctionExpression.new(function_definition.name, parmeter_list, expressions) 
+            Ast::FunctionExpression.new(function_definition.name, parmeter_list, expressions) 
           end
     
     rule(:asignee => simple(:left) , :asigned => simple(:right) ) do
-      AssignmentExpression.new(left.name, right ) 
+      Ast::AssignmentExpression.new(left.name, right ) 
     end
     #shortcut to get the ast tree for a given string
     # optional second arguement specifies a rule that will be parsed (mainly for testing)     

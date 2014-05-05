@@ -7,7 +7,7 @@ class TestArguments < MiniTest::Test
   def test_one_argument
     @string_input    = '(42)'
     @parse_output = {:argument_list => [{:argument => {:integer => '42'}}] }
-    @transform_output =  [Parser::IntegerExpression.new(42) ]
+    @transform_output =  [Ast::IntegerExpression.new(42) ]
     @parser = @parser.argument_list
   end
 
@@ -15,14 +15,14 @@ class TestArguments < MiniTest::Test
     @string_input    = '(42, foo)'
     @parse_output = {:argument_list => [{:argument => {:integer => '42'}},
                                       {:argument => {:name   => 'foo'}}]}
-    @transform_output = [Parser::IntegerExpression.new(42), Parser::NameExpression.new('foo')]
+    @transform_output = [Ast::IntegerExpression.new(42), Ast::NameExpression.new('foo')]
     @parser = @parser.argument_list
   end
 
   def test_parmeter
     @string_input = "(foo)"
     @parse_output = {:parmeter_list => [{:parmeter => { :name => "foo"}} ]}
-    @transform_output = [Parser::NameExpression.new('foo')]
+    @transform_output = [Ast::NameExpression.new('foo')]
     @parser = @parser.parmeter_list
   end
 
@@ -30,7 +30,7 @@ class TestArguments < MiniTest::Test
     @string_input = "( foo , bar)"
     @parse_output = {:parmeter_list => [{:parmeter => { :name => "foo"}},
                                         {:parmeter => { :name => "bar"}} ]}
-    @transform_output = [Parser::NameExpression.new('foo') , Parser::NameExpression.new('bar')]
+    @transform_output = [Ast::NameExpression.new('foo') , Ast::NameExpression.new('bar')]
     @parser = @parser.parmeter_list
   end
 

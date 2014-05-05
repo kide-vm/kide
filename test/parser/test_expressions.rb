@@ -11,7 +11,7 @@ class TestExpressions < MiniTest::Test
 else
 HERE
     @parse_output = {:expressions=>[{:integer=>"4"}, {:integer=>"5"}]}
-    @transform_output = {:expressions=>[ Parser::IntegerExpression.new(4), Parser::IntegerExpression.new(5)]}
+    @transform_output = {:expressions=>[ Ast::IntegerExpression.new(4), Ast::IntegerExpression.new(5)]}
     @parser = @parser.expressions_else
   end
 
@@ -27,10 +27,10 @@ HERE
                   { :function_call => { :name => "call" } , 
                     :argument_list => [ {:argument => { :integer => "4" } } , 
                                         {:argument => { :integer => "6" } } ] } ]}
-    args = [ Parser::IntegerExpression.new(4) , Parser::IntegerExpression.new(6) ]
-    @transform_output = {:expressions=>[ Parser::IntegerExpression.new(5), 
-                                        Parser::NameExpression.new("name") ,
-                                        Parser::FuncallExpression.new("call", args ) ] }
+    args = [ Ast::IntegerExpression.new(4) , Ast::IntegerExpression.new(6) ]
+    @transform_output = {:expressions=>[ Ast::IntegerExpression.new(5), 
+                                        Ast::NameExpression.new("name") ,
+                                        Ast::FuncallExpression.new("call", args ) ] }
 
     @parser = @parser.expressions_end
   end

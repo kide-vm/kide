@@ -13,9 +13,9 @@ HERE
     @parse_output = {:function_definition   => {:name => 'foo'},
                 :parmeter_list => [{:parmeter => {:name => 'x'}}],
                 :expressions   => [{:integer => '5'}]}
-    @transform_output = Parser::FunctionExpression.new('foo', 
-                [Parser::NameExpression.new('x')], 
-                [Parser::IntegerExpression.new(5)])
+    @transform_output = Ast::FunctionExpression.new('foo', 
+                [Ast::NameExpression.new('x')], 
+                [Ast::IntegerExpression.new(5)])
   end
 
   def test_function_assignment
@@ -28,8 +28,8 @@ HERE
                   :parmeter_list => [{ :parmeter => { :name => "x" } }], 
                   :expressions => [ { :asignee => { :name => "abba" }, :asigned => { :integer => "5" } } ]
                 }
-    @transform_output = Parser::FunctionExpression.new( "foo", [Parser::NameExpression.new("x")],
-                           [Parser::AssignmentExpression.new( "abba", Parser::IntegerExpression.new(5) ) ])
+    @transform_output = Ast::FunctionExpression.new( "foo", [Ast::NameExpression.new("x")],
+                           [Ast::AssignmentExpression.new( "abba", Ast::IntegerExpression.new(5) ) ])
   end
 
     

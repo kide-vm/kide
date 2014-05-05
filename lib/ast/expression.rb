@@ -1,5 +1,5 @@
 # ast classes
-module Parser
+module Ast
   class Expression
     def eval 
       raise "abstract"

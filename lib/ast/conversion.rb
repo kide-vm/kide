@@ -1,4 +1,4 @@
-module Vm
+module Ast
   # Convert ast to vm-values via visitor pattern
   # We do this (what would otherwise seem like foot-shuffling) to keep the layers seperated
   # Ie towards the feature goal of reusing the same parse for several binary outputs 
@@ -19,8 +19,8 @@ module Vm
   end
   
 end
-require_relative "../parser/nodes"
+require_relative "expression"
 
-Parser::Expression.class_eval do
-  include Vm::Conversion
+Ast::Expression.class_eval do
+  include Ast::Conversion
 end

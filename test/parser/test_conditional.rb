@@ -15,8 +15,8 @@ HERE
     @parse_output = { :conditional => { :integer => "0"}, 
                   :if_true => {  :expressions => [ { :integer => "42" } ] } , 
                   :if_false => { :expressions => [ { :integer => "667" } ] } }
-    @transform_output = Parser::ConditionalExpression.new(  Parser::IntegerExpression.new(0),
-                  [Parser::IntegerExpression.new(42)], [Parser::IntegerExpression.new(667)])
+    @transform_output = Ast::ConditionalExpression.new(  Ast::IntegerExpression.new(0),
+                  [Ast::IntegerExpression.new(42)], [Ast::IntegerExpression.new(667)])
 
     @parser = @parser.conditional
   end
