@@ -21,11 +21,12 @@ module Vm
     end
     def load_args
       args.each_with_index do |arg , index|
-        arg.load index
+        add_code arg.load(index)
       end
     end
+
     def do_call
-      Machine.instance.function_call self
+      add_code Machine.instance.function_call self
     end
   end
 end

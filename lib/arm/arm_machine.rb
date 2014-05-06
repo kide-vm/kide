@@ -33,8 +33,16 @@ module Arm
     def word_load value , reg
       mov( :left => reg , :right => value )
     end
+    def string_load str_lit , reg
+      [  add( :left => "r#{reg}".to_sym   , :extra => str_lit ) ,  #right is pc, implicit
+        #second arg is a hack to get the stringlength without coding
+         mov( :left => "r#{reg+1}".to_sym , :right => str_lit.length ) ] 
+    end
+
     def function_call call
       raise "Not FunctionCall #{call.inspect}" unless call.is_a? Vm::FunctionCall
+      call.args.each do | arg |
+      end
       bl( :left => call.function )
     end
 
@@ -44,18 +52,28 @@ module Arm
     end
     def main_exit
       entry = Vm::Block.new("main_exit")
-      entry.add_code syscall(0)
+      entry.add_code syscall(1)
     end
     def function_entry f_name
       entry = Vm::Block.new("#{f_name}_entry")
-      entry.add_code  push( :left => :lr )
+#      entry.add_code  push( :left => :lr )
     end
     def function_exit f_name
       entry = Vm::Block.new("#{f_name}_exit")
-      entry.add_code  pop( :left => :pc )
+      entry.add_code  mov( :left => :pc , :right => :lr )
     end
+    def putstring
+      put = Vm::Block.new("putstring_code")
+      # should be another level of indirection, ie write(io,str)
+      put.add_code mov( :left => :r2 , :right => :r1 )
+      put.add_code mov( :left => :r1 , :right => :r0 )
+      put.add_code mov( :left => :r0 , :right => 1 ) #stdout
+      put.add_code  syscall(4)
+    end
+    private     
     def syscall num
       [mov( :left => :r7 , :right => num ) ,  swi( :left => 0 )]
     end
+
   end
 end

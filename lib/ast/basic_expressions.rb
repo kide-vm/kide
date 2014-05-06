@@ -29,8 +29,9 @@ module Ast
     end
 
     def compile context
-      # TODO check if needst to be added?
-      Vm::ObjectReference.new( Vm::StringValue.new(string) )
+      value = Vm::StringLiteral.new(string)
+      context.program.add_object value 
+      value
     end
     def == other
       compare other ,  [:string]

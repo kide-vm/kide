@@ -4,11 +4,6 @@ module Arm
   module LogicHelper
     # ADDRESSING MODE 1 
     # Logic ,Maths, Move and compare instructions (last three below)
-    # Build representation for source value 
-    def build
-      @rn = @args[1]
-      do_build @args[2] 
-    end
     
     # arm intrucioons are pretty sensible, and always 4 bytes (thumb not supported)
     def length
@@ -21,6 +16,7 @@ module Arm
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
         arg = Arm::NumLiteral.new( arg.position - self.position - 8 )
+        @rn = :pc
       end
       if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
         arg = Arm::NumLiteral.new( arg )
@@ -36,7 +32,7 @@ module Arm
         else
           raise "cannot fit numeric literal argument in operand #{arg}"
         end
-      elsif (arg.is_a?(Arm::Register))
+      elsif (arg.is_a?(Symbol))
         @operand = arg
         @i = 0
       elsif (arg.is_a?(Arm::Shift))
@@ -64,7 +60,7 @@ module Arm
     
         @operand = rm_ref | (shift_op << 4) | (shift_imm << 4+3)
       else
-        raise "invalid operand argument #{arg.inspect}"
+        raise "invalid operand argument #{arg.inspect} , #{inspect}"
       end
     end
 
@@ -87,7 +83,7 @@ module Arm
     include LogicHelper
 
     def initialize(options)
-      super(options) 
+      super(options)
       @update_status_flag = 0
       @condition_code = :al
       @opcode = options[:opcode]
@@ -96,9 +92,14 @@ module Arm
 
       @rn = nil
       @i = 0      
-      @rd = args[0]
+      @rd = @args[0]
     end
     attr_accessor :i, :rn, :rd
+    # Build representation for source value 
+    def build
+      @rn = @args[1]
+      do_build @args[2] 
+    end
 
   end
   class CompareInstruction < Vm::CompareInstruction

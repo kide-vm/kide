@@ -56,12 +56,12 @@ module Vm
         obj.assemble io
       end
     end
-
+    
     # set the next executed block after self.
     # why is this useful? if it's unconditional, why not merge them:
     #    So the second block can be used as a jump target. You standard loop needs a block to setup
     #    and at least one to do the calculation
-    def next block
+    def set_next block
       @next = block
     end
 

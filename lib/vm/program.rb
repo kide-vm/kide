@@ -49,6 +49,8 @@ module Vm
       fun = get_function name
       unless fun
         fun = Function.new(name)
+        block = Core::Kernel.send(name)
+        fun.set_body block
         @functions << fun
       end
       fun

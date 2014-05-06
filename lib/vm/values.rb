@@ -41,40 +41,36 @@ module Vm
     end
   end
   
-  class Float < Word
-  end
+  # The name really says it all.
+  # The only interesting thing is storage.
+  # Currently string are stored "inline" , ie in the code segment. 
+  # Mainly because that works an i aint no elf expert.
   
-  class Reference < Word
-  end
-  class StringValue < Value
-    def initialize string
-      @string = string
-    end
-    def length
-      @string.length + 3
+  class StringLiteral < Value
+    
+    # currently aligned to 4 (ie padded with 0) and off course 0 at the end
+    def initialize(str)
+      super()
+      length = str.length 
+      # rounding up to the next 4 (always adding one for zero pad)
+      pad =  ((length / 4 ) + 1 ) * 4 - length
+      raise "#{pad} #{self}" unless pad >= 1
+      @string = str + "\x00" * pad 
     end
     attr_reader :string
-  end
-  
-  class MemoryReference < Reference
-  end
 
-  class ObjectReference < Reference
-    def initialize obj
-      @object = obj
+    def load reg_num
+      Machine.instance.string_load self , reg_num
     end
-    attr_reader :object
+
+    # the strings length plus padding
+    def length
+      @string.length
+    end
     
-    def compiled context
-      if object.is_a? StringValue
-        context.program.add_object object
-      else
-        #TODO define object layout more generally and let objects lay themselves out
-        # as it is the program does this (in the objectwriter/stringtable)
-        un.done
-      end
+    # just writing the string
+    def assemble(io)
+      io << @string
     end
   end
-
 end
-require_relative "string_literal"

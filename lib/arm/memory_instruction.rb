@@ -7,16 +7,22 @@ module Arm
   class MemoryInstruction < Vm::MemoryInstruction
     include Arm::Constants
 
-    def initialize(opcode , condition_code , update_status , args)
-      super(opcode , condition_code , update_status , args)
+    def initialize(options)
+      super(options)
+      @update_status_flag = 0
+      @condition_code = :al
+      @opcode = options[:opcode]
+      @args = [options[:left] , options[:right] ]
+      @operand = 0
+
       @i = 0 #I flag (third bit)
       @pre_post_index = 0 #P flag
       @add_offset = 0 #U flag
       @byte_access = opcode.to_s[-1] == "b" ? 1 : 0 #B (byte) flag
       @w = 0 #W flag
       @is_load = opcode.to_s[0] == "l" ? 1 : 0 #L (load) flag
-      @rn = reg "r0" # register zero = zero bit pattern
-      @rd = reg "r0" # register zero = zero bit pattern
+      @rn = :r0 # register zero = zero bit pattern
+      @rd = :r0 # register zero = zero bit pattern
     end
     attr_accessor :i, :pre_post_index, :add_offset,
                   :byte_access, :w, :is_load, :rn, :rd
@@ -29,17 +35,17 @@ module Arm
     # Build representation for target address
     def build
       if( @is_load )
-        @rd = args[0]
-        arg = args[1]
+        @rd = @args[0]
+        arg = @args[1]
       else #store
-        @rd = args[1]
-        arg = args[0]
+        @rd = @args[1]
+        arg = @args[0]
       end
       #str / ldr are _serious instructions. With BIG possibilities not half are implemented
-      if (arg.is_a?(Arm::Register))
+      if (arg.is_a?(Symbol)) #symbol is register
         @rn = arg
-        if(arg.offset != 0) 
-          @operand = arg.offset
+        if options[:offset]
+          @operand = options[:offset]
           if (@operand < 0)
             @add_offset = 0
             #TODO test/check/understand
@@ -50,6 +56,13 @@ module Arm
           if (@operand.abs > 4095)
             raise "reference offset too large/small (max 4095) #{arg} #{inspect}"
           end
+        end
+      elsif (arg.is_a?(Vm::StringLiteral)) #use pc relative
+        @rn = :pc
+        @operand = arg.position - self.position  - 8 #stringtable is after code
+        @add_offset = 1
+        if (@operand.abs > 4095)
+          raise "reference offset too large/small (max 4095) #{arg} #{inspect}"
         end
       elsif (arg.is_a?(Arm::Label) or arg.is_a?(Arm::NumLiteral))
         @pre_post_index = 1
@@ -69,9 +82,9 @@ module Arm
       @add_offset = 1
       @pre_post_index = 1
       instuction_class =  0b01 # OPC_MEMORY_ACCESS
-      val = operand  
-      val |= (rd.bits <<        12 )  
-      val |= (rn.bits <<        12+4) #16  
+      val = @operand.is_a?(Symbol) ? reg_code(@operand) : @operand 
+      val |= (reg_code(rd) <<        12 )  
+      val |= (reg_code(rn) <<        12+4) #16  
       val |= (is_load <<        12+4  +4)
       val |= (w <<              12+4  +4+1)
       val |= (byte_access <<    12+4  +4+1+1)
@@ -81,6 +94,7 @@ module Arm
       val |= (instuction_class<<12+4  +4+1+1+1+1  +1+1)  
       val |= (cond_bit_code <<  12+4  +4+1+1+1+1  +1+1+2)
       io.write_uint32 val
+      
     end
   end
 end

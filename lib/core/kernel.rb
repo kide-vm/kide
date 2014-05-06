@@ -2,7 +2,7 @@ module Core
   class Kernel
     
     #there are no Kernel instances, only class methods.
-    # We use this module syntax to avoid the (ugly) self.
+    # We use this module syntax to avoid the (ugly) self (also eases searching).
     module ClassMethods
       def main_start
         #TODO extract args into array of strings
@@ -18,9 +18,9 @@ module Core
       def function_exit f_name
         Vm::Machine.instance.function_exit f_name
       end
-      def self.puts string
+      def putstring
         # should unwrap from string to char*
-        Vm::Machine.instance.puts string
+        Vm::Machine.instance.putstring 
       end
     end
     

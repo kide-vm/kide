@@ -21,7 +21,6 @@ module Vm
     # in other words, during assembly the position _must_ be resolved into a pc relative address
     # and not used as is
     def position
-      throw "Not set" unless @position
       @position 
     end
     
