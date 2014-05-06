@@ -71,7 +71,6 @@ module Arm
     def assemble(io)
       build
       instuction_class = 0b00 # OPC_DATA_PROCESSING
-      puts inspect
       val = @operand.is_a?(Symbol) ? reg_code(@operand) : @operand 
       val |= (reg_code(@rd) <<            12)     
       val |= (reg_code(@rn) <<            12+4)   

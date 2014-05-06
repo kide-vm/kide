@@ -15,8 +15,8 @@ module Vm
     def initialize(name , args = [])
       super(name)
       @args = args
-      @entry = Block.new("entry_#{name}")
-      @exit = Block.new("exit_#{name}")
+      @entry = Kernel::function_entry( name )
+      @exit = Kernel::function_exit( name )
     end
     attr_reader :args , :entry , :exit
     

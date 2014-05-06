@@ -31,21 +31,28 @@ module Arm
     end
     
     def word_load value , reg
-      e = Vm::Block.new("load_#{value}")
-      e.add_code( MoveInstruction.new( :left => reg , :right => value ) )
+      mov( :left => reg , :right => value )
     end
     def function_call call
       raise "Not FunctionCall #{call.inspect}" unless call.is_a? Vm::FunctionCall
       bl( :left => call.function )
     end
 
-    def main_entry
+    def main_start
       entry = Vm::Block.new("main_entry")
       entry.add_code  mov( :left => :fp , :right => 0 )
     end
     def main_exit
       entry = Vm::Block.new("main_exit")
       entry.add_code syscall(0)
+    end
+    def function_entry f_name
+      entry = Vm::Block.new("#{f_name}_entry")
+      entry.add_code  push( :left => :lr )
+    end
+    def function_exit f_name
+      entry = Vm::Block.new("#{f_name}_exit")
+      entry.add_code  pop( :left => :pc )
     end
     def syscall num
       [mov( :left => :r7 , :right => num ) ,  swi( :left => 0 )]

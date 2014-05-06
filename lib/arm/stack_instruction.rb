@@ -19,7 +19,7 @@ module Arm
       @operand = 0
 
       @update_status_flag= 0
-      @rn = reg "r0" # register zero = zero bit pattern
+      @rn = :r0 # register zero = zero bit pattern
       # downward growing, decrement before memory access
       # official ARM style stack as used by gas
       @write_base = 1
@@ -40,10 +40,10 @@ module Arm
       build
       instuction_class = 0b10 # OPC_STACK
       cond = @condition_code.is_a?(Symbol) ?  COND_CODES[@condition_code]   : @condition_code
-      rn = reg "sp" # sp register
+      @rn = :sp # sp register
       #assemble of old
-      val = operand
-      val |= (rn.bits <<             16)
+      val = @operand
+      val |= (reg_code(@rn) <<             16)
       val |= (is_pop <<              16+4) #20
       val |= (write_base <<          16+4+ 1) 
       val |= (update_status_flag <<  16+4+ 1+1) 
@@ -57,13 +57,14 @@ module Arm
     private 
     # Build representation for source value
     def build
-      if (args.is_a?(Array))
+      if (@args.is_a?(Array))
         @operand = 0
-        args.each do |reg |
-          @operand |= (1 << reg.bits)
+        @args.each do |reg |
+          next unless reg
+          @operand |= (1 << reg_code(reg))
         end
       else
-        raise "invalid operand argument  #{args.inspect}"
+        raise "invalid operand argument  #{@args.inspect} #{inspect}"
       end
     end
   end
