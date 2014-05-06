@@ -28,10 +28,10 @@ module Vm
       @objects = []
       # global functions
       @functions = []
-      @entry = Vm::Kernel::main_start
+      @entry = Core::Kernel::main_start
       #main gets executed between entry and exit
       @main = nil
-      @exit = Vm::Kernel::main_exit
+      @exit = Core::Kernel::main_exit
     end
     attr_reader :context , :main , :functions
     

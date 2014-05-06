@@ -1,4 +1,7 @@
 module Core
-  module Integer
+  class Integer
+    module ClassMethods
+    end
+    extend ClassMethods    
   end
 end

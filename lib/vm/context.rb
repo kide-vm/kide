@@ -1,4 +1,4 @@
-require_relative "kernel"
+require "core/kernel"
 require_relative "program"
 
 module Vm

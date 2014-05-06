@@ -15,8 +15,8 @@ module Vm
     def initialize(name , args = [])
       super(name)
       @args = args
-      @entry = Kernel::function_entry( name )
-      @exit = Kernel::function_exit( name )
+      @entry = Core::Kernel::function_entry( name )
+      @exit = Core::Kernel::function_exit( name )
     end
     attr_reader :args , :entry , :exit
     
@@ -27,7 +27,7 @@ module Vm
     def link_at address , context
 #      function = context.program.get_function(name)
 #      unless function
-#        function = Vm::Kernel.send(name)
+#        function = Core::Kernel.send(name)
 #        context.program.get_or_create_function( name , function , arity )
 #      end
 
