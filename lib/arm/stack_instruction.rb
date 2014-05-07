@@ -10,12 +10,12 @@ module Arm
       4
     end
 
-    def initialize(options)
-      super(options) 
+    def initialize(attributes)
+      super(attributes) 
       @update_status_flag = 0
       @condition_code = :al
-      @opcode = options[:opcode]
-      @args = [options[:left] , options[:right] , options[:extra]]
+      @opcode = attributes[:opcode]
+      @args = [attributes[:left] , attributes[:right] , attributes[:extra]]
       @operand = 0
 
       @update_status_flag= 0

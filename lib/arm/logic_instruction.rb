@@ -82,12 +82,12 @@ module Arm
     include Arm::Constants
     include LogicHelper
 
-    def initialize(options)
-      super(options)
+    def initialize(attributes)
+      super(attributes)
       @update_status_flag = 0
       @condition_code = :al
-      @opcode = options[:opcode]
-      @args = [options[:left] , options[:right] , options[:extra]]
+      @opcode = attributes[:opcode]
+      @args = [attributes[:left] , attributes[:right] , attributes[:extra]]
       @operand = 0
 
       @rn = nil
@@ -103,11 +103,14 @@ module Arm
 
   end
   class CompareInstruction < Vm::CompareInstruction
-    def initialize(options)
-      super(options) 
+    include Arm::Constants
+    include LogicHelper
+
+    def initialize(attributes)
+      super(attributes) 
       @condition_code = :al
-      @opcode = options[:opcode]
-      @args = [options[:left] , options[:right] , options[:extra]]
+      @opcode = attributes[:opcode]
+      @args = [attributes[:left] , attributes[:right] , attributes[:extra]]
       @operand = 0
       @i = 0      
       @update_status_flag = 1
@@ -115,19 +118,19 @@ module Arm
       @rd = :r0
     end
     def build 
-      do_build args[1]
+      do_build @args[1]
     end
   end
   class MoveInstruction < Vm::MoveInstruction
     include Arm::Constants
     include LogicHelper
 
-    def initialize(options) 
-      super(options)
+    def initialize(attributes) 
+      super(attributes)
       @update_status_flag = 0
       @condition_code = :al
-      @opcode = options[:opcode]
-      @args = [options[:left] , options[:right] , options[:extra]]
+      @opcode = attributes[:opcode]
+      @args = [attributes[:left] , attributes[:right] , attributes[:extra]]
       @operand = 0
 
       @i = 0      

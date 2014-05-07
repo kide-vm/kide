@@ -7,12 +7,12 @@ module Arm
   class MemoryInstruction < Vm::MemoryInstruction
     include Arm::Constants
 
-    def initialize(options)
-      super(options)
+    def initialize(attributes)
+      super(attributes)
       @update_status_flag = 0
       @condition_code = :al
-      @opcode = options[:opcode]
-      @args = [options[:left] , options[:right] ]
+      @opcode = attributes[:opcode]
+      @args = [attributes[:left] , attributes[:right] ]
       @operand = 0
 
       @i = 0 #I flag (third bit)
@@ -44,8 +44,8 @@ module Arm
       #str / ldr are _serious instructions. With BIG possibilities not half are implemented
       if (arg.is_a?(Symbol)) #symbol is register
         @rn = arg
-        if options[:offset]
-          @operand = options[:offset]
+        if @attributes[:offset]
+          @operand = @attributes[:offset]
           if (@operand < 0)
             @add_offset = 0
             #TODO test/check/understand

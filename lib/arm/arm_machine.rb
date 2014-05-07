@@ -16,15 +16,15 @@ module Arm
     def define_instruction inst , clazz
       super
       return
-      # need to use create_method and move to options hash
+      # need to use create_method and move to attributes hash
       define_method("#{inst}s") do |*args|
         instruction clazz , inst , :al , 1 , *args
       end
       ArmMachine::COND_CODES.keys.each do |suffix|
-        define_method("#{inst}#{suffix}") do |options|
+        define_method("#{inst}#{suffix}") do |attributes|
           instruction clazz , inst , suffix , 0 , *args
         end
-        define_method("#{inst}s#{suffix}") do |options|
+        define_method("#{inst}s#{suffix}") do |attributes|
           instruction clazz , inst , suffix , 1 , *args
         end
       end
