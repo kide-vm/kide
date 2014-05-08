@@ -30,7 +30,7 @@ module Vm
       @functions = []
       @entry = Core::Kernel::main_start
       #main gets executed between entry and exit
-      @main = nil
+      @main = Block.new("main")
       @exit = Core::Kernel::main_exit
     end
     attr_reader :context , :main , :functions

@@ -30,7 +30,7 @@ module Arm
           @operand = op_with_rot
           @i = 1
         else
-          raise "cannot fit numeric literal argument in operand #{arg}"
+          raise "cannot fit numeric literal argument in operand #{arg.inspect}"
         end
       elsif (arg.is_a?(Symbol))
         @operand = arg

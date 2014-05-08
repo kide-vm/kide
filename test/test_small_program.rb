@@ -9,16 +9,16 @@ require_relative 'helper'
 class TestSmallProg < MiniTest::Test
   # need a code generator, for arm 
   def setup
-    @program = Asm::Assembler.new
+    @program = Vm::Program.new "Arm"
   end
 
   def test_loop
-    @program.main do
-      mov r0, 5                #1
+    @program.main.instance_eval do
+      mov :r0, 5                #1
       start do
-        subs r0, r0, 1       #2
+        subs :r0, :r0, 1       #2
         bne :start           #3
-        mov r7, 1               #4
+        mov :r7, 1               #4
       	swi 0                   #5  5 instructions
       end
     end
@@ -26,23 +26,25 @@ class TestSmallProg < MiniTest::Test
   end
 
   def test_hello
-    hello = "Hello Raisa\n"
-    @program.main do 
-      mov r7, 4     # 4 == write
-      mov r0 , 1    # stdout
-      add r1 , pc , hello   # address of "hello Raisa"
-      mov r2 , hello.length
-    	swi 0         #software interupt, ie kernel syscall
-      mov r7, 1     # 1 == exit
-    	swi 0
+    hello = Vm::StringLiteral.new "Hello Raisa\n"
+    @program.add_object hello
+    @program.main.instance_eval do 
+      mov :left =>:r7, :right => 4     # 4 == write
+      mov :left =>:r0 , :right => 1    # stdout
+      add :left =>:r1 , :extra => hello   # address of "hello Raisa"
+      mov :left =>:r2 , :right => hello.length
+    	swi :left => 0         #software interupt, ie kernel syscall
+      mov :left => :r7, :right => 1     # 1 == exit
+    	swi :left => 0
     end
-    write(7 + hello.length/4 + 1 , 'hello') 
+    write(9 + hello.length/4 + 1 , 'hello') 
   end
 
   #helper to write the file
   def write len ,name
     writer = Elf::ObjectWriter.new(Elf::Constants::TARGET_ARM)
-    assembly = @program.assemble_to_string
+    io = @program.assemble(StringIO.new)
+    assembly = io.string
     assert_equal len * 4 , assembly.length 
     writer.set_text assembly
     writer.save("#{name}_test.o")    

@@ -65,6 +65,16 @@ module Vm
       @next = block
     end
 
+    # sugar to create instructions easily. Any method with one arg is sent to the machine and the result
+    # (hopefully an instruction) added as code
+    def method_missing(meth, *args, &block)
+      if args.length == 1
+        add_code Machine.instance.send(meth , *args)
+      else
+        super
+      end
+    end
+
   end
 
 end
