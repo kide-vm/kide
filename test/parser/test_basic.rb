@@ -18,6 +18,13 @@ class TestBasic < MiniTest::Test
     @parser = @parser.name
   end
 
+  def test_comment
+    @string_input    = '# i am a comment\n' #NEEDS the return, which is what delimits the comment
+    @parse_output = {:comment => ' i am a comment'}
+    @transform_output = @parse_output #dont transform
+    @parser = @parser.comment
+  end
+
   def test_string
     @string_input    = <<HERE
 "hello" 
