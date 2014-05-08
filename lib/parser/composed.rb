@@ -46,7 +46,7 @@ module Parser
     rule(:expressions_end)    { delimited_expressions(keyword_end) }
 
     rule(:function_definition) {
-      keyword_def >> name.as(:function_definition) >> parmeter_list >> expressions_end
+      keyword_def >> name.as(:function_definition) >> parmeter_list >> newline >> expressions_end
     }
 
     rule(:parmeter_list) {

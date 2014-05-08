@@ -19,8 +19,10 @@ class TestBasic < MiniTest::Test
   end
 
   def test_comment
-    @string_input    = '# i am a comment\n' #NEEDS the return, which is what delimits the comment
-    @parse_output = {:comment => ' i am a comment'}
+    out = "# i am a comment \n"
+    @string_input    =  out.dup #NEEDS the return, which is what delimits the comment
+    out = out[1..-2]
+    @parse_output = {:comment => out}
     @transform_output = @parse_output #dont transform
     @parser = @parser.comment
   end
