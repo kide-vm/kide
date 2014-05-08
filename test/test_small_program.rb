@@ -14,15 +14,17 @@ class TestSmallProg < MiniTest::Test
 
   def test_loop
     @program.main.instance_eval do
-      mov :r0, 5                #1
-      start do
-        subs :r0, :r0, 1       #2
-        bne :start           #3
-        mov :r7, 1               #4
-      	swi 0                   #5  5 instructions
+      mov :left => :r0, :right => 5                #1
+      start = Vm::Block.new("start")
+      add_code start
+      start.instance_eval do
+        #subs :left => :r0, :right => :r0, :offset => 1       #2
+        #bne :left => :start           #3
+        mov :left => :r7, :right => 1               #4
+      	swi :left => 0                   #5  5 instructions
       end
     end
-    write( 5 , "loop" )
+    write( 6 , "loop" )
   end
 
   def test_hello
