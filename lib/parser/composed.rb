@@ -26,11 +26,11 @@ module Parser
     rule(:function_call) { name.as(:function_call) >> argument_list }
 
     rule(:assignment) { name.as(:asignee) >> equal_sign >> expression.as(:asigned)  }
-
-    rule(:expression) { conditional | function_call | integer | string | (name >> space? >> equal_sign.absent?) }
+    #| (name >> space? >> equal_sign.absent?)
+    rule(:expression) { conditional | function_call | integer | string  }
 
     def delimited_expressions( delimit )
-      ( space? >> (delimit.absent? >> (assignment | expression)).repeat(1)).as(:expressions) >> delimit
+      ( (delimit.absent? >> (assignment | expression)).repeat(1)).as(:expressions) >> delimit
     end
     
     rule(:conditional) {

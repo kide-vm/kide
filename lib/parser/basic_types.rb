@@ -19,13 +19,13 @@ module Parser
     rule(:plus) { str('+') }
     rule(:equal_sign) { str('=') >> space?}
     rule(:sign) { plus | minus }
-    rule(:dot) { str('.') }
+    rule(:dot) {  str('.') }
     rule(:digit) { match('[0-9]') }
     rule(:exponent) { (str('e')| str('E')) }
  
-    rule(:true) { str('true').as(:true) >> space?}
-    rule(:false) {      str('false').as(:false) >> space?}
-    rule(:nil) { str('null').as(:nil) >> space?}
+    rule(:true) {   str('true').as(:true) >> space?}
+    rule(:false){   str('false').as(:false) >> space?}
+    rule(:nil)  {   str('null').as(:nil) >> space?}
     
     # identifier must start with lower case
     rule(:name)   { (match['a-z'] >> match['a-zA-Z0-9'].repeat).as(:name)  >> space? }

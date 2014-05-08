@@ -26,9 +26,7 @@ class TestBasic < MiniTest::Test
   end
 
   def test_string
-    @string_input    = <<HERE
-"hello" 
-HERE
+    @string_input    = "\"hello\""
     @parse_output =  {:string=>"hello"}
     @transform_output =  Ast::StringExpression.new('hello')
     @parser = @parser.string
