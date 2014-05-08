@@ -1,5 +1,6 @@
 require_relative 'helper'
 require "yaml"
+require "parslet/convenience"
 class TestRunner < MiniTest::Test
 
   # this creates test methods dynamically , one for each file in runners directory
@@ -18,10 +19,11 @@ class TestRunner < MiniTest::Test
 
   def execute file
     string = File.read(file)
-    syntax    = Parser::Composed.new.parse(string)
-    main      = Parser::Transform.new.apply(syntax)
-    
+    parser = Parser::Composed.new
+    syntax    = parser.function_definition.parse_with_debug(string)
     program = Vm::Program.new "Arm"
+    main      = Parser::Transform.new.apply(syntax)
+
 
     program.main = main.compile( program.context )
 
