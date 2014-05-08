@@ -19,7 +19,8 @@ module Parser
 
     rule(:argument_list) {
       left_parenthesis >>
-      ((expression.as(:argument) >> (comma >> expression.as(:argument)).repeat(0)).repeat(0,1)).as(:argument_list) >>
+      (  (simple_expression.as(:argument) >> 
+          (comma >> simple_expression.as(:argument)).repeat(0)).repeat(0,1)).as(:argument_list) >>
       right_parenthesis
     }
 
@@ -27,7 +28,9 @@ module Parser
 
     rule(:assignment) { name.as(:asignee) >> equal_sign >> expression.as(:asigned)  }
     #| (name >> space? >> equal_sign.absent?)
-    rule(:expression) { conditional | function_call | integer | string  }
+
+    rule(:simple_expression) { function_call | integer | string | name }
+    rule(:expression) { conditional | simple_expression  }
 
     def delimited_expressions( delimit )
       ( (delimit.absent? >> (assignment | expression)).repeat(1)).as(:expressions) >> delimit
