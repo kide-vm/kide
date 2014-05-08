@@ -30,14 +30,14 @@ module Parser
     #| (name >> space? >> equal_sign.absent?)
 
     rule(:simple_expression) { function_call | integer | string | name }
-    rule(:expression) { conditional | simple_expression  }
+    rule(:expression) { (conditional | simple_expression ) >> newline.maybe }
 
     def delimited_expressions( delimit )
-      ( (delimit.absent? >> (assignment | expression)).repeat(1)).as(:expressions) >> delimit
+      ( (delimit.absent? >> (assignment | expression)).repeat(1)).as(:expressions) >> delimit >> newline.maybe
     end
     
     rule(:conditional) {
-      keyword_if >> left_parenthesis >> expression.as(:conditional) >> right_parenthesis >>
+      keyword_if >> left_parenthesis >> expression.as(:conditional) >> right_parenthesis >> newline >>
         delimited_expressions(keyword_else).as(:if_true) >> 
         delimited_expressions(keyword_end).as(:if_false)
     }

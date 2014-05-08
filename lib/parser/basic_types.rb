@@ -8,11 +8,11 @@ module Parser
     # rule of thumb is that anything eats space behind it, but only space, no newlines
     rule(:space)  { (str('\t') | str(' ')).repeat(1) }
     rule(:space?) { space.maybe }
-    rule(:newline){ str('\n') }
+    rule(:newline){ str("\n") >> space?}
     
     rule(:comment){ match('#') >> (newline.absent? >> any).repeat.as(:comment) >> newline }
 
-    rule(:eol) { (newline >> space?) | any.absent? }
+    rule(:eol) { newline  | any.absent? }
     
     rule(:double_quote){ str('"') }
     rule(:minus) { str('-') }

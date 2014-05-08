@@ -6,7 +6,7 @@ class TestConditional < MiniTest::Test
     
   def test_conditional
     @string_input = <<HERE
-if (0) 
+if(0) 
   42
 else
   667
