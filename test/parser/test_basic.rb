@@ -29,19 +29,16 @@ class TestBasic < MiniTest::Test
 
   def test_string
     @string_input    = "\"hello\""
-    @parse_output =  {:string=>"hello"}
+    @parse_output =  {:string=>[{:char=>"h"}, {:char=>"e"}, {:char=>"l"}, {:char=>"l"}, {:char=>"o"}]}
     @transform_output =  Ast::StringExpression.new('hello')
     @parser = @parser.string
   end
 
   def test_string_escapes
-    out = "hello  nyou"
-    out[6] = '\\'
-    @string_input    = "\"#{out}\""
-    # puts will show that this is a string with a \n in it. 
-    # but he who knows the ruby string rules well enough to do this in the input may win a beer at the ...
-    # puts @string_input
-    @parse_output =  {:string=>out} #chop quotes off
+    out = 'hello  \nyou'
+    @string_input    = '"' + out + '"'
+    @parse_output =  {:string=>[{:char=>"h"}, {:char=>"e"}, {:char=>"l"}, {:char=>"l"}, {:char=>"o"}, 
+      {:char=>" "}, {:char=>" "}, {:esc=>"n"}, {:char=>"y"}, {:char=>"o"}, {:char=>"u"}]}
     @transform_output =  Ast::StringExpression.new(out)
     @parser = @parser.string
   end

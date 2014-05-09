@@ -10,6 +10,9 @@ module Parser
     rule(:space?) { space.maybe }
     rule(:newline){ str("\n") >> space?}
     
+    rule(:quote)      { str('"') }
+    rule(:nonquote)   { str('"').absent? >> any }
+
     rule(:comment){ match('#') >> (newline.absent? >> any).repeat.as(:comment) >> newline }
 
     rule(:eol) { newline  | any.absent? }
@@ -30,15 +33,22 @@ module Parser
     # identifier must start with lower case
     rule(:name)   { (match['a-z'] >> match['a-zA-Z0-9'].repeat).as(:name)  >> space? }
     
-    rule(:string_special) { match['\0\t\n\r"\\\\'] }
-    rule(:escaped_special) { str("\\") >> match['0tnr"\\\\'] }
+    rule(:escape)     { str('\\') >> any.as(:esc) }
+    rule(:string)     { quote >> (
+        escape | 
+        nonquote.as(:char)
+      ).repeat(1).as(:string) >> quote }
+    
+    
+#    rule(:string_special) { match['\0\t\n\r"\\\\'] }
+#    rule(:escaped_special) { str("\\") >> match['0tnr"\\\\'] }
     
     #anything in double quotes
-    rule(:string){
-      double_quote >> 
-      ( escaped_special | string_special.absent? >> any ).repeat.as(:string) >> 
-      double_quote >> space?
-    }
+#    rule(:string){
+#      double_quote >> 
+#      ( escaped_special | string_special.absent? >> any ).repeat.as(:string) >> 
+#      double_quote >> space?
+#    }
     rule(:integer)    { sign.maybe >> digit.repeat(1).as(:integer) >> space? }
     
     rule(:float) { integer >>  dot >> integer >> 

@@ -3,9 +3,12 @@ require 'ast/expression'
 
 module Parser
   class Transform < Parslet::Transform
+    rule(:string => sequence(:chars)) { Ast::StringExpression.new chars.join }
+    rule(:esc => simple(:esc)) { '\\' +  esc }
+    rule(char: simple(:char)) { char }
+    
     rule(:integer => simple(:value)) { Ast::IntegerExpression.new(value.to_i) }
     rule(:name   => simple(:name))  { Ast::NameExpression.new(name.to_s) }
-    rule(:string   => simple(:string))  { Ast::StringExpression.new(string.to_s) }
 
     rule(:argument  => simple(:argument))    { argument  }
     rule(:argument_list => sequence(:argument_list)) { argument_list }

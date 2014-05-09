@@ -24,7 +24,8 @@ class TestFunctionCall < MiniTest::Test
   def test_function_call_string
     @string_input    = 'puts( "hello")'
     @parse_output = {:function_call => {:name => 'puts' },
-                      :argument_list    => [{:argument => {:string => 'hello'}}]}
+                      :argument_list    => [{:argument => 
+                        {:string=>[{:char=>"h"}, {:char=>"e"}, {:char=>"l"}, {:char=>"l"}, {:char=>"o"}]}}]}
     @transform_output = Ast::FuncallExpression.new "puts", [Ast::StringExpression.new("hello")]
     @parser = @parser.function_call
   end

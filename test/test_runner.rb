@@ -20,7 +20,7 @@ class TestRunner < MiniTest::Test
   def execute file
     string = File.read(file)
     parser = Parser::Composed.new
-    syntax    = parser.function_definition.parse_with_debug(string)
+    syntax    = parser.parse_with_debug(string)
     program = Vm::Program.new "Arm"
     main      = Parser::Transform.new.apply(syntax)
 
