@@ -21,16 +21,18 @@ class TestRunner < MiniTest::Test
     string = File.read(file)
     parser = Parser::Crystal.new
     program = Vm::Program.new "Arm"
-    parts = string.split "SPLIT"
+    syntax  = parser.parse_with_debug(string)
+    parts   = Parser::Transform.new.apply(syntax)
+    # file is a list of expressions, al but the last must be a function
+    # and the last is wrapped as a main
     parts.each_with_index do |part,index|
       puts "parsing #{index}=#{part}"
-      syntax  = parser.parse_with_debug(part)
-      funct   = Parser::Transform.new.apply(syntax)
-      expr    = funct.compile( program.context )
+      expr    = part.compile( program.context )
       if index = parts.length
         program.main = expr
       else
         raise "should be function definition for now" unless expr.is_a? Function
+        program.add_function expr
       end
     end
 
