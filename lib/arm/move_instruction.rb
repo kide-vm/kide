@@ -3,11 +3,11 @@ require_relative "logic_helper"
 
 module Arm
 
-  class LogicInstruction < Vm::LogicInstruction
+  class MoveInstruction < Vm::MoveInstruction
     include Arm::Constants
     include LogicHelper
 
-    def initialize(attributes)
+    def initialize(attributes) 
       super(attributes)
       @update_status_flag = 0
       @condition_code = :al
@@ -15,15 +15,13 @@ module Arm
       @args = [attributes[:left] , attributes[:right] , attributes[:extra]]
       @operand = 0
 
-      @rn = nil
       @i = 0      
       @rd = @args[0]
+      @rn = :r0 # register zero = zero bit pattern
     end
-    attr_accessor :i, :rn, :rd
-    # Build representation for source value 
+  
     def build
-      @rn = @args[1]
-      do_build @args[2] 
+      do_build @args[1]
     end
   end
 end

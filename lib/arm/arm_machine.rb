@@ -2,6 +2,8 @@ require "vm/machine"
 require_relative "instruction"
 require_relative "stack_instruction"
 require_relative "logic_instruction"
+require_relative "move_instruction"
+require_relative "compare_instruction"
 require_relative "memory_instruction"
 require_relative "call_instruction"
 
