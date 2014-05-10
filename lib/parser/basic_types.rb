@@ -8,7 +8,7 @@ module Parser
     # rule of thumb is that anything eats space behind it, but only space, no newlines
     rule(:space)  { (str('\t') | str(' ')).repeat(1) }
     rule(:space?) { space.maybe }
-    rule(:newline){ str("\n") >> space?}
+    rule(:newline){ str("\n") >> space? >> newline.repeat }
     
     rule(:quote)      { str('"') }
     rule(:nonquote)   { str('"').absent? >> any }
@@ -25,11 +25,7 @@ module Parser
     rule(:dot) {  str('.') }
     rule(:digit) { match('[0-9]') }
     rule(:exponent) { (str('e')| str('E')) }
- 
-    rule(:true) {   str('true').as(:true) >> space?}
-    rule(:false){   str('false').as(:false) >> space?}
-    rule(:nil)  {   str('null').as(:nil) >> space?}
-    
+     
     # identifier must start with lower case
     rule(:name)   { (match['a-z'] >> match['a-zA-Z0-9'].repeat).as(:name)  >> space? }
     
