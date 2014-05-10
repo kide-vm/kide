@@ -15,9 +15,13 @@ module Ast
       fun.do_call
       fun
     end
+    def inspect
+      self.class.name + ".new(" + name.inspect + ", ["+ 
+        args.collect{|m| m.inspect }.join( ",") +"] )"  
+    end
   
-    def == other
-      compare other , [:name , :args]
+    def attributes
+      [:name , :args]
     end
   end
   
@@ -26,14 +30,17 @@ module Ast
     def initialize assignee, assigned
       @assignee, @assigned = assignee, assigned
     end
+    def inspect
+      self.class.name + ".new(" + assignee + ", " + assigned.inspect+ ")"
+    end
     
     def compile context
       var = @assigned.compile(context)
       context.locals[@assignee] = var 
     end
 
-    def == other
-      compare other , [:assignee, :assigned]
+    def attributes
+      [:assignee, :assigned]
     end
   end
 end

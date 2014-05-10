@@ -4,8 +4,13 @@ module Ast
     def initialize name, params, block
       @name, @params, @block = name, params, block
     end
-    def == other
-      compare other , [:name, :params, :block]
+    def attributes
+      [:name, :params, :block]
+    end
+    def inspect
+      self.class.name + ".new(" + name.inspect + ", ["+ 
+        params.collect{|m| m.inspect }.join( ",") +"] , [" + 
+        block.collect{|m| m.inspect }.join( ",") +"] )"  
     end
     
     def compile context

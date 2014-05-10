@@ -15,7 +15,13 @@ module Ast
     def compile context
       raise "abstract #{self}"
     end
-    def compare other , attributes
+    def inspectt
+      self.class.name + ".new(" + self.attributes.collect{|m| self.send(m).inspect }.join( ",") +")"
+    end
+    def attributes
+      raise "abstract #{self}"
+    end
+    def == other
       return false unless other.class == self.class 
       attributes.each do |a|
         left = send(a)

@@ -4,8 +4,9 @@ module Ast
     def initialize cond, if_true, if_false
       @cond, @if_true, @if_false = cond, if_true, if_false
     end
-    def == other
-      compare other , [:cond, :if_true, :if_false]
+
+    def attributes
+      [:cond, :if_true, :if_false]
     end
   end
 

@@ -7,11 +7,14 @@ module Ast
     def initialize val
       @value = val
     end
+    def inspect
+      self.class.name + ".new(" + value.to_s+ ")"
+    end
     def compile context
       Vm::Signed.new value
     end
-    def == other
-      compare other , [:value]
+    def attributes
+      [:value]
     end
   end
 
@@ -20,8 +23,11 @@ module Ast
     def initialize name
       @name = name
     end
-    def == other
-      compare other ,  [:name]
+    def inspect
+      self.class.name + ".new(" + name + ")"
+    end
+    def attributes
+      [:name]
     end
   end
 
@@ -30,14 +36,17 @@ module Ast
     def initialize str
       @string = str
     end
+    def inspectt
+      "#{string}"
+    end
 
     def compile context
       value = Vm::StringLiteral.new(string)
       context.program.add_object value 
       value
     end
-    def == other
-      compare other ,  [:string]
+    def attributes
+      [:string]
     end
   end
 
