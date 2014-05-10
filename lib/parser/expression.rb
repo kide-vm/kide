@@ -14,5 +14,9 @@ module Parser
     rule(:expressions_else)   { delimited_expressions(keyword_else) }
     rule(:expressions_end)    { delimited_expressions(keyword_end) }
 
+    rule(:operator_expression) do
+       infix_expression(expression,  [multiply, 2, :left],  [plus, 1, :right]) 
+     end
+
   end
 end

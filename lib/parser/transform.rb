@@ -41,6 +41,11 @@ module Parser
     rule(:asignee => simple(:left) , :asigned => simple(:right) ) do
       Ast::AssignmentExpression.new(left , right ) 
     end
+    
+    rule(l: simple(:l), o: simple(:o) , r: simple(:r)) do 
+      Ast::OperatorExpression.new( o.to_s.strip , l ,r)
+    end
+    
     #shortcut to get the ast tree for a given string
     # optional second arguement specifies a rule that will be parsed (mainly for testing)     
     def self.ast string , rule = :root

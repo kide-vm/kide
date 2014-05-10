@@ -45,4 +45,40 @@ module Ast
       [:assignee, :assigned]
     end
   end
+  class OperatorExpression < Expression
+    attr_reader  :operator, :left, :right
+
+    def initialize operator, left, right
+      @operator, @left, @right = operator, left, right
+    end
+    def attributes
+      [:operator, :left, :right]
+    end
+    def inspect
+      self.class.name + ".new(" + operator.inspect + ", " +  left.inspect + "," + right.inspect + ")"  
+    end
+  
+    def compile context
+      parent_locals = context.locals
+      context.locals = {}
+      args = []
+      params.each do |param|
+        args << param.compile(context) # making the argument a local
+      end
+#      args = params.collect{|p| Vm::Value.type p.name }
+      function = Vm::Function.new(name ,args )
+      context.program.add_function function
+      block.each do |b|
+        compiled = b.compile context
+        if compiled.is_a? Vm::Block
+          he.breaks.loose
+        else
+          function.body.add_code compiled
+        end
+        puts compiled.inspect
+      end
+      context.locals = parent_locals if parent_locals
+      function
+    end
+  end
 end

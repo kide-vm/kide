@@ -12,7 +12,10 @@ module Parser
     rule(:comma)  { str(',') >> space? }
     rule(:colon)  { str(':') >> space? }
     rule(:semicolon)  { str(';') >> space? }
-    rule(:question_mark)  { str('?') >> space? }    
-    rule(:excamation_mark)  { str('!') >> space? }    
+    rule(:question_mark)  { str('?') >> space? }
+    rule(:excamation_mark)  { str('!') >> space? }  
+
+    rule(:multiply) { match['*/']  >> space? }
+    rule(:plus) { match['+-']  >> space? }
   end
 end

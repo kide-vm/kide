@@ -34,7 +34,7 @@ HERE
     @parser = @parser.function_definition
   end
 
-  def test_function_while
+  def ttest_function_while
     @string_input    = <<HERE
 def fibonaccit(n)
   a = 0 

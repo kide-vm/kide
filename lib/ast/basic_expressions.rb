@@ -41,8 +41,8 @@ module Ast
     def initialize str
       @string = str
     end
-    def inspectt
-      "#{string}"
+    def inspect
+      self.class.name + '.new("' + string + '")'
     end
 
     def compile context
