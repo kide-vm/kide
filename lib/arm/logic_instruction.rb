@@ -1,4 +1,3 @@
-require_relative "instruction"
 require_relative "logic_helper"
 
 module Arm
@@ -9,9 +8,9 @@ module Arm
 
     def initialize(attributes)
       super(attributes)
-      @update_status_flag = 0
-      @condition_code = :al
-      @opcode = attributes[:opcode]
+      @attributes[:update_status_flag] = 0
+      @attributes[:condition_code] = :al
+      @attributes[:opcode] = attributes[:opcode]
       @operand = 0
 
       @rn = nil

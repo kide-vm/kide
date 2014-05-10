@@ -1,4 +1,3 @@
-require_relative "instruction"
 
 module Arm
   # Many arm instructions may be conditional, where the default condition is always (al)
@@ -84,7 +83,7 @@ module Arm
       raise inspect unless reg_code(@rd)
       val |= (reg_code(@rd) <<            12)     
       val |= (reg_code(@rn) <<            12+4)   
-      val |= (@update_status_flag << 12+4+4)#20 
+      val |= (@attributes[:update_status_flag] << 12+4+4)#20 
       val |= (op_bit_code <<        12+4+4  +1)
       val |= (@i <<                  12+4+4  +1+4) 
       val |= (instuction_class <<   12+4+4  +1+4+1) 

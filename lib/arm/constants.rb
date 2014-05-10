@@ -21,9 +21,9 @@ module Arm
       :bl => 0b1011,
       :bx => 0b00010010
     }
-    #return the bit patter that the cpu uses for the current instruction @opcode
+    #return the bit patter that the cpu uses for the current instruction @attributes[:opcode]
     def op_bit_code
-      OPCODES[@opcode] or throw "no code found for #{@opcode.inspect}"
+      OPCODES[@attributes[:opcode]] or throw "no code found for #{@attributes[:opcode].inspect}"
     end
 
     #codition codes can be applied to many instructions and thus save branches
@@ -39,9 +39,9 @@ module Arm
       :ge => 0b1010, :gt => 0b1100,
       :vs => 0b0110
     }
-    #return the bit pattern for the @condition_code variable, which signals the conditional code
+    #return the bit pattern for the @attributes[:condition_code] variable, which signals the conditional code
     def cond_bit_code
-      COND_CODES[@condition_code] or throw "no code found for #{@condition_code}"
+      COND_CODES[@attributes[:condition_code]] or throw "no code found for #{@attributes[:condition_code]}"
     end
     
     REGISTERS = { 'r0' => 0, 'r1' => 1, 'r2' => 2, 'r3' => 3, 'r4' => 4, 'r5' => 5,

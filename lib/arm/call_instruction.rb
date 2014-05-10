@@ -1,4 +1,3 @@
-require_relative "instruction"
 require_relative "nodes"
 
 module Arm
@@ -24,14 +23,12 @@ module Arm
 
     def initialize(attributes)
       super(attributes)
-      @update_status_flag = 0
-      @condition_code = :al
-      @opcode = attributes[:opcode]
-      @operand = 0
+      @attributes[:update_status_flag] = 0
+      @attributes[:condition_code] = :al
     end
     
     def assemble(io)
-      case @opcode
+      case @attributes[:opcode]
       when :b, :bl
         arg = @attributes[:left]
         #puts "BLAB #{arg.inspect}"
@@ -51,7 +48,7 @@ module Arm
         else
           raise "else not coded #{inspect}"
         end
-        io.write_uint8 OPCODES[opcode] | (COND_CODES[@condition_code] << 4)
+        io.write_uint8 OPCODES[opcode] | (COND_CODES[@attributes[:condition_code]] << 4)
       when :swi
         arg = @attributes[:left]
         if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
@@ -60,7 +57,7 @@ module Arm
         if (arg.is_a?(Arm::NumLiteral))
           packed = [arg.value].pack('L')[0,3]
           io << packed
-          io.write_uint8 0b1111 | (COND_CODES[@condition_code] << 4)
+          io.write_uint8 0b1111 | (COND_CODES[@attributes[:condition_code]] << 4)
         else
           raise "invalid operand argument expected literal not #{arg} #{inspect}"
         end

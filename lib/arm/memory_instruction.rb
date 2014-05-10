@@ -1,5 +1,4 @@
 require_relative "nodes"
-require_relative "instruction"
 
 module Arm
   # ADDRESSING MODE 2
@@ -9,9 +8,9 @@ module Arm
 
     def initialize(attributes)
       super(attributes)
-      @update_status_flag = 0
-      @condition_code = :al
-      @opcode = attributes[:opcode]
+      @attributes[:update_status_flag] = 0
+      @attributes[:condition_code] = :al
+      @attributes[:opcode] = attributes[:opcode]
       @operand = 0
 
       @i = 0 #I flag (third bit)
@@ -23,8 +22,7 @@ module Arm
       @rn = :r0 # register zero = zero bit pattern
       @rd = :r0 # register zero = zero bit pattern
     end
-    attr_accessor :i, :pre_post_index, :add_offset,
-                  :byte_access, :w, :is_load, :rn, :rd
+#    attr_accessor :i, :pre_post_index, :add_offset, :byte_access, :w, :is_load, :rn, :rd
 
     # arm intrucioons are pretty sensible, and always 4 bytes (thumb not supported)
     def length
@@ -82,14 +80,14 @@ module Arm
       @pre_post_index = 1
       instuction_class =  0b01 # OPC_MEMORY_ACCESS
       val = @operand.is_a?(Symbol) ? reg_code(@operand) : @operand 
-      val |= (reg_code(rd) <<        12 )  
-      val |= (reg_code(rn) <<        12+4) #16  
-      val |= (is_load <<        12+4  +4)
-      val |= (w <<              12+4  +4+1)
-      val |= (byte_access <<    12+4  +4+1+1)
-      val |= (add_offset <<     12+4  +4+1+1+1)
-      val |= (pre_post_index << 12+4  +4+1+1+1+1)#24
-      val |= (i <<              12+4  +4+1+1+1+1  +1) 
+      val |= (reg_code(@rd) <<        12 )  
+      val |= (reg_code(@rn) <<        12+4) #16  
+      val |= (@is_load <<        12+4  +4)
+      val |= (@w <<              12+4  +4+1)
+      val |= (@byte_access <<    12+4  +4+1+1)
+      val |= (@add_offset <<     12+4  +4+1+1+1)
+      val |= (@pre_post_index << 12+4  +4+1+1+1+1)#24
+      val |= (@i <<              12+4  +4+1+1+1+1  +1) 
       val |= (instuction_class<<12+4  +4+1+1+1+1  +1+1)  
       val |= (cond_bit_code <<  12+4  +4+1+1+1+1  +1+1+2)
       io.write_uint32 val
