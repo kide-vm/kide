@@ -20,12 +20,19 @@ class TestRunner < MiniTest::Test
   def execute file
     string = File.read(file)
     parser = Parser::Composed.new
-    syntax    = parser.parse_with_debug(string)
     program = Vm::Program.new "Arm"
-    main      = Parser::Transform.new.apply(syntax)
-
-
-    program.main = main.compile( program.context )
+    parts = string.split "SPLIT"
+    parts.each_with_index do |part,index|
+      puts "parsing #{index}=#{part}"
+      syntax  = parser.parse_with_debug(part)
+      funct   = Parser::Transform.new.apply(syntax)
+      expr    = funct.compile( program.context )
+      if index = parts.length
+        program.main = expr
+      else
+        raise "should be function definition for now" unless expr.is_a? Function
+      end
+    end
 
     program.link_at( 0 , program.context )
     
@@ -38,7 +45,7 @@ class TestRunner < MiniTest::Test
     writer.set_text assembly.string
     writer.save(file.gsub(".rb" , ".o"))
 
-    puts program.to_yaml
+#    puts program.to_yaml
   end
 
 end
