@@ -70,7 +70,7 @@ module Vm
       # rounding up to the next 4 (always adding one for zero pad)
       pad =  ((length / 4 ) + 1 ) * 4 - length
       raise "#{pad} #{self}" unless pad >= 1
-      @string = str + "\x00" * pad 
+      @value = str + "\x00" * pad 
     end
     def string
       @value
@@ -82,12 +82,12 @@ module Vm
 
     # the strings length plus padding
     def length
-      @string.length
+      string.length
     end
     
     # just writing the string
     def assemble(io)
-      io << @string
+      io << string
     end
   end
 end
