@@ -10,7 +10,6 @@ module Arm
       super(attributes)
       @attributes[:update_status_flag] = 0
       @attributes[:condition_code] = :al
-      @attributes[:opcode] = attributes[:opcode]
       @operand = 0
 
       @rn = nil

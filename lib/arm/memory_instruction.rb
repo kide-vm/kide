@@ -10,14 +10,10 @@ module Arm
       super(attributes)
       @attributes[:update_status_flag] = 0
       @attributes[:condition_code] = :al
-      @attributes[:opcode] = attributes[:opcode]
       @operand = 0
 
-      @i = 0 #I flag (third bit)
       @pre_post_index = 0 #P flag
       @add_offset = 0 #U flag
-      @byte_access = opcode.to_s[-1] == "b" ? 1 : 0 #B (byte) flag
-      @w = 0 #W flag
       @is_load = opcode.to_s[0] == "l" ? 1 : 0 #L (load) flag
       @rn = :r0 # register zero = zero bit pattern
       @rd = :r0 # register zero = zero bit pattern
@@ -73,21 +69,24 @@ module Arm
 
     def assemble(io)
       build
+      i = 0 #I flag (third bit)
       #not sure about these 2 constants. They produce the correct output for str r0 , r1
       # but i can't help thinking that that is because they are not used in that instruction and
       # so it doesn't matter. Will see
       @add_offset = 1
       @pre_post_index = 1
+      w = 0 #W flag
+      byte_access = opcode.to_s[-1] == "b" ? 1 : 0 #B (byte) flag
       instuction_class =  0b01 # OPC_MEMORY_ACCESS
       val = @operand.is_a?(Symbol) ? reg_code(@operand) : @operand 
       val |= (reg_code(@rd) <<        12 )  
       val |= (reg_code(@rn) <<        12+4) #16  
       val |= (@is_load <<        12+4  +4)
-      val |= (@w <<              12+4  +4+1)
-      val |= (@byte_access <<    12+4  +4+1+1)
+      val |= (w <<              12+4  +4+1)
+      val |= (byte_access <<    12+4  +4+1+1)
       val |= (@add_offset <<     12+4  +4+1+1+1)
       val |= (@pre_post_index << 12+4  +4+1+1+1+1)#24
-      val |= (@i <<              12+4  +4+1+1+1+1  +1) 
+      val |= (i <<              12+4  +4+1+1+1+1  +1) 
       val |= (instuction_class<<12+4  +4+1+1+1+1  +1+1)  
       val |= (cond_bit_code <<  12+4  +4+1+1+1+1  +1+1+2)
       io.write_uint32 val
