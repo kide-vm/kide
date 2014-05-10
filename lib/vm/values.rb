@@ -20,6 +20,21 @@ module Vm
   
   # just a base class for data. not sure how this will be usefull (may just have read too much llvm)
   class Value < Code
+
+    def initialize value
+      @value = value
+    end
+    #naming convention to infer types in kernel functions. Kernel types are basic types, ie see below
+    # 
+    def self.type name
+      parts = name.split("_")
+      t = "Basic"
+      if parts[1]
+        t = parts[1]
+      end
+      t
+    end
+    
   end
 
   class Word < Value
