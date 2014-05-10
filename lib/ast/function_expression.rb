@@ -2,7 +2,7 @@ module Ast
   class FunctionExpression < Expression
     attr_reader  :name, :params, :block
     def initialize name, params, block
-      @name, @params, @block = name, params, block
+      @name, @params, @block = name.to_sym, params, block
     end
     def attributes
       [:name, :params, :block]
@@ -16,6 +16,7 @@ module Ast
     def compile context
       args = params.collect{|p| Vm::Value.type p.name }
       function = Vm::Function.new(name ,args )
+      context.program.add_function function
       parent_locals = context.locals
       context.locals = {}
       block.each do |b|

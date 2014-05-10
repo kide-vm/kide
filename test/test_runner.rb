@@ -26,7 +26,7 @@ class TestRunner < MiniTest::Test
     # file is a list of expressions, al but the last must be a function
     # and the last is wrapped as a main
     parts.each_with_index do |part,index|
-      puts "parsing #{index}=#{part}"
+      puts "parsing #{index}=#{part.inspect}"
       expr    = part.compile( program.context )
       if index = parts.length
         program.main = expr

@@ -14,14 +14,14 @@ module Vm
     def assign_function context
       @function = context.program.get_function @name
       if @function
-        raise "error #{self}" unless @function.arity != args.length
+        raise "error #{self} , #{@function.args.length} != #{args.length}" if @function.arity != args.length
       else
         @function = context.program.get_or_create_function @name
       end
     end
     def load_args
       args.each_with_index do |arg , index|
-        add_code arg.load(index)
+        add_code arg.load("r#{index}".to_sym)
       end
     end
 

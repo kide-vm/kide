@@ -24,6 +24,8 @@ module Vm
     def initialize value
       @value = value
     end
+    attr_reader :value
+    
     #naming convention to infer types in kernel functions. Kernel types are basic types, ie see below
     # 
     def self.type name
@@ -40,6 +42,9 @@ module Vm
   class Word < Value
     def load reg
       Machine.instance.word_load self , reg
+    end
+    def length
+      4
     end
   end
   

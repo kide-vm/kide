@@ -21,6 +21,9 @@ module Arm
       if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
         arg = Arm::NumLiteral.new( arg )
       end
+      if( arg.is_a? Vm::Signed ) #HACK to not have to change the code just now
+        arg = Arm::NumLiteral.new( arg.value )
+      end
       if (arg.is_a?(Arm::NumLiteral))
         if (arg.value.fits_u8?)
           # no shifting needed
@@ -57,7 +60,6 @@ module Arm
         elsif (arg.type == 'rrx')
           shift_imm = 0
         end
-    
         @operand = rm_ref | (shift_op << 4) | (shift_imm << 4+3)
       else
         raise "invalid operand argument #{arg.inspect} , #{inspect}"
@@ -68,6 +70,7 @@ module Arm
       build
       instuction_class = 0b00 # OPC_DATA_PROCESSING
       val = @operand.is_a?(Symbol) ? reg_code(@operand) : @operand 
+      raise inspect unless reg_code(@rd)
       val |= (reg_code(@rd) <<            12)     
       val |= (reg_code(@rn) <<            12+4)   
       val |= (@update_status_flag << 12+4+4)#20 

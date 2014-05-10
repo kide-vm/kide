@@ -43,14 +43,21 @@ module Vm
       @objects << o # TODO check type , no basic values allowed (must be wrapped)
     end
     
+    def add_function function
+      raise "not a function #{function}" unless function.is_a? Function
+      @functions << function
+    end
+
     def get_function name
-      @functions.detect{ |f| (f.name == name) && (f.class == Function) }
+      name = name.to_sym
+      @functions.detect{ |f| (f.name == name) }
     end
 
     # preferred way of creating new functions (also forward declarations, will flag unresolved later)
     def get_or_create_function name 
       fun = get_function name
       unless fun
+        puts @functions.inspect
         fun = Function.new(name)
         block = Core::Kernel.send(name)
         fun.set_body block
