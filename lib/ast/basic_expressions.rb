@@ -7,6 +7,9 @@ module Ast
     def initialize val
       @value = val
     end
+    def compile context
+      Vm::Signed.new value
+    end
     def == other
       compare other , [:value]
     end

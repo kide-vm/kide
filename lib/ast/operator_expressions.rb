@@ -26,6 +26,12 @@ module Ast
     def initialize assignee, assigned
       @assignee, @assigned = assignee, assigned
     end
+    
+    def compile context
+      var = @assigned.compile(context)
+      context.locals[@assignee] = var 
+    end
+
     def == other
       compare other , [:assignee, :assigned]
     end
