@@ -1,5 +1,12 @@
 require_relative "../helper"
 require "parslet/convenience"
+
+# remove the line numbers on assert fails, so it's easy to copy paste the result as the expected result
+Parslet::Slice.class_eval do
+  def inspect
+    '"'  + to_s + '"'
+  end
+end
 # Included in parser test will create tests methods
 module ParserHelper
   
@@ -17,7 +24,6 @@ module ParserHelper
     # check that @string_input parses correctly to @parse_output
     def check_parse
       is = @parser.parse_with_debug(@string_input)
-      #puts is.inspect
       assert_equal @parse_output , is
     end
 
