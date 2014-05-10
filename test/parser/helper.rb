@@ -10,7 +10,7 @@ module ParserHelper
  
   module InstanceMethods
     def setup
-      @parser    = Parser::Composed.new
+      @parser    = Parser::Crystal.new
       @transform = Parser::Transform.new
     end
 

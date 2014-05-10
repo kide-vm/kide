@@ -65,14 +65,16 @@ module Vm
     
     # currently aligned to 4 (ie padded with 0) and off course 0 at the end
     def initialize(str)
-      super()
+      super(str)
       length = str.length 
       # rounding up to the next 4 (always adding one for zero pad)
       pad =  ((length / 4 ) + 1 ) * 4 - length
       raise "#{pad} #{self}" unless pad >= 1
       @string = str + "\x00" * pad 
     end
-    attr_reader :string
+    def string
+      @value
+    end
 
     def load reg_num
       Machine.instance.string_load self , reg_num

@@ -19,7 +19,7 @@ class TestRunner < MiniTest::Test
 
   def execute file
     string = File.read(file)
-    parser = Parser::Composed.new
+    parser = Parser::Crystal.new
     program = Vm::Program.new "Arm"
     parts = string.split "SPLIT"
     parts.each_with_index do |part,index|

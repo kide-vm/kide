@@ -1,7 +1,7 @@
 require 'parslet'
 
 require "elf/object_writer"
-require 'parser/composed'
+require 'parser/crystal'
 require 'parser/transform'
 require "vm/context"
 require "vm/machine"

@@ -7,7 +7,7 @@ module Parser
   # obviously a work in progress !!
   # We "compose" the parser from bits, divide and hopefully conquer
    
-  class Composed < Parslet::Parser
+  class Crystal < Parslet::Parser
     include BasicTypes
     include Tokens
     include Keywords
@@ -19,9 +19,9 @@ module Parser
 
     rule(:argument_list) {
       left_parenthesis >>
-      (  (simple_expression.as(:argument) >> 
-          (comma >> simple_expression.as(:argument)).repeat(0)).repeat(0,1)).as(:argument_list) >>
-      right_parenthesis
+      (  (simple_expression.as(:argument) >> space? >>
+          (comma >> space? >> simple_expression.as(:argument)).repeat(0)).repeat(0,1)).as(:argument_list) >>
+          space? >> right_parenthesis
     }
 
     rule(:function_call) { name.as(:function_call) >> argument_list }
@@ -54,6 +54,6 @@ module Parser
         ((name.as(:parmeter) >> (comma >> name.as(:parmeter)).repeat(0)).repeat(0,1)).as(:parmeter_list) >>
       right_parenthesis
     }
-    rule(:root){ function_definition | expression | assignment }
+    rule(:root){ function_definition | expression | assignment | function_call }
   end
 end
