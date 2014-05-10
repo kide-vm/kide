@@ -14,11 +14,15 @@ module Ast
     end
     
     def compile context
-      args = params.collect{|p| Vm::Value.type p.name }
-      function = Vm::Function.new(name ,args )
-      context.program.add_function function
       parent_locals = context.locals
       context.locals = {}
+      args = []
+      params.each do |param|
+        args << param.compile(context) # making the argument a local
+      end
+#      args = params.collect{|p| Vm::Value.type p.name }
+      function = Vm::Function.new(name ,args )
+      context.program.add_function function
       block.each do |b|
         compiled = b.compile context
         if compiled.is_a? Vm::Block

@@ -32,7 +32,7 @@ module Arm
     end
     
     def word_load value , reg
-      raise "nnn " unless reg.class == Symbol
+      raise "not a register :#{reg}:" unless reg.class == Symbol
       mov( :left => reg , :right => value )
     end
     def string_load str_lit , reg

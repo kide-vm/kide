@@ -35,8 +35,10 @@ module Ast
     end
     
     def compile context
-      var = @assigned.compile(context)
-      context.locals[@assignee] = var 
+      value = @assigned.compile(context)
+      variable = Vm::Variable.new @assignee , :r0 , value
+      context.locals[@assignee] = variable
+      variable
     end
 
     def attributes

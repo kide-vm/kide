@@ -23,6 +23,11 @@ module Ast
     def initialize name
       @name = name
     end
+    def compile context
+      variable = Vm::Variable.new(@name)
+      context.locals[@name] = variable
+      variable
+    end
     def inspect
       self.class.name + ".new(" + name + ")"
     end

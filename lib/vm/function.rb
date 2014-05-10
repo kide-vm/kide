@@ -56,7 +56,6 @@ module Vm
     
     def assemble io
       @entry.assemble(io)
-      raise @body.inspect
       @body.assemble(io)
       @exit.assemble(io)
     end

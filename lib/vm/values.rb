@@ -36,7 +36,6 @@ module Vm
       end
       t
     end
-    
   end
 
   class Word < Value
@@ -60,7 +59,22 @@ module Vm
       Machine.instance.signed_plus self , signed
     end
   end
-  
+
+  class Variable < Value
+    attr_reader :name , :register
+    def initialize name , register = nil , val = nil
+      super(val)
+      @register = register
+      @name = name
+    end
+    def length
+      @value.length
+    end
+    def assemble io
+      @value.load @register
+    end
+  end
+
   # The name really says it all.
   # The only interesting thing is storage.
   # Currently string are stored "inline" , ie in the code segment. 
