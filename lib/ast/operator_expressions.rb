@@ -31,7 +31,7 @@ module Ast
       @assignee, @assigned = assignee, assigned
     end
     def inspect
-      self.class.name + ".new(" + assignee + ", " + assigned.inspect+ ")"
+      self.class.name + ".new(" + assignee.inspect + ", " + assigned.inspect + ")"
     end
     
     def compile context

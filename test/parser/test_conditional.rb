@@ -36,7 +36,9 @@ HERE
     @parse_output = {:while=>"while", :while_cond=>{:integer=>"1"}, :do=>"do", :body=>{:expressions=>[{:asignee=>{:name=>"tmp"}, :asigned=>{:name=>"a"}}, {:asignee=>{:name=>"a"}, :asigned=>{:name=>"b"}}]}}
     @transform_output = Ast::WhileExpression.new(
                   Ast::IntegerExpression.new(1), 
-                  [Ast::AssignmentExpression.new("tmp", Ast::NameExpression.new("a")), Ast::AssignmentExpression.new("a", Ast::NameExpression.new("b"))] )
+                  [Ast::AssignmentExpression.new(Ast::NameExpression.new("tmp"), 
+                    Ast::NameExpression.new("a")),
+                     Ast::AssignmentExpression.new(Ast::NameExpression.new("a"), Ast::NameExpression.new("b"))] )
     @parser = @parser.while
   end
 end

@@ -29,7 +29,7 @@ module Ast
       variable
     end
     def inspect
-      self.class.name + ".new(" + name + ")"
+      self.class.name + '.new("' + name + '")'
     end
     def attributes
       [:name]

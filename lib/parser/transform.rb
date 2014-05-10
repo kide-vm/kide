@@ -39,7 +39,7 @@ module Parser
           end
     
     rule(:asignee => simple(:left) , :asigned => simple(:right) ) do
-      Ast::AssignmentExpression.new(left.name, right ) 
+      Ast::AssignmentExpression.new(left , right ) 
     end
     #shortcut to get the ast tree for a given string
     # optional second arguement specifies a rule that will be parsed (mainly for testing)     
