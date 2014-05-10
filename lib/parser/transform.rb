@@ -13,11 +13,6 @@ module Parser
     rule(:argument  => simple(:argument))    { argument  }
     rule(:argument_list => sequence(:argument_list)) { argument_list }
 
-    # need TWO transform rules, for one/many arguments (see the[] wrapping in the first)
-    rule(:function_call => simple(:function_call),
-          :argument_list    => simple(:argument))   do
-            Ast::FuncallExpression.new(function_call.name, [argument]) 
-          end
     rule( :function_call => simple(:function_call), 
           :argument_list    => sequence(:argument_list)) do
            Ast::FuncallExpression.new(function_call.name, argument_list) 
@@ -31,13 +26,6 @@ module Parser
 
     rule(:parmeter  => simple(:parmeter))    { parmeter  }
     rule(:parmeter_list => sequence(:parmeter_list)) { parmeter_list }
-
-    # need TWO transform rules, for one/many arguments (see the[] wrapping in the first)
-    rule(:function_definition   => simple(:function_definition),
-         :parmeter_list => simple(:parmeter),
-         :expressions   => sequence(:expressions)) do
-            Ast::FunctionExpression.new(function_definition.name, [parmeter], expressions) 
-          end
 
     rule(:function_definition   => simple(:function_definition),
          :parmeter_list => sequence(:parmeter_list),
