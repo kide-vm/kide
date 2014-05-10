@@ -20,5 +20,23 @@ HERE
 
     @parser = @parser.conditional
   end
-  
+
+  def test_while
+    @string_input = <<HERE
+while 1 do
+  tmp = a
+  a = b
+end
+HERE
+#go in there
+#  b = tmp + b
+#  puts(b)
+#  n = n - 1
+
+    @parse_output = {:while=>"while", :while_cond=>{:integer=>"1"}, :do=>"do", :body=>{:expressions=>[{:asignee=>{:name=>"tmp"}, :asigned=>{:name=>"a"}}, {:asignee=>{:name=>"a"}, :asigned=>{:name=>"b"}}]}}
+    @transform_output = Ast::WhileExpression.new(
+                  Ast::IntegerExpression.new(1), 
+                  [Ast::AssignmentExpression.new("tmp", Ast::NameExpression.new("a")), Ast::AssignmentExpression.new("a", Ast::NameExpression.new("b"))] )
+    @parser = @parser.while
+  end
 end
