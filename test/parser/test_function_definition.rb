@@ -16,6 +16,7 @@ HERE
     @transform_output = Ast::FunctionExpression.new('foo', 
                 [Ast::NameExpression.new('x')], 
                 [Ast::IntegerExpression.new(5)])
+    @parser = @parser.function_definition
   end
 
   def test_function_assignment
@@ -30,6 +31,7 @@ HERE
                 }
     @transform_output = Ast::FunctionExpression.new( "foo", [Ast::NameExpression.new("x")],
                            [Ast::AssignmentExpression.new( "abba", Ast::IntegerExpression.new(5) ) ])
+    @parser = @parser.function_definition
   end
 
     

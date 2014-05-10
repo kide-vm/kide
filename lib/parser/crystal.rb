@@ -25,6 +25,6 @@ module Parser
     include Conditional
     include Expression
 
-    rule(:root){ function_definition | expression | assignment | function_call }
+    rule(:root){ (function_definition | expression | assignment | function_call).repeat }
   end
 end

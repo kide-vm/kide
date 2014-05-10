@@ -9,6 +9,7 @@ class TestFunctionCall < MiniTest::Test
     @parse_output = {:function_call => {:name => 'foo'},
              :argument_list    => [{:argument => {:integer => '42'} }] }
     @transform_output = Ast::FuncallExpression.new 'foo', [Ast::IntegerExpression.new(42)]
+    @parser = @parser.function_call
   end
 
   def test_function_call_multi
