@@ -15,7 +15,6 @@ module Arm
       @update_status_flag = 0
       @condition_code = :al
       @opcode = attributes[:opcode]
-      @args = [attributes[:left] , attributes[:right] , attributes[:extra]]
       @operand = 0
 
       @update_status_flag= 0
@@ -57,14 +56,15 @@ module Arm
     private 
     # Build representation for source value
     def build
-      if (@args.is_a?(Array))
+      regs = @attributes[:regs]
+      if (regs.is_a?(Array))
         @operand = 0
-        @args.each do |reg |
+        regs.each do |reg |
           next unless reg
           @operand |= (1 << reg_code(reg))
         end
       else
-        raise "invalid operand argument  #{@args.inspect} #{inspect}"
+        raise "invalid operand argument  #{regs.inspect} #{inspect}"
       end
     end
   end

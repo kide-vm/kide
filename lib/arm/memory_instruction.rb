@@ -12,7 +12,6 @@ module Arm
       @update_status_flag = 0
       @condition_code = :al
       @opcode = attributes[:opcode]
-      @args = [attributes[:left] , attributes[:right] ]
       @operand = 0
 
       @i = 0 #I flag (third bit)
@@ -35,11 +34,11 @@ module Arm
     # Build representation for target address
     def build
       if( @is_load )
-        @rd = @args[0]
-        arg = @args[1]
+        @rd = @attributes[:left]
+        arg = @attributes[:right]
       else #store
-        @rd = @args[1]
-        arg = @args[0]
+        @rd = @attributes[:right]
+        arg = @attributes[:left]
       end
       #str / ldr are _serious instructions. With BIG possibilities not half are implemented
       if (arg.is_a?(Symbol)) #symbol is register

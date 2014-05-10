@@ -82,11 +82,11 @@ class TestArmAsm < MiniTest::Test
     assert_code code , :orr , [0x03,0x20,0x82,0xe1] #e1 82 20 03
   end
   def test_push
-    code = @machine.push :left => :lr
+    code = @machine.push :regs => [:lr]
     assert_code code , :push ,  [0x00,0x40,0x2d,0xe9] #e9 2d 40 00
   end
   def test_pop
-    code = @machine.pop	:left => :pc
+    code = @machine.pop	:regs => [:pc]
     assert_code code , :pop , [0x00,0x80,0xbd,0xe8] #e8 bd 80 00
   end
   def test_rsb

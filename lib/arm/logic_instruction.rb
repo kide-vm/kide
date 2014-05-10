@@ -12,18 +12,17 @@ module Arm
       @update_status_flag = 0
       @condition_code = :al
       @opcode = attributes[:opcode]
-      @args = [attributes[:left] , attributes[:right] , attributes[:extra]]
       @operand = 0
 
       @rn = nil
       @i = 0      
-      @rd = @args[0]
+      @rd = @attributes[:left]
     end
     attr_accessor :i, :rn, :rd
     # Build representation for source value 
     def build
-      @rn = @args[1]
-      do_build @args[2] 
+      @rn = @attributes[:right]
+      do_build @attributes[:extra]
     end
   end
 end

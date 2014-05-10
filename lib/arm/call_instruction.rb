@@ -27,14 +27,13 @@ module Arm
       @update_status_flag = 0
       @condition_code = :al
       @opcode = attributes[:opcode]
-      @args = [attributes[:left] , attributes[:right] , attributes[:extra]]
       @operand = 0
     end
     
     def assemble(io)
       case @opcode
       when :b, :bl
-        arg = @args[0]
+        arg = @attributes[:left]
         #puts "BLAB #{arg.inspect}"
         if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
           arg = Arm::NumLiteral.new( arg )
@@ -54,7 +53,7 @@ module Arm
         end
         io.write_uint8 OPCODES[opcode] | (COND_CODES[@condition_code] << 4)
       when :swi
-        arg = @args[0]
+        arg = @attributes[:left]
         if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
           arg = Arm::NumLiteral.new( arg )
         end

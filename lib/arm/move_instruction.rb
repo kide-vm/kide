@@ -12,16 +12,15 @@ module Arm
       @update_status_flag = 0
       @condition_code = :al
       @opcode = attributes[:opcode]
-      @args = [attributes[:left] , attributes[:right] , attributes[:extra]]
       @operand = 0
 
       @i = 0      
-      @rd = @args[0]
+      @rd = @attributes[:left]
       @rn = :r0 # register zero = zero bit pattern
     end
   
     def build
-      do_build @args[1]
+      do_build @attributes[:right]
     end
   end
 end

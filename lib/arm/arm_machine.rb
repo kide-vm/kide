@@ -59,7 +59,7 @@ module Arm
     end
     def function_entry f_name
       entry = Vm::Block.new("#{f_name}_entry")
-#      entry.add_code  push( :left => :lr )
+#      entry.add_code  push( :regs => [:lr] )
     end
     def function_exit f_name
       entry = Vm::Block.new("#{f_name}_exit")
