@@ -5,6 +5,7 @@ require_relative "conditional"
 require_relative "expression"
 require_relative "function_call"
 require_relative "function_definition"
+require_relative "operators"
 
 module Parser
   
@@ -20,11 +21,12 @@ module Parser
     include BasicTypes
     include Tokens
     include Keywords
-    include FunctionCall
-    include FunctionDefinition
     include Conditional
     include Expression
+    include FunctionCall
+    include FunctionDefinition
+    include Operators
 
-    rule(:root){ (function_definition | expression | assignment | function_call).repeat }
+    rule(:root){ (function_definition | expression | operator_expression | function_call).repeat }
   end
 end

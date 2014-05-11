@@ -20,7 +20,7 @@ module Parser
     rule(:double_quote){ str('"') }
     rule(:minus) { str('-') }
     rule(:plus) { str('+') }
-    rule(:equal_sign) { str('=') >> space?}
+
     rule(:sign) { plus | minus }
     rule(:dot) {  str('.') }
     rule(:digit) { match('[0-9]') }

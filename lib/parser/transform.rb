@@ -18,14 +18,14 @@ module Parser
            Ast::FuncallExpression.new(function_call.name, argument_list) 
     end
 
-    rule(:conditional     => simple(:conditional),
-         :if_true  => {:expressions => sequence(:if_true)},
-         :if_false => {:expressions => sequence(:if_false)}) do
+    rule(:if => simple(:if), :conditional     => simple(:conditional),
+         :if_true  => {:expressions => sequence(:if_true) , :else => simple(:else) },
+         :if_false => {:expressions => sequence(:if_false) , :end => simple(:e) }) do
            Ast::ConditionalExpression.new(conditional, if_true, if_false) 
          end
 
     rule(:while     => simple(:while), :while_cond => simple(:while_cond) , :do => simple(:do), 
-         :body => {:expressions => sequence(:body)}) do
+         :body => {:expressions => sequence(:body) , :end => simple(:e) }) do
            Ast::WhileExpression.new(while_cond, body) 
          end
 
@@ -34,13 +34,9 @@ module Parser
 
     rule(:function_definition   => simple(:function_definition),
          :parmeter_list => sequence(:parmeter_list),
-         :expressions   => sequence(:expressions)) do
+         :expressions   => sequence(:expressions) , :end => simple(:e)) do
             Ast::FunctionExpression.new(function_definition.name, parmeter_list, expressions) 
           end
-    
-    rule(:asignee => simple(:left) , :asigned => simple(:right) ) do
-      Ast::AssignmentExpression.new(left , right ) 
-    end
     
     rule(l: simple(:l), o: simple(:o) , r: simple(:r)) do 
       Ast::OperatorExpression.new( o.to_s.strip , l ,r)

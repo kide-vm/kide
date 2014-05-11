@@ -15,7 +15,5 @@ module Parser
     rule(:question_mark)  { str('?') >> space? }
     rule(:excamation_mark)  { str('!') >> space? }  
 
-    rule(:multiply) { match['*/']  >> space? }
-    rule(:plus) { match['+-']  >> space? }
   end
 end

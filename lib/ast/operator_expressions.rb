@@ -25,26 +25,6 @@ module Ast
     end
   end
   
-  class AssignmentExpression < Expression
-    attr_reader  :assignee, :assigned
-    def initialize assignee, assigned
-      @assignee, @assigned = assignee, assigned
-    end
-    def inspect
-      self.class.name + ".new(" + assignee.inspect + ", " + assigned.inspect + ")"
-    end
-    
-    def compile context
-      value = @assigned.compile(context)
-      variable = Vm::Variable.new @assignee , :r0 , value
-      context.locals[@assignee] = variable
-      variable
-    end
-
-    def attributes
-      [:assignee, :assigned]
-    end
-  end
   class OperatorExpression < Expression
     attr_reader  :operator, :left, :right
 
@@ -62,6 +42,14 @@ module Ast
       parent_locals = context.locals
       context.locals = {}
       args = []
+
+      #assignemnt
+      value = @assigned.compile(context)
+      variable = Vm::Variable.new @assignee , :r0 , value
+      context.locals[@assignee] = variable
+      variable
+
+
       params.each do |param|
         args << param.compile(context) # making the argument a local
       end
