@@ -43,11 +43,4 @@ class TestBasic < MiniTest::Test
     @parser = @parser.string
   end
 
-  def test_assignment
-    @string_input    = "a = 5"
-    @parse_output = { :asignee => { :name=>"a" } , :asigned => { :integer => "5" } }
-    @transform_output = Ast::AssignmentExpression.new(Ast::NameExpression.new("a"), Ast::IntegerExpression.new(5))
-    @parser = @parser.assignment
-  end
-
 end

@@ -10,9 +10,8 @@ def foo(x)
   5
 end
 HERE
-    @parse_output = {:function_definition   => {:name => 'foo'},
-                :parmeter_list => [{:parmeter => {:name => 'x'}}],
-                :expressions   => [{:integer => '5'}]}
+    @parse_output = {:function_definition=>{:name=>"foo"}, 
+    :parmeter_list=>[{:parmeter=>{:name=>"x"}}], :expressions=>[{:integer=>"5"}], :end=>"end"}
     @transform_output = Ast::FunctionExpression.new('foo', 
                 [Ast::NameExpression.new('x')], 
                 [Ast::IntegerExpression.new(5)])
@@ -25,12 +24,10 @@ def foo(x)
  abba = 5 
 end
 HERE
-    @parse_output = { :function_definition => { :name => "foo" } , 
-                  :parmeter_list => [{ :parmeter => { :name => "x" } }], 
-                  :expressions => [ { :asignee => { :name => "abba" }, :asigned => { :integer => "5" } } ]
-                }
-    @transform_output = Ast::FunctionExpression.new(:foo, [Ast::NameExpression.new("x")] , 
-        [Ast::AssignmentExpression.new(Ast::NameExpression.new("abba"), Ast::IntegerExpression.new(5))] )
+    @parse_output = {:function_definition=>{:name=>"foo"}, 
+    :parmeter_list=>[{:parmeter=>{:name=>"x"}}], 
+    :expressions=>[{:l=>{:name=>"abba"}, :o=>"= ", :r=>{:integer=>"5"}}], :end=>"end"}
+    @transform_output = Ast::FunctionExpression.new(:foo, [Ast::NameExpression.new("x")] , [Ast::OperatorExpression.new("=", Ast::NameExpression.new("abba"),Ast::IntegerExpression.new(5))] )
     @parser = @parser.function_definition
   end
 
@@ -52,8 +49,7 @@ HERE
                   :parmeter_list => [{ :parmeter => { :name => "x" } }], 
                   :expressions => [ { :asignee => { :name => "abba" }, :asigned => { :integer => "5" } } ]
                 }
-    @transform_output = Ast::FunctionExpression.new( "foo", [Ast::NameExpression.new("x")],
-                           [Ast::AssignmentExpression.new( "abba", Ast::IntegerExpression.new(5) ) ])
+    @transform_output = nil
     @parser = @parser.function_definition
   end    
 end
