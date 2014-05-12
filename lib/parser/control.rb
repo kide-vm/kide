@@ -1,5 +1,5 @@
 module Parser
-  module Conditional
+  module Control
     include Parslet
     rule(:conditional) do
       keyword_if >> left_parenthesis >> expression.as(:conditional) >> right_parenthesis >> newline >>

@@ -12,6 +12,4 @@ module Ast
       [:cond, :if_true, :if_false]
     end
   end
-
-  
 end

@@ -1,7 +1,7 @@
 require_relative "basic_types"
 require_relative "tokens"
 require_relative "keywords"
-require_relative "conditional"
+require_relative "control"
 require_relative "expression"
 require_relative "function_call"
 require_relative "function_definition"
@@ -21,7 +21,7 @@ module Parser
     include BasicTypes
     include Tokens
     include Keywords
-    include Conditional
+    include Control
     include Expression
     include FunctionCall
     include FunctionDefinition
