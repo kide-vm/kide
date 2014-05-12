@@ -7,7 +7,9 @@ module Parser
       end
     
     rule(:while_do) do
-      keyword_while  >> expressions_do.as(:while_cond)  >> expressions_end.as(:body)
+      keyword_while  >> left_parenthesis >> expression.as(:while_cond)  >> right_parenthesis >> 
+                                                                    keyword_do >> newline >> 
+                              expressions_end.as(:body)
     end
   end
 end

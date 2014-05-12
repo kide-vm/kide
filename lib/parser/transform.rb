@@ -25,7 +25,7 @@ module Parser
          end
 
     rule(:while     => simple(:while),
-         :while_cond => { :expressions => sequence(:while_cond) , :do => simple(:do)} , 
+         :while_cond => simple(:while_cond) , :do => simple(:do) , 
          :body => {:expressions => sequence(:body) , :end => simple(:e) }) do
            Ast::WhileExpression.new(while_cond, body) 
          end
