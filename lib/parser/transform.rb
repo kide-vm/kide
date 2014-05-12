@@ -33,10 +33,10 @@ module Parser
     rule(:parmeter  => simple(:parmeter))    { parmeter  }
     rule(:parmeter_list => sequence(:parmeter_list)) { parmeter_list }
 
-    rule(:function_definition   => simple(:function_definition),
+    rule(:function_name   => simple(:function_name),
          :parmeter_list => sequence(:parmeter_list),
          :expressions   => sequence(:expressions) , :end => simple(:e)) do
-            Ast::FunctionExpression.new(function_definition.name, parmeter_list, expressions) 
+            Ast::FunctionExpression.new(function_name.name, parmeter_list, expressions) 
           end
     
     rule(l: simple(:l), o: simple(:o) , r: simple(:r)) do 

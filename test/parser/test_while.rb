@@ -11,7 +11,7 @@ while(1) do
   puts(b)
 end
 HERE
-
+    @string_input.chop!
     @parse_output = {:while=>"while", 
                     :while_cond=>{:integer=>"1"}, 
                     :do=>"do", 

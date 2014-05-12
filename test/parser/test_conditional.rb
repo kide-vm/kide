@@ -12,6 +12,7 @@ else
   667
 end
 HERE
+@string_input.chop!
     @parse_output = {:if=>"if", :conditional=>{:integer=>"0"}, 
     :if_true=>{:expressions=>[{:integer=>"42"}], :else=>"else"}, 
     :if_false=>{:expressions=>[{:integer=>"667"}], :end=>"end"}}

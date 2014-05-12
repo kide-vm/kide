@@ -12,7 +12,7 @@ end
 
 foo( 3 )
 HERE
-    @parse_output = [{:function_definition=>{:name=>"foo"}, 
+    @parse_output = [{:function_name=>{:name=>"foo"}, 
       :parmeter_list=>[{:parmeter=>{:name=>"x"}}], 
       :expressions=>[{:l=>{:name=>"a"}, :o=>"= ", :r=>{:integer=>"5"}}], :end=>"end"}, 
       {:function_call=>{:name=>"foo"}, :argument_list=>[{:argument=>{:integer=>"3"}}]}]

@@ -3,7 +3,7 @@ module Parser
     include Parslet
     
     rule(:function_definition) {
-      keyword_def >> name.as(:function_definition) >> parmeter_list >> newline >> expressions_end
+      keyword_def >> name.as(:function_name) >> parmeter_list >> newline >> expressions_end >> newline
     }
 
     rule(:parmeter_list) {
