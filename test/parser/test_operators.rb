@@ -22,6 +22,12 @@ class TestExpressions < MiniTest::Test
   def test_simple_minus
     simple_op "-"
   end
+  def test_simple_greater
+    simple_op ">"
+  end
+  def test_simple_smaller
+    simple_op "<"
+  end
   def test_op_variable
     @string_input    = "a + 35"
     @parse_output = {:l=>{:name=>"a"}, :o=>"+ ", :r=>{:integer=>"35"}}
