@@ -1,5 +1,6 @@
 
 require_relative "test_basic"
+require_relative "test_compund"
 require_relative "test_arguments"
 require_relative "test_expressions"
 require_relative "test_function_call"

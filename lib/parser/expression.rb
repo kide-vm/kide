@@ -2,7 +2,7 @@ module Parser
   module Expression
     include Parslet
     
-    rule(:simple_expression) { function_call | integer | string | name }
+    rule(:value_expression) { function_call | basic_type }
 
     rule(:expression) { (while_do | conditional | operator_expression | function_call ) >> newline }
 

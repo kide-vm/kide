@@ -15,9 +15,6 @@ module Ast
     def compile context
       raise "abstract #{self}"
     end
-    def inspectt
-      self.class.name + ".new(" + self.attributes.collect{|m| self.send(m).inspect }.join( ",") +")"
-    end
     def attributes
       raise "abstract #{self}"
     end
@@ -36,6 +33,7 @@ module Ast
 end
 
 require_relative "basic_expressions"
+require_relative "compound_expressions"
 require_relative "conditional_expression"
 require_relative "while_expression"
 require_relative "function_expression"

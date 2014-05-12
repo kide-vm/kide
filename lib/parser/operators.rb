@@ -23,7 +23,7 @@ module Parser
   
     #infix doing the heavy lifting here, 
     # is defined as an expressions and array of [atoms,priority,binding] triples
-    rule(:operator_expression) do infix_expression(simple_expression,
+    rule(:operator_expression) do infix_expression(value_expression,
                                      [exponent, 120, :left] ,
                                      [multiply, 120, :left] ,
                                      [plus, 110, :left],

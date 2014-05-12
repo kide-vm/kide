@@ -1,4 +1,5 @@
 require_relative "basic_types"
+require_relative "compound_types"
 require_relative "tokens"
 require_relative "keywords"
 require_relative "control"
@@ -19,6 +20,7 @@ module Parser
 
   class Crystal < Parslet::Parser
     include BasicTypes
+    include CompundTypes
     include Tokens
     include Keywords
     include Control

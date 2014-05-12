@@ -8,7 +8,10 @@ module Parser
     rule(:right_parenthesis) { str(')') >> space? }
     rule(:left_brace)  { str('{')    >> space? }
     rule(:right_brace)  { str('}')    >> space? }
+    rule(:left_bracket)  { str('[')    >> space? }
+    rule(:right_bracket)  { str(']')    >> space? }
 
+    rule(:association)  { str("=>") >> space? }
     rule(:comma)  { str(',') >> space? }
     rule(:colon)  { str(':') >> space? }
     rule(:semicolon)  { str(';') >> space? }
