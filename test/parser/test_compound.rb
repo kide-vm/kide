@@ -29,14 +29,14 @@ class TestCompound < MiniTest::Test
 
   def test_hash
     @string_input = '{ foo => 33 }'
-    @parse_output = {:hash=>[{:hash_pair=>{:argument=>{:name=>"foo"}, :element=>{:integer=>"33"}}}]}
+    @parse_output = {:hash=>[{:hash_pair=>{:hash_key=>{:name=>"foo"}, :hash_value=>{:integer=>"33"}}}]}
     @transform_output = Ast::HashExpression.new([Ast::AssociationExpression.new(Ast::NameExpression.new("foo") , Ast::IntegerExpression.new(33))])
     @parser = @parser.hash
   end
 
   def test_hash_list
     @string_input = "{foo => 33 , bar => 42}"
-    @parse_output = {:hash=>[{:hash_pair=>{:argument=>{:name=>"foo"}, :element=>{:integer=>"33"}}}, {:hash_pair=>{:argument=>{:name=>"bar"}, :element=>{:integer=>"42"}}}]}
+    @parse_output = {:hash=>[{:hash_pair=>{:hash_key=>{:name=>"foo"}, :hash_value=>{:integer=>"33"}}}, {:hash_pair=>{:hash_key=>{:name=>"bar"}, :hash_value=>{:integer=>"42"}}}]}
     @transform_output = Ast::HashExpression.new([Ast::AssociationExpression.new(Ast::NameExpression.new("foo") , Ast::IntegerExpression.new(33)),Ast::AssociationExpression.new(Ast::NameExpression.new("bar") , Ast::IntegerExpression.new(42))])
     @parser = @parser.hash
   end

@@ -13,7 +13,7 @@ module Parser
     rule(:array => sequence(:array) ) { Ast::ArrayExpression.new(array) } 
     rule(:element  => simple(:element))    { element  }
     rule(:hash => sequence(:hash) ) { Ast::HashExpression.new(hash) } 
-    rule(:argument => simple(:argument) , :element => simple(:element)) {  Ast::AssociationExpression.new(argument,element) }
+    rule(:hash_key => simple(:hash_key) , :hash_value => simple(:hash_value)) {  Ast::AssociationExpression.new(hash_key,hash_value) }
     rule(:hash_pair => simple(:hash_pair) ) {  hash_pair }
 
     rule(:argument  => simple(:argument))    { argument  }
