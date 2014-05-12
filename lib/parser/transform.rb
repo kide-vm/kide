@@ -24,7 +24,8 @@ module Parser
            Ast::ConditionalExpression.new(conditional, if_true, if_false) 
          end
 
-    rule(:while     => simple(:while), :while_cond => simple(:while_cond) , :do => simple(:do), 
+    rule(:while     => simple(:while),
+         :while_cond => { :expressions => sequence(:while_cond) , :do => simple(:do)} , 
          :body => {:expressions => sequence(:body) , :end => simple(:e) }) do
            Ast::WhileExpression.new(while_cond, body) 
          end

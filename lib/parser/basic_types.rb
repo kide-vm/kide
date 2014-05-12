@@ -27,7 +27,7 @@ module Parser
     rule(:exponent) { (str('e')| str('E')) }
      
     # identifier must start with lower case
-    rule(:name)   { (match['a-z'] >> match['a-zA-Z0-9'].repeat).as(:name)  >> space? }
+    rule(:name)   { keyword.absent? >> (match['a-z'] >> match['a-zA-Z0-9'].repeat).as(:name)  >> space? }
     
     rule(:escape)     { str('\\') >> any.as(:esc) }
     rule(:string)     { quote >> (

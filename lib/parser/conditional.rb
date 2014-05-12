@@ -1,15 +1,13 @@
 module Parser
   module Conditional
     include Parslet
-    rule(:conditional) {
+    rule(:conditional) do
       keyword_if >> left_parenthesis >> expression.as(:conditional) >> right_parenthesis >> newline >>
-        delimited_expressions(keyword_else).as(:if_true) >> 
-        delimited_expressions(keyword_end).as(:if_false)
-    }
+        expressions_else.as(:if_true) >> expressions_end.as(:if_false)
+      end
     
-    rule(:while) {
-      keyword_while  >> expression.as(:while_cond) >>  keyword_do >> newline >> 
-                        delimited_expressions(keyword_end).as(:body)
-    }
+    rule(:while_do) do
+      keyword_while  >> expressions_do.as(:while_cond)  >> expressions_end.as(:body)
+    end
   end
 end

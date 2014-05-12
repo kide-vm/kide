@@ -1,6 +1,7 @@
 module Parser
   module Keywords
     include Parslet
+    
     rule(:keyword_begin)  {  str('begin').as(:begin) >> space?}
     rule(:keyword_def)    {  str('def') >> space? }
     rule(:keyword_do)     {  str('do').as(:do) >> space?}
@@ -14,5 +15,11 @@ module Parser
     rule(:keyword_unless) {  str('unless').as(:unless) >> space?}
     rule(:keyword_until)  {  str('until').as(:until) >> space?}
     rule(:keyword_while)  {  str('while').as(:while) >> space?}
+    
+    # this rule is just to make sure identifiers can't be keywords. Kind of duplication here, but we need the 
+    # space in above rules, so just make sure to add any here too.
+    rule(:keyword){ str('begin') | str('def') | str('do') | str('else') | str('end') | 
+                    str('false')| str('if')| str('rescue')| str('true')| str('nil') |
+                    str('unless')| str('until')| str('while')}
   end
 end

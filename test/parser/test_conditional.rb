@@ -25,23 +25,19 @@ HERE
     @string_input = <<HERE
 while 1 do
   tmp = a
-  a = b
+  puts(b)
 end
 HERE
-#go in there
-#  b = tmp + b
-#  puts(b)
-#  n = n - 1
 
     @parse_output = {:while=>"while", 
-          :while_cond=>{:integer=>"1"}, 
-          :do=>"do", 
-          :body=>{:expressions=>[{:l=>{:name=>"tmp"}, :o=>"= ", :r=>{:name=>"a"}}, {:l=>{:name=>"a"}, :o=>"= ", :r=>{:name=>"b"}}], 
-          :end=>"end"}}
+      :while_cond=>{:expressions=>[{:integer=>"1"}], 
+      :do=>"do"}, 
+      :body=>{:expressions=>[{:l=>{:name=>"tmp"}, :o=>"= ", :r=>{:name=>"a"}}, 
+        {:function_call=>{:name=>"puts"}, :argument_list=>[{:argument=>{:name=>"b"}}]}], :end=>"end"}}
     @transform_output = Ast::WhileExpression.new(
-        Ast::IntegerExpression.new(1), 
-        [Ast::OperatorExpression.new("=", Ast::NameExpression.new("tmp"),Ast::NameExpression.new("a")),
-           Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::NameExpression.new("b"))] )
-    @parser = @parser.while
+            [Ast::IntegerExpression.new(1)], 
+            [Ast::OperatorExpression.new("=", Ast::NameExpression.new("tmp"),Ast::NameExpression.new("a")), 
+                                Ast::FuncallExpression.new("puts", [Ast::NameExpression.new("b")] )] )
+    @parser = @parser.while_do
   end
 end
