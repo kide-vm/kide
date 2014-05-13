@@ -27,6 +27,11 @@ module Vm
     end
   end
 
+  # Just a nice way to write branches
+  class Bool < Value
+
+  end
+
   # This is what it is when we don't know what it is.
   # Must be promoted to A Word-Value to to anything
   # remembering that our oo machine is typed, no overloading or stuff
@@ -34,10 +39,12 @@ module Vm
 
     attr_accessor :register
 
-    def initialize reg
-      register = reg
+    def inspect
+      self.class.name + ":reg:#{register}:"
     end
-
+    def initialize reg
+      @register = reg
+    end
     def length
       4
     end
@@ -45,19 +52,23 @@ module Vm
   
   class Unsigned < Word
     
-    def plus unsigned
-      Machine.instance.unsigned_plus self , unsigned
+    def plus block , unsigned
+      CMachine.instance.unsigned_plus self , unsigned
     end
   end
 
   class Integer < Word
 
-    def less_or_equal right
-      Machine.instance.integer_less_or_equal self , right
+    def less_or_equal block , right
+      CMachine.instance.integer_less_or_equal block , self , right
     end
 
-    def plus right
-      Machine.instance.integer_plus self , right
+    def plus block , right
+      CMachine.instance.integer_plus block , self , right
+    end
+    
+    def load block , right
+      CMachine.instance.integer_load block , self , right
     end
   end
 end

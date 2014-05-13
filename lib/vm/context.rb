@@ -12,6 +12,6 @@ module Vm
       @attributes = {}
       @attributes[:program] = program
     end
-    
+    attr_reader :attributes
   end
 end

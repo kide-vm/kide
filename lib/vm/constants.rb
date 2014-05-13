@@ -11,7 +11,7 @@ module Vm
 
 
   class IntegerConstant < Constant
-    def init int
+    def initialize int
       @integer = int
     end
     attr_reader :integer

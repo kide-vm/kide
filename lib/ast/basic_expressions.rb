@@ -14,7 +14,7 @@ module Ast
       value.to_s
     end
     def compile context , into
-      Vm::Integer.new value
+      Vm::IntegerConstant.new value
     end
     def attributes
       [:value]

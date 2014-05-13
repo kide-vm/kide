@@ -31,10 +31,10 @@ module Vm
       @objects = []
       # global functions
       @functions = []
-      @entry = Core::Kernel::main_start
+      @entry = Core::Kernel::main_start  Vm::Block.new("main_entry")
       #main gets executed between entry and exit
       @main = Block.new("main")
-      @exit = Core::Kernel::main_exit
+      @exit = Core::Kernel::main_exit Vm::Block.new("main_exit")
     end
     attr_reader :context , :main , :functions
     
@@ -58,9 +58,7 @@ module Vm
       fun = get_function name
       unless fun
         puts @functions.inspect
-        fun = Function.new(name)
-        block = Core::Kernel.send(name)
-        fun.set_body block
+        fun = Core::Kernel.send(name)
         @functions << fun
       end
       fun

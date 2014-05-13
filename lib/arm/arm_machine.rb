@@ -31,45 +31,45 @@ module Arm
       end
     end
 
-    def integer_less_or_equal left , right
-      cmp(:left => left , :right => right )
+    def integer_less_or_equal block ,  left , right
+      block.add_code cmp(:left => left , :right => right )
+      Vm::Bool.new
     end
 
-    def integer_plus left , right
-      add(:left => left , :right => right )
+    def integer_plus block , left , right
+      block.add_code add(:left => left , :right => right )
+      left
     end
 
-    def word_load value , reg
-      raise "not a register :#{reg}:" unless reg.class == Symbol
-      mov( :left => reg , :right => value )
+    def integer_load block , left , right
+      reg = "r#{left.register}".to_sym
+      block.add_code mov( :left => reg , :right => right )
+      left 
     end
-    def string_load str_lit , reg
-      [  add( :left => "r#{reg}".to_sym   , :extra => str_lit ) ,  #right is pc, implicit
+    def string_load block ,  str_lit , reg
+      block.add_code add( :left => "r#{reg}".to_sym   , :extra => str_lit )   #right is pc, implicit
         #second arg is a hack to get the stringlength without coding
-         mov( :left => "r#{reg+1}".to_sym , :right => str_lit.length ) ] 
+      block.add_code mov( :left => "r#{reg+1}".to_sym , :right => str_lit.length )
+      str_lit
     end
 
     def function_call call
       raise "Not FunctionCall #{call.inspect}" unless call.is_a? Vm::FunctionCall
-      call.args.each do | arg |
-      end
-      bl( :left => call.function )
+      block.add_code bl( :left => call.function )
+      call.function.return_value
     end
 
-    def main_start
-      entry = Vm::Block.new("main_entry")
+    def main_start entry
       entry.add_code  mov( :left => :fp , :right => 0 )
     end
-    def main_exit
-      entry = Vm::Block.new("main_exit")
-      entry.add_code syscall(1)
+    def main_exit exit
+      exit.add_code syscall(1)
     end
-    def function_entry f_name
-      entry = Vm::Block.new("#{f_name}_entry")
-#      entry.add_code  push( :regs => [:lr] )
+    def function_entry block, f_name
+        #      entry.add_code  push( :regs => [:lr] )
+        block
     end
-    def function_exit f_name
-      entry = Vm::Block.new("#{f_name}_exit")
+    def function_exit entry , f_name
       entry.add_code  mov( :left => :pc , :right => :lr )
     end
     def putstring

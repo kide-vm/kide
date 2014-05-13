@@ -22,22 +22,22 @@ module Vm
       super()
       @name = name
       @args = args
-      @entry = Core::Kernel::function_entry( name )
-      @exit = Core::Kernel::function_exit( name )
-      @body = Block.new("#{name}_body")
+      @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_exit") ,name )
+      @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_entry") , name )
+      @body =  Block.new("#{name}_body")
+      @reg_count = 0
       branch_body
     end
     attr_reader :args , :entry , :exit , :body , :name
 
-    # this creates a branch from entry here and from here to exit 
-    # unless there is a link existing, in which you are resposible
-    def set_body body
-      @body = body
-      branch_body
-    end
-
     def arity
       @args.length
+    end
+
+    def next_register
+      next_free = @reg_count
+      @reg_count += 1
+      next_free + args.length
     end
 
     def link_at address , context
@@ -65,11 +65,6 @@ module Vm
     def branch_body
       @entry.set_next(@body)
       @body.set_next(@exit) if @body and  !@body.next
-    end
-
-    def add_arg value
-      # TODO check
-      @args << value
     end
   end
 end

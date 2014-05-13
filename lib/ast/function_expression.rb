@@ -18,16 +18,20 @@ module Ast
     end
     def compile context , into 
       raise "function does not compile into anything #{self}" if into
-      parent_locals = context.locals
-      context.locals = {}
       args = []
+      locals = {}
       params.each_with_index do |param , index|
         arg = param.name
         arg_value = Vm::Integer.new(index)
-        context.locals[arg] = arg_value
+        locals[arg] = arg_value
         args << arg_value
       end
       function = Vm::Function.new(name , args )
+      parent_locals = context.locals
+      parent_function = context.function
+      context.locals = locals
+      context.function = function
+
       context.program.add_function function
       into = function.entry
       block.each do |b|
@@ -41,6 +45,7 @@ module Ast
         puts compiled.inspect
       end
       context.locals = parent_locals
+      context.function = parent_function
       function
     end
 
