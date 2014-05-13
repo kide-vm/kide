@@ -6,21 +6,21 @@ class TestCompound < MiniTest::Test
     
   def test_one_array
     @string_input    = '[42]'
-    @parse_output = {:array=>[{:element=>{:integer=>"42"}}]}
+    @parse_output = {:array=>[{:array_element=>{:integer=>"42"}}]}
     @transform_output =  Ast::ArrayExpression.new([Ast::IntegerExpression.new(42)])
     @parser = @parser.array
   end
 
   def test_array_list
     @string_input    = '[42, foo]'
-    @parse_output = {:array=>[{:element=>{:integer=>"42"}}, {:element=>{:name=>"foo"}}]}
+    @parse_output = {:array=>[{:array_element=>{:integer=>"42"}}, {:array_element=>{:name=>"foo"}}]}
     @transform_output = Ast::ArrayExpression.new([Ast::IntegerExpression.new(42), Ast::NameExpression.new("foo")])
     @parser = @parser.array
   end
 
   def test_array_ops
     @string_input    = '[ 3 + 4 , foo(22) ]'
-    @parse_output = {:array=>[{:element=>{:l=>{:integer=>"3"}, :o=>"+ ", :r=>{:integer=>"4"}}}, {:element=>{:function_call=>{:name=>"foo"}, :argument_list=>[{:argument=>{:integer=>"22"}}]}}]}
+    @parse_output = {:array=>[{:array_element=>{:l=>{:integer=>"3"}, :o=>"+ ", :r=>{:integer=>"4"}}}, {:array_element=>{:function_call=>{:name=>"foo"}, :argument_list=>[{:argument=>{:integer=>"22"}}]}}]}
     @transform_output = Ast::ArrayExpression.new(
             [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(3),Ast::IntegerExpression.new(4)), 
               Ast::FuncallExpression.new("foo", [Ast::IntegerExpression.new(22)] )])
