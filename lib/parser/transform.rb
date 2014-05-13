@@ -11,7 +11,7 @@ module Parser
     rule(:name   => simple(:name))  { Ast::NameExpression.new(name.to_s) }
 
     rule(:array => sequence(:array) ) { Ast::ArrayExpression.new(array) } 
-    rule(:element  => simple(:element))    { element  }
+    rule(:array_element  => simple(:array_element))    { array_element  }
     rule(:hash => sequence(:hash) ) { Ast::HashExpression.new(hash) } 
     rule(:hash_key => simple(:hash_key) , :hash_value => simple(:hash_value)) {  Ast::AssociationExpression.new(hash_key,hash_value) }
     rule(:hash_pair => simple(:hash_pair) ) {  hash_pair }

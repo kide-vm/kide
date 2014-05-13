@@ -1,12 +1,12 @@
 module Parser
   # Compound types are Arrays and Hashes
-  module CompundTypes
+  module CompoundTypes
     include Parslet
 
     rule(:array) do
       left_bracket >>
-      (  ((operator_expression|value_expression).as(:element) >> space? >>
-          (comma >> space? >> (operator_expression|value_expression).as(:element)).repeat(0)).repeat(0,1)).as(:array) >>
+      (  ((operator_expression|value_expression).as(:array_element) >> space? >>
+          (comma >> space? >> (operator_expression|value_expression).as(:array_element)).repeat(0)).repeat(0,1)).as(:array) >>
           space? >> right_bracket
       end
 
