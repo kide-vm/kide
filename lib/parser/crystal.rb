@@ -20,7 +20,7 @@ module Parser
 
   class Crystal < Parslet::Parser
     include BasicTypes
-    include CompoundTypes
+#    include CompoundTypes
     include Tokens
     include Keywords
     include Control
