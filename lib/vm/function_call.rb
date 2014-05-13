@@ -12,6 +12,7 @@ module Vm
     attr_reader  :function , :args , :name
     
     def load_args into
+      raise args.inspect
       args.each_with_index do |arg , index|
         into.add_code arg.load("r#{index}".to_sym)
       end

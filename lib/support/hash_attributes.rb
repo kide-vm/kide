@@ -8,17 +8,17 @@ module Support
         puts "NO -#{args.length} BLOCK #{block_given?}"
         super 
       else
-        name = name.to_s
+        sname = name.to_s
         if args.length == 1        #must be assignemnt for ir attr= val
-          if name.include? "="
+          if sname.include? "="
             #puts "setting :#{name.chop}:#{args[0]}"
-            return @attributes[name.chop.to_sym] = args[0]
+            return @attributes[sname.chop.to_sym] = args[0]
           else 
             super
           end
         else
           #puts "getting :#{name}:#{@attributes[name.to_sym]}"
-          return @attributes[name.to_sym]
+          return @attributes[sname.to_sym]
         end
       end
     end

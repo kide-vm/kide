@@ -1,6 +1,6 @@
 module Vm
 
-  # Our virtual machine has a number of registers of a given size and uses a stack
+  # Our virtual c-machine has a number of registers of a given size and uses a stack
   # So much so standard
   # But our machine is oo, meaning that the register contents is typed. 
   # Off course current hardware does not have that (a perceived issue), but for our machine we pretend.
@@ -22,7 +22,7 @@ module Vm
   # Instructions work with options, so you can pass anything in, and the only thing the functions does
   # is save you typing the clazz.new. It passes the function name as the :opcode
    
-  class Machine
+  class CMachine
   
     # hmm, not pretty but for now
     @@instance = nil

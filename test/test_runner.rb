@@ -26,11 +26,11 @@ class TestRunner < MiniTest::Test
     # file is a list of expressions, al but the last must be a function
     # and the last is wrapped as a main
     parts.each_with_index do |part,index|
-      puts "parsing #{index}=#{part.inspect}"
-      expr    = part.compile( program.context )
       if index = parts.length
+        expr    = part.compile( program.context , nil )
         program.main = expr
       else
+        expr    = part.compile( program.context , program.main )
         raise "should be function definition for now" unless expr.is_a? Function
         program.add_function expr
       end

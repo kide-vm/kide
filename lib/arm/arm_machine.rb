@@ -1,4 +1,4 @@
-require "vm/machine"
+require "vm/c_machine"
 require_relative "stack_instruction"
 require_relative "logic_instruction"
 require_relative "move_instruction"
@@ -7,7 +7,7 @@ require_relative "memory_instruction"
 require_relative "call_instruction"
 
 module Arm
-  class ArmMachine < Vm::Machine
+  class ArmMachine < Vm::CMachine
     
     # defines a method in the current class, with the name inst (first erg) 
     # the method instantiates an instruction of the given class which gets passed a single hash as arg

@@ -69,7 +69,7 @@ module Vm
     # (hopefully an instruction) added as code
     def method_missing(meth, *args, &block)
       if args.length == 1
-        add_code Machine.instance.send(meth , *args)
+        add_code CMachine.instance.send(meth , *args)
       else
         super
       end

@@ -6,21 +6,21 @@ module Core
     module ClassMethods
       def main_start
         #TODO extract args into array of strings
-        Vm::Machine.instance.main_start
+        Vm::CMachine.instance.main_start
       end
       def main_exit
         # Machine.exit mov r7 , 0  + swi 0 
-        Vm::Machine.instance.main_exit
+        Vm::CMachine.instance.main_exit
       end
       def function_entry f_name
-        Vm::Machine.instance.function_entry f_name
+        Vm::CMachine.instance.function_entry f_name
       end
       def function_exit f_name
-        Vm::Machine.instance.function_exit f_name
+        Vm::CMachine.instance.function_exit f_name
       end
       def putstring
         # should unwrap from string to char*
-        Vm::Machine.instance.putstring 
+        Vm::CMachine.instance.putstring 
       end
     end
     

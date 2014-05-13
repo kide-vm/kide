@@ -28,7 +28,7 @@ class TestSmallProg < MiniTest::Test
   end
 
   def test_hello
-    hello = Vm::StringLiteral.new "Hello Raisa\n"
+    hello = Vm::StringConstant.new "Hello Raisa\n"
     @program.add_object hello
     @program.main.instance_eval do 
       mov :left =>:r7, :right => 4     # 4 == write

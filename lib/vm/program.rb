@@ -19,13 +19,13 @@ module Vm
   class Program < Block
     
     # Initialize with a string for cpu. Naming conventions are: for Machine XXX there exists a module XXX
-    #  with a XXXMachine in it that derives from Vm::Machine
+    #  with a XXXMachine in it that derives from Vm::CMachine
     def initialize machine = nil
       super("start")
       machine = RbConfig::CONFIG["host_cpu"] unless machine
       machine = "intel" if machine == "x86_64"
       machine = machine.capitalize
-      Machine.instance = eval("#{machine}::#{machine}Machine").new
+      CMachine.instance = eval("#{machine}::#{machine}Machine").new
       @context = Context.new(self)
       #global objects (data)
       @objects = []
