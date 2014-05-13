@@ -12,10 +12,10 @@ else
 HERE
     @string_input.chop!
     @parse_output = {:expressions=>[{:name=>"dud"}, 
-      {:function_call=>{:name=>"fuu"}, :argument_list=>[{:argument=>{:integer=>"3"}}]}], 
+      {:call_site=>{:name=>"fuu"}, :argument_list=>[{:argument=>{:integer=>"3"}}]}], 
       :else=>"else"}
     @transform_output ={:expressions=>[Ast::NameExpression.new("dud"), 
-          Ast::FuncallExpression.new("fuu", [Ast::IntegerExpression.new(3)] )], :else=>"else"}
+          Ast::CallSiteExpression.new("fuu", [Ast::IntegerExpression.new(3)] )], :else=>"else"}
     @parser = @parser.expressions_else
   end
 
@@ -27,10 +27,10 @@ end
 HERE
     @string_input.chop!
     @parse_output = {:expressions=>[{:name=>"name"}, 
-      {:function_call=>{:name=>"call"}, :argument_list=>[{:argument=>{:integer=>"4"}}, {:argument=>{:integer=>"6"}}]}], 
+      {:call_site=>{:name=>"call"}, :argument_list=>[{:argument=>{:integer=>"4"}}, {:argument=>{:integer=>"6"}}]}], 
       :end=>"end"}
     @transform_output = {:expressions=>[Ast::NameExpression.new("name"), 
-      Ast::FuncallExpression.new("call", [Ast::IntegerExpression.new(4),Ast::IntegerExpression.new(6)] )], 
+      Ast::CallSiteExpression.new("call", [Ast::IntegerExpression.new(4),Ast::IntegerExpression.new(6)] )], 
       :end=>"end"}
 
     @parser = @parser.expressions_end

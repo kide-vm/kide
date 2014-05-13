@@ -2,7 +2,7 @@ module Vm
 
   # name and args , return
 
-  class FunctionCall < Value
+  class CallSite < Value
 
     def initialize(name , args , function )
       @name = name

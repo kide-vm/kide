@@ -20,10 +20,10 @@ class TestCompound < MiniTest::Test
 
   def test_array_ops
     @string_input    = '[ 3 + 4 , foo(22) ]'
-    @parse_output = {:array=>[{:array_element=>{:l=>{:integer=>"3"}, :o=>"+ ", :r=>{:integer=>"4"}}}, {:array_element=>{:function_call=>{:name=>"foo"}, :argument_list=>[{:argument=>{:integer=>"22"}}]}}]}
+    @parse_output = {:array=>[{:array_element=>{:l=>{:integer=>"3"}, :o=>"+ ", :r=>{:integer=>"4"}}}, {:array_element=>{:call_site=>{:name=>"foo"}, :argument_list=>[{:argument=>{:integer=>"22"}}]}}]}
     @transform_output = Ast::ArrayExpression.new(
             [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(3),Ast::IntegerExpression.new(4)), 
-              Ast::FuncallExpression.new("foo", [Ast::IntegerExpression.new(22)] )])
+              Ast::CallSiteExpression.new("foo", [Ast::IntegerExpression.new(22)] )])
     @parser = @parser.array
   end
 

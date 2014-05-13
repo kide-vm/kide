@@ -4,7 +4,7 @@ require_relative "tokens"
 require_relative "keywords"
 require_relative "control"
 require_relative "expression"
-require_relative "function_call"
+require_relative "call_site"
 require_relative "function_definition"
 require_relative "operators"
 
@@ -25,10 +25,10 @@ module Parser
     include Keywords
     include Control
     include Expression
-    include FunctionCall
+    include CallSite
     include FunctionDefinition
     include Operators
 
-    rule(:root){ (function_definition | expression | operator_expression | function_call).repeat }
+    rule(:root){ (function_definition | expression | operator_expression | call_site).repeat }
   end
 end

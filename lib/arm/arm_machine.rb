@@ -54,7 +54,7 @@ module Arm
     end
 
     def function_call into , call
-      raise "Not FunctionCall #{call.inspect}" unless call.is_a? Vm::FunctionCall
+      raise "Not CallSite #{call.inspect}" unless call.is_a? Vm::CallSite
       raise "Not linked #{call.inspect}" unless call.function
       into.add_code bl( :left => call.function )
       call.function.return_type

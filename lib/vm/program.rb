@@ -1,5 +1,5 @@
 require_relative "function"
-require_relative "function_call"
+require_relative "call_site"
 require "arm/arm_machine"
 
 module Vm

@@ -16,11 +16,11 @@ HERE
                     :while_cond=>{:integer=>"1"}, 
                     :do=>"do", 
                     :body=>{:expressions=>[{:l=>{:name=>"tmp"}, :o=>"= ", :r=>{:name=>"a"}}, 
-              {:function_call=>{:name=>"puts"}, :argument_list=>[{:argument=>{:name=>"b"}}]}], :end=>"end"}}
+              {:call_site=>{:name=>"puts"}, :argument_list=>[{:argument=>{:name=>"b"}}]}], :end=>"end"}}
     @transform_output = Ast::WhileExpression.new(
             Ast::IntegerExpression.new(1), 
             [Ast::OperatorExpression.new("=", Ast::NameExpression.new("tmp"),Ast::NameExpression.new("a")), 
-              Ast::FuncallExpression.new("puts", [Ast::NameExpression.new("b")] )] )
+              Ast::CallSiteExpression.new("puts", [Ast::NameExpression.new("b")] )] )
     @parser = @parser.while_do
   end
 
@@ -41,7 +41,7 @@ HERE
       :body=>{:expressions=>[{:l=>{:name=>"tmp"}, :o=>"= ", :r=>{:name=>"a"}}, 
                 {:l=>{:name=>"a"}, :o=>"= ", :r=>{:name=>"b"}}, 
                 {:l=>{:name=>"b"}, :o=>"= ", :r=>{:l=>{:name=>"tmp"}, :o=>"+ ", :r=>{:name=>"b"}}}, 
-                {:function_call=>{:name=>"puts"}, 
+                {:call_site=>{:name=>"puts"}, 
                     :argument_list=>[{:argument=>{:name=>"b"}}]}, 
                 {:l=>{:name=>"n"}, :o=>"= ", :r=>{:l=>{:name=>"n"}, :o=>"- ", :r=>{:integer=>"1"}}}], 
       :end=>"end"}}
@@ -50,7 +50,7 @@ HERE
             [Ast::OperatorExpression.new("=", Ast::NameExpression.new("tmp"),Ast::NameExpression.new("a")), 
              Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::NameExpression.new("b")), 
              Ast::OperatorExpression.new("=", Ast::NameExpression.new("b"),Ast::OperatorExpression.new("+", Ast::NameExpression.new("tmp"),
-             Ast::NameExpression.new("b"))), Ast::FuncallExpression.new("puts", [Ast::NameExpression.new("b")] ), 
+             Ast::NameExpression.new("b"))), Ast::CallSiteExpression.new("puts", [Ast::NameExpression.new("b")] ), 
              Ast::OperatorExpression.new("=", Ast::NameExpression.new("n"),Ast::OperatorExpression.new("-", Ast::NameExpression.new("n"),Ast::IntegerExpression.new(1)))] )
     @parser = @parser.while_do
   end

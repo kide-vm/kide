@@ -1,5 +1,5 @@
 module Parser
-  module FunctionCall
+  module CallSite
     include Parslet
 
     rule(:argument_list) {
@@ -9,7 +9,7 @@ module Parser
           space? >> right_parenthesis
     }
 
-    rule(:function_call) { name.as(:function_call) >> argument_list }
+    rule(:call_site) { name.as(:call_site) >> argument_list }
 
     
   end

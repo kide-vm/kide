@@ -2,9 +2,9 @@ module Parser
   module Expression
     include Parslet
     
-    rule(:value_expression) { function_call | basic_type }
+    rule(:value_expression) { call_site | basic_type }
 
-    rule(:expression) { (while_do | conditional | operator_expression | function_call ) >> newline }
+    rule(:expression) { (while_do | conditional | operator_expression | call_site ) >> newline }
 
     def delimited_expressions( delimit )
       ( (delimit.absent? >> expression).repeat(1)).as(:expressions) >> delimit

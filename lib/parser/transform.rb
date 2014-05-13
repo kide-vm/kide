@@ -19,9 +19,9 @@ module Parser
     rule(:argument  => simple(:argument))    { argument  }
     rule(:argument_list => sequence(:argument_list)) { argument_list }
 
-    rule( :function_call => simple(:function_call), 
+    rule( :call_site => simple(:call_site), 
           :argument_list    => sequence(:argument_list)) do
-           Ast::FuncallExpression.new(function_call.name, argument_list) 
+           Ast::CallSiteExpression.new(call_site.name, argument_list) 
     end
 
     rule(:if => simple(:if), :conditional     => simple(:conditional),
