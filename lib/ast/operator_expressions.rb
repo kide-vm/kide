@@ -7,13 +7,14 @@ module Ast
     def initialize name, args
       @name , @args = name , args
     end
-    def compile context
-      fun = Vm::FunctionCall.new( name , args.collect{ |a| a.compile(context) } )
-      fun.assign_function context
-      fun.load_args
-      fun.do_call
+    def compile context , into
+      params = args.collect{ |a| a.compile(context, into) }
+      fun = Vm::FunctionCall.new( name ,  params )
+      fun.load_args into
+      fun.do_call into
       fun
     end
+    
     def inspect
       self.class.name + ".new(" + name.inspect + ", ["+ 
         args.collect{|m| m.inspect }.join( ",") +"] )"  
@@ -41,35 +42,24 @@ module Ast
     def to_s
       "#{left} #{operator} #{right}"
     end
-    def compile context
-      parent_locals = context.locals
-      context.locals = {}
-      args = []
-
-      #assignemnt
-      value = @assigned.compile(context)
-      variable = Vm::Variable.new @assignee , :r0 , value
-      context.locals[@assignee] = variable
-      variable
-
-
-      params.each do |param|
-        args << param.compile(context) # making the argument a local
+    def compile context , into
+      r_val = right.compile(context , into)
+      
+      if operator == "="    # assignemnt
+        raise "Can only assign variables, not #{left}" unless left.is_a?(NameExpression) 
+        context.locals[left.name] = r_val
+        return r_val
       end
-#      args = params.collect{|p| Vm::Value.type p.name }
-      function = Vm::Function.new(name ,args )
-      context.program.add_function function
-      block.each do |b|
-        compiled = b.compile context
-        if compiled.is_a? Vm::Block
-          he.breaks.loose
-        else
-          function.body.add_code compiled
-        end
-        puts compiled.inspect
+      l_val = left.compile(context , into)
+
+      case operator
+      when ">"
+        code = l_val.less_or_equal r_val
+      when "+"
+        code = l_val.plus r_val
+      else
+        raise "unimplemented operator #{operator} #{self}"
       end
-      context.locals = parent_locals if parent_locals
-      function
     end
   end
 end

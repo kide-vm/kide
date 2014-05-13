@@ -14,7 +14,7 @@ module Vm
   # A Machines main responsibility in the framework is to instantiate Instruction
 
   # Value functions are mapped to machines by concatenating the values class name + the methd name
-  # Example:  SignedValue.plus( value ) ->  Machine.signed_plus (value )
+  # Example:  IntegerValue.plus( value ) ->  Machine.signed_plus (value )
   
   # Also, shortcuts are created to easily instantiate Instruction objects. The "standard" set of instructions
   # (arm-influenced) provides for normal operations on a register machine, 

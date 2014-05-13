@@ -22,7 +22,7 @@ module Arm
 
     #(stays in subclases, while build is overriden to provide different arguments)
     def do_build(arg)      
-      if arg.is_a?(Vm::StringLiteral)
+      if arg.is_a?(Vm::StringConstant)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
         arg = Arm::NumLiteral.new( arg.position - self.position - 8 )
@@ -31,7 +31,7 @@ module Arm
       if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
         arg = Arm::NumLiteral.new( arg )
       end
-      if( arg.is_a? Vm::Signed ) #HACK to not have to change the code just now
+      if( arg.is_a? Vm::Integer ) #HACK to not have to change the code just now
         arg = Arm::NumLiteral.new( arg.value )
       end
       if (arg.is_a?(Arm::NumLiteral))

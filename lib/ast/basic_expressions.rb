@@ -13,8 +13,8 @@ module Ast
     def to_s
       value.to_s
     end
-    def compile context
-      Vm::Signed.new value
+    def compile context , into
+      Vm::Integer.new value
     end
     def attributes
       [:value]
@@ -26,10 +26,10 @@ module Ast
     def initialize name
       @name = name
     end
-    def compile context
-      variable = Vm::Variable.new(@name)
-      context.locals[@name] = variable
-      variable
+    # compiling a variable resolves it. 
+    # if it wasn't defined, nli is returned 
+    def compile context , into
+      context.locals[name]
     end
     def inspect
       self.class.name + '.new("' + name + '")'
@@ -51,8 +51,8 @@ module Ast
       self.class.name + '.new("' + string + '")'
     end
 
-    def compile context
-      value = Vm::StringLiteral.new(string)
+    def compile context , into
+      value = Vm::StringConstant.new(string)
       context.program.add_object value 
       value
     end

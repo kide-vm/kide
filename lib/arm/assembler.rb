@@ -39,11 +39,11 @@ module Arm
 
     # Add a string to the string table. Strings are global and constant. So only one copy of each 
     # string exists
-    # Internally StringLiterals are created and stored and during assembly written after the blocks
+    # Internally StringConstants are created and stored and during assembly written after the blocks
     def add_string str
       code = @string_table[str]
       return code if code
-      data = Vm::StringLiteral.new(str)
+      data = Vm::StringConstant.new(str)
       @string_table[str] = data
     end
 

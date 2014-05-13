@@ -30,7 +30,15 @@ module Arm
         end
       end
     end
-    
+
+    def integer_less_or_equal left , right
+      cmp(:left => left , :right => right )
+    end
+
+    def integer_plus left , right
+      add(:left => left , :right => right )
+    end
+
     def word_load value , reg
       raise "not a register :#{reg}:" unless reg.class == Symbol
       mov( :left => reg , :right => value )

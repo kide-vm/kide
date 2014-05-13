@@ -21,27 +21,23 @@ module Vm
   # just a base class for data. not sure how this will be usefull (may just have read too much llvm)
   class Value < Code
 
-    def initialize value
-      @value = value
-    end
-    attr_reader :value
-    
-    #naming convention to infer types in kernel functions. Kernel types are basic types, ie see below
-    # 
-    def self.type name
-      parts = name.split("_")
-      t = "Basic"
-      if parts[1]
-        t = parts[1]
-      end
-      t
+
+    def type
+      self.class
     end
   end
 
+  # This is what it is when we don't know what it is.
+  # Must be promoted to A Word-Value to to anything
+  # remembering that our oo machine is typed, no overloading or stuff
   class Word < Value
-    def load reg
-      Machine.instance.word_load self , reg
+
+    attr_accessor :register
+
+    def initialize reg
+      register = reg
     end
+
     def length
       4
     end
@@ -54,59 +50,15 @@ module Vm
     end
   end
 
-  class Signed < Word
-    def plus signed
-      Machine.instance.signed_plus self , signed
-    end
-  end
+  class Integer < Word
 
-  class Variable < Value
-    attr_reader :name , :register
-    def initialize name , register = nil , val = nil
-      super(val)
-      @register = register
-      @name = name
-    end
-    def length
-      @value.length
-    end
-    def assemble io
-      @value.load @register
-    end
-  end
-
-  # The name really says it all.
-  # The only interesting thing is storage.
-  # Currently string are stored "inline" , ie in the code segment. 
-  # Mainly because that works an i aint no elf expert.
-  
-  class StringLiteral < Value
-    
-    # currently aligned to 4 (ie padded with 0) and off course 0 at the end
-    def initialize(str)
-      super(str)
-      length = str.length 
-      # rounding up to the next 4 (always adding one for zero pad)
-      pad =  ((length / 4 ) + 1 ) * 4 - length
-      raise "#{pad} #{self}" unless pad >= 1
-      @value = str + "\x00" * pad 
-    end
-    def string
-      @value
+    def less_or_equal right
+      Machine.instance.integer_less_or_equal self , right
     end
 
-    def load reg_num
-      Machine.instance.string_load self , reg_num
-    end
-
-    # the strings length plus padding
-    def length
-      string.length
-    end
-    
-    # just writing the string
-    def assemble(io)
-      io << string
+    def plus right
+      Machine.instance.integer_plus self , right
     end
   end
 end
+require_relative "constants"

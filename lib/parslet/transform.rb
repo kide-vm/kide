@@ -22,7 +22,7 @@ require 'parslet/pattern'
 #
 #   class Example < Parslet::Transform
 #     rule(:string => simple(:x)) {  # (1)
-#       StringLiteral.new(x)
+#       StringConstant.new(x)
 #     }
 #   end
 #

@@ -8,7 +8,7 @@ module Parser
     rule(:bit_and) { str('&') >> space?}
     rule(:bit_or) { str('|') >> space?}
     rule(:greater_equal) { str('>=') >> space?}
-    rule(:smaller_equal) { str('<=') >> space?}
+    rule(:less_or_equal) { str('<=') >> space?}
     rule(:larger) { str('>') >> space?}
     rule(:smaller) { str('<') >> space?}
     rule(:identity) { str('===') >> space?}
@@ -31,7 +31,7 @@ module Parser
                                      [bit_and, 90, :left],
                                      [bit_or, 90, :right],
                                      [greater_equal, 80, :left],
-                                     [smaller_equal, 80, :left],
+                                     [less_or_equal, 80, :left],
                                      [larger, 80, :left],
                                      [smaller, 80, :left],
                                      [identity, 70, :right],

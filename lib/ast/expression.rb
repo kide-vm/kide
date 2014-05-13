@@ -12,7 +12,7 @@ module Ast
     def eval 
       raise "abstract #{self}"
     end
-    def compile context
+    def compile context , into
       raise "abstract #{self}"
     end
     def attributes

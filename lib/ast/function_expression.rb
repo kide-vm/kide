@@ -16,27 +16,31 @@ module Ast
     def to_s
       "def #{name}( " + params.join(",") + ") \n" + block.join("\n") + "end\n"
     end
-    def compile context
-      raise self.to_s
+    def compile context , into 
+      raise "function does not compile into anything #{self}" if into
       parent_locals = context.locals
       context.locals = {}
       args = []
-      params.each do |param|
-        args << param.compile(context) # making the argument a local
+      params.each_with_index do |param , index|
+        arg = param.name
+        arg_value = Vm::Integer.new(index)
+        context.locals[arg] = arg_value
+        args << arg_value
       end
-#      args = params.collect{|p| Vm::Value.type p.name }
-      function = Vm::Function.new(name ,args )
+      function = Vm::Function.new(name , args )
       context.program.add_function function
+      into = function.entry
       block.each do |b|
-        compiled = b.compile context
+        compiled = b.compile(context , into)
         if compiled.is_a? Vm::Block
+          into = compiled
           he.breaks.loose
         else
           function.body.add_code compiled
         end
         puts compiled.inspect
       end
-      context.locals = parent_locals if parent_locals
+      context.locals = parent_locals
       function
     end
 
