@@ -13,7 +13,11 @@ module Ast
         block.collect{|m| m.inspect }.join( ",") +"] )"  
     end
     
+    def to_s
+      "def #{name}( " + params.join(",") + ") \n" + block.join("\n") + "end\n"
+    end
     def compile context
+      raise self.to_s
       parent_locals = context.locals
       context.locals = {}
       args = []

@@ -10,6 +10,9 @@ module Ast
     def inspect
       self.class.name + ".new(" + value.to_s+ ")"
     end
+    def to_s
+      value.to_s
+    end
     def compile context
       Vm::Signed.new value
     end
@@ -30,6 +33,9 @@ module Ast
     end
     def inspect
       self.class.name + '.new("' + name + '")'
+    end
+    def to_s
+      name
     end
     def attributes
       [:name]

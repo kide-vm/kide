@@ -7,7 +7,6 @@ module Ast
     def initialize name, args
       @name , @args = name , args
     end
-  
     def compile context
       fun = Vm::FunctionCall.new( name , args.collect{ |a| a.compile(context) } )
       fun.assign_function context
@@ -19,7 +18,9 @@ module Ast
       self.class.name + ".new(" + name.inspect + ", ["+ 
         args.collect{|m| m.inspect }.join( ",") +"] )"  
     end
-  
+    def to_s
+      "#{name}(" + args.join(",") + ")"
+    end
     def attributes
       [:name , :args]
     end
@@ -37,7 +38,9 @@ module Ast
     def inspect
       self.class.name + ".new(" + operator.inspect + ", " +  left.inspect + "," + right.inspect + ")"  
     end
-  
+    def to_s
+      "#{left} #{operator} #{right}"
+    end
     def compile context
       parent_locals = context.locals
       context.locals = {}
