@@ -45,20 +45,21 @@ module Vm
     
     def add_function function
       raise "not a function #{function}" unless function.is_a? Function
+      raise "syserr " unless function.name.is_a? Symbol
       @functions << function
     end
 
     def get_function name
       name = name.to_sym
-      @functions.detect{ |f| (f.name == name) }
+      @functions.detect{ |f| f.name == name }
     end
 
     # preferred way of creating new functions (also forward declarations, will flag unresolved later)
     def get_or_create_function name 
       fun = get_function name
       unless fun
-        puts @functions.inspect
         fun = Core::Kernel.send(name)
+        raise "no such function '#{name}'" if fun == nil
         @functions << fun
       end
       fun

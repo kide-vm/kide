@@ -53,17 +53,18 @@ module Arm
       str_lit
     end
 
-    def function_call call
+    def function_call into , call
       raise "Not FunctionCall #{call.inspect}" unless call.is_a? Vm::FunctionCall
-      block.add_code bl( :left => call.function )
-      call.function.return_value
+      raise "Not linked #{call.inspect}" unless call.function
+      into.add_code bl( :left => call.function )
+      call.function.return_type
     end
 
     def main_start entry
       entry.add_code  mov( :left => :fp , :right => 0 )
     end
     def main_exit exit
-      exit.add_code syscall(1)
+      syscall(exit , 1)
     end
     def function_entry block, f_name
         #      entry.add_code  push( :regs => [:lr] )
@@ -72,17 +73,21 @@ module Arm
     def function_exit entry , f_name
       entry.add_code  mov( :left => :pc , :right => :lr )
     end
-    def putstring
-      put = Vm::Block.new("putstring_code")
-      # should be another level of indirection, ie write(io,str)
-      put.add_code mov( :left => :r2 , :right => :r1 )
-      put.add_code mov( :left => :r1 , :right => :r0 )
-      put.add_code mov( :left => :r0 , :right => 1 ) #stdout
-      put.add_code  syscall(4)
+
+    # assumes string in r0 and r1 and moves them along for the syscall
+    def write_stdout block
+      block.add_code mov( :left => :r2 , :right => :r1 )
+      block.add_code mov( :left => :r1 , :right => :r0 )
+      block.add_code mov( :left => :r0 , :right => 1 ) # 1 == stdout
+      syscall( block , 4 )
     end
+
     private     
-    def syscall num
-      [mov( :left => :r7 , :right => num ) ,  swi( :left => 0 )]
+
+    def syscall block , num
+      block.add_code mov( :left => :r7 , :right => num )
+      block.add_code swi( :left => 0 )
+      Vm::Integer.new(0)  #small todo, is this actually correct for all (that they return int)
     end
 
   end

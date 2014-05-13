@@ -18,9 +18,16 @@ module Core
       def function_exit block , f_name
         Vm::CMachine.instance.function_exit block , f_name
       end
+        
+      #TODO this is in the wrong place. It is a function that returns a function object
+      #   while all other methods add their code into some block. --> kernel
       def putstring
-        # should unwrap from string to char*
-        Vm::CMachine.instance.putstring 
+        function = Vm::Function.new(:putstring , [Vm::Integer , Vm::Integer ] )
+        block = function.body
+        # should be another level of indirection, ie write(io,str)
+        ret = Vm::CMachine.instance.write_stdout(block)
+        function.return_type = ret
+        function
       end
     end
     

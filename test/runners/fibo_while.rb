@@ -5,7 +5,7 @@ def fibonaccit(n)
     tmp = a
     a = b
     b = tmp + b
-    puts(b)
+    putstring(b)
     n = n - 1
   end
 end

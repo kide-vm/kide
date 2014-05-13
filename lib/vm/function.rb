@@ -29,6 +29,7 @@ module Vm
       branch_body
     end
     attr_reader :args , :entry , :exit , :body , :name
+    attr_accessor :return_type
 
     def arity
       @args.length
