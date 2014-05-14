@@ -25,19 +25,19 @@ module Arm
       if arg.is_a?(Vm::StringConstant)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
-        arg = Arm::NumLiteral.new( arg.position - self.position - 8 )
+        arg = Vm::IntegerConstant.new( arg.position - self.position - 8 )
         @rn = :pc
       end
       if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
-        arg = Arm::NumLiteral.new( arg )
+        arg = Vm::IntegerConstant.new( arg )
       end
       if( arg.is_a? Vm::Integer ) #HACK to not have to change the code just now
-        arg = Arm::NumLiteral.new( arg.value )
+        arg = Vm::IntegerConstant.new( arg.value )
       end
-      if (arg.is_a?(Arm::NumLiteral))
-        if (arg.value.fits_u8?)
+      if (arg.is_a?(Vm::IntegerConstant))
+        if (arg.integer.fits_u8?)
           # no shifting needed
-          @operand = arg.value
+          @operand = arg.integer
           @i = 1
         elsif (op_with_rot = calculate_u8_with_rr(arg))
           @operand = op_with_rot
@@ -59,7 +59,7 @@ module Arm
         end
     
         arg1 = arg.value
-        if (arg1.is_a?(Arm::NumLiteral))
+        if (arg1.is_a?(Vm::IntegerConstant))
           if (arg1.value >= 32)
             raise "cannot shift by more than 31 #{arg1} #{inspect}"
           end

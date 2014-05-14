@@ -34,11 +34,4 @@ module Arm
     end
   end
 
-  class NumLiteral 
-    attr_accessor :value
-    def initialize val
-      @value = val
-    end
-  end
-
 end

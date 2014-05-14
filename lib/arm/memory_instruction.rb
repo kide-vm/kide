@@ -57,7 +57,7 @@ module Arm
         if (@operand.abs > 4095)
           raise "reference offset too large/small (max 4095) #{arg} #{inspect}"
         end
-      elsif (arg.is_a?(Arm::Label) or arg.is_a?(Arm::NumLiteral))
+      elsif (arg.is_a?(Arm::Label) or arg.is_a?(Vm::IntegerConstant))
         @pre_post_index = 1
         @rn = pc
         @use_addrtable_reloc = true

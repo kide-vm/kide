@@ -32,14 +32,14 @@ module Arm
         arg = @attributes[:left]
         #puts "BLAB #{arg.inspect}"
         if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
-          arg = Arm::NumLiteral.new( arg )
+          arg = Vm::IntegerConstant.new( arg )
         end
-        if arg.is_a? Vm::Code
+        if arg.is_a? Vm::Block
           diff = arg.position - self.position - 8
-          arg = Arm::NumLiteral.new(diff)
+          arg = Vm::IntegerConstant.new(diff)
         end
-        if (arg.is_a?(Arm::NumLiteral))
-          jmp_val = arg.value >> 2
+        if (arg.is_a?(Vm::IntegerConstant))
+          jmp_val = arg.integer >> 2
           packed = [jmp_val].pack('l')
           # signed 32-bit, condense to 24-bit
           # TODO add check that the value fits into 24 bits
@@ -51,10 +51,10 @@ module Arm
       when :swi
         arg = @attributes[:left]
         if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
-          arg = Arm::NumLiteral.new( arg )
+          arg = Vm::IntegerConstant.new( arg )
         end
-        if (arg.is_a?(Arm::NumLiteral))
-          packed = [arg.value].pack('L')[0,3]
+        if (arg.is_a?(Vm::IntegerConstant))
+          packed = [arg.integer].pack('L')[0,3]
           io << packed
           io.write_uint8 0b1111 | (COND_CODES[@attributes[:condition_code]] << 4)
         else
