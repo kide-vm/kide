@@ -22,7 +22,26 @@ HERE
                         Ast::CallSiteExpression.new("foo", [Ast::IntegerExpression.new(3)] )]
 
   end
-  
+
+  def test_comments
+    @string_input = <<HERE
+def foo(x) #here
+  a = 0           # a == r1
+  b = 1           # b = r2
+  while(n<1) do #comment
+    tmp = a       # r3 <- r1
+    a = b         # r1 <- r2
+    b = tmp + b   #  r4 = r2 + r3  (r4 transient)  r2 <- r4 
+    putstring(b)  
+    n = n - 1     #me  
+  end #no
+end #anywhere
+foo( 3 ) #and more
+HERE
+    @parse_output =[{:function_name=>{:name=>"foo"}, :parmeter_list=>[{:parmeter=>{:name=>"x"}}], :expressions=>[{:l=>{:name=>"a"}, :o=>"= ", :r=>{:integer=>"5"}}], :end=>"end"}, {:call_site=>{:name=>"foo"}, :argument_list=>[{:argument=>{:integer=>"3"}}]}]
+    @transform_output = [Ast::FunctionExpression.new(:foo, [Ast::NameExpression.new("x")] , [Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::IntegerExpression.new(5))] ), Ast::CallSiteExpression.new(:foo, [Ast::IntegerExpression.new(3)] )]
+  end
+
   def test_fibo1
     @string_input = <<HERE
 def fibonaccit(n)

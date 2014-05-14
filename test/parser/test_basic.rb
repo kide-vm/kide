@@ -21,8 +21,7 @@ class TestBasic < MiniTest::Test
   def test_comment
     out = "# i am a comment \n"
     @string_input    =  out.dup #NEEDS the return, which is what delimits the comment
-    out = out[1..-2]
-    @parse_output = {:comment => out}
+    @parse_output = out
     @transform_output = @parse_output #dont transform
     @parser = @parser.comment
   end
