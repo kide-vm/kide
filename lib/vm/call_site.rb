@@ -16,8 +16,7 @@ module Vm
         if arg.is_a? IntegerConstant
           Vm::Integer.new(index).load into , arg
         else
-          raise "no #{arg.inspect}" if arg.register != index
-          #arg.load( into , index )
+          arg.move( into , index ) if arg.register != index
         end
       end
     end

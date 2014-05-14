@@ -73,6 +73,11 @@ module Vm
     def load block , right
       CMachine.instance.integer_load block , self , right
     end
+
+    def move block , right
+      CMachine.instance.integer_move block , self , right
+    end
+
   end
 end
 require_relative "constants"

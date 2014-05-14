@@ -26,10 +26,15 @@ module Arm
     end
 
     def integer_load block , left , right
-      reg = "r#{left.register}".to_sym
-      block.add_code mov( :left => reg , :right => right )
+      block.add_code mov( :left => left , :right => right )
       left 
     end
+
+    def integer_move block , left , right
+      block.add_code mov( :left => left , :right => right )
+      left 
+    end
+
     def string_load block ,  str_lit , reg
       block.add_code add( :left => "r#{reg}".to_sym   , :extra => str_lit )   #right is pc, implicit
         #second arg is a hack to get the stringlength without coding

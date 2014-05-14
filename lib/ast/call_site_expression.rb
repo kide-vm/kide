@@ -13,7 +13,6 @@ module Ast
       call = Vm::CallSite.new( name ,  params  , function)
       call.load_args into
       call.do_call into
-      call
     end
     
     def inspect

@@ -23,15 +23,14 @@ class TestRunner < MiniTest::Test
     program = Vm::Program.new "Arm"
     syntax  = parser.parse_with_debug(string)
     parts   = Parser::Transform.new.apply(syntax)
-    # file is a list of expressions, al but the last must be a function
+    # file is a list of expressions, all but the last must be a function
     # and the last is wrapped as a main
     parts.each_with_index do |part,index|
-      if index = parts.length
-        expr    = part.compile( program.context , nil )
-        program.main = expr
-      else
+      if index == (parts.length - 1)
         expr    = part.compile( program.context , program.main )
-        raise "should be function definition for now" unless expr.is_a? Function
+      else
+        expr    = part.compile( program.context ,  nil )
+        raise "should be function definition for now" unless expr.is_a? Vm::Function
         program.add_function expr
       end
     end
