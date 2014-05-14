@@ -40,7 +40,11 @@ class TestRunner < MiniTest::Test
     binary = program.assemble(StringIO.new )
 
     writer = Elf::ObjectWriter.new(Elf::Constants::TARGET_ARM)
-
+    blocks = program.functions.collect{ |f| [f.entry , f.exit , f.body] } 
+    blocks += [program.entry , program.exit , program.main]
+    blocks.flatten.each do |b|
+      writer.add_symbol b.name.to_s , b.position
+    end
     assembly = program.assemble(StringIO.new)
 
     writer.set_text assembly.string

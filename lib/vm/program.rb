@@ -36,7 +36,7 @@ module Vm
       @main = Block.new("main")
       @exit = Core::Kernel::main_exit Vm::Block.new("main_exit")
     end
-    attr_reader :context , :main , :functions
+    attr_reader :context , :main , :functions , :entry , :exit
     
     def add_object o
       return if @objects.include? o
