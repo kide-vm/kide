@@ -1,7 +1,7 @@
 
 module Arm
   # Many arm instructions may be conditional, where the default condition is always (al)
-  # ArmMachine::COND_CODES names them, and this attribute reflects it
+  # Constants::COND_CODES names them, and this attribute reflects it
   #attr_reader :condition_code
   #attr_reader :operand
 

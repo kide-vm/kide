@@ -43,5 +43,13 @@ module Vm
   class MoveInstruction < Instruction
   end
   class CallInstruction < Instruction
+    def initialize options
+      super
+      opcode = @attributes[:opcode].to_s
+      if opcode.length == 3 and opcode[0] == "b"
+        @attributes[:condition_code] = opcode[1,2].to_sym
+        @attributes[:opcode] = :b
+      end
+    end
   end
 end

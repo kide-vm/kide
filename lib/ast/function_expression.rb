@@ -34,15 +34,11 @@ module Ast
       context.locals = locals
       context.function = function
 
-      into = function.entry
+      into = function.body
       block.each do |b|
         compiled = b.compile(context , into)
-        if compiled.is_a? Vm::Block
-          into = compiled
-          he.breaks.loose
-        else
-          function.body.add_code compiled
-        end
+        function.return_type = compiled
+        raise "alarm " unless compiled.is_a? Vm::Word
         puts compiled.inspect
       end
       context.locals = parent_locals

@@ -5,7 +5,6 @@ module Arm
   
   # A branch could be called a jump as it has no notion of returning
   
-  # A call has the bl code as someone thought "branch with link" is a useful name.
   # The pc is put into the link register to make a return possible
   # a return is affected by moving the stored link register into the pc, effectively a branch
   
@@ -24,12 +23,12 @@ module Arm
     def initialize(attributes)
       super(attributes)
       @attributes[:update_status_flag] = 0
-      @attributes[:condition_code] = :al
+      @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
     end
     
     def assemble(io)
       case @attributes[:opcode]
-      when :b, :bl
+      when :b, :call
         arg = @attributes[:left]
         #puts "BLAB #{arg.inspect}"
         if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
@@ -46,9 +45,9 @@ module Arm
           # TODO add check that the value fits into 24 bits
           io << packed[0,3]
         else
-          raise "else not coded #{inspect}"
+          raise "else not coded arg =#{arg}: #{inspect}"
         end
-        io.write_uint8 OPCODES[opcode] | (COND_CODES[@attributes[:condition_code]] << 4)
+        io.write_uint8 op_bit_code | (COND_CODES[@attributes[:condition_code]] << 4)
       when :swi
         arg = @attributes[:left]
         if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
@@ -61,6 +60,8 @@ module Arm
         else
           raise "invalid operand argument expected literal not #{arg} #{inspect}"
         end
+      else
+        raise "Should not be the case #{inspect}"
       end
     end
     

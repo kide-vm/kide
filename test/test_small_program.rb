@@ -18,10 +18,8 @@ class TestSmallProg < MiniTest::Test
       start = Vm::Block.new("start")
       add_code start
       start.instance_eval do
-        #subs :left => :r0, :right => :r0, :offset => 1       #2
-        #bne :left => :start           #3
-        mov :left => :r7, :right => 1               #4
-      	swi :left => 0                   #5  5 instructions
+        sub :left => :r0, :right => :r0, :extra => 1 , :update_status_flag => 1      #2
+        bne :left => start           #3
       end
     end
     write( 6 , "loop" )
@@ -36,10 +34,8 @@ class TestSmallProg < MiniTest::Test
       add :left =>:r1 , :extra => hello   # address of "hello Raisa"
       mov :left =>:r2 , :right => hello.length
     	swi :left => 0         #software interupt, ie kernel syscall
-      mov :left => :r7, :right => 1     # 1 == exit
-    	swi :left => 0
     end
-    write(9 + hello.length/4 + 1 , 'hello') 
+    write(7 + hello.length/4 + 1 , 'hello') 
   end
 
   #helper to write the file

@@ -3,7 +3,7 @@ require_relative 'helper'
 # try  to test that the generation of basic instructions works
 # one instruction at a time, reverse testing from objdump --demangle -Sfghxp
 # tests are named as per assembler code, ie test_mov testing mov instruction
-#  adc add and bic eor orr rsb rsc sbc sub mov mvn cmn cmp teq tst b bl bx swi strb
+#  adc add and bic eor orr rsb rsc sbc sub mov mvn cmn cmp teq tst b call bx swi strb
 
 class TestArmAsm < MiniTest::Test
   # need Assembler and a block (see those classes) 
@@ -19,7 +19,7 @@ class TestArmAsm < MiniTest::Test
     io = StringIO.new
     code.assemble(io)
     binary = io.string
-    assert_equal 4 , binary.length
+    assert_equal 4 , binary.length , "code length wrong for #{code.inspect}"
     index = 0
     binary.each_byte do |byte |
       assert_equal should[index] , byte , "byte #{index} 0x#{should[index].to_s(16)} != 0x#{byte.to_s(16)}"
@@ -45,9 +45,9 @@ class TestArmAsm < MiniTest::Test
     code = @machine.b	:left => -4  #this jumps to the next instruction
     assert_code code , :b , [0xff,0xff,0xff,0xea] #ea ff ff fe
   end
-  def test_bl #see comment above. bx not implemented (as it means into thumb, and no thumb here)
-    code = @machine.bl	:left => -4  #this jumps to the next instruction
-    assert_code code , :bl , [0xff,0xff,0xff,0xeb] #ea ff ff fe
+  def test_call #see comment above. bx not implemented (as it means into thumb, and no thumb here)
+    code = @machine.call	:left => -4  #this jumps to the next instruction
+    assert_code code , :call, [0xff,0xff,0xff,0xeb] #ea ff ff fe
   end
   def test_bic
     code = @machine.bic	:left => :r2 , :right => :r2 , :extra => :r3

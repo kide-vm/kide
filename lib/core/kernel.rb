@@ -7,10 +7,12 @@ module Core
       def main_start block
         #TODO extract args into array of strings
         Vm::CMachine.instance.main_start block
+        block
       end
       def main_exit block
         # Machine.exit mov r7 , 0  + swi 0 
         Vm::CMachine.instance.main_exit block
+        block
       end
       def function_entry block , f_name
         Vm::CMachine.instance.function_entry block , f_name

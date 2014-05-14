@@ -7,7 +7,7 @@ module Arm
 
     def initialize(attributes)
       super(attributes) 
-      @attributes[:condition_code] = :al
+      @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
       @i = 0      
       @attributes[:update_status_flag] = 1

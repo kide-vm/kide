@@ -8,8 +8,8 @@ module Arm
 
     def initialize(attributes)
       super(attributes)
-      @attributes[:update_status_flag] = 0
-      @attributes[:condition_code] = :al
+      @attributes[:update_status_flag] = 0 if @attributes[:update_status_flag] == nil
+      @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
 
       @pre_post_index = 0 #P flag
