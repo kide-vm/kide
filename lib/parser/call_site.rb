@@ -9,7 +9,7 @@ module Parser
           space? >> right_parenthesis
     }
 
-    rule(:call_site) { name.as(:call_site) >> argument_list }
+    rule(:call_site) { name.as(:call_site) >> argument_list >> comment.maybe}
 
     
   end

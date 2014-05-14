@@ -6,13 +6,13 @@ module Parser
     # rule of thumb is that anything eats space behind it, but only space, no newlines
     rule(:space)  { (str('\t') | str(' ')).repeat(1) }
     rule(:space?) { space.maybe }
-    rule(:newline){ str("\n") >> space? >> newline.repeat }
+    rule(:linebreak){ str("\n") >> space? >> linebreak.repeat }
     
     rule(:quote)      { str('"') }
     rule(:nonquote)   { str('"').absent? >> any }
 
-    rule(:comment){ match('#') >> (newline.absent? >> any).repeat.as(:comment) >> newline }
-
+    rule(:comment){ match('#') >> (linebreak.absent? >> any).repeat >> linebreak }
+    rule(:newline) { linebreak | comment }
     rule(:eol) { newline  | any.absent? }
     
     rule(:double_quote){ str('"') }
