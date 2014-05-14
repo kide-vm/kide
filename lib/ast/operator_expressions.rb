@@ -24,12 +24,8 @@ module Ast
         if( l_val ) #variable existed, move data there
           l_val = l_val.move( into , r_val)
         else
-          if r_val.is_a? Vm::IntegerConstant
-            next_register = context.function.next_register
-            l_val = Vm::Integer.new(next_register).load( into , r_val )
-          else
-            l_val = r_val
-          end
+          next_register = context.function.next_register
+          l_val = Vm::Integer.new(next_register).load( into , r_val )
         end
         context.locals[left.name] = l_val
         return l_val
@@ -41,12 +37,15 @@ module Ast
       when ">"
         code = l_val.less_or_equal into , r_val
       when "+"
-        code = l_val.plus into , r_val
+        res = Vm::Integer.new(context.function.next_register)
+        code = res.plus into , l_val , r_val
       when "-"
-        code = l_val.minus into , r_val
+        res = Vm::Integer.new(context.function.next_register)
+        code = res.minus into , l_val , r_val
       else
         raise "unimplemented operator #{operator} #{self}"
       end
+      code
     end
   end
 end

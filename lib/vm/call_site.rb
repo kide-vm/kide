@@ -16,7 +16,7 @@ module Vm
         if arg.is_a? IntegerConstant
           Vm::Integer.new(index).load into , arg
         else
-          arg.move( into , index ) if arg.register != index
+          Vm::Integer.new(index).move( into, arg ) if arg.register != index
         end
       end
     end

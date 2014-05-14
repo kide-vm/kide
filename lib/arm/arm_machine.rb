@@ -15,14 +15,14 @@ module Arm
       Vm::Bool.new
     end
 
-    def integer_plus block , left , right
-      block.add_code add(:left => left , :right => left , :extra => :right )
-      left
+    def integer_plus block , result , left , right
+      block.add_code add(:left => result , :right => left , :extra => right )
+      result
     end
 
-    def integer_minus block , left , right
-      block.add_code sub(:left => left , :right => left , :extra => :right )
-      left
+    def integer_minus block , result , left , right
+      block.add_code sub(:left => result , :right => left , :extra => right )
+      result
     end
 
     def integer_load block , left , right
@@ -54,6 +54,7 @@ module Arm
     end
     def main_exit exit
       syscall(exit , 1)
+      exit
     end
     def function_entry block, f_name
         #      entry.add_code  push( :regs => [:lr] )

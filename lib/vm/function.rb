@@ -22,8 +22,8 @@ module Vm
       super()
       @name = name
       @args = args
-      @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_exit") ,name )
-      @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_entry") , name )
+      @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_entry") ,name )
+      @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_exit") , name )
       @body =  Block.new("#{name}_body")
       @reg_count = 0
       branch_body
@@ -47,7 +47,7 @@ module Vm
       @entry.link_at address , context
       address += @entry.length
       @body.link_at(address , context)
-      address += @entry.length
+      address += @body.length
       @exit.link_at(address,context)
     end
     

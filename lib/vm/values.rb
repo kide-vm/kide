@@ -63,11 +63,11 @@ module Vm
       CMachine.instance.integer_less_or_equal block , self , right
     end
 
-    def plus block , right
-      CMachine.instance.integer_plus block , self , right
+    def plus block , left , right
+      CMachine.instance.integer_plus block , self , left , right
     end
-    def minus block , right
-      CMachine.instance.integer_minus block , self , right
+    def minus block , left , right
+      CMachine.instance.integer_minus block , self , left , right
     end
     
     def load block , right

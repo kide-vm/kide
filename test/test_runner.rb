@@ -31,7 +31,6 @@ class TestRunner < MiniTest::Test
       else
         expr    = part.compile( program.context ,  nil )
         raise "should be function definition for now" unless expr.is_a? Vm::Function
-        program.add_function expr
       end
     end
 
@@ -45,9 +44,8 @@ class TestRunner < MiniTest::Test
     blocks.flatten.each do |b|
       writer.add_symbol b.name.to_s , b.position
     end
-    assembly = program.assemble(StringIO.new)
 
-    writer.set_text assembly.string
+    writer.set_text binary.string
     writer.save(file.gsub(".rb" , ".o"))
 
 #    puts program.to_yaml

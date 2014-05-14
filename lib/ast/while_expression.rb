@@ -16,11 +16,13 @@ module Ast
     def compile context , into
       cond_val = condition.compile(context , into)
       #set up branches for bodies
+      # jump to end if done
       last = nil
       body.each do |part|
         last = part.compile(context , into )
         puts "compiled in while #{last.inspect}"
       end
+      #jump back to test
       return last
     end
   end
