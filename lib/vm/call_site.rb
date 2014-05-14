@@ -13,13 +13,17 @@ module Vm
     
     def load_args into
       args.each_with_index do |arg , index|
-        puts "load " + arg.inspect
-        arg.load( into , index )
+        if arg.is_a? IntegerConstant
+          Vm::Integer.new(index).load into , arg
+        else
+          raise "no #{arg.inspect}" if arg.register != index
+          #arg.load( into , index )
+        end
       end
     end
 
     def do_call into
-      into.add_code CMachine.instance.function_call into , self
+      CMachine.instance.function_call into , self
     end
   end
 end

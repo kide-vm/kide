@@ -20,6 +20,11 @@ module Arm
       left
     end
 
+    def integer_minus block , left , right
+      block.add_code sub(:left => left , :right => right )
+      left
+    end
+
     def integer_load block , left , right
       reg = "r#{left.register}".to_sym
       block.add_code mov( :left => reg , :right => right )
@@ -35,7 +40,7 @@ module Arm
     def function_call into , call
       raise "Not CallSite #{call.inspect}" unless call.is_a? Vm::CallSite
       raise "Not linked #{call.inspect}" unless call.function
-      into.add_code bl( :left => call.function )
+      into.add_code call( :left => call.function )
       call.function.return_type
     end
 

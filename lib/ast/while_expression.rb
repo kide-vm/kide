@@ -16,10 +16,12 @@ module Ast
     def compile context , into
       cond_val = condition.compile(context , into)
       #set up branches for bodies
+      last = nil
       body.each do |part|
-        part.compile(context , into )
+        last = part.compile(context , into )
+        puts "compiled in while #{last.inspect}"
       end
-      return cond_val
+      return last
     end
   end
 

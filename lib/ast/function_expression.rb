@@ -1,20 +1,20 @@
 module Ast
   class FunctionExpression < Expression
-    attr_reader  :name, :params, :block
-    def initialize name, params, block
-      @name, @params, @block = name.to_sym, params, block
+    attr_reader  :name, :params, :body
+    def initialize name, params, body
+      @name, @params, @body = name.to_sym, params, body
     end
     def attributes
-      [:name, :params, :block]
+      [:name, :params, :body]
     end
     def inspect
       self.class.name + ".new(" + name.inspect + ", ["+ 
         params.collect{|m| m.inspect }.join( ",") +"] , [" + 
-        block.collect{|m| m.inspect }.join( ",") +"] )"  
+        body.collect{|m| m.inspect }.join( ",") +"] )"  
     end
     
     def to_s
-      "def #{name}( " + params.join(",") + ") \n" + block.join("\n") + "end\n"
+      "def #{name}( " + params.join(",") + ") \n" + body.join("\n") + "end\n"
     end
     def compile context , into 
       raise "function does not compile into anything #{self}" if into
@@ -35,11 +35,11 @@ module Ast
       context.function = function
 
       into = function.body
-      block.each do |b|
+      body.each do |b|
         compiled = b.compile(context , into)
         function.return_type = compiled
-        raise "alarm " unless compiled.is_a? Vm::Word
-        puts compiled.inspect
+        puts "compiled in function #{compiled.inspect}"
+        raise "alarm #{compiled} \n #{b}" unless compiled.is_a? Vm::Word
       end
       context.locals = parent_locals
       context.function = parent_function

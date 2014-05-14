@@ -66,6 +66,9 @@ module Vm
     def plus block , right
       CMachine.instance.integer_plus block , self , right
     end
+    def minus block , right
+      CMachine.instance.integer_minus block , self , right
+    end
     
     def load block , right
       CMachine.instance.integer_load block , self , right

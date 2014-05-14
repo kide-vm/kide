@@ -16,18 +16,25 @@ module Ast
       "#{left} #{operator} #{right}"
     end
     def compile context , into
-      puts "compile #{to_s}"
+      puts "compile operator #{to_s}"
       r_val = right.compile(context , into)
-      if operator == "="    # assignemnt
+      if operator == "="    # assignment, value based
         raise "Can only assign variables, not #{left}" unless left.is_a?(NameExpression) 
-        if r_val.is_a? Vm::IntegerConstant
-          puts context.attributes.keys.join(" ")
-          next_register = context.function.next_register
-          r_val = Vm::Integer.new(next_register).load( into , r_val )
+        l_val = context.locals[left.name]
+        if( l_val ) #variable existed, move data there
+          l_val = l_val.move( into , r_val)
+        else
+          if r_val.is_a? Vm::IntegerConstant
+            next_register = context.function.next_register
+            l_val = Vm::Integer.new(next_register).load( into , r_val )
+          else
+            l_val = r_val
+          end
         end
-        context.locals[left.name] = r_val
-        return r_val
+        context.locals[left.name] = l_val
+        return l_val
       end
+
       l_val = left.compile(context , into)
 
       case operator
@@ -35,6 +42,8 @@ module Ast
         code = l_val.less_or_equal into , r_val
       when "+"
         code = l_val.plus into , r_val
+      when "-"
+        code = l_val.minus into , r_val
       else
         raise "unimplemented operator #{operator} #{self}"
       end
