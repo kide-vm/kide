@@ -34,7 +34,7 @@ module Arm
         if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
           arg = Vm::IntegerConstant.new( arg )
         end
-        if arg.is_a? Vm::Block
+        if arg.is_a?(Vm::Block) or arg.is_a?(Vm::Function)
           diff = arg.position - self.position - 8
           arg = Vm::IntegerConstant.new(diff)
         end

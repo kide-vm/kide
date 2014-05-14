@@ -31,9 +31,6 @@ module Arm
       if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
         arg = Vm::IntegerConstant.new( arg )
       end
-      if( arg.is_a? Vm::Integer ) #HACK to not have to change the code just now
-        arg = Vm::IntegerConstant.new( arg.value )
-      end
       if (arg.is_a?(Vm::IntegerConstant))
         if (arg.integer.fits_u8?)
           # no shifting needed
@@ -45,7 +42,7 @@ module Arm
         else
           raise "cannot fit numeric literal argument in operand #{arg.inspect}"
         end
-      elsif (arg.is_a?(Symbol))
+      elsif (arg.is_a?(Symbol) or arg.is_a?(Vm::Integer))
         @operand = arg
         @i = 0
       elsif (arg.is_a?(Arm::Shift))
@@ -79,16 +76,22 @@ module Arm
     def assemble(io)
       build
       instuction_class = 0b00 # OPC_DATA_PROCESSING
-      val = @operand.is_a?(Symbol) ? reg_code(@operand) : @operand 
+      val = (@operand.is_a?(Symbol) or @operand.is_a?(Vm::Integer)) ? reg_code(@operand) : @operand 
+      val = 0 if val == nil
+      val = shift(val , 0)
       raise inspect unless reg_code(@rd)
-      val |= (reg_code(@rd) <<            12)     
-      val |= (reg_code(@rn) <<            12+4)   
-      val |= (@attributes[:update_status_flag] << 12+4+4)#20 
-      val |= (op_bit_code <<        12+4+4  +1)
-      val |= (@i <<                  12+4+4  +1+4) 
-      val |= (instuction_class <<   12+4+4  +1+4+1) 
-      val |= (cond_bit_code <<      12+4+4  +1+4+1+2)
+      val |= shift(reg_code(@rd) ,            12)     
+      val |= shift(reg_code(@rn) ,            12+4)   
+      val |= shift(@attributes[:update_status_flag] , 12+4+4)#20 
+      val |= shift(op_bit_code ,        12+4+4  +1)
+      val |= shift(@i ,                  12+4+4  +1+4) 
+      val |= shift(instuction_class ,   12+4+4  +1+4+1) 
+      val |= shift(cond_bit_code ,      12+4+4  +1+4+1+2)
       io.write_uint32 val
+    end
+    def shift val , by
+      raise "Not integer #{val}:#{val.class}" unless val.is_a? Fixnum
+      val << by
     end
   end
 end

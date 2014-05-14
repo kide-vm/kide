@@ -16,12 +16,12 @@ module Arm
     end
 
     def integer_plus block , left , right
-      block.add_code add(:left => left , :right => right )
+      block.add_code add(:left => left , :right => left , :extra => :right )
       left
     end
 
     def integer_minus block , left , right
-      block.add_code sub(:left => left , :right => right )
+      block.add_code sub(:left => left , :right => left , :extra => :right )
       left
     end
 

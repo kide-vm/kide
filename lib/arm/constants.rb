@@ -56,6 +56,9 @@ module Arm
       Arm::Register.new(name.to_sym , code )
     end
     def reg_code name
+      if name.is_a? Vm::Word
+        name = "r#{name.register}"
+      end
       REGISTERS[name.to_s]
     end
 
