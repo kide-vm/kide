@@ -35,6 +35,7 @@ module Vm
 
     def add_code(kode)
       raise "alarm #{kode}" if kode.is_a? Word
+      raise "alarm #{kode}" unless kode.is_a? Code
       @codes << kode
       self
     end

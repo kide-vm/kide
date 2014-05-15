@@ -1,6 +1,8 @@
+require_relative "context"
 require_relative "function"
 require_relative "call_site"
 require "arm/arm_machine"
+require "core/kernel"
 
 module Vm
   # A Program represents an executable that we want to build
@@ -58,7 +60,7 @@ module Vm
     def get_or_create_function name 
       fun = get_function name
       unless fun
-        fun = Core::Kernel.send(name)
+        fun = Core::Kernel.send(name , context)
         raise "no such function '#{name}'" if fun == nil
         @functions << fun
       end

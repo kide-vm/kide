@@ -9,7 +9,7 @@ module Vm
   # Functions have a exactly three blocks, entry, exit and body, which are created for you
   # with straight branches between them.
 
-  # Also remember that if your den body exists of severa blocks, they must be wrapped in a 
+  # Also remember that if your den body exists of several blocks, they must be wrapped in a 
   # block as the function really only has the one, and blocks only assemble their codes,
   # not their next links
   # This comes at zero runtime cost though, as the wrapper is just the sum of it's codes

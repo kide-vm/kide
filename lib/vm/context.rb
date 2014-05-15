@@ -1,6 +1,4 @@
-require "core/kernel"
-require_relative "program"
-
+require "support/hash_attributes"
 module Vm
   
   #currently just holding the program in here so we can have global access

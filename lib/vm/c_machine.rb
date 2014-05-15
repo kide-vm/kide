@@ -66,6 +66,7 @@ module Vm
       # code, and has opcode set to :b and :condition_code set to the condition
       CONDITIONS.each do |suffix|
         define_instruction_for("b#{suffix}".to_sym , CallInstruction)
+        define_instruction_for("call#{suffix}".to_sym , CallInstruction)
       end
     end
 

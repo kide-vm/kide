@@ -50,6 +50,10 @@ module Vm
         @attributes[:condition_code] = opcode[1,2].to_sym
         @attributes[:opcode] = :b
       end
+      if opcode.length == 6 and opcode[0] == "c"
+        @attributes[:condition_code] = opcode[4,2].to_sym
+        @attributes[:opcode] = :call
+      end
     end
   end
 end

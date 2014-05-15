@@ -50,14 +50,15 @@ module Arm
             raise "reference offset too large/small (max 4095) #{arg} #{inspect}"
           end
         end
-      elsif (arg.is_a?(Vm::StringConstant)) #use pc relative
+      elsif (arg.is_a?(Vm::StringConstant) ) #use pc relative
         @rn = :pc
         @operand = arg.position - self.position  - 8 #stringtable is after code
         @add_offset = 1
         if (@operand.abs > 4095)
           raise "reference offset too large/small (max 4095) #{arg} #{inspect}"
         end
-      elsif (arg.is_a?(Arm::Label) or arg.is_a?(Vm::IntegerConstant))
+      elsif( arg.is_a?(Vm::IntegerConstant) )
+        raise "is this working ??  #{arg} #{inspect}"
         @pre_post_index = 1
         @rn = pc
         @use_addrtable_reloc = true

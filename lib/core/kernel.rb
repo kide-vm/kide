@@ -23,11 +23,22 @@ module Core
         
       #TODO this is in the wrong place. It is a function that returns a function object
       #   while all other methods add their code into some block. --> kernel
-      def putstring
+      def putstring context
         function = Vm::Function.new(:putstring , [Vm::Integer , Vm::Integer ] )
         block = function.body
         # should be another level of indirection, ie write(io,str)
         ret = Vm::CMachine.instance.write_stdout(block)
+        function.return_type = ret
+        function
+      end
+
+      def putint context
+        function = Vm::Function.new(:putint , [Vm::Integer , Vm::Integer ] )
+        block = function.body
+        buffer = Vm::StringConstant.new("           ")
+        context.program.add_object buffer
+        # should be another level of indirection, ie write(io,str)
+        ret = Vm::CMachine.instance.integer_to_s(block , buffer)
         function.return_type = ret
         function
       end
