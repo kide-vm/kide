@@ -15,8 +15,6 @@ module Arm
       @pre_post_index = 0 #P flag
       @add_offset = 0 #U flag
       @is_load = opcode.to_s[0] == "l" ? 1 : 0 #L (load) flag
-      @rn = :r0 # register zero = zero bit pattern
-      @rd = :r0 # register zero = zero bit pattern
     end
 #    attr_accessor :i, :pre_post_index, :add_offset, :byte_access, :w, :is_load, :rn, :rd
 
@@ -27,13 +25,8 @@ module Arm
                   
     # Build representation for target address
     def build
-      if( @is_load )
-        @rd = @left
-        arg = @attributes[:right]
-      else #store
-        @rd = @attributes[:right]
-        arg = @left
-      end
+      arg = @attributes[:right]
+      arg = "r#{arg.register}".to_sym if( arg.is_a? Vm::Word )
       #str / ldr are _serious instructions. With BIG possibilities not half are implemented
       if (arg.is_a?(Symbol)) #symbol is register
         @rn = arg
@@ -79,19 +72,24 @@ module Arm
       w = 0 #W flag
       byte_access = opcode.to_s[-1] == "b" ? 1 : 0 #B (byte) flag
       instuction_class =  0b01 # OPC_MEMORY_ACCESS
-      val = @operand.is_a?(Symbol) ? reg_code(@operand) : @operand 
-      val |= (reg_code(@rd) <<        12 )  
-      val |= (reg_code(@rn) <<        12+4) #16  
-      val |= (@is_load <<        12+4  +4)
-      val |= (w <<              12+4  +4+1)
-      val |= (byte_access <<    12+4  +4+1+1)
-      val |= (@add_offset <<     12+4  +4+1+1+1)
-      val |= (@pre_post_index << 12+4  +4+1+1+1+1)#24
-      val |= (i <<              12+4  +4+1+1+1+1  +1) 
-      val |= (instuction_class<<12+4  +4+1+1+1+1  +1+1)  
-      val |= (cond_bit_code <<  12+4  +4+1+1+1+1  +1+1+2)
+      val = @operand
+      val = reg_code(@operand) if @operand.is_a?(Symbol)
+      val = shift(val , 0 ) # for the test
+      val |= shift(reg_code(@left) ,        12 )  
+      val |= shift(reg_code(@rn) ,        12+4) #16  
+      val |= shift(@is_load ,        12+4  +4)
+      val |= shift(w ,              12+4  +4+1)
+      val |= shift(byte_access ,    12+4  +4+1+1)
+      val |= shift(@add_offset ,     12+4  +4+1+1+1)
+      val |= shift(@pre_post_index , 12+4  +4+1+1+1+1)#24
+      val |= shift(i ,              12+4  +4+1+1+1+1  +1) 
+      val |= shift(instuction_class,12+4  +4+1+1+1+1  +1+1)  
+      val |= shift(cond_bit_code ,  12+4  +4+1+1+1+1  +1+1+2)
       io.write_uint32 val
-      
+    end
+    def shift val , by
+      raise "Not integer #{val}:#{val.class} #{inspect}" unless val.is_a? Fixnum
+      val << by
     end
   end
 end
