@@ -6,8 +6,8 @@ module Arm
   class MemoryInstruction < Vm::MemoryInstruction
     include Arm::Constants
 
-    def initialize(attributes)
-      super(attributes)
+    def initialize(left , attributes)
+      super(left , attributes)
       @attributes[:update_status_flag] = 0 if @attributes[:update_status_flag] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
@@ -28,11 +28,11 @@ module Arm
     # Build representation for target address
     def build
       if( @is_load )
-        @rd = @attributes[:left]
+        @rd = @left
         arg = @attributes[:right]
       else #store
         @rd = @attributes[:right]
-        arg = @attributes[:left]
+        arg = @left
       end
       #str / ldr are _serious instructions. With BIG possibilities not half are implemented
       if (arg.is_a?(Symbol)) #symbol is register

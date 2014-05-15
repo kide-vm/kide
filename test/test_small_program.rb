@@ -14,12 +14,12 @@ class TestSmallProg < MiniTest::Test
 
   def test_loop
     @program.main.instance_eval do
-      mov :left => :r0, :right => 5                #1
+      mov  :r0, :right => 5                #1
       start = Vm::Block.new("start")
       add_code start
       start.instance_eval do
-        sub :left => :r0, :right => :r0, :extra => 1 , :update_status_flag => 1      #2
-        bne :left => start           #3
+        sub  :r0, :right => :r0, :extra => 1 , :update_status_flag => 1      #2
+        bne  start  ,{}         #3
       end
     end
     write( 6 , "loop" )
@@ -29,11 +29,11 @@ class TestSmallProg < MiniTest::Test
     hello = Vm::StringConstant.new "Hello Raisa\n"
     @program.add_object hello
     @program.main.instance_eval do 
-      mov :left =>:r7, :right => 4     # 4 == write
-      mov :left =>:r0 , :right => 1    # stdout
-      add :left =>:r1 , :extra => hello   # address of "hello Raisa"
-      mov :left =>:r2 , :right => hello.length
-    	swi :left => 0         #software interupt, ie kernel syscall
+      mov :r7, :right => 4     # 4 == write
+      mov :r0 , :right => 1    # stdout
+      add :r1 , :extra => hello   # address of "hello Raisa"
+      mov :r2 , :right => hello.length
+    	swi  0 , {}         #software interupt, ie kernel syscall
     end
     write(7 + hello.length/4 + 1 , 'hello') 
   end
