@@ -10,7 +10,7 @@ module Arm
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
       @i = 0      
-      @attributes[:update_status_flag] = 1
+      @attributes[:update_status] = 1
       @rn = first
       @rd = :r0
     end

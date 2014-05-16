@@ -27,6 +27,10 @@ class TestLogic < MiniTest::Test
     code = @machine.sub  :r2, left: :r0, right: 1
     assert_code code, :sub ,  [0x01,0x20,0x40,0xe2] #e2 40 20 01 
   end
+  def test_subs
+    code = @machine.sub  :r2, left: :r2, right: 1 , update_status: 1
+    assert_code code, :sub ,  [0x01,0x20,0x52,0xe2] #e2 52 20 01
+  end
   def test_orr
     code = @machine.orr	 :r2 , left: :r2 , right: :r3
     assert_code code , :orr , [0x03,0x20,0x82,0xe1] #e1 82 20 03

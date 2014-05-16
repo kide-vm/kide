@@ -22,7 +22,7 @@ module Arm
 
     def initialize(first, attributes)
       super(first , attributes)
-      @attributes[:update_status_flag] = 0
+      @attributes[:update_status] = 0
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
     end
     

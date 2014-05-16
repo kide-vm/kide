@@ -13,12 +13,12 @@ module Arm
 
     def initialize(first , attributes)
       super(first , attributes) 
-      @attributes[:update_status_flag] = 0 if @attributes[:update_status_flag] == nil
+      @attributes[:update_status] = 0 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @attributes[:opcode] = attributes[:opcode]
       @operand = 0
 
-      @attributes[:update_status_flag]= 0
+      @attributes[:update_status]= 0
       @rn = :r0 # register zero = zero bit pattern
       # downward growing, decrement before memory access
       # official ARM style stack as used by gas
@@ -44,7 +44,7 @@ module Arm
       val |= (reg_code(@rn) <<             16)
       val |= (is_pop <<              16+4) #20
       val |= (write_base <<          16+4+ 1) 
-      val |= (@attributes[:update_status_flag] <<  16+4+ 1+1) 
+      val |= (@attributes[:update_status] <<  16+4+ 1+1) 
       val |= (up_down <<             16+4+ 1+1+1)
       val |= (pre_post_index <<      16+4+ 1+1+1+1)#24
       val |= (instuction_class <<    16+4+ 1+1+1+1 +2) 

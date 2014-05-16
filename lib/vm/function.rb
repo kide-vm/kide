@@ -50,7 +50,9 @@ module Vm
       address += @body.length
       @exit.link_at(address,context)
     end
-    
+    def position
+      @entry.position
+    end
     def length
       @entry.length + @exit.length + @body.length
     end

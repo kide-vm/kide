@@ -9,7 +9,7 @@ module Arm
   # Only when an instruction affects the status is a subsequent compare instruction effective
   # But to make the conditional execution (see cond) work for more than one instruction, one needs to
   # be able to execute without changing the status 
-  #attr_reader :update_status_flag
+  #attr_reader :update_status
   
   module LogicHelper
     # ADDRESSING MODE 1 
@@ -83,7 +83,7 @@ module Arm
       raise inspect unless reg_code(@rd)
       val |= shift(reg_code(@rd) ,            12)     
       val |= shift(reg_code(@rn) ,            12+4)   
-      val |= shift(@attributes[:update_status_flag] , 12+4+4)#20 
+      val |= shift(@attributes[:update_status] , 12+4+4)#20 
       val |= shift(op_bit_code ,        12+4+4  +1)
       val |= shift(@i ,                  12+4+4  +1+4) 
       val |= shift(instuction_class ,   12+4+4  +1+4+1) 

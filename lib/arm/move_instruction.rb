@@ -7,7 +7,7 @@ module Arm
 
     def initialize(first , attributes) 
       super(first , attributes)
-      @attributes[:update_status_flag] = 0 if @attributes[:update_status_flag] == nil
+      @attributes[:update_status] = 0 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @attributes[:opcode] = attributes[:opcode]
       @operand = 0
@@ -59,7 +59,7 @@ module Arm
       val = shift(@operand , 0)
       val |= shift(reg_code(@first) ,            12)     
       val |= shift(reg_code(@rn) ,            12+4)   
-      val |= shift(@attributes[:update_status_flag] , 12+4+4)#20 
+      val |= shift(@attributes[:update_status] , 12+4+4)#20 
       val |= shift(op_bit_code ,        12+4+4  +1)
       val |= shift(@immediate ,                  12+4+4  +1+4) 
       val |= shift(instuction_class ,   12+4+4  +1+4+1) 
