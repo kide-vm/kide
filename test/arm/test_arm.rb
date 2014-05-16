@@ -26,18 +26,6 @@ class TestArmAsm < MiniTest::Test
     code = @machine.cmp	 :r1 , right: :r2
     assert_code code , :cmp , [0x02,0x00,0x51,0xe1] #e1 51 00 02
   end
-  def test_ldr
-    code = @machine.ldr  :r0, right: :r0
-    assert_code code, :ldr ,  [0x00,0x00,0x90,0xe5] #e5 90 00 00
-  end
-  def test_ldr2
-    code = @machine.ldr  :r0, right: :r0 , :offset =>  4
-    assert_code code, :ldr ,  [0x04,0x00,0x90,0xe5] #e5 90 00 04
-  end
-  def test_ldrb
-    code = @machine.ldrb  :r0, right: :r0
-    assert_code code, :ldrb ,  [0x00,0x00,0xd0,0xe5] #e5 d0 00 00
-  end
   def test_push
     code = @machine.push [:lr] , {}
     assert_code code , :push ,  [0x00,0x40,0x2d,0xe9] #e9 2d 40 00
@@ -57,14 +45,6 @@ class TestArmAsm < MiniTest::Test
   def test_sbc
     code = @machine.sbc	 :r3, left: :r4 , right: :r5
     assert_code code , :sbc , [0x05,0x30,0xc4,0xe0]#e0 c4 30 05
-  end
-  def test_str
-    code = @machine.str  :r0, right: :r0
-    assert_code code, :str ,  [0x00,0x00,0x80,0xe5] #e5 81 00 00
-  end
-  def test_strb
-    code = @machine.strb  :r0, right: :r0
-    assert_code code, :strb ,  [0x00,0x00,0xc0,0xe5] #e5 c0 00 00
   end
   def test_swi
     code = @machine.swi	 0x05 , {}
