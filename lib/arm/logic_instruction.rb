@@ -11,29 +11,25 @@ module Arm
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
 
-      @rn = nil
+      @left = nil
       @i = 0      
     end
-    attr_accessor :i, :rn
     
-    # Build representation for source value 
-    def build
-      @rn = @attributes[:right]
-      do_build @attributes[:extra]
-    end
-
     # arm intrucioons are pretty sensible, and always 4 bytes (thumb not supported)
     def length
       4
     end
 
-    #(stays in subclases, while build is overriden to provide different arguments)
-    def do_build(arg)      
+    # Build representation for source value 
+    def build
+      @left = @attributes[:left]
+      arg = @attributes[:extra]
+      
       if arg.is_a?(Vm::StringConstant)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
         arg = Vm::IntegerConstant.new( arg.position - self.position - 8 )
-        @rn = :pc
+        @left = :pc
       end
       if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
         arg = Vm::IntegerConstant.new( arg )
@@ -89,7 +85,7 @@ module Arm
       val = shift(val , 0)
       raise inspect unless reg_code(@first)
       val |= shift(reg_code(@first) ,            12)     
-      val |= shift(reg_code(@rn) ,            12+4)   
+      val |= shift(reg_code(@left) ,            12+4)   
       val |= shift(@attributes[:update_status_flag] , 12+4+4)#20 
       val |= shift(op_bit_code ,        12+4+4  +1)
       val |= shift(@i ,                  12+4+4  +1+4) 

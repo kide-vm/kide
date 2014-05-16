@@ -18,7 +18,7 @@ class TestSmallProg < MiniTest::Test
       start = Vm::Block.new("start")
       add_code start
       start.instance_eval do
-        sub  :r0, right: :r0, :extra => 1 , :update_status_flag => 1      #2
+        sub  :r0, left: :r0, :extra => 1 , :update_status_flag => 1      #2
         bne  start  ,{}         #3
       end
     end
