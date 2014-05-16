@@ -41,7 +41,7 @@ module Core
         reg1 = Vm::Integer.new(1)
         block.add_code Vm::CMachine.instance.mov( reg1 , right: str_addr ) #move arg up
         block.add_code Vm::CMachine.instance.add( str_addr , left: buffer )   # string to write to
-        block.add_code Vm::CMachine.instance.add( str_addr , left: str_addr , right:6 )   # string to write to
+        block.add_code Vm::CMachine.instance.add( str_addr , left: str_addr , right: (buffer.length-3))   # string to write to
         context.str_addr = str_addr
         itos_fun = context.program.get_or_create_function(:utoa)
         block.add_code Vm::CMachine.instance.call( itos_fun , {})
@@ -49,32 +49,26 @@ module Core
         block.add_code Vm::CMachine.instance.add( str_addr , left: buffer )   # string to write to
         block.add_code Vm::CMachine.instance.mov( reg1 , right: buffer.length )
         ret = Vm::CMachine.instance.write_stdout(block)
-        #        function.return_type = ret
         function
       end
 
+      # The conversion to base10 is quite a bit more complicated than i thought. The bulk of it is in div10
+      # We set up variables, do the devision and write the result to the string
+      # then check if were done and recurse if neccessary
+      # As we write before we recurse (save a push) we write the number backwards
       def utoa context
         function = Vm::Function.new(:utoa , [Vm::Integer , Vm::Integer ] )
         block = function.body
         str_addr = context.str_addr
         number = Vm::Integer.new(str_addr.register + 1)
         remainder = Vm::Integer.new( number.register + 1)
-        #STMFD  sp!, {r9, r10, lr}               #function entry save working regs (for recursion)
-        #automatic block.add_code push( [:lr ] , {} )      #and the return address.
-        #  MOV    r9, r1                         # preserve arguments over following
-        #  MOV    r10, r2                         # function calls
-        # BL     udiv10                         # r1 = r1 / 10
         Vm::CMachine.instance.div10( block , number  , remainder )
-        # ADD    r10, r10, 48 #'0'                   # make char out of digit (by using ascii encoding)
+        # make char out of digit (by using ascii encoding) 48 == "0"
         block.add_code Vm::CMachine.instance.add( remainder , left: remainder , right: 48 )
-        #STRB   r10, [r1], 1                   # store digit at end of buffer
-#        block.add_code Vm::CMachine.instance.strb( remainder , right: str_addr, offset: 1 , flagie: 1) 
-        block.add_code Vm::CMachine.instance.strb( remainder, right: str_addr , :offset =>  -1 , flaggie: 1)          # CMP    r1, #0                         # quotient non-zero?
+        block.add_code Vm::CMachine.instance.strb( remainder, right: str_addr ) 
+        block.add_code Vm::CMachine.instance.sub( str_addr, left: str_addr , right: 1 ) 
         block.add_code Vm::CMachine.instance.cmp( number , right: 0 )
-        #BLNE   utoa                           # conditional recursive call to utoa
         block.add_code Vm::CMachine.instance.callne( function , {} )
-        #LDMFD  sp!, {r9, r10, pc}              # function exit - restore and return
-        #automatic block.add_code pop( [:pc] , {} )
         return function
       end
     end

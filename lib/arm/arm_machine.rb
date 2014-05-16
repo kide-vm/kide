@@ -74,31 +74,21 @@ module Arm
     
     # the number (a Vm::integer) is (itself) divided by 10, ie overwritten by the result
     #  and the remainder is overwritten (ie an out argument)
-    # not really a function, more a macro, hence private
+    # not really a function, more a macro, 
     def div10 block, number , remainder
-      
-      # takes argument in r1
-      # returns quotient in r1, remainder in r2
-      #          SUB    r2, r1, #10                       # keep (x-10) for later
+      # Note about division: devision is MUCH more expensive than one would have thought
+      # And coding it is a bit of a mind leap: it's all about finding a a result that gets the 
+      #  remainder smaller than an int. i'll post some links sometime. This is from the arm manual
       block.add_code sub( remainder , left: number , right: 10 )
-      #          SUB    r1, r1, r1, lsr #2
       block.add_code sub( number , left: number , right: number ,  shift_lsr: 2)
-      #          ADD    r1, r1, r1, lsr #4
       block.add_code add( number , left: number , right: number ,  shift_lsr: 4)
-      #          ADD    r1, r1, r1, lsr #8
       block.add_code add( number , left: number , right: number ,  shift_lsr: 8)
-      #          ADD    r1, r1, r1, lsr #16
       block.add_code add( number , left: number , right: number ,  shift_lsr: 16)
-      #          MOV    r1, r1, lsr #3
       block.add_code mov( number ,  right: number , shift_lsr: 3)
-      #          ADD    r3, r1, r1, asl #2
       tmp = Vm::Integer.new( remainder.register + 1)
       block.add_code add( tmp , left: number , right: number ,  shift_lsl: 2)
-      #          SUBS   r2, r2, r3, asl #1                # calc (x-10) - (x/10)*10
       block.add_code sub( remainder , left: remainder , right: tmp , shift_lsl: 1 , update_status: 1)
-      #          ADDPL  r1, r1, #1                        # fix-up quotient
       block.add_code add( number , left: number,  right: 1 , condition_code: :pl )
-      #          ADDMI  r2, r2, #10                       # fix-up remainder
       block.add_code add( remainder , left: remainder ,  right: 10 , condition_code: :mi )
     end
 
