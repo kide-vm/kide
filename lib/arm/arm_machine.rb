@@ -112,7 +112,7 @@ module Arm
       #          SUB    r2, r1, #10                       # keep (x-10) for later
       block.add_code sub( remainder , left: number , right: 10 )
       #          SUB    r1, r1, r1, lsr #2
-      block.add_code add( number , left: number , right: number ,  shift_right: 4)
+      block.add_code add( number , left: number , right: number ,  shift_lsr: 4)
       #          ADD    r1, r1, r1, lsr #4
       #          ADD    r1, r1, r1, lsr #8
       #          ADD    r1, r1, r1, lsr #16
