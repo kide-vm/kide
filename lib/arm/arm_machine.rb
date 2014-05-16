@@ -65,9 +65,11 @@ module Arm
 
     # assumes string in r0 and r1 and moves them along for the syscall
     def write_stdout block
-      block.add_code mov(  :r2 , right: :r1 )
-      block.add_code mov(  :r1 , right: :r0 )
-      block.add_code mov(  :r0 , right: 1 ) # 1 == stdout
+      block.instance_eval do 
+        mov(  :r2 , right: :r1 )
+        mov(  :r1 , right: :r0 )
+        mov(  :r0 , right: 1 ) # 1 == stdout
+      end
       syscall( block , 4 )
     end
 
@@ -79,17 +81,19 @@ module Arm
       # Note about division: devision is MUCH more expensive than one would have thought
       # And coding it is a bit of a mind leap: it's all about finding a a result that gets the 
       #  remainder smaller than an int. i'll post some links sometime. This is from the arm manual
-      block.add_code sub( remainder , left: number , right: 10 )
-      block.add_code sub( number , left: number , right: number ,  shift_lsr: 2)
-      block.add_code add( number , left: number , right: number ,  shift_lsr: 4)
-      block.add_code add( number , left: number , right: number ,  shift_lsr: 8)
-      block.add_code add( number , left: number , right: number ,  shift_lsr: 16)
-      block.add_code mov( number ,  right: number , shift_lsr: 3)
-      tmp = Vm::Integer.new( remainder.register + 1)
-      block.add_code add( tmp , left: number , right: number ,  shift_lsl: 2)
-      block.add_code sub( remainder , left: remainder , right: tmp , shift_lsl: 1 , update_status: 1)
-      block.add_code add( number , left: number,  right: 1 , condition_code: :pl )
-      block.add_code add( remainder , left: remainder ,  right: 10 , condition_code: :mi )
+      block.instance_eval do 
+        sub( remainder , left: number , right: 10 )
+        sub( number , left: number , right: number ,  shift_lsr: 2)
+        add( number , left: number , right: number ,  shift_lsr: 4)
+        add( number , left: number , right: number ,  shift_lsr: 8)
+        add( number , left: number , right: number ,  shift_lsr: 16)
+        mov( number ,  right: number , shift_lsr: 3)
+        tmp = Vm::Integer.new( remainder.register + 1)
+        add( tmp , left: number , right: number ,  shift_lsl: 2)
+        sub( remainder , left: remainder , right: tmp , shift_lsl: 1 , update_status: 1)
+        add( number , left: number,  right: 1 , condition_code: :pl )
+        add( remainder , left: remainder ,  right: 10 , condition_code: :mi )
+      end
     end
 
     def syscall block , num

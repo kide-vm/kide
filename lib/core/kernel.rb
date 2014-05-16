@@ -38,16 +38,18 @@ module Core
         buffer = Vm::StringConstant.new("           ")
         context.program.add_object buffer
         str_addr = Vm::Integer.new(0)                  # address of the 
-        reg1 = Vm::Integer.new(1)
-        block.add_code Vm::CMachine.instance.mov( reg1 , right: str_addr ) #move arg up
-        block.add_code Vm::CMachine.instance.add( str_addr , left: buffer )   # string to write to
-        block.add_code Vm::CMachine.instance.add( str_addr , left: str_addr , right: (buffer.length-3))   # string to write to
         context.str_addr = str_addr
+        reg1 = Vm::Integer.new(1)
         itos_fun = context.program.get_or_create_function(:utoa)
-        block.add_code Vm::CMachine.instance.call( itos_fun , {})
+        block.instance_eval do 
+          mov( reg1 , right: str_addr ) #move arg up
+          add( str_addr , left: buffer )   # string to write to
+          add( str_addr , left: str_addr , right: (buffer.length-3))  
+          call( itos_fun , {})
         # And now we "just" have to print it, using the write_stdout
-        block.add_code Vm::CMachine.instance.add( str_addr , left: buffer )   # string to write to
-        block.add_code Vm::CMachine.instance.mov( reg1 , right: buffer.length )
+          add( str_addr , left: buffer )   # string to write to
+          mov( reg1 , right: buffer.length )
+        end
         ret = Vm::CMachine.instance.write_stdout(block)
         function
       end
@@ -64,11 +66,13 @@ module Core
         remainder = Vm::Integer.new( number.register + 1)
         Vm::CMachine.instance.div10( block , number  , remainder )
         # make char out of digit (by using ascii encoding) 48 == "0"
-        block.add_code Vm::CMachine.instance.add( remainder , left: remainder , right: 48 )
-        block.add_code Vm::CMachine.instance.strb( remainder, right: str_addr ) 
-        block.add_code Vm::CMachine.instance.sub( str_addr, left: str_addr , right: 1 ) 
-        block.add_code Vm::CMachine.instance.cmp( number , right: 0 )
-        block.add_code Vm::CMachine.instance.callne( function , {} )
+        block.instance_eval do 
+          add( remainder , left: remainder , right: 48 )
+          strb( remainder, right: str_addr ) 
+          sub( str_addr, left: str_addr , right: 1 ) 
+          cmp( number , right: 0 )
+          callne( function , {} )
+        end
         return function
       end
     end
