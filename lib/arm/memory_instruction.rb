@@ -6,8 +6,8 @@ module Arm
   class MemoryInstruction < Vm::MemoryInstruction
     include Arm::Constants
 
-    def initialize(left , attributes)
-      super(left , attributes)
+    def initialize(first , attributes)
+      super(first , attributes)
       @attributes[:update_status_flag] = 0 if @attributes[:update_status_flag] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
@@ -75,7 +75,7 @@ module Arm
       val = @operand
       val = reg_code(@operand) if @operand.is_a?(Symbol)
       val = shift(val , 0 ) # for the test
-      val |= shift(reg_code(@left) ,        12 )  
+      val |= shift(reg_code(@first) ,        12 )  
       val |= shift(reg_code(@rn) ,        12+4) #16  
       val |= shift(@is_load ,        12+4  +4)
       val |= shift(w ,              12+4  +4+1)

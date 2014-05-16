@@ -10,29 +10,29 @@ require_relative "constants"
 module Arm
   class ArmMachine < Vm::CMachine
 
-    def integer_less_or_equal block ,  left , right
-      block.add_code cmp( left , right: right )
+    def integer_less_or_equal block ,  first , right
+      block.add_code cmp( first , right: right )
       Vm::Bool.new
     end
 
-    def integer_plus block , result , left , right
-      block.add_code add( result , right: left , :extra => right )
+    def integer_plus block , result , first , right
+      block.add_code add( result , right: first , :extra => right )
       result
     end
 
-    def integer_minus block , result , left , right
-      block.add_code sub( result , right: left , :extra => right )
+    def integer_minus block , result , first , right
+      block.add_code sub( result , right: first , :extra => right )
       result
     end
 
-    def integer_load block , left , right
-      block.add_code mov(  left , right: right )
-      left 
+    def integer_load block , first , right
+      block.add_code mov(  first , right: right )
+      first 
     end
 
-    def integer_move block , left , right
-      block.add_code mov(  left , right: right )
-      left 
+    def integer_move block , first , right
+      block.add_code mov(  first , right: right )
+      first 
     end
 
     def string_load block ,  str_lit , reg
@@ -111,16 +111,17 @@ module Arm
       # returns quotient in r1, remainder in r2
       #          SUB    r2, r1, #10                       # keep (x-10) for later
       block.add_code sub( remainder , right: number , :extra => 10 )
-#          SUB    r1, r1, r1, lsr #2
-#          ADD    r1, r1, r1, lsr #4
-#          ADD    r1, r1, r1, lsr #8
-#          ADD    r1, r1, r1, lsr #16
-#          MOV    r1, r1, lsr #3
-#          ADD    r3, r1, r1, asl #2
-#          SUBS   r2, r2, r3, asl #1                # calc (x-10) - (x/10)*10
-#          ADDPL  r1, r1, #1                        # fix-up quotient
-#          ADDMI  r2, r2, #10                       # fix-up remainder
-#          MOV    pc, lr     
+      #          SUB    r1, r1, r1, lsr #2
+      block.add_code add( number , right: number , extra: number ,  shift_right: 4)
+      #          ADD    r1, r1, r1, lsr #4
+      #          ADD    r1, r1, r1, lsr #8
+      #          ADD    r1, r1, r1, lsr #16
+      #          MOV    r1, r1, lsr #3
+      #          ADD    r3, r1, r1, asl #2
+      #          SUBS   r2, r2, r3, asl #1                # calc (x-10) - (x/10)*10
+      #          ADDPL  r1, r1, #1                        # fix-up quotient
+      #          ADDMI  r2, r2, #10                       # fix-up remainder
+      #          MOV    pc, lr     
     end
 
     def syscall block , num

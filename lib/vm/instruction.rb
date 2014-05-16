@@ -25,8 +25,8 @@ module Vm
     # Make hash attributes to object attributes
     include Support::HashAttributes
     
-    def initialize left , options
-      @left = left
+    def initialize first , options
+      @first = first
       @attributes = options
     end
   end
@@ -44,7 +44,7 @@ module Vm
   class MoveInstruction < Instruction
   end
   class CallInstruction < Instruction
-    def initialize left , options
+    def initialize first , options
       super
       opcode = @attributes[:opcode].to_s
       if opcode.length == 3 and opcode[0] == "b"

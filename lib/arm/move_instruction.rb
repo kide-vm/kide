@@ -6,15 +6,15 @@ module Arm
     include Arm::Constants
     include LogicHelper
 
-    def initialize(left , attributes) 
-      super(left , attributes)
+    def initialize(first , attributes) 
+      super(first , attributes)
       @attributes[:update_status_flag] = 0 if @attributes[:update_status_flag] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @attributes[:opcode] = attributes[:opcode]
       @operand = 0
 
       @i = 0      
-      @rd = @left
+      @rd = @first
       @rn = :r0 # register zero = zero bit pattern
     end
   

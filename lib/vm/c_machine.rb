@@ -81,11 +81,11 @@ module Vm
     # defaults gets merged into the instructions options hash, ie passed on to the (machine specific)
     # Instruction constructor and as such can be used to influence that classes behaviour
     def define_instruction(inst , clazz , defaults = {} )
-      create_method(inst) do |left , options|
+      create_method(inst) do |first , options|
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
-        clazz.new(left , options)
+        clazz.new(first , options)
       end
     end
 

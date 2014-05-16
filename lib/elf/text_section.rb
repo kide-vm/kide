@@ -10,8 +10,8 @@ module Elf
       Elf::Constants::SHT_PROGBITS
     end
 
-    def flags
-      Elf::Constants::SHF_ALLOC | Elf::Constants::SHF_EXECINSTR
+    def flags #making the text writable !gogogo
+      Elf::Constants::SHF_WRITE | Elf::Constants::SHF_ALLOC | Elf::Constants::SHF_EXECINSTR
     end
   
     def alignment

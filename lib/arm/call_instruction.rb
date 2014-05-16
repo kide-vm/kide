@@ -20,8 +20,8 @@ module Arm
       4
     end
 
-    def initialize(left, attributes)
-      super(left , attributes)
+    def initialize(first, attributes)
+      super(first , attributes)
       @attributes[:update_status_flag] = 0
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
     end
@@ -29,7 +29,7 @@ module Arm
     def assemble(io)
       case @attributes[:opcode]
       when :b, :call
-        arg = @left
+        arg = @first
         #puts "BLAB #{arg.inspect}"
         if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
           arg = Vm::IntegerConstant.new( arg )
@@ -49,7 +49,7 @@ module Arm
         end
         io.write_uint8 op_bit_code | (COND_CODES[@attributes[:condition_code]] << 4)
       when :swi
-        arg = @left
+        arg = @first
         if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
           arg = Vm::IntegerConstant.new( arg )
         end

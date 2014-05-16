@@ -11,8 +11,8 @@ module Arm
       4
     end
 
-    def initialize(left , attributes)
-      super(left , attributes) 
+    def initialize(first , attributes)
+      super(first , attributes) 
       @attributes[:update_status_flag] = 0 if @attributes[:update_status_flag] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @attributes[:opcode] = attributes[:opcode]
@@ -55,7 +55,7 @@ module Arm
     private 
     # Build representation for source value
     def build
-      regs = @left
+      regs = @first
       if (regs.is_a?(Array))
         @operand = 0
         regs.each do |reg |

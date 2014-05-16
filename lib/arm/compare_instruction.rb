@@ -5,13 +5,13 @@ module Arm
     include Arm::Constants
     include LogicHelper
 
-    def initialize(left , attributes)
-      super(left , attributes) 
+    def initialize(first , attributes)
+      super(first , attributes) 
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
       @i = 0      
       @attributes[:update_status_flag] = 1
-      @rn = left
+      @rn = first
       @rd = :r0
     end
     def build 
