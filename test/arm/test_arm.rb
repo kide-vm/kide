@@ -1,31 +1,8 @@
 require_relative 'helper'
 
-# try  to test that the generation of basic instructions works
-# one instruction at a time, reverse testing from objdump --demangle -Sfghxp
-# tests are named as per assembler code, ie test_mov testing mov instruction
-#  adc add and bic eor orr rsb rsc sbc sub mov mvn cmn cmp teq tst b call bx swi strb
-
 class TestArmAsm < MiniTest::Test
-  # need Assembler and a block (see those classes) 
-  def setup
-    @machine = Arm::ArmMachine.new
-  end
+  include ArmHelper
 
-  # code is what the generator spits out, at least one instruction worth (.first)
-  # the op code is wat was witten as assembler in the first place and the binary result
-  # is reversed and in 4 bytes as ruby can only do 31 bits and so we can't test with just one int (?)
-  def assert_code code , op , should
-    assert_equal op ,  code.opcode
-    io = StringIO.new
-    code.assemble(io)
-    binary = io.string
-    assert_equal 4 , binary.length , "code length wrong for #{code.inspect}"
-    index = 0
-    binary.each_byte do |byte |
-      assert_equal should[index] , byte , "byte #{index} 0x#{should[index].to_s(16)} != 0x#{byte.to_s(16)}"
-      index += 1
-    end
-  end
   def test_b
     # the address is what an assembler calculates (a signed number for the amount of instructions), 
     # ie the relative (to pc) address -8 (pipeline) /4 so save space
@@ -100,13 +77,5 @@ class TestArmAsm < MiniTest::Test
   def test_tst
     code = @machine.tst  :r1 , right: :r2
     assert_code code , :tst , [0x02,0x00,0x11,0xe1] #e1 11 00 02
-  end
-  def test_mov
-    code = @machine.mov  :r0, right: 5
-    assert_code code , :mov , [0x05,0x00,0xa0,0xe3] #e3 a0 10 05
-  end
-  def test_mvn
-    code = @machine.mvn  :r1, right: 5
-    assert_code code , :mvn , [0x05,0x10,0xe0,0xe3] #e3 e0 10 05
   end
 end

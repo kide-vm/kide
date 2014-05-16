@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-class TestArmAsm < MiniTest::Test
+class TestLogic < MiniTest::Test
   include ArmHelper
 
   def test_adc
@@ -10,6 +10,10 @@ class TestArmAsm < MiniTest::Test
   def test_add
     code = @machine.add	 :r1 , left: :r1, right: :r3
     assert_code code , :add , [0x03,0x10,0x81,0xe0] #e0 81 10 03
+  end
+  def test_add_lst
+    code = @machine.add( :r1 , left: :r2 , right: :r3 ,  shift_lsr: 8)
+    assert_code code , :add , [0x23,0x14,0x82,0xe0] #e0 82 14 23
   end
   def test_and # inst eval doesn't really work with and
     code = @machine.and(  :r1 , left: :r2 , right: :r3)
