@@ -38,11 +38,17 @@ module Core
         buffer = Vm::StringConstant.new("           ")
         context.program.add_object buffer
         str_addr = Vm::Integer.new(0)                  # address of the 
-        block.add_code Vm::CMachine.instance.mov( str_addr , right: Vm::Integer.new(1)) #move arg up
-        block.add_code Vm::CMachine.instance.add( str_addr , left: buffer)   # string to write to
+        reg1 = Vm::Integer.new(1)
+        block.add_code Vm::CMachine.instance.mov( reg1 , right: str_addr ) #move arg up
+        block.add_code Vm::CMachine.instance.add( str_addr , left: buffer )   # string to write to
+        block.add_code Vm::CMachine.instance.add( str_addr , left: str_addr , right:6 )   # string to write to
         context.str_addr = str_addr
         itos_fun = context.program.get_or_create_function(:utoa)
         block.add_code Vm::CMachine.instance.call( itos_fun , {})
+        # And now we "just" have to print it, using the write_stdout
+        block.add_code Vm::CMachine.instance.add( str_addr , left: buffer )   # string to write to
+        block.add_code Vm::CMachine.instance.mov( reg1 , right: buffer.length )
+        ret = Vm::CMachine.instance.write_stdout(block)
         #        function.return_type = ret
         function
       end
@@ -62,8 +68,8 @@ module Core
         # ADD    r10, r10, 48 #'0'                   # make char out of digit (by using ascii encoding)
         block.add_code Vm::CMachine.instance.add( remainder , left: remainder , right: 48 )
         #STRB   r10, [r1], 1                   # store digit at end of buffer
-        block.add_code Vm::CMachine.instance.strb( remainder , right: str_addr )  #and increment TODO check
-        # CMP    r1, #0                         # quotient non-zero?
+#        block.add_code Vm::CMachine.instance.strb( remainder , right: str_addr, offset: 1 , flagie: 1) 
+        block.add_code Vm::CMachine.instance.strb( remainder, right: str_addr , :offset =>  -1 , flaggie: 1)          # CMP    r1, #0                         # quotient non-zero?
         block.add_code Vm::CMachine.instance.cmp( number , right: 0 )
         #BLNE   utoa                           # conditional recursive call to utoa
         block.add_code Vm::CMachine.instance.callne( function , {} )
@@ -71,8 +77,6 @@ module Core
         #automatic block.add_code pop( [:pc] , {} )
         return function
       end
-      
-
     end
     
     extend ClassMethods

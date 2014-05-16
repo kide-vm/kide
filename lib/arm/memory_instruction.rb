@@ -16,9 +16,8 @@ module Arm
       @add_offset = 0 #U flag
       @is_load = opcode.to_s[0] == "l" ? 1 : 0 #L (load) flag
     end
-#    attr_accessor :i, :pre_post_index, :add_offset, :byte_access, :w, :is_load, :rn, :rd
 
-    # arm intrucioons are pretty sensible, and always 4 bytes (thumb not supported)
+    # arm intructions are pretty sensible, and always 4 bytes (thumb not supported)
     def length
       4
     end
@@ -68,6 +67,8 @@ module Arm
       # but i can't help thinking that that is because they are not used in that instruction and
       # so it doesn't matter. Will see
       @add_offset = 1
+      # TODO to be continued
+      @add_offset = 0 if @attributes[:add_offset]
       @pre_post_index = 1
       w = 0 #W flag
       byte_access = opcode.to_s[-1] == "b" ? 1 : 0 #B (byte) flag
@@ -75,6 +76,7 @@ module Arm
       val = @operand
       val = reg_code(@operand) if @operand.is_a?(Symbol)
       val = shift(val , 0 ) # for the test
+      @pre_post_index = 0 if @attributes[:flaggie]
       val |= shift(reg_code(@first) ,        12 )  
       val |= shift(reg_code(@rn) ,        12+4) #16  
       val |= shift(@is_load ,        12+4  +4)
