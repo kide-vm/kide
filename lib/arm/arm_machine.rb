@@ -16,12 +16,12 @@ module Arm
     end
 
     def integer_plus block , result , first , right
-      block.add_code add( result , right: first , :extra => right )
+      block.add_code add( result , left: first , :extra => right )
       result
     end
 
     def integer_minus block , result , first , right
-      block.add_code sub( result , right: first , :extra => right )
+      block.add_code sub( result , left: first , :extra => right )
       result
     end
 
@@ -88,7 +88,7 @@ module Arm
       # BL     udiv10                         # r1 = r1 / 10
       div10( tos , number  , remainder )
       # ADD    r10, r10, 48 #'0'                   # make char out of digit (by using ascii encoding)
-      tos.add_code add( remainder , right: remainder , extra: 48 )
+      tos.add_code add( remainder , left: remainder , right: 48 )
       #STRB   r10, [r1], 1                   # store digit at end of buffer
       tos.add_code strb( remainder , right: string )  #and increment TODO check
       # CMP    r1, #0                         # quotient non-zero?
@@ -110,9 +110,9 @@ module Arm
       # takes argument in r1
       # returns quotient in r1, remainder in r2
       #          SUB    r2, r1, #10                       # keep (x-10) for later
-      block.add_code sub( remainder , right: number , :extra => 10 )
+      block.add_code sub( remainder , left: number , right: 10 )
       #          SUB    r1, r1, r1, lsr #2
-      block.add_code add( number , right: number , extra: number ,  shift_right: 4)
+      block.add_code add( number , left: number , right: number ,  shift_right: 4)
       #          ADD    r1, r1, r1, lsr #4
       #          ADD    r1, r1, r1, lsr #8
       #          ADD    r1, r1, r1, lsr #16

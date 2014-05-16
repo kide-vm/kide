@@ -11,7 +11,8 @@ module Arm
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
 
-      @left = nil
+      @left = @attributes[:left]
+      raise "Left arg must be given #{inspect}" unless @left
       @i = 0      
     end
     
@@ -21,14 +22,12 @@ module Arm
     end
 
     # Build representation for source value 
-    def build
-      @left = @attributes[:left]
-      arg = @attributes[:extra]
-      
-      if arg.is_a?(Vm::StringConstant)
+    def build      
+      arg = @attributes[:right]
+      if @left.is_a?(Vm::StringConstant)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
-        arg = Vm::IntegerConstant.new( arg.position - self.position - 8 )
+        arg = Vm::IntegerConstant.new( @left.position - self.position - 8 )
         @left = :pc
       end
       if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
@@ -94,7 +93,7 @@ module Arm
       io.write_uint32 val
     end
     def shift val , by
-      raise "Not integer #{val}:#{val.class}" unless val.is_a? Fixnum
+      raise "Not integer #{val}:#{val.class} #{inspect}" unless val.is_a? Fixnum
       val << by
     end
   end
