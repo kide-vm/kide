@@ -52,22 +52,7 @@ module Arm
       else
         raise "invalid operand argument #{right.inspect} , #{inspect}"
       end
-      #codes that one can shift, first two probably most common.
-      # l (in lsr) means logical, ie unsigned, a (in asl) is arithmetic, ie signed
-      {'lsl' => 0b000, 'lsr' => 0b010, 'asr' => 0b100, 'ror' => 0b110, 'rrx' => 0b110}.each do |short, bin|
-        long = "shift_#{short}".to_sym
-        if shif = @attributes[long]
-          shif = shif.integer if (shif.is_a?(Vm::IntegerConstant))
-          if (shif.is_a?(Vm::Integer))
-            bin |= 0x1;
-            shift = shif.register << 1
-          end
-          raise "0 < shift <= 32  #{shif} #{inspect}"  if (shif >= 32) or( shif < 0)
-          @operand |=   shift(bin  , 4 )
-          @operand |=   shift(shif , 4+3)
-          break
-        end
-      end
+      shift_handling
     end
 
     def assemble(io)
