@@ -37,11 +37,42 @@ module Core
         block = function.body
         buffer = Vm::StringConstant.new("           ")
         context.program.add_object buffer
-        # should be another level of indirection, ie write(io,str)
-        ret = Vm::CMachine.instance.integer_to_s(block , buffer)
-        function.return_type = ret
+        str_addr = Vm::Integer.new(0)                  # address of the 
+        block.add_code Vm::CMachine.instance.mov( str_addr , right: Vm::Integer.new(1)) #move arg up
+        block.add_code Vm::CMachine.instance.add( str_addr , left: buffer)   # string to write to
+        context.str_addr = str_addr
+        itos_fun = context.program.get_or_create_function(:utoa)
+        block.add_code Vm::CMachine.instance.call( itos_fun , {})
+        #        function.return_type = ret
         function
       end
+
+      def utoa context
+        function = Vm::Function.new(:utoa , [Vm::Integer , Vm::Integer ] )
+        block = function.body
+        str_addr = context.str_addr
+        number = Vm::Integer.new(str_addr.register + 1)
+        remainder = Vm::Integer.new( number.register + 1)
+        #STMFD  sp!, {r9, r10, lr}               #function entry save working regs (for recursion)
+        #automatic block.add_code push( [:lr ] , {} )      #and the return address.
+        #  MOV    r9, r1                         # preserve arguments over following
+        #  MOV    r10, r2                         # function calls
+        # BL     udiv10                         # r1 = r1 / 10
+        Vm::CMachine.instance.div10( block , number  , remainder )
+        # ADD    r10, r10, 48 #'0'                   # make char out of digit (by using ascii encoding)
+        block.add_code Vm::CMachine.instance.add( remainder , left: remainder , right: 48 )
+        #STRB   r10, [r1], 1                   # store digit at end of buffer
+        block.add_code Vm::CMachine.instance.strb( remainder , right: str_addr )  #and increment TODO check
+        # CMP    r1, #0                         # quotient non-zero?
+        block.add_code Vm::CMachine.instance.cmp( number , right: 0 )
+        #BLNE   utoa                           # conditional recursive call to utoa
+        block.add_code Vm::CMachine.instance.callne( function , {} )
+        #LDMFD  sp!, {r9, r10, pc}              # function exit - restore and return
+        #automatic block.add_code pop( [:pc] , {} )
+        return function
+      end
+      
+
     end
     
     extend ClassMethods

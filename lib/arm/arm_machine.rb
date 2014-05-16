@@ -57,11 +57,10 @@ module Arm
       exit
     end
     def function_entry block, f_name
-        #      entry.add_code  push( :regs => [:lr] )
-        block
+        block.add_code  push( [:lr] , {})
     end
     def function_exit entry , f_name
-      entry.add_code  mov(  :pc , right: :lr )
+      entry.add_code  pop(  [:pc] , {})
     end
 
     # assumes string in r0 and r1 and moves them along for the syscall
@@ -72,48 +71,7 @@ module Arm
       syscall( block , 4 )
     end
 
-    # make a string out of the integer.
-    # as we don't have memory management yet, we have to pass the string in (ouch)
-    # in a weird twist the string is actually a string, while we really use its address.
-    #      this works as the program will save any strings used onto the assmbly (thus creating a global)
-    def integer_to_s block , string
-      block.add_code push( [:lr ] , {} )  #return address
-      # pin data, so no saving when recursing
-      str_addr = Vm::Integer.new(0)
-      block.add_code add( str_addr , left: string)
-      # need to create a block to do the actual utoa, which is recursive      
-      tos = utoa(str_addr)
-      block.add_code call( tos , {} )        # call the workers in
-      block.add_code pop( [:pc] , {} )       # return
-      block.add_code(tos) # and then add the new block to actually generate code
-    end
     
-    def utoa str_addr
-      number = Vm::Integer.new(str_addr.register + 1)
-      remainder = Vm::Integer.new( number.register + 1)
-      tos = Vm::Block.new("i_to_s") 
-      #STMFD  sp!, {r9, r10, lr}               #function entry save working regs (for recursion)
-      tos.add_code push( [:lr ] , {} )      #and the return address.
-      #  MOV    r9, r1                         # preserve arguments over following
-      #  MOV    r10, r2                         # function calls
-      # BL     udiv10                         # r1 = r1 / 10
-      div10( tos , number  , remainder )
-      # ADD    r10, r10, 48 #'0'                   # make char out of digit (by using ascii encoding)
-      tos.add_code add( remainder , left: remainder , right: 48 )
-      #STRB   r10, [r1], 1                   # store digit at end of buffer
-      tos.add_code strb( remainder , right: str_addr )  #and increment TODO check
-      # CMP    r1, #0                         # quotient non-zero?
-      tos.add_code cmp( number , right: 0 )
-      #BLNE   utoa                           # conditional recursive call to utoa
-      tos.add_code callne( tos , {} )
-      #LDMFD  sp!, {r9, r10, pc}              # function exit - restore and return
-      tos.add_code pop( [:pc] , {} )
-      return tos
-    end
-        
-    private     
-
-
     # the number (a Vm::integer) is (itself) divided by 10, ie overwritten by the result
     #  and the remainder is overwritten (ie an out argument)
     # not really a function, more a macro, hence private
@@ -132,7 +90,7 @@ module Arm
       #          ADD    r1, r1, r1, lsr #16
       block.add_code add( number , left: number , right: number ,  shift_lsr: 16)
       #          MOV    r1, r1, lsr #3
-      block.add_code mov( remainder , left: remainder  , right: remainder , shift_lsr: 3)
+      block.add_code mov( number ,  right: number , shift_lsr: 3)
       #          ADD    r3, r1, r1, asl #2
       tmp = Vm::Integer.new( remainder.register + 1)
       block.add_code add( tmp , left: number , right: number ,  shift_lsl: 2)
