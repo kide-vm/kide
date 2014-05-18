@@ -11,56 +11,56 @@ module Arm
   class ArmMachine < Vm::CMachine
 
     def integer_less_or_equal block ,  first , right
-      block.add_code cmp( first , right: right )
+      block <<  cmp( first , right: right )
       Vm::Bool.new
     end
 
     def integer_plus block , result , first , right
-      block.add_code add( result , left: first , :extra => right )
+      block <<  add( result , left: first , :extra => right )
       result
     end
 
     def integer_minus block , result , first , right
-      block.add_code sub( result , left: first , :extra => right )
+      block <<  sub( result , left: first , :extra => right )
       result
     end
 
     def integer_load block , first , right
-      block.add_code mov(  first , right: right )
+      block <<  mov(  first , right: right )
       first 
     end
 
     def integer_move block , first , right
-      block.add_code mov(  first , right: right )
+      block <<  mov(  first , right: right )
       first 
     end
 
     def string_load block ,  str_lit , reg
-      block.add_code add(  "r#{reg}".to_sym   , :extra => str_lit )   #right is pc, implicit
+      block <<  add(  "r#{reg}".to_sym   , :extra => str_lit )   #right is pc, implicit
         #second arg is a hack to get the stringlength without coding
-      block.add_code mov(  "r#{reg+1}".to_sym , right: str_lit.length )
+      block <<  mov(  "r#{reg+1}".to_sym , right: str_lit.length )
       str_lit
     end
 
     def function_call into , call
       raise "Not CallSite #{call.inspect}" unless call.is_a? Vm::CallSite
       raise "Not linked #{call.inspect}" unless call.function
-      into.add_code call(  call.function  , {})
+      into <<  call(  call.function  , {})
       call.function.return_type
     end
 
     def main_start entry
-      entry.add_code  mov(  :fp , right: 0 )
+      entry <<   mov(  :fp , right: 0 )
     end
     def main_exit exit
       syscall(exit , 1)
       exit
     end
     def function_entry block, f_name
-        block.add_code  push( [:lr] , {})
+        block <<  push( [:lr] , {})
     end
     def function_exit entry , f_name
-      entry.add_code  pop(  [:pc] , {})
+      entry <<   pop(  [:pc] , {})
     end
 
     # assumes string in r0 and r1 and moves them along for the syscall
@@ -97,8 +97,8 @@ module Arm
     end
 
     def syscall block , num
-      block.add_code mov(  :r7 , right: num )
-      block.add_code swi(  0 , {})
+      block <<  mov(  :r7 , right: num )
+      block <<  swi(  0 , {})
       Vm::Integer.new(0)  #small todo, is this actually correct for all (that they return int)
     end
 

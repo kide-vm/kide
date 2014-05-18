@@ -39,6 +39,7 @@ module Vm
       @codes << kode
       self
     end
+    alias :<< :add_code 
 
     def link_at pos , context
       @position = pos
