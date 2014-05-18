@@ -89,7 +89,7 @@ module Vm
 
     # assemble in the same order as linked
     def assemble( io )
-      link_at( @position , {}) #second link in case of forward declarations
+      link_at( @position , nil) #second link in case of forward declarations
       @entry.assemble( io )
       @main.assemble( io )
       @exit.assemble( io )

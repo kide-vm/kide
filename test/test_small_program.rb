@@ -33,7 +33,7 @@ class TestSmallProg < MiniTest::Test
       mov :r0 ,  1    # stdout
       add :r1 , hello , nil   # address of "hello Raisa"
       mov :r2 ,  hello.length
-    	swi  0 , {}         #software interupt, ie kernel syscall
+    	swi  0          #software interupt, ie kernel syscall
     end
     write(7 + hello.length/4 + 1 , 'hello') 
   end

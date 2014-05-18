@@ -10,29 +10,29 @@ require_relative "constants"
 module Arm
   class ArmMachine < Vm::CMachine
 
-    def integer_less_or_equal block ,  first , right
-      block <<  cmp( first ,  right )
+    def integer_less_or_equal block ,  left , right
+      block <<  cmp( left ,  right )
       Vm::Bool.new
     end
 
-    def integer_plus block , result , first , right
-      block <<  add( result , first ,  right )
+    def integer_plus block , result , left , right
+      block <<  add( result , left ,  right )
       result
     end
 
-    def integer_minus block , result , first , right
-      block <<  sub( result ,  first ,  right )
+    def integer_minus block , result , left , right
+      block <<  sub( result ,  left ,  right )
       result
     end
 
-    def integer_load block , first , right
-      block <<  mov(  first ,  right )
-      first 
+    def integer_load block , to , from
+      block <<  mov(  to ,  from )
+      to 
     end
 
-    def integer_move block , first , right
-      block <<  mov(  first ,  right )
-      first 
+    def integer_move block , to , from
+      block <<  mov(  to ,  from )
+      to 
     end
 
     def string_load block ,  str_lit , reg
@@ -45,7 +45,7 @@ module Arm
     def function_call into , call
       raise "Not CallSite #{call.inspect}" unless call.is_a? Vm::CallSite
       raise "Not linked #{call.inspect}" unless call.function
-      into <<  call(  call.function  , {})
+      into <<  call(  call.function  )
       call.function.return_type
     end
 
@@ -57,10 +57,10 @@ module Arm
       exit
     end
     def function_entry block, f_name
-        block <<  push( [:lr] , {})
+        block <<  push( [:lr] )
     end
     def function_exit entry , f_name
-      entry <<   pop(  [:pc] , {})
+      entry <<   pop(  [:pc] )
     end
 
     # assumes string in r0 and r1 and moves them along for the syscall
@@ -98,7 +98,7 @@ module Arm
 
     def syscall block , num
       block <<  mov(  :r7 , num )
-      block <<  swi(  0 , {})
+      block <<  swi(  0 )
       Vm::Integer.new(0)  #small todo, is this actually correct for all (that they return int)
     end
 

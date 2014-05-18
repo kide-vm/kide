@@ -45,7 +45,7 @@ module Core
           mov( reg1 ,  str_addr ) #move arg up
           add( str_addr ,  buffer ,nil )   # string to write to
           add( str_addr ,  str_addr ,  (buffer.length-3))  
-          call( itos_fun , {})
+          call( itos_fun )
         # And now we "just" have to print it, using the write_stdout
           add( str_addr ,  buffer , nil )   # string to write to
           mov( reg1 ,  buffer.length )
@@ -71,7 +71,7 @@ module Core
           strb( remainder, right: str_addr ) 
           sub( str_addr,  str_addr ,  1 ) 
           cmp( number ,  0 )
-          callne( function , {} )
+          callne( function  )
         end
         return function
       end
