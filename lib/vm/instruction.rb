@@ -55,8 +55,9 @@ module Vm
     end
   end
   class CompareInstruction < Instruction
-    def initialize first , options
-      @first = first
+    def initialize left , right , options
+      @left = left
+      @right = right
       super(options)
     end
   end

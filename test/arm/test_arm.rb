@@ -18,14 +18,6 @@ class TestArmAsm < MiniTest::Test
     code = @machine.bic	 :r2 , left: :r2 , right: :r3
     assert_code code , :bic , [0x03,0x20,0xc2,0xe1] #e3 c2 20 44
   end
-  def test_cmn
-    code = @machine.cmn	 :r1 , right: :r2
-    assert_code code , :cmn , [0x02,0x00,0x71,0xe1] #e1 71 00 02
-  end
-  def test_cmp
-    code = @machine.cmp	 :r1 , right: :r2
-    assert_code code , :cmp , [0x02,0x00,0x51,0xe1] #e1 51 00 02
-  end
   def test_push
     code = @machine.push [:lr] , {}
     assert_code code , :push ,  [0x00,0x40,0x2d,0xe9] #e9 2d 40 00
@@ -47,15 +39,7 @@ class TestArmAsm < MiniTest::Test
     assert_code code , :sbc , [0x05,0x30,0xc4,0xe0]#e0 c4 30 05
   end
   def test_swi
-    code = @machine.swi	 0x05 , {}
+    code = @machine.swi	 0x05 
     assert_code code , :swi , [0x05,0x00,0x00,0xef]#ef 00 00 05
-  end
-  def test_teq
-    code = @machine.teq  :r1 , right: :r2
-    assert_code code , :teq , [0x02,0x00,0x31,0xe1] #e1 31 00 02
-  end
-  def test_tst
-    code = @machine.tst  :r1 , right: :r2
-    assert_code code , :tst , [0x02,0x00,0x11,0xe1] #e1 11 00 02
   end
 end

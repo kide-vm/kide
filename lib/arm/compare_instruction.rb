@@ -2,22 +2,22 @@ module Arm
   class CompareInstruction < Vm::CompareInstruction
     include Arm::Constants
 
-    def initialize(first , attributes)
-      super(first , attributes) 
+    def initialize(left , right , attributes)
+      super(left , right,  attributes) 
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
       @i = 0      
       @attributes[:update_status] = 1
-      @rn = first
+      @rn = left
       @rd = :r0
     end
-    # arm intrucioons are pretty sensible, and always 4 bytes (thumb not supported)
+    # arm instructions are pretty sensible, and always 4 bytes (thumb not supported)
     def length
       4
     end
 
     def build 
-      arg = @attributes[:right]
+      arg = @right
 
       if arg.is_a?(Vm::StringConstant)
         # do pc relative addressing with the difference to the instuction

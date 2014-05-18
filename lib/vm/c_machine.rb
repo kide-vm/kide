@@ -45,28 +45,28 @@ module Vm
     # Derived machines may use own instructions and define functions for them if so desired
     def initialize
       [:push, :pop].each do |inst|
-        define_instruction_for(inst , StackInstruction)
+        define_instruction_one(inst , StackInstruction)
       end
       [:adc, :add, :and, :bic, :eor, :orr, :rsb, :rsc, :sbc, :sub].each do |inst|
-        define_instruction_for(inst , LogicInstruction)
+        define_instruction_one(inst , LogicInstruction)
       end
       [:mov, :mvn].each do |inst|
-        define_instruction_for(inst , MoveInstruction)
+        define_instruction_one(inst , MoveInstruction)
       end
       [:cmn, :cmp, :teq, :tst].each do |inst|
-        define_instruction_for(inst , CompareInstruction)
+        define_instruction_two(inst , CompareInstruction)
       end
       [:strb, :str , :ldrb, :ldr].each do |inst|
-        define_instruction_for(inst , MemoryInstruction)
+        define_instruction_one(inst , MemoryInstruction)
       end
       [:b, :call , :swi].each do |inst|
-        define_instruction_for(inst , CallInstruction)
+        define_instruction_one(inst , CallInstruction)
       end
       # create all possible brach instructions, but the CallInstruction demangles the 
       # code, and has opcode set to :b and :condition_code set to the condition
       CONDITIONS.each do |suffix|
-        define_instruction_for("b#{suffix}".to_sym , CallInstruction)
-        define_instruction_for("call#{suffix}".to_sym , CallInstruction)
+        define_instruction_one("b#{suffix}".to_sym , CallInstruction)
+        define_instruction_one("call#{suffix}".to_sym , CallInstruction)
       end
     end
 
@@ -74,20 +74,6 @@ module Vm
         self.class.send(:define_method, name , &block)
     end
 
-    # define the instruction inst (given as a symbol) on this class as a methods
-    # As we define a standard set of instructions (or memnonics) , this turns this class into a kind of
-    # Assembler, in that you can write .mov() or .pop() and those functions mean the same as if they 
-    # were in an assembler file (also options are the same)
-    # defaults gets merged into the instructions options hash, ie passed on to the (machine specific)
-    # Instruction constructor and as such can be used to influence that classes behaviour
-    def define_instruction(inst , clazz , defaults = {} )
-      create_method(inst) do |first , options|
-        options = {} if options == nil
-        options.merge defaults
-        options[:opcode] = inst
-        clazz.new(first , options)
-      end
-    end
 
     def self.instance
       @@instance
@@ -105,7 +91,28 @@ module Vm
     #    be used to define the mov on an arm machine. 
     # This methods picks up that derived class and calls a define_instruction methods that can 
     #   be overriden in subclasses 
-    def define_instruction_for(inst , clazz )
+    def define_instruction_one(inst , clazz ,  defaults = {} )
+      clazz =  class_for(clazz)
+      create_method(inst) do |first , options = nil|
+        options = {} if options == nil
+        options.merge defaults
+        options[:opcode] = inst
+        clazz.new(first , options)
+      end
+    end
+
+    # same for two args (left right, from to etc)
+    def define_instruction_two(inst , clazz ,  defaults = {} )
+      clazz =  class_for(clazz)
+      create_method(inst) do |first ,second , options = nil|
+        options = {} if options == nil
+        options.merge defaults
+        options[:opcode] = inst
+        clazz.new(first , second ,options)
+      end
+    end
+
+    def class_for clazz
       c_name = clazz.name
       my_module = self.class.name.split("::").first
       clazz_name = clazz.name.split("::").last
@@ -113,7 +120,7 @@ module Vm
         module_class = eval("#{my_module}::#{clazz_name}") rescue nil
         clazz = module_class if module_class
       end
-      define_instruction(inst , clazz )
+      clazz
     end
   end
 end
