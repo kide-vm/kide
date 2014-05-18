@@ -25,27 +25,51 @@ module Vm
     # Make hash attributes to object attributes
     include Support::HashAttributes
     
-    def initialize first , options
-      @first = first
+    def initialize  options
       @attributes = options
     end
   end
   
   class StackInstruction < Instruction
+    def initialize first , options
+      @first = first
+      super(options)
+    end
   end
   class MemoryInstruction < Instruction
+    def initialize first , options
+      @first = first
+      super(options)
+    end
   end
   class LogicInstruction < Instruction
+    def initialize first , options
+      @first = first
+      super(options)
+    end
   end
   class MathInstruction < Instruction
+    def initialize first , options
+      @first = first
+      super(options)
+    end
   end
   class CompareInstruction < Instruction
+    def initialize first , options
+      @first = first
+      super(options)
+    end
   end
   class MoveInstruction < Instruction
+    def initialize first , options
+      @first = first
+      super(options)
+    end
   end
   class CallInstruction < Instruction
     def initialize first , options
-      super
+      @first = first
+      super(options)
       opcode = @attributes[:opcode].to_s
       if opcode.length == 3 and opcode[0] == "b"
         @attributes[:condition_code] = opcode[1,2].to_sym

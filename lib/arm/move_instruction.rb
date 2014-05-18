@@ -1,5 +1,3 @@
-require_relative "logic_helper"
-
 module Arm
 
   class MoveInstruction < Vm::MoveInstruction
