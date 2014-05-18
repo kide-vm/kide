@@ -3,13 +3,12 @@ module Arm
   class LogicInstruction < Vm::LogicInstruction
     include Arm::Constants
 
-    def initialize(first , attributes)
-      super(first , attributes)
+    def initialize(result , left , right , attributes)
+      super(result ,left , right , attributes)
       @attributes[:update_status] = 0 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
 
-      @left = @attributes[:left]
       raise "Left arg must be given #{inspect}" unless @left
       @immediate = 0      
     end
@@ -21,7 +20,7 @@ module Arm
 
     # Build representation for source value 
     def build      
-      right = @attributes[:right]
+      right = @right
       if @left.is_a?(Vm::StringConstant)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie pointing to fetch and not execute)
@@ -57,7 +56,7 @@ module Arm
       build
       instuction_class = 0b00 # OPC_DATA_PROCESSING
       val = shift(@operand , 0)
-      val |= shift(reg_code(@first) ,            12)     
+      val |= shift(reg_code(@result) ,            12)     
       val |= shift(reg_code(@left) ,            12+4)   
       val |= shift(@attributes[:update_status] , 12+4+4)#20 
       val |= shift(op_bit_code ,        12+4+4  +1)

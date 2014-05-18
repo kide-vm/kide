@@ -48,7 +48,7 @@ module Vm
         define_instruction_one(inst , StackInstruction)
       end
       [:adc, :add, :and, :bic, :eor, :orr, :rsb, :rsc, :sbc, :sub].each do |inst|
-        define_instruction_one(inst , LogicInstruction)
+        define_instruction_three(inst , LogicInstruction)
       end
       [:mov, :mvn].each do |inst|
         define_instruction_one(inst , MoveInstruction)
@@ -104,11 +104,22 @@ module Vm
     # same for two args (left right, from to etc)
     def define_instruction_two(inst , clazz ,  defaults = {} )
       clazz =  class_for(clazz)
-      create_method(inst) do |first ,second , options = nil|
+      create_method(inst) do |left ,right , options = nil|
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
-        clazz.new(first , second ,options)
+        clazz.new(left , right ,options)
+      end
+    end
+
+    # same for three args (result = left right,)
+    def define_instruction_three(inst , clazz ,  defaults = {} )
+      clazz =  class_for(clazz)
+      create_method(inst) do |result , left ,right , options = nil|
+        options = {} if options == nil
+        options.merge defaults
+        options[:opcode] = inst
+        clazz.new(result, left , right ,options)
       end
     end
 

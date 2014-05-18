@@ -43,8 +43,10 @@ module Vm
     end
   end
   class LogicInstruction < Instruction
-    def initialize first , options
-      @first = first
+    def initialize result , left , right , options
+      @result = result
+      @left = left
+      @right = right
       super(options)
     end
   end

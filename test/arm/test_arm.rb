@@ -14,10 +14,6 @@ class TestArmAsm < MiniTest::Test
     code = @machine.call	 -4 ,{} #this jumps to the next instruction
     assert_code code , :call, [0xff,0xff,0xff,0xeb] #ea ff ff fe
   end
-  def test_bic
-    code = @machine.bic	 :r2 , left: :r2 , right: :r3
-    assert_code code , :bic , [0x03,0x20,0xc2,0xe1] #e3 c2 20 44
-  end
   def test_push
     code = @machine.push [:lr] , {}
     assert_code code , :push ,  [0x00,0x40,0x2d,0xe9] #e9 2d 40 00
@@ -25,18 +21,6 @@ class TestArmAsm < MiniTest::Test
   def test_pop
     code = @machine.pop [:pc] , {}
     assert_code code , :pop , [0x00,0x80,0xbd,0xe8] #e8 bd 80 00
-  end
-  def test_rsb
-    code = @machine.rsb	 :r1 , left: :r2 , right: :r3
-    assert_code code , :rsb , [0x03,0x10,0x62,0xe0]#e0 62 10 03
-  end
-  def test_rsc
-    code = @machine.rsc	 :r2 , left: :r3 , right: :r4
-    assert_code code , :rsc , [0x04,0x20,0xe3,0xe0]#e0 e3 20 04
-  end
-  def test_sbc
-    code = @machine.sbc	 :r3, left: :r4 , right: :r5
-    assert_code code , :sbc , [0x05,0x30,0xc4,0xe0]#e0 c4 30 05
   end
   def test_swi
     code = @machine.swi	 0x05 

@@ -43,8 +43,8 @@ module Core
         itos_fun = context.program.get_or_create_function(:utoa)
         block.instance_eval do 
           mov( reg1 , right: str_addr ) #move arg up
-          add( str_addr , left: buffer )   # string to write to
-          add( str_addr , left: str_addr , right: (buffer.length-3))  
+          add( str_addr ,  buffer ,nil )   # string to write to
+          add( str_addr ,  str_addr ,  (buffer.length-3))  
           call( itos_fun , {})
         # And now we "just" have to print it, using the write_stdout
           add( str_addr , left: buffer )   # string to write to
@@ -67,10 +67,10 @@ module Core
         Vm::CMachine.instance.div10( block , number  , remainder )
         # make char out of digit (by using ascii encoding) 48 == "0"
         block.instance_eval do 
-          add( remainder , left: remainder , right: 48 )
+          add( remainder ,  remainder ,  48 )
           strb( remainder, right: str_addr ) 
-          sub( str_addr, left: str_addr , right: 1 ) 
-          cmp( number , right: 0 )
+          sub( str_addr,  str_addr ,  1 ) 
+          cmp( number ,  0 )
           callne( function , {} )
         end
         return function

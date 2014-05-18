@@ -11,27 +11,27 @@ module Arm
   class ArmMachine < Vm::CMachine
 
     def integer_less_or_equal block ,  first , right
-      block <<  cmp( first , right: right )
+      block <<  cmp( first ,  right )
       Vm::Bool.new
     end
 
     def integer_plus block , result , first , right
-      block <<  add( result , left: first , :extra => right )
+      block <<  add( result , first ,  right )
       result
     end
 
     def integer_minus block , result , first , right
-      block <<  sub( result , left: first , :extra => right )
+      block <<  sub( result ,  first ,  right )
       result
     end
 
     def integer_load block , first , right
-      block <<  mov(  first , right: right )
+      block <<  mov(  first ,  right )
       first 
     end
 
     def integer_move block , first , right
-      block <<  mov(  first , right: right )
+      block <<  mov(  first ,  right )
       first 
     end
 
@@ -82,17 +82,17 @@ module Arm
       # And coding it is a bit of a mind leap: it's all about finding a a result that gets the 
       #  remainder smaller than an int. i'll post some links sometime. This is from the arm manual
       block.instance_eval do 
-        sub( remainder , left: number , right: 10 )
-        sub( number , left: number , right: number ,  shift_lsr: 2)
-        add( number , left: number , right: number ,  shift_lsr: 4)
-        add( number , left: number , right: number ,  shift_lsr: 8)
-        add( number , left: number , right: number ,  shift_lsr: 16)
-        mov( number ,  right: number , shift_lsr: 3)
+        sub( remainder ,  number ,  10 )
+        sub( number ,  number ,  number ,  shift_lsr: 2)
+        add( number ,  number ,  number ,  shift_lsr: 4)
+        add( number ,  number ,  number ,  shift_lsr: 8)
+        add( number ,  number ,  number ,  shift_lsr: 16)
+        mov( number ,   number , shift_lsr: 3)
         tmp = Vm::Integer.new( remainder.register + 1)
-        add( tmp , left: number , right: number ,  shift_lsl: 2)
-        sub( remainder , left: remainder , right: tmp , shift_lsl: 1 , update_status: 1)
-        add( number , left: number,  right: 1 , condition_code: :pl )
-        add( remainder , left: remainder ,  right: 10 , condition_code: :mi )
+        add( tmp ,  number ,  number ,  shift_lsl: 2)
+        sub( remainder ,  remainder ,  tmp , shift_lsl: 1 , update_status: 1)
+        add( number ,  number,   1 , condition_code: :pl )
+        add( remainder ,  remainder ,   10 , condition_code: :mi )
       end
     end
 
