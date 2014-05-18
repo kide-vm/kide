@@ -36,9 +36,9 @@ module Arm
     end
 
     def string_load block ,  str_lit , reg
-      block <<  add(  "r#{reg}".to_sym   , :extra => str_lit )   #right is pc, implicit
+      block <<  add(  "r#{reg}".to_sym   ,  str_lit , nil )   #right is pc, implicit
         #second arg is a hack to get the stringlength without coding
-      block <<  mov(  "r#{reg+1}".to_sym , right: str_lit.length )
+      block <<  mov(  "r#{reg+1}".to_sym ,  str_lit.length )
       str_lit
     end
 
@@ -50,7 +50,7 @@ module Arm
     end
 
     def main_start entry
-      entry <<   mov(  :fp , right: 0 )
+      entry <<   mov(  :fp ,  0 )
     end
     def main_exit exit
       syscall(exit , 1)
@@ -66,9 +66,9 @@ module Arm
     # assumes string in r0 and r1 and moves them along for the syscall
     def write_stdout block
       block.instance_eval do 
-        mov(  :r2 , right: :r1 )
-        mov(  :r1 , right: :r0 )
-        mov(  :r0 , right: 1 ) # 1 == stdout
+        mov(  :r2 ,  :r1 )
+        mov(  :r1 ,  :r0 )
+        mov(  :r0 ,  1 ) # 1 == stdout
       end
       syscall( block , 4 )
     end
@@ -97,7 +97,7 @@ module Arm
     end
 
     def syscall block , num
-      block <<  mov(  :r7 , right: num )
+      block <<  mov(  :r7 , num )
       block <<  swi(  0 , {})
       Vm::Integer.new(0)  #small todo, is this actually correct for all (that they return int)
     end

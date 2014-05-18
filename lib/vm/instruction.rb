@@ -64,8 +64,9 @@ module Vm
     end
   end
   class MoveInstruction < Instruction
-    def initialize first , options
-      @first = first
+    def initialize to , from , options
+      @to = to
+      @from = from
       super(options)
     end
   end

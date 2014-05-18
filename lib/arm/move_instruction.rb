@@ -3,8 +3,8 @@ module Arm
   class MoveInstruction < Vm::MoveInstruction
     include Arm::Constants
 
-    def initialize(first , attributes) 
-      super(first , attributes)
+    def initialize(to , from , attributes) 
+      super(to , from , attributes)
       @attributes[:update_status] = 0 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @attributes[:opcode] = attributes[:opcode]
@@ -20,7 +20,7 @@ module Arm
     end
 
     def build
-      right = @attributes[:right]
+      right = @from
       if right.is_a?(Vm::StringConstant)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
@@ -55,7 +55,7 @@ module Arm
       build
       instuction_class = 0b00 # OPC_DATA_PROCESSING
       val = shift(@operand , 0)
-      val |= shift(reg_code(@first) ,            12)     
+      val |= shift(reg_code(@to) ,            12)     
       val |= shift(reg_code(@rn) ,            12+4)   
       val |= shift(@attributes[:update_status] , 12+4+4)#20 
       val |= shift(op_bit_code ,        12+4+4  +1)

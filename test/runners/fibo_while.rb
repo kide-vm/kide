@@ -5,7 +5,7 @@ def fibonaccit(n) # n == r0
     tmp = a       # r3 <- r1
     a = b         # r1 <- r2
     b = tmp + b   #  r4 = r2 + r3  (r4 transient)  r2 <- r4 
-    tmp = inttos(b)
+    tmp = putint(b)
     putstring(tmp)   
     n = n - 1      # r2 <- 0   ????   #call ok  
   end             #r5 <- r0 - 1                  # r0 <- r5

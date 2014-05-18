@@ -51,7 +51,7 @@ module Vm
         define_instruction_three(inst , LogicInstruction)
       end
       [:mov, :mvn].each do |inst|
-        define_instruction_one(inst , MoveInstruction)
+        define_instruction_two(inst , MoveInstruction)
       end
       [:cmn, :cmp, :teq, :tst].each do |inst|
         define_instruction_two(inst , CompareInstruction)

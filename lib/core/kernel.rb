@@ -42,13 +42,13 @@ module Core
         reg1 = Vm::Integer.new(1)
         itos_fun = context.program.get_or_create_function(:utoa)
         block.instance_eval do 
-          mov( reg1 , right: str_addr ) #move arg up
+          mov( reg1 ,  str_addr ) #move arg up
           add( str_addr ,  buffer ,nil )   # string to write to
           add( str_addr ,  str_addr ,  (buffer.length-3))  
           call( itos_fun , {})
         # And now we "just" have to print it, using the write_stdout
-          add( str_addr , left: buffer )   # string to write to
-          mov( reg1 , right: buffer.length )
+          add( str_addr ,  buffer , nil )   # string to write to
+          mov( reg1 ,  buffer.length )
         end
         ret = Vm::CMachine.instance.write_stdout(block)
         function
