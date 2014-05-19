@@ -46,6 +46,7 @@ module Arm
       raise "Not CallSite #{call.inspect}" unless call.is_a? Vm::CallSite
       raise "Not linked #{call.inspect}" unless call.function
       into <<  call(  call.function  )
+      raise "No return type for #{call.function.name}" unless call.function.return_type
       call.function.return_type
     end
 

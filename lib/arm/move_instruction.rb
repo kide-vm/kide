@@ -27,7 +27,7 @@ module Arm
         right = Vm::IntegerConstant.new( right.position - self.position - 8 )
         @rn = :pc
       end
-      if( right.is_a? Fixnum ) #HACK to not have to change the code just now
+      if( right.is_a? Fixnum )
         right = Vm::IntegerConstant.new( right )
       end
       if (right.is_a?(Vm::IntegerConstant))

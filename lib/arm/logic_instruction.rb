@@ -3,7 +3,7 @@ module Arm
   class LogicInstruction < Vm::LogicInstruction
     include Arm::Constants
 
-    def initialize(result , left , right , attributes)
+    def initialize(result , left , right , attributes = {})
       super(result ,left , right , attributes)
       @attributes[:update_status] = 0 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil

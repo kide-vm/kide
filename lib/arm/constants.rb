@@ -22,8 +22,8 @@ module Arm
     }
     #return the bit patter that the cpu uses for the current instruction @attributes[:opcode]
     def op_bit_code
-      bit_code = OPCODES[@attributes[:opcode]] 
-      bit_code or raise "no code found for #{@attributes[:opcode].inspect}"
+      bit_code = OPCODES[opcode] 
+      bit_code or raise "no code found for #{opcode} #{inspect}"
     end
 
     #codition codes can be applied to many instructions and thus save branches
