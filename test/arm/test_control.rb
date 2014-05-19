@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-class TestArmAsm < MiniTest::Test
+class TestControl < MiniTest::Test
   include ArmHelper
 
   def test_b
@@ -13,14 +13,6 @@ class TestArmAsm < MiniTest::Test
   def test_call #see comment above. bx not implemented (as it means into thumb, and no thumb here)
     code = @machine.call	 -4 ,{} #this jumps to the next instruction
     assert_code code , :call, [0xff,0xff,0xff,0xeb] #ea ff ff fe
-  end
-  def test_push
-    code = @machine.push [:lr] 
-    assert_code code , :push ,  [0x00,0x40,0x2d,0xe9] #e9 2d 40 00
-  end
-  def test_pop
-    code = @machine.pop [:pc] 
-    assert_code code , :pop , [0x00,0x80,0xbd,0xe8] #e8 bd 80 00
   end
   def test_swi
     code = @machine.swi	 0x05 
