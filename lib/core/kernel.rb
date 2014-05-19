@@ -73,6 +73,40 @@ module Core
         b.callne( utoa_function  )
         return utoa_function
       end
+
+      # testing method, hand coded fibo, expects arg in 1 , so pass 2 in, first bogy
+      # result comes in 0
+      # a hand coded version of the fibonachi numbers
+      #  not my hand off course, found in the net from a basic introduction
+      def fibo context
+        fibo_function = Vm::Function.new(:fibo , [Vm::Integer , Vm::Integer] , Vm::Integer )
+        result = fibo_function.args[0]
+        int =fibo_function.args[1]
+        i = Vm::Integer.new(2)
+        f1 = Vm::Integer.new(3)
+        f2 = Vm::Integer.new(4)
+        loop_block = Vm::Block.new("loop")
+        fibo_function.body.instance_eval do
+          cmp( int , 1)
+          mov( result, int , condition_code: :le)
+          mov( :pc , :lr , condition_code: :le)
+          push [  i , f1 , f2 , :lr]
+          mov( f1 , 1)
+          mov(f2 , 0)
+          sub( i , int , 2)
+          add_code loop_block
+        end
+        loop_block.instance_eval do
+          add( f1 , f1 , f2)
+          sub( f2 , f1 , f2)
+          sub( i , i , 1 , update_status: 1)
+          bpl( loop_block )
+          mov( result , f1 )
+          pop [ i , f1 , f2 , :pc]
+        end
+        fibo_function
+      end
+
     end
     
     extend ClassMethods

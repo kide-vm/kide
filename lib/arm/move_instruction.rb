@@ -65,7 +65,7 @@ module Arm
       io.write_uint32 val
     end
     def shift val , by
-      raise "Not integer #{val}:#{val.class}" unless val.is_a? Fixnum
+      raise "Not integer #{val}:#{val.class} in #{inspect}" unless val.is_a? Fixnum
       val << by
     end
   end

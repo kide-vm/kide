@@ -35,18 +35,8 @@ class TestRunner < MiniTest::Test
       end
     end
 
-    program.link_at( 0 , program.context )
-    
-    binary = program.assemble(StringIO.new )
-    assert binary
-    writer = Elf::ObjectWriter.new(Elf::Constants::TARGET_ARM)
-    blocks = program.functions.collect{ |f| [f.entry , f.exit , f.body] } 
-    blocks += [program.entry , program.exit , program.main]
-    blocks.flatten.each do |b|
-      writer.add_symbol b.name.to_s , b.position
-    end
+    writer = Elf::ObjectWriter.new(program , Elf::Constants::TARGET_ARM)
 
-    writer.set_text binary.string
     writer.save(file.gsub(".rb" , ".o"))
 
 #    puts program.to_yaml
