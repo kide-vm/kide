@@ -22,13 +22,31 @@ module Vm
     def initialize(name , args = [] , return_type = nil)
       super()
       @name = name
-      @args = args
-      @return_type = return_type
-      @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_entry") ,name )
-      @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_exit") , name )
-      @body =  Block.new("#{name}_body")
-      @reg_count = 0
-      branch_body
+      @args = Array.new(args.length)
+      args.each_with_index do |arg , i|
+        if arg.is_a?(Value)
+          @args[i] = arg
+          raise "arg in non std register #{arg.inspect}" unless i == arg.register
+        else
+          @args[i] = arg.new(i)
+        end
+      end
+     @return_type = return_type || Vm::Integer 
+     if @return_type.is_a?(Value)
+       raise "return in non std register #{@return_type.inspect}" unless 0 == @return_type.register
+     else
+       @return_type = @return_type.new(0)
+     end
+     @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_entry") ,name )
+     @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_exit") , name )
+     @body =  Block.new("#{name}_body")
+     @reg_count = 0
+     branch_body
+     @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_entry") ,name )
+     @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_exit") , name )
+     @body =  Block.new("#{name}_body")
+     @reg_count = 0
+     branch_body
     end
     attr_reader :args , :entry , :exit , :body , :name
     attr_accessor :return_type

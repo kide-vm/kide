@@ -33,47 +33,45 @@ module Core
       end
 
       def putint context , arg = Vm::Integer
-        arg = Vm::Integer.new( 0 )
-        function = Vm::Function.new(:putint , [arg ] , arg )
-        buffer = Vm::StringConstant.new("           ")
-        context.program.add_object buffer
-        str_addr = Vm::Integer.new(1) 
-        context.str_addr = str_addr
-        reg1 = Vm::Integer.new(2)
-        itos_fun = context.program.get_or_create_function(:utoa)
-        function.body.instance_eval do 
-          mov( reg1 ,  str_addr ) #move arg up
-          add( str_addr ,  buffer ,nil )   # string to write to
-          add( str_addr ,  str_addr ,  (buffer.length-3))  
-          call( itos_fun )
+        putint_function = Vm::Function.new(:putint , [arg] , arg )
+        buffer = Vm::StringConstant.new("           ") # create a buffer
+        context.program.add_object buffer              # and save it (function local variable: a no no)
+        int = putint_function.args.first
+        moved_int = Vm::Integer.new(1)
+        utoa = context.program.get_or_create_function(:utoa)
+        putint_function.body.instance_eval do 
+          mov( moved_int ,  int ) #move arg up
+          add( int ,  buffer ,nil )   # string to write to
+          add( int ,  int ,  (buffer.length-3))  
+          call( utoa )
         # And now we "just" have to print it, using the write_stdout
-          add( str_addr ,  buffer , nil )   # string to write to
-          mov( reg1 ,  buffer.length )
+          add( int ,  buffer , nil )   # string to write to
+          mov( moved_int ,  buffer.length )
         end
-        ret = Vm::CMachine.instance.write_stdout(function.body)
-        function
+        Vm::CMachine.instance.write_stdout(putint_function.body)
+        putint_function
       end
 
       # The conversion to base10 is quite a bit more complicated than i thought. The bulk of it is in div10
       # We set up variables, do the devision and write the result to the string
       # then check if were done and recurse if neccessary
       # As we write before we recurse (save a push) we write the number backwards
+      # arguments: string address , integer
       def utoa context
-        function = Vm::Function.new(:utoa , [Vm::Integer , Vm::Integer ] )
-        block = function.body
-        str_addr = context.str_addr
-        number = Vm::Integer.new(str_addr.register + 1)
+        utoa_function = Vm::Function.new(:utoa , [Vm::Integer , Vm::Integer ] , Vm::Integer )
+        str_addr = utoa_function.args[0]
+        number = utoa_function.args[1]
         remainder = Vm::Integer.new( number.register + 1)
-        Vm::CMachine.instance.div10( block , number  , remainder )
+        Vm::CMachine.instance.div10( utoa_function.body , number  , remainder )
         # make char out of digit (by using ascii encoding) 48 == "0"
-        block.instance_eval do 
+        utoa_function.body.instance_eval do 
           add( remainder ,  remainder ,  48 )
           strb( remainder, right: str_addr ) 
           sub( str_addr,  str_addr ,  1 ) 
           cmp( number ,  0 )
-          callne( function  )
+          callne( utoa_function  )
         end
-        return function
+        return utoa_function
       end
     end
     
