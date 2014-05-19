@@ -14,18 +14,19 @@ module Ast
       save_locals context , into
       call.load_args into
       call.do_call into
-      resore_locals context , into
+      restore_locals context , into
+      function.return_type
     end
 
     def save_locals context , into
       into.instance_eval do 
-        push [:r0, :r1 , :r2]
+        push [:r1 , :r2 , :r3]
       end
     end
 
-    def resore_locals context , into
+    def restore_locals context , into
       into.instance_eval do 
-        pop [:r0, :r1 , :r2]
+        pop [:r1, :r2 , :r3]
       end
     end
 
