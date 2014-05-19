@@ -35,13 +35,6 @@ module Arm
       to 
     end
 
-    def string_load block ,  str_lit , reg
-      block <<  add(  "r#{reg}".to_sym   ,  str_lit , nil )   #right is pc, implicit
-        #second arg is a hack to get the stringlength without coding
-      block <<  mov(  "r#{reg+1}".to_sym ,  str_lit.length )
-      str_lit
-    end
-
     def function_call into , call
       raise "Not CallSite #{call.inspect}" unless call.is_a? Vm::CallSite
       raise "Not linked #{call.inspect}" unless call.function

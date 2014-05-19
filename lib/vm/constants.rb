@@ -33,8 +33,8 @@ module Vm
       @string = str + "\x00" * pad 
     end
 
-    def load reg_num
-      Machine.instance.string_load self , reg_num
+    def result= value
+      class_for(MoveInstruction).new(value , self , :opcode => :mov)
     end
 
     # the strings length plus padding

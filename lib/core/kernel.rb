@@ -39,15 +39,16 @@ module Core
         int = putint_function.args.first
         moved_int = Vm::Integer.new(1)
         utoa = context.program.get_or_create_function(:utoa)
-        putint_function.body.instance_eval do 
-          mov( moved_int ,  int ) #move arg up
-          add( int ,  buffer ,nil )   # string to write to
-          add( int ,  int ,  (buffer.length-3))  
-          call( utoa )
+        b = putint_function.body
+        b.mov( moved_int ,  int ) #move arg up
+        #b.a       buffer  => int          # string to write to
+        
+        b.add( int ,  buffer ,nil )   # string to write to
+        b.a       int +  (buffer.length-3) => int
+        b.call( utoa )
         # And now we "just" have to print it, using the write_stdout
-          add( int ,  buffer , nil )   # string to write to
-          mov( moved_int ,  buffer.length )
-        end
+        b.add( int ,  buffer , nil )   # string to write to
+        b.mov( moved_int ,  buffer.length )
         Vm::CMachine.instance.write_stdout(putint_function.body)
         putint_function
       end
@@ -64,13 +65,12 @@ module Core
         remainder = Vm::Integer.new( number.register + 1)
         Vm::CMachine.instance.div10( utoa_function.body , number  , remainder )
         # make char out of digit (by using ascii encoding) 48 == "0"
-        utoa_function.body.instance_eval do 
-          add( remainder ,  remainder ,  48 )
-          strb( remainder, right: str_addr ) 
-          sub( str_addr,  str_addr ,  1 ) 
-          cmp( number ,  0 )
-          callne( utoa_function  )
-        end
+        b = utoa_function.body
+        b.a      remainder + 48 => remainder
+        b.strb( remainder, right: str_addr ) 
+        b.sub( str_addr,  str_addr ,  1 ) 
+        b.cmp( number ,  0 )
+        b.callne( utoa_function  )
         return utoa_function
       end
     end

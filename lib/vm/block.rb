@@ -34,12 +34,19 @@ module Vm
     end
 
     def add_code(kode)
+      if kode.is_a? Hash
+        raise "Hack only for 1 element #{inspect} #{kode.inspect}" unless kode.length == 1
+        instruction , result = kode.first
+        instruction.result = result
+        kode = instruction
+      end
       raise "alarm #{kode}" if kode.is_a? Word
       raise "alarm #{kode}" unless kode.is_a? Code
       @codes << kode
       self
     end
     alias :<< :add_code 
+    alias :a :add_code 
 
     def link_at pos , context
       @position = pos
@@ -67,6 +74,7 @@ module Vm
     # sugar to create instructions easily. Any method with one arg is sent to the machine and the result
     # (hopefully an instruction) added as code
     def method_missing(meth, *args, &block)
+      raise "hallo" if( meth.to_s[-1] == "=")
       add_code CMachine.instance.send(meth , *args)
     end
 
