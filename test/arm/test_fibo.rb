@@ -10,10 +10,11 @@ class TestFibo < MiniTest::Test
   #  not my hand off course, found in the net from a basic introduction
   def test_fibo
     int = Vm::Integer.new(1) # the one is funny, but the fibo is _really_ tight code and reuses registers
-    fibo = utoa = @program.get_or_create_function(:fibo)
+    fibo  = @program.get_or_create_function(:fibo)
     @program.main.mov( int , 10 )
     @program.main.call( fibo )
-    #could put ...
+    putint = @program.get_or_create_function(:putint)
+    @program.main.call( putint )
     write 20 , "fibo"
   end
   
