@@ -22,6 +22,7 @@ class TestRunner < MiniTest::Test
     parser = Parser::Crystal.new
     program = Vm::Program.new "Arm"
     syntax  = parser.parse_with_debug(string)
+    assert syntax
     parts   = Parser::Transform.new.apply(syntax)
     # file is a list of expressions, all but the last must be a function
     # and the last is wrapped as a main
@@ -37,7 +38,7 @@ class TestRunner < MiniTest::Test
     program.link_at( 0 , program.context )
     
     binary = program.assemble(StringIO.new )
-
+    assert binary
     writer = Elf::ObjectWriter.new(Elf::Constants::TARGET_ARM)
     blocks = program.functions.collect{ |f| [f.entry , f.exit , f.body] } 
     blocks += [program.entry , program.exit , program.main]

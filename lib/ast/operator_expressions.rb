@@ -18,6 +18,7 @@ module Ast
     def compile context , into
       puts "compile operator #{to_s}"
       r_val = right.compile(context , into)
+      puts "compiled right #{r_val.inspect}"
       if operator == "="    # assignment, value based
         raise "Can only assign variables, not #{left}" unless left.is_a?(NameExpression) 
         l_val = context.locals[left.name]
@@ -38,7 +39,9 @@ module Ast
         code = l_val.less_or_equal into , r_val
       when "+"
         res = Vm::Integer.new(context.function.next_register)
-        code = res.plus into , l_val , r_val
+        into.add_code     res.is l_val + r_val
+#        code = res.plus into , l_val , r_val
+        code = res
       when "-"
         res = Vm::Integer.new(context.function.next_register)
         code = res.minus into , l_val , r_val

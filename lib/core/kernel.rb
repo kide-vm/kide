@@ -23,8 +23,8 @@ module Core
         
       #TODO this is in the wrong place. It is a function that returns a function object
       #   while all other methods add their code into some block. --> kernel
-      def putstring context
-        function = Vm::Function.new(:putstring , [Vm::Integer , Vm::Integer ] )
+      def putstring context , string = Vm::Integer , length = Vm::Integer
+        function = Vm::Function.new(:putstring , [string , length ] , string)
         block = function.body
         # should be another level of indirection, ie write(io,str)
         ret = Vm::CMachine.instance.write_stdout(block)
@@ -32,16 +32,16 @@ module Core
         function
       end
 
-      def putint context
-        function = Vm::Function.new(:putint , [Vm::Integer , Vm::Integer ] )
-        block = function.body
+      def putint context , arg = Vm::Integer
+        arg = Vm::Integer.new( 0 )
+        function = Vm::Function.new(:putint , [arg ] , arg )
         buffer = Vm::StringConstant.new("           ")
         context.program.add_object buffer
-        str_addr = Vm::Integer.new(0)                  # address of the 
+        str_addr = Vm::Integer.new(1) 
         context.str_addr = str_addr
-        reg1 = Vm::Integer.new(1)
+        reg1 = Vm::Integer.new(2)
         itos_fun = context.program.get_or_create_function(:utoa)
-        block.instance_eval do 
+        function.body.instance_eval do 
           mov( reg1 ,  str_addr ) #move arg up
           add( str_addr ,  buffer ,nil )   # string to write to
           add( str_addr ,  str_addr ,  (buffer.length-3))  
@@ -50,7 +50,7 @@ module Core
           add( str_addr ,  buffer , nil )   # string to write to
           mov( reg1 ,  buffer.length )
         end
-        ret = Vm::CMachine.instance.write_stdout(block)
+        ret = Vm::CMachine.instance.write_stdout(function.body)
         function
       end
 
