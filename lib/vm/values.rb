@@ -21,7 +21,15 @@ module Vm
   # just a base class for data. not sure how this will be usefull (may just have read too much llvm)
   class Value < Code
 
-
+    def class_for clazz
+      CMachine.instance.class_for(clazz)
+    end
+    # part of the dsl, ie serves to make code like  value.is a + b     work
+    # ie we save the receier as the result into the instruction and pass that back
+    def is instruction
+      instruction.result = self
+      instruction
+    end
     def type
       self.class
     end
@@ -63,6 +71,9 @@ module Vm
       CMachine.instance.integer_less_or_equal block , self , right
     end
 
+    def + other
+      class_for(LogicInstruction).new(nil , self , other , :opcode => :add)
+    end
     def plus block , first , right
       CMachine.instance.integer_plus block , self , first , right
     end

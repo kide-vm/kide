@@ -21,57 +21,59 @@ module Vm
   
   # Instruction derives from Code, for the assembly api
   
-  class Instruction < Code
-    # Make hash attributes to object attributes
-    include Support::HashAttributes
-    
+  class Instruction < Code    
     def initialize  options
       @attributes = options
+    end
+    def opcode
+      @attributes[:opcode]
     end
   end
   
   class StackInstruction < Instruction
-    def initialize first , options
+    def initialize first , options = {}
       @first = first
       super(options)
     end
   end
   class MemoryInstruction < Instruction
-    def initialize first , options
+    def initialize first , options = {}
       @first = first
       super(options)
     end
   end
   class LogicInstruction < Instruction
-    def initialize result , left , right , options
+    def initialize result , left , right , options = {}
       @result = result
       @left = left
       @right = right
       super(options)
     end
+    attr_accessor :result
   end
   class MathInstruction < Instruction
-    def initialize first , options
+    def initialize first , options = {}
       @first = first
       super(options)
     end
   end
   class CompareInstruction < Instruction
-    def initialize left , right , options
+    def initialize left , right , options  = {}
       @left = left
       @right = right
       super(options)
     end
   end
   class MoveInstruction < Instruction
-    def initialize to , from , options
+    def initialize to , from , options = {}
       @to = to
       @from = from
+      raise inspect unless from
       super(options)
     end
   end
   class CallInstruction < Instruction
-    def initialize first , options
+    def initialize first , options  = {}
       @first = first
       super(options)
       opcode = @attributes[:opcode].to_s

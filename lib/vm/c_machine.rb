@@ -81,6 +81,17 @@ module Vm
     def self.instance= machine
       @@instance = machine
     end
+    def class_for clazz
+      c_name = clazz.name
+      my_module = self.class.name.split("::").first
+      clazz_name = clazz.name.split("::").last
+      if(my_module != Vm )
+        module_class = eval("#{my_module}::#{clazz_name}") rescue nil
+        clazz = module_class if module_class
+      end
+      clazz
+    end
+    
     private
     #defining the instruction (opcode, symbol) as an given class.
     # the class is a Vm::Instruction derived base class and to create machine specific function
@@ -92,7 +103,7 @@ module Vm
     # This methods picks up that derived class and calls a define_instruction methods that can 
     #   be overriden in subclasses 
     def define_instruction_one(inst , clazz ,  defaults = {} )
-      clazz =  class_for(clazz)
+      clazz =  self.class_for(clazz)
       create_method(inst) do |first , options = nil|
         options = {} if options == nil
         options.merge defaults
@@ -103,7 +114,7 @@ module Vm
 
     # same for two args (left right, from to etc)
     def define_instruction_two(inst , clazz ,  defaults = {} )
-      clazz =  class_for(clazz)
+      clazz =  self.class_for(clazz)
       create_method(inst) do |left ,right , options = nil|
         options = {} if options == nil
         options.merge defaults
@@ -114,24 +125,13 @@ module Vm
 
     # same for three args (result = left right,)
     def define_instruction_three(inst , clazz ,  defaults = {} )
-      clazz =  class_for(clazz)
+      clazz =  self.class_for(clazz)
       create_method(inst) do |result , left ,right , options = nil|
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
         clazz.new(result, left , right ,options)
       end
-    end
-
-    def class_for clazz
-      c_name = clazz.name
-      my_module = self.class.name.split("::").first
-      clazz_name = clazz.name.split("::").last
-      if(my_module != Vm )
-        module_class = eval("#{my_module}::#{clazz_name}") rescue nil
-        clazz = module_class if module_class
-      end
-      clazz
     end
   end
 end

@@ -4,12 +4,13 @@ module Vm
 
   # Functions are similar to Blocks. Where Blocks can be jumped to, Functions can be called.
 
-  # Functions also have arguments, though they are handled differently (in register allocation)
-  
+  # Functions also have arguments and a return. These are Value subclass instances, ie specify
+  #   type (by class type) and register by instance
+
   # Functions have a exactly three blocks, entry, exit and body, which are created for you
   # with straight branches between them.
 
-  # Also remember that if your den body exists of several blocks, they must be wrapped in a 
+  # Also remember that if your body exists of several blocks, they must be wrapped in a 
   # block as the function really only has the one, and blocks only assemble their codes,
   # not their next links
   # This comes at zero runtime cost though, as the wrapper is just the sum of it's codes
@@ -18,10 +19,11 @@ module Vm
 
   class Function < Code
 
-    def initialize(name , args = [])
+    def initialize(name , args = [] , return_type = nil)
       super()
       @name = name
       @args = args
+      @return_type = return_type
       @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_entry") ,name )
       @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_exit") , name )
       @body =  Block.new("#{name}_body")
