@@ -76,8 +76,10 @@ module Vm
     # but for constants we have to create instruction first (mov)
     def assign other
       other = Vm::IntegerConstant.new(other) if other.is_a? Fixnum
-      if other.is_a? Vm::IntegerConstant
+      if other.is_a?(Vm::IntegerConstant)
         class_for(MoveInstruction).new( self , other , :opcode => :mov)
+      elsif other.is_a?(Vm::StringConstant) # pc relative addressing
+        class_for(LogicInstruction).new(self , other , nil , opcode: :add)
       else 
         other.assign(self)
       end

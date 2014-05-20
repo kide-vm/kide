@@ -27,13 +27,17 @@ class TestSmallProg < MiniTest::Test
   def test_hello
     hello = Vm::StringConstant.new "Hello Raisa\n"
     @program.add_object hello
-    @program.main.instance_eval do 
-      mov :r7,  4     # 4 == write
-      mov :r0 ,  1    # stdout
-      add :r1 , hello , nil   # address of "hello Raisa"
-      mov :r2 ,  hello.length
-    	swi  0          #software interupt, ie kernel syscall
-    end
+    # these are only here because it's a test program, usually all coding happens with values
+    r0 = Vm::Integer.new(0)
+    r1 = Vm::Integer.new(1)
+    r2 = Vm::Integer.new(2)
+    r7 = Vm::Integer.new(7)
+    b = @program.main.scope binding
+    b.r7 = 4     # 4 == write
+    b.r0 = 1    # stdout
+    b.r1 = hello  # address of "hello Raisa"
+    b.r2 =  hello.length
+    b.swi  0          #software interupt, ie kernel syscall
     @should = [0,176,160,227,4,112,160,227,1,0,160,227,12,16,143,226,16,32,160,227,0,0,0,239,1,112,160,227,0,0,0,239,72,101,108,108,111,32,82,97,105,115,97,10,0,0,0,0]
     write "hello"
   end
@@ -43,8 +47,9 @@ class TestSmallProg < MiniTest::Test
   def test_fibo
     int = Vm::Integer.new(1) # the one is funny, but the fibo is _really_ tight code and reuses registers
     fibo  = @program.get_or_create_function(:fibo)
-    @program.main.mov( int , 10 )
-    @program.main.call( fibo )
+    main= @program.main.scope binding
+    main.int = 10
+    main.call( fibo )
     # this is the version without the putint (which makes the program 3 times bigger)
     @should = [0,176,160,227,10,16,160,227,1,0,0,235,1,112,160,227,0,0,0,239,0,64,45,233,1,0,81,227,1,0,160,209,14,240,160,209,28,64,45,233,1,48,160,227,0,64,160,227,2,32,65,226,4,48,131,224,4,64,67,224,1,32,82,226,251,255,255,90,3,0,160,225,28,128,189,232,0,128,189,232]
     #putint = @program.get_or_create_function(:putint)
