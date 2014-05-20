@@ -48,7 +48,10 @@ module Vm
     attr_accessor :register
 
     def inspect
-      self.class.name + ":reg:#{register}:"
+      self.class.name + "(r#{register})"
+    end
+    def to_s
+      inspect
     end
     def initialize reg
       @register = reg

@@ -13,17 +13,17 @@ class TestSmallProg < MiniTest::Test
   end
 
   def test_loop
-    @program.main.instance_eval do
-      mov  :r0,  5                #1
-      start = Vm::Block.new("start")
-      add_code start
-      start.instance_eval do
-        sub  :r0, :r0, 1 , :update_status => 1      #2
-        bne  start  ,{}         #3
-      end
+    start = Vm::Block.new("start")
+    m = @program.main.scope binding
+    r0 = Vm::Integer.new(0)
+    m.r0 = 5                #1
+    m.add_code start
+    start.instance_eval do
+      sub  :r0, :r0, 1 , :update_status => 1      #2
+      bne  start          #3
     end
     @should = [0,176,160,227,5,0,160,227,1,0,80,226,253,255,255,26,1,112,160,227,0,0,0,239]
-    write( 6 , "loop" )
+    write "loop"
   end
 
   def test_hello
@@ -60,7 +60,7 @@ class TestSmallProg < MiniTest::Test
   def write name
     writer = Elf::ObjectWriter.new(@program , Elf::Constants::TARGET_ARM)
     assembly = writer.text
-    puts assembly
+    # use this for getting the bytes to compare to :  puts assembly
     assembly.text.bytes.each_with_index do |byte , index|
       assert_equal  byte , @should[index] , "byte #{index}"
     end

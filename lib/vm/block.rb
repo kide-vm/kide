@@ -63,8 +63,15 @@ module Vm
       end
     end
     
-    def at where 
-      @current = where
+    # to use the assignment syntax (see method_missing) the scope must be set, so variables can be resolved
+    # The scope you set should be a binding (literally, the kernel.binding)
+    # The function return the block, so it can be chained into an assignment
+    #  Example (coding a function )  and having variable int defined
+    #  b = function.body.scope(binding)
+    #  b.int = 5                      will create a mov instruction to set the register that int points to 
+    def scope where
+      @scope = where
+      self
     end
     # set the next executed block after self.
     # why is this useful? if it's unconditional, why not merge them:
@@ -74,12 +81,27 @@ module Vm
       @next = block
     end
 
-    # sugar to create instructions easily. Any method with one arg is sent to the machine and the result
-    # (hopefully an instruction) added as code
+    # sugar to create instructions easily. Actually just got double sweet with two versions:
+    # 1 for any method that ends in = we evaluate the method name in the current scope (see scope())
+    #     for the result we call assign with the right value. The resulting instruction is added to 
+    #     the block.
+    #     Thus we emulate assignment, 
+    #     Example: block b
+    #                      b.variable = value          looks like what it does, but actually generates
+    #                                                   an instruction for the block (mov or add)
+    #                   
+    # 2- any other method will be passed on to the CMachine and the result added to the block
+    #  With this trick we can write what looks like assembler, 
+    #  Example   b.instance_eval
+    #                mov( r1 , r2 )
+    #                add( r1 , r2 , 4)
+    # end
+    #           mov and add will be called on Machine and generate Inststuction that are then added 
+    #             to the block
     def method_missing(meth, *args, &block)
-      if( meth.to_s[-1] == "=")
-        val = @current.eval  meth.to_s[0 ... -1]
-        raise "hallo #{val}" 
+      if( meth.to_s[-1] == "=" && args.length == 1)
+        l_val = @scope.eval  meth.to_s[0 ... -1]
+        add_code l_val.asign(args[0])
       end
       add_code CMachine.instance.send(meth , *args)
     end
