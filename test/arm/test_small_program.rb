@@ -17,7 +17,7 @@ class TestSmallProg < MiniTest::Test
     m = @program.main.scope binding
     r0 = Vm::Integer.new(0)
     m.r0 = 5                #1
-    m.add_code start
+    m << start
     start.instance_eval do
       sub  :r0, :r0, 1 , :update_status => 1      #2
       bne  start          #3

@@ -101,9 +101,10 @@ module Vm
     def method_missing(meth, *args, &block)
       if( meth.to_s[-1] == "=" && args.length == 1)
         l_val = @scope.eval  meth.to_s[0 ... -1]
-        add_code l_val.asign(args[0])
+        add_code l_val.assign(args[0])
+      else
+        add_code CMachine.instance.send(meth , *args)
       end
-      add_code CMachine.instance.send(meth , *args)
     end
 
   end

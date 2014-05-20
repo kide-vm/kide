@@ -70,6 +70,19 @@ module Vm
 
   class Integer < Word
 
+    # part of the dsl. 
+    # Gets called with either fixnum/IntegerConstant or an Instruction (usually logic, iw add...)
+    # For instructions we flip, ie call the assign on the instruction
+    # but for constants we have to create instruction first (mov)
+    def assign other
+      other = Vm::IntegerConstant.new(other) if other.is_a? Fixnum
+      if other.is_a? Vm::IntegerConstant
+        class_for(MoveInstruction).new( self , other , :opcode => :mov)
+      else 
+        other.assign(self)
+      end
+    end
+
     def less_or_equal block , right
       CMachine.instance.integer_less_or_equal block , self , right
     end
