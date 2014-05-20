@@ -13,8 +13,8 @@ class TestFibo < MiniTest::Test
     fibo  = @program.get_or_create_function(:fibo)
     @program.main.mov( int , 10 )
     @program.main.call( fibo )
-    putint = @program.get_or_create_function(:putint)
-    @program.main.call( putint )
+#    putint = @program.get_or_create_function(:putint)
+#    @program.main.call( putint )
     write 20 , "fibo"
   end
   

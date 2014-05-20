@@ -14,6 +14,12 @@ module Elf
       Elf::Constants::SHF_WRITE | Elf::Constants::SHF_ALLOC | Elf::Constants::SHF_EXECINSTR
     end
   
+    def length
+      @text.length
+    end
+    def to_s
+      "[" + @text.bytes.join(",") + "]"
+    end
     def alignment
       4
     end

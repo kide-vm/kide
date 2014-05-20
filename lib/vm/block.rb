@@ -63,6 +63,9 @@ module Vm
       end
     end
     
+    def at where 
+      @current = where
+    end
     # set the next executed block after self.
     # why is this useful? if it's unconditional, why not merge them:
     #    So the second block can be used as a jump target. You standard loop needs a block to setup
@@ -74,7 +77,10 @@ module Vm
     # sugar to create instructions easily. Any method with one arg is sent to the machine and the result
     # (hopefully an instruction) added as code
     def method_missing(meth, *args, &block)
-      raise "hallo" if( meth.to_s[-1] == "=")
+      if( meth.to_s[-1] == "=")
+        val = @current.eval  meth.to_s[0 ... -1]
+        raise "hallo #{val}" 
+      end
       add_code CMachine.instance.send(meth , *args)
     end
 

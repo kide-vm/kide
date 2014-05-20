@@ -22,6 +22,7 @@ class TestSmallProg < MiniTest::Test
         bne  start  ,{}         #3
       end
     end
+    @should = [0,176,160,227,5,0,160,227,1,0,80,226,253,255,255,26,1,112,160,227,0,0,0,239]
     write( 6 , "loop" )
   end
 
@@ -35,17 +36,18 @@ class TestSmallProg < MiniTest::Test
       mov :r2 ,  hello.length
     	swi  0          #software interupt, ie kernel syscall
     end
-    write(7 + hello.length/4 + 1 , 'hello') 
+    @should = [0,176,160,227,4,112,160,227,1,0,160,227,12,16,143,226,16,32,160,227,0,0,0,239,1,112,160,227,0,0,0,239,72,101,108,108,111,32,82,97,105,115,97,10,0,0,0,0]
+    write(7 + hello.length/4 + 1 , 'hello')
   end
 
   #helper to write the file
   def write len ,name
-    writer = Elf::ObjectWriter.new(Elf::Constants::TARGET_ARM)
-    io = @program.assemble(StringIO.new)
-    assembly = io.string
-    assert_equal len * 4 , assembly.length 
-    writer.set_text assembly
-    writer.save("#{name}_test.o")    
+    writer = Elf::ObjectWriter.new(@program , Elf::Constants::TARGET_ARM)
+    assembly = writer.text
+    assembly.text.bytes.each_with_index do |byte , index|
+      assert_equal  byte , @should[index] , "byte #{index}"
+    end
+#    writer.save("#{name}_test.o")
   end
 end
 # _start copied from dietc
