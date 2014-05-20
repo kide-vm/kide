@@ -80,12 +80,11 @@ module Core
       #  not my hand off course, found in the net from a basic introduction
       def fibo context
         fibo_function = Vm::Function.new(:fibo , [Vm::Integer , Vm::Integer] , Vm::Integer )
-        result = fibo_function.args[0]
-        int =fibo_function.args[1]
+        result , int = fibo_function.args
         i = Vm::Integer.new(2)
+        loop_block = Vm::Block.new("loop")
         f1 = Vm::Integer.new(3)
         f2 = Vm::Integer.new(4)
-        loop_block = Vm::Block.new("loop")
         fibo_function.body.instance_eval do
           cmp( int , 1)
           mov( result, int , condition_code: :le)
@@ -96,6 +95,7 @@ module Core
           sub( i , int , 2)
           add_code loop_block
         end
+
         loop_block.instance_eval do
           add( f1 , f1 , f2)
           sub( f2 , f1 , f2)

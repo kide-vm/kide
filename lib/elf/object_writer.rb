@@ -29,12 +29,11 @@ module Elf
       end
       set_text binary.string      
     end
-
+    attr_reader :text
     def set_text(text)
       @text.text = text
       add_symbol "_start", 0
     end
-
     def add_symbol(name, offset, linkage = Elf::Constants::STB_GLOBAL)
       @symbol_table.add_func_symbol name, offset, @text, linkage
     end
