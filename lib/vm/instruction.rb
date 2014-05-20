@@ -43,13 +43,27 @@ module Vm
     end
   end
   class LogicInstruction < Instruction
+    #  result = left op right
+    # 
+    # Logic instruction are your basic operator implementation. But unlike the (normal) code we write
+    #    these Instructions must have "place" to write their results. Ie when you write 4 + 5 in ruby
+    #    the result is sort of up in the air, but with Instructions the result must be assigned 
     def initialize result , left , right , options = {}
       @result = result
       @left = left
       @right = right
       super(options)
     end
-    attr_accessor :result
+    # this is used to write code that looks like assignment
+    #  So instructions can be created without the result (register) set, and this assigns where 
+    # the reuslt after the fact, but usually in the same line
+    # Example (with block b, and variables int,a,b):  b.int = a + b
+    #  a + b actually creates an add instruction while the b.int=  assigns the result to int
+    #  b.add( int , a , b) is an alternative (assmbler style) way of writing the same.   
+    def assign left
+      @result = left
+      self
+    end
   end
   class MathInstruction < Instruction
     def initialize first , options = {}

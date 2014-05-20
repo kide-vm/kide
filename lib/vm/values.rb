@@ -88,7 +88,10 @@ module Vm
     end
 
     def + other
-      class_for(LogicInstruction).new(nil , self , other , :opcode => :add)
+      class_for(LogicInstruction).new(nil , self , other , opcode: :add)
+    end
+    def - other
+      class_for(LogicInstruction).new(nil , self , other , opcode:  :sub , update_status: 1 )
     end
     def plus block , first , right
       CMachine.instance.integer_plus block , self , first , right
