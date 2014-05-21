@@ -37,7 +37,7 @@ module Core
         buffer = Vm::StringConstant.new("           ") # create a buffer
         context.program.add_object buffer              # and save it (function local variable: a no no)
         int = putint_function.args.first
-        moved_int = Vm::Integer.new(1)
+        moved_int = putint_function.new_local
         utoa = context.program.get_or_create_function(:utoa)
         b = putint_function.body
         b.mov( moved_int ,  int ) #move arg up
@@ -62,11 +62,11 @@ module Core
         utoa_function = Vm::Function.new(:utoa , [Vm::Integer , Vm::Integer ] , Vm::Integer )
         str_addr = utoa_function.args[0]
         number = utoa_function.args[1]
-        remainder = Vm::Integer.new( number.register + 1)
+        remainder = utoa_function.new_local
         Vm::CMachine.instance.div10( utoa_function.body , number  , remainder )
         # make char out of digit (by using ascii encoding) 48 == "0"
-        b = utoa_function.body
-        b.a      remainder + 48 => remainder
+        b = utoa_function.body.scope binding
+        b.remainder = remainder + 48
         b.strb( remainder, right: str_addr ) 
         b.sub( str_addr,  str_addr ,  1 ) 
         b.cmp( number ,  0 )
