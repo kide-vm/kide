@@ -1,5 +1,4 @@
 require_relative 'helper'
-require 'parslet/convenience'
 
 class TestHello < MiniTest::Test
   include Fragments

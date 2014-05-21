@@ -1,9 +1,14 @@
 require_relative '../helper'
+require 'parslet/convenience'
 
 #test the generation of code fragments. 
 # ie parse                assumes @string_input
 #   compile
 #   assemble/write        assume a @should array with the bytes in it
+
+# since the bytes are store, the test can be run on any machine.
+
+# but to get the bytes, one needs to link and run the object file to confirm correctness (to be automated)
 
 module Fragments
   # need a code generator, for arm 
