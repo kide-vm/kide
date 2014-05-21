@@ -94,11 +94,13 @@ module Vm
     end
     
     def load block , right
-      RegisterMachine.instance.integer_load block , self , right
+      block.mov(  self ,  right )
+      self
     end
 
     def move block , right
-      RegisterMachine.instance.integer_move block , self , right
+      block.mov(  self ,  right )
+      self
     end
 
   end

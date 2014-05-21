@@ -25,16 +25,6 @@ module Arm
       result
     end
 
-    def integer_load block , to , from
-      block <<  mov(  to ,  from )
-      to 
-    end
-
-    def integer_move block , to , from
-      block <<  mov(  to ,  from )
-      to 
-    end
-
     def function_call into , call
       raise "Not CallSite #{call.inspect}" unless call.is_a? Vm::CallSite
       raise "Not linked #{call.inspect}" unless call.function
