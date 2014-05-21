@@ -5,7 +5,7 @@ module Vm
   # and usually end up embedded in the instructions. ie your basic foo + 4 will encode
   # the 4 in the instruction opcode. The 4 is not accessible anywhere else.
   # When it should be usable in other forms, the constant must become a Value first 
-  class Constant < Value
+  class Constant < Code
     
   end
 

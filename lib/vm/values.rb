@@ -4,9 +4,8 @@ module Vm
   
   # Values represent the information as it is processed. Different subclasses for different types, 
   # each type with different operations.
-  # The oprerations on values is what makes a machine do things.
-  # For compilation, values are moved to the machines registers and the methods (on values) map
-  #     to machine instructions
+  # The oprerations on values is what makes a machine do things. Operations are captured as 
+  # subclasses of Instruction and saved to Blocks
   
   # Values are immutable! (that's why they are called values)
   # Operations on values _always_ produce new values (conceptionally)
@@ -19,10 +18,9 @@ module Vm
   # Float, Reference , Integer(s) must fit the same registers
   
   # just a base class for data. not sure how this will be usefull (may just have read too much llvm)
-  class Value < Code
-
-    def type
-      self.class
+  class Value 
+    def class_for clazz
+      CMachine.instance.class_for(clazz)
     end
   end
 
