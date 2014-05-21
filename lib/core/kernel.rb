@@ -82,10 +82,10 @@ module Core
         fibo_function = Vm::Function.new(:fibo , [Vm::Integer , Vm::Integer] , Vm::Integer )
         result = fibo_function.args[0]
         int = fibo_function.args[1]
-        count = Vm::Integer.new(2)
+        count = fibo_function.new_local
         loop_block = Vm::Block.new("loop", nil)
-        f1 = Vm::Integer.new(3)
-        f2 = Vm::Integer.new(4)
+        f1 = fibo_function.new_local
+        f2 = fibo_function.new_local
         b = fibo_function.body.scope binding
         
         b.a  int == 1
