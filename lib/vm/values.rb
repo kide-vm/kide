@@ -21,12 +21,6 @@ module Vm
   # just a base class for data. not sure how this will be usefull (may just have read too much llvm)
   class Value < Code
 
-    # part of the dsl, ie serves to make code like  value.is a + b     work
-    # ie we save the receier as the result into the instruction and pass that back
-    def is instruction
-      instruction.assign self
-      instruction
-    end
     def type
       self.class
     end
