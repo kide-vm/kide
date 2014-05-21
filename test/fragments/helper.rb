@@ -33,7 +33,7 @@ module Fragments
     assembly = writer.text
     # use this for getting the bytes to compare to :  
     #puts assembly
-    writer.save("#{name}_test.o")
+    writer.save("#{name}.o")
     assembly.text.bytes.each_with_index do |byte , index|
       is = @should[index]
       assert_equal  Fixnum , is.class , "@#{index.to_s(16)} = #{is}"

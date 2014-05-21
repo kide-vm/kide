@@ -94,7 +94,14 @@ module Vm
     end
     
     def load block , right
-      block.mov(  self ,  right )
+      if(right.is_a? IntegerConstant)
+        block.mov(  self ,  right )  #move the value
+      elsif right.is_a? StringConstant
+        block.add( self , right , nil)   #move the address, by "adding" to pc, ie pc relative
+        block.mov( Integer.new(register+1) ,  right.length )  #and the length HACK TODO
+      else
+        raise "unknown #{right.inspect}" 
+      end
       self
     end
 
