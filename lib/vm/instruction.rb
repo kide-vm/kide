@@ -28,6 +28,18 @@ module Vm
     def opcode
       @attributes[:opcode]
     end
+    
+    def method_missing name , *args , &block 
+      return super unless (args.length <= 1) or block_given?
+      set , attribute = name.to_s.split("set_")
+      if set == ""
+        @attributes[attribute.to_sym] = args[0] || 1
+        return self 
+      else
+        return super
+      end
+      return @attributes[name.to_sym]
+    end
   end
   
   class StackInstruction < Instruction

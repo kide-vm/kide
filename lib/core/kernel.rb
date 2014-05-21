@@ -80,30 +80,31 @@ module Core
       #  not my hand off course, found in the net from a basic introduction
       def fibo context
         fibo_function = Vm::Function.new(:fibo , [Vm::Integer , Vm::Integer] , Vm::Integer )
-        result , int = fibo_function.args
-        i = Vm::Integer.new(2)
+        result = fibo_function.args[0]
+        int = fibo_function.args[1]
+        count = Vm::Integer.new(2)
         loop_block = Vm::Block.new("loop")
         f1 = Vm::Integer.new(3)
         f2 = Vm::Integer.new(4)
-        fibo_function.body.instance_eval do
-          cmp( int , 1)
-          mov( result, int , condition_code: :le)
-          mov( :pc , :lr , condition_code: :le)
-          push [  i , f1 , f2 , :lr]
-          mov( f1 , 1)
-          mov(f2 , 0)
-          sub( i , int , 2)
-          add_code loop_block
-        end
+        b = fibo_function.body.scope binding
+        
+        b.a  int == 1
+        b.mov( result, int , condition_code: :le)
+        b.mov( :pc , :lr , condition_code: :le)
+        b.push [  count , f1 , f2 , :lr]
+        b.f1 = 1
+        b.f2 = 0
+        b.count = int - 2 
 
-        loop_block.instance_eval do
-          add( f1 , f1 , f2)
-          sub( f2 , f1 , f2)
-          sub( i , i , 1 , update_status: 1)
-          bpl( loop_block )
-          mov( result , f1 )
-          pop [ i , f1 , f2 , :pc]
-        end
+        b.add_code loop_block
+        l = loop_block.scope binding
+
+        l.f1 = f1 + f2
+        l.f2 = f1 - f2
+        l.count = (count - 1).set_update_status
+        l.bpl( loop_block )
+        l.result = f1
+        l.pop [ count , f1 , f2 , :pc]
         fibo_function
       end
 

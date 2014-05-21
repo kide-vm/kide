@@ -11,6 +11,10 @@ module Vm
   # The first setting the position, the second assembling
   class Code
     
+    def class_for clazz
+      CMachine.instance.class_for(clazz)
+    end
+
     # set the position to zero, will have to reset later
     def initialize
       @position = 0

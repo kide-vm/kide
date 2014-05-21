@@ -24,3 +24,14 @@ module Support
     end
   end
 end
+
+class Binding
+  #these are defined in 2.1 and thus the definitions should be conditional. TODO
+  def local_variable_defined? sym
+    vars = eval("local_variables")
+    vars.include? sym
+  end
+  def local_variable_get sym
+    eval(sym.to_s)
+  end
+end
