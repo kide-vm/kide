@@ -38,7 +38,7 @@ module Vm
       if kode.is_a? Hash
         raise "Hack only for 1 element #{inspect} #{kode.inspect}" unless kode.length == 1
         instruction , result = kode.first
-        instruction.result = result
+        instruction.assign result
         kode = instruction
       end
       raise "alarm #{kode}" if kode.is_a? Word
