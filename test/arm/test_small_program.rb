@@ -18,7 +18,7 @@ class TestSmallProg < MiniTest::Test
     r0 = Vm::Integer.new(0)
     m.r0 = 5                #1
     m << s
-    s.r0 = r0 - 1      #2
+    s.r0 = (r0 - 1).set_update_status      #2
     s.bne  s          #3
     @should = [0,176,160,227,5,0,160,227,1,0,80,226,253,255,255,26,1,112,160,227,0,0,0,239]
     write "loop"

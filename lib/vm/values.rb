@@ -21,9 +21,6 @@ module Vm
   # just a base class for data. not sure how this will be usefull (may just have read too much llvm)
   class Value < Code
 
-    def class_for clazz
-      CMachine.instance.class_for(clazz)
-    end
     # part of the dsl, ie serves to make code like  value.is a + b     work
     # ie we save the receier as the result into the instruction and pass that back
     def is instruction
@@ -76,11 +73,11 @@ module Vm
     # but for constants we have to create instruction first (mov)
     def assign other
       other = Vm::IntegerConstant.new(other) if other.is_a? Fixnum
-      if other.is_a?(Vm::IntegerConstant)
+      if other.is_a?(Vm::IntegerConstant) or other.is_a?(Vm::Integer)
         class_for(MoveInstruction).new( self , other , :opcode => :mov)
       elsif other.is_a?(Vm::StringConstant) # pc relative addressing
         class_for(LogicInstruction).new(self , other , nil , opcode: :add)
-      else 
+      else
         other.assign(self)
       end
     end
@@ -88,12 +85,14 @@ module Vm
     def less_or_equal block , right
       CMachine.instance.integer_less_or_equal block , self , right
     end
-
+    def == other
+      code = class_for(CompareInstruction).new(self , other , opcode: :cmp)
+    end
     def + other
       class_for(LogicInstruction).new(nil , self , other , opcode: :add)
     end
     def - other
-      class_for(LogicInstruction).new(nil , self , other , opcode:  :sub , update_status: 1 )
+      class_for(LogicInstruction).new(nil , self , other , opcode:  :sub )#, update_status: 1 )
     end
     def plus block , first , right
       CMachine.instance.integer_plus block , self , first , right
