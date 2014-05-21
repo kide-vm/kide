@@ -20,14 +20,15 @@ module Vm
   
   class Block < Code
 
-    def initialize(name)
+    def initialize(name , function)
       super()
+      @function = function
       @name = name.to_sym
       @next = nil
       @codes = []
     end
 
-    attr_reader :name  , :next , :codes
+    attr_reader :name  , :next , :codes , :function
 
     def length
       @codes.inject(0) {| sum  , item | sum + item.length}

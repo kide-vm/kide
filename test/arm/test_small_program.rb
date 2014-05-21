@@ -13,7 +13,7 @@ class TestSmallProg < MiniTest::Test
   end
 
   def test_loop
-    s = Vm::Block.new("start").scope binding
+    s = Vm::Block.new("start",nil).scope binding
     m = @program.main.scope binding
     r0 = Vm::Integer.new(0)
     m.r0 = 5                #1

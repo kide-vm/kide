@@ -37,15 +37,10 @@ module Vm
      else
        @return_type = @return_type.new(0)
      end
-     @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_entry") ,name )
-     @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_exit") , name )
-     @body =  Block.new("#{name}_body")
-     @reg_count = 0
-     branch_body
-     @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_entry") ,name )
-     @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_exit") , name )
-     @body =  Block.new("#{name}_body")
-     @reg_count = 0
+     @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_entry" , self) ,name )
+     @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_exit", self) , name )
+     @body =  Block.new("#{name}_body", self)
+     @locals = []
      branch_body
     end
     attr_reader :args , :entry , :exit , :body , :name
@@ -55,10 +50,11 @@ module Vm
       @args.length
     end
 
-    def next_register
-      next_free = @reg_count
-      @reg_count += 1
-      next_free + args.length
+    def new_local type = Vm::Integer
+      register = args.length + @locals.length
+      l = type.new(register)
+      @locals << l
+      l
     end
 
     def link_at address , context

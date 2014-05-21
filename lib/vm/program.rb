@@ -23,7 +23,7 @@ module Vm
     # Initialize with a string for cpu. Naming conventions are: for Machine XXX there exists a module XXX
     #  with a XXXMachine in it that derives from Vm::CMachine
     def initialize machine = nil
-      super("start")
+      super("start" , nil)
       machine = RbConfig::CONFIG["host_cpu"] unless machine
       machine = "intel" if machine == "x86_64"
       machine = machine.capitalize
@@ -33,10 +33,10 @@ module Vm
       @objects = []
       # global functions
       @functions = []
-      @entry = Core::Kernel::main_start  Vm::Block.new("main_entry")
+      @entry = Core::Kernel::main_start  Vm::Block.new("main_entry",nil)
       #main gets executed between entry and exit
-      @main = Block.new("main")
-      @exit = Core::Kernel::main_exit Vm::Block.new("main_exit")
+      @main = Block.new("main",nil)
+      @exit = Core::Kernel::main_exit Vm::Block.new("main_exit",nil)
     end
     attr_reader :context , :main , :functions , :entry , :exit
     

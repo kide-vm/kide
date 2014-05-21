@@ -83,7 +83,7 @@ module Core
         result = fibo_function.args[0]
         int = fibo_function.args[1]
         count = Vm::Integer.new(2)
-        loop_block = Vm::Block.new("loop")
+        loop_block = Vm::Block.new("loop", nil)
         f1 = Vm::Integer.new(3)
         f2 = Vm::Integer.new(4)
         b = fibo_function.body.scope binding

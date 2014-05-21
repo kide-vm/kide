@@ -82,7 +82,7 @@ module Arm
         add( number ,  number ,  number ,  shift_lsr: 8)
         add( number ,  number ,  number ,  shift_lsr: 16)
         mov( number ,   number , shift_lsr: 3)
-        tmp = Vm::Integer.new( remainder.register + 1)
+        tmp = function.new_local
         add( tmp ,  number ,  number ,  shift_lsl: 2)
         sub( remainder ,  remainder ,  tmp , shift_lsl: 1 , update_status: 1)
         add( number ,  number,   1 , condition_code: :pl )
