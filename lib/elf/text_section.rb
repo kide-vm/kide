@@ -18,7 +18,7 @@ module Elf
       @text.length
     end
     def to_s
-      "[" + @text.bytes.join(",") + "]"
+      "[" + @text.bytes.collect{|b| "0x"+ b.to_s(16)}.join(",") + "]"
     end
     def alignment
       4
