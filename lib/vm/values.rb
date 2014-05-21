@@ -20,7 +20,7 @@ module Vm
   # just a base class for data. not sure how this will be usefull (may just have read too much llvm)
   class Value 
     def class_for clazz
-      CMachine.instance.class_for(clazz)
+      RegisterMachine.instance.class_for(clazz)
     end
   end
 
@@ -53,7 +53,7 @@ module Vm
   class Unsigned < Word
     
     def plus block , unsigned
-      CMachine.instance.unsigned_plus self , unsigned
+      RegisterMachine.instance.unsigned_plus self , unsigned
     end
   end
 
@@ -75,7 +75,7 @@ module Vm
     end
 
     def less_or_equal block , right
-      CMachine.instance.integer_less_or_equal block , self , right
+      RegisterMachine.instance.integer_less_or_equal block , self , right
     end
     def == other
       code = class_for(CompareInstruction).new(self , other , opcode: :cmp)
@@ -87,18 +87,18 @@ module Vm
       class_for(LogicInstruction).new(nil , self , other , opcode:  :sub )#, update_status: 1 )
     end
     def plus block , first , right
-      CMachine.instance.integer_plus block , self , first , right
+      RegisterMachine.instance.integer_plus block , self , first , right
     end
     def minus block , first , right
-      CMachine.instance.integer_minus block , self , first , right
+      RegisterMachine.instance.integer_minus block , self , first , right
     end
     
     def load block , right
-      CMachine.instance.integer_load block , self , right
+      RegisterMachine.instance.integer_load block , self , right
     end
 
     def move block , right
-      CMachine.instance.integer_move block , self , right
+      RegisterMachine.instance.integer_move block , self , right
     end
 
   end

@@ -1,4 +1,4 @@
-require "vm/c_machine"
+require "vm/register_machine"
 require_relative "stack_instruction"
 require_relative "logic_instruction"
 require_relative "move_instruction"
@@ -8,7 +8,7 @@ require_relative "call_instruction"
 require_relative "constants"
 
 module Arm
-  class ArmMachine < Vm::CMachine
+  class ArmMachine < Vm::RegisterMachine
 
     def integer_less_or_equal block ,  left , right
       block <<  cmp( left ,  right )

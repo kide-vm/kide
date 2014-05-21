@@ -22,7 +22,7 @@ module Vm
   # Instructions work with options, so you can pass anything in, and the only thing the functions does
   # is save you typing the clazz.new. It passes the function name as the :opcode
    
-  class CMachine
+  class RegisterMachine
   
     # hmm, not pretty but for now
     @@instance = nil

@@ -22,7 +22,7 @@ module Vm
     end
 
     def do_call into
-      CMachine.instance.function_call into , self
+      RegisterMachine.instance.function_call into , self
     end
   end
 end

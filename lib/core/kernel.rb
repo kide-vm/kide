@@ -6,19 +6,19 @@ module Core
     module ClassMethods
       def main_start block
         #TODO extract args into array of strings
-        Vm::CMachine.instance.main_start block
+        Vm::RegisterMachine.instance.main_start block
         block
       end
       def main_exit block
         # Machine.exit mov r7 , 0  + swi 0 
-        Vm::CMachine.instance.main_exit block
+        Vm::RegisterMachine.instance.main_exit block
         block
       end
       def function_entry block , f_name
-        Vm::CMachine.instance.function_entry block , f_name
+        Vm::RegisterMachine.instance.function_entry block , f_name
       end
       def function_exit block , f_name
-        Vm::CMachine.instance.function_exit block , f_name
+        Vm::RegisterMachine.instance.function_exit block , f_name
       end
         
       #TODO this is in the wrong place. It is a function that returns a function object
@@ -27,7 +27,7 @@ module Core
         function = Vm::Function.new(:putstring , [string , length ] , string)
         block = function.body
         # should be another level of indirection, ie write(io,str)
-        ret = Vm::CMachine.instance.write_stdout(block)
+        ret = Vm::RegisterMachine.instance.write_stdout(block)
         function.return_type = ret
         function
       end
@@ -49,7 +49,7 @@ module Core
         # And now we "just" have to print it, using the write_stdout
         b.add( int ,  buffer , nil )   # string to write to
         b.mov( moved_int ,  buffer.length )
-        Vm::CMachine.instance.write_stdout(putint_function.body)
+        Vm::RegisterMachine.instance.write_stdout(putint_function.body)
         putint_function
       end
 
@@ -63,7 +63,7 @@ module Core
         str_addr = utoa_function.args[0]
         number = utoa_function.args[1]
         remainder = utoa_function.new_local
-        Vm::CMachine.instance.div10( utoa_function.body , number  , remainder )
+        Vm::RegisterMachine.instance.div10( utoa_function.body , number  , remainder )
         # make char out of digit (by using ascii encoding) 48 == "0"
         b = utoa_function.body.scope binding
         b.remainder = remainder + 48

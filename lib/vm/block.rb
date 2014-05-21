@@ -91,7 +91,7 @@ module Vm
     #                      b.variable = value          looks like what it does, but actually generates
     #                                                   an instruction for the block (mov or add)
     #                   
-    # 2- any other method will be passed on to the CMachine and the result added to the block
+    # 2- any other method will be passed on to the RegisterMachine and the result added to the block
     #  With this trick we can write what looks like assembler, 
     #  Example   b.instance_eval
     #                mov( r1 , r2 )
@@ -109,7 +109,7 @@ module Vm
           return super
         end
       end
-      add_code CMachine.instance.send(meth , *args)
+      add_code RegisterMachine.instance.send(meth , *args)
     end
 
   end
