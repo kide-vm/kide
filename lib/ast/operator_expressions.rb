@@ -32,13 +32,14 @@ module Ast
       end
 
       l_val = left.compile(context , into)
-
+      into = into.scope binding
+      
       case operator
       when ">"
         code = l_val.less_or_equal into , r_val
       when "+"
         res = context.function.new_local
-        into.add_code     res.is l_val + r_val
+        into.res = l_val + r_val
 #        code = res.plus into , l_val , r_val
         code = res
       when "-"

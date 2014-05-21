@@ -24,7 +24,7 @@ module Vm
     # part of the dsl, ie serves to make code like  value.is a + b     work
     # ie we save the receier as the result into the instruction and pass that back
     def is instruction
-      instruction.result = self
+      instruction.assign self
       instruction
     end
     def type
