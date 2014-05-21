@@ -99,12 +99,16 @@ module Vm
     #           mov and add will be called on Machine and generate Inststuction that are then added 
     #             to the block
     def method_missing(meth, *args, &block)
-      if( meth.to_s[-1] == "=" && args.length == 1)
-        l_val = @scope.eval  meth.to_s[0 ... -1]
-        add_code l_val.assign(args[0])
-      else
-        add_code CMachine.instance.send(meth , *args)
+      var = meth.to_s[0 ... -1]
+      if( args.length == 1) and  ( meth.to_s[-1] == "=" )
+        if @scope.local_variable_defined? var.to_sym
+          l_val = @scope.local_variable_get var.to_sym
+          return add_code l_val.assign(args[0])
+        else
+          return super
+        end
       end
+      add_code CMachine.instance.send(meth , *args)
     end
 
   end
