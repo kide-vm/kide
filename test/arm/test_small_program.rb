@@ -20,7 +20,7 @@ class TestSmallProg < MiniTest::Test
     m << s
     s.r0 = (r0 - 1).set_update_status      #2
     s.bne  s          #3
-    @should = [0,176,160,227,5,0,160,227,1,0,80,226,253,255,255,26,1,112,160,227,0,0,0,239]
+    @should = [0x0,0xb0,0xa0,0xe3,0x5,0x0,0xa0,0xe3,0x1,0x0,0x50,0xe2,0xfd,0xff,0xff,0x1a,0x1,0x70,0xa0,0xe3,0x0,0x0,0x0,0xef]
     write "loop"
   end
 
@@ -38,7 +38,7 @@ class TestSmallProg < MiniTest::Test
     b.r1 = hello  # address of "hello Raisa"
     b.r2 =  hello.length
     b.swi  0          #software interupt, ie kernel syscall
-    @should = [0,176,160,227,4,112,160,227,1,0,160,227,12,16,143,226,16,32,160,227,0,0,0,239,1,112,160,227,0,0,0,239,72,101,108,108,111,32,82,97,105,115,97,10,0,0,0,0]
+    @should = [0x0,0xb0,0xa0,0xe3,0x4,0x70,0xa0,0xe3,0x1,0x0,0xa0,0xe3,0xc,0x10,0x8f,0xe2,0x10,0x20,0xa0,0xe3,0x0,0x0,0x0,0xef,0x1,0x70,0xa0,0xe3,0x0,0x0,0x0,0xef,0x48,0x65,0x6c,0x6c,0x6f,0x20,0x52,0x61,0x69,0x73,0x61,0xa,0x0,0x0,0x0,0x0]
     write "hello"
   end
 
@@ -51,11 +51,11 @@ class TestSmallProg < MiniTest::Test
     main.int = 10
     main.call( fibo )
     # this is the version without the putint (which makes the program 3 times bigger)
-    @should = [0,176,160,227,10,16,160,227,1,0,0,235,1,112,160,227,0,0,0,239,0,64,45,233,1,0,81,227,1,0,160,209,14,240,160,209,28,64,45,233,1,48,160,227,0,64,160,227,2,32,65,226,4,48,131,224,4,64,67,224,1,32,82,226,251,255,255,90,3,0,160,225,28,128,189,232,0,128,189,232]
-    #putint = @program.get_or_create_function(:putint)
-    #@program.main.call( putint )
+    @should = [0x0,0xb0,0xa0,0xe3,0xa,0x10,0xa0,0xe3,0x1,0x0,0x0,0xeb,0x1,0x70,0xa0,0xe3,0x0,0x0,0x0,0xef,0x0,0x40,0x2d,0xe9,0x1,0x0,0x51,0xe3,0x1,0x0,0xa0,0xd1,0xe,0xf0,0xa0,0xd1,0x1c,0x40,0x2d,0xe9,0x1,0x30,0xa0,0xe3,0x0,0x40,0xa0,0xe3,0x2,0x20,0x41,0xe2,0x4,0x30,0x83,0xe0,0x4,0x40,0x43,0xe0,0x1,0x20,0x52,0xe2,0xfb,0xff,0xff,0x5a,0x3,0x0,0xa0,0xe1,0x1c,0x80,0xbd,0xe8,0x0,0x80,0xbd,0xe8]
+    putint = @program.get_or_create_function(:putint)
+    @program.main.call( putint )
     # so here the "full" version with putint
-    @should_b = [0,176,160,227,10,16,160,227,2,0,0,235,33,0,0,235,1,112,160,227,0,0,0,239,0,64,45,233,1,0,81,227,1,0,160,209,14,240,160,209,28,64,45,233,1,48,160,227,0,64,160,227,2,32,65,226,4,48,131,224,4,64,67,224,1,32,82,226,251,255,255,90,3,0,160,225,28,128,189,232,0,128,189,232,0,64,45,233,10,32,65,226,33,17,65,224,33,18,129,224,33,20,129,224,33,24,129,224,161,17,160,225,1,49,129,224,131,32,82,224,1,16,129,82,10,32,130,66,48,32,130,226,0,32,192,229,1,0,64,226,0,0,81,227,239,255,255,27,0,128,189,232,0,64,45,233,0,16,160,225,36,0,143,226,9,0,128,226,233,255,255,235,24,0,143,226,12,16,160,227,1,32,160,225,0,16,160,225,1,0,160,227,4,112,160,227,0,0,0,239,0,128,189,232,32,32,32,32,32,32,32,32,32,32,32,0]
+    @should = [0,176,160,227,10,16,160,227,2,0,0,235,33,0,0,235,1,112,160,227,0,0,0,239,0,64,45,233,1,0,81,227,1,0,160,209,14,240,160,209,28,64,45,233,1,48,160,227,0,64,160,227,2,32,65,226,4,48,131,224,4,64,67,224,1,32,82,226,251,255,255,90,3,0,160,225,28,128,189,232,0,128,189,232,0,64,45,233,10,32,65,226,33,17,65,224,33,18,129,224,33,20,129,224,33,24,129,224,161,17,160,225,1,49,129,224,131,32,82,224,1,16,129,82,10,32,130,66,48,32,130,226,0,32,192,229,1,0,64,226,0,0,81,227,239,255,255,27,0,128,189,232,0,64,45,233,0,16,160,225,36,0,143,226,9,0,128,226,233,255,255,235,24,0,143,226,12,16,160,227,1,32,160,225,0,16,160,225,1,0,160,227,4,112,160,227,0,0,0,239,0,128,189,232,32,32,32,32,32,32,32,32,32,32,32,0]
     write "fibo"
   end
 
@@ -63,11 +63,13 @@ class TestSmallProg < MiniTest::Test
   def write name
     writer = Elf::ObjectWriter.new(@program , Elf::Constants::TARGET_ARM)
     assembly = writer.text
-    # use this for getting the bytes to compare to :  puts assembly
+    # use this for getting the bytes to compare to :  
+    # puts assembly
+    writer.save("#{name}_test.o")
     assembly.text.bytes.each_with_index do |byte , index|
-      assert_equal  byte , @should[index] , "byte #{index}"
+      is = @should[index]
+      assert_equal  byte , is , "@#{index.to_s(16)} #{byte.to_s(16)} != #{is.to_s(16)}"
     end
-#    writer.save("#{name}_test.o")
   end
 end
 # _start copied from dietc
