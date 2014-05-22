@@ -17,13 +17,14 @@ module Ast
       ret = into.new_block "#{into.name}_return_#{hash}"
       while_block = into.new_block "#{into.name}_while_#{hash}"
       cond_val = condition.compile(context , while_block)
-      while_block.beq ret
+      while_block.bne ret
       last = nil
       body.each do |part|
         last = part.compile(context , while_block )
         puts "compiled in while #{last.inspect}"
       end
       while_block.b while_block
+      into.insert_at_end
       return last
     end
   end
