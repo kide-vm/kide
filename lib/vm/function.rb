@@ -73,6 +73,17 @@ module Vm
       block
     end
 
+    # return a list of the blocks that are addressable, ie entry and @blocks and all next
+    def blocks
+      ret = []
+      (@blocks << @entry).each do |b|
+        while b
+          ret << b
+          b = b.next
+        end  
+      end
+      ret
+    end
     # following id the Code interface
     
     # to link we link the entry and then any blocks. The entry links the straight line

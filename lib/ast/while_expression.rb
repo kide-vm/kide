@@ -14,15 +14,16 @@ module Ast
       [:condition, :body]
     end
     def compile context , into
-      cond_val = condition.compile(context , into)
-      #set up branches for bodies
-      # jump to end if done
+      ret = into.new_block "#{into.name}_return_#{hash}"
+      while_block = into.new_block "#{into.name}_while_#{hash}"
+      cond_val = condition.compile(context , while_block)
+      while_block.beq ret
       last = nil
       body.each do |part|
-        last = part.compile(context , into )
+        last = part.compile(context , while_block )
         puts "compiled in while #{last.inspect}"
       end
-      #jump back to test
+      while_block.b while_block
       return last
     end
   end
