@@ -25,8 +25,23 @@ module Vm
   end
 
   # Just a nice way to write branches
-  class Bool < Value
+  class BranchCondition < Value
 
+    def initialize operator
+      @operator = operator
+    end
+    attr_accessor :operator
+    #needed to check the opposite, ie not true
+    def not_operator
+      case @operator
+      when :le
+        :gt
+      when :gt
+        :le
+      else
+        raise "no implemented #{@operator}"
+      end
+    end
   end
 
   # This is what it is when we don't know what it is.
@@ -76,6 +91,9 @@ module Vm
 
     def less_or_equal block , right
       RegisterMachine.instance.integer_less_or_equal block , self , right
+    end
+    def greater_than block , right
+      RegisterMachine.instance.integer_greater_than block , self , right
     end
     def == other
       code = class_for(CompareInstruction).new(self , other , opcode: :cmp)

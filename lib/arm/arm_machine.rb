@@ -12,7 +12,11 @@ module Arm
 
     def integer_less_or_equal block ,  left , right
       block <<  cmp( left ,  right )
-      Vm::Bool.new
+      Vm::BranchCondition.new :le
+    end
+    def integer_greater_than block ,  left , right
+      block <<  cmp( left ,  right )
+      Vm::BranchCondition.new :gt
     end
 
     def integer_plus block , result , left , right

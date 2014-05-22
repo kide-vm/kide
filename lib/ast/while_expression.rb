@@ -14,16 +14,18 @@ module Ast
       [:condition, :body]
     end
     def compile context , into
-      ret = into.new_block "#{into.name}_return_#{hash}"
       while_block = into.new_block "#{into.name}_while_#{hash}"
+      ret = while_block.new_block "#{into.name}_return_#{hash}"
       cond_val = condition.compile(context , while_block)
-      while_block.bne ret
+      puts "compiled while condition #{cond_val.inspect}"
+      while_block.b ret , condition_code: cond_val.not_operator
       last = nil
       body.each do |part|
         last = part.compile(context , while_block )
         puts "compiled in while #{last.inspect}"
       end
       while_block.b while_block
+      puts "compile while end"
       into.insert_at_end
       return last
     end

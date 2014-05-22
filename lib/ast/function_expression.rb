@@ -38,7 +38,7 @@ module Ast
       body.each do |b|
         compiled = b.compile(context , into)
         function.return_type = compiled
-        puts "compiled in function #{compiled.class}"
+        puts "compiled in function #{compiled.inspect}"
         raise "alarm #{compiled} \n #{b}" unless compiled.is_a? Vm::Word
       end
       context.locals = parent_locals

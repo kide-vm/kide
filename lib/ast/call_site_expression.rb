@@ -20,13 +20,13 @@ module Ast
 
     def save_locals context , into
       into.instance_eval do 
-        push [:r1 , :r2 , :r3]
+        push [:r0,:r1 , :r2 , :r3]
       end
     end
 
     def restore_locals context , into
       into.instance_eval do 
-        pop [:r1, :r2 , :r3]
+        pop [:r0,:r1, :r2 , :r3]
       end
     end
 
