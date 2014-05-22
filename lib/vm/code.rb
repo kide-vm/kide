@@ -1,10 +1,10 @@
 module Vm
   # Base class for anything that we can assemble
 
-  # Derived classes include instructions and data(values)
+  # Derived classes include instructions and constants(data)
   
   # The commonality abstracted here is the length and position
-  # and the ability to assemble itself into the stream
+  # and the ability to assemble itself into the stream(io)
   
   # All code is position independant once assembled.
   # But for jumps and calls two passes are neccessary. 
@@ -39,8 +39,7 @@ module Vm
       raise "Not implemented #{inspect}"
     end
     
-    # so currently the interface passes the io (usually string_io) in for the code to assemble itself.
-    # this may change as the writing is still done externally (or that will change)
+    # we pass the io (usually string_io) in for the code to assemble itself.
     def assemble(io)
       raise "Not implemented #{self.inspect}"
     end

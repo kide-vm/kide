@@ -30,12 +30,6 @@ module Vm
 
     attr_reader :name  , :next , :codes , :function
 
-    def length
-      cods = @codes.inject(0) {| sum  , item | sum + item.length}
-      cods += @next.length if @next
-      cods
-    end
-
     def add_code(kode)
       if kode.is_a? Hash
         raise "Hack only for 1 element #{inspect} #{kode.inspect}" unless kode.length == 1
@@ -50,26 +44,6 @@ module Vm
     end
     alias :<< :add_code 
     alias :a :add_code 
-
-    def link_at pos , context
-      @position = pos
-      @codes.each do |code|
-        code.link_at(pos , context)
-        pos += code.length
-      end
-      if @next
-        @next.link_at pos , context
-        pos += @next.length
-      end
-      pos
-    end
-
-    def assemble(io)
-      @codes.each do |obj|
-        obj.assemble io
-      end
-      @next.assemble(io) if @next
-    end
 
     # create a new linear block after this block. Linear means there is no brach needed from this one
     # to the new one. Usually the new one just serves as jump address for a control statement
@@ -121,6 +95,36 @@ module Vm
       add_code RegisterMachine.instance.send(meth , *args)
     end
 
-  end
+    # Code interface follows. Note position is inheitted as is from Code
 
+    # length of the block is the length of it's codes, plus any next block (ie no branch follower)
+    #  Note, the next is in effect a linked list and as such may have many blocks behind it.
+    def length
+      cods = @codes.inject(0) {| sum  , item | sum + item.length}
+      cods += @next.length if @next
+      cods
+    end
+
+    # to link we link the codes (instructions), plus any next in line block (non- branched)
+    def link_at pos , context
+      super(pos , context)
+      @codes.each do |code|
+        code.link_at(pos , context)
+        pos += code.length
+      end
+      if @next
+        @next.link_at pos , context
+        pos += @next.length
+      end
+      pos
+    end
+
+    # assemble the codes (instructions) and any next in line block
+    def assemble(io)
+      @codes.each do |obj|
+        obj.assemble io
+      end
+      @next.assemble(io) if @next
+    end
+  end
 end

@@ -50,6 +50,7 @@ module Vm
      @body =  Block.new("#{name}_body", self , @return)
      @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_entry" , self , @body) ,name )
      @locals = []
+     @blocks = []
     end
 
     attr_reader :args , :entry , :exit , :body , :name
@@ -66,21 +67,42 @@ module Vm
       l
     end
 
+    def new_block name
+      block = Block.new(name , self)
+      @blocks << block
+      block
+    end
+
+    # following id the Code interface
+    
+    # to link we link the entry and then any blocks. The entry links the straight line
     def link_at address , context
-      raise "undefined code #{inspect}" if @body.nil? 
       super #just sets the position
       @entry.link_at address , context
       address += @entry.length
+      @blocks.each do |block|
+        block.link_at(pos , context)
+        pos += block.length
+      end
     end
+
+    # position of the function is the position of the entry block
     def position
       @entry.position
     end
+
+    # length of a function is the entry block length (includes the straight line behind it) 
+    # plus any out of line blocks that have been added
     def length
-      @entry.length
+      @blocks.inject(@entry.length) {| sum  , item | sum + item.length}
     end
     
+    # assembling assembles the entry (straight line/ no branch line) + any additional branches
     def assemble io
       @entry.assemble(io)
+      @blocks.each do |block|
+        block.assemble io
+      end
     end
 
   end
