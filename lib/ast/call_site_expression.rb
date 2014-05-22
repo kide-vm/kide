@@ -11,23 +11,12 @@ module Ast
       function = context.program.get_or_create_function(name)
       raise "Forward declaration not implemented (#{name}) #{inspect}" if function == nil
       call = Vm::CallSite.new( name ,  params  , function)
-      save_locals context , into
+      current_function = context.function
+      current_function.save_locals(context , into) if current_function
       call.load_args into
       call.do_call into
-      restore_locals context , into
+      current_function.restore_locals(context , into) if current_function
       function.return_type
-    end
-
-    def save_locals context , into
-      into.instance_eval do 
-        push [:r0,:r1 , :r2 , :r3]
-      end
-    end
-
-    def restore_locals context , into
-      into.instance_eval do 
-        pop [:r0,:r1, :r2 , :r3]
-      end
     end
 
     def inspect

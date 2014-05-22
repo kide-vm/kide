@@ -67,6 +67,16 @@ module Vm
       l
     end
 
+    def save_locals context , into
+      save = args.collect{|a| a.register } + @locals.collect{|l| l.register}
+      into.push save
+    end
+
+    def restore_locals context , into
+      restore = args.collect{|a| a.register } + @locals.collect{|l| l.register}
+      into.pop restore
+    end
+
     def new_block name
       block = Block.new(name , self)
       @blocks << block

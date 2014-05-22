@@ -58,8 +58,8 @@ module Arm
       regs = @first
       if (regs.is_a?(Array))
         @operand = 0
-        regs.each do |reg |
-          next unless reg
+        regs.each_with_index do |reg , index|
+          raise "nil register in push, index #{index}" if reg == nil
           @operand |= (1 << reg_code(reg))
         end
       else

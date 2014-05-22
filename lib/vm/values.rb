@@ -59,6 +59,7 @@ module Vm
     end
     def initialize reg
       @register = reg
+      raise inspect if reg == nil
     end
     def length
       4

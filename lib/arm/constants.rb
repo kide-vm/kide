@@ -59,7 +59,12 @@ module Arm
       if name.is_a? Vm::Word
         name = "r#{name.register}"
       end
-      REGISTERS[name.to_s]
+      if name.is_a? Fixnum
+        name = "r#{name}"
+      end
+      r = REGISTERS[name.to_s]
+      raise "no reg #{name}" if r == nil
+      r
     end
 
    def calculate_u8_with_rr(arg)
