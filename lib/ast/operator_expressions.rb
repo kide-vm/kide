@@ -25,7 +25,7 @@ module Ast
         if( l_val ) #variable existed, move data there
           l_val = l_val.move( into , r_val)
         else
-          l_val = context.function.new_local.load( into , r_val )
+          l_val = context.function.new_local.move( into , r_val )
         end
         context.locals[left.name] = l_val
         return l_val

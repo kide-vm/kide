@@ -7,16 +7,24 @@ module Vm
   # Functions also have arguments and a return. These are Value subclass instances, ie specify
   #   type (by class type) and register by instance
 
-  # Functions have a exactly three blocks, entry, exit and body, which are created for you
-  # with straight branches between them.
+  # They also have local variables. Args take up the first n regs, then locals the rest. No 
+  #  direct manipulating of registers (ie specifying the number) should be done.
 
-  # Also remember that if your body exists of several blocks, they must be wrapped in a 
-  # block as the function really only has the one, and blocks only assemble their codes,
-  # not their next links
-  # This comes at zero runtime cost though, as the wrapper is just the sum of it's codes
+  # Code-wise Functions are made up from a list of Blocks, in a similar way blocks are made up of codes
+  # Four of the block have a special role:
+  # - entry/exit: are usually system specific
+  # - body:  the logical start of the function
+  # - return: the logical end, where ALL blocks must end
   
-  # If you change the body block to point elsewhere, remember to end up at exit
-
+  # Blocks can be linked in two ways:
+  # -linear:  flow continues from one to the next as they are sequential both logically and "physically"
+  #           use the block set_next for this. 
+  #           This "the straight line", there must be a continuous sequence from body to return
+  #           Linear blocks may be created from an existing block with new_block
+  # - branched: You create new blocks using function.new_block which gets added "after" return
+  #            These (eg if/while) blocks may themselves have linear blocks ,but the last of these 
+  #            MUST have an uncoditional branch. And remember, all roads lead to return.
+  
   class Function < Code
 
     def initialize(name , args = [] , return_type = nil)
@@ -37,12 +45,13 @@ module Vm
      else
        @return_type = @return_type.new(0)
      end
-     @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_entry" , self) ,name )
-     @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_exit", self) , name )
-     @body =  Block.new("#{name}_body", self)
+     @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_exit" , self) , name )
+     @return =  Block.new("#{name}_return", self , @exit)
+     @body =  Block.new("#{name}_body", self , @return)
+     @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_entry" , self , @body) ,name )
      @locals = []
-     branch_body
     end
+
     attr_reader :args , :entry , :exit , :body , :name
     attr_accessor :return_type
 
@@ -62,28 +71,17 @@ module Vm
       super #just sets the position
       @entry.link_at address , context
       address += @entry.length
-      @body.link_at(address , context)
-      address += @body.length
-      @exit.link_at(address,context)
     end
     def position
       @entry.position
     end
     def length
-      @entry.length + @exit.length + @body.length
+      @entry.length
     end
     
     def assemble io
       @entry.assemble(io)
-      @body.assemble(io)
-      @exit.assemble(io)
     end
 
-    private
-    # set up the braches from entry to body and body to exit (unless that exists, see set_body)
-    def branch_body
-      @entry.set_next(@body)
-      @body.set_next(@exit) if @body and  !@body.next
-    end
   end
 end

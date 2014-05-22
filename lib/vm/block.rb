@@ -20,18 +20,20 @@ module Vm
   
   class Block < Code
 
-    def initialize(name , function)
+    def initialize(name , function , next_block = nil)
       super()
       @function = function
       @name = name.to_sym
-      @next = nil
+      @next = next_block
       @codes = []
     end
 
     attr_reader :name  , :next , :codes , :function
 
     def length
-      @codes.inject(0) {| sum  , item | sum + item.length}
+      cods = @codes.inject(0) {| sum  , item | sum + item.length}
+      cods += @next.length if @next
+      cods
     end
 
     def add_code(kode)
@@ -55,6 +57,10 @@ module Vm
         code.link_at(pos , context)
         pos += code.length
       end
+      if @next
+        @next.link_at pos , context
+        pos += @next.length
+      end
       pos
     end
 
@@ -62,8 +68,18 @@ module Vm
       @codes.each do |obj|
         obj.assemble io
       end
+      @next.assemble(io) if @next
     end
-    
+
+    # create a new linear block after this block. Linear means there is no brach needed from this one
+    # to the new one. Usually the new one just serves as jump address for a control statement
+    # In code generation (assembly) , new new_block is written after this one, ie zero runtime cost
+    def new_block name
+      new_b = Block.new( name , @function , @next )
+      @next = new_b
+      return new_b
+    end
+
     # to use the assignment syntax (see method_missing) the scope must be set, so variables can be resolved
     # The scope you set should be a binding (literally, the kernel.binding)
     # The function return the block, so it can be chained into an assignment
@@ -73,13 +89,6 @@ module Vm
     def scope where
       @scope = where
       self
-    end
-    # set the next executed block after self.
-    # why is this useful? if it's unconditional, why not merge them:
-    #    So the second block can be used as a jump target. You standard loop needs a block to setup
-    #    and at least one to do the calculation
-    def set_next block
-      @next = block
     end
 
     # sugar to create instructions easily. Actually just got double sweet with two versions:
