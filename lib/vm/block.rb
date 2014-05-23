@@ -26,7 +26,7 @@ module Vm
       @name = name.to_sym
       @next = next_block
       @codes = []
-      @insert_at_end = false
+      @insert_at = self
     end
 
     attr_reader :name  , :next , :codes , :function
@@ -40,7 +40,7 @@ module Vm
       end
       raise "alarm #{kode}" if kode.is_a? Word
       raise "alarm #{kode}" unless kode.is_a? Code
-      insert_at.codes << kode
+      @insert_at.codes << kode
       self
     end
     alias :<< :add_code 
@@ -55,20 +55,19 @@ module Vm
       return new_b
     end
 
-    # when control structures create new blocks (with new_block) control continues at the end of
-    # the chain of blocks that was created.
-    # the code using _this block should be unaware of the complexity of the block and just keep using this
-    # block as before (ie in a linear way)
-    # this switches that behaviour on, ie code is hence after inserted at the end of the last block
-    def insert_at_end
-      @insert_at_end = true
+    # when control structures create new blocks (with new_block) control continues at some new block the
+    # the control structure creates. 
+    # Example: while, needs  2 extra blocks
+    #          1 condition code, must be its own blockas we jump back to it
+    #           -       the body, can actually be after the condition as we don't need to jump there
+    #          2 after while block. Condition jumps here 
+    # After block 2, the function is linear again and the calling code does not need to know what happened
+    
+    # But subsequent statements are still using the original block (self) to add code to
+    # So the while expression creates the extra blocks, adds them and the code and then "moves" the insertion point along
+    def insert_at block
+      @insert_at = block
       self
-    end
-
-    # returns the point at which code is added. See insert_at_end for explanation. Usually self, but... 
-    def insert_at
-      return self unless @insert_at_end 
-      @next ? @next.insert_at : self
     end
 
     # to use the assignment syntax (see method_missing) the scope must be set, so variables can be resolved

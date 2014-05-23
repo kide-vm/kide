@@ -14,8 +14,8 @@ module Ast
       [:condition, :body]
     end
     def compile context , into
-      while_block = into.new_block "#{into.name}_while_#{hash}"
-      ret = while_block.new_block "#{into.name}_return_#{hash}"
+      while_block = into.new_block "#{into.name}_while"
+      ret = while_block.new_block "#{into.name}_return"
       cond_val = condition.compile(context , while_block)
       puts "compiled while condition #{cond_val.inspect}"
       while_block.b ret , condition_code: cond_val.not_operator
@@ -26,7 +26,7 @@ module Ast
       end
       while_block.b while_block
       puts "compile while end"
-      into.insert_at_end
+      into.insert_at ret
       return last
     end
   end
