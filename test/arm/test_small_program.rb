@@ -65,7 +65,7 @@ class TestSmallProg < MiniTest::Test
     assembly = writer.text
     # use this for getting the bytes to compare to :  
     # puts assembly
-    writer.save("#{name}_test.o")
+    #writer.save("#{name}_test.o")
     assembly.text.bytes.each_with_index do |byte , index|
       is = @should[index]
       assert_equal  byte , is , "@#{index.to_s(16)} #{byte.to_s(16)} != #{is.to_s(16)}"

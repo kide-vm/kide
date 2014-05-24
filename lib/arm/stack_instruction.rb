@@ -25,7 +25,15 @@ module Arm
     end
                   
     def assemble(io)
-      build
+      if (@first.is_a?(Array))
+        @operand = 0
+        @first.each do |r|
+          raise "nil register in push, index #{r}- #{inspect}" if r.nil?
+          @operand |= (1 << reg_code(r))
+        end
+      else
+        raise "invalid operand argument #{inspect}"
+      end
       write_base = 1
       if (opcode == :push)
         pre_post_index = 1
@@ -50,21 +58,6 @@ module Arm
       val |= (instuction_class <<    16+4+ 1+1+1+1 +2) 
       val |= (cond <<                16+4+ 1+1+1+1 +2+2)
       io.write_uint32 val
-    end
-    
-    private 
-    # Build representation for source value
-    def build
-      regs = @first
-      if (regs.is_a?(Array))
-        @operand = 0
-        regs.each_with_index do |reg , index|
-          raise "nil register in push, index #{index}" if reg == nil
-          @operand |= (1 << reg_code(reg))
-        end
-      else
-        raise "invalid operand argument  #{regs.inspect} #{inspect}"
-      end
     end
   end
 end
