@@ -23,7 +23,7 @@ HERE
     @parse_output = {:if=>"if", :conditional=>{:integer=>"0"}, 
     :if_true=>{:expressions=>[{:integer=>"42"}], :else=>"else"}, 
     :if_false=>{:expressions=>[{:integer=>"667"}], :end=>"end"}}
-    @transform_output = Ast::ConditionalExpression.new(  Ast::IntegerExpression.new(0),
+    @transform_output = Ast::IfExpression.new(  Ast::IntegerExpression.new(0),
                   [Ast::IntegerExpression.new(42)], [Ast::IntegerExpression.new(667)])
 
     @parser = @parser.conditional

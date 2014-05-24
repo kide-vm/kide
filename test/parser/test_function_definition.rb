@@ -54,7 +54,7 @@ HERE
     :end=>"end"}
     @transform_output = Ast::FunctionExpression.new(:ofthen, 
           [Ast::NameExpression.new("n")] , 
-          [Ast::ConditionalExpression.new(Ast::IntegerExpression.new(0), 
+          [Ast::IfExpression.new(Ast::IntegerExpression.new(0), 
             [Ast::OperatorExpression.new("=", Ast::NameExpression.new("isit"),
               Ast::IntegerExpression.new(42))],
           [Ast::OperatorExpression.new("=", Ast::NameExpression.new("maybenot"),Ast::IntegerExpression.new(667))] )] )

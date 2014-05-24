@@ -27,7 +27,7 @@ module Parser
     rule(:if => simple(:if), :conditional     => simple(:conditional),
          :if_true  => {:expressions => sequence(:if_true) , :else => simple(:else) },
          :if_false => {:expressions => sequence(:if_false) , :end => simple(:e) }) do
-           Ast::ConditionalExpression.new(conditional, if_true, if_false) 
+           Ast::IfExpression.new(conditional, if_true, if_false) 
          end
 
     rule(:while     => simple(:while),

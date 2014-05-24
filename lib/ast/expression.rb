@@ -34,7 +34,7 @@ end
 
 require_relative "basic_expressions"
 require_relative "compound_expressions"
-require_relative "conditional_expression"
+require_relative "if_expression"
 require_relative "while_expression"
 require_relative "function_expression"
 require_relative "operator_expressions"
