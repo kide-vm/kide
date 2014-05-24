@@ -38,6 +38,8 @@ module Vm
         :gt
       when :gt
         :le
+      when :lt
+        :ge
       else
         raise "no implemented #{@operator}"
       end
@@ -95,6 +97,9 @@ module Vm
     end
     def greater_than block , right
       RegisterMachine.instance.integer_greater_than block , self , right
+    end
+    def less_than block , right
+      RegisterMachine.instance.integer_less_than block , self , right
     end
     def == other
       code = class_for(CompareInstruction).new(self , other , opcode: :cmp)

@@ -37,6 +37,8 @@ module Ast
       case operator
       when ">"
         code = l_val.greater_than into , r_val
+      when "<"
+        code = l_val.less_than into , r_val
       when "+"
         res = context.function.new_local
         into.res = l_val + r_val
