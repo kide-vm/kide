@@ -10,6 +10,10 @@ require_relative "constants"
 module Arm
   class ArmMachine < Vm::RegisterMachine
 
+    def integer_equals block ,  left , right
+      block <<  cmp( left ,  right )
+      Vm::BranchCondition.new :eq
+    end
     def integer_less_or_equal block ,  left , right
       block <<  cmp( left ,  right )
       Vm::BranchCondition.new :le

@@ -40,6 +40,8 @@ module Vm
         :le
       when :lt
         :ge
+      when :eq
+        :ne
       else
         raise "no implemented #{@operator}"
       end
@@ -97,6 +99,9 @@ module Vm
     end
     def greater_than block , right
       RegisterMachine.instance.integer_greater_than block , self , right
+    end
+    def equals block , right
+      RegisterMachine.instance.integer_equals block , self , right
     end
     def less_than block , right
       RegisterMachine.instance.integer_less_than block , self , right

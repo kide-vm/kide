@@ -35,12 +35,21 @@ module Ast
       context.function = function
 
       into = function.body
+      last_compiled = nil
       body.each do |b|
-        compiled = b.compile(context , into)
-        function.return_type = compiled
-        puts "compiled in function #{compiled.inspect}"
-        raise "alarm #{compiled} \n #{b}" unless compiled.is_a? Vm::Word
+        last_compiled = b.compile(context , into)
+        puts "compiled in function #{last_compiled.inspect}"
+        raise "alarm #{last_compiled} \n #{b}" unless last_compiled.is_a? Vm::Word
       end
+      
+      return_reg = Vm::Integer.new(0)
+      if last_compiled.is_a?(Vm::IntegerConstant) or last_compiled.is_a?(Vm::StringConstant)
+        return_reg.load into , last_compiled if last_compiled.register != return_reg.register
+      else
+        return_reg.move( into, last_compiled ) if last_compiled.register != return_reg.register
+      end
+      function.set_return return_reg
+      
       context.locals = parent_locals
       context.function = parent_function
       function

@@ -28,7 +28,7 @@ module Core
         block = function.body
         # should be another level of indirection, ie write(io,str)
         ret = Vm::RegisterMachine.instance.write_stdout(block)
-        function.return_type = ret
+        function.set_return ret
         function
       end
 

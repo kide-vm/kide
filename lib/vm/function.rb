@@ -39,23 +39,25 @@ module Vm
           @args[i] = arg.new(i)
         end
       end
-     @return_type = return_type || Vm::Integer 
-     if @return_type.is_a?(Value)
-       raise "return in non std register #{@return_type.inspect}" unless 0 == @return_type.register
-     else
-       @return_type = @return_type.new(0)
-     end
-     @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_exit" , self) , name )
-     @return =  Block.new("#{name}_return", self , @exit)
-     @body =  Block.new("#{name}_body", self , @return)
-     @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_entry" , self , @body) ,name )
-     @locals = []
-     @blocks = []
+      set_return return_type
+      @exit =  Core::Kernel::function_exit( Vm::Block.new("#{name}_exit" , self) , name )
+      @return =  Block.new("#{name}_return", self , @exit)
+      @body =  Block.new("#{name}_body", self , @return)
+      @entry = Core::Kernel::function_entry( Vm::Block.new("#{name}_entry" , self , @body) ,name )
+      @locals = []
+      @blocks = []
     end
 
-    attr_reader :args , :entry , :exit , :body , :name
-    attr_accessor :return_type
+    attr_reader :args , :entry , :exit , :body , :name , :return_type
 
+    def set_return type_or_value
+      @return_type = type_or_value || Vm::Integer 
+      if @return_type.is_a?(Value)
+        raise "return in non std register #{@return_type.inspect}" unless 0 == @return_type.register
+      else
+        @return_type = @return_type.new(0)
+      end
+    end
     def arity
       @args.length
     end
@@ -69,11 +71,14 @@ module Vm
 
     def save_locals context , into
       save = args.collect{|a| a.register } + @locals.collect{|l| l.register}
+      save.delete_at(0)
       into.push save
     end
 
     def restore_locals context , into
+      #TODO assumes allocation in order, as the pop must be get regs in ascending order (also push)
       restore = args.collect{|a| a.register } + @locals.collect{|l| l.register}
+      restore.delete_at(0)
       into.pop restore
     end
 
