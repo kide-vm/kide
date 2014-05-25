@@ -62,8 +62,7 @@ module Arm
     # assumes string in r0 and r1 and moves them along for the syscall
     def write_stdout block
       block.instance_eval do 
-        mov(  :r2 ,  :r1 )
-        mov(  :r1 ,  :r0 )
+        # TODO save and restore r0
         mov(  :r0 ,  1 ) # 1 == stdout
       end
       syscall( block , 4 )
@@ -93,9 +92,13 @@ module Arm
     end
 
     def syscall block , num
-      block <<  mov(  :r7 , num )
+      sys_and_ret = Vm::Integer.new(7)
+      block <<  mov(  sys_and_ret , num )
       block <<  swi(  0 )
-      Vm::Integer.new(0)  #small todo, is this actually correct for all (that they return int)
+      #small todo, is this actually correct for all (that they return int)
+      block << mov( sys_and_ret , :r0 ) # syscall returns in r0, more to our return
+      #todo should write type into r0 according to syscall
+      sys_and_ret
     end
 
   end

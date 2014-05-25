@@ -34,9 +34,9 @@ module Vm
       args.each_with_index do |arg , i|
         if arg.is_a?(Value)
           @args[i] = arg
-          raise "arg in non std register #{arg.inspect}" unless i == arg.register
+          raise "arg in non std register #{arg.inspect}" unless (i+1) == arg.register
         else
-          @args[i] = arg.new(i)
+          @args[i] = arg.new(i+1)
         end
       end
       set_return return_type
@@ -53,9 +53,9 @@ module Vm
     def set_return type_or_value
       @return_type = type_or_value || Vm::Integer 
       if @return_type.is_a?(Value)
-        raise "return in non std register #{@return_type.inspect}" unless 0 == @return_type.register
+        raise "return in non std register #{@return_type.inspect}" unless 7 == @return_type.register
       else
-        @return_type = @return_type.new(0)
+        @return_type = @return_type.new(7)
       end
     end
     def arity
@@ -64,22 +64,21 @@ module Vm
 
     def new_local type = Vm::Integer
       register = args.length + @locals.length
-      l = type.new(register)
+      l = type.new(register + 1) # one for the type register 0, TODO add type as arg0 implicitly
+      raise "the red flag #{inspect}" if l.register > 6
       @locals << l
       l
     end
 
     def save_locals context , into
       save = args.collect{|a| a.register } + @locals.collect{|l| l.register}
-      save.delete_at(0)
-      into.push save
+      into.push(save) unless save.empty?
     end
 
     def restore_locals context , into
       #TODO assumes allocation in order, as the pop must be get regs in ascending order (also push)
       restore = args.collect{|a| a.register } + @locals.collect{|l| l.register}
-      restore.delete_at(0)
-      into.pop restore
+      into.pop(restore) unless restore.empty?
     end
 
     def new_block name

@@ -22,7 +22,7 @@ module Ast
       locals = {}
       params.each_with_index do |param , index|
         arg = param.name
-        arg_value = Vm::Integer.new(index)
+        arg_value = Vm::Integer.new(index+1)
         locals[arg] = arg_value
         args << arg_value
       end
@@ -42,7 +42,7 @@ module Ast
         raise "alarm #{last_compiled} \n #{b}" unless last_compiled.is_a? Vm::Word
       end
       
-      return_reg = Vm::Integer.new(0)
+      return_reg = Vm::Integer.new(7)
       if last_compiled.is_a?(Vm::IntegerConstant) or last_compiled.is_a?(Vm::StringConstant)
         return_reg.load into , last_compiled if last_compiled.register != return_reg.register
       else
