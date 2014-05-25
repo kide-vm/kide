@@ -16,6 +16,7 @@ module Ast
       call.load_args into
       call.do_call into
       current_function.restore_locals(context , into) if current_function
+      puts "compile call #{function.return_type}"
       function.return_type
     end
 

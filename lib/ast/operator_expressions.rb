@@ -23,7 +23,7 @@ module Ast
         raise "Can only assign variables, not #{left}" unless left.is_a?(NameExpression) 
         l_val = context.locals[left.name]
         if( l_val ) #variable existed, move data there
-          l_val = l_val.move( into , r_val) if r_val.is_a?(Vm::Value) and l_val.register != r_val.register
+          l_val = l_val.move( into , r_val) 
         else
           l_val = context.function.new_local.move( into , r_val )
         end

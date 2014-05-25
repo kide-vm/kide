@@ -16,7 +16,7 @@ module Vm
         if arg.is_a?(IntegerConstant) or arg.is_a?(StringConstant)
           function.args[index].load into , arg
         else
-          function.args[index].move( into, arg ) if arg.register != args[index].register
+          function.args[index].move( into, arg ) if arg.register != function.args[index].register
         end
       end
     end
