@@ -74,16 +74,15 @@ module Core
         return utoa_function
       end
 
-      # testing method, hand coded fibo, expects arg in 1 , so pass 2 in, first bogy
-      # result comes in 0
+      # testing method, hand coded fibo, expects arg in 1 
+      # result comes in 7
       # a hand coded version of the fibonachi numbers
       #  not my hand off course, found in the net from a basic introduction
       def fibo context
-        fibo_function = Vm::Function.new(:fibo , [Vm::Integer , Vm::Integer] , Vm::Integer )
-        result = fibo_function.args[0]
-        int = fibo_function.args[1]
+        fibo_function = Vm::Function.new(:fibo , [Vm::Integer] , Vm::Integer )
+        result = Vm::Integer.new(7)
+        int = fibo_function.args[0]
         count = fibo_function.new_local
-        loop_block = Vm::Block.new("loop", nil)
         f1 = fibo_function.new_local
         f2 = fibo_function.new_local
         b = fibo_function.body.scope binding
@@ -96,14 +95,14 @@ module Core
         b.f2 = 0
         b.count = int - 2 
 
-        b.add_code loop_block
-        l = loop_block.scope binding
+        l = fibo_function.body.new_block("loop").scope binding
 
         l.f1 = f1 + f2
         l.f2 = f1 - f2
         l.count = (count - 1).set_update_status
-        l.bpl( loop_block )
-        l.result = f1
+        l.bpl( l )
+        l.mov( result , f1 )
+        fibo_function.set_return result
         l.pop [ count , f1 , f2 , :pc]
         fibo_function
       end
