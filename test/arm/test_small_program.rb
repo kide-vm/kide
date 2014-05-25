@@ -13,14 +13,14 @@ class TestSmallProg < MiniTest::Test
   end
 
   def test_loop
-    s = Vm::Block.new("start",nil).scope binding
-    m = @program.main.scope binding
     r0 = Vm::Integer.new(0)
+    m = @program.main.scope binding
     m.r0 = 5                #1
-    m << s
+
+    s = m.new_block("loop").scope binding
     s.r0 = (r0 - 1).set_update_status      #2
     s.bne  s          #3
-    @should = [0x0,0xb0,0xa0,0xe3,0x5,0x0,0xa0,0xe3,0x1,0x0,0x50,0xe2,0xfd,0xff,0xff,0x1a,0x1,0x70,0xa0,0xe3,0x0,0x0,0x0,0xef]
+    @should = [0x0,0xb0,0xa0,0xe3,0x5,0x0,0xa0,0xe3,0x1,0x0,0x50,0xe2,0xfd,0xff,0xff,0x1a,0x1,0x70,0xa0,0xe3,0x0,0x0,0x0,0xef,0x0,0x70,0xa0,0xe1]
     write "loop"
   end
 
@@ -62,11 +62,11 @@ class TestSmallProg < MiniTest::Test
     writer = Elf::ObjectWriter.new(@program , Elf::Constants::TARGET_ARM)
     assembly = writer.text
     # use this for getting the bytes to compare to :  
-     puts assembly
+    #puts assembly
     writer.save("#{name}_test.o")
     assembly.text.bytes.each_with_index do |byte , index|
       is = @should[index]
-      assert_equal is.class, Fixnum
+      assert is , "Should be longer, #{index.to_s(16)}"
       assert_equal  byte , is , "@#{index.to_s(16)} #{byte.to_s(16)} != #{is.to_s(16)}"
     end
   end
