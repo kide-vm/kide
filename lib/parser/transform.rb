@@ -10,9 +10,9 @@ module Parser
     rule(:integer => simple(:value)) { Ast::IntegerExpression.new(value.to_i) }
     rule(:name   => simple(:name))  { Ast::NameExpression.new(name.to_s) }
 
-    rule(:array => sequence(:array) ) { Ast::ArrayExpression.new(array) } 
+    rule(:array_constant => sequence(:array_constant) ) { Ast::ArrayExpression.new(array_constant) } 
     rule(:array_element  => simple(:array_element))    { array_element  }
-    rule(:hash => sequence(:hash) ) { Ast::HashExpression.new(hash) } 
+    rule(:hash_constant => sequence(:hash_constant) ) { Ast::HashExpression.new(hash_constant) } 
     rule(:hash_key => simple(:hash_key) , :hash_value => simple(:hash_value)) {  Ast::AssociationExpression.new(hash_key,hash_value) }
     rule(:hash_pair => simple(:hash_pair) ) {  hash_pair }
 
