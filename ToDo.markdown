@@ -41,5 +41,5 @@ good performance io with or without zero-mq. Fiddle looks nice addmittadly.
 
 Anyway, as i want to use gpio mostly the whole c wrapping is not too high on the list.
 
-My first approach would be to minkey patch any gems where they dip into things we don't have.
+My first approach would be to monkey patch any gems where they dip into things we don't have.
 Or copy/port them to a smaller version.
