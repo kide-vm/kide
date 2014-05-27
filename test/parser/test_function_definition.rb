@@ -61,6 +61,47 @@ HERE
     @parser = @parser.function_definition
   end
 
+  def test_function_return
+    @string_input    = <<HERE
+def retvar(n)
+  i = 5
+  return i 
+end
+HERE
+    @parse_output = {:function_name=>{:name=>"retvar"}, :parmeter_list=>[{:parmeter=>{:name=>"n"}}], :expressions=>[{:l=>{:name=>"i"}, :o=>"= ", :r=>{:integer=>"5"}}, {:return=>"return", :return_expression=>{:name=>"i"}}], :end=>"end"}
+    @transform_output = Ast::FunctionExpression.new(:retvar, [Ast::NameExpression.new("n")] , [Ast::OperatorExpression.new("=", Ast::NameExpression.new("i"),Ast::IntegerExpression.new(5)),Ast::ReturnExpression.new(Ast::NameExpression.new("i") )] )
+    @parser = @parser.function_definition
+  end
+
+  def test_function_return_if
+    @string_input    = <<HERE
+def retvar(n)
+  if( n > 5)
+    return 10
+  else
+    return 20
+  end 
+end
+HERE
+    @parse_output = {:function_name=>{:name=>"retvar"}, :parmeter_list=>[{:parmeter=>{:name=>"n"}}], :expressions=>[{:if=>"if", :conditional=>{:l=>{:name=>"n"}, :o=>"> ", :r=>{:integer=>"5"}}, :if_true=>{:expressions=>[{:return=>"return", :return_expression=>{:integer=>"10"}}], :else=>"else"}, :if_false=>{:expressions=>[{:return=>"return", :return_expression=>{:integer=>"20"}}], :end=>"end"}}], :end=>"end"}
+    @transform_output = Ast::FunctionExpression.new(:retvar, [Ast::NameExpression.new("n")] , [Ast::IfExpression.new(Ast::OperatorExpression.new(">", Ast::NameExpression.new("n"),Ast::IntegerExpression.new(5)), [Ast::ReturnExpression.new(Ast::IntegerExpression.new(10) )],[Ast::ReturnExpression.new(Ast::IntegerExpression.new(20) )] )] )
+    @parser = @parser.function_definition
+  end
+
+  def test_function_return_while
+    @string_input    = <<HERE
+def retvar(n)
+  while( n > 5) do
+    n = n + 1
+    return n
+  end 
+end
+HERE
+    @parse_output = {:function_name=>{:name=>"retvar"}, :parmeter_list=>[{:parmeter=>{:name=>"n"}}], :expressions=>[{:while=>"while", :while_cond=>{:l=>{:name=>"n"}, :o=>"> ", :r=>{:integer=>"5"}}, :do=>"do", :body=>{:expressions=>[{:l=>{:name=>"n"}, :o=>"= ", :r=>{:l=>{:name=>"n"}, :o=>"+ ", :r=>{:integer=>"1"}}}, {:return=>"return", :return_expression=>{:name=>"n"}}], :end=>"end"}}], :end=>"end"}
+    @transform_output = Ast::FunctionExpression.new(:retvar, [Ast::NameExpression.new("n")] , [Ast::WhileExpression.new(Ast::OperatorExpression.new(">", Ast::NameExpression.new("n"),Ast::IntegerExpression.new(5)), [Ast::OperatorExpression.new("=", Ast::NameExpression.new("n"),Ast::OperatorExpression.new("+", Ast::NameExpression.new("n"),Ast::IntegerExpression.new(1))), Ast::ReturnExpression.new(Ast::NameExpression.new("n") )] )] )
+    @parser = @parser.function_definition
+  end
+
   def test_function_while
     @string_input    = <<HERE
 def fibonaccit(n)

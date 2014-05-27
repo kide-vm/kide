@@ -4,7 +4,7 @@ module Parser
     
     rule(:value_expression) { call_site | basic_type }
 
-    rule(:expression) { (while_do | conditional | operator_expression | call_site ) >> newline }
+    rule(:expression) { (simple_return | while_do | conditional | operator_expression | call_site ) >> newline }
 
     def delimited_expressions( delimit )
       ( (delimit.absent? >> expression).repeat(1)).as(:expressions) >> delimit
