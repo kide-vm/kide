@@ -20,7 +20,7 @@ module Parser
 
   class Crystal < Parslet::Parser
     include BasicTypes
-#    include CompoundTypes
+    include CompoundTypes
     include Tokens
     include Keywords
     include Control
@@ -29,6 +29,6 @@ module Parser
     include FunctionDefinition
     include Operators
 
-    rule(:root){ (function_definition | expression | operator_expression | call_site | space).repeat }
+    rule(:root){ (function_definition | expression  | call_site | space).repeat }
   end
 end

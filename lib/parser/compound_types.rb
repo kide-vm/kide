@@ -3,16 +3,16 @@ module Parser
   module CompoundTypes
     include Parslet
 
-    rule(:array) do
+    rule(:array_constant) do
       left_bracket >>
       (  ((operator_expression|value_expression).as(:array_element) >> space? >>
-          (comma >> space? >> (operator_expression|value_expression).as(:array_element)).repeat(0)).repeat(0,1)).as(:array) >>
+          (comma >> space? >> (operator_expression|value_expression).as(:array_element)).repeat(0)).repeat(0,1)).as(:array_constant) >>
           space? >> right_bracket
       end
 
     rule(:hash_pair)  { basic_type.as(:hash_key) >> association >> (operator_expression|value_expression).as(:hash_value) }
-    rule(:hash)       { left_brace >> ((hash_pair.as(:hash_pair) >> 
-                         (comma >> space? >> hash_pair.as(:hash_pair)).repeat(0)).repeat(0,1)).as(:hash)>> 
+    rule(:hash_constant)       { left_brace >> ((hash_pair.as(:hash_pair) >> 
+                         (comma >> space? >> hash_pair.as(:hash_pair)).repeat(0)).repeat(0,1)).as(:hash_constant)>> 
                          space? >> right_brace }
 
   end
