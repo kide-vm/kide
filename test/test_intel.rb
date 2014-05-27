@@ -1,7 +1,7 @@
 require_relative 'helper'
 require 'intel/all'
 
-class TestIntel < MiniTest::Unit::TestCase
+class TestIntel < MiniTest::Test
   # MachineCodeX86Test initialize-release
 
   def setup
