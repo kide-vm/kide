@@ -72,36 +72,32 @@ Time to add some meat.
 Step 5 - Register allocation
 ----------------------------
 
-Unfortunately Hello world cheated a little in that it assumed knowledge of registers. Next up is a dynamic
-algorithm for register allocation.
+A first version of register allocation is done. I moved away from the standard c calling convention to pin a 
+type register and also not have passing and return overlapping.
+That at least simplified thinking about register allocation. One has to remember the machine level is completely
+value and pass by value based.
 
-Probably using something along llvm lines (again!), ie Instructions refering to the Values theu use.
-Ravel the chain up from the back, ie where things have to be at the end to make it work.
+As a side i got a return statement done now, and implicit return at the end has been working. Just making sure all
+branches actually return implicitly is not done. But no rush there, as one can always write the return explicitly.
 
 Step 6 - Basic type instructions
 --------------------------------
 
 As we want to work on values, all the value methods have to be implemented to map to machine instructions.
 
-With optimisations there are so many!! 
+Some are done, most are not. But they are straightforward.
 
 Step 7 - Compound types
 -----------------------
 
-Your basic array and hash need to be parsed , and implemented along with string. Nothing much happens without
-these guys. 
+Arrays and Hash parse. Good. But this means The Actual datastructures should be implemented. AWIP ( a work in progress)
 
 Step 8
--------
-
-Implement a way to call libc
-
-Step 9
 ------
 
 Implement classes,  implement Core library of arrays/hash
 
-Step 10
+Step 9
 ------
 
 Implement Blocks
@@ -114,6 +110,10 @@ Implement Exceptions
 Step 12
 -------
 
+Implement a way to call libc
+
+Step 13
+-------
 
 Celebrate New year 2030
 
