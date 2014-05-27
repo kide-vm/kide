@@ -13,5 +13,8 @@ module Parser
                                           right_parenthesis >> keyword_do >> newline >>
                               expressions_end.as(:body)
     end
+    rule(:simple_return) do
+      keyword_return >> (operator_expression|value_expression).as(:return_expression) >> eol
+    end
   end
 end

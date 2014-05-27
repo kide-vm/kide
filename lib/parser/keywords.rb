@@ -10,6 +10,7 @@ module Parser
     rule(:keyword_false)  {  str('false').as(:false) >> space?}
     rule(:keyword_if)     {  str('if').as(:if)   >> space? }
     rule(:keyword_rescue) {  str('rescue').as(:rescue) >> space?}
+    rule(:keyword_return) {  str('return').as(:return) >> space?}
     rule(:keyword_true)   {  str('true').as(:true) >> space?}
     rule(:keyword_nil)    {  str('nil').as(:nil) >> space?}
     rule(:keyword_unless) {  str('unless').as(:unless) >> space?}

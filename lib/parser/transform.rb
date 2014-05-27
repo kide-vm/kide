@@ -36,6 +36,10 @@ module Parser
            Ast::WhileExpression.new(while_cond, body) 
          end
 
+    rule(:return => simple(:return) , :return_expression => simple(:return_expression))do
+       Ast::ReturnExpression.new(return_expression) 
+     end
+
     rule(:parmeter  => simple(:parmeter))    { parmeter  }
     rule(:parmeter_list => sequence(:parmeter_list)) { parmeter_list }
 
