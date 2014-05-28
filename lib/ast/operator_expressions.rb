@@ -39,6 +39,10 @@ module Ast
         code = l_val.greater_than into , r_val
       when "<"
         code = l_val.less_than into , r_val
+      when ">="
+        code = l_val.greater_or_equal into , r_val
+      when "<="
+        code = l_val.less_or_equal into , r_val
       when "=="
         code = l_val.equals into , r_val
       when "+"

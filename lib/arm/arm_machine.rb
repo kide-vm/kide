@@ -18,6 +18,10 @@ module Arm
       block <<  cmp( left ,  right )
       Vm::BranchCondition.new :le
     end
+    def integer_greater_or_equal block ,  left , right
+      block <<  cmp( left ,  right )
+      Vm::BranchCondition.new :ge
+    end
     def integer_less_than block ,  left , right
       block <<  cmp( left ,  right )
       Vm::BranchCondition.new :lt
