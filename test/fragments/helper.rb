@@ -37,7 +37,7 @@ module Fragments
     writer = Elf::ObjectWriter.new(@program , Elf::Constants::TARGET_ARM)
     assembly = writer.text
     # use this for getting the bytes to compare to :  
-    puts assembly
+    #puts assembly
     writer.save("#{name}.o")
     assembly.text.bytes.each_with_index do |byte , index|
       is = @should[index]
