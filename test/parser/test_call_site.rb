@@ -31,4 +31,25 @@ class TestCallSite < MiniTest::Test
     @parser = @parser.call_site
   end
 
+  def test_call_operator
+    @string_input    = 'puts( 3 + 5)'
+    @parse_output = {:call_site=>{:name=>"puts"}, :argument_list=>[{:argument=>{:l=>{:integer=>"3"}, :o=>"+ ", :r=>{:integer=>"5"}}}]}
+    @transform_output = Ast::CallSiteExpression.new(:puts, [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(3),Ast::IntegerExpression.new(5))] )
+    @parser = @parser.call_site
+  end
+
+  def test_call_two_operators
+    @string_input    = 'puts(3 + 5 , a - 3)'
+    @parse_output = {:call_site=>{:name=>"puts"}, :argument_list=>[{:argument=>{:l=>{:integer=>"3"}, :o=>"+ ", :r=>{:integer=>"5"}}}, {:argument=>{:l=>{:name=>"a"}, :o=>"- ", :r=>{:integer=>"3"}}}]}
+    @transform_output = Ast::CallSiteExpression.new(:puts, [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(3),Ast::IntegerExpression.new(5)),Ast::OperatorExpression.new("-", Ast::NameExpression.new("a"),Ast::IntegerExpression.new(3))] )
+    @parser = @parser.call_site
+  end
+
+  def test_call_chaining
+    @string_input    = 'puts(putint(3 + 5 ), a - 3)'
+    @parse_output = {:call_site=>{:name=>"puts"}, :argument_list=>[{:argument=>{:call_site=>{:name=>"putint"}, :argument_list=>[{:argument=>{:l=>{:integer=>"3"}, :o=>"+ ", :r=>{:integer=>"5"}}}]}}, {:argument=>{:l=>{:name=>"a"}, :o=>"- ", :r=>{:integer=>"3"}}}]}
+    @transform_output = Ast::CallSiteExpression.new(:puts, [Ast::CallSiteExpression.new(:putint, [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(3),Ast::IntegerExpression.new(5))] ),Ast::OperatorExpression.new("-", Ast::NameExpression.new("a"),Ast::IntegerExpression.new(3))] )
+    @parser = @parser.call_site
+  end
+
 end
