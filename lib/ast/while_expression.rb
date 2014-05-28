@@ -18,7 +18,7 @@ module Ast
       ret = while_block.new_block "#{into.name}_return"
       cond_val = condition.compile(context , while_block)
       puts "compiled while condition #{cond_val.inspect}"
-      while_block.b ret , condition_code: cond_val.not_operator
+      while_block.b ret , condition_code: cond_val.operator
       last = nil
       body.each do |part|
         last = part.compile(context , while_block )
