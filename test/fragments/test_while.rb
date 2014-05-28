@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-class TestWhile < MiniTest::Test
+class TestWhileFragment < MiniTest::Test
   include Fragments
 
   def test_while

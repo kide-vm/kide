@@ -3,7 +3,7 @@ require_relative 'helper'
 class TestFunctions < MiniTest::Test
   include Fragments
 
-  def test_hello
+  def test_functions
     @string_input = <<HERE
     def minus(a,b)
       a - b
