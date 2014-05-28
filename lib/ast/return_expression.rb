@@ -14,7 +14,7 @@ module Ast
       [:expression]
     end
     def compile context , into
-      expression_value = condition.compile(context , into)
+      expression_value = expression.compile(context , into)
       puts "compiled return expression #{expression_value.inspect}"
       return expression_value
     end
