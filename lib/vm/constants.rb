@@ -30,7 +30,7 @@ module Vm
       # rounding up to the next 4 (always adding one for zero pad)
       pad =  ((length / 4 ) + 1 ) * 4 - length
       raise "#{pad} #{self}" unless pad >= 1
-      @string = str + "\x00" * pad 
+      @string = str + " " * pad
     end
 
     def result= value
