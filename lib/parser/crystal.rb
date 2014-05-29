@@ -6,6 +6,7 @@ require_relative "control"
 require_relative "expression"
 require_relative "call_site"
 require_relative "function_definition"
+require_relative "module_def"
 require_relative "operators"
 
 module Parser
@@ -28,7 +29,8 @@ module Parser
     include CallSite
     include FunctionDefinition
     include Operators
+    include ModuleDef
 
-    rule(:root){ (function_definition | expression  | call_site | space).repeat }
+    rule(:root){ (function_definition | expression  | call_site ).repeat }
   end
 end

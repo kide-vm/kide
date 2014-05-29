@@ -37,9 +37,9 @@ module ParserHelper
     # check that @string_input parses and transforms to @transform_output
     def check_ast
       syntax    = @parser.parse(@string_input)
-      tree      = @transform.apply(syntax)
-      # puts tree.inspect
-      assert_equal @transform_output , tree
+      is      = @transform.apply(syntax)
+      #puts is.inspect
+      assert_equal @transform_output , is
     end
   end
 

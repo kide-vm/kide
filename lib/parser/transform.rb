@@ -53,6 +53,10 @@ module Parser
       Ast::OperatorExpression.new( o.to_s.strip , l ,r)
     end
     
+    rule( :name => simple(:name) , :module_expressions => sequence(:module_expressions) , :end=>"end") do
+      Ast::ModuleExpression.new(name , module_expressions) 
+    end
+    
     #shortcut to get the ast tree for a given string
     # optional second arguement specifies a rule that will be parsed (mainly for testing)     
     def self.ast string , rule = :root
