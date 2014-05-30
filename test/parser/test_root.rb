@@ -64,7 +64,7 @@ HERE
   
   def test_module_method
     @string_input = <<HERE
-module fibo
+module Fibo
   def fibonaccit(n)
     a = 0 
   end
@@ -73,33 +73,33 @@ module fibo
 end
 
 HERE
-    @parse_output = [{:name=>"fibo", :module_expressions=>[{:function_name=>{:name=>"fibonaccit"}, :parmeter_list=>[{:parmeter=>{:name=>"n"}}], :expressions=>[{:l=>{:name=>"a"}, :o=>"= ", :r=>{:integer=>"0"}}], :end=>"end"}, {:call_site=>{:name=>"fibonaccit"}, :argument_list=>[{:argument=>{:integer=>"10"}}]}], :end=>"end"}]
-    @transform_output = [Ast::ModuleExpression.new(:fibo ,[Ast::FunctionExpression.new(:fibonaccit, [Ast::NameExpression.new("n")] , [Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::IntegerExpression.new(0))] ), Ast::CallSiteExpression.new(:fibonaccit, [Ast::IntegerExpression.new(10)] )] )]
+    @parse_output = [{:module_name=>"Fibo", :module_expressions=>[{:function_name=>{:name=>"fibonaccit"}, :parmeter_list=>[{:parmeter=>{:name=>"n"}}], :expressions=>[{:l=>{:name=>"a"}, :o=>"= ", :r=>{:integer=>"0"}}], :end=>"end"}, {:call_site=>{:name=>"fibonaccit"}, :argument_list=>[{:argument=>{:integer=>"10"}}]}], :end=>"end"}]
+    @transform_output = [Ast::ModuleExpression.new(:Fibo ,[Ast::FunctionExpression.new(:fibonaccit, [Ast::NameExpression.new("n")] , [Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::IntegerExpression.new(0))] ), Ast::CallSiteExpression.new(:fibonaccit, [Ast::IntegerExpression.new(10)] )] )]
   end
 
   def test_module_assignment
     @string_input = <<HERE
-module fibo
+module Fibo
   a = 5 + foo
   bar( b , a , r)
 end
 
 HERE
-    @parse_output = [{:name=>"fibo", :module_expressions=>[{:l=>{:name=>"a"}, :o=>"= ", :r=>{:l=>{:integer=>"5"}, :o=>"+ ", :r=>{:name=>"foo"}}}, {:call_site=>{:name=>"bar"}, :argument_list=>[{:argument=>{:name=>"b"}}, {:argument=>{:name=>"a"}}, {:argument=>{:name=>"r"}}]}], :end=>"end"}]
-    @transform_output = [Ast::ModuleExpression.new(:fibo ,[Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(5),Ast::NameExpression.new("foo"))), Ast::CallSiteExpression.new(:bar, [Ast::NameExpression.new("b"),Ast::NameExpression.new("a"),Ast::NameExpression.new("r")] )] )]
+    @parse_output = [{:module_name=>"Fibo", :module_expressions=>[{:l=>{:name=>"a"}, :o=>"= ", :r=>{:l=>{:integer=>"5"}, :o=>"+ ", :r=>{:name=>"foo"}}}, {:call_site=>{:name=>"bar"}, :argument_list=>[{:argument=>{:name=>"b"}}, {:argument=>{:name=>"a"}}, {:argument=>{:name=>"r"}}]}], :end=>"end"}]
+    @transform_output = [Ast::ModuleExpression.new(:Fibo ,[Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(5),Ast::NameExpression.new("foo"))), Ast::CallSiteExpression.new(:bar, [Ast::NameExpression.new("b"),Ast::NameExpression.new("a"),Ast::NameExpression.new("r")] )] )]
   end
 
   def test_module_class
     @string_input = <<HERE
-module fibo
-  class bar
+module FooBo
+  class Bar
     a = 5 + foo
   end
 end
 
 HERE
-    @parse_output = [{:name=>"fibo", :module_expressions=>[{:name=>"bar", :class_expressions=>[{:l=>{:name=>"a"}, :o=>"= ", :r=>{:l=>{:integer=>"5"}, :o=>"+ ", :r=>{:name=>"foo"}}}], :end=>"end"}], :end=>"end"}]
-    @transform_output = [Ast::ModuleExpression.new(:fibo ,[Ast::ClassExpression.new(:bar ,[Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(5),Ast::NameExpression.new("foo")))] )] )]
+    @parse_output = [{:module_name=>"FooBo", :module_expressions=>[{:module_name=>"Bar", :class_expressions=>[{:l=>{:name=>"a"}, :o=>"= ", :r=>{:l=>{:integer=>"5"}, :o=>"+ ", :r=>{:name=>"foo"}}}], :end=>"end"}], :end=>"end"}]
+    @transform_output = [Ast::ModuleExpression.new(:FooBo ,[Ast::ClassExpression.new(:Bar ,[Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(5),Ast::NameExpression.new("foo")))] )] )]
   end
 
 end
