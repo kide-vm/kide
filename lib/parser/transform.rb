@@ -9,6 +9,8 @@ module Parser
     
     rule(:integer => simple(:value)) { Ast::IntegerExpression.new(value.to_i) }
     rule(:name   => simple(:name))  { Ast::NameExpression.new(name.to_s) }
+    rule(:instance_variable   => simple(:instance_variable))  { Ast::VariableExpression.new(instance_variable.name) }
+    rule(:module_name   => simple(:module_name))  { Ast::ModuleName.new(module_name.to_s) }
 
     rule(:array_constant => sequence(:array_constant) ) { Ast::ArrayExpression.new(array_constant) } 
     rule(:array_element  => simple(:array_element))    { array_element  }

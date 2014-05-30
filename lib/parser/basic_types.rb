@@ -25,7 +25,13 @@ module Parser
     rule(:exponent) { (str('e')| str('E')) }
      
     # identifier must start with lower case
-    rule(:name)   { keyword.absent? >> (match['a-z'] >> match['a-zA-Z0-9'].repeat).as(:name)  >> space? }
+    # TODO rule forbit names like if_true, because it starts with a keyword. a little looser please!
+    rule(:name)   { keyword.absent? >> (match['a-z_'] >> match['a-zA-Z0-9_'].repeat).as(:name)  >> space? }
+    # instance variables must have the @
+    rule(:instance_variable) { (match('@') >> name).as(:instance_variable) }
+    # and class/module names must start with capital 
+    # (admittatly the rule matches constants too, but one step at a time)
+    rule(:module_name) { keyword.absent? >> (match['A-Z'] >> match['a-zA-Z0-9_'].repeat).as(:module_name)  >> space? }
     
     rule(:escape)     { str('\\') >> any.as(:esc) }
     rule(:string)     { quote >> (

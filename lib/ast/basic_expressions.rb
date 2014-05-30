@@ -42,6 +42,11 @@ module Ast
     end
   end
 
+  class VariableExpression < NameExpression
+  end
+  class ModuleName < NameExpression
+  end
+
   class StringExpression < Expression
     attr_reader  :string
     def initialize str
