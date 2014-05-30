@@ -5,7 +5,7 @@ class TestWhileFragment < MiniTest::Test
 
   def test_while
     @string_input = <<HERE
-    def fibonaccit(n) # n == r0
+def fibonaccit(n) # n == r0
       a = 0           # a == r1
       b = 1           # b = r2
       while( n > 1 ) do                   #BUG comment lines + comments behind function calls
@@ -15,7 +15,7 @@ class TestWhileFragment < MiniTest::Test
         n = n - 1      # r0 <- r2   for call,    #call ok  
       end             #r5 <- r0 - 1    n=n-1 through r5 tmp              
       return b
-    end               # r0 <- r5
+end               # r0 <- r5
 
     putint(fibonaccit( 10 ))
 HERE
