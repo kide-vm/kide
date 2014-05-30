@@ -89,6 +89,19 @@ HERE
     @transform_output = [Ast::ModuleExpression.new(:fibo ,[Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(5),Ast::NameExpression.new("foo"))), Ast::CallSiteExpression.new(:bar, [Ast::NameExpression.new("b"),Ast::NameExpression.new("a"),Ast::NameExpression.new("r")] )] )]
   end
 
+  def test_module_class
+    @string_input = <<HERE
+module fibo
+  class bar
+    a = 5 + foo
+  end
+end
+
+HERE
+    @parse_output = [{:name=>"fibo", :module_expressions=>[{:name=>"bar", :class_expressions=>[{:l=>{:name=>"a"}, :o=>"= ", :r=>{:l=>{:integer=>"5"}, :o=>"+ ", :r=>{:name=>"foo"}}}], :end=>"end"}], :end=>"end"}]
+    @transform_output = [Ast::ModuleExpression.new(:fibo ,[Ast::ClassExpression.new(:bar ,[Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(5),Ast::NameExpression.new("foo")))] )] )]
+  end
+
 end
 
 

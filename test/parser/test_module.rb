@@ -59,4 +59,16 @@ HERE
     @transform_output = Ast::ModuleExpression.new(:sif ,[Ast::CallSiteExpression.new(:ofthen, [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(3),Ast::IntegerExpression.new(4)),Ast::NameExpression.new("var")] ), Ast::FunctionExpression.new(:ofthen, [Ast::NameExpression.new("n"),Ast::NameExpression.new("m")] , [Ast::IntegerExpression.new(44)] )] )
     @parser = @parser.module_definition
   end
+  def test_module_class
+    @string_input    = <<HERE
+module foo
+  class bar
+    funcall(3+4 , var)
+  end
+end
+HERE
+    @parse_output = {:name=>"foo", :module_expressions=>[{:name=>"bar", :class_expressions=>[{:call_site=>{:name=>"funcall"}, :argument_list=>[{:argument=>{:l=>{:integer=>"3"}, :o=>"+", :r=>{:integer=>"4"}}}, {:argument=>{:name=>"var"}}]}], :end=>"end"}], :end=>"end"}
+    @transform_output = Ast::ModuleExpression.new(:foo ,[Ast::ClassExpression.new(:bar ,[Ast::CallSiteExpression.new(:funcall, [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(3),Ast::IntegerExpression.new(4)),Ast::NameExpression.new("var")] )] )] )
+    @parser = @parser.module_definition
+  end
 end

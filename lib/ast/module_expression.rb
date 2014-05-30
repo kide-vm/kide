@@ -30,5 +30,7 @@ module Ast
     end
   end
 
-  
+  class ClassExpression < ModuleExpression
+
+  end
 end

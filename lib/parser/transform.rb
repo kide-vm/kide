@@ -53,8 +53,12 @@ module Parser
       Ast::OperatorExpression.new( o.to_s.strip , l ,r)
     end
     
+    #modules and classes are undertsndibly quite similar   Class < Module
     rule( :name => simple(:name) , :module_expressions => sequence(:module_expressions) , :end=>"end") do
-      Ast::ModuleExpression.new(name , module_expressions) 
+      Ast::ModuleExpression.new(name , module_expressions)
+    end
+    rule( :name => simple(:name) , :class_expressions => sequence(:class_expressions) , :end=>"end") do
+      Ast::ClassExpression.new(name , class_expressions)
     end
     
     #shortcut to get the ast tree for a given string
