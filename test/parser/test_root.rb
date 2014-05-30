@@ -62,6 +62,33 @@ HERE
     @transform_output = [Ast::FunctionExpression.new(:fibonaccit, [Ast::NameExpression.new("n")] , [Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::IntegerExpression.new(0)),Ast::OperatorExpression.new("=", Ast::NameExpression.new("b"),Ast::IntegerExpression.new(1)),Ast::WhileExpression.new(Ast::OperatorExpression.new(">", Ast::NameExpression.new("n"),Ast::IntegerExpression.new(1)), [Ast::OperatorExpression.new("=", Ast::NameExpression.new("tmp"),Ast::NameExpression.new("a")), Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::NameExpression.new("b")), Ast::OperatorExpression.new("=", Ast::NameExpression.new("b"),Ast::OperatorExpression.new("+", Ast::NameExpression.new("tmp"),Ast::NameExpression.new("b"))), Ast::CallSiteExpression.new("puts", [Ast::NameExpression.new("b")] ), Ast::OperatorExpression.new("=", Ast::NameExpression.new("n"),Ast::OperatorExpression.new("-", Ast::NameExpression.new("n"),Ast::IntegerExpression.new(1)))] )] ), Ast::CallSiteExpression.new("fibonaccit", [Ast::IntegerExpression.new(10)] )]
   end
   
+  def test_module_method
+    @string_input = <<HERE
+module fibo
+  def fibonaccit(n)
+    a = 0 
+  end
+
+  fibonaccit( 10 )
+end
+
+HERE
+    @parse_output = [{:name=>"fibo", :module_expressions=>[{:function_name=>{:name=>"fibonaccit"}, :parmeter_list=>[{:parmeter=>{:name=>"n"}}], :expressions=>[{:l=>{:name=>"a"}, :o=>"= ", :r=>{:integer=>"0"}}], :end=>"end"}, {:call_site=>{:name=>"fibonaccit"}, :argument_list=>[{:argument=>{:integer=>"10"}}]}], :end=>"end"}]
+    @transform_output = [Ast::ModuleExpression.new(:fibo ,[Ast::FunctionExpression.new(:fibonaccit, [Ast::NameExpression.new("n")] , [Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::IntegerExpression.new(0))] ), Ast::CallSiteExpression.new(:fibonaccit, [Ast::IntegerExpression.new(10)] )] )]
+  end
+
+  def test_module_assignment
+    @string_input = <<HERE
+module fibo
+  a = 5 + foo
+  bar( b , a , r)
+end
+
+HERE
+    @parse_output = [{:name=>"fibo", :module_expressions=>[{:l=>{:name=>"a"}, :o=>"= ", :r=>{:l=>{:integer=>"5"}, :o=>"+ ", :r=>{:name=>"foo"}}}, {:call_site=>{:name=>"bar"}, :argument_list=>[{:argument=>{:name=>"b"}}, {:argument=>{:name=>"a"}}, {:argument=>{:name=>"r"}}]}], :end=>"end"}]
+    @transform_output = [Ast::ModuleExpression.new(:fibo ,[Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(5),Ast::NameExpression.new("foo"))), Ast::CallSiteExpression.new(:bar, [Ast::NameExpression.new("b"),Ast::NameExpression.new("a"),Ast::NameExpression.new("r")] )] )]
+  end
+
 end
 
 

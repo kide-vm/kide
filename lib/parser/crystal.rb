@@ -31,6 +31,6 @@ module Parser
     include Operators
     include ModuleDef
 
-    rule(:root){ (function_definition | expression  | call_site ).repeat }
+    rule(:root){ (module_def | function_definition | expression  | call_site ).repeat }
   end
 end
