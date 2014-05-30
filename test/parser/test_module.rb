@@ -19,13 +19,24 @@ HERE
     @string_input    = <<HERE
 module Opers
   def foo(x)
-    abba = 5 
+    abba = 5
     2 + 5
   end
 end
 HERE
     @parse_output = {:module_name=>"Opers", :module_expressions=>[{:function_name=>{:name=>"foo"}, :parmeter_list=>[{:parmeter=>{:name=>"x"}}], :expressions=>[{:l=>{:name=>"abba"}, :o=>"= ", :r=>{:integer=>"5"}}, {:l=>{:integer=>"2"}, :o=>"+ ", :r=>{:integer=>"5"}}], :end=>"end"}], :end=>"end"}
     @transform_output = Ast::ModuleExpression.new(:Opers ,[Ast::FunctionExpression.new(:foo, [Ast::NameExpression.new("x")] , [Ast::OperatorExpression.new("=", Ast::NameExpression.new("abba"),Ast::IntegerExpression.new(5)),Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(2),Ast::IntegerExpression.new(5))] )] )
+    @parser = @parser.module_definition
+  end
+
+  def test_module_assign_instance
+    @string_input    = <<HERE
+module Opers
+  @abba = 5
+end
+HERE
+    @parse_output = {:module_name=>"Opers", :module_expressions=>[{:l=>{:instance_variable=>{:name=>"abba"}}, :o=>"= ", :r=>{:integer=>"5"}}], :end=>"end"}
+    @transform_output = Ast::ModuleExpression.new(:Opers ,[Ast::OperatorExpression.new("=", Ast::VariableExpression.new("abba"),Ast::IntegerExpression.new(5))] )
     @parser = @parser.module_definition
   end
 
