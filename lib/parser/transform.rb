@@ -23,7 +23,11 @@ module Parser
 
     rule( :call_site => simple(:call_site), 
           :argument_list    => sequence(:argument_list)) do
-           Ast::CallSiteExpression.new(call_site.name, argument_list) 
+           Ast::CallSiteExpression.new(call_site.name, argument_list )
+    end
+    rule( :receiver => simple(:receiver) , :call_site => simple(:call_site), 
+          :argument_list    => sequence(:argument_list)) do
+           Ast::CallSiteExpression.new(call_site.name, argument_list , receiver) 
     end
 
     rule(:if => simple(:if), :conditional     => simple(:conditional),

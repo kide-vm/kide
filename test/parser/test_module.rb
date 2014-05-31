@@ -70,6 +70,7 @@ HERE
     @transform_output = Ast::ModuleExpression.new(:Soho ,[Ast::CallSiteExpression.new(:ofthen, [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(3),Ast::IntegerExpression.new(4)),Ast::NameExpression.new("var")] ), Ast::FunctionExpression.new(:ofthen, [Ast::NameExpression.new("n"),Ast::NameExpression.new("m")] , [Ast::IntegerExpression.new(44)] )] )
     @parser = @parser.module_definition
   end
+
   def test_module_class
     @string_input    = <<HERE
 module Foo

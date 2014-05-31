@@ -102,6 +102,17 @@ HERE
     @transform_output = [Ast::ModuleExpression.new(:FooBo ,[Ast::ClassExpression.new(:Bar ,[Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(5),Ast::NameExpression.new("foo")))] )] )]
   end
 
+  def test_class_method
+    @string_input = <<HERE
+class FooBo
+  Bar.call(35)
+end
+
+HERE
+    @parse_output = [{:module_name=>"FooBo", :class_expressions=>[{:receiver=>{:module_name=>"Bar"}, :call_site=>{:name=>"call"}, :argument_list=>[{:argument=>{:integer=>"35"}}]}], :end=>"end"}]
+    @transform_output = [Ast::ClassExpression.new(:FooBo ,[Ast::CallSiteExpression.new(:call, [Ast::IntegerExpression.new(35)] ,Ast::ModuleName.new("Bar"))] )]
+  end
+
 end
 
 
