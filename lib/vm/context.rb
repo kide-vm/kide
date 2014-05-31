@@ -10,6 +10,8 @@ module Vm
       @attributes = {}
       @attributes[:object_space] = object_space
     end
-    attr_reader :attributes
+    attr_reader :attributes 
+    attr_accessor :current_class
+    
   end
 end

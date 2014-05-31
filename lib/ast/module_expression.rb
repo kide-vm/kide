@@ -15,25 +15,18 @@ module Ast
       [:name , :expressions]
     end
     def compile context , into
-      # create the class or module
-      # check if it'sa function definition and add
-      # if not, execute it, but that does means we should be in crystal (executable), not ruby. ie throw an error for now
       clazz = context.object_space.get_or_create_class name
-      
-
-
-      expression_value = expression.compile(context , into)
-      puts "compiled return expression #{expression_value.inspect}, now return in 7"
-      # copied from function expression: TODO make function
-
-      return_reg = Vm::Integer.new(7)
-      if expression_value.is_a?(Vm::IntegerConstant) or expression_value.is_a?(Vm::StringConstant)
-        return_reg.load into , expression_value if expression_value.register != return_reg.register
-      else
-        return_reg.move( into, expression_value ) if expression_value.register != return_reg.register
+      puts "Class #{clazz.inspect}"
+      context.class = clazz
+      expressions.each do |expression|
+        # check if it'sa function definition and add
+        # if not, execute it, but that does means we should be in crystal (executable), not ruby. ie throw an error for now
+        raise "only functions for now #{expression.inspect}" unless expression.is_a? Ast::FunctionExpression
+        expression_value = expression.compile(context , nil )
+        puts "compiled return expression #{expression_value.inspect}, now return in 7"
       end
-      #function.set_return return_reg
-      return return_reg
+
+      return nil
     end
   end
 

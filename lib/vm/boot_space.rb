@@ -1,5 +1,5 @@
 require_relative "context"
-require_relative "function"
+require_relative "boot_class"
 require_relative "call_site"
 require "arm/arm_machine"
 require "core/kernel"
@@ -13,8 +13,6 @@ module Vm
 
   # While data "ususally" would live in a .data section, we may also "inline" it into the code
   # in an oo system all data is represented as objects
-
-  # in terms of variables and their visibility, things are simple. They are either local or global
   
   # throwing in a context for unspecified use (well one is to pass the programm/globals around)
    
@@ -28,19 +26,17 @@ module Vm
       machine = "intel" if machine == "x86_64"
       machine = machine.capitalize
       RegisterMachine.instance = eval("#{machine}::#{machine}Machine").new
+      @classes = {}
       @context = Context.new(self)
+      @context.current_class = get_or_create_class :Object
       #global objects (data)
       @objects = []
-      # global functions
-      @functions = []
-
-      @classes = []
       @entry = Core::Kernel::main_start  Vm::Block.new("main_entry",nil)
       #main gets executed between entry and exit
       @main = Block.new("main",nil)
       @exit = Core::Kernel::main_exit Vm::Block.new("main_exit",nil)
     end
-    attr_reader :context , :main , :functions , :entry , :exit
+    attr_reader :context , :main , :classes , :entry , :exit
     
     def add_object o
       return if @objects.include? o
@@ -48,45 +44,27 @@ module Vm
       @objects << o # TODO check type , no basic values allowed (must be wrapped)
     end
     
-    def add_function function
-      raise "not a function #{function}" unless function.is_a? Function
-      raise "syserr " unless function.name.is_a? Symbol
-      @functions << function
-    end
-
-    def get_function name
-      name = name.to_sym
-      @functions.detect{ |f| f.name == name }
-    end
-
-    # preferred way of creating new functions (also forward declarations, will flag unresolved later)
-    def get_or_create_function name 
-      fun = get_function name
-      unless fun
-        fun = Core::Kernel.send(name , context)
-        raise "no such function '#{name}'" if fun == nil
-        @functions << fun
-      end
-      fun
-    end
-
     def get_or_create_class name
-      
+      c = @classes[name]
+      unless c
+        c = BootClass.new(name,@context)
+        @classes[name] = c
+      end
+      c
     end
 
-    # linking entry , main , exit
-    #         functions , objects
+    # linking entry , main , exit , classes , objects
     def link_at( start , context)
-      @position = start
+      super
       @entry.link_at( start , context )
       start += @entry.length
       @main.link_at( start , context )
       start += @main.length
       @exit.link_at( start , context)
       start += @exit.length
-      @functions.each do |function|
-        function.link_at(start , context)
-        start += function.length
+      @classes.values.each do |clazz|
+        clazz.link_at(start , context)
+        start += clazz.length
       end
       @objects.each do |o|
         o.link_at(start , context)
@@ -100,8 +78,8 @@ module Vm
       @entry.assemble( io )
       @main.assemble( io )
       @exit.assemble( io )
-      @functions.each do |function|
-        function.assemble(io)
+      @classes.values.each do |clazz|
+        clazz.assemble(io)
       end
       @objects.each do |o|
         o.assemble(io)

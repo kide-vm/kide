@@ -22,7 +22,9 @@ module Elf
       binary = program.assemble(StringIO.new )
       
       blocks = []
-      program.functions.each {|f| blocks += f.blocks }
+      program.classes.values.each do |clazz| 
+        clazz.functions.each {|f| blocks += f.blocks }
+      end
       blocks += [program.entry , program.exit , program.main]
       blocks.flatten.each do |b|
         add_symbol b.name.to_s , b.position
