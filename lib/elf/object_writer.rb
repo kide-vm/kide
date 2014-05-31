@@ -23,7 +23,11 @@ module Elf
       
       blocks = []
       program.classes.values.each do |clazz| 
-        clazz.functions.each {|f| blocks += f.blocks }
+        clazz.functions.each do |f|
+          f.blocks.each do |b|
+              add_symbol "#{clazz.name}::#{f.name}@#{b.name}" , b.position
+            end
+        end
       end
       blocks += [program.entry , program.exit , program.main]
       blocks.flatten.each do |b|

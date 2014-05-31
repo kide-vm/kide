@@ -9,7 +9,7 @@ module Parser
           space? >> right_parenthesis
     }
 
-    rule(:call_site) { name.as(:call_site) >> argument_list >> comment.maybe}
+    rule(:call_site) { (name.as(:receiver) >> str(".")).repeat(0,1) >> name.as(:call_site) >> argument_list >> comment.maybe}
 
     
   end

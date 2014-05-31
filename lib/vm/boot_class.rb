@@ -26,7 +26,7 @@ module Vm
       fun = get_function name
       unless fun
         fun = Core::Kernel.send(name , @context)
-        raise "no such function '#{name}'" if fun == nil
+        raise "no such function #{name}, #{name.class}" if fun == nil
         @functions << fun
       end
       fun
