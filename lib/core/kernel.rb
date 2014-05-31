@@ -35,10 +35,10 @@ module Core
       def putint context , arg = Vm::Integer
         putint_function = Vm::Function.new(:putint , [arg] , arg )
         buffer = Vm::StringConstant.new("           ") # create a buffer
-        context.program.add_object buffer              # and save it (function local variable: a no no)
+        context.object_space.add_object buffer              # and save it (function local variable: a no no)
         int = putint_function.args.first
         moved_int = putint_function.new_local
-        utoa = context.program.get_or_create_function(:utoa)
+        utoa = context.object_space.get_or_create_function(:utoa)
         b = putint_function.body
         b.mov( moved_int ,  int ) #move arg up
         #b.a       buffer  => int          # string to write to

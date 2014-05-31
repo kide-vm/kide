@@ -13,7 +13,7 @@ require 'parslet/convenience'
 module Fragments
   # need a code generator, for arm 
   def setup
-    @program = Vm::Program.new "Arm"
+    @object_space = Vm::BootSpace.new "Arm"
   end
 
   def parse 
@@ -24,9 +24,9 @@ module Fragments
     # and the last is wrapped as a main
     parts.each_with_index do |part,index|
       if index == (parts.length - 1)
-        expr    = part.compile( @program.context , @program.main )
+        expr    = part.compile( @object_space.context , @object_space.main )
       else
-        expr    = part.compile( @program.context ,  nil )
+        expr    = part.compile( @object_space.context ,  nil )
         raise "should be function definition for now" unless expr.is_a? Vm::Function
       end
     end
@@ -34,7 +34,7 @@ module Fragments
 
   # helper to write the file
   def write name
-    writer = Elf::ObjectWriter.new(@program , Elf::Constants::TARGET_ARM)
+    writer = Elf::ObjectWriter.new(@object_space , Elf::Constants::TARGET_ARM)
     assembly = writer.text
     # use this for getting the bytes to compare to :  
     #puts assembly

@@ -58,7 +58,7 @@ module Ast
 
     def compile context , into
       value = Vm::StringConstant.new(string)
-      context.program.add_object value 
+      context.object_space.add_object value 
       value
     end
     def attributes

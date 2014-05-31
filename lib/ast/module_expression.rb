@@ -15,6 +15,13 @@ module Ast
       [:name , :expressions]
     end
     def compile context , into
+      # create the class or module
+      # check if it'sa function definition and add
+      # if not, execute it, but that does means we should be in crystal (executable), not ruby. ie throw an error for now
+      clazz = context.object_space.get_or_create_class name
+      
+
+
       expression_value = expression.compile(context , into)
       puts "compiled return expression #{expression_value.inspect}, now return in 7"
       # copied from function expression: TODO make function

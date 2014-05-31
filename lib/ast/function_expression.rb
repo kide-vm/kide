@@ -27,7 +27,7 @@ module Ast
         args << arg_value
       end
       function = Vm::Function.new(name , args )
-      context.program.add_function function
+      context.object_space.add_function function
 
       parent_locals = context.locals
       parent_function = context.function

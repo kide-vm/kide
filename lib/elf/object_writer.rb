@@ -8,7 +8,7 @@ module Elf
   class ObjectWriter
     def initialize(program , target)
       @object = Elf::ObjectFile.new(target)
-      @program = program
+      @object_space = program
       sym_strtab = Elf::StringTableSection.new(".strtab")
       @object.add_section sym_strtab
       @symbol_table = Elf::SymbolTableSection.new(".symtab", sym_strtab)

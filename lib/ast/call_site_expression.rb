@@ -8,7 +8,7 @@ module Ast
     end
     def compile context , into
       params = args.collect{ |a| a.compile(context, into) }
-      function = context.program.get_or_create_function(name)
+      function = context.object_space.get_or_create_function(name)
       raise "Forward declaration not implemented (#{name}) #{inspect}" if function == nil
       call = Vm::CallSite.new( name ,  params  , function)
       current_function = context.function

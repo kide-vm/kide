@@ -5,8 +5,8 @@ require "arm/arm_machine"
 require "core/kernel"
 
 module Vm
-  # A Program represents an executable that we want to build
-  # it has a list of functions and (global) objects
+  # The BootSpace is contains all objects for a program. In functional terms it is a program, but on oo
+  # it is a collection of objects, some of which are data, some classes, some functions
   
   # The main entry is a function called (of all things) "main", This _must be supplied by the compling
   # There is a start and exit block that call main, which receives an array of strings
@@ -18,7 +18,7 @@ module Vm
   
   # throwing in a context for unspecified use (well one is to pass the programm/globals around)
    
-  class Program < Code
+  class BootSpace < Code
     
     # Initialize with a string for cpu. Naming conventions are: for Machine XXX there exists a module XXX
     #  with a XXXMachine in it that derives from Vm::RegisterMachine
@@ -44,6 +44,7 @@ module Vm
     
     def add_object o
       return if @objects.include? o
+      raise "must be derived from Code #{o.inspect}" unless o.is_a? Code
       @objects << o # TODO check type , no basic values allowed (must be wrapped)
     end
     
