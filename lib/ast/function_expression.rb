@@ -26,7 +26,8 @@ module Ast
         locals[arg] = arg_value
         args << arg_value
       end
-      function = Vm::Function.new(name , args )
+      class_name = context.current_class.name
+      function = Vm::Function.new("#{class_name}::#{name}" , args )
       context.current_class.add_function function 
 
       parent_locals = context.locals

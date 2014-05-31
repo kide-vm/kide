@@ -29,7 +29,7 @@ module Vm
 
     def initialize(name , args = [] , return_type = nil)
       super()
-      @name = name
+      @name = name.to_sym
       @args = Array.new(args.length)
       args.each_with_index do |arg , i|
         if arg.is_a?(Value)

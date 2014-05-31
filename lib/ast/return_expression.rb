@@ -20,7 +20,7 @@ module Ast
 
       return_reg = Vm::Integer.new(7)
       if expression_value.is_a?(Vm::IntegerConstant) or expression_value.is_a?(Vm::StringConstant)
-        return_reg.load into , expression_value if expression_value.register != return_reg.register
+        return_reg.load into , expression_value 
       else
         return_reg.move( into, expression_value ) if expression_value.register != return_reg.register
       end
