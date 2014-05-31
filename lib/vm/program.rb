@@ -18,12 +18,12 @@ module Vm
   
   # throwing in a context for unspecified use (well one is to pass the programm/globals around)
    
-  class Program < Block
+  class Program < Code
     
     # Initialize with a string for cpu. Naming conventions are: for Machine XXX there exists a module XXX
     #  with a XXXMachine in it that derives from Vm::RegisterMachine
     def initialize machine = nil
-      super("start" , nil)
+      super()
       machine = RbConfig::CONFIG["host_cpu"] unless machine
       machine = "intel" if machine == "x86_64"
       machine = machine.capitalize
@@ -33,6 +33,8 @@ module Vm
       @objects = []
       # global functions
       @functions = []
+
+      @classes = []
       @entry = Core::Kernel::main_start  Vm::Block.new("main_entry",nil)
       #main gets executed between entry and exit
       @main = Block.new("main",nil)
@@ -66,7 +68,11 @@ module Vm
       end
       fun
     end
-    
+
+    def get_or_create_class name
+      
+    end
+
     # linking entry , main , exit
     #         functions , objects
     def link_at( start , context)
