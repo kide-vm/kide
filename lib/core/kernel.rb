@@ -38,7 +38,7 @@ module Core
         context.object_space.add_object buffer              # and save it (function local variable: a no no)
         int = putint_function.args.first
         moved_int = putint_function.new_local
-        utoa = context.current_class.get_or_create_function(:utoa)
+        utoa = context.object_space.get_or_create_class(:Object).get_or_create_function(:utoa)
         b = putint_function.body
         b.mov( moved_int ,  int ) #move arg up
         #b.a       buffer  => int          # string to write to

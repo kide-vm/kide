@@ -8,6 +8,7 @@ module Ast
     end
     def compile context , into
       params = args.collect{ |a| a.compile(context, into) }
+      #TOOD, this needs dynamic resolution
       function = context.current_class.get_or_create_function(name)
       raise "Forward declaration not implemented (#{name}) #{inspect}" if function == nil
       call = Vm::CallSite.new( name ,  params  , function)
