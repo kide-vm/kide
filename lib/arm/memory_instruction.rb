@@ -6,8 +6,8 @@ module Arm
   class MemoryInstruction < Vm::MemoryInstruction
     include Arm::Constants
 
-    def initialize(first , attributes)
-      super(first , attributes)
+    def initialize(result , left , right = nil , attributes = {})
+      super(result , left , right , attributes)
       @attributes[:update_status] = 0 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
@@ -24,13 +24,13 @@ module Arm
                   
     # Build representation for target address
     def build
-      arg = @attributes[:right]
+      arg = @left
       arg = "r#{arg.register}".to_sym if( arg.is_a? Vm::Word )
       #str / ldr are _serious instructions. With BIG possibilities not half are implemented
       if (arg.is_a?(Symbol)) #symbol is register
         @rn = arg
-        if @attributes[:offset]
-          @operand = @attributes[:offset]
+        if @right
+          @operand = @right
           if (@operand < 0)
             @add_offset = 0
             #TODO test/check/understand
@@ -62,6 +62,7 @@ module Arm
 
     def assemble(io)
       build
+      puts inspect
       i = 0 #I flag (third bit)
       #not sure about these 2 constants. They produce the correct output for str r0 , r1
       # but i can't help thinking that that is because they are not used in that instruction and
@@ -77,7 +78,7 @@ module Arm
       val = reg_code(@operand) if @operand.is_a?(Symbol)
       val = shift(val , 0 ) # for the test
       @pre_post_index = 0 if @attributes[:flaggie]
-      val |= shift(reg_code(@first) ,        12 )  
+      val |= shift(reg_code(@result) ,        12 )  
       val |= shift(reg_code(@rn) ,        12+4) #16  
       val |= shift(@is_load ,        12+4  +4)
       val |= shift(w ,              12+4  +4+1)

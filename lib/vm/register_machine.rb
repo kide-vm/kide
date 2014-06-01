@@ -57,7 +57,7 @@ module Vm
         define_instruction_two(inst , CompareInstruction)
       end
       [:strb, :str , :ldrb, :ldr].each do |inst|
-        define_instruction_one(inst , MemoryInstruction)
+        define_instruction_three(inst , MemoryInstruction)
       end
       [:b, :call , :swi].each do |inst|
         define_instruction_one(inst , CallInstruction)
@@ -126,7 +126,7 @@ module Vm
     # same for three args (result = left right,)
     def define_instruction_three(inst , clazz ,  defaults = {} )
       clazz =  self.class_for(clazz)
-      create_method(inst) do |result , left ,right , options = nil|
+      create_method(inst) do |result , left ,right = nil , options = nil|
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst

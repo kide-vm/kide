@@ -49,8 +49,10 @@ module Vm
     end
   end
   class MemoryInstruction < Instruction
-    def initialize first , options = {}
-      @first = first
+    def initialize result , left , right = nil , options = {}
+      @result = result
+      @left = left
+      @right = right
       super(options)
     end
   end
