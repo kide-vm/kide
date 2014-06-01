@@ -42,8 +42,6 @@ module Ast
     end
   end
 
-  class VariableExpression < NameExpression
-  end
   class ModuleName < NameExpression
   end
 

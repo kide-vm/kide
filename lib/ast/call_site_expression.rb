@@ -35,4 +35,11 @@ module Ast
     end
   end
   
+  class VariableExpression < CallSiteExpression
+
+    def initialize name
+      super( :_get_instance_variable  , [StringExpression.new(name)] )
+    end
+  end
+  
 end

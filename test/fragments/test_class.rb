@@ -5,23 +5,38 @@ class TestClass < MiniTest::Test
 
   def test_class
     @string_input = <<HERE
+class Object
+  def layout()
+    return @layout
+  end
+  def class()
+    return layout.class()
+  end
+  def index_of( name )
+    return layout.index_of(name) 
+  end
+end
 class String
-  def plus( str)
+  def length()
+    return @length
+  end
+  def plus(str)
     my_length = self.length() 
     str_len = str.length()
     new_string = String.new(my_length + str_len)
     i = 0
-    while( i < my_length)
+    while( i < my_length) do
       char = self.get(i)
       new_string.set(i , char)
       i = i + 1
     end
     i = 0
-    while( i < str_len)
+    while( i < str_len) do
       char = str.get(i)
       new_string.set( i + my_length , char)
       i = i + 1
     end
+    return new_string
   end
 end
 HERE

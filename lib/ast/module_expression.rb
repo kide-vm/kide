@@ -16,10 +16,9 @@ module Ast
     end
     def compile context , into
       clazz = context.object_space.get_or_create_class name
-      puts "Class #{clazz.inspect}"
-      context.class = clazz
+      context.current_class = clazz
       expressions.each do |expression|
-        # check if it'sa function definition and add
+        # check if it's a function definition and add
         # if not, execute it, but that does means we should be in crystal (executable), not ruby. ie throw an error for now
         raise "only functions for now #{expression.inspect}" unless expression.is_a? Ast::FunctionExpression
         expression_value = expression.compile(context , nil )

@@ -20,7 +20,27 @@ module Core
       def function_exit block , f_name
         Vm::RegisterMachine.instance.function_exit block , f_name
       end
-        
+      
+      # in ruby, how this goes is   
+      #  def _get_instance_variable var
+      #     i = self.index_of(var)
+      #     return at_index(i)
+      #  end  
+      # The at_index is just "below" the api, somehting we need but don't want to expose, so we can't code the above in ruby
+      def _get_instance_variable context , name = Vm::Integer
+        get_function = Vm::Function.new(:_get_instance_variable , [Vm::Integer , Vm::Integer ] , Vm::Integer )
+        me = get_function.args[0]
+        var_name = get_function.args[1]
+        index_function = context.object_space.get_or_create_class(:Object).get_or_create_function(:index_of)
+        b = get_function.body
+        b.push( me )
+        index = b.call( index_function )
+        b.pop(me)
+        b.mov( var_name , index )
+        Vm::RegisterMachine.instance.at_index( get_function.body , number  , remainder )
+        return get_function
+      end
+
       #TODO this is in the wrong place. It is a function that returns a function object
       #   while all other methods add their code into some block. --> kernel
       def putstring context , string = Vm::Integer , length = Vm::Integer
