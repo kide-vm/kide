@@ -88,7 +88,7 @@ module Core
         # make char out of digit (by using ascii encoding) 48 == "0"
         b = utoa_function.body.scope binding
         b.remainder = remainder + 48
-        b.strb( remainder, right: str_addr ) 
+        b.strb( remainder, str_addr ) 
         b.sub( str_addr,  str_addr ,  1 ) 
         b.cmp( number ,  0 )
         b.callne( utoa_function  )
