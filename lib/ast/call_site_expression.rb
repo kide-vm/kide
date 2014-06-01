@@ -40,6 +40,10 @@ module Ast
     def initialize name
       super( :_get_instance_variable  , [StringExpression.new(name)] )
     end
+    def inspect
+      self.class.name + ".new(" + args[0].string.inspect + ")"  
+    end
+
   end
   
 end

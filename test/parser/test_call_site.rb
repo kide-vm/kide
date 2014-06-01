@@ -8,14 +8,21 @@ class TestCallSite < MiniTest::Test
     @string_input = 'foo(42)'
     @parse_output = {:call_site => {:name => 'foo'},
              :argument_list    => [{:argument => {:integer => '42'} }] }
-    @transform_output = Ast::CallSiteExpression.new 'foo', [Ast::IntegerExpression.new(42)]
+    @transform_output = Ast::CallSiteExpression.new :foo, [Ast::IntegerExpression.new(42)]
     @parser = @parser.call_site
   end
 
   def test_single_self
     @string_input = 'self.foo(42)'
     @parse_output = {:receiver=>{:name=>"self"}, :call_site=>{:name=>"foo"}, :argument_list=>[{:argument=>{:integer=>"42"}}]}
-    @transform_output = Ast::CallSiteExpression.new 'foo', [Ast::IntegerExpression.new(42)]
+    @transform_output = Ast::CallSiteExpression.new :foo, [Ast::IntegerExpression.new(42)]
+    @parser = @parser.call_site
+  end
+
+  def test_single_instance
+    @string_input = '@var.foo(42)'
+    @parse_output = {:receiver=>{:instance_variable=>{:name=>"var"}}, :call_site=>{:name=>"foo"}, :argument_list=>[{:argument=>{:integer=>"42"}}]}
+    @transform_output = Ast::CallSiteExpression.new(:foo, [Ast::IntegerExpression.new(42)] ,Ast::VariableExpression.new("var"))
     @parser = @parser.call_site
   end
 
@@ -38,7 +45,7 @@ class TestCallSite < MiniTest::Test
     @parse_output = {:call_site => {:name => 'baz' },
                      :argument_list    => [{:argument => {:integer => '42'}},
                                            {:argument => {:name => 'foo'}}]}
-    @transform_output = Ast::CallSiteExpression.new 'baz', 
+    @transform_output = Ast::CallSiteExpression.new :baz, 
                            [Ast::IntegerExpression.new(42), Ast::NameExpression.new("foo") ]
     @parser = @parser.call_site
   end
@@ -84,6 +91,12 @@ class TestCallSite < MiniTest::Test
     @string_input    = 'Class.new(self.get(4))'
     @parse_output = {:receiver=>{:module_name=>"Class"}, :call_site=>{:name=>"new"}, :argument_list=>[{:argument=>{:receiver=>{:name=>"self"}, :call_site=>{:name=>"get"}, :argument_list=>[{:argument=>{:integer=>"4"}}]}}]}
     @transform_output = Ast::CallSiteExpression.new(:new, [Ast::CallSiteExpression.new(:get, [Ast::IntegerExpression.new(4)] ,Ast::NameExpression.new("self"))] ,Ast::ModuleName.new("Class"))
+    @parser = @parser.call_site
+  end
+  def test_call_chaining_instance
+    @string_input    = '@class.new(self.get(4))'
+    @parse_output = {:receiver=>{:instance_variable=>{:name=>"class"}}, :call_site=>{:name=>"new"}, :argument_list=>[{:argument=>{:receiver=>{:name=>"self"}, :call_site=>{:name=>"get"}, :argument_list=>[{:argument=>{:integer=>"4"}}]}}]}
+    @transform_output = Ast::CallSiteExpression.new(:new, [Ast::CallSiteExpression.new(:get, [Ast::IntegerExpression.new(4)] ,Ast::NameExpression.new("self"))] ,Ast::VariableExpression.new("class"))
     @parser = @parser.call_site
   end
 
