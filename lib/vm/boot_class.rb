@@ -2,11 +2,12 @@ module Vm
   # class is mainly a list of functions with a name (for now)
   # layout of object is seperated into Layout
   class BootClass < Code
-    def initialize name , context
+    def initialize name , context , superclass = :Object
       @context = context
       # class functions
       @functions = []
       @name = name.to_sym
+      @superclass = superclass
     end
     attr_reader :name , :functions
     
@@ -24,6 +25,11 @@ module Vm
     # preferred way of creating new functions (also forward declarations, will flag unresolved later)
     def get_or_create_function name 
       fun = get_function name
+      unless fun or name == :Object
+        supr = @context.object_space.get_or_create_class(@superclass)
+        fun = supr.get_function name
+        puts "#{supr.functions.collect(&:name)} for #{name} GOT #{fun.class}" if name == :index_of
+      end
       unless fun
         fun = Core::Kernel.send(name , @context)
         raise "no such function #{name}, #{name.class}" if fun == nil

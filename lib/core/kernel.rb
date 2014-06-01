@@ -31,13 +31,14 @@ module Core
         get_function = Vm::Function.new(:_get_instance_variable , [Vm::Integer , Vm::Integer ] , Vm::Integer )
         me = get_function.args[0]
         var_name = get_function.args[1]
+        return_to = get_function.return_type
         index_function = context.object_space.get_or_create_class(:Object).get_or_create_function(:index_of)
         b = get_function.body
         b.push( me )
         index = b.call( index_function )
         b.pop(me)
-        b.mov( var_name , index )
-        Vm::RegisterMachine.instance.at_index( get_function.body , number  , remainder )
+        return_to.at_index( get_function.body , me , index )
+        get_function.set_return return_to
         return get_function
       end
 

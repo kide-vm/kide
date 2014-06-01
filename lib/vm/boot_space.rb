@@ -45,6 +45,7 @@ module Vm
     end
     
     def get_or_create_class name
+      raise "uups #{name}" unless name.is_a? Symbol
       c = @classes[name]
       unless c
         c = BootClass.new(name,@context)

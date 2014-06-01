@@ -118,6 +118,9 @@ module Vm
     def - other
       class_for(LogicInstruction).new(nil , self , other , opcode:  :sub )#, update_status: 1 )
     end
+    def at_index block , left , right
+      RegisterMachine.instance.integer_at_index block , self , left , right
+    end
     def plus block , first , right
       RegisterMachine.instance.integer_plus block , self , first , right
     end

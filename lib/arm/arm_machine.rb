@@ -31,6 +31,12 @@ module Arm
       Vm::BranchCondition.new :gt
     end
 
+    # TODO wrong type, should be object_reference. But that needs the actual typing to work
+    def integer_at_index block , result ,left , right
+      block <<  ldr( result , left , right )
+      result
+    end
+
     def integer_plus block , result , left , right
       block <<  add( result , left ,  right )
       result

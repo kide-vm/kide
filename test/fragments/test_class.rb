@@ -6,14 +6,14 @@ class TestClass < MiniTest::Test
   def test_class
     @string_input = <<HERE
 class Object
+  def index_of( name )
+    return @layout.index_of(name) 
+  end
   def layout()
     return @layout
   end
   def class()
-    return layout.class()
-  end
-  def index_of( name )
-    return layout.index_of(name) 
+    return @layout.class()
   end
 end
 class String
@@ -21,7 +21,7 @@ class String
     return @length
   end
   def plus(str)
-    my_length = self.length() 
+    my_length = @length 
     str_len = str.length()
     new_string = String.new(my_length + str_len)
     i = 0
