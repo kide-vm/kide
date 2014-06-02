@@ -27,7 +27,7 @@ module Fragments
         expr    = part.compile( @object_space.context , @object_space.main )
       else
         expr    = part.compile( @object_space.context ,  nil )
-        raise "should be function definition for now" unless expr.is_a? Vm::Function
+        raise "should be function definition for now, not #{part.inspect}#{expr.inspect}" unless expr.is_a? Vm::Function
       end
     end
   end

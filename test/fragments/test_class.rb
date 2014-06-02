@@ -20,10 +20,13 @@ class String
   def length()
     return @length
   end
+  def self.new_string( len )
+    4
+  end
   def plus(str)
     my_length = @length 
     str_len = str.length()
-    new_string = String.new(my_length + str_len)
+    new_string = String.new_string(my_length + str_len)
     i = 0
     while( i < my_length) do
       char = self.get(i)
@@ -45,5 +48,22 @@ HERE
     parse 
     write "class"
   end
+
+  def parse 
+    parser = Parser::Crystal.new
+    syntax  = parser.parse_with_debug(@string_input)
+    parts   = Parser::Transform.new.apply(syntax)
+    # file is a list of expressions, all but the last must be a function
+    # and the last is wrapped as a main
+    parts.each_with_index do |part,index|
+      if index == (parts.length - 1)
+        expr    = part.compile( @object_space.context , @object_space.main )
+      else
+        expr    = part.compile( @object_space.context ,  nil )
+        raise "should be function definition for now, not #{part.inspect}#{expr.inspect}" unless expr.is_a? Vm::BootClass
+      end
+    end
+  end
+
 end
 

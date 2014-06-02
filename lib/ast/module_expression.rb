@@ -27,7 +27,7 @@ module Ast
         #puts "compiled expression #{expression_value.inspect}"
       end
 
-      return nil
+      return clazz
     end
   end
 
