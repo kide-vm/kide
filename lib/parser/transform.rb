@@ -21,6 +21,7 @@ module Parser
     rule(:argument  => simple(:argument))    { argument  }
     rule(:argument_list => sequence(:argument_list)) { argument_list }
 
+    #Two rules for calls, simple and qualified. Keeps the rules simpler
     rule( :call_site => simple(:call_site), 
           :argument_list    => sequence(:argument_list)) do
            Ast::CallSiteExpression.new(call_site.name, argument_list )
@@ -49,17 +50,25 @@ module Parser
     rule(:parmeter  => simple(:parmeter))    { parmeter  }
     rule(:parmeter_list => sequence(:parmeter_list)) { parmeter_list }
 
+    # Also two rules for function definitions, unqualified and qualified
     rule(:function_name   => simple(:function_name),
          :parmeter_list => sequence(:parmeter_list),
          :expressions   => sequence(:expressions) , :end => simple(:e)) do
-            Ast::FunctionExpression.new(function_name.name, parmeter_list, expressions) 
+            Ast::FunctionExpression.new(function_name.name, parmeter_list, expressions)
           end
-    
+
+    rule(:receiver=> simple(:receiver),
+         :function_name   => simple(:function_name),
+         :parmeter_list => sequence(:parmeter_list),
+         :expressions   => sequence(:expressions) , :end => simple(:e)) do
+            Ast::FunctionExpression.new(function_name.name, parmeter_list, expressions , receiver)
+          end
+
     rule(l: simple(:l), o: simple(:o) , r: simple(:r)) do 
       Ast::OperatorExpression.new( o.to_s.strip , l ,r)
     end
     
-    #modules and classes are undertsndibly quite similar   Class < Module
+    #modules and classes are understandibly quite similar   Class < Module
     rule( :module_name => simple(:module_name) , :module_expressions => sequence(:module_expressions) , :end=>"end") do
       Ast::ModuleExpression.new(module_name , module_expressions)
     end
