@@ -53,7 +53,9 @@ module Ast
     def inspect
       self.class.name + '.new("' + string + '")'
     end
-
+    def to_s
+      '"' + string + '"'
+    end
     def compile context , into
       value = Vm::StringConstant.new(string)
       context.object_space.add_object value 

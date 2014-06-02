@@ -18,23 +18,23 @@ module Ast
       true_block = false_block.new_block "#{into.name}_if_true"
       merge_block = true_block.new_block "#{into.name}_if_merge"
 
+      puts "compiling if condition #{cond}"
       cond_val = cond.compile(context , into)
-      puts "compiled if condition #{cond_val.inspect}"
       into.b true_block , condition_code: cond_val.operator
             
       if_false.each do |part|
+        puts "compiling in if false #{part}"
         last = part.compile(context , false_block )
-        puts "compiled in if false #{last.inspect}"
       end
       false_block.b merge_block
 
       last = nil
       if_true.each do |part|
+        puts "compiling in if true #{part}"
         last = part.compile(context , true_block )
-        puts "compiled in if true #{last.inspect}"
       end
 
-      puts "compile if end"
+      puts "compiled if: end"
       into.insert_at merge_block
 
       return last

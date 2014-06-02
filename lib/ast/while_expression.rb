@@ -16,13 +16,13 @@ module Ast
     def compile context , into
       while_block = into.new_block "#{into.name}_while"
       ret = while_block.new_block "#{into.name}_return"
+      puts "compiling while condition #{condition}"
       cond_val = condition.compile(context , while_block)
-      puts "compiled while condition #{cond_val.inspect}"
       while_block.b ret , condition_code: cond_val.not_operator
       last = nil
       body.each do |part|
+        puts "compiling in while #{part}"
         last = part.compile(context , while_block )
-        puts "compiled in while #{last.inspect}"
       end
       while_block.b while_block
       puts "compile while end"

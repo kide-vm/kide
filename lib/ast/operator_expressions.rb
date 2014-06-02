@@ -16,9 +16,9 @@ module Ast
       "#{left} #{operator} #{right}"
     end
     def compile context , into
-      puts "compile operator #{to_s}"
+      puts "compiling operator #{to_s}"
       r_val = right.compile(context , into)
-      puts "compiled right #{r_val.inspect}"
+      #puts "compiled right #{r_val.inspect}"
       if operator == "="    # assignment, value based
         raise "Can only assign variables, not #{left}" unless left.is_a?(NameExpression) 
         l_val = context.locals[left.name]
@@ -52,6 +52,9 @@ module Ast
       when "-"
         res = context.function.new_local
         code = res.minus into , l_val , r_val
+      when "<<"
+        res = context.function.new_local
+        code = res.left_shift into , l_val , r_val
       else
         raise "unimplemented operator #{operator} #{self}"
       end

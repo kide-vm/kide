@@ -22,7 +22,7 @@ module Ast
         # check if it's a function definition and add
         # if not, execute it, but that does means we should be in crystal (executable), not ruby. ie throw an error for now
         raise "only functions for now #{expression.inspect}" unless expression.is_a? Ast::FunctionExpression
-        puts "compiling expression #{expression.inspect}"
+        puts "compiling expression #{expression}"
         expression_value = expression.compile(context , nil )
         #puts "compiled expression #{expression_value.inspect}"
       end

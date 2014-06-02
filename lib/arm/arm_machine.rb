@@ -46,6 +46,10 @@ module Arm
       block <<  sub( result ,  left ,  right )
       result
     end
+    def integer_left_shift block , result , left , right
+      block <<  mov( result ,  left , shift_lsr: right )
+      result
+    end
 
     def function_call into , call
       raise "Not CallSite #{call.inspect}" unless call.is_a? Vm::CallSite

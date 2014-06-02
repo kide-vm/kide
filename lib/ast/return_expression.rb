@@ -14,8 +14,8 @@ module Ast
       [:expression]
     end
     def compile context , into
+      puts "compiling return expression #{expression}, now return in 7"
       expression_value = expression.compile(context , into)
-      puts "compiled return expression #{expression_value.inspect}, now return in 7"
       # copied from function expression: TODO make function
 
       return_reg = Vm::Integer.new(7)

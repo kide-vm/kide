@@ -127,6 +127,9 @@ module Vm
     def minus block , first , right
       RegisterMachine.instance.integer_minus block , self , first , right
     end
+    def left_shift block , first , right
+      RegisterMachine.instance.integer_left_shift block , self , first , right
+    end
     
     def load block , right
       if(right.is_a? IntegerConstant)

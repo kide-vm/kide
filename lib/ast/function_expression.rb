@@ -17,7 +17,9 @@ module Ast
     end
     
     def to_s
-      "def #{name}( " + params.join(",") + ") \n" + body.join("\n") + "end\n"
+      ret = "def "
+      ret += "#{receiver}." if receiver
+      ret + "#{name}( " + params.join(",") + ") \n" + body.join("\n") + "end\n"
     end
     def compile context , into 
       raise "function does not compile into anything #{self}" if into
@@ -31,6 +33,7 @@ module Ast
       end
       class_name = context.current_class.name
       function = Vm::Function.new(name , args )
+      # class depends on receiver
       context.current_class.add_function function 
 
       parent_locals = context.locals
@@ -41,8 +44,8 @@ module Ast
       into = function.body
       last_compiled = nil
       body.each do |b|
+        puts "compiling in function #{b}"
         last_compiled = b.compile(context , into)
-        puts "compiled in function #{last_compiled.inspect}"
         raise "alarm #{last_compiled} \n #{b}" unless last_compiled.is_a? Vm::Word
       end
       
