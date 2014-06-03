@@ -35,7 +35,7 @@ module Ast
       "#{self.class.name}.new(#{name})"
     end
     def to_s
-      name
+      name.to_s
     end
     def attributes
       [:name]
@@ -54,7 +54,7 @@ module Ast
       self.class.name + '.new("' + string + '")'
     end
     def to_s
-      '"' + string + '"'
+      '"' + string.to_s + '"'
     end
     def compile context , into
       value = Vm::StringConstant.new(string)

@@ -13,15 +13,21 @@ module Ast
     def compile context , into
       params = args.collect{ |a| a.compile(context, into) }
 
-      r = context.current_class.name
-      if !receiver.nil? and receiver.name != :self
-        r = receiver.name 
-        raise "uups #{receiver.class}.#{receiver.name.class}" unless r.is_a? Symbol
+      if receiver.name == :self
+        function = context.current_class.get_or_create_function(name)
+      elsif receiver.is_a? ModuleName
+        c_name = receiver.name
+        clazz = context.object_space.get_or_create_class c_name
+        raise "uups #{clazz}.#{c_name}" unless clazz
+        #class qualifier, means call from metaclass
+        clazz = clazz.meta_class
+        function = clazz.get_or_create_function(name)
+      elsif receiver.is_a? VariableExpression
+        raise "not implemented instance var:#{receiver}"
+      else
+        raise "not implemented case (dare i say system error):#{receiver}"
       end
-      clazz = context.object_space.get_or_create_class r
-
-      function = context.current_class.get_function(name)
-      raise "Forward declaration not implemented for #{clazz.name}:#{name} #{inspect}" if function == nil
+      raise "No such method error #{clazz.to_s}:#{name}" if function == nil
       call = Vm::CallSite.new( name ,  params  , function)
       current_function = context.function
       current_function.save_locals(context , into) if current_function

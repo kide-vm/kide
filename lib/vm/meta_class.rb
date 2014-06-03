@@ -26,8 +26,12 @@ module Vm
 
     def get_function name
       name = name.to_sym
-      @functions.detect{ |f| f.name == name }
+      f = @functions.detect{ |f| f.name == name }
+      puts "no function for #{name} in Meta #{@me_self.inspect}" unless f
+      f
     end
-        
+    def inspect
+      "#{@me_self}, #{@functions.length} functions"
+    end
   end
 end

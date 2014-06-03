@@ -45,6 +45,7 @@ module Vm
       # dummies, just for the other to compile
       obj = get_or_create_class :Object
       [:index_of , :_get_instance_variable].each do |f|
+        puts "adding #{f}"
         obj.add_function Boot::Object.send(f , @context)
       end
     end

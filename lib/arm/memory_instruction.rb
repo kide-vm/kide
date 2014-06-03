@@ -11,7 +11,7 @@ module Arm
       @attributes[:update_status] = 0 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
-
+      raise "alert" if right.is_a? Vm::Block
       @pre_post_index = 0 #P flag
       @add_offset = 0 #U flag
       @is_load = opcode.to_s[0] == "l" ? 1 : 0 #L (load) flag
@@ -31,7 +31,10 @@ module Arm
         @rn = arg
         if @right
           @operand = @right
+          #TODO better test, this operand integer (register) does not work. but sleep first
+          @operand = @operand.register if @operand.is_a? Vm::Integer
           unless( @operand.is_a? Symbol)
+            puts "operand #{@operand.inspect}"
             if (@operand < 0)
               @add_offset = 0
               #TODO test/check/understand

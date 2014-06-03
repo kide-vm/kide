@@ -21,9 +21,11 @@ module Vm
       @functions << function
     end
 
-    def get_function name
-      name = name.to_sym
-      @functions.detect{ |f| f.name == name }
+    def get_function fname
+      fname = fname.to_sym
+      f = @functions.detect{ |f| f.name == fname }
+      names = @functions.collect{|f| f.name } 
+      f
     end
 
     # way of creating new functions that have not been parsed.
@@ -36,12 +38,15 @@ module Vm
       end
       unless fun
         fun = Core::Kernel.send(name , @context)
-        raise "no such function #{name}, #{name.class}" if fun == nil
+        return nil if fun == nil
         @functions << fun
       end
       fun
     end
-    
+
+    def inspect
+      "BootClass #{@name} , super #{@super_class} #{@functions.length} functions"
+    end
     # Code interface follows. Note position is inheitted as is from Code
 
     # length of the class is the length of it's functions

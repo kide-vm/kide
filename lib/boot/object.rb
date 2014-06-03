@@ -24,10 +24,10 @@ module Boot
         return_to = get_function.return_type
         index_function = context.object_space.get_or_create_class(:Object).get_or_create_function(:index_of)
         b = get_function.body
-        b.push( me )
-        index = b.call( index_function )
-        b.pop(me)
-        return_to.at_index( get_function.body , me , index )
+        b.push( [me] )
+        b.call( index_function )
+        b.pop([me])
+        return_to.at_index( get_function.body , me , return_to )
         get_function.set_return return_to
         return get_function
       end
