@@ -16,12 +16,17 @@ class Object
     return @layout.class()
   end
 end
+class Class
+  def Class.new_object( length )
+    return 4
+  end
+end
 class String
+  def String.new_string( len )
+    return Class.new_object( len << 2 )
+  end
   def length()
     return @length
-  end
-  def self.new_string( len )
-    4
   end
   def plus(str)
     my_length = @length 
@@ -29,7 +34,7 @@ class String
     new_string = String.new_string(my_length + str_len)
     i = 0
     while( i < my_length) do
-      char = self.get(i)
+      char = get(i)
       new_string.set(i , char)
       i = i + 1
     end

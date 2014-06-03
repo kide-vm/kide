@@ -31,10 +31,16 @@ module Ast
         locals[arg] = arg_value
         args << arg_value
       end
-      class_name = context.current_class.name
-      function = Vm::Function.new(name , args )
       # class depends on receiver
-      context.current_class.add_function function 
+      if receiver.nil? 
+        clazz = context.current_class
+      else
+        c = context.object_space.get_or_create_class receiver.name.to_sym
+        clazz = c.meta_class
+      end
+
+      function = Vm::Function.new(name , args )
+      clazz.add_function function 
 
       parent_locals = context.locals
       parent_function = context.function
