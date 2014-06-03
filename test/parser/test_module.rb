@@ -36,7 +36,7 @@ module Opers
 end
 HERE
     @parse_output = {:module_name=>"Opers", :module_expressions=>[{:l=>{:instance_variable=>{:name=>"abba"}}, :o=>"= ", :r=>{:integer=>"5"}}], :end=>"end"}
-    @transform_output = Ast::ModuleExpression.new(:Opers ,[Ast::OperatorExpression.new("=", Ast::VariableExpression.new("abba"),Ast::IntegerExpression.new(5))] )
+    @transform_output = Ast::ModuleExpression.new(:Opers ,[Ast::OperatorExpression.new("=", Ast::VariableExpression.new(:abba),Ast::IntegerExpression.new(5))] )
     @parser = @parser.module_definition
   end
 

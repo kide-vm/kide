@@ -63,6 +63,7 @@ module Arm
     # return the block of the given name
     # or raise an exception, as this is meant to be called when the block is available 
     def get_block name
+      name = name.to_sym
       block = @blocks.find {|b| b.name == name}
       raise "No block found for #{name} (in #{blocks.collect{|b|b.name}.join(':')})" unless block
       block

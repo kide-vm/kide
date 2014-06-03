@@ -24,7 +24,7 @@ module Ast
   class NameExpression < Expression
     attr_reader  :name
     def initialize name
-      @name = name
+      @name = name.to_sym
     end
     # compiling a variable resolves it. 
     # if it wasn't defined, nli is returned 
@@ -32,7 +32,7 @@ module Ast
       context.locals[name]
     end
     def inspect
-      self.class.name + '.new("' + name + '")'
+      "#{self.class.name}.new(#{name})"
     end
     def to_s
       name

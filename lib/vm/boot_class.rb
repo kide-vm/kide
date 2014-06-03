@@ -1,15 +1,19 @@
+require_relative "meta_class"
+
 module Vm
   # class is mainly a list of functions with a name (for now)
   # layout of object is seperated into Layout
   class BootClass < Code
-    def initialize name , context , superclass = :Object
+    def initialize name , context , super_class = :Object
+      super()
       @context = context
       # class functions
       @functions = []
       @name = name.to_sym
-      @superclass = superclass
+      @super_class = super_class
+      @meta_class = MetaClass.new(self)
     end
-    attr_reader :name , :functions
+    attr_reader :name , :functions , :meta_class
     
     def add_function function
       raise "not a function #{function}" unless function.is_a? Function
@@ -22,11 +26,11 @@ module Vm
       @functions.detect{ |f| f.name == name }
     end
 
-    # preferred way of creating new functions (also forward declarations, will flag unresolved later)
+    # way of creating new functions that have not been parsed.
     def get_or_create_function name 
       fun = get_function name
       unless fun or name == :Object
-        supr = @context.object_space.get_or_create_class(@superclass)
+        supr = @context.object_space.get_or_create_class(@super_class)
         fun = supr.get_function name
         puts "#{supr.functions.collect(&:name)} for #{name} GOT #{fun.class}" if name == :index_of
       end

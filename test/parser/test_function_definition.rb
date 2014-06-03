@@ -22,7 +22,7 @@ def String.length(x)
 end
 HERE
     @parse_output = {:receiver=>{:module_name=>"String"}, :function_name=>{:name=>"length"}, :parmeter_list=>[{:parmeter=>{:name=>"x"}}], :expressions=>[{:instance_variable=>{:name=>"length"}}], :end=>"end"}
-    @transform_output = Ast::FunctionExpression.new(:length, [Ast::NameExpression.new("x")] , [Ast::VariableExpression.new("length")] ,Ast::ModuleName.new("String") )
+    @transform_output = Ast::FunctionExpression.new(:length, [Ast::NameExpression.new("x")] , [Ast::VariableExpression.new(:length)] ,Ast::ModuleName.new("String") )
     @parser = @parser.function_definition
   end
 

@@ -5,7 +5,9 @@ module Ast
     attr_reader  :name, :args , :receiver
 
     def initialize name, args , receiver = Ast::NameExpression.new(:self)
-      @name , @args , @receiver = name.to_sym , args , receiver
+      @name = name.to_sym
+      @args = args 
+      @receiver =  receiver
     end
 
     def compile context , into
@@ -14,6 +16,7 @@ module Ast
       r = context.current_class.name
       if !receiver.nil? and receiver.name != :self
         r = receiver.name 
+        raise "uups #{receiver.class}.#{receiver.name.class}" unless r.is_a? Symbol
       end
       clazz = context.object_space.get_or_create_class r
 

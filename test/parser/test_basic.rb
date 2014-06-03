@@ -35,7 +35,7 @@ class TestBasic < MiniTest::Test
   def test_instance_variable
     @string_input    = '@foo_bar '
     @parse_output = {:instance_variable=>{:name=>"foo_bar"}}
-    @transform_output = Ast::VariableExpression.new('foo_bar')
+    @transform_output = Ast::VariableExpression.new(:foo_bar)
     @parser = @parser.instance_variable
   end
 
