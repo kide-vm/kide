@@ -1,18 +1,6 @@
 module Ast
   class WhileExpression < Expression
-    attr_reader  :condition, :body
-    def initialize condition, body
-      @condition , @body = condition , body
-    end
-    def inspect
-      self.class.name + ".new(" + condition.inspect + ", "  + body.inspect + " )"  
-    end
-    def to_s
-      "while(#{condition}) do\n" + body.join("\n") + "\nend\n"
-    end
-    def attributes
-      [:condition, :body]
-    end
+#    attr_reader  :condition, :body
     def compile context , into
       while_block = into.new_block "#{into.name}_while"
       ret = while_block.new_block "#{into.name}_return"

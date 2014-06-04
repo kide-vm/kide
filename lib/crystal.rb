@@ -3,6 +3,7 @@ require 'parslet'
 require "elf/object_writer"
 require 'parser/crystal'
 require 'parser/transform'
+require "ast/all"
 require "vm/register_machine"
 require "vm/code"
 require "vm/values"

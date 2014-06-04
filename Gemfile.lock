@@ -5,6 +5,12 @@ GIT
     parslet (1.7.0)
       blankslate (~> 2.0)
 
+GIT
+  remote: https://github.com/ruby-in-ruby/crystal-reader.git
+  revision: b25d5ab99250965883d3a71163961ea75431778f
+  specs:
+    crystal-reader (0.1.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -81,6 +87,7 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
+  crystal-reader (= 0.1.0)!
   jeweler
   minitest
   parslet!
