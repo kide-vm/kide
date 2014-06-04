@@ -25,7 +25,7 @@ class Opers
 end
 HERE
     @parse_output = {:module_name=>"Opers", :class_expressions=>[{:function_name=>{:name=>"foo"}, :parmeter_list=>[{:parmeter=>{:name=>"x"}}], :expressions=>[{:l=>{:instance_variable=>{:name=>"abba"}}, :o=>"= ", :r=>{:integer=>"5"}}, {:l=>{:integer=>"2"}, :o=>"+ ", :r=>{:integer=>"5"}}], :end=>"end"}], :end=>"end"}
-    @transform_output = Ast::ClassExpression.new(:Opers ,[Ast::FunctionExpression.new(:foo, [Ast::NameExpression.new("x")] , [Ast::OperatorExpression.new("=", Ast::VariableExpression.new("abba"),Ast::IntegerExpression.new(5)),Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(2),Ast::IntegerExpression.new(5))] )] )
+    @transform_output = Ast::ClassExpression.new(:Opers ,[Ast::FunctionExpression.new(:foo, [Ast::NameExpression.new("x")] , [Ast::OperatorExpression.new("=", Ast::VariableExpression.new(:abba),Ast::IntegerExpression.new(5)),Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(2),Ast::IntegerExpression.new(5))] )] )
     @parser = @parser.class_definition
   end
 
@@ -56,7 +56,7 @@ class Pifi
 end
 HERE
     @parse_output = {:module_name=>"Pifi", :class_expressions=>[{:call_site=>{:name=>"ofthen"}, :argument_list=>[{:argument=>{:l=>{:integer=>"3"}, :o=>"+", :r=>{:integer=>"4"}}}, {:argument=>{:name=>"var"}}]}, {:function_name=>{:name=>"ofthen"}, :parmeter_list=>[{:parmeter=>{:name=>"n"}}, {:parmeter=>{:name=>"m"}}], :expressions=>[{:integer=>"44"}], :end=>"end"}], :end=>"end"}
-    @transform_output =Ast::ClassExpression.new(:Pifi ,[Ast::CallSiteExpression.new(:ofthen, [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(3),Ast::IntegerExpression.new(4)),Ast::NameExpression.new("var")] ), Ast::FunctionExpression.new(:ofthen, [Ast::NameExpression.new("n"),Ast::NameExpression.new("m")] , [Ast::IntegerExpression.new(44)] )] )
+    @transform_output =Ast::ClassExpression.new(:Pifi ,[Ast::CallSiteExpression.new(:ofthen, [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(3),Ast::IntegerExpression.new(4)),Ast::NameExpression.new(:var)] ), Ast::FunctionExpression.new(:ofthen, [Ast::NameExpression.new("n"),Ast::NameExpression.new("m")] , [Ast::IntegerExpression.new(44)] )] )
     @parser = @parser.class_definition
   end
   def test_class_module
@@ -68,7 +68,7 @@ class Foo
 end
 HERE
     @parse_output = {:module_name=>"Foo", :class_expressions=>[{:module_name=>"Boo", :module_expressions=>[{:call_site=>{:name=>"funcall"}, :argument_list=>[{:argument=>{:l=>{:integer=>"3"}, :o=>"+", :r=>{:integer=>"4"}}}, {:argument=>{:name=>"var"}}]}], :end=>"end"}], :end=>"end"}
-    @transform_output = Ast::ClassExpression.new(:Foo ,[Ast::ModuleExpression.new(:Boo ,[Ast::CallSiteExpression.new(:funcall, [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(3),Ast::IntegerExpression.new(4)),Ast::NameExpression.new("var")] )] )] )
+    @transform_output = Ast::ClassExpression.new(:Foo ,[Ast::ModuleExpression.new(:Boo ,[Ast::CallSiteExpression.new(:funcall, [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(3),Ast::IntegerExpression.new(4)),Ast::NameExpression.new(:var)] )] )] )
     @parser = @parser.class_definition
   end
 end

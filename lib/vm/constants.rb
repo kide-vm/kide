@@ -26,6 +26,7 @@ module Vm
     attr_reader :string
     # currently aligned to 4 (ie padded with 0) and off course 0 at the end
     def initialize str
+      str = str.to_s if str.is_a? Symbol
       length = str.length 
       # rounding up to the next 4 (always adding one for zero pad)
       pad =  ((length / 4 ) + 1 ) * 4 - length

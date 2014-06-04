@@ -4,15 +4,30 @@ module Ast
   class CallSiteExpression < Expression
     attr_reader  :name, :args , :receiver
 
-    def initialize name, args , receiver = Ast::NameExpression.new("self")
-      @name , @args , @receiver = name.to_sym , args , receiver
+    def initialize name, args , receiver = Ast::NameExpression.new(:self)
+      @name = name.to_sym
+      @args = args 
+      @receiver =  receiver
     end
 
     def compile context , into
       params = args.collect{ |a| a.compile(context, into) }
-      #TOOD, this needs dynamic resolution
-      function = context.current_class.get_or_create_function(name)
-      raise "Forward declaration not implemented (#{name}) #{inspect}" if function == nil
+
+      if receiver.name == :self
+        function = context.current_class.get_or_create_function(name)
+      elsif receiver.is_a? ModuleName
+        c_name = receiver.name
+        clazz = context.object_space.get_or_create_class c_name
+        raise "uups #{clazz}.#{c_name}" unless clazz
+        #class qualifier, means call from metaclass
+        clazz = clazz.meta_class
+        function = clazz.get_or_create_function(name)
+      elsif receiver.is_a? VariableExpression
+        raise "not implemented instance var:#{receiver}"
+      else
+        raise "not implemented case (dare i say system error):#{receiver}"
+      end
+      raise "No such method error #{clazz.to_s}:#{name}" if function == nil
       call = Vm::CallSite.new( name ,  params  , function)
       current_function = context.function
       current_function.save_locals(context , into) if current_function

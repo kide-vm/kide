@@ -3,7 +3,7 @@ require_relative 'helper'
 class TestWhileFragment < MiniTest::Test
   include Fragments
 
-  def test_while
+  def test_while_fibo
     @string_input = <<HERE
 def fibonaccit(n) # n == r0
       a = 0           # a == r1

@@ -22,7 +22,7 @@ class TestCallSite < MiniTest::Test
   def test_single_instance
     @string_input = '@var.foo(42)'
     @parse_output = {:receiver=>{:instance_variable=>{:name=>"var"}}, :call_site=>{:name=>"foo"}, :argument_list=>[{:argument=>{:integer=>"42"}}]}
-    @transform_output = Ast::CallSiteExpression.new(:foo, [Ast::IntegerExpression.new(42)] ,Ast::VariableExpression.new("var"))
+    @transform_output = Ast::CallSiteExpression.new(:foo, [Ast::IntegerExpression.new(42)] ,Ast::VariableExpression.new(:var))
     @parser = @parser.call_site
   end
 
@@ -96,7 +96,7 @@ class TestCallSite < MiniTest::Test
   def test_call_chaining_instance
     @string_input    = '@class.new(self.get(4))'
     @parse_output = {:receiver=>{:instance_variable=>{:name=>"class"}}, :call_site=>{:name=>"new"}, :argument_list=>[{:argument=>{:receiver=>{:name=>"self"}, :call_site=>{:name=>"get"}, :argument_list=>[{:argument=>{:integer=>"4"}}]}}]}
-    @transform_output = Ast::CallSiteExpression.new(:new, [Ast::CallSiteExpression.new(:get, [Ast::IntegerExpression.new(4)] ,Ast::NameExpression.new("self"))] ,Ast::VariableExpression.new("class"))
+    @transform_output = Ast::CallSiteExpression.new(:new, [Ast::CallSiteExpression.new(:get, [Ast::IntegerExpression.new(4)] ,Ast::NameExpression.new("self"))] ,Ast::VariableExpression.new(:class))
     @parser = @parser.call_site
   end
 

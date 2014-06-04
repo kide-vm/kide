@@ -31,25 +31,25 @@ class TestExpressions < MiniTest::Test
   def test_op_variable
     @string_input    = "a + 35"
     @parse_output = {:l=>{:name=>"a"}, :o=>"+ ", :r=>{:integer=>"35"}}
-    @transform_output = Ast::OperatorExpression.new("+", Ast::NameExpression.new("a"),Ast::IntegerExpression.new(35))
+    @transform_output = Ast::OperatorExpression.new("+", Ast::NameExpression.new(:a),Ast::IntegerExpression.new(35))
     @parser = @parser.operator_expression
   end
   def test_op_two_variable
     @string_input    = "a - b"
     @parse_output = {:l=>{:name=>"a"}, :o=>"- ", :r=>{:name=>"b"}}
-    @transform_output = Ast::OperatorExpression.new("-", Ast::NameExpression.new("a"),Ast::NameExpression.new("b"))
+    @transform_output = Ast::OperatorExpression.new("-", Ast::NameExpression.new(:a),Ast::NameExpression.new("b"))
     @parser = @parser.operator_expression
   end
   def test_op_instance_variable
     @string_input    = "@a - 5"
     @parse_output = {:l=>{:instance_variable=>{:name=>"a"}}, :o=>"- ", :r=>{:integer=>"5"}}
-    @transform_output = Ast::OperatorExpression.new("-", Ast::VariableExpression.new("a"),Ast::IntegerExpression.new(5))
+    @transform_output = Ast::OperatorExpression.new("-", Ast::VariableExpression.new(:a),Ast::IntegerExpression.new(5))
     @parser = @parser.operator_expression
   end
   def test_op_variable_string
     @string_input    = 'a - "st"'
     @parse_output = {:l=>{:name=>"a"}, :o=>"- ", :r=>{:string=>[{:char=>"s"}, {:char=>"t"}]}}
-    @transform_output = Ast::OperatorExpression.new("-", Ast::NameExpression.new("a"),Ast::StringExpression.new("st"))
+    @transform_output = Ast::OperatorExpression.new("-", Ast::NameExpression.new(:a),Ast::StringExpression.new("st"))
     @parser = @parser.operator_expression
   end
   def test_two_same_ops
@@ -73,13 +73,13 @@ class TestExpressions < MiniTest::Test
   def test_assignment
     @string_input    = "a = 5"
     @parse_output = {:l=>{:name=>"a"}, :o=>"= ", :r=>{:integer=>"5"}}
-    @transform_output = Ast::OperatorExpression.new("=", Ast::NameExpression.new("a"),Ast::IntegerExpression.new(5))
+    @transform_output = Ast::OperatorExpression.new("=", Ast::NameExpression.new(:a),Ast::IntegerExpression.new(5))
     @parser = @parser.operator_expression
   end
   def test_assignment_instance
     @string_input    = "@a = 5"
     @parse_output = {:l=>{:instance_variable=>{:name=>"a"}}, :o=>"= ", :r=>{:integer=>"5"}}
-    @transform_output = Ast::OperatorExpression.new("=", Ast::VariableExpression.new("a"),Ast::IntegerExpression.new(5))
+    @transform_output = Ast::OperatorExpression.new("=", Ast::VariableExpression.new(:a),Ast::IntegerExpression.new(5))
     @parser = @parser.operator_expression
   end
 

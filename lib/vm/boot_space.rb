@@ -3,6 +3,7 @@ require_relative "boot_class"
 require_relative "call_site"
 require "arm/arm_machine"
 require "core/kernel"
+require "boot/object"
 
 module Vm
   # The BootSpace is contains all objects for a program. In functional terms it is a program, but on oo
@@ -35,9 +36,19 @@ module Vm
       #main gets executed between entry and exit
       @main = Block.new("main",nil)
       @exit = Core::Kernel::main_exit Vm::Block.new("main_exit",nil)
+      boot_classes
     end
     attr_reader :context , :main , :classes , :entry , :exit
     
+    def boot_classes
+      # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we have to define some 
+      # dummies, just for the other to compile
+      obj = get_or_create_class :Object
+      [:index_of , :_get_instance_variable].each do |f|
+        puts "adding #{f}"
+        obj.add_function Boot::Object.send(f , @context)
+      end
+    end
     def add_object o
       return if @objects.include? o
       raise "must be derived from Code #{o.inspect}" unless o.is_a? Code
@@ -45,7 +56,7 @@ module Vm
     end
     
     def get_or_create_class name
-      raise "uups #{name}" unless name.is_a? Symbol
+      raise "uups #{name}.#{name.class}" unless name.is_a? Symbol
       c = @classes[name]
       unless c
         c = BootClass.new(name,@context)
