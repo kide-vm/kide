@@ -6,7 +6,7 @@ module Arm
       super(left , right,  attributes) 
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
-      @i = 0      
+      @immediate = 0      
       @attributes[:update_status] = 1
       @rn = left
       @rd = :r0
@@ -16,14 +16,18 @@ module Arm
       4
     end
 
-    def build 
-      arg = @right
+    def assemble(io)
+      # don't overwrite instance variables, to make assembly repeatable
+      rn = @rn
+      operand = @operand
+      immediate = @immediate
 
+      arg = @right
       if arg.is_a?(Vm::StringConstant)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
         arg = Vm::IntegerConstant.new( arg.position - self.position - 8 )
-        @rn = :pc
+        rn = :pc
       end
       if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
         arg = Vm::IntegerConstant.new( arg )
@@ -31,21 +35,21 @@ module Arm
       if (arg.is_a?(Vm::IntegerConstant))
         if (arg.integer.fits_u8?)
           # no shifting needed
-          @operand = arg.integer
-          @i = 1
+          operand = arg.integer
+          immediate = 1
         elsif (op_with_rot = calculate_u8_with_rr(arg))
-          @operand = op_with_rot
-          @i = 1
+          operand = op_with_rot
+          immediate = 1
           raise "hmm"
         else
           raise "cannot fit numeric literal argument in operand #{arg.inspect}"
         end
       elsif (arg.is_a?(Symbol) or arg.is_a?(Vm::Integer))
-        @operand = arg
-        @i = 0
+        operand = arg
+        immediate = 0
       elsif (arg.is_a?(Arm::Shift))
         rm_ref = arg.argument
-        @i = 0
+        immediate = 0
         shift_op = {'lsl' => 0b000, 'lsr' => 0b010, 'asr' => 0b100,
                     'ror' => 0b110, 'rrx' => 0b110}[arg.type]
         if (arg.type == 'ror' and arg.value.nil?)
@@ -65,24 +69,20 @@ module Arm
         elsif (arg.type == 'rrx')
           shift_imm = 0
         end
-        @operand = rm_ref | (shift_op << 4) | (shift_imm << 4+3)
+        operand = rm_ref | (shift_op << 4) | (shift_imm << 4+3)
       else
         raise "invalid operand argument #{arg.inspect} , #{inspect}"
       end
-    end
-
-    def assemble(io)
-      build
       instuction_class = 0b00 # OPC_DATA_PROCESSING
-      val = (@operand.is_a?(Symbol) or @operand.is_a?(Vm::Integer)) ? reg_code(@operand) : @operand 
+      val = (operand.is_a?(Symbol) or operand.is_a?(Vm::Integer)) ? reg_code(operand) : operand 
       val = 0 if val == nil
       val = shift(val , 0)
       raise inspect unless reg_code(@rd)
       val |= shift(reg_code(@rd) ,            12)     
-      val |= shift(reg_code(@rn) ,            12+4)   
+      val |= shift(reg_code(rn) ,            12+4)   
       val |= shift(@attributes[:update_status] , 12+4+4)#20 
       val |= shift(op_bit_code ,        12+4+4  +1)
-      val |= shift(@i ,                  12+4+4  +1+4) 
+      val |= shift(immediate ,                  12+4+4  +1+4) 
       val |= shift(instuction_class ,   12+4+4  +1+4+1) 
       val |= shift(cond_bit_code ,      12+4+4  +1+4+1+2)
       io.write_uint32 val

@@ -25,11 +25,14 @@ module Arm
     end
                   
     def assemble(io)
+      # don't overwrite instance variables, to make assembly repeatable
+      operand = @operand
+      
       if (@first.is_a?(Array))
-        @operand = 0
+        operand = 0
         @first.each do |r|
           raise "nil register in push, index #{r}- #{inspect}" if r.nil?
-          @operand |= (1 << reg_code(r))
+          operand |= (1 << reg_code(r))
         end
       else
         raise "invalid operand argument #{inspect}"
@@ -48,7 +51,7 @@ module Arm
       cond = @attributes[:condition_code].is_a?(Symbol) ?  COND_CODES[@attributes[:condition_code]]   : @attributes[:condition_code]
       @rn = :sp # sp register
       #assemble of old
-      val = @operand
+      val = operand
       val |= (reg_code(@rn) <<             16)
       val |= (is_pop <<              16+4) #20
       val |= (write_base <<          16+4+ 1) 
