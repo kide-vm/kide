@@ -15,14 +15,18 @@ module Ast
         raise "uups #{clazz}.#{c_name}" unless clazz
         #class qualifier, means call from metaclass
         clazz = clazz.meta_class
+        value = clazz
+        puts "CLAZZ #{value}"
         function = clazz.get_or_create_function(name)
       elsif receiver.is_a? VariableExpression
         raise "not implemented instance var:#{receiver}"
       else
-        raise "not implemented case (dare i say system error):#{receiver}"
+        # should be case switch for basic tyes and dynamic dispatch for objects reference
+        value = context.locals[receiver.name]
+        function = context.current_class.get_or_create_function(name)
       end
       raise "No such method error #{clazz.to_s}:#{name}" if function == nil
-      call = Vm::CallSite.new( name ,  params  , function)
+      call = Vm::CallSite.new( name ,  value , params  , function)
       current_function = context.function
       current_function.save_locals(context , into) if current_function
       call.load_args into

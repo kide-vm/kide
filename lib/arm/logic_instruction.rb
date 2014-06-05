@@ -43,7 +43,7 @@ module Arm
         elsif (op_with_rot = calculate_u8_with_rr(right))
           operand = op_with_rot
           immediate = 1
-          raise "hmm"
+#          raise "hmm"
         else
           raise "cannot fit numeric literal argument in operand #{right.inspect}"
         end

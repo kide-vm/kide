@@ -4,6 +4,7 @@ require_relative "call_site"
 require "arm/arm_machine"
 require "core/kernel"
 require "boot/object"
+require "boot/string"
 
 module Vm
   # The BootSpace is contains all objects for a program. In functional terms it is a program, but on oo
@@ -47,6 +48,11 @@ module Vm
       [:index_of , :_get_instance_variable].each do |f|
         puts "adding #{f}"
         obj.add_function Boot::Object.send(f , @context)
+      end
+      obj = get_or_create_class :String
+      [:get , :set].each do |f|
+        puts "adding #{f}"
+        obj.add_function Boot::String.send(f , @context)
       end
     end
     def add_object o

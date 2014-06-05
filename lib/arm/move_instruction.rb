@@ -12,10 +12,10 @@ module Arm
 
       @immediate = 0      
       @rn = :r0 # register zero = zero bit pattern
-      raise inspect if  to.is_a?(Vm::Value) and 
-                        from.is_a?(Vm::Value) and 
-                        !@attributes[:shift_lsr] and
-                        to.register == from.register
+#      raise inspect if  to.is_a?(Vm::Value) and 
+#                        from.is_a?(Vm::Value) and 
+#                        !@attributes[:shift_lsr] and
+#                        to.register == from.register
     end
     
     # arm intrucions are pretty sensible, and always 4 bytes (thumb not supported)

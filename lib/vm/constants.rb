@@ -15,6 +15,9 @@ module Vm
       @integer = int
     end
     attr_reader :integer
+    def value
+      @integer
+    end
   end
 
   # The name really says it all.

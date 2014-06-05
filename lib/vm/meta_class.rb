@@ -30,8 +30,22 @@ module Vm
       puts "no function for #{name} in Meta #{@me_self.inspect}" unless f
       f
     end
+    # way of creating new functions that have not been parsed.
+    def get_or_create_function name 
+      fun = get_function name
+      unless fun or name == :Object
+        supr = @context.object_space.get_or_create_class(@super_class)
+        fun = supr.get_function name
+        puts "#{supr.functions.collect(&:name)} for #{name} GOT #{fun.class}" if name == :index_of
+      end
+      fun
+    end
+
     def inspect
-      "#{@me_self}, #{@functions.length} functions"
+      "MetaClass on #{@me_self}, #{@functions.length} functions"
+    end
+    def to_s 
+      inspect
     end
   end
 end

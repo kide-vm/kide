@@ -4,13 +4,14 @@ module Vm
 
   class CallSite < Value
 
-    def initialize(name , args , function )
+    def initialize(name , value , args , function )
       @name = name
+      @value = value    
       @args = args
       @function = function
     end
-    attr_reader  :function , :args , :name
-    
+    attr_reader  :function , :args , :name , :value
+
     def load_args into
       args.each_with_index do |arg , index|
         if arg.is_a?(IntegerConstant) or arg.is_a?(StringConstant)

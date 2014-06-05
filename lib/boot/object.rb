@@ -32,17 +32,17 @@ module Boot
         return get_function
       end
 
-      def _set_instance_variable(name , value)
+      def _set_instance_variable(context , name , value)
         raise name
       end
       
-      def _get_singleton_method(name )
+      def _get_singleton_method(context , name )
         raise name
       end
-      def _add_singleton_method(method)
+      def _add_singleton_method(context, method)
         raise "4"
       end
-      def initialize()
+      def initialize(context)
         raise "4"
       end
     end

@@ -38,7 +38,6 @@ module Vm
       end
       unless fun
         fun = Core::Kernel.send(name , @context)
-        return nil if fun == nil
         @functions << fun
       end
       fun
@@ -46,6 +45,9 @@ module Vm
 
     def inspect
       "BootClass #{@name} , super #{@super_class} #{@functions.length} functions"
+    end
+    def to_s
+      inspect
     end
     # Code interface follows. Note position is inheitted as is from Code
 

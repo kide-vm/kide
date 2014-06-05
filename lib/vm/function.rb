@@ -65,7 +65,8 @@ module Vm
     def new_local type = Vm::Integer
       register = args.length + @locals.length
       l = type.new(register + 1) # one for the type register 0, TODO add type as arg0 implicitly
-      raise "the red flag #{inspect}" if l.register > 6
+      puts "new local #{l.register}"
+#      raise "Register overflow in function #{name}" if l.register > 6
       @locals << l
       l
     end
