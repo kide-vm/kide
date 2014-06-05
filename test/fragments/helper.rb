@@ -38,9 +38,9 @@ module Fragments
     assembly = writer.text
     writer.save("#{name}.o")    
     function = @object_space.classes[@target[0]]
-    assert function
+    assert function , "no class #{@target[0]}"
     function = function.get_function(@target[1])
-    assert function
+    assert function , "no function #{@target[1]}  for class #{@target[0]}"
     io = StringIO.new
     function.assemble io
     assembly = io.string
