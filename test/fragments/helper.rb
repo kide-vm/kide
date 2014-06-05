@@ -36,10 +36,17 @@ module Fragments
   def write name
     writer = Elf::ObjectWriter.new(@object_space , Elf::Constants::TARGET_ARM)
     assembly = writer.text
+    writer.save("#{name}.o")    
+    function = @object_space.classes[@target[0]]
+    assert function
+    function = function.get_function(@target[1])
+    assert function
+    io = StringIO.new
+    function.assemble io
+    assembly = io.string
     # use this for getting the bytes to compare to :  
-    #puts assembly
-    writer.save("#{name}.o")
-    assembly.text.bytes.each_with_index do |byte , index|
+    #puts bytes(assembly)
+    assembly.bytes.each_with_index do |byte , index|
       is = @should[index]
       assert_equal  Fixnum , is.class , "@#{index.to_s(16)} = #{is}"
       assert_equal  byte , is  , "@#{index.to_s(16)} #{byte.to_s(16)} != #{is.to_s(16)}"
@@ -50,4 +57,8 @@ module Fragments
       assert_equal @output , result
     end
   end
+  def bytes string
+    "[" + string.bytes.collect{|b| "0x"+ b.to_s(16)}.join(",") + "]"
+  end
+  
 end
