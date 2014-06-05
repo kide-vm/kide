@@ -49,13 +49,14 @@ module Arm
       else
         raise "invalid operand argument #{right.inspect} , #{inspect}"
       end
-      shift_handling
     end
 
     def assemble(io)
       build
+      op =  shift_handling
       instuction_class = 0b00 # OPC_DATA_PROCESSING
       val = shift(@operand , 0)
+      val |= shift(op , 0) # any barral action, is already shifted
       val |= shift(reg_code(@result) ,            12)     
       val |= shift(reg_code(@left) ,            12+4)   
       val |= shift(@attributes[:update_status] , 12+4+4)#20 
