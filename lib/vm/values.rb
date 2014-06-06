@@ -48,21 +48,40 @@ module Vm
     end
   end
 
-  # This is what it is when we don't know what it is.
-  # Must be promoted to A Word-Value to to anything
+  # RegisterUSe is _not_ the name for a register, "only" for a certain use of it. 
+  # In a way it is like a variable name, a storage location. The location is a register off course, 
+  # but which register can be changed, and _all_ instructions sharing the RegisterUse then use that register
+  # In other words a simple level of indirection, or change from value to reference sematics.
+  class RegisterUse
+    attr_accessor :register
+    def initialize r
+      @register = r
+    end
+  end
+
+  # This is what it is when we don't know what it is. #TODO, better if it were explicitly a different type, not the base
+  # Must be promoted to A Word-Value to to anything                       makes is_a chaecking easier
   # remembering that our oo machine is typed, no overloading or stuff
   class Word < Value
 
-    attr_accessor :register
+    attr_accessor :used_register
+
+    def register
+      @used_register.register
+    end
 
     def inspect
-      self.class.name + "(r#{register})"
+      self.class.name + "(r#{used_register.register})"
     end
     def to_s
       inspect
     end
     def initialize reg
-      @register = reg
+      if reg.is_a? Fixnum
+        @used_register = RegisterUse.new(reg)
+      else
+        @used_register = reg
+      end
       raise inspect if reg == nil
     end
     def length

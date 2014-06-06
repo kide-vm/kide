@@ -7,19 +7,21 @@ module Ast
       locals = {}
       params.each_with_index do |param , index|
         arg = param.name
-        arg_value = Vm::Integer.new(index+1)
+        arg_value = Vm::Integer.new(index+2)
         locals[arg] = arg_value
         args << arg_value
       end
       # class depends on receiver
       if receiver.nil? 
         clazz = context.current_class
+        me = Vm::Integer.new( Vm::Function::RECEIVER_REG )
       else
         c = context.object_space.get_or_create_class receiver.name.to_sym
         clazz = c.meta_class
+        raise "get the constant loaded to 1"
       end
 
-      function = Vm::Function.new(name , args )
+      function = Vm::Function.new(name , me , args )
       clazz.add_function function 
 
       parent_locals = context.locals

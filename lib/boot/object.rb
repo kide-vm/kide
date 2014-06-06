@@ -6,7 +6,7 @@ module Boot
       # set/get instance variable use it. 
       # This is just a placeholder, as we code this in ruby, but the instance methods need the definition before.
       def index_of context , name = Vm::Integer
-        index_function = Vm::Function.new(:index_of , [Vm::Integer] , Vm::Integer )
+        index_function = Vm::Function.new(:index_of , Vm::Integer , [Vm::Integer] , Vm::Integer )
         return index_function
       end
 
@@ -18,7 +18,7 @@ module Boot
       #  end  
       # The at_index is just "below" the api, somehting we need but don't want to expose, so we can't code the above in ruby
       def _get_instance_variable context , name = Vm::Integer
-        get_function = Vm::Function.new(:_get_instance_variable , [Vm::Integer , Vm::Integer ] , Vm::Integer )
+        get_function = Vm::Function.new(:_get_instance_variable , Vm::Integer , [ Vm::Integer ] , Vm::Integer )
         me = get_function.args[0]
         var_name = get_function.args[1]
         return_to = get_function.return_type

@@ -32,8 +32,8 @@ module Core
         function
       end
 
-      def putint context , arg = Vm::Integer
-        putint_function = Vm::Function.new(:putint , [arg] , arg )
+      def putint context
+        putint_function = Vm::Function.new(:putint , Vm::Integer , [] , Vm::Integer )
         buffer = Vm::StringConstant.new("           ") # create a buffer
         context.object_space.add_object buffer              # and save it (function local variable: a no no)
         int = putint_function.args.first
@@ -59,7 +59,7 @@ module Core
       # As we write before we recurse (save a push) we write the number backwards
       # arguments: string address , integer
       def utoa context
-        utoa_function = Vm::Function.new(:utoa , [Vm::Integer , Vm::Integer ] , Vm::Integer )
+        utoa_function = Vm::Function.new(:utoa , Vm::Integer , [ Vm::Integer ] , Vm::Integer )
         str_addr = utoa_function.args[0]
         number = utoa_function.args[1]
         remainder = utoa_function.new_local
@@ -79,7 +79,7 @@ module Core
       # a hand coded version of the fibonachi numbers
       #  not my hand off course, found in the net from a basic introduction
       def fibo context
-        fibo_function = Vm::Function.new(:fibo , [Vm::Integer] , Vm::Integer )
+        fibo_function = Vm::Function.new(:fibo , Vm::Integer , [] , Vm::Integer )
         result = Vm::Integer.new(7)
         int = fibo_function.args[0]
         count = fibo_function.new_local

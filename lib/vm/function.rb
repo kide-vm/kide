@@ -27,16 +27,27 @@ module Vm
   
   class Function < Code
 
-    def initialize(name , args = [] , return_type = nil)
+    TYPE_REG = 0
+    RECEIVER_REG = 1
+    RETURN_REG = 7
+    
+    def initialize(name , receiver = Vm::Integer , args = [] , return_type = Vm::Integer)
       super()
       @name = name.to_sym
+      if receiver.is_a?(Value)
+        @receiver = receiver
+        raise "arg in non std register #{arg.inspect}" unless RECEIVER_REG == receiver.register
+      else
+        @receiver = receiver.new(RECEIVER_REG)
+      end
+      
       @args = Array.new(args.length)
       args.each_with_index do |arg , i|
         if arg.is_a?(Value)
           @args[i] = arg
-          raise "arg in non std register #{arg.inspect}" unless (i+1) == arg.register
+          raise "arg in non std register #{arg.inspect}" unless (i+1+RECEIVER_REG) == arg.register
         else
-          @args[i] = arg.new(i+1)
+          @args[i] = arg.new(i+1+RECEIVER_REG)
         end
       end
       set_return return_type
@@ -48,14 +59,14 @@ module Vm
       @blocks = []
     end
 
-    attr_reader :args , :entry , :exit , :body , :name , :return_type
+    attr_reader :args , :entry , :exit , :body , :name , :return_type , :revceiver
 
     def set_return type_or_value
       @return_type = type_or_value || Vm::Integer 
       if @return_type.is_a?(Value)
-        raise "return in non std register #{@return_type.inspect}" unless 7 == @return_type.register
+        raise "return in non std register #{@return_type.inspect}" unless RETURN_REG == @return_type.register
       else
-        @return_type = @return_type.new(7)
+        @return_type = @return_type.new(RETURN_REG)
       end
     end
     def arity
@@ -63,14 +74,15 @@ module Vm
     end
 
     def new_local type = Vm::Integer
-      register = args.length + @locals.length
+      register = args.length + 1 + @locals.length # one for the receiver implicit arg
       l = type.new(register + 1) # one for the type register 0, TODO add type as arg0 implicitly
       puts "new local #{l.register}"
 #      raise "Register overflow in function #{name}" if l.register > 6
       @locals << l
       l
     end
-
+    #BUG - must save receiver
+    
     def save_locals context , into
       save = args.collect{|a| a.register } + @locals.collect{|l| l.register}
       into.push(save) unless save.empty?
