@@ -3,7 +3,7 @@ module Ast
   
   class CallSiteExpression < Expression
 #    attr_reader  :name, :args , :receiver
-
+    @@counter = 0
     def compile context , into
       params = args.collect{ |a| a.compile(context, into) }
 
@@ -25,7 +25,9 @@ module Ast
       current_function.save_locals(context , into) if current_function
       call.load_args into
       call.do_call into
-      current_function.restore_locals(context , into) if current_function
+      after = into.new_block("#{into.name}_call#{@@counter+=1}")
+      into.insert_at after
+      current_function.restore_locals(context , after) if current_function
       puts "compile call #{function.return_type}"
       function.return_type
     end
