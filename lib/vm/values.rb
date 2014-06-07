@@ -122,9 +122,6 @@ module Vm
     def less_than block , right
       RegisterMachine.instance.integer_less_than block , self , right
     end
-    def equals block , right
-      RegisterMachine.instance.integer_equals block , self , right
-    end
     def == other
       code = class_for(CompareInstruction).new(self , other , opcode: :cmp)
     end
@@ -145,6 +142,9 @@ module Vm
     end
     def left_shift block , first , right
       RegisterMachine.instance.integer_left_shift block , self , first , right
+    end
+    def equals block , right
+      RegisterMachine.instance.integer_equals block , self , right
     end
     
     def load block , right

@@ -23,11 +23,10 @@ module Fragments
     # file is a list of expressions, all but the last must be a function
     # and the last is wrapped as a main
     parts.each_with_index do |part,index|
-      if index == (parts.length - 1)
-        expr    = part.compile( @object_space.context , @object_space.main )
-      else
+      if part.is_a? Ast::FunctionExpression
         expr    = part.compile( @object_space.context ,  nil )
-        raise "should be function definition for now, not #{part.inspect}#{expr.inspect}" unless expr.is_a? Vm::Function
+      else
+        expr    = part.compile( @object_space.context , @object_space.main )
       end
     end
   end

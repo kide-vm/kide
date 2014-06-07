@@ -7,28 +7,20 @@ module Ast
     def compile context , into
       params = args.collect{ |a| a.compile(context, into) }
 
-      if receiver.name == :self
+      if receiver.is_a?(NameExpression) and (receiver.name == :self)
         function = context.current_class.get_or_create_function(name)
-        value = Vm::Integer.new(Vm::Function::RECEIVER_REG)
-      elsif receiver.is_a? ModuleName
-        c_name = receiver.name
-        clazz = context.object_space.get_or_create_class c_name
-        raise "uups #{clazz}.#{c_name}" unless clazz
-        #class qualifier, means call from metaclass
-        clazz = clazz.meta_class
-        value = clazz
-        puts "CLAZZ #{value}"
-        function = clazz.get_or_create_function(name)
-      elsif receiver.is_a? VariableExpression
-        raise "not implemented instance var:#{receiver}"
+        value_receiver = Vm::Integer.new(Vm::Function::RECEIVER_REG)
       else
-        # should be case switch for basic tyes and dynamic dispatch for objects reference
-        value = context.locals[receiver.name]
-        raise "no value" unless value
+        value_receiver = receiver.compile(context , into)
         function = context.current_class.get_or_create_function(name)
       end
-      raise "No such method error #{clazz.to_s}:#{name}" if function == nil
-      call = Vm::CallSite.new( name ,  value , params  , function)
+      # this lot below should go, since the compile should handle all
+      if receiver.is_a? VariableExpression
+        raise "not implemented instance var:#{receiver}"
+      end
+      raise "No such method error #{3.to_s}:#{name}" if (function.nil?)
+      raise "No receiver error #{inspect}:#{value_receiver}:#{name}" if (value_receiver.nil?)
+      call = Vm::CallSite.new( name ,  value_receiver , params  , function)
       current_function = context.function
       current_function.save_locals(context , into) if current_function
       call.load_args into

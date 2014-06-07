@@ -1,5 +1,4 @@
 require_relative "code"
-require "support/hash_attributes"
 module Vm
 
   # Because the idea of what one instruction does, does not always map one to one to real machine

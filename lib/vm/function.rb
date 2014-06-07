@@ -45,7 +45,7 @@ module Vm
       args.each_with_index do |arg , i|
         if arg.is_a?(Value)
           @args[i] = arg
-          raise "arg in non std register #{arg.inspect}" unless RECEIVER_REG == arg.used_register.next_reg(i - 1)
+          raise "arg #{i}in non std register #{arg.inspect}" unless RECEIVER_REG == arg.used_register.next_reg(-1-i)
         else
           @args[i] = arg.new(RegisterUse.new(RECEIVER_REG).next_reg(i + 1))
         end

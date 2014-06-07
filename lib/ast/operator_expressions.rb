@@ -7,6 +7,7 @@ module Ast
       #puts "compiled right #{r_val.inspect}"
       if operator == "="    # assignment, value based
         raise "Can only assign variables, not #{left}" unless left.is_a?(NameExpression) 
+        puts context.inspect unless context.locals
         l_val = context.locals[left.name]
         if( l_val ) #variable existed, move data there
           l_val = l_val.move( into , r_val) 
@@ -18,7 +19,6 @@ module Ast
       end
 
       l_val = left.compile(context , into)
-
       case operator
       when ">"
         code = l_val.greater_than into , r_val

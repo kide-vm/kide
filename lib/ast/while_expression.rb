@@ -5,6 +5,7 @@ module Ast
       while_block = into.new_block "#{into.name}_while"
       ret = while_block.new_block "#{into.name}_return"
       puts "compiling while condition #{condition}"
+      puts "Locals #{context.locals.keys.join('-')}, #{context.locals.object_id}"
       cond_val = condition.compile(context , while_block)
       while_block.b ret , condition_code: cond_val.not_operator
       last = nil

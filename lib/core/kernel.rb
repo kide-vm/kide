@@ -23,8 +23,8 @@ module Core
 
       #TODO this is in the wrong place. It is a function that returns a function object
       #   while all other methods add their code into some block. --> kernel
-      def putstring context , string = Vm::Integer , length = Vm::Integer
-        function = Vm::Function.new(:putstring , [string , length ] , string)
+      def putstring context 
+        function = Vm::Function.new(:putstring , Vm::Integer , [] )
         block = function.body
         # should be another level of indirection, ie write(io,str)
         ret = Vm::RegisterMachine.instance.write_stdout(block)
