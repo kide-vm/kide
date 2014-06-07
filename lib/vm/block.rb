@@ -27,13 +27,18 @@ module Vm
       @next = next_block
       @codes = []
       @insert_at = self
+      # keeping track of register usage, left (assigns) or right (uses)
+      @assigns = []
+      @uses = []
     end
 
-    attr_reader :name  , :next , :codes , :function
+    attr_reader :name  , :next , :codes , :function , :assigns , :uses
 
     def add_code(kode)
       raise "alarm #{kode}" if kode.is_a? Word
       raise "alarm #{kode.class} #{kode}" unless kode.is_a? Code
+      @assigns += kode.assigns
+      @uses += kode.uses
       @insert_at.codes << kode
       self
     end

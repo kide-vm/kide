@@ -106,7 +106,7 @@ module Arm
     end
 
     def syscall block , num
-      sys_and_ret = Vm::Integer.new(7)
+      sys_and_ret = Vm::Integer.new( Vm::Function::RETURN_REG )
       block <<  mov(  sys_and_ret , num )
       block <<  swi(  0 )
       #small todo, is this actually correct for all (that they return int)

@@ -11,7 +11,6 @@ def fibonaccir( n )
       else
         a = fibonaccir( n - 1 ) 
         b = fibonaccir( n - 2 )
-        c = fibonaccir( n - 3 )
         return a + b
       end
 end

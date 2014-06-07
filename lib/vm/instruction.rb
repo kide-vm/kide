@@ -27,7 +27,23 @@ module Vm
     def opcode
       @attributes[:opcode]
     end
-    
+
+    # returns an array of registers (RegisterUses) that this instruction uses.
+    # ie for r1 = r2 + r3 
+    # which in assembler is add r1 , r2 , r3
+    # it would return [r2,r3]
+    # for pushes the list may be longer, whereas for a jump empty
+    def uses
+      raise "abstract called for #{self.class}"
+    end
+    # returns an array of registers (RegisterUses) that this instruction assigns to.
+    # ie for r1 = r2 + r3 
+    # which in assembler is add r1 , r2 , r3
+    # it would return [r1]
+    # for most instruction this is one, but comparisons and jumps 0 , and pop's as long as 16
+    def assigns
+      raise "abstract called for #{self.class}"
+    end
     def method_missing name , *args , &block 
       return super unless (args.length <= 1) or block_given?
       set , attribute = name.to_s.split("set_")
@@ -46,6 +62,21 @@ module Vm
       @first = first
       super(options)
     end
+    def is_push?
+      opcode == :push
+    end
+    def is_pop?
+      !is_push?
+    end
+    def uses
+      is_push? ? regs : []
+    end
+    def assigns
+      is_pop? ? regs : []
+    end
+    def regs
+      @first
+    end
   end
   class MemoryInstruction < Instruction
     def initialize result , left , right = nil , options = {}
@@ -53,6 +84,14 @@ module Vm
       @left = left
       @right = right
       super(options)
+    end
+    def uses
+      ret = [@left.used_register ]
+      ret << @right.used_register unless @right.nil?
+      ret
+    end
+    def assigns
+      [@result.used_register]
     end
   end
   class LogicInstruction < Instruction
@@ -64,29 +103,46 @@ module Vm
     def initialize result , left , right , options = {}
       @result = result
       @left = left
-      @right = right
+      @right = right.is_a?(Fixnum) ? IntegerConstant.new(right) : right
       super(options)
     end
-  end
-  class MathInstruction < Instruction
-    def initialize first , options = {}
-      @first = first
-      super(options)
+    def uses
+      ret = []
+      ret << @left.used_register if @left and not @left.is_a? Constant
+      ret << @right.used_register if @right and not @right.is_a?(Constant)
+      ret
+    end
+    def assigns
+      [@result.used_register]
     end
   end
   class CompareInstruction < Instruction
     def initialize left , right , options  = {}
       @left = left
-      @right = right
+      @right = right.is_a?(Fixnum) ? IntegerConstant.new(right) : right
       super(options)
+    end
+    def uses
+      ret = [@left.used_register ]
+      ret << @right.used_register unless @right.is_a? Constant
+      ret
+    end
+    def assigns
+      []
     end
   end
   class MoveInstruction < Instruction
     def initialize to , from , options = {}
       @to = to
-      @from = from
+      @from = from.is_a?(Fixnum) ? IntegerConstant.new(from) : from
       raise "move must have from set #{inspect}" unless from
       super(options)
+    end
+    def uses
+      @from.is_a?(Constant) ? [] : [@from.used_register]
+    end
+    def assigns
+      [@to.used_register]
     end
   end
   class CallInstruction < Instruction
@@ -102,6 +158,12 @@ module Vm
         @attributes[:condition_code] = opcode[4,2].to_sym
         @attributes[:opcode] = :call
       end
+    end
+    def uses
+      []
+    end
+    def assigns
+      []
     end
   end
 end
