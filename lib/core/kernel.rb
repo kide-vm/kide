@@ -39,17 +39,19 @@ module Core
         int = putint_function.receiver
         moved_int = putint_function.new_local
         utoa = context.object_space.get_or_create_class(:Object).get_or_create_function(:utoa)
-        b = putint_function.body
-        b.mov( moved_int ,  int ) #move arg up
-        #b.a       buffer  => int          # string to write to
+        body = putint_function.body
+        body.mov( moved_int ,  int ) #move arg up
+        #body.a       buffer  => int          # string to write to
         
-        b.add( int ,  buffer ,nil )   # string to write to
-        b.add(int , int ,  buffer.length - 3) 
-        b.call( utoa )
+        body.add( int ,  buffer ,nil )   # string to write to
+        body.add(int , int ,  buffer.length - 3) 
+        body.call( utoa )
+        after = body.new_block("#{body.name}_a")
+        body.insert_at after
         # And now we "just" have to print it, using the write_stdout
-        b.add( int ,  buffer , nil )   # string to write to
-        b.mov( moved_int ,  buffer.length )
-        Vm::RegisterMachine.instance.write_stdout(putint_function.body)
+        after.add( int ,  buffer , nil )   # string to write to
+        after.mov( moved_int ,  buffer.length )
+        Vm::RegisterMachine.instance.write_stdout(after)
         putint_function
       end
 
@@ -65,12 +67,12 @@ module Core
         remainder = utoa_function.new_local
         Vm::RegisterMachine.instance.div10( utoa_function.body , number  , remainder )
         # make char out of digit (by using ascii encoding) 48 == "0"
-        b = utoa_function.body
-        b.add(remainder , remainder , 48)
-        b.strb( remainder, str_addr ) 
-        b.sub( str_addr,  str_addr ,  1 ) 
-        b.cmp( number ,  0 )
-        b.callne( utoa_function  )
+        body = utoa_function.body
+        body.add(remainder , remainder , 48)
+        body.strb( remainder, str_addr ) 
+        body.sub( str_addr,  str_addr ,  1 ) 
+        body.cmp( number ,  0 )
+        body.callne( utoa_function  )
         return utoa_function
       end
 
@@ -85,15 +87,15 @@ module Core
         count = fibo_function.new_local
         f1 = fibo_function.new_local
         f2 = fibo_function.new_local
-        b = fibo_function.body
+        body = fibo_function.body
         
-        b.cmp  int , 1
-        b.mov( result, int , condition_code: :le)
-        b.mov( :pc , :lr , condition_code: :le)
-        b.push [  count , f1 , f2 , :lr]
-        b.mov f1 , 1
-        b.mov f2 , 0
-        b.sub count , int , 2 
+        body.cmp  int , 1
+        body.mov( result, int , condition_code: :le)
+        body.mov( :pc , :lr , condition_code: :le)
+        body.push [  count , f1 , f2 , :lr]
+        body.mov f1 , 1
+        body.mov f2 , 0
+        body.sub count , int , 2 
 
         l = fibo_function.body.new_block("loop")
         

@@ -25,9 +25,7 @@ module Ast
 
       parent_locals = context.locals
       parent_function = context.function
-      puts "Locals #{locals.keys.join('-')}, #{locals.object_id}"
       context.locals = locals
-      puts "Locals #{context.locals.keys.join('-')}, #{context.locals.object_id}"
       context.function = function
 
       into = function.body

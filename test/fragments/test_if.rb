@@ -7,9 +7,9 @@ class TestIf < MiniTest::Test
     @string_input = <<HERE
 def itest(n)
       if( n < 12)
-        putstring("then")
+        "then".putstring()
       else
-        putstring("else")
+        "else".putstring()
       end
 end
 
