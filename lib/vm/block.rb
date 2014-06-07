@@ -38,17 +38,19 @@ module Vm
       self
     end
     alias :<< :add_code 
-    alias :a :add_code 
 
     # create a new linear block after this block. Linear means there is no brach needed from this one
     # to the new one. Usually the new one just serves as jump address for a control statement
     # In code generation (assembly) , new new_block is written after this one, ie zero runtime cost
-    def new_block name
-      new_b = Block.new( name , @function , @next )
-      @next = new_b
+    def new_block new_name
+      new_b = Block.new( new_name , @function , @insert_at.next )
+      @insert_at.set_next new_b
       return new_b
     end
 
+    def set_next next_b 
+      @next = next_b
+    end
     # when control structures create new blocks (with new_block) control continues at some new block the
     # the control structure creates. 
     # Example: while, needs  2 extra blocks
