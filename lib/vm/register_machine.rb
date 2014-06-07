@@ -108,6 +108,7 @@ module Vm
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
+        first = Vm::Integer.new(first) if first.is_a? Symbol
         clazz.new(first , options)
       end
     end
@@ -118,6 +119,8 @@ module Vm
       create_method(inst) do |left ,right , options = nil|
         options = {} if options == nil
         options.merge defaults
+        left = Vm::Integer.new(left) if left.is_a? Symbol
+        right = Vm::Integer.new(right) if right.is_a? Symbol
         options[:opcode] = inst
         clazz.new(left , right ,options)
       end
@@ -130,6 +133,9 @@ module Vm
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
+        result = Vm::Integer.new(result) if result.is_a? Symbol
+        left = Vm::Integer.new(left) if left.is_a? Symbol
+        right = Vm::Integer.new(right) if right.is_a? Symbol
         clazz.new(result, left , right ,options)
       end
     end

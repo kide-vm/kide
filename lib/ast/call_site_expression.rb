@@ -9,6 +9,7 @@ module Ast
 
       if receiver.name == :self
         function = context.current_class.get_or_create_function(name)
+        value = Vm::Integer.new(Vm::Function::RECEIVER_REG)
       elsif receiver.is_a? ModuleName
         c_name = receiver.name
         clazz = context.object_space.get_or_create_class c_name
@@ -23,6 +24,7 @@ module Ast
       else
         # should be case switch for basic tyes and dynamic dispatch for objects reference
         value = context.locals[receiver.name]
+        raise "no value" unless value
         function = context.current_class.get_or_create_function(name)
       end
       raise "No such method error #{clazz.to_s}:#{name}" if function == nil

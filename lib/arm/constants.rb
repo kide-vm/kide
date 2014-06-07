@@ -50,20 +50,21 @@ module Arm
                   'a3' => 2, 'a4' => 3, 'v1' => 4, 'v2' => 5, 'v3' => 6, 'v4' => 7, 'v5' => 8,
                   'v6' => 9, 'rfp' => 9, 'sl' => 10, 'fp' => 11, 'ip' => 12, 'sp' => 13,
                   'lr' => 14, 'pc' => 15 }
-    def reg name
-      code = reg_code name
-      raise "no such register #{name}" unless code
-      Arm::Register.new(name.to_sym , code )
+    def reg r_name
+      code = reg_code r_name
+      raise "no such register #{r_name}" unless code
+      Arm::Register.new(r_name.to_sym , code )
     end
-    def reg_code name
-      if name.is_a? Vm::Word
-        name = "r#{name.register}"
+    def reg_code r_name
+      raise "double r #{r_name}" if( :rr1 == r_name) 
+      if r_name.is_a? Vm::Word
+        r_name = r_name.register_symbol
       end
-      if name.is_a? Fixnum
-        name = "r#{name}"
+      if r_name.is_a? Fixnum
+        r_name = "r#{r_name}"
       end
-      r = REGISTERS[name.to_s]
-      raise "no reg #{name}" if r == nil
+      r = REGISTERS[r_name.to_s]
+      raise "no reg #{r_name}" if r == nil
       r
     end
 

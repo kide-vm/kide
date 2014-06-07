@@ -3,7 +3,7 @@ require_relative "meta_class"
 module Vm
   # class is mainly a list of functions with a name (for now)
   # layout of object is seperated into Layout
-  class BootClass < Code
+  class BootClass < ObjectConstant
     def initialize name , context , super_class = :Object
       super()
       @context = context

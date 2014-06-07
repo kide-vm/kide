@@ -25,7 +25,7 @@ module Arm
       immediate = @immediate
 
       right = @right
-      if @left.is_a?(Vm::StringConstant)
+      if @left.is_a?(Vm::ObjectConstant)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie pointing to fetch and not execute)
         right = @left.position - self.position - 8 
@@ -36,7 +36,7 @@ module Arm
         right = Vm::IntegerConstant.new( right )
       end
       if (right.is_a?(Vm::IntegerConstant))
-        if (right.integer.fits_u8?)
+        if true #TODO (right.integer.fits_u8?)
           # no shifting needed
           operand = right.integer
           immediate = 1

@@ -36,7 +36,7 @@ module Core
         putint_function = Vm::Function.new(:putint , Vm::Integer , [] , Vm::Integer )
         buffer = Vm::StringConstant.new("           ") # create a buffer
         context.object_space.add_object buffer              # and save it (function local variable: a no no)
-        int = putint_function.args.first
+        int = putint_function.receiver
         moved_int = putint_function.new_local
         utoa = context.object_space.get_or_create_class(:Object).get_or_create_function(:utoa)
         b = putint_function.body
@@ -44,7 +44,7 @@ module Core
         #b.a       buffer  => int          # string to write to
         
         b.add( int ,  buffer ,nil )   # string to write to
-        b.a       int +  (buffer.length-3) => int
+        b.add(int , int ,  buffer.length - 3) 
         b.call( utoa )
         # And now we "just" have to print it, using the write_stdout
         b.add( int ,  buffer , nil )   # string to write to
@@ -60,13 +60,13 @@ module Core
       # arguments: string address , integer
       def utoa context
         utoa_function = Vm::Function.new(:utoa , Vm::Integer , [ Vm::Integer ] , Vm::Integer )
-        str_addr = utoa_function.args[0]
-        number = utoa_function.args[1]
+        str_addr = utoa_function.receiver
+        number = utoa_function.args.first
         remainder = utoa_function.new_local
         Vm::RegisterMachine.instance.div10( utoa_function.body , number  , remainder )
         # make char out of digit (by using ascii encoding) 48 == "0"
-        b = utoa_function.body.scope binding
-        b.remainder = remainder + 48
+        b = utoa_function.body
+        b.add(remainder , remainder , 48)
         b.strb( remainder, str_addr ) 
         b.sub( str_addr,  str_addr ,  1 ) 
         b.cmp( number ,  0 )
@@ -80,26 +80,26 @@ module Core
       #  not my hand off course, found in the net from a basic introduction
       def fibo context
         fibo_function = Vm::Function.new(:fibo , Vm::Integer , [] , Vm::Integer )
-        result = Vm::Integer.new(7)
-        int = fibo_function.args[0]
+        result = fibo_function.return_type
+        int = fibo_function.receiver
         count = fibo_function.new_local
         f1 = fibo_function.new_local
         f2 = fibo_function.new_local
-        b = fibo_function.body.scope binding
+        b = fibo_function.body
         
-        b.a  int == 1
+        b.cmp  int , 1
         b.mov( result, int , condition_code: :le)
         b.mov( :pc , :lr , condition_code: :le)
         b.push [  count , f1 , f2 , :lr]
-        b.f1 = 1
-        b.f2 = 0
-        b.count = int - 2 
+        b.mov f1 , 1
+        b.mov f2 , 0
+        b.sub count , int , 2 
 
-        l = fibo_function.body.new_block("loop").scope binding
-
-        l.f1 = f1 + f2
-        l.f2 = f1 - f2
-        l.count = (count - 1).set_update_status
+        l = fibo_function.body.new_block("loop")
+        
+        l.add f1 , f1 , f2
+        l.sub f2 , f1 , f2
+        l.sub count ,  count , 1 , set_update_status: 1
         l.bpl( l )
         l.mov( result , f1 )
         fibo_function.set_return result

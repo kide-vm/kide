@@ -53,9 +53,23 @@ module Vm
   # but which register can be changed, and _all_ instructions sharing the RegisterUse then use that register
   # In other words a simple level of indirection, or change from value to reference sematics.
   class RegisterUse
-    attr_accessor :register
+    attr_accessor :symbol
     def initialize r
-      @register = r
+      if( r.is_a? Fixnum)
+        r = "r#{r}".to_sym
+      end
+      raise "wrong type for register init #{r}" unless r.is_a? Symbol
+      raise "double r #{r}" if r == :rr1
+      @symbol = r
+    end
+
+    #helper methods to calculate with register symbols
+    def next_reg by = 1
+      int = @symbol[1,3].to_i
+      "r#{int + by}".to_sym
+    end
+    def next_reg_use by = 1
+      RegisterUse.new( next_reg(by) )
     end
   end
 
@@ -66,23 +80,21 @@ module Vm
 
     attr_accessor :used_register
 
-    def register
-      @used_register.register
+    def register_symbol
+      @used_register.symbol
     end
-
     def inspect
-      self.class.name + "(r#{used_register.register})"
+      "#{self.class.name} (#{register_symbol})"
     end
     def to_s
       inspect
     end
     def initialize reg
-      if reg.is_a? Fixnum
-        @used_register = RegisterUse.new(reg)
-      else
+      if reg.is_a? RegisterUse
         @used_register = reg
+      else
+        @used_register = RegisterUse.new(reg)
       end
-      raise inspect if reg == nil
     end
     def length
       4
@@ -97,21 +109,6 @@ module Vm
   end
 
   class Integer < Word
-
-    # part of the dsl. 
-    # Gets called with either fixnum/IntegerConstant or an Instruction (usually logic, iw add...)
-    # For instructions we flip, ie call the assign on the instruction
-    # but for constants we have to create instruction first (mov)
-    def assign other
-      other = Vm::IntegerConstant.new(other) if other.is_a? Fixnum
-      if other.is_a?(Vm::IntegerConstant) or other.is_a?(Vm::Integer)
-        class_for(MoveInstruction).new( self , other , :opcode => :mov)
-      elsif other.is_a?(Vm::StringConstant) # pc relative addressing
-        class_for(LogicInstruction).new(self , other , nil , opcode: :add)
-      else
-        other.assign(self)
-      end
-    end
 
     def less_or_equal block , right
       RegisterMachine.instance.integer_less_or_equal block , self , right
@@ -155,7 +152,9 @@ module Vm
         block.mov(  self ,  right )  #move the value
       elsif right.is_a? StringConstant
         block.add( self , right , nil)   #move the address, by "adding" to pc, ie pc relative
-        block.mov( Integer.new(register+1) ,  right.length )  #and the length HACK TODO
+        block.mov( Integer.new(self.used_register.next_reg) ,  right.length )  #and the length HACK TODO
+      elsif right.is_a?(BootClass) or right.is_a?(MetaClass)
+        block.add( self , right , nil)   #move the address, by "adding" to pc, ie pc relative
       else
         raise "unknown #{right.inspect}" 
       end

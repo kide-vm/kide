@@ -43,5 +43,6 @@ module Vm
     def assemble(io)
       raise "Not implemented #{self.inspect}"
     end
+    
   end
 end

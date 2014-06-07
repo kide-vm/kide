@@ -7,10 +7,10 @@ module Ast
       # copied from function expression: TODO make function
 
       return_reg = Vm::Integer.new(7)
-      if expression_value.is_a?(Vm::IntegerConstant) or expression_value.is_a?(Vm::StringConstant)
+      if expression_value.is_a?(Vm::IntegerConstant) or expression_value.is_a?(Vm::ObjectConstant)
         return_reg.load into , expression_value 
       else
-        return_reg.move( into, expression_value ) if expression_value.register != return_reg.register
+        return_reg.move( into, expression_value ) if expression_value.register_symbol != return_reg.register_symbol
       end
       #function.set_return return_reg
       return return_reg

@@ -23,7 +23,7 @@ module Arm
       immediate = @immediate
 
       arg = @right
-      if arg.is_a?(Vm::StringConstant)
+      if arg.is_a?(Vm::ObjectConstant)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
         arg = Vm::IntegerConstant.new( arg.position - self.position - 8 )

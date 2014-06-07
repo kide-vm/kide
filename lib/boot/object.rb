@@ -19,8 +19,8 @@ module Boot
       # The at_index is just "below" the api, somehting we need but don't want to expose, so we can't code the above in ruby
       def _get_instance_variable context , name = Vm::Integer
         get_function = Vm::Function.new(:_get_instance_variable , Vm::Integer , [ Vm::Integer ] , Vm::Integer )
-        me = get_function.args[0]
-        var_name = get_function.args[1]
+        me = get_function.receiver
+        var_name = get_function.args.first
         return_to = get_function.return_type
         index_function = context.object_space.get_or_create_class(:Object).get_or_create_function(:index_of)
         b = get_function.body

@@ -12,10 +12,11 @@ module Arm
 
       @immediate = 0      
       @rn = :r0 # register zero = zero bit pattern
-#      raise inspect if  to.is_a?(Vm::Value) and 
-#                        from.is_a?(Vm::Value) and 
-#                        !@attributes[:shift_lsr] and
-#                        to.register == from.register
+      raise inspect if  to.is_a?(Vm::Value) and 
+                        from.is_a?(Vm::Value) and 
+                        !@attributes[:shift_lsr] and
+                        to.register_symbol == from.register_symbol
+      raise "uups " if @to.register_symbol == :rr1
     end
     
     # arm intrucions are pretty sensible, and always 4 bytes (thumb not supported)
@@ -30,7 +31,7 @@ module Arm
       immediate = @immediate
 
       right = @from
-      if right.is_a?(Vm::StringConstant)
+      if right.is_a?(Vm::ObjectConstant)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
         right = Vm::IntegerConstant.new( right.position - self.position - 8 )

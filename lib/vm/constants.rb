@@ -9,6 +9,10 @@ module Vm
     
   end
 
+  # another abstract "marker" class (so we can check for it)
+  # derived classes are Boot/Meta Clas and StringConstant 
+  class ObjectConstant < Constant
+  end
 
   class IntegerConstant < Constant
     def initialize int
@@ -25,7 +29,7 @@ module Vm
   # Currently string are stored "inline" , ie in the code segment. 
   # Mainly because that works an i aint no elf expert.
   
-  class StringConstant < Constant
+  class StringConstant < ObjectConstant
     attr_reader :string
     # currently aligned to 4 (ie padded with 0) and off course 0 at the end
     def initialize str

@@ -12,13 +12,12 @@ module Ast
         args << arg_value
       end
       # class depends on receiver
+      me = Vm::Integer.new( Vm::Function::RECEIVER_REG )
       if receiver.nil? 
         clazz = context.current_class
-        me = Vm::Integer.new( Vm::Function::RECEIVER_REG )
       else
         c = context.object_space.get_or_create_class receiver.name.to_sym
         clazz = c.meta_class
-        raise "get the constant loaded to 1"
       end
 
       function = Vm::Function.new(name , me , args )
@@ -38,10 +37,10 @@ module Ast
       end
       
       return_reg = Vm::Integer.new(7)
-      if last_compiled.is_a?(Vm::IntegerConstant) or last_compiled.is_a?(Vm::StringConstant)
-        return_reg.load into , last_compiled if last_compiled.register != return_reg.register
+      if last_compiled.is_a?(Vm::IntegerConstant) or last_compiled.is_a?(Vm::ObjectConstant)
+        return_reg.load into , last_compiled if last_compiled.register_symbol != return_reg.register_symbol
       else
-        return_reg.move( into, last_compiled ) if last_compiled.register != return_reg.register
+        return_reg.move( into, last_compiled ) if last_compiled.register_symbol != return_reg.register_symbol
       end
       function.set_return return_reg
       

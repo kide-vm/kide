@@ -18,8 +18,7 @@ module Ast
       end
 
       l_val = left.compile(context , into)
-      into = into.scope binding
-      
+
       case operator
       when ">"
         code = l_val.greater_than into , r_val
@@ -33,7 +32,7 @@ module Ast
         code = l_val.equals into , r_val
       when "+"
         res = context.function.new_local
-        into.res = l_val + r_val
+        into.add res , l_val , r_val
         code = res
       when "-"
         res = context.function.new_local

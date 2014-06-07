@@ -32,14 +32,8 @@ module Vm
     attr_reader :name  , :next , :codes , :function
 
     def add_code(kode)
-      if kode.is_a? Hash
-        raise "Hack only for 1 element #{inspect} #{kode.inspect}" unless kode.length == 1
-        instruction , result = kode.first
-        instruction.assign result
-        kode = instruction
-      end
       raise "alarm #{kode}" if kode.is_a? Word
-      raise "alarm #{kode}" unless kode.is_a? Code
+      raise "alarm #{kode.class} #{kode}" unless kode.is_a? Code
       @insert_at.codes << kode
       self
     end
@@ -70,27 +64,8 @@ module Vm
       self
     end
 
-    # to use the assignment syntax (see method_missing) the scope must be set, so variables can be resolved
-    # The scope you set should be a binding (literally, the kernel.binding)
-    # The function return the block, so it can be chained into an assignment
-    #  Example (coding a function )  and having variable int defined
-    #  b = function.body.scope(binding)
-    #  b.int = 5                      will create a mov instruction to set the register that int points to 
-    def scope where
-      @scope = where
-      self
-    end
-
-    # sugar to create instructions easily. Actually just got double sweet with two versions:
-    # 1 for any method that ends in = we evaluate the method name in the current scope (see scope())
-    #     for the result we call assign with the right value. The resulting instruction is added to 
-    #     the block.
-    #     Thus we emulate assignment, 
-    #     Example: block b
-    #                      b.variable = value          looks like what it does, but actually generates
-    #                                                   an instruction for the block (mov or add)
-    #                   
-    # 2- any other method will be passed on to the RegisterMachine and the result added to the block
+    # sugar to create instructions easily. 
+    # any method will be passed on to the RegisterMachine and the result added to the block
     #  With this trick we can write what looks like assembler, 
     #  Example   b.instance_eval
     #                mov( r1 , r2 )
@@ -98,16 +73,8 @@ module Vm
     # end
     #           mov and add will be called on Machine and generate Inststuction that are then added 
     #             to the block
+    # also symbols are supported and wrapped as register usages (for bare metal programming)
     def method_missing(meth, *args, &block)
-      var = meth.to_s[0 ... -1]
-      if( args.length == 1) and  ( meth.to_s[-1] == "=" )
-        if @scope.local_variable_defined? var.to_sym
-          l_val = @scope.local_variable_get var.to_sym
-          return add_code l_val.assign(args[0])
-        else
-          return super
-        end
-      end
       add_code RegisterMachine.instance.send(meth , *args)
     end
 

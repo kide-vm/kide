@@ -27,16 +27,16 @@ module Vm
   
   class Function < Code
 
-    TYPE_REG = 0
-    RECEIVER_REG = 1
-    RETURN_REG = 7
+    TYPE_REG = :r0
+    RECEIVER_REG = :r1
+    RETURN_REG = :r7
     
     def initialize(name , receiver = Vm::Integer , args = [] , return_type = Vm::Integer)
       super()
       @name = name.to_sym
       if receiver.is_a?(Value)
         @receiver = receiver
-        raise "arg in non std register #{arg.inspect}" unless RECEIVER_REG == receiver.register
+        raise "arg in non std register #{arg.inspect}" unless RECEIVER_REG == receiver.register_symbol
       else
         @receiver = receiver.new(RECEIVER_REG)
       end
@@ -45,9 +45,9 @@ module Vm
       args.each_with_index do |arg , i|
         if arg.is_a?(Value)
           @args[i] = arg
-          raise "arg in non std register #{arg.inspect}" unless (i+1+RECEIVER_REG) == arg.register
+          raise "arg in non std register #{arg.inspect}" unless RECEIVER_REG == arg.used_register.next_reg(i - 1)
         else
-          @args[i] = arg.new(i+1+RECEIVER_REG)
+          @args[i] = arg.new(RegisterUse.new(RECEIVER_REG).next_reg(i + 1))
         end
       end
       set_return return_type
@@ -59,12 +59,12 @@ module Vm
       @blocks = []
     end
 
-    attr_reader :args , :entry , :exit , :body , :name , :return_type , :revceiver
+    attr_reader :args , :entry , :exit , :body , :name , :return_type , :receiver
 
     def set_return type_or_value
       @return_type = type_or_value || Vm::Integer 
       if @return_type.is_a?(Value)
-        raise "return in non std register #{@return_type.inspect}" unless RETURN_REG == @return_type.register
+        raise "return in non std register #{@return_type.inspect}" unless RETURN_REG == @return_type.register_symbol
       else
         @return_type = @return_type.new(RETURN_REG)
       end
@@ -76,7 +76,7 @@ module Vm
     def new_local type = Vm::Integer
       register = args.length + 1 + @locals.length # one for the receiver implicit arg
       l = type.new(register + 1) # one for the type register 0, TODO add type as arg0 implicitly
-      puts "new local #{l.register}"
+      puts "new local #{l.register_symbol}"
 #      raise "Register overflow in function #{name}" if l.register > 6
       @locals << l
       l
@@ -84,13 +84,13 @@ module Vm
     #BUG - must save receiver
     
     def save_locals context , into
-      save = args.collect{|a| a.register } + @locals.collect{|l| l.register}
+      save = args.collect{|a| a.register_symbol } + @locals.collect{|l| l.register_symbol}
       into.push(save) unless save.empty?
     end
 
     def restore_locals context , into
       #TODO assumes allocation in order, as the pop must be get regs in ascending order (also push)
-      restore = args.collect{|a| a.register } + @locals.collect{|l| l.register}
+      restore = args.collect{|a| a.register_symbol } + @locals.collect{|l| l.register_symbol}
       into.pop(restore) unless restore.empty?
     end
 

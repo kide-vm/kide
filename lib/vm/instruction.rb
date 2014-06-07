@@ -68,16 +68,6 @@ module Vm
       @right = right
       super(options)
     end
-    # this is used to write code that looks like assignment
-    #  So instructions can be created without the result (register) set, and this assigns where 
-    # the reuslt after the fact, but usually in the same line
-    # Example (with block b, and variables int,a,b):  b.int = a + b
-    #  a + b actually creates an add instruction while the b.int=  assigns the result to int
-    #  b.add( int , a , b) is an alternative (assmbler style) way of writing the same.   
-    def assign left
-      @result = left
-      self
-    end
   end
   class MathInstruction < Instruction
     def initialize first , options = {}
@@ -96,7 +86,7 @@ module Vm
     def initialize to , from , options = {}
       @to = to
       @from = from
-      raise inspect unless from
+      raise "move must have from set #{inspect}" unless from
       super(options)
     end
   end
