@@ -11,7 +11,8 @@ module Ast
       puts "compiling if condition #{cond}"
       cond_val = cond.compile(context , into)
       into.b true_block , condition_code: cond_val.operator
-            
+      into.branch = true_block
+
       if_false.each do |part|
         puts "compiling in if false #{part}"
         last = part.compile(context , false_block )

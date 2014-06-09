@@ -25,6 +25,7 @@ module Vm
       @function = function
       @name = name.to_sym
       @next = next_block
+      @branch = nil
       @codes = []
       @insert_at = self
       # keeping track of register usage, left (assigns) or right (uses)
@@ -33,14 +34,26 @@ module Vm
     end
 
     attr_reader :name  , :next , :codes , :function , :assigns , :uses
+    attr_accessor :branch
+    
+    def reachable
+      ret = []
+      add_next ret
+      add_branch ret
+      ret
+    end
 
     def add_code(kode)
       raise "alarm #{kode}" if kode.is_a? Word
       raise "alarm #{kode.class} #{kode}" unless kode.is_a? Code
-      @assigns += kode.assigns
-      @uses += kode.uses
-      @insert_at.codes << kode
+      @insert_at.do_add kode
       self
+    end
+    def do_add kode
+      kode.assigns.each { |a| (@assigns << a) unless @assigns.include?(a) }
+      kode.uses.each { |use| (@uses << use) unless (@assigns.include?(use) or @uses.include?(use)) }
+      #puts "IN ADD #{name}#{uses}" 
+      @codes << kode
     end
     alias :<< :add_code 
 
@@ -85,6 +98,13 @@ module Vm
       add_code RegisterMachine.instance.send(meth , *args)
     end
 
+    # returns if this is a block that ends in a call (and thus needs local variable handling)
+    def call_block?
+      return false unless codes.last.is_a?(CallInstruction)
+      return false unless codes.last.opcode == :call
+      codes.dup.reverse.find{ |c| c.is_a? StackInstruction }
+    end
+
     # Code interface follows. Note position is inheitted as is from Code
 
     # length of the block is the length of it's codes, plus any next block (ie no branch follower)
@@ -115,6 +135,20 @@ module Vm
         obj.assemble io
       end
       @next.assemble(io) if @next
+    end
+
+    private
+    def add_next ret
+      return if @next.nil?
+      return if ret.include? @next
+      ret << @next
+      ret + @next.reachable
+    end
+    def add_branch ret
+      return if @branch.nil?
+      return if ret.include? @branch
+      ret << @branch
+      ret + @branch.reachable
     end
   end
 end

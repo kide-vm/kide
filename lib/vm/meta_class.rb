@@ -27,16 +27,16 @@ module Vm
     def get_function name
       name = name.to_sym
       f = @functions.detect{ |f| f.name == name }
-      puts "no function for #{name} in Meta #{@me_self.inspect}" unless f
+      puts "no function for :#{name} in Meta #{@me_self.inspect}" unless f
       f
     end
     # way of creating new functions that have not been parsed.
     def get_or_create_function name 
       fun = get_function name
       unless fun or name == :Object
-        supr = @context.object_space.get_or_create_class(@super_class)
+        supr = @me_self.context.object_space.get_or_create_class(@super_class)
         fun = supr.get_function name
-        puts "#{supr.functions.collect(&:name)} for #{name} GOT #{fun.class}" if name == :index_of
+        puts "#{supr.functions.collect(&:name)} for #{name} GOT #{fun.class}"
       end
       fun
     end

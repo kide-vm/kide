@@ -56,7 +56,7 @@ module Vm
       @body =  Block.new("body", self , @return)
       @entry = Core::Kernel::function_entry( Vm::Block.new("entry" , self , @body) ,name )
       @locals = []
-      @blocks = []
+      @linked = false # incase link is called twice, we only calculate locals once
     end
 
     attr_reader :args , :entry , :exit , :body , :name , :return_type , :receiver
@@ -81,46 +81,53 @@ module Vm
       @locals << l
       l
     end
-    #BUG - must save receiver
     
-    def save_locals context , into
-      save = args.collect{|a| a.register_symbol } + @locals.collect{|l| l.register_symbol}
-      into.push(save) unless save.empty?
-    end
-
-    def restore_locals context , into
-      #TODO assumes allocation in order, as the pop must be get regs in ascending order (also push)
-      restore = args.collect{|a| a.register_symbol } + @locals.collect{|l| l.register_symbol}
-      into.pop(restore) unless restore.empty?
-    end
-
-    def new_block name
-      block = Block.new(name , self)
-      @blocks << block
-      block
+    # return a list of registers that are still in use after the given block
+    # a call_site uses pushes and pops these to make them available for code after a call
+    def locals_at l_block
+      used =[]
+      assigned = []
+      l_block.reachable.each do |b|
+        b.uses.each {|u|
+          (used << u) unless assigned.include?(u) 
+        }
+        assigned += b.assigns
+      end
+      used.uniq
     end
 
     # return a list of the blocks that are addressable, ie entry and @blocks and all next
     def blocks
       ret = []
-      (@blocks << @entry).each do |b|
-        while b
-          ret << b
-          b = b.next
-        end  
-      end
+      b = @entry
+      while b
+        ret << b
+        b = b.next
+      end  
       ret
     end
+
     # following id the Code interface
     
     # to link we link the entry and then any blocks. The entry links the straight line
     def link_at address , context
       super #just sets the position
       @entry.link_at address , context
-      address += @entry.length
-      @blocks.each do |block|
-        block.link_at(pos , context)
-        pos += block.length
+      return if @linked
+      @linked = true
+      blocks.each do |b|
+        if push = b.call_block?
+          locals = locals_at b
+          if(locals.empty?)
+            puts "Empty #{b}"
+          else
+            puts "PUSH #{push}"
+            push.set_registers(locals)
+            pop = b.next.codes.first
+            puts "POP #{pop}"
+            pop.set_registers(locals)
+          end
+        end
       end
     end
 
@@ -132,16 +139,12 @@ module Vm
     # length of a function is the entry block length (includes the straight line behind it) 
     # plus any out of line blocks that have been added
     def length
-      @blocks.inject(@entry.length) {| sum  , item | sum + item.length}
+      @entry.length
     end
     
     # assembling assembles the entry (straight line/ no branch line) + any additional branches
     def assemble io
       @entry.assemble(io)
-      @blocks.each do |block|
-        block.assemble io
-      end
     end
-
   end
 end

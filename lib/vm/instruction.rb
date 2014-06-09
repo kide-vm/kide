@@ -62,6 +62,10 @@ module Vm
       @first = first
       super(options)
     end
+    # when calling we place a dummy push/pop in the stream and calculate later what registers actually need saving 
+    def set_registers regs
+      @first = regs.collect{ |r| r.symbol }
+    end
     def is_push?
       opcode == :push
     end

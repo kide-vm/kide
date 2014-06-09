@@ -7,6 +7,8 @@ module Ast
       puts "compiling while condition #{condition}"
       cond_val = condition.compile(context , while_block)
       while_block.b ret , condition_code: cond_val.not_operator
+      while_block.branch = ret
+
       last = nil
       body.each do |part|
         puts "compiling in while #{part}"

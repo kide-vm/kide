@@ -22,12 +22,12 @@ module Ast
       raise "No receiver error #{inspect}:#{value_receiver}:#{name}" if (value_receiver.nil?)
       call = Vm::CallSite.new( name ,  value_receiver , params  , function)
       current_function = context.function
-      current_function.save_locals(context , into) if current_function
+      into.push([])  unless current_function.nil?
       call.load_args into
       call.do_call into
       after = into.new_block("#{into.name}_call#{@@counter+=1}")
       into.insert_at after
-      current_function.restore_locals(context , after) if current_function
+      after.pop([]) unless current_function.nil?
       puts "compile call #{function.return_type}"
       function.return_type
     end
