@@ -2,11 +2,11 @@ module Ast
   class ReturnExpression < Expression
 #    attr_reader  :expression
     def compile context , into
-      puts "compiling return expression #{expression}, now return in 7"
+      puts "compiling return expression #{expression}, now return in return_regsiter"
       expression_value = expression.compile(context , into)
       # copied from function expression: TODO make function
 
-      return_reg = Vm::Integer.new(7)
+      return_reg = Vm::Integer.new(Vm::RegisterMachine.instance.return_register)
       if expression_value.is_a?(Vm::IntegerConstant) or expression_value.is_a?(Vm::ObjectConstant)
         return_reg.load into , expression_value 
       else

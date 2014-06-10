@@ -7,12 +7,13 @@ module Ast
       locals = {}
       params.each_with_index do |param , index|
         arg = param.name
-        arg_value = Vm::Integer.new(index+2)
+        register = Vm::RegisterUse.new(Vm::RegisterMachine.instance.receiver_register).next_reg_use(index + 1)
+        arg_value = Vm::Integer.new(register)
         locals[arg] = arg_value
         args << arg_value
       end
       # class depends on receiver
-      me = Vm::Integer.new( Vm::Function::RECEIVER_REG )
+      me = Vm::Integer.new( Vm::RegisterMachine.instance.receiver_register )
       if receiver.nil? 
         clazz = context.current_class
       else
@@ -36,7 +37,7 @@ module Ast
         raise "alarm #{last_compiled} \n #{b}" unless last_compiled.is_a? Vm::Word
       end
       
-      return_reg = Vm::Integer.new(7)
+      return_reg = Vm::Integer.new(Vm::RegisterMachine.instance.return_register)
       if last_compiled.is_a?(Vm::IntegerConstant) or last_compiled.is_a?(Vm::ObjectConstant)
         return_reg.load into , last_compiled if last_compiled.register_symbol != return_reg.register_symbol
       else

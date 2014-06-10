@@ -27,27 +27,24 @@ module Vm
   
   class Function < Code
 
-    TYPE_REG = :r0
-    RECEIVER_REG = :r1
-    RETURN_REG = :r7
-    
     def initialize(name , receiver = Vm::Integer , args = [] , return_type = Vm::Integer)
       super()
       @name = name.to_sym
       if receiver.is_a?(Value)
         @receiver = receiver
-        raise "arg in non std register #{arg.inspect}" unless RECEIVER_REG == receiver.register_symbol
+        raise "arg in non std register #{receiver.inspect}" unless RegisterMachine.instance.receiver_register == receiver.register_symbol
       else
-        @receiver = receiver.new(RECEIVER_REG)
+        @receiver = receiver.new(RegisterMachine.instance.receiver_register)
       end
       
       @args = Array.new(args.length)
       args.each_with_index do |arg , i|
+        shouldda = RegisterUse.new(RegisterMachine.instance.receiver_register).next_reg_use(i + 1)
         if arg.is_a?(Value)
           @args[i] = arg
-          raise "arg #{i}in non std register #{arg.inspect}" unless RECEIVER_REG == arg.used_register.next_reg(-1-i)
+          raise "arg #{i} in non std register #{arg.used_register}, expecting #{shouldda}" unless shouldda == arg.used_register
         else
-          @args[i] = arg.new(RegisterUse.new(RECEIVER_REG).next_reg(i + 1))
+          @args[i] = arg.new(shouldda)
         end
       end
       set_return return_type
@@ -64,9 +61,9 @@ module Vm
     def set_return type_or_value
       @return_type = type_or_value || Vm::Integer 
       if @return_type.is_a?(Value)
-        raise "return in non std register #{@return_type.inspect}" unless RETURN_REG == @return_type.register_symbol
+        raise "return in non std register #{@return_type.inspect}" unless RegisterMachine.instance.return_register == @return_type.register_symbol
       else
-        @return_type = @return_type.new(RETURN_REG)
+        @return_type = @return_type.new(RegisterMachine.instance.return_register)
       end
     end
     def arity

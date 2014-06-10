@@ -9,7 +9,7 @@ module Ast
 
       if receiver.is_a?(NameExpression) and (receiver.name == :self)
         function = context.current_class.get_or_create_function(name)
-        value_receiver = Vm::Integer.new(Vm::Function::RECEIVER_REG)
+        value_receiver = Vm::Integer.new(Vm::RegisterMachine.instance.receiver_register)
       else
         value_receiver = receiver.compile(context , into)
         function = context.current_class.get_or_create_function(name)

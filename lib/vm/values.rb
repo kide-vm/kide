@@ -63,13 +63,17 @@ module Vm
       @symbol = r
     end
 
-    #helper methods to calculate with register symbols
-    def next_reg by = 1
-      int = @symbol[1,3].to_i
-      "r#{int + by}".to_sym
+    def == other
+      return false if other.nil?
+      return false if other.class != RegisterUse
+      symbol == other.symbol
     end
+
+    #helper method to calculate with register symbols
     def next_reg_use by = 1
-      RegisterUse.new( next_reg(by) )
+      int = @symbol[1,3].to_i
+      sym = "r#{int + by}".to_sym
+      RegisterUse.new( sym )
     end
   end
 
@@ -152,7 +156,7 @@ module Vm
         block.mov(  self ,  right )  #move the value
       elsif right.is_a? StringConstant
         block.add( self , right , nil)   #move the address, by "adding" to pc, ie pc relative
-        block.mov( Integer.new(self.used_register.next_reg) ,  right.length )  #and the length HACK TODO
+        block.mov( Integer.new(self.used_register.next_reg_use) ,  right.length )  #and the length HACK TODO
       elsif right.is_a?(BootClass) or right.is_a?(MetaClass)
         block.add( self , right , nil)   #move the address, by "adding" to pc, ie pc relative
       else

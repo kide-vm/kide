@@ -9,6 +9,20 @@ require_relative "constants"
 
 module Arm
   class ArmMachine < Vm::RegisterMachine
+    # The constants are here for readablility, the code uses access functions below
+    RETURN_REG = :r0
+    TYPE_REG = :r1
+    RECEIVER_REG = :r2
+    
+    def return_register
+      RETURN_REG
+    end
+    def type_register
+      TYPE_REG
+    end
+    def receiver_register
+      RECEIVER_REG
+    end
 
     def integer_equals block ,  left , right
       block <<  cmp( left ,  right )
@@ -106,11 +120,11 @@ module Arm
     end
 
     def syscall block , num
-      sys_and_ret = Vm::Integer.new( Vm::Function::RETURN_REG )
+      #small todo, is this actually correct for all (that they return int)
+      sys_and_ret = Vm::Integer.new( Vm::RegisterMachine.instance.return_register )
       block <<  mov(  sys_and_ret , num )
       block <<  swi(  0 )
-      #small todo, is this actually correct for all (that they return int)
-      block << mov( sys_and_ret , :r0 ) # syscall returns in r0, more to our return
+      block << mov( sys_and_ret , return_register ) # syscall returns in r0, more to our return
       #todo should write type into r0 according to syscall
       sys_and_ret
     end
