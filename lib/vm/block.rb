@@ -35,8 +35,7 @@ module Vm
     attr_reader :name  , :next , :codes , :function , :assigns , :uses
     attr_accessor :branch
     
-    def reachable
-      ret = []
+    def reachable ret = []
       add_next ret
       add_branch ret
       ret
@@ -98,14 +97,14 @@ module Vm
       return if @next.nil?
       return if ret.include? @next
       ret << @next
-      ret + @next.reachable
+      @next.reachable ret
     end
     # helper for determining reachable blocks 
     def add_branch ret
       return if @branch.nil?
       return if ret.include? @branch
       ret << @branch
-      ret + @branch.reachable
+      @branch.reachable ret
     end
   end
 end

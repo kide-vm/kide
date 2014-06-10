@@ -4,22 +4,6 @@ module Core
     #there are no Kernel instances, only class methods.
     # We use this module syntax to avoid the (ugly) self (also eases searching).
     module ClassMethods
-      def main_start block
-        #TODO extract args into array of strings
-        Vm::RegisterMachine.instance.main_start block
-        block
-      end
-      def main_exit block
-        # Machine.exit mov r7 , 0  + swi 0 
-        Vm::RegisterMachine.instance.main_exit block
-        block
-      end
-      def function_entry block , f_name
-        Vm::RegisterMachine.instance.function_entry block , f_name
-      end
-      def function_exit block , f_name
-        Vm::RegisterMachine.instance.function_exit block , f_name
-      end
 
       #TODO this is in the wrong place. It is a function that returns a function object
       #   while all other methods add their code into some block. --> kernel
@@ -39,19 +23,20 @@ module Core
         int = putint_function.receiver
         moved_int = putint_function.new_local
         utoa = context.object_space.get_or_create_class(:Object).get_or_create_function(:utoa)
-        body = putint_function.body
-        body.mov( moved_int ,  int ) #move arg up
-        #body.a       buffer  => int          # string to write to
-        
-        body.add( int ,  buffer ,nil )   # string to write to
-        body.add(int , int ,  buffer.length - 3) 
-        body.call( utoa )
-        after = body.new_block("#{body.name}_a")
-        body.insert_at after
-        # And now we "just" have to print it, using the write_stdout
-        after.add( int ,  buffer , nil )   # string to write to
-        after.mov( moved_int ,  buffer.length )
-        Vm::RegisterMachine.instance.write_stdout(after)
+        putint_function.instance_eval do
+          mov( moved_int ,  int ) #move arg up
+          #body.a       buffer  => int          # string to write to
+
+          add( int ,  buffer ,nil )   # string to write to
+          add(int , int ,  buffer.length - 3) 
+          call( utoa )
+          after = new_block("#{body.name}_a")
+          insert_at after
+          # And now we "just" have to print it, using the write_stdout
+          add( int ,  buffer , nil )   # string to write to
+          mov( moved_int ,  buffer.length )
+          Vm::RegisterMachine.instance.write_stdout(after)
+        end
         putint_function
       end
 
@@ -65,14 +50,15 @@ module Core
         str_addr = utoa_function.receiver
         number = utoa_function.args.first
         remainder = utoa_function.new_local
-        Vm::RegisterMachine.instance.div10( utoa_function.body , number  , remainder )
+        Vm::RegisterMachine.instance.div10( utoa_function , number  , remainder )
         # make char out of digit (by using ascii encoding) 48 == "0"
-        body = utoa_function.body
-        body.add(remainder , remainder , 48)
-        body.strb( remainder, str_addr ) 
-        body.sub( str_addr,  str_addr ,  1 ) 
-        body.cmp( number ,  0 )
-        body.callne( utoa_function  )
+        utoa_function.instance_eval do
+          add(  remainder , remainder , 48)
+          strb( remainder, str_addr ) 
+          sub(  str_addr,  str_addr ,  1 ) 
+          cmp(  number ,  0 )
+          callne( utoa_function  )
+        end
         return utoa_function
       end
 
@@ -87,25 +73,29 @@ module Core
         count = fibo_function.new_local
         f1 = fibo_function.new_local
         f2 = fibo_function.new_local
-        body = fibo_function.body
+        fibo_function.instance_eval do
         
-        body.cmp  int , 1
-        body.mov( result, int , condition_code: :le)
-        body.mov( :pc , :lr , condition_code: :le)
-        body.push [  count , f1 , f2 , :lr]
-        body.mov f1 , 1
-        body.mov f2 , 0
-        body.sub count , int , 2 
+          cmp  int , 1
+          mov( result, int , condition_code: :le)
+          mov( :pc , :lr , condition_code: :le)
+          push [  count , f1 , f2 , :lr]
+          mov f1 , 1
+          mov f2 , 0
+          sub count , int , 2 
+        end
 
-        l = fibo_function.body.new_block("loop")
+        l = fibo_function.new_block("loop")
+        fibo_function.insert_at l
         
-        l.add f1 , f1 , f2
-        l.sub f2 , f1 , f2
-        l.sub count ,  count , 1 , set_update_status: 1
-        l.bpl( l )
-        l.mov( result , f1 )
+        fibo_function.instance_eval do 
+          add f1 , f1 , f2
+          sub f2 , f1 , f2
+          sub count ,  count , 1 , set_update_status: 1
+          bpl( l )
+          mov( result , f1 )
+          pop [ count , f1 , f2 , :pc]
+        end
         fibo_function.set_return result
-        l.pop [ count , f1 , f2 , :pc]
         fibo_function
       end
 

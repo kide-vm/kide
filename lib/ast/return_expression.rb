@@ -2,6 +2,7 @@ module Ast
   class ReturnExpression < Expression
 #    attr_reader  :expression
     def compile context
+      into = context.function
       puts "compiling return expression #{expression}, now return in return_regsiter"
       expression_value = expression.compile(context)
       # copied from function expression: TODO make function

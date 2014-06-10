@@ -13,7 +13,7 @@ module Vm
       @super_class = super_class
       @meta_class = MetaClass.new(self)
     end
-    attr_reader :name , :functions , :meta_class
+    attr_reader :name , :functions , :meta_class , :context
     
     def add_function function
       raise "not a function #{function}" unless function.is_a? Function

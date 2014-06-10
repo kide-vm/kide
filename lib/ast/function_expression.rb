@@ -28,7 +28,6 @@ module Ast
       context.locals = locals
       context.function = function
 
-      into = function.body
       last_compiled = nil
       body.each do |b|
         puts "compiling in function #{b}"
@@ -38,9 +37,9 @@ module Ast
       
       return_reg = Vm::Integer.new(Vm::RegisterMachine.instance.return_register)
       if last_compiled.is_a?(Vm::IntegerConstant) or last_compiled.is_a?(Vm::ObjectConstant)
-        return_reg.load into , last_compiled if last_compiled.register_symbol != return_reg.register_symbol
+        return_reg.load function , last_compiled if last_compiled.register_symbol != return_reg.register_symbol
       else
-        return_reg.move( into, last_compiled ) if last_compiled.register_symbol != return_reg.register_symbol
+        return_reg.move( function, last_compiled ) if last_compiled.register_symbol != return_reg.register_symbol
       end
       function.set_return return_reg
       

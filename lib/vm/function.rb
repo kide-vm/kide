@@ -48,11 +48,11 @@ module Vm
         end
       end
       set_return return_type
-      @exit =  Core::Kernel::function_exit( Vm::Block.new("exit" , self , nil) , name )
+      @exit =  RegisterMachine.instance.function_exit( Vm::Block.new("exit" , self , nil) , name )
       @return =  Block.new("return", self , @exit)
       @body =  Block.new("body", self , @return)
       @insert_at = @body
-      @entry = Core::Kernel::function_entry( Vm::Block.new("entry" , self , @body) ,name )
+      @entry = RegisterMachine.instance.function_entry( Vm::Block.new("entry" , self , @body) ,name )
       @locals = []
       @linked = false # incase link is called twice, we only calculate locals once
     end
@@ -153,7 +153,6 @@ module Vm
     #             to the current block
     # also symbols are supported and wrapped as register usages (for bare metal programming)
     def method_missing(meth, *args, &block)
-      puts "passing #{meth} , #{args.length} #{args}"
       add_code RegisterMachine.instance.send(meth , *args)
     end
 
@@ -169,7 +168,7 @@ module Vm
         if push = b.call_block?
           locals = locals_at b
           if(locals.empty?)
-            puts "Empty #{b}"
+            puts "Empty #{b.name}"
           else
             puts "PUSH #{push}"
             push.set_registers(locals)

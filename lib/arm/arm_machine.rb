@@ -73,18 +73,24 @@ module Arm
       call.function.return_type
     end
 
-    def main_start entry
+    def main_start context
+      entry = Vm::Block.new("main_entry",nil,nil)
       entry.do_add mov(  :fp ,  0 )
+      entry.do_add call( context.function.entry )
+      entry
     end
-    def main_exit exit
+    def main_exit context
+      exit = Vm::Block.new("main_exit",nil,nil)
       syscall(exit , 1)
       exit
     end
     def function_entry block, f_name
         block.do_add  push( [:lr] )
+        block
     end
     def function_exit entry , f_name
       entry.do_add   pop(  [:pc] )
+      entry
     end
 
     # assumes string in r0 and r1 and moves them along for the syscall
@@ -98,11 +104,11 @@ module Arm
     # the number (a Vm::integer) is (itself) divided by 10, ie overwritten by the result
     #  and the remainder is overwritten (ie an out argument)
     # not really a function, more a macro, 
-    def div10 block, number , remainder
+    def div10 function, number , remainder
       # Note about division: devision is MUCH more expensive than one would have thought
       # And coding it is a bit of a mind leap: it's all about finding a a result that gets the 
       #  remainder smaller than an int. i'll post some links sometime. This is from the arm manual
-      block.instance_eval do 
+      function.instance_eval do 
         sub( remainder ,  number ,  10 )
         sub( number ,  number ,  number ,  shift_lsr: 2)
         add( number ,  number ,  number ,  shift_lsr: 4)

@@ -31,12 +31,13 @@ module Vm
       @classes = {}
       @context = Context.new(self)
       @context.current_class = get_or_create_class :Object
+      @main = Function.new("main")
+      @context.function = @main
       #global objects (data)
       @objects = []
-      @entry = Core::Kernel::main_start  Vm::Block.new("main_entry",nil,nil)
+      @entry = RegisterMachine.instance.main_start @context
       #main gets executed between entry and exit
-      @main = Block.new("main",nil,nil)
-      @exit = Core::Kernel::main_exit Vm::Block.new("main_exit",nil,nil)
+      @exit = RegisterMachine.instance.main_exit @context
       boot_classes
     end
     attr_reader :context , :main , :classes , :entry , :exit
