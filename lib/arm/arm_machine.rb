@@ -25,74 +25,72 @@ module Arm
     end
 
     def integer_equals block ,  left , right
-      block <<  cmp( left ,  right )
+      block.add_code  cmp( left ,  right )
       Vm::BranchCondition.new :eq
     end
     def integer_less_or_equal block ,  left , right
-      block <<  cmp( left ,  right )
+      block.add_code  cmp( left ,  right )
       Vm::BranchCondition.new :le
     end
     def integer_greater_or_equal block ,  left , right
-      block <<  cmp( left ,  right )
+      block.add_code  cmp( left ,  right )
       Vm::BranchCondition.new :ge
     end
     def integer_less_than block ,  left , right
-      block <<  cmp( left ,  right )
+      block.add_code  cmp( left ,  right )
       Vm::BranchCondition.new :lt
     end
     def integer_greater_than block ,  left , right
-      block <<  cmp( left ,  right )
+      block.add_code  cmp( left ,  right )
       Vm::BranchCondition.new :gt
     end
 
     # TODO wrong type, should be object_reference. But that needs the actual typing to work
     def integer_at_index block , result ,left , right
-      block <<  ldr( result , left , right )
+      block.add_code  ldr( result , left , right )
       result
     end
 
     def integer_plus block , result , left , right
-      block <<  add( result , left ,  right )
+      block.add_code  add( result , left ,  right )
       result
     end
 
     def integer_minus block , result , left , right
-      block <<  sub( result ,  left ,  right )
+      block.add_code  sub( result ,  left ,  right )
       result
     end
     def integer_left_shift block , result , left , right
-      block <<  mov( result ,  left , shift_lsr: right )
+      block.add_code  mov( result ,  left , shift_lsr: right )
       result
     end
 
     def function_call into , call
       raise "Not CallSite #{call.inspect}" unless call.is_a? Vm::CallSite
       raise "Not linked #{call.inspect}" unless call.function
-      into <<  call(  call.function  )
+      into.add_code  call(  call.function  )
       raise "No return type for #{call.function.name}" unless call.function.return_type
       call.function.return_type
     end
 
     def main_start entry
-      entry <<   mov(  :fp ,  0 )
+      entry.do_add mov(  :fp ,  0 )
     end
     def main_exit exit
       syscall(exit , 1)
       exit
     end
     def function_entry block, f_name
-        block <<  push( [:lr] )
+        block.do_add  push( [:lr] )
     end
     def function_exit entry , f_name
-      entry <<   pop(  [:pc] )
+      entry.do_add   pop(  [:pc] )
     end
 
     # assumes string in r0 and r1 and moves them along for the syscall
     def write_stdout block
-      block.instance_eval do 
-        # TODO save and restore r0
-        mov(  :r0 ,  1 ) # 1 == stdout
-      end
+      # TODO save and restore r0
+      block.do_add  mov(  :r0 ,  1 ) # 1 == stdout
       syscall( block , 4 )
     end
 
@@ -122,9 +120,9 @@ module Arm
     def syscall block , num
       #small todo, is this actually correct for all (that they return int)
       sys_and_ret = Vm::Integer.new( Vm::RegisterMachine.instance.return_register )
-      block <<  mov(  sys_and_ret , num )
-      block <<  swi(  0 )
-      block << mov( sys_and_ret , return_register ) # syscall returns in r0, more to our return
+      block.do_add  mov(  sys_and_ret , num )
+      block.do_add  swi(  0 )
+      block.do_add mov( sys_and_ret , return_register ) # syscall returns in r0, more to our return
       #todo should write type into r0 according to syscall
       sys_and_ret
     end

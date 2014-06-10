@@ -23,13 +23,13 @@ module Boot
         var_name = get_function.args.first
         return_to = get_function.return_type
         index_function = context.object_space.get_or_create_class(:Object).get_or_create_function(:index_of)
-        body = get_function.body
-        body.push( [me] )
-        body.call( index_function )
-        after_body = body.new_block("#{body.name}_a")
-        body.insert_at after_body
-        after_body.pop([me])
-        return_to.at_index( after_body , me , return_to )
+        get_function.push( [me] )
+        get_function.call( index_function )
+        after_body = get_function.new_block("#{get_function.insertion_point.name}_a")
+        
+        get_function.insert_at after_body
+        get_function.pop([me])
+        return_to.at_index( get_function , me , return_to )
         get_function.set_return return_to
         return get_function
       end

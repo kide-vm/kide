@@ -65,9 +65,9 @@ HERE
     # and the last is wrapped as a main
     parts.each_with_index do |part,index|
       if index == (parts.length - 1)
-        expr    = part.compile( @object_space.context , @object_space.main )
+        expr    = part.compile( @object_space.context )
       else
-        expr    = part.compile( @object_space.context ,  nil )
+        expr    = part.compile( @object_space.context )
         raise "should be function definition for now, not #{part.inspect}#{expr.inspect}" unless expr.is_a? Vm::BootClass
       end
     end

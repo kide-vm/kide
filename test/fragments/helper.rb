@@ -24,9 +24,9 @@ module Fragments
     # and the last is wrapped as a main
     parts.each_with_index do |part,index|
       if part.is_a? Ast::FunctionExpression
-        expr    = part.compile( @object_space.context ,  nil )
+        expr    = part.compile( @object_space.context )
       else
-        expr    = part.compile( @object_space.context , @object_space.main )
+        expr    = part.compile( @object_space.context )
       end
     end
   end

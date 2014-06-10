@@ -28,9 +28,9 @@ class TestRunner < MiniTest::Test
     # and the last is wrapped as a main
     parts.each_with_index do |part,index|
       if index == (parts.length - 1)
-        expr    = part.compile( program.context , program.main )
+        expr    = part.compile( program.context )
       else
-        expr    = part.compile( program.context ,  nil )
+        expr    = part.compile( program.context )
         raise "should be function definition for now" unless expr.is_a? Vm::Function
       end
     end

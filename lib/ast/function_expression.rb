@@ -1,8 +1,7 @@
 module Ast
   class FunctionExpression < Expression
 #    attr_reader  :name, :params, :body , :receiver
-    def compile context , into 
-      raise "function does not compile into anything #{self}" if into
+    def compile context
       args = []
       locals = {}
       params.each_with_index do |param , index|
@@ -33,7 +32,7 @@ module Ast
       last_compiled = nil
       body.each do |b|
         puts "compiling in function #{b}"
-        last_compiled = b.compile(context , into)
+        last_compiled = b.compile(context)
         raise "alarm #{last_compiled} \n #{b}" unless last_compiled.is_a? Vm::Word
       end
       

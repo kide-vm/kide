@@ -1,9 +1,10 @@
 module Ast
   class OperatorExpression < Expression
 #    attr_reader  :operator, :left, :right
-    def compile context , into
+    def compile context
+      into = context.function
       puts "compiling operator #{to_s}"
-      r_val = right.compile(context , into)
+      r_val = right.compile(context)
       #puts "compiled right #{r_val.inspect}"
       if operator == "="    # assignment, value based
         raise "Can only assign variables, not #{left}" unless left.is_a?(NameExpression) 
@@ -18,7 +19,7 @@ module Ast
         return l_val
       end
 
-      l_val = left.compile(context , into)
+      l_val = left.compile(context)
       case operator
       when ">"
         code = l_val.greater_than into , r_val

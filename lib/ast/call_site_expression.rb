@@ -4,14 +4,15 @@ module Ast
   class CallSiteExpression < Expression
 #    attr_reader  :name, :args , :receiver
     @@counter = 0
-    def compile context , into
-      params = args.collect{ |a| a.compile(context, into) }
+    def compile context
+      into = context.function
+      params = args.collect{ |a| a.compile(context) }
 
       if receiver.is_a?(NameExpression) and (receiver.name == :self)
         function = context.current_class.get_or_create_function(name)
         value_receiver = Vm::Integer.new(Vm::RegisterMachine.instance.receiver_register)
       else
-        value_receiver = receiver.compile(context , into)
+        value_receiver = receiver.compile(context)
         function = context.current_class.get_or_create_function(name)
       end
       # this lot below should go, since the compile should handle all
@@ -25,9 +26,10 @@ module Ast
       into.push([])  unless current_function.nil?
       call.load_args into
       call.do_call into
-      after = into.new_block("#{into.name}_call#{@@counter+=1}")
+      
+      after = into.new_block("call#{@@counter+=1}")
       into.insert_at after
-      after.pop([]) unless current_function.nil?
+      into.pop([]) unless current_function.nil?
       puts "compile call #{function.return_type}"
       function.return_type
     end

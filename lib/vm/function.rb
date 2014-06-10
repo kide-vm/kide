@@ -51,13 +51,17 @@ module Vm
       @exit =  Core::Kernel::function_exit( Vm::Block.new("exit" , self , nil) , name )
       @return =  Block.new("return", self , @exit)
       @body =  Block.new("body", self , @return)
+      @insert_at = @body
       @entry = Core::Kernel::function_entry( Vm::Block.new("entry" , self , @body) ,name )
       @locals = []
       @linked = false # incase link is called twice, we only calculate locals once
     end
 
-    attr_reader :args , :entry , :exit , :body , :name , :return_type , :receiver
-
+    attr_reader :args , :entry , :exit , :body , :name , :return_type , :receiver 
+    
+    def insertion_point
+      @insert_at
+    end
     def set_return type_or_value
       @return_type = type_or_value || Vm::Integer 
       if @return_type.is_a?(Value)
@@ -102,6 +106,55 @@ module Vm
         b = b.next
       end  
       ret
+    end
+
+    # when control structures create new blocks (with new_block) control continues at some new block the
+    # the control structure creates. 
+    # Example: while, needs  2 extra blocks
+    #          1 condition code, must be its own blockas we jump back to it
+    #           -       the body, can actually be after the condition as we don't need to jump there
+    #          2 after while block. Condition jumps here 
+    # After block 2, the function is linear again and the calling code does not need to know what happened
+    
+    # But subsequent statements are still using the original block (self) to add code to
+    # So the while expression creates the extra blocks, adds them and the code and then "moves" the insertion point along
+    def insert_at block
+      @insert_at = block
+      self
+    end
+
+    # create a new linear block after the current insertion block. 
+    # Linear means there is no brach needed from that one to the new one. 
+    # Usually the new one just serves as jump address for a control statement
+    # In code generation (assembly) , new new_block is written after this one, ie zero runtime cost
+    # This does _not_ change the insertion point, that has do be done with insert_at(block)
+    def new_block new_name
+      block_name = "#{@insert_at.name}_#{new_name}"
+      new_b = Block.new( block_name , @function , @insert_at.next )
+      @insert_at.set_next new_b
+      return new_b
+    end
+
+    def add_code(kode)
+      raise "alarm #{kode}" if kode.is_a? Word
+      raise "alarm #{kode.class} #{kode}" unless kode.is_a? Code
+      @insert_at.do_add kode
+      self
+    end
+
+    # sugar to create instructions easily. 
+    # any method will be passed on to the RegisterMachine and the result added to the insertion block
+    #  With this trick we can write what looks like assembler, 
+    #  Example   func.instance_eval
+    #                mov( r1 , r2 )
+    #                add( r1 , r2 , 4)
+    # end
+    #           mov and add will be called on Machine and generate Inststuction that are then added 
+    #             to the current block
+    # also symbols are supported and wrapped as register usages (for bare metal programming)
+    def method_missing(meth, *args, &block)
+      puts "passing #{meth} , #{args.length} #{args}"
+      add_code RegisterMachine.instance.send(meth , *args)
     end
 
     # following id the Code interface

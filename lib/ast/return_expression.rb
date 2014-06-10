@@ -1,9 +1,9 @@
 module Ast
   class ReturnExpression < Expression
 #    attr_reader  :expression
-    def compile context , into
+    def compile context
       puts "compiling return expression #{expression}, now return in return_regsiter"
-      expression_value = expression.compile(context , into)
+      expression_value = expression.compile(context)
       # copied from function expression: TODO make function
 
       return_reg = Vm::Integer.new(Vm::RegisterMachine.instance.return_register)

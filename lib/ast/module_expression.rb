@@ -1,7 +1,7 @@
 module Ast
   class ModuleExpression < Expression
 #    attr_reader  :name ,:expressions
-    def compile context , into
+    def compile context
       clazz = context.object_space.get_or_create_class name
       puts "Created class #{clazz.name.inspect}"
       context.current_class = clazz
@@ -10,7 +10,7 @@ module Ast
         # if not, execute it, but that does means we should be in crystal (executable), not ruby. ie throw an error for now
         raise "only functions for now #{expression.inspect}" unless expression.is_a? Ast::FunctionExpression
         puts "compiling expression #{expression}"
-        expression_value = expression.compile(context , nil )
+        expression_value = expression.compile(context )
         #puts "compiled expression #{expression_value.inspect}"
       end
 

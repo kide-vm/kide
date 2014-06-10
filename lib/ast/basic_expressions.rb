@@ -4,7 +4,7 @@ module Ast
 
   class IntegerExpression < Expression
 #    attr_reader :value
-    def compile context , into
+    def compile context
       Vm::IntegerConstant.new value
     end
   end
@@ -13,7 +13,7 @@ module Ast
 #    attr_reader  :name
 
     # compiling a variable resolves it. if it wasn't defined, raise an exception 
-    def compile context , into
+    def compile context
       raise "Undefined variable #{name}, defined locals #{context.locals.keys.join('-')}" unless context.locals.has_key?(name)
       context.locals[name]
     end
@@ -21,7 +21,7 @@ module Ast
 
   class ModuleName < NameExpression
 
-    def compile context , into
+    def compile context
       clazz = context.object_space.get_or_create_class name
       raise "uups #{clazz}.#{name}" unless clazz
       #class qualifier, means call from metaclass
@@ -34,7 +34,7 @@ module Ast
 
   class StringExpression < Expression
 #    attr_reader  :string
-    def compile context , into
+    def compile context
       value = Vm::StringConstant.new(string)
       context.object_space.add_object value 
       value

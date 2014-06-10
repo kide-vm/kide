@@ -27,7 +27,6 @@ module Vm
       @next = next_block
       @branch = nil
       @codes = []
-      @insert_at = self
       # keeping track of register usage, left (assigns) or right (uses)
       @assigns = []
       @uses = []
@@ -43,59 +42,15 @@ module Vm
       ret
     end
 
-    def add_code(kode)
-      raise "alarm #{kode}" if kode.is_a? Word
-      raise "alarm #{kode.class} #{kode}" unless kode.is_a? Code
-      @insert_at.do_add kode
-      self
-    end
     def do_add kode
       kode.assigns.each { |a| (@assigns << a) unless @assigns.include?(a) }
       kode.uses.each { |use| (@uses << use) unless (@assigns.include?(use) or @uses.include?(use)) }
       #puts "IN ADD #{name}#{uses}" 
       @codes << kode
     end
-    alias :<< :add_code 
-
-    # create a new linear block after this block. Linear means there is no brach needed from this one
-    # to the new one. Usually the new one just serves as jump address for a control statement
-    # In code generation (assembly) , new new_block is written after this one, ie zero runtime cost
-    def new_block new_name
-      new_b = Block.new( new_name , @function , @insert_at.next )
-      @insert_at.set_next new_b
-      return new_b
-    end
 
     def set_next next_b 
       @next = next_b
-    end
-    # when control structures create new blocks (with new_block) control continues at some new block the
-    # the control structure creates. 
-    # Example: while, needs  2 extra blocks
-    #          1 condition code, must be its own blockas we jump back to it
-    #           -       the body, can actually be after the condition as we don't need to jump there
-    #          2 after while block. Condition jumps here 
-    # After block 2, the function is linear again and the calling code does not need to know what happened
-    
-    # But subsequent statements are still using the original block (self) to add code to
-    # So the while expression creates the extra blocks, adds them and the code and then "moves" the insertion point along
-    def insert_at block
-      @insert_at = block
-      self
-    end
-
-    # sugar to create instructions easily. 
-    # any method will be passed on to the RegisterMachine and the result added to the block
-    #  With this trick we can write what looks like assembler, 
-    #  Example   b.instance_eval
-    #                mov( r1 , r2 )
-    #                add( r1 , r2 , 4)
-    # end
-    #           mov and add will be called on Machine and generate Inststuction that are then added 
-    #             to the block
-    # also symbols are supported and wrapped as register usages (for bare metal programming)
-    def method_missing(meth, *args, &block)
-      add_code RegisterMachine.instance.send(meth , *args)
     end
 
     # returns if this is a block that ends in a call (and thus needs local variable handling)
