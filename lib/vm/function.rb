@@ -48,7 +48,7 @@ module Vm
         end
       end
       set_return return_type
-      @exit =  Core::Kernel::function_exit( Vm::Block.new("exit" , self) , name )
+      @exit =  Core::Kernel::function_exit( Vm::Block.new("exit" , self , nil) , name )
       @return =  Block.new("return", self , @exit)
       @body =  Block.new("body", self , @return)
       @entry = Core::Kernel::function_entry( Vm::Block.new("entry" , self , @body) ,name )

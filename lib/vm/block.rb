@@ -20,7 +20,7 @@ module Vm
   
   class Block < Code
 
-    def initialize(name , function , next_block = nil)
+    def initialize(name , function , next_block )
       super()
       @function = function
       @name = name.to_sym
@@ -138,12 +138,14 @@ module Vm
     end
 
     private
+    # helper for determining reachable blocks 
     def add_next ret
       return if @next.nil?
       return if ret.include? @next
       ret << @next
       ret + @next.reachable
     end
+    # helper for determining reachable blocks 
     def add_branch ret
       return if @branch.nil?
       return if ret.include? @branch

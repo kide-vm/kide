@@ -33,10 +33,10 @@ module Vm
       @context.current_class = get_or_create_class :Object
       #global objects (data)
       @objects = []
-      @entry = Core::Kernel::main_start  Vm::Block.new("main_entry",nil)
+      @entry = Core::Kernel::main_start  Vm::Block.new("main_entry",nil,nil)
       #main gets executed between entry and exit
-      @main = Block.new("main",nil)
-      @exit = Core::Kernel::main_exit Vm::Block.new("main_exit",nil)
+      @main = Block.new("main",nil,nil)
+      @exit = Core::Kernel::main_exit Vm::Block.new("main_exit",nil,nil)
       boot_classes
     end
     attr_reader :context , :main , :classes , :entry , :exit
