@@ -110,6 +110,7 @@ module Vm
       @right = right.is_a?(Fixnum) ? IntegerConstant.new(right) : right
       super(options)
     end
+    attr_accessor :result , :left ,  :right
     def uses
       ret = []
       ret << @left.used_register if @left and not @left.is_a? Constant
@@ -142,6 +143,7 @@ module Vm
       raise "move must have from set #{inspect}" unless from
       super(options)
     end
+    attr_accessor :to , :from
     def uses
       @from.is_a?(Constant) ? [] : [@from.used_register]
     end

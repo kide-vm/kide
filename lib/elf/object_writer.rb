@@ -18,7 +18,7 @@ module Elf
       @object.add_section @text
       
       program.link_at( 0 , program.context )
-    
+      program.run_passes
       binary = program.assemble(StringIO.new )
       
       blocks = []

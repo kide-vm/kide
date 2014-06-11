@@ -1,4 +1,5 @@
 require_relative "block"
+require_relative "passes"
 
 module Vm
 
@@ -54,7 +55,6 @@ module Vm
       @insert_at = @body
       @entry = RegisterMachine.instance.function_entry( Vm::Block.new("entry" , self , @body) ,name )
       @locals = []
-      @linked = false # incase link is called twice, we only calculate locals once
     end
 
     attr_reader :args , :entry , :exit , :body , :name , :return_type , :receiver 
@@ -162,22 +162,6 @@ module Vm
     def link_at address , context
       super #just sets the position
       @entry.link_at address , context
-      return if @linked
-      @linked = true
-      blocks.each do |b|
-        if push = b.call_block?
-          locals = locals_at b
-          if(locals.empty?)
-            puts "Empty #{b.name}"
-          else
-            puts "PUSH #{push}"
-            push.set_registers(locals)
-            pop = b.next.codes.first
-            puts "POP #{pop}"
-            pop.set_registers(locals)
-          end
-        end
-      end
     end
 
     # position of the function is the position of the entry block

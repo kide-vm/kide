@@ -39,9 +39,22 @@ module Vm
       #main gets executed between entry and exit
       @exit = RegisterMachine.instance.main_exit @context
       boot_classes
+      @passes = [ MoveMoveReduction.new,  LogicMoveReduction.new,  SaveLocals.new ]
     end
     attr_reader :context , :main , :classes , :entry , :exit
-    
+
+    def run_passes
+      @passes.each do |pass|
+        all = main.blocks
+        @classes.each_value do |c| 
+          c.functions.each {|f| all += f.blocks  }
+        end
+        all.each do |block|
+          pass.run(block)
+        end
+      end
+    end
+
     def boot_classes
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we have to define some 
       # dummies, just for the other to compile
