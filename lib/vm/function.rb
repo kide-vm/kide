@@ -130,7 +130,7 @@ module Vm
     # This does _not_ change the insertion point, that has do be done with insert_at(block)
     def new_block new_name
       block_name = "#{@insert_at.name}_#{new_name}"
-      new_b = Block.new( block_name , @function , @insert_at.next )
+      new_b = Block.new( block_name , self , @insert_at.next )
       @insert_at.set_next new_b
       return new_b
     end

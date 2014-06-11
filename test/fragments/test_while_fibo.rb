@@ -32,6 +32,7 @@ HERE
   def test_kernel_fibo
     int = Vm::Integer.new(1) 
     fibo  = @object_space.get_or_create_class(:Object).get_or_create_function(:fibo)
+    #HACk this with send
     main = @object_space.main
     main.mov int , 10
     ret = main.call( fibo )

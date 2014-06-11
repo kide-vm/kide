@@ -10,7 +10,7 @@ module Vm
     def run block
       block.codes.dup.each_with_index do |kode , index|
         next unless kode.is_a? StackInstruction
-        if kode.regiters.empty?
+        if kode.registers.empty?
           block.codes.delete(kode) 
           puts "deleted stack instruction in #{b.name}"
         end
@@ -31,6 +31,8 @@ module Vm
         next unless kode.is_a? LogicInstruction
         next unless n.is_a? MoveInstruction
         if kode.result == n.from
+          puts "KODE #{kode.result.inspect}"
+          puts "N #{n.from.inspect}"
           kode.result = n.to
           block.codes.delete(n)
         end
@@ -56,6 +58,19 @@ module Vm
     end
   end
 
+  #As the name says, remove no-ops. Currently mov x , x supported
+  class NoopReduction
+    def run block
+      block.codes.dup.each_with_index do |kode , index|
+        next unless kode.is_a? MoveInstruction
+        if kode.to == kode.from
+          block.codes.delete(kode) 
+          puts "deleted noop move in #{block.name}"
+        end
+      end
+    end
+  end
+
   # We insert push/pops as dummies to fill them later in CallSaving
   # as we can not know ahead of time which locals wil be live in the code to come
   # and also we don't want to "guess" later where the push/pops should be
@@ -64,11 +79,9 @@ module Vm
   # Or sometimes just remove the push/pops, when no locals needed saving
   class SaveLocals
     def run block
-      unless block.function
-        puts "No function for #{block.name}"
-      end
       push = block.call_block?
       return unless push
+      return unless block.function
       locals = block.function.locals_at block
       pop = block.next.codes.first
       if(locals.empty?)

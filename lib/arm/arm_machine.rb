@@ -128,7 +128,6 @@ module Arm
       sys_and_ret = Vm::Integer.new( Vm::RegisterMachine.instance.return_register )
       block.do_add  mov(  sys_and_ret , num )
       block.do_add  swi(  0 )
-      block.do_add mov( sys_and_ret , return_register ) # syscall returns in r0, more to our return
       #todo should write type into r0 according to syscall
       sys_and_ret
     end

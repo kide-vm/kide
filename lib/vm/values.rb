@@ -126,15 +126,15 @@ module Vm
     def less_than block , right
       RegisterMachine.instance.integer_less_than block , self , right
     end
-    def == other
-      code = class_for(CompareInstruction).new(self , other , opcode: :cmp)
-    end
-    def + other
-      class_for(LogicInstruction).new(nil , self , other , opcode: :add)
-    end
-    def - other
-      class_for(LogicInstruction).new(nil , self , other , opcode:  :sub )#, update_status: 1 )
-    end
+#    def == other
+#      code = class_for(CompareInstruction).new(self , other , opcode: :cmp)
+#    end
+#    def + other
+#      class_for(LogicInstruction).new(nil , self , other , opcode: :add)
+#    end
+#    def - other
+#      class_for(LogicInstruction).new(nil , self , other , opcode:  :sub )#, update_status: 1 )
+#    end
     def at_index block , left , right
       RegisterMachine.instance.integer_at_index block , self , left , right
     end

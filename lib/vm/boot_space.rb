@@ -39,7 +39,7 @@ module Vm
       #main gets executed between entry and exit
       @exit = RegisterMachine.instance.main_exit @context
       boot_classes
-      @passes = [ MoveMoveReduction.new,  LogicMoveReduction.new,  SaveLocals.new ]
+      @passes = [ MoveMoveReduction.new ,  LogicMoveReduction.new, NoopReduction.new, SaveLocals.new ]
     end
     attr_reader :context , :main , :classes , :entry , :exit
 
@@ -55,6 +55,10 @@ module Vm
       end
     end
 
+    # boot the classes, ie create a minimal set of classes with a minimal set of functions
+    # minimal means only that which can not be coded in ruby
+    # Functions are grabbed from respective modules by sending the sunction name. This should return the 
+    # implementation of the function (ie a function object), not actually try to implement it (as that's impossible in ruby)
     def boot_classes
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we have to define some 
       # dummies, just for the other to compile
@@ -69,12 +73,16 @@ module Vm
         obj.add_function Boot::String.send(f , @context)
       end
     end
+
+    # Objects are data and get assembled after functions
     def add_object o
       return if @objects.include? o
       raise "must be derived from Code #{o.inspect}" unless o.is_a? Code
       @objects << o # TODO check type , no basic values allowed (must be wrapped)
     end
-    
+
+    # this is the way to instantiate classes (not BootBlass.new)
+    # so we get and keep exactly one per name
     def get_or_create_class name
       raise "uups #{name}.#{name.class}" unless name.is_a? Symbol
       c = @classes[name]
@@ -85,15 +93,15 @@ module Vm
       c
     end
 
-    # linking entry , main , exit , classes , objects
+    # linking entry , exit , main , classes , objects
     def link_at( start , context)
       super
       @entry.link_at( start , context )
       start += @entry.length
-      @main.link_at( start , context )
-      start += @main.length
       @exit.link_at( start , context)
       start += @exit.length
+      @main.link_at( start , context )
+      start += @main.length
       @classes.values.each do |clazz|
         clazz.link_at(start , context)
         start += clazz.length
@@ -108,8 +116,8 @@ module Vm
     def assemble( io )
       link_at( @position , nil) #second link in case of forward declarations
       @entry.assemble( io )
-      @main.assemble( io )
       @exit.assemble( io )
+      @main.assemble( io )
       @classes.values.each do |clazz|
         clazz.assemble(io)
       end
@@ -118,10 +126,5 @@ module Vm
       end
       io
     end
-    
-    def main= code
-      @main = code
-    end
-
   end
 end
