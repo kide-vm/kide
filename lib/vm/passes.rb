@@ -34,8 +34,7 @@ module Vm
         # small todo. This does not catch condition_code that are not :al
         next if (n.attributes.length > 3) or (kode.attributes.length > 3)
         if kode.result == n.from
-          puts "KODE #{kode.inspect} , #{kode.attributes.length}"
-          puts "N #{n.inspect} , #{n.attributes.length}"
+          puts "Logic #{kode}  goes #{n}"
           kode.result = n.to
           block.codes.delete(n)
         end
@@ -57,6 +56,7 @@ module Vm
         # small todo. This does not catch condition_code that are not :al
         next if (n.attributes.length > 3) or (kode.attributes.length > 3)
         if kode.to == n.from
+          puts "Move #{kode}  goes #{n} "
           kode.to = n.to
           block.codes.delete(n)
         end
@@ -74,7 +74,7 @@ module Vm
         next if (kode.attributes.length > 3)
         if kode.to == kode.from
           block.codes.delete(kode) 
-          puts "deleted noop move in #{block.name} #{kode.inspect}"
+          puts "deleted noop move in #{block.name} #{kode}"
         end
       end
     end

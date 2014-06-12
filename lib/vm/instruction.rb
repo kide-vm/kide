@@ -28,7 +28,14 @@ module Vm
     def opcode
       @attributes[:opcode]
     end
-
+    #abstract, only should be called from derived
+    def to_s
+      atts = @attributes.dup
+      atts.delete(:opcode)
+      atts.delete(:update_status)
+      atts.delete(:condition_code) if atts[:condition_code] == :al
+      atts.empty? ? "" : ", #{atts}"
+    end
     # returns an array of registers (RegisterUses) that this instruction uses.
     # ie for r1 = r2 + r3 
     # which in assembler is add r1 , r2 , r3
@@ -82,6 +89,9 @@ module Vm
     def regs
       @first
     end
+    def to_s
+      "#{opcode} #{@first} #{super}"
+    end
   end
   class MemoryInstruction < Instruction
     def initialize result , left , right = nil , options = {}
@@ -121,6 +131,9 @@ module Vm
     def assigns
       [@result.used_register]
     end
+    def to_s
+      "#{opcode} #{result.register_symbol} , #{left.register_symbol} , #{right.register_symbol} #{super}"
+    end
   end
   class CompareInstruction < Instruction
     def initialize left , right , options  = {}
@@ -150,6 +163,9 @@ module Vm
     end
     def assigns
       [@to.used_register]
+    end
+    def to_s
+      "#{opcode} #{@to.register_symbol} , #{@from.is_a?(Constant) ? @from.value : @from.register_symbol} #{super}"
     end
   end
   class CallInstruction < Instruction
