@@ -90,7 +90,7 @@ module Vm
       @first
     end
     def to_s
-      "#{opcode} #{@first} #{super}"
+      "#{opcode} [#{@first.collect {|f| f.to_asm}.join(',') }] #{super}"
     end
   end
   class MemoryInstruction < Instruction
@@ -131,8 +131,8 @@ module Vm
     def assigns
       [@result.used_register]
     end
-    def to_s
-      "#{opcode} #{result.register_symbol} , #{left.register_symbol} , #{right.register_symbol} #{super}"
+    def to_asm
+      "#{opcode} #{result.to_asm} , #{left.to_asm} , #{right.to_asm} #{super}"
     end
   end
   class CompareInstruction < Instruction
@@ -165,7 +165,7 @@ module Vm
       [@to.used_register]
     end
     def to_s
-      "#{opcode} #{@to.register_symbol} , #{@from.is_a?(Constant) ? @from.value : @from.register_symbol} #{super}"
+      "#{opcode} #{@to.to_asm} , #{@from.to_asm} #{super}"
     end
   end
   class CallInstruction < Instruction

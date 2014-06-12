@@ -22,6 +22,9 @@ module Vm
     def value
       @integer
     end
+    def to_asm
+      @integer.to_s
+    end
   end
 
   # The name really says it all.

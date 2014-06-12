@@ -103,6 +103,10 @@ module Vm
     def length
       4
     end
+    # aka to string
+    def to_asm
+      "#{register_symbol}"
+    end
   end
   
   class Unsigned < Word
@@ -169,7 +173,6 @@ module Vm
       block.mov(  self ,  right )
       self
     end
-
   end
 end
 require_relative "constants"
