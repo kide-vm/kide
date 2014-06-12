@@ -93,11 +93,13 @@ module Arm
       entry
     end
 
-    # assumes string in r0 and r1 and moves them along for the syscall
-    def write_stdout block
+    # assumes string in standard receiver reg (r2) and moves them down for the syscall
+    def write_stdout function #, string
       # TODO save and restore r0
-      block.do_add  mov(  :r0 ,  1 ) # 1 == stdout
-      syscall( block , 4 )
+      function.mov(  :r0 ,  1 ) # 1 == stdout
+      function.mov( :r1 , :r2 )
+      function.mov( :r2 , :r3 )
+      syscall( function.insertion_point , 4 ) # 4 == write
     end
 
     
@@ -124,12 +126,13 @@ module Arm
     end
 
     def syscall block , num
-      #small todo, is this actually correct for all (that they return int)
-      sys_and_ret = Vm::Integer.new( Vm::RegisterMachine.instance.return_register )
-      block.do_add  mov(  sys_and_ret , num )
+      # This is very arm specific, syscall number is passed in r7, other arguments like a c call ie 0 and up
+      sys = Vm::Integer.new( Vm::RegisterUse.new(:r7) )
+      ret = Vm::Integer.new( Vm::RegisterUse.new(RETURN_REG) )
+      block.do_add  mov(  sys , num )
       block.do_add  swi(  0 )
-      #todo should write type into r0 according to syscall
-      sys_and_ret
+      #todo should write type into r1 according to syscall
+      ret
     end
 
   end

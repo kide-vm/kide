@@ -5,9 +5,9 @@ module Ast
       f = context.function
       # to execute the logic as the if states it, the blocks are the other way around
       # so we can the jump over the else if true ,and the else joins unconditionally after the true_block
-      false_block = f.new_block "if_false"
-      true_block = f.new_block "if_true"
       merge_block = f.new_block "if_merge"
+      true_block = f.new_block "if_true"
+      false_block = f.new_block "if_false"
 
       puts "compiling if condition #{cond}"
       cond_val = cond.compile(context)
