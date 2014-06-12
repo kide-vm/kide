@@ -27,7 +27,7 @@ module Ast
       call.load_args into
       call.do_call into
       
-      after = into.new_block("call#{@@counter+=1}")
+      after = into.new_block("#{name}#{@@counter+=1}")
       into.insert_at after
       into.pop([]) unless current_function.nil?
       puts "compile call #{function.return_type}"

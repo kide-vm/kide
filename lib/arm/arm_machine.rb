@@ -76,7 +76,7 @@ module Arm
     def main_start context
       entry = Vm::Block.new("main_entry",nil,nil)
       entry.do_add mov(  :fp ,  0 )
-      entry.do_add call( context.function.entry )
+      entry.do_add call( context.function )
       entry
     end
     def main_exit context
