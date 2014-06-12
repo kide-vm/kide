@@ -25,7 +25,7 @@ module Boot
         index_function = context.object_space.get_or_create_class(:Object).get_or_create_function(:index_of)
         get_function.push( [me] )
         get_function.call( index_function )
-        after_body = get_function.new_block("#{get_function.insertion_point.name}_a")
+        after_body = get_function.new_block("after_index")
         
         get_function.insert_at after_body
         get_function.pop([me])

@@ -20,19 +20,17 @@ module Core
         moved_int = putint_function.new_local
         utoa = context.object_space.get_or_create_class(:Object).get_or_create_function(:utoa)
         putint_function.instance_eval do
-          mov( moved_int ,  int ) #move arg up
-          #body.a       buffer  => int          # string to write to
-
-          add( int ,  buffer ,nil )   # string to write to
-          add(int , int ,  buffer.length - 3) 
+          mov( moved_int ,  int )     # move arg up
+          add( int ,  buffer ,nil )   # string to write to (add string address to pc)
+          add( int , int ,  buffer.length - 3) # 3 for good measure , ahem.
           call( utoa )
-          after = new_block("#{body.name}_a")
+          after = new_block("after_call")
           insert_at after
           # And now we "just" have to print it, using the write_stdout
           add( int ,  buffer , nil )   # string to write to
           mov( moved_int ,  buffer.length )
-          Vm::RegisterMachine.instance.write_stdout(after)
         end
+        Vm::RegisterMachine.instance.write_stdout(putint_function)
         putint_function
       end
 

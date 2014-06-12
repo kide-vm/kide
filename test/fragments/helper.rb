@@ -44,7 +44,7 @@ module Fragments
     function.assemble io
     assembly = io.string
     # use this for getting the bytes to compare to :  
-    #puts bytes(assembly)
+    puts bytes(assembly)
     assembly.bytes.each_with_index do |byte , index|
       is = @should[index]
       assert_equal  Fixnum , is.class , "@#{index.to_s(16)} = #{is}"
