@@ -30,9 +30,12 @@ module Vm
         next if n.nil?
         next unless kode.is_a? LogicInstruction
         next unless n.is_a? MoveInstruction
+        # specific arm instructions, don't optimize as don't know what the extra mean
+        # small todo. This does not catch condition_code that are not :al
+        next if (n.attributes.length > 3) or (kode.attributes.length > 3)
         if kode.result == n.from
-          puts "KODE #{kode.result.inspect}"
-          puts "N #{n.from.inspect}"
+          puts "KODE #{kode.inspect} , #{kode.attributes.length}"
+          puts "N #{n.inspect} , #{n.attributes.length}"
           kode.result = n.to
           block.codes.delete(n)
         end
@@ -50,6 +53,9 @@ module Vm
         next if n.nil?
         next unless kode.is_a? MoveInstruction
         next unless n.is_a? MoveInstruction
+        # specific arm instructions, don't optimize as don't know what the extra mean
+        # small todo. This does not catch condition_code that are not :al
+        next if (n.attributes.length > 3) or (kode.attributes.length > 3)
         if kode.to == n.from
           kode.to = n.to
           block.codes.delete(n)
@@ -63,9 +69,12 @@ module Vm
     def run block
       block.codes.dup.each_with_index do |kode , index|
         next unless kode.is_a? MoveInstruction
+        # specific arm instructions, don't optimize as don't know what the extra mean
+        # small todo. This does not catch condition_code that are not :al
+        next if (kode.attributes.length > 3)
         if kode.to == kode.from
           block.codes.delete(kode) 
-          puts "deleted noop move in #{block.name}"
+          puts "deleted noop move in #{block.name} #{kode.inspect}"
         end
       end
     end
@@ -89,9 +98,9 @@ module Vm
         block.codes.delete(push)
         block.next.codes.delete(pop)
       else
-        puts "PUSH #{push}"
+        #puts "PUSH #{push}"
         push.set_registers(locals)
-        puts "POP #{pop}"
+        #puts "POP #{pop}"
         pop.set_registers(locals)
       end
     end

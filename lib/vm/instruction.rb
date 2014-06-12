@@ -24,6 +24,7 @@ module Vm
     def initialize  options
       @attributes = options
     end
+    attr_reader :attributes
     def opcode
       @attributes[:opcode]
     end

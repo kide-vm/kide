@@ -110,6 +110,7 @@ module Arm
       # Note about division: devision is MUCH more expensive than one would have thought
       # And coding it is a bit of a mind leap: it's all about finding a a result that gets the 
       #  remainder smaller than an int. i'll post some links sometime. This is from the arm manual
+      tmp = function.new_local
       function.instance_eval do 
         sub( remainder ,  number ,  10 )
         sub( number ,  number ,  number ,  shift_lsr: 2)
@@ -117,7 +118,6 @@ module Arm
         add( number ,  number ,  number ,  shift_lsr: 8)
         add( number ,  number ,  number ,  shift_lsr: 16)
         mov( number ,   number , shift_lsr: 3)
-        tmp = function.new_local
         add( tmp ,  number ,  number ,  shift_lsl: 2)
         sub( remainder ,  remainder ,  tmp , shift_lsl: 1 , update_status: 1)
         add( number ,  number,   1 , condition_code: :pl )
