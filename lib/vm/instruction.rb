@@ -183,10 +183,18 @@ module Vm
       end
     end
     def uses
-      []
+      if opcode == :call
+        @first.args.collect {|arg| arg.used_register }
+      else
+        []
+      end
     end
     def assigns
-      []
+      if opcode == :call
+        [RegisterUse.new(RegisterMachine.instance.return_register)]
+      else
+        []
+      end
     end
   end
 end

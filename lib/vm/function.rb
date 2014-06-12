@@ -87,7 +87,8 @@ module Vm
     # a call_site uses pushes and pops these to make them available for code after a call
     def locals_at l_block
       used =[]
-      assigned = []
+      # call assigns the return register, but as it is in l_block, it is not asked.
+      assigned = [ RegisterUse.new(Vm::RegisterMachine.instance.return_register) ]
       l_block.reachable.each do |b|
         b.uses.each {|u|
           (used << u) unless assigned.include?(u) 
