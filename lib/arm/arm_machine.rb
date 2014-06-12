@@ -97,8 +97,8 @@ module Arm
     def write_stdout function #, string
       # TODO save and restore r0
       function.mov( :r0 ,  1 ) # 1 == stdout
-      function.mov( :r1 , RECEIVER_REG )
-      function.mov( RECEIVER_REG , :r3 )
+      function.mov( :r1 , receiver_register )
+      function.mov( receiver_register , :r3 )
       syscall( function.insertion_point , 4 ) # 4 == write
     end
 

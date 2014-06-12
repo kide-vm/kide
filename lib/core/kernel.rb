@@ -56,40 +56,40 @@ module Core
         return utoa_function
       end
 
-      # testing method, hand coded fibo, expects arg in 1 
-      # result comes in 7
+      # testing method, hand coded fibo, expects arg in receiver_register 
+      # result comes in return_register
       # a hand coded version of the fibonachi numbers
-      #  not my hand off course, found in the net from a basic introduction
+      # not my hand off course, found in the net http://www.peter-cockerell.net/aalp/html/ch-5.html
       def fibo context
         fibo_function = Vm::Function.new(:fibo , Vm::Integer , [] , Vm::Integer )
         result = fibo_function.return_type
         int = fibo_function.receiver
-        count = fibo_function.new_local
+        
+        last = fibo_function.new_block("return")
+        
         f1 = fibo_function.new_local
         f2 = fibo_function.new_local
-        fibo_function.instance_eval do
         
+        fibo_function.instance_eval do
           cmp  int , 1
           mov( result, int , condition_code: :le)
-          mov( :pc , :lr , condition_code: :le)
-          push [  count , f1 , f2 , :lr]
-          mov f1 , 1
+          ble( last ) #branch to return, rather than return (as the original)
+          mov f1 , 1        #set up initial values
           mov f2 , 0
-          sub count , int , 2 
         end
 
-        l = fibo_function.new_block("loop")
-        fibo_function.insert_at l
+        loop = fibo_function.new_block("loop")
+        fibo_function.insert_at loop
         
-        fibo_function.instance_eval do 
-          add f1 , f1 , f2
-          sub f2 , f1 , f2
-          sub count ,  count , 1 , set_update_status: 1
-          bpl( l )
+        fibo_function.instance_eval do #loop through 
+          add f1 , f1 , f2             # f1 = f1 + f2
+          sub f2 , f1 , f2             # f2 = f1 -f2
+          sub int ,  int , 1  # todo: set.. should do below cmp, but doesn't , set_update_status: 1
+          cmp int , 1
+          bne( loop )
           mov( result , f1 )
-          pop [ count , f1 , f2 , :pc]
         end
-        fibo_function.set_return result
+        
         fibo_function
       end
 
