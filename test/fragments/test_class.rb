@@ -6,16 +6,33 @@ class TestClass < MiniTest::Test
   def test_class
     @string_input = <<HERE
 class Object
+  def raise()
+    putstring()
+    exit()
+  end
+  def method_missing(name,args)
+    name.raise()
+  end
+  def class()
+    l = @layout
+    return l.class()
+  end
+  def resolve_method(name)
+    clazz = class()
+    function = clazz._get_instance_variable(name)
+    index = clazz.index_of(name)
+    if( function == 0 )
+      name.raise()
+    else
+      return function
+    end
+  end
   def index_of( name )
     l = @layout
     return l.index_of(name) 
   end
   def layout()
     return @layout
-  end
-  def class()
-    l = @layout
-    return l.class()
   end
 end
 class Class

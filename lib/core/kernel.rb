@@ -5,6 +5,13 @@ module Core
     # We use this module syntax to avoid the (ugly) self (also eases searching).
     module ClassMethods
 
+      def exit context 
+        function = Vm::Function.new(:exit , Vm::Integer , [] )
+        ret = Vm::RegisterMachine.instance.exit(function)
+        function.set_return ret
+        function
+      end
+
       def putstring context 
         function = Vm::Function.new(:putstring , Vm::Integer , [] )
         ret = Vm::RegisterMachine.instance.write_stdout(function)
@@ -18,7 +25,7 @@ module Core
         context.object_space.add_object buffer              # and save it (function local variable: a no no)
         int = putint_function.receiver
         moved_int = putint_function.new_local
-        utoa = context.object_space.get_or_create_class(:Object).get_or_create_function(:utoa)
+        utoa = context.object_space.get_or_create_class(:Object).resolve_function(:utoa)
         putint_function.instance_eval do
           mov( moved_int ,  int )     # move arg up
           add( int ,  buffer ,nil )   # string to write to (add string address to pc)

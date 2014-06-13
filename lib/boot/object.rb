@@ -22,7 +22,7 @@ module Boot
         me = get_function.receiver
         var_name = get_function.args.first
         return_to = get_function.return_type
-        index_function = context.object_space.get_or_create_class(:Object).get_or_create_function(:index_of)
+        index_function = context.object_space.get_or_create_class(:Object).resolve_function(:index_of)
         get_function.push( [me] )
         get_function.call( index_function )
         after_body = get_function.new_block("after_index")

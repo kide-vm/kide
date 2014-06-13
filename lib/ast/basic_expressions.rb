@@ -26,9 +26,8 @@ module Ast
       raise "uups #{clazz}.#{name}" unless clazz
       #class qualifier, means call from metaclass
       clazz = clazz.meta_class
-      value = clazz
-      puts "CLAZZ #{value}"
-      function = clazz.get_or_create_function(name)
+      puts "CLAZZ #{clazz}"
+      clazz
     end    
   end
 

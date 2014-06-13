@@ -102,6 +102,11 @@ module Arm
       syscall( function.insertion_point , 4 ) # 4 == write
     end
 
+    # stop, do not return
+    def exit function #, string
+      syscall( function.insertion_point , 1 ) # 1 == exit
+    end
+
     
     # the number (a Vm::integer) is (itself) divided by 10, ie overwritten by the result
     #  and the remainder is overwritten (ie an out argument)

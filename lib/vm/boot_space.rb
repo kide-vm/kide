@@ -64,12 +64,16 @@ module Vm
       # dummies, just for the other to compile
       obj = get_or_create_class :Object
       [:index_of , :_get_instance_variable].each do |f|
-        puts "adding #{f}"
+        puts "Boot Object::#{f}"
         obj.add_function Boot::Object.send(f , @context)
+      end
+      [:utoa, :putstring,:putint,:fibo,:exit].each do |f|
+        puts "Boot Kernel::#{f}"
+        obj.add_function Core::Kernel.send(f , @context)
       end
       obj = get_or_create_class :String
       [:get , :set].each do |f|
-        puts "adding #{f}"
+        puts "Boot String::#{f}"
         obj.add_function Boot::String.send(f , @context)
       end
     end

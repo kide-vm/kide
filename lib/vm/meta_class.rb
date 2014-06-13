@@ -30,14 +30,13 @@ module Vm
       puts "no function for :#{name} in Meta #{@me_self.inspect}" unless f
       f
     end
-    # way of creating new functions that have not been parsed.
-    def get_or_create_function name 
+
+    # get the function and if not found, try superclasses. raise error if not found
+    def resolve_function name 
       fun = get_function name
-      unless fun or name == :Object
-        supr = @me_self.context.object_space.get_or_create_class(@super_class)
-        fun = supr.get_function name
-        puts "#{supr.functions.collect(&:name)} for #{name} GOT #{fun.class}"
-      end
+      # TODO THE BOOK says is class A derives from B , then the metaclass of A derives from the metaclass of B
+      # just get to it ! (and stop whimpering)
+      raise "Method not found #{name} , for #{inspect}" unless fun
       fun
     end
 

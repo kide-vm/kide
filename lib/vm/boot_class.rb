@@ -28,23 +28,20 @@ module Vm
       f
     end
 
-    # way of creating new functions that have not been parsed.
-    def get_or_create_function name 
+    # get the function and if not found, try superclasses. raise error if not found
+    def resolve_function name
       fun = get_function name
       unless fun or name == :Object
         supr = @context.object_space.get_or_create_class(@super_class)
         fun = supr.get_function name
         puts "#{supr.functions.collect(&:name)} for #{name} GOT #{fun.class}" if name == :index_of
       end
-      unless fun
-        fun = Core::Kernel.send(name , @context)
-        @functions << fun
-      end
+      raise "Method not found :#{name}, for #{inspect}" unless fun
       fun
     end
 
     def inspect
-      "BootClass #{@name} , super #{@super_class} #{@functions.length} functions"
+      "BootClass #{@name} < #{@super_class}:#{@functions.collect(&:name)}"
     end
     def to_s
       inspect

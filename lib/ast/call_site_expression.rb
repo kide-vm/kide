@@ -7,20 +7,33 @@ module Ast
     def compile context
       into = context.function
       params = args.collect{ |a| a.compile(context) }
-
-      if receiver.is_a?(NameExpression) and (receiver.name == :self)
-        function = context.current_class.get_or_create_function(name)
-        value_receiver = Vm::Integer.new(Vm::RegisterMachine.instance.receiver_register)
-      else
+      puts "compiling receiver #{receiver} (call #{name})"
+      if receiver.is_a? ModuleName
+        clazz = context.object_space.get_or_create_class receiver.name
+        function = clazz.resolve_function name
+      elsif receiver.is_a?(StringExpression) or receiver.is_a?(IntegerExpression)
+        #TODO obviously the class is wrong, but you gotta start somewhere
+        clazz = context.object_space.get_or_create_class :Object
+        function = clazz.resolve_function name
         value_receiver = receiver.compile(context)
-        function = context.current_class.get_or_create_function(name)
-      end
-      # this lot below should go, since the compile should handle all
-      if receiver.is_a? VariableExpression
+      elsif receiver.is_a?(NameExpression) 
+        if(receiver.name == :self)
+          function = context.current_class.resolve_function(name)
+          value_receiver = Vm::Integer.new(Vm::RegisterMachine.instance.receiver_register)
+        else
+          value_receiver = receiver.compile(context)
+          # TODO HACK warning: should determine class dynamically
+          function = context.current_class.resolve_function(name)
+        end
+      elsif receiver.is_a? VariableExpression
         raise "not implemented instance var:#{receiver}"
+      else
+        #This , how does one say nowadays, smells. Smells of unused polymorphism actually
+        raise "Not sure this is possible, but never good to leave elses open #{receiver} #{receiver.class}"
+        # this lot below should go, since the compile should handle all
       end
-      raise "No such method error #{3.to_s}:#{name}" if (function.nil?)
-      raise "No receiver error #{inspect}:#{value_receiver}:#{name}" if (value_receiver.nil?)
+      raise "No such method error #{inspect}" if (function.nil?)
+      raise "No receiver error #{inspect}:#{receiver}" if (value_receiver.nil?)
       call = Vm::CallSite.new( name ,  value_receiver , params  , function)
       current_function = context.function
       into.push([])  unless current_function.nil?
@@ -30,7 +43,6 @@ module Ast
       after = into.new_block("#{name}#{@@counter+=1}")
       into.insert_at after
       into.pop([]) unless current_function.nil?
-      puts "compile call #{function.return_type}"
       function.return_type
     end
   end
