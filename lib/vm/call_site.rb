@@ -17,7 +17,7 @@ module Vm
       if value.is_a?(IntegerConstant) or value.is_a?(ObjectConstant)
         function.receiver.load into , value
       else
-        raise "meta #{name} " if value.is_a? MetaClass
+        raise "meta #{name} " if value.is_a? Boot::MetaClass
         function.receiver.move( into, value ) if value.register_symbol != function.receiver.register_symbol
       end
       raise "function call '#{name}' has #{args.length} arguments, but function has #{function.args.length}" if args.length != function.args.length

@@ -161,7 +161,7 @@ module Vm
       elsif right.is_a? StringConstant
         block.add( self , right , nil)   #move the address, by "adding" to pc, ie pc relative
         block.mov( Integer.new(self.used_register.next_reg_use) ,  right.length )  #and the length HACK TODO
-      elsif right.is_a?(BootClass) or right.is_a?(MetaClass)
+      elsif right.is_a?(Boot::BootClass) or right.is_a?(Boot::MetaClass)
         block.add( self , right , nil)   #move the address, by "adding" to pc, ie pc relative
       else
         raise "unknown #{right.inspect}" 

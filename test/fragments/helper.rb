@@ -13,7 +13,7 @@ require 'parslet/convenience'
 module Fragments
   # need a code generator, for arm 
   def setup
-    @object_space = Vm::BootSpace.new "Arm"
+    @object_space = Boot::BootSpace.new "Arm"
   end
 
   def parse 

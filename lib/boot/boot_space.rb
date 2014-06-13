@@ -1,12 +1,12 @@
-require_relative "context"
-require_relative "boot_class"
-require_relative "call_site"
+require "vm/context"
+require "boot/boot_class"
+require "vm/call_site"
 require "arm/arm_machine"
 require "core/kernel"
 require "boot/object"
 require "boot/string"
 
-module Vm
+module Boot
   # The BootSpace is contains all objects for a program. In functional terms it is a program, but on oo
   # it is a collection of objects, some of which are data, some classes, some functions
   
@@ -18,7 +18,7 @@ module Vm
   
   # throwing in a context for unspecified use (well one is to pass the programm/globals around)
    
-  class BootSpace < Code
+  class BootSpace < Vm::Code
     
     # Initialize with a string for cpu. Naming conventions are: for Machine XXX there exists a module XXX
     #  with a XXXMachine in it that derives from Vm::RegisterMachine
@@ -27,19 +27,19 @@ module Vm
       machine = RbConfig::CONFIG["host_cpu"] unless machine
       machine = "intel" if machine == "x86_64"
       machine = machine.capitalize
-      RegisterMachine.instance = eval("#{machine}::#{machine}Machine").new
+      Vm::RegisterMachine.instance = eval("#{machine}::#{machine}Machine").new
       @classes = {}
-      @context = Context.new(self)
+      @context = Vm::Context.new(self)
       @context.current_class = get_or_create_class :Object
-      @main = Function.new("main")
+      @main = Vm::Function.new("main")
       @context.function = @main
       #global objects (data)
       @objects = []
-      @entry = RegisterMachine.instance.main_start @context
+      @entry = Vm::RegisterMachine.instance.main_start @context
       #main gets executed between entry and exit
-      @exit = RegisterMachine.instance.main_exit @context
+      @exit = Vm::RegisterMachine.instance.main_exit @context
       boot_classes
-      @passes = [ MoveMoveReduction.new ,  LogicMoveReduction.new, NoopReduction.new, SaveLocals.new ]
+      @passes = [ Vm::MoveMoveReduction.new ,  Vm::LogicMoveReduction.new, Vm::NoopReduction.new, Vm::SaveLocals.new ]
     end
     attr_reader :context , :main , :classes , :entry , :exit
 
@@ -81,7 +81,7 @@ module Vm
     # Objects are data and get assembled after functions
     def add_object o
       return if @objects.include? o
-      raise "must be derived from Code #{o.inspect}" unless o.is_a? Code
+      raise "must be derived from Code #{o.inspect}" unless o.is_a? Vm::Code
       @objects << o # TODO check type , no basic values allowed (must be wrapped)
     end
 

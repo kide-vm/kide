@@ -1,4 +1,4 @@
-module Vm
+module Boot
   # class that acts like a class, but is really the object
   
   # described in the ruby language book as the eigenclass, what you get with 
@@ -8,7 +8,7 @@ module Vm
   #                     PS: can't say i fancy the << self syntax and am considerernig adding a keyword for it, like meta
   #                      In effect it is a very similar construct to   def self.function(...)
   #                      So one could write               def meta.function(...) and thus define on the meta-class
-  class MetaClass < ObjectConstant
+  class MetaClass < Vm::ObjectConstant
     # no name, nor nothing. as this is just the object really
     
     def initialize(object)

@@ -85,7 +85,7 @@ HERE
         expr    = part.compile( @object_space.context )
       else
         expr    = part.compile( @object_space.context )
-        raise "should be function definition for now, not #{part.inspect}#{expr.inspect}" unless expr.is_a? Vm::BootClass
+        raise "should be function definition for now, not #{part.inspect}#{expr.inspect}" unless expr.is_a? Boot::BootClass
       end
     end
   end
