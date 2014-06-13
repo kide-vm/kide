@@ -2,7 +2,7 @@ require "vm/context"
 require "boot/boot_class"
 require "vm/call_site"
 require "arm/arm_machine"
-require "core/kernel"
+require "kernel/all"
 require "boot/object"
 require "boot/string"
 
@@ -69,7 +69,7 @@ module Boot
       end
       [:utoa, :putstring,:putint,:fibo,:exit].each do |f|
         puts "Boot Kernel::#{f}"
-        obj.add_function Core::Kernel.send(f , @context)
+        obj.add_function Crystal::Kernel.send(f , @context)
       end
       obj = get_or_create_class :String
       [:get , :set].each do |f|
