@@ -36,7 +36,7 @@ module Vm
       atts.delete(:condition_code) if atts[:condition_code] == :al
       atts.empty? ? "" : ", #{atts}"
     end
-    # returns an array of registers (RegisterUses) that this instruction uses.
+    # returns an array of registers (RegisterReferences) that this instruction uses.
     # ie for r1 = r2 + r3 
     # which in assembler is add r1 , r2 , r3
     # it would return [r2,r3]
@@ -44,7 +44,7 @@ module Vm
     def uses
       raise "abstract called for #{self.class}"
     end
-    # returns an array of registers (RegisterUses) that this instruction assigns to.
+    # returns an array of registers (RegisterReferences) that this instruction assigns to.
     # ie for r1 = r2 + r3 
     # which in assembler is add r1 , r2 , r3
     # it would return [r1]
@@ -191,7 +191,7 @@ module Vm
     end
     def assigns
       if opcode == :call
-        [RegisterUse.new(RegisterMachine.instance.return_register)]
+        [RegisterReference.new(RegisterMachine.instance.return_register)]
       else
         []
       end

@@ -1,4 +1,5 @@
 require_relative "code"
+require_relative "register_reference"
 
 module Vm
   
@@ -7,12 +8,7 @@ module Vm
   # The oprerations on values is what makes a machine do things. Operations are captured as 
   # subclasses of Instruction and saved to Blocks
   
-  # Values are immutable! (that's why they are called values)
-  # Operations on values _always_ produce new values (conceptionally)
-  
   # Values are a way to reason about (create/validate) instructions. 
-  # In fact a linked lists of values is created by invoking instructions
-  # the linked list goes from value to instruction to value, backwards
   
   # Word Values are what fits in a register. Derived classes
   # Float, Reference , Integer(s) must fit the same registers
@@ -48,35 +44,6 @@ module Vm
     end
   end
 
-  # RegisterUSe is _not_ the name for a register, "only" for a certain use of it. 
-  # In a way it is like a variable name, a storage location. The location is a register off course, 
-  # but which register can be changed, and _all_ instructions sharing the RegisterUse then use that register
-  # In other words a simple level of indirection, or change from value to reference sematics.
-  class RegisterUse
-    attr_accessor :symbol
-    def initialize r
-      if( r.is_a? Fixnum)
-        r = "r#{r}".to_sym
-      end
-      raise "wrong type for register init #{r}" unless r.is_a? Symbol
-      raise "double r #{r}" if r == :rr1
-      @symbol = r
-    end
-
-    def == other
-      return false if other.nil?
-      return false if other.class != RegisterUse
-      symbol == other.symbol
-    end
-
-    #helper method to calculate with register symbols
-    def next_reg_use by = 1
-      int = @symbol[1,3].to_i
-      sym = "r#{int + by}".to_sym
-      RegisterUse.new( sym )
-    end
-  end
-
   # This is what it is when we don't know what it is. #TODO, better if it were explicitly a different type, not the base
   # Must be promoted to A Word-Value to to anything                       makes is_a chaecking easier
   # remembering that our oo machine is typed, no overloading or stuff
@@ -94,10 +61,10 @@ module Vm
       inspect
     end
     def initialize reg
-      if reg.is_a? RegisterUse
+      if reg.is_a? RegisterReference
         @used_register = reg
       else
-        @used_register = RegisterUse.new(reg)
+        @used_register = RegisterReference.new(reg)
       end
     end
     def length

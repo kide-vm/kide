@@ -6,7 +6,7 @@ module Ast
       locals = {}
       params.each_with_index do |param , index|
         arg = param.name
-        register = Vm::RegisterUse.new(Vm::RegisterMachine.instance.receiver_register).next_reg_use(index + 1)
+        register = Vm::RegisterReference.new(Vm::RegisterMachine.instance.receiver_register).next_reg_use(index + 1)
         arg_value = Vm::Integer.new(register)
         locals[arg] = arg_value
         args << arg_value

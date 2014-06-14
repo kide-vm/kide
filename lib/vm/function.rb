@@ -40,7 +40,7 @@ module Vm
       
       @args = Array.new(args.length)
       args.each_with_index do |arg , i|
-        shouldda = RegisterUse.new(RegisterMachine.instance.receiver_register).next_reg_use(i + 1)
+        shouldda = RegisterReference.new(RegisterMachine.instance.receiver_register).next_reg_use(i + 1)
         if arg.is_a?(Value)
           @args[i] = arg
           raise "arg #{i} in non std register #{arg.used_register}, expecting #{shouldda}" unless shouldda == arg.used_register
@@ -88,7 +88,7 @@ module Vm
     def locals_at l_block
       used =[]
       # call assigns the return register, but as it is in l_block, it is not asked.
-      assigned = [ RegisterUse.new(Vm::RegisterMachine.instance.return_register) ]
+      assigned = [ RegisterReference.new(Vm::RegisterMachine.instance.return_register) ]
       l_block.reachable.each do |b|
         b.uses.each {|u|
           (used << u) unless assigned.include?(u) 

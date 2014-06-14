@@ -132,8 +132,8 @@ module Arm
 
     def syscall block , num
       # This is very arm specific, syscall number is passed in r7, other arguments like a c call ie 0 and up
-      sys = Vm::Integer.new( Vm::RegisterUse.new(:r7) )
-      ret = Vm::Integer.new( Vm::RegisterUse.new(RETURN_REG) )
+      sys = Vm::Integer.new( Vm::RegisterReference.new(:r7) )
+      ret = Vm::Integer.new( Vm::RegisterReference.new(RETURN_REG) )
       block.do_add  mov(  sys , num )
       block.do_add  swi(  0 )
       #todo should write type into r1 according to syscall
