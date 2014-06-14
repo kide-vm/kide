@@ -1,7 +1,7 @@
 module Vm
   class Integer < Word
     # needs to be here as Word's constructor is private (to make it abstract)
-    def initilize reg
+    def initialize reg
       super
     end
 
@@ -33,7 +33,7 @@ module Vm
       block.sub( self ,  left ,  right )
       self
     end
-    def left_shift block , first , right
+    def left_shift block , left , right
       block.mov( self ,  left , shift_lsr: right )
       self
     end

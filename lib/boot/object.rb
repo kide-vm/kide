@@ -10,6 +10,11 @@ module Boot
         return index_function
       end
 
+      def self.layout
+        layout_function = Vm::Function.new(:layout , Vm::Reference , [ ] , Vm::Reference )
+        layout_function.at_index 2
+        layout_function
+      end
 
       # in ruby, how this goes is   
       #  def _get_instance_variable var

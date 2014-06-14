@@ -28,13 +28,14 @@ module Vm
   
   class Function < Code
 
-    def initialize(name , receiver = Vm::Integer , args = [] , return_type = Vm::Integer)
+    def initialize(name , receiver = Vm::Reference , args = [] , return_type = Vm::Reference)
       super()
       @name = name.to_sym
       if receiver.is_a?(Value)
         @receiver = receiver
         raise "arg in non std register #{receiver.inspect}" unless RegisterMachine.instance.receiver_register == receiver.register_symbol
       else
+        puts receiver.inspect
         @receiver = receiver.new(RegisterMachine.instance.receiver_register)
       end
       
@@ -63,7 +64,7 @@ module Vm
       @insert_at
     end
     def set_return type_or_value
-      @return_type = type_or_value || Vm::Integer 
+      @return_type = type_or_value || Vm::Reference 
       if @return_type.is_a?(Value)
         raise "return in non std register #{@return_type.inspect}" unless RegisterMachine.instance.return_register == @return_type.register_symbol
       else

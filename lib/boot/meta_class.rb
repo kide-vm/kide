@@ -19,7 +19,7 @@ module Boot
     
     # in a non-booting version this should map to _add_singleton_method
     def add_function function
-      raise "not a function #{function}" unless function.is_a? Function
+      raise "not a function #{function}" unless function.is_a? Vm::Function
       raise "syserr " unless function.name.is_a? Symbol
       @functions << function
     end

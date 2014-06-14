@@ -1,7 +1,7 @@
 module Vm
-  class Reference
+  class Reference < Word
     # needs to be here as Word's constructor is private (to make it abstract)
-    def initilize reg
+    def initialize reg
       super
     end
 
