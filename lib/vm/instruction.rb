@@ -101,12 +101,12 @@ module Vm
       super(options)
     end
     def uses
-      ret = [@left.used_register ]
-      ret << @right.used_register unless @right.nil?
+      ret = [@left.register ]
+      ret << @right.register unless @right.nil?
       ret
     end
     def assigns
-      [@result.used_register]
+      [@result.register]
     end
   end
   class LogicInstruction < Instruction
@@ -124,12 +124,12 @@ module Vm
     attr_accessor :result , :left ,  :right
     def uses
       ret = []
-      ret << @left.used_register if @left and not @left.is_a? Constant
-      ret << @right.used_register if @right and not @right.is_a?(Constant)
+      ret << @left.register if @left and not @left.is_a? Constant
+      ret << @right.register if @right and not @right.is_a?(Constant)
       ret
     end
     def assigns
-      [@result.used_register]
+      [@result.register]
     end
     def to_asm
       "#{opcode} #{result.to_asm} , #{left.to_asm} , #{right.to_asm} #{super}"
@@ -142,8 +142,8 @@ module Vm
       super(options)
     end
     def uses
-      ret = [@left.used_register ]
-      ret << @right.used_register unless @right.is_a? Constant
+      ret = [@left.register ]
+      ret << @right.register unless @right.is_a? Constant
       ret
     end
     def assigns
@@ -159,10 +159,10 @@ module Vm
     end
     attr_accessor :to , :from
     def uses
-      @from.is_a?(Constant) ? [] : [@from.used_register]
+      @from.is_a?(Constant) ? [] : [@from.register]
     end
     def assigns
-      [@to.used_register]
+      [@to.register]
     end
     def to_s
       "#{opcode} #{@to.to_asm} , #{@from.to_asm} #{super}"
@@ -184,7 +184,7 @@ module Vm
     end
     def uses
       if opcode == :call
-        @first.args.collect {|arg| arg.used_register }
+        @first.args.collect {|arg| arg.register }
       else
         []
       end

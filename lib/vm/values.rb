@@ -21,6 +21,7 @@ module Vm
   end
 
   # Just a nice way to write branches
+  # Comparisons produce them, and branches take them as argument.
   class BranchCondition < Value
 
     def initialize operator
@@ -49,10 +50,10 @@ module Vm
   # remembering that our oo machine is typed, no overloading or stuff
   class Word < Value
 
-    attr_accessor :used_register
+    attr_accessor :register
 
     def register_symbol
-      @used_register.symbol
+      @register.symbol
     end
     def inspect
       "#{self.class.name} (#{register_symbol})"
@@ -62,9 +63,9 @@ module Vm
     end
     def initialize reg
       if reg.is_a? RegisterReference
-        @used_register = reg
+        @register = reg
       else
-        @used_register = RegisterReference.new(reg)
+        @register = RegisterReference.new(reg)
       end
     end
     def length
@@ -86,40 +87,40 @@ module Vm
   class Integer < Word
 
     def less_or_equal block , right
-      RegisterMachine.instance.integer_less_or_equal block , self , right
+      block.cmp( self ,  right )
+      Vm::BranchCondition.new :le
     end
     def greater_or_equal block , right
-      RegisterMachine.instance.integer_greater_or_equal block , self , right
+      block.cmp( self ,  right )
+      Vm::BranchCondition.new :ge
     end
     def greater_than block , right
-      RegisterMachine.instance.integer_greater_than block , self , right
+      block.cmp( self ,  right )
+      Vm::BranchCondition.new :gt
     end
     def less_than block , right
-      RegisterMachine.instance.integer_less_than block , self , right
+      block.cmp( self ,  right )
+      Vm::BranchCondition.new :lt
     end
-#    def == other
-#      code = class_for(CompareInstruction).new(self , other , opcode: :cmp)
-#    end
-#    def + other
-#      class_for(LogicInstruction).new(nil , self , other , opcode: :add)
-#    end
-#    def - other
-#      class_for(LogicInstruction).new(nil , self , other , opcode:  :sub )#, update_status: 1 )
-#    end
     def at_index block , left , right
-      RegisterMachine.instance.integer_at_index block , self , left , right
+      block.ldr( self , left , right )
+      self
     end
     def plus block , first , right
-      RegisterMachine.instance.integer_plus block , self , first , right
+      block.add( self , left ,  right )
+      self
     end
-    def minus block , first , right
-      RegisterMachine.instance.integer_minus block , self , first , right
+    def minus block , left , right
+      block.sub( self ,  left ,  right )
+      self
     end
     def left_shift block , first , right
-      RegisterMachine.instance.integer_left_shift block , self , first , right
+      block.mov( self ,  left , shift_lsr: right )
+      self
     end
     def equals block , right
-      RegisterMachine.instance.integer_equals block , self , right
+      block.cmp( self ,  right )
+      Vm::BranchCondition.new :eq
     end
     
     def load block , right
@@ -127,7 +128,7 @@ module Vm
         block.mov(  self ,  right )  #move the value
       elsif right.is_a? StringConstant
         block.add( self , right , nil)   #move the address, by "adding" to pc, ie pc relative
-        block.mov( Integer.new(self.used_register.next_reg_use) ,  right.length )  #and the length HACK TODO
+        block.mov( Integer.new(self.register.next_reg_use) ,  right.length )  #and the length HACK TODO
       elsif right.is_a?(Boot::BootClass) or right.is_a?(Boot::MetaClass)
         block.add( self , right , nil)   #move the address, by "adding" to pc, ie pc relative
       else

@@ -43,7 +43,7 @@ module Vm
         shouldda = RegisterReference.new(RegisterMachine.instance.receiver_register).next_reg_use(i + 1)
         if arg.is_a?(Value)
           @args[i] = arg
-          raise "arg #{i} in non std register #{arg.used_register}, expecting #{shouldda}" unless shouldda == arg.used_register
+          raise "arg #{i} in non std register #{arg.register}, expecting #{shouldda}" unless shouldda == arg.register
         else
           @args[i] = arg.new(shouldda)
         end

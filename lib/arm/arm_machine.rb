@@ -24,47 +24,6 @@ module Arm
       RECEIVER_REG
     end
 
-    def integer_equals block ,  left , right
-      block.add_code  cmp( left ,  right )
-      Vm::BranchCondition.new :eq
-    end
-    def integer_less_or_equal block ,  left , right
-      block.add_code  cmp( left ,  right )
-      Vm::BranchCondition.new :le
-    end
-    def integer_greater_or_equal block ,  left , right
-      block.add_code  cmp( left ,  right )
-      Vm::BranchCondition.new :ge
-    end
-    def integer_less_than block ,  left , right
-      block.add_code  cmp( left ,  right )
-      Vm::BranchCondition.new :lt
-    end
-    def integer_greater_than block ,  left , right
-      block.add_code  cmp( left ,  right )
-      Vm::BranchCondition.new :gt
-    end
-
-    # TODO wrong type, should be object_reference. But that needs the actual typing to work
-    def integer_at_index block , result ,left , right
-      block.add_code  ldr( result , left , right )
-      result
-    end
-
-    def integer_plus block , result , left , right
-      block.add_code  add( result , left ,  right )
-      result
-    end
-
-    def integer_minus block , result , left , right
-      block.add_code  sub( result ,  left ,  right )
-      result
-    end
-    def integer_left_shift block , result , left , right
-      block.add_code  mov( result ,  left , shift_lsr: right )
-      result
-    end
-
     def function_call into , call
       raise "Not CallSite #{call.inspect}" unless call.is_a? Vm::CallSite
       raise "Not linked #{call.inspect}" unless call.function
