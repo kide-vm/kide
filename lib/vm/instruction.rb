@@ -131,7 +131,7 @@ module Vm
     def assigns
       [@result.register]
     end
-    def to_asm
+    def to_s
       "#{opcode} #{result.to_asm} , #{left.to_asm} , #{right.to_asm} #{super}"
     end
   end
@@ -148,6 +148,9 @@ module Vm
     end
     def assigns
       []
+    end
+    def to_s
+      "#{opcode} #{@left.to_asm} , #{@right.to_asm} #{super}"
     end
   end
   class MoveInstruction < Instruction
@@ -195,6 +198,9 @@ module Vm
       else
         []
       end
+    end
+    def to_s
+      "#{opcode} #{@first.to_asm} #{super}"
     end
   end
 end

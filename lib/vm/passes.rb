@@ -34,7 +34,7 @@ module Vm
         # small todo. This does not catch condition_code that are not :al
         next if (n.attributes.length > 3) or (kode.attributes.length > 3)
         if kode.result == n.from
-          puts "Logic #{kode}  goes #{n}"
+          puts "Logic reduction #{kode} removes #{n}"
           kode.result = n.to
           block.codes.delete(n)
         end
@@ -56,7 +56,7 @@ module Vm
         # small todo. This does not catch condition_code that are not :al
         next if (n.attributes.length > 3) or (kode.attributes.length > 3)
         if kode.to == n.from
-          puts "Move #{kode}  goes #{n} "
+          puts "Move reduction #{kode}: removes #{n} "
           kode.to = n.to
           block.codes.delete(n)
         end
@@ -94,7 +94,7 @@ module Vm
       locals = block.function.locals_at block
       pop = block.next.codes.first
       if(locals.empty?)
-        puts "Empty #{block.name}"
+        #puts "Empty #{block.name}"
         block.codes.delete(push)
         block.next.codes.delete(pop)
       else

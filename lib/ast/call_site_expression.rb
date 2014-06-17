@@ -10,7 +10,8 @@ module Ast
       puts "compiling receiver #{receiver} (call #{name})"
       if receiver.is_a? ModuleName
         clazz = context.object_space.get_or_create_class receiver.name
-        function = clazz.resolve_function name
+        value_receiver = clazz.meta_class
+        function = value_receiver.resolve_function name
       elsif receiver.is_a?(StringExpression) or receiver.is_a?(IntegerExpression)
         #TODO obviously the class is wrong, but you gotta start somewhere
         clazz = context.object_space.get_or_create_class :Object

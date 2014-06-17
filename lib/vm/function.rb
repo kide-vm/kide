@@ -78,7 +78,7 @@ module Vm
     def new_local type = Vm::Integer
       register = args.length + 3 + @locals.length # three for the receiver, return and type regs
       l = type.new(register)     #so start at r3
-      puts "new local #{l.register_symbol}"
+      #puts "new local #{l.register_symbol}"
       raise "Register overflow in function #{name}" if register >= 13 # yep, 13 is bad luck
       @locals << l
       l
