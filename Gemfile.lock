@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/ruby-in-ruby/crystal-reader.git
-  revision: 06d4ab2fe5af054df6c3a247528b1088e78e24c9
+  revision: 58064637cbc42273302543e804abdc34efa5d36c
   specs:
     crystal-reader (0.1.0)
 
