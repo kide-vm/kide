@@ -40,7 +40,20 @@ module Boot
       end
 
       def _set_instance_variable(context , name , value)
-        raise name
+        set_function = Vm::Function.new(:_set_instance_variable , Vm::Integer , [ Vm::Integer , Vm::Integer] , Vm::Integer )
+        me = set_function.receiver
+        var_name = set_function.args.first
+        return_to = set_function.return_type
+        index_function = context.object_space.get_or_create_class(:Object).resolve_function(:index_of)
+        set_function.push( [me] )
+        set_function.call( index_function )
+        after_body = set_function.new_block("after_index")
+        
+        set_function.insert_at after_body
+        set_function.pop([me])
+        return_to.at_index( set_function , me , return_to )
+        set_function.set_return return_to
+        return set_function
       end
       
       def _get_singleton_method(context , name )
