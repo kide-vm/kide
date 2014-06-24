@@ -34,8 +34,8 @@ module Arm
 
     def main_start context
       entry = Vm::Block.new("main_entry",nil,nil)
-      entry.do_add mov(  :fp ,  0 )
-      entry.do_add call( context.function )
+      entry.add_code mov(  :fp ,  0 )
+      entry.add_code call( context.function )
       entry
     end
     def main_exit context
@@ -44,11 +44,11 @@ module Arm
       exit
     end
     def function_entry block, f_name
-        block.do_add  push( [:lr] )
+        block.add_code  push( [:lr] )
         block
     end
     def function_exit entry , f_name
-      entry.do_add   pop(  [:pc] )
+      entry.add_code   pop(  [:pc] )
       entry
     end
 
@@ -93,8 +93,8 @@ module Arm
       # This is very arm specific, syscall number is passed in r7, other arguments like a c call ie 0 and up
       sys = Vm::Integer.new( Vm::RegisterReference.new(:r7) )
       ret = Vm::Integer.new( Vm::RegisterReference.new(RETURN_REG) )
-      block.do_add  mov(  sys , num )
-      block.do_add  swi(  0 )
+      block.add_code  mov(  sys , num )
+      block.add_code  swi(  0 )
       #todo should write type into r1 according to syscall
       ret
     end

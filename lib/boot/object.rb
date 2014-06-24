@@ -39,7 +39,7 @@ module Boot
         return get_function
       end
 
-      def _set_instance_variable(context , name , value)
+      def _set_instance_variable(context , name = Vm::Integer , value = Vm::Integer )
         set_function = Vm::Function.new(:_set_instance_variable , Vm::Integer , [ Vm::Integer , Vm::Integer] , Vm::Integer )
         me = set_function.receiver
         var_name = set_function.args.first

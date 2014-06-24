@@ -41,7 +41,7 @@ module Vm
       ret
     end
 
-    def do_add kode
+    def add_code kode
       kode.assigns.each { |a| (@assigns << a) unless @assigns.include?(a) }
       kode.uses.each { |use| (@uses << use) unless (@assigns.include?(use) or @uses.include?(use)) }
       #puts "IN ADD #{name}#{uses}" 

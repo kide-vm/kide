@@ -140,7 +140,7 @@ module Vm
     def add_code(kode)
       raise "alarm #{kode}" if kode.is_a? Word
       raise "alarm #{kode.class} #{kode}" unless kode.is_a? Code
-      @insert_at.do_add kode
+      @insert_at.add_code kode
       self
     end
 
