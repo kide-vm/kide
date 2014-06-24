@@ -26,6 +26,7 @@ module Fragments
       if part.is_a? Ast::FunctionExpression
         expr    = part.compile( @object_space.context )
       else
+        puts part.inspect if part.is_a? Hash
         expr    = part.compile( @object_space.context )
       end
     end

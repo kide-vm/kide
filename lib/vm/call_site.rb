@@ -20,7 +20,7 @@ module Vm
         raise "meta #{name} " if value.is_a? Boot::MetaClass
         function.receiver.move( into, value ) if value.register_symbol != function.receiver.register_symbol
       end
-      raise "function call '#{name}' has #{args.length} arguments, but function has #{function.args.length}" if args.length != function.args.length
+      raise "function call '#{args.inspect}' has #{args.length} arguments, but function has #{function.args.length}" if args.length != function.args.length
       args.each_with_index do |arg , index|
         if arg.is_a?(IntegerConstant) or arg.is_a?(StringConstant)
           function.args[index].load into , arg

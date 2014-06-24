@@ -1,9 +1,9 @@
 require_relative 'helper'
 
-class TestClass < MiniTest::Test
+class TestStringClass < MiniTest::Test
   include Fragments
 
-  def test_class
+  def test_string_class
     @string_input = <<HERE
 class Object
   def raise()
