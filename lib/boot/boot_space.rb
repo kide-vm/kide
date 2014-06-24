@@ -63,17 +63,17 @@ module Boot
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we have to define some 
       # dummies, just for the other to compile
       obj = get_or_create_class :Object
-      [:index_of , :_get_instance_variable].each do |f|
-        puts "Boot Object::#{f}"
+      [:index_of , :_get_instance_variable , :_set_instance_variable].each do |f|
+        #puts "Boot Object::#{f}"
         obj.add_function Boot::Object.send(f , @context)
       end
       [:utoa, :putstring,:putint,:fibo,:exit].each do |f|
-        puts "Boot Kernel::#{f}"
+        #puts "Boot Kernel::#{f}"
         obj.add_function Crystal::Kernel.send(f , @context)
       end
       obj = get_or_create_class :String
       [:get , :set].each do |f|
-        puts "Boot String::#{f}"
+        #puts "Boot String::#{f}"
         obj.add_function Boot::String.send(f , @context)
       end
     end
