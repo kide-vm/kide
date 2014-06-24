@@ -13,7 +13,7 @@ module Boot
       @super_class = super_class
       @meta_class = MetaClass.new(self)
     end
-    attr_reader :name , :functions , :meta_class , :context
+    attr_reader :name , :functions , :meta_class , :context , :super_class
     
     def add_function function
       raise "not a function #{function}" unless function.is_a? Vm::Function

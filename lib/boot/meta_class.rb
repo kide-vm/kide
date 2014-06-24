@@ -27,8 +27,13 @@ module Boot
     def get_function name
       name = name.to_sym
       f = @functions.detect{ |f| f.name == name }
-      puts "no function for :#{name} in Meta #{@me_self.inspect}" unless f
-      f
+      return f if f
+      if( @me_self == :Object )
+        puts "no function for :#{name} in Meta #{@me_self.inspect}"
+        return nil
+      else  #recurse up class hierachy unless we're at Object
+        return @me_self.context.object_space.get_or_create_class(@me_self.super_class).get_function name
+      end
     end
 
     # get the function and if not found, try superclasses. raise error if not found
