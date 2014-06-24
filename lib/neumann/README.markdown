@@ -1,4 +1,4 @@
-Virtual Machine 
+Von Neumann Machine 
 ===============
 
 This is the logic that uses the generated ast to produce code, using the asm layer.
