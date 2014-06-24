@@ -13,6 +13,7 @@ module Arm
     RETURN_REG = :r0
     TYPE_REG = :r1
     RECEIVER_REG = :r2
+    SYSCALL_REG = :r7
     
     def return_register
       RETURN_REG
@@ -91,7 +92,7 @@ module Arm
 
     def syscall block , num
       # This is very arm specific, syscall number is passed in r7, other arguments like a c call ie 0 and up
-      sys = Vm::Integer.new( Vm::RegisterReference.new(:r7) )
+      sys = Vm::Integer.new( Vm::RegisterReference.new(SYSCALL_REG) )
       ret = Vm::Integer.new( Vm::RegisterReference.new(RETURN_REG) )
       block.add_code  mov(  sys , num )
       block.add_code  swi(  0 )
