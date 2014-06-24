@@ -7,18 +7,24 @@ module Ast
       r_val = right.compile(context)
       #puts "compiled right #{r_val.inspect}"
       if operator == "="    # assignment, value based
-        raise "Can only assign variables, not #{left}" unless left.is_a?(NameExpression) 
-        puts context.inspect unless context.locals
-        l_val = context.locals[left.name]
-        if( l_val ) #variable existed, move data there
-          l_val = l_val.move( into , r_val) 
+        if(left.is_a? VariableExpression)
+          left.make_setter
+          l_val = left.compile(context)
+        elsif left.is_a?(NameExpression)
+          puts context.inspect unless context.locals
+          l_val = context.locals[left.name]
+          if( l_val ) #variable existed, move data there
+            l_val = l_val.move( into , r_val) 
+          else
+            l_val = context.function.new_local.move( into , r_val )
+          end
+          context.locals[left.name] = l_val
         else
-          l_val = context.function.new_local.move( into , r_val )
+          raise "Can only assign variables, not #{left}" 
         end
-        context.locals[left.name] = l_val
         return l_val
       end
-
+      
       l_val = left.compile(context)
       case operator
       when ">"
