@@ -56,6 +56,11 @@ module Vm
       self
     end
 
+    def is_true? function
+      function.cmp( self ,  0 )
+      Vm::BranchCondition.new :ne
+    end
+
     def move block , right
       block.mov(  self ,  right )
       self
