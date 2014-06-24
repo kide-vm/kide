@@ -27,11 +27,11 @@ module Ast
           function = context.current_class.resolve_function(name)
         end
       elsif receiver.is_a? VariableExpression
-        raise "not implemented instance var:#{receiver}"
+        value_receiver = receiver.compile(context)
+        function = context.current_class.resolve_function(name)
       else
         #This , how does one say nowadays, smells. Smells of unused polymorphism actually
         raise "Not sure this is possible, but never good to leave elses open #{receiver} #{receiver.class}"
-        # this lot below should go, since the compile should handle all
       end
       raise "No such method error #{inspect}" if (function.nil?)
       raise "No receiver error #{inspect}:#{receiver}" if (value_receiver.nil?)
@@ -50,6 +50,10 @@ module Ast
   
   class VariableExpression < CallSiteExpression
 #      super( :_get_instance_variable  , [StringExpression.new(name)] )
+    def make_setter 
+      @name = :_set_instance_variable
+      @args << StringExpression.new("value")
+    end
   end
   
 end
