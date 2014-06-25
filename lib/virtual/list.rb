@@ -8,19 +8,11 @@ class List
   end
 
   def get(key)
-    if( @next )
-      return @next.get(key)
-    else
-      return nil
-    end
+    @next ?  @next.get(key) : nil
   end
 
   def set(key , value)
-    if(@next)
-      @next.set(key,value)
-    else
-      @next = Node.new(key,value)
-    end
+    @next ? @next.set(key,value) : @next = Node.new(key,value)
     value
   end
 end
@@ -31,17 +23,9 @@ class Node < List
     @value = value
   end
   def get(key)
-    if(@key == key)
-      return @value
-    else
-      return super(key)
-    end
+    @key == key ? @value : super(key)
   end
   def set(key,value)
-    if(@key == key)
-      @value = value
-    else
-      super(key,value)
-    end
+    @key == key ? @value = value : super(key,value)
   end
 end
