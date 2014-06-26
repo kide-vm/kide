@@ -11,11 +11,10 @@ module VirtualHelper
     parser  = Parser::Crystal.new
     syntax  = parser.parse_with_debug(@string_input)
     parts   = Parser::Transform.new.apply(syntax)
-
-    parts.each_with_index do |part,index|
-      expr    = part.compile( @object_space.context )
-    end
-
+    machine = Virtual::Machine.new
+    puts parts.class.inspect
+    parts.compile(machine.bindings)
+    
   end
   
 end

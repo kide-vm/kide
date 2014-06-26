@@ -1,4 +1,4 @@
-module Vm
+module Virtual
   # The Virtual Machine is a value based virtual machine in which ruby is implemented. While it is value based,
   # it resembles oo in basic ways of object encapsulation and method invokation, it is a "closed" / static sytem
   # in that all types are know and there is no dynamic dispatch (so we don't bite our tail here).
@@ -42,6 +42,8 @@ module Vm
       # storage is a linked list. Has the same api as a ha
       @bindings = List.new
     end
+    attr_reader :bindings
+    
     # run the instruction stream given. Instructions are a graph and executing means traversing it.
     # If there is no next instruction the machine stops
     def run instruction
