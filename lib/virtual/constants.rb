@@ -1,16 +1,11 @@
-module Vm
+module Virtual
   
-  # constants are the stuff that you embedd in the program as numbers or strings. 
-  # Another way to think about them is as Operands, they have no seperate "identity"
-  # and usually end up embedded in the instructions. ie your basic foo + 4 will encode
-  # the 4 in the instruction opcode. The 4 is not accessible anywhere else.
-  # When it should be usable in other forms, the constant must become a Value first 
-  class Constant < Code
+  class Constant < ::Virtual::Object
     
   end
 
   # another abstract "marker" class (so we can check for it)
-  # derived classes are Boot/Meta Clas and StringConstant 
+  # derived classes are Boot/Meta Class and StringConstant 
   class ObjectConstant < Constant
   end
 
@@ -19,11 +14,11 @@ module Vm
       @integer = int
     end
     attr_reader :integer
-    def value
-      @integer
+    def attributes 
+      [:integer]
     end
-    def to_asm
-      @integer.to_s
+    def inspect
+      self.class.name + ".new(#{@integer})"
     end
   end
 

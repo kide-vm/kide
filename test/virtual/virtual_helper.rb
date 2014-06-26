@@ -12,9 +12,8 @@ module VirtualHelper
     syntax  = parser.parse_with_debug(@string_input)
     parts   = Parser::Transform.new.apply(syntax)
     machine = Virtual::Machine.new
-    puts parts.class.inspect
-    parts.compile(machine.bindings)
-    
+    expressions = parts.compile(machine.bindings)
+    assert_equal @output , expressions
   end
   
 end

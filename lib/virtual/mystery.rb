@@ -1,8 +1,11 @@
-module Vm
-  class Mystery < Word
-    # needs to be here as Word's constructor is private (to make it abstract)
-    def initilize reg
-      super
+module Virtual
+  class Mystery < Value
+    def initilize 
     end
+
+    def as type
+      type.new
+    end
+
   end
 end

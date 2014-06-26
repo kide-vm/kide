@@ -4,7 +4,7 @@ module Ast
 
   class IntegerExpression < Expression
 #    attr_reader :value
-    def compile context
+    def compile binding
       Virtual::IntegerConstant.new value
     end
   end

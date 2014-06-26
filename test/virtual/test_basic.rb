@@ -6,7 +6,7 @@ class TestBasic < MiniTest::Test
     
   def test_number
     @string_input    = '42 '
-    @output = Ast::IntegerExpression.new(42)
+    @output = [Virtual::IntegerConstant.new(42)]
     check
   end
 

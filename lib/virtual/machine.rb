@@ -57,3 +57,8 @@ module Virtual
 end
 
 require_relative "list"
+require_relative "instruction"
+require_relative "value"
+require_relative "mystery"
+require_relative "object"
+require_relative "constants"

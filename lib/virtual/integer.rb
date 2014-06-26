@@ -1,9 +1,5 @@
 module Vm
-  class Integer < Word
-    # needs to be here as Word's constructor is private (to make it abstract)
-    def initialize reg
-      super
-    end
+  class Integer
 
     def less_or_equal block , right
       block.cmp( self ,  right )
