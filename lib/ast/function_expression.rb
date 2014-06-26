@@ -6,13 +6,13 @@ module Ast
       locals = {}
       params.each_with_index do |param , index|
         arg = param.name
-        register = Vm::RegisterReference.new(Vm::RegisterMachine.instance.receiver_register).next_reg_use(index + 1)
-        arg_value = Vm::Integer.new(register)
+        register = Virtual::RegisterReference.new(Virtual::RegisterMachine.instance.receiver_register).next_reg_use(index + 1)
+        arg_value = Virtual::Integer.new(register)
         locals[arg] = arg_value
         args << arg_value
       end
       # class depends on receiver
-      me = Vm::Integer.new( Vm::RegisterMachine.instance.receiver_register )
+      me = Virtual::Integer.new( Virtual::RegisterMachine.instance.receiver_register )
       if receiver.nil? 
         clazz = context.current_class
       else
@@ -20,7 +20,7 @@ module Ast
         clazz = c.meta_class
       end
 
-      function = Vm::Function.new(name , me , args )
+      function = Virtual::Function.new(name , me , args )
       clazz.add_function function 
 
       parent_locals = context.locals
@@ -32,11 +32,11 @@ module Ast
       body.each do |b|
         puts "compiling in function #{b}"
         last_compiled = b.compile(context)
-        raise "alarm #{last_compiled} \n #{b}" unless last_compiled.is_a? Vm::Word
+        raise "alarm #{last_compiled} \n #{b}" unless last_compiled.is_a? Virtual::Word
       end
       
-      return_reg = Vm::Integer.new(Vm::RegisterMachine.instance.return_register)
-      if last_compiled.is_a?(Vm::IntegerConstant) or last_compiled.is_a?(Vm::ObjectConstant)
+      return_reg = Virtual::Integer.new(Virtual::RegisterMachine.instance.return_register)
+      if last_compiled.is_a?(Virtual::IntegerConstant) or last_compiled.is_a?(Virtual::ObjectConstant)
         return_reg.load function , last_compiled if last_compiled.register_symbol != return_reg.register_symbol
       else
         return_reg.move( function, last_compiled ) if last_compiled.register_symbol != return_reg.register_symbol

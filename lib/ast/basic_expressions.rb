@@ -5,7 +5,7 @@ module Ast
   class IntegerExpression < Expression
 #    attr_reader :value
     def compile context
-      Vm::IntegerConstant.new value
+      Virtual::IntegerConstant.new value
     end
   end
 
@@ -34,7 +34,7 @@ module Ast
   class StringExpression < Expression
 #    attr_reader  :string
     def compile context
-      value = Vm::StringConstant.new(string)
+      value = Virtual::StringConstant.new(string)
       context.object_space.add_object value 
       value
     end

@@ -7,11 +7,11 @@ module Crystal
     # As we write before we recurse (save a push) we write the number backwards
     # arguments: string address , integer
     def self.utoa context
-      utoa_function = Vm::Function.new(:utoa , Vm::Integer , [ Vm::Integer ] , Vm::Integer )
+      utoa_function = Virtual::Function.new(:utoa , Virtual::Integer , [ Virtual::Integer ] , Virtual::Integer )
       str_addr = utoa_function.receiver
       number = utoa_function.args.first
       remainder = utoa_function.new_local
-      Vm::RegisterMachine.instance.div10( utoa_function , number  , remainder )
+      Virtual::RegisterMachine.instance.div10( utoa_function , number  , remainder )
       # make char out of digit (by using ascii encoding) 48 == "0"
       utoa_function.instance_eval do
         add(  remainder , remainder , 48)
@@ -24,8 +24,8 @@ module Crystal
     end
 
     def self.putint context
-      putint_function = Vm::Function.new(:putint , Vm::Integer , [] , Vm::Integer )
-      buffer = Vm::StringConstant.new("           ") # create a buffer
+      putint_function = Virtual::Function.new(:putint , Virtual::Integer , [] , Virtual::Integer )
+      buffer = Virtual::StringConstant.new("           ") # create a buffer
       context.object_space.add_object buffer              # and save it (function local variable: a no no)
       int = putint_function.receiver
       moved_int = putint_function.new_local
@@ -41,7 +41,7 @@ module Crystal
         add( int ,  buffer , nil )   # string to write to
         mov( moved_int ,  buffer.length )
       end
-      Vm::RegisterMachine.instance.write_stdout(putint_function)
+      Virtual::RegisterMachine.instance.write_stdout(putint_function)
       putint_function
     end
 
@@ -50,7 +50,7 @@ module Crystal
     # a hand coded version of the fibonachi numbers
     # not my hand off course, found in the net http://www.peter-cockerell.net/aalp/html/ch-5.html
     def self.fibo context
-      fibo_function = Vm::Function.new(:fibo , Vm::Integer , [] , Vm::Integer )
+      fibo_function = Virtual::Function.new(:fibo , Virtual::Integer , [] , Virtual::Integer )
       result = fibo_function.return_type
       int = fibo_function.receiver
     

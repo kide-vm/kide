@@ -8,7 +8,7 @@ module Boot
   #                     PS: can't say i fancy the << self syntax and am considerernig adding a keyword for it, like meta
   #                      In effect it is a very similar construct to   def self.function(...)
   #                      So one could write               def meta.function(...) and thus define on the meta-class
-  class MetaClass < Vm::ObjectConstant
+  class MetaClass < Virtual::ObjectConstant
     # no name, nor nothing. as this is just the object really
     
     def initialize(object)
@@ -19,7 +19,7 @@ module Boot
     
     # in a non-booting version this should map to _add_singleton_method
     def add_function function
-      raise "not a function #{function}" unless function.is_a? Vm::Function
+      raise "not a function #{function}" unless function.is_a? Virtual::Function
       raise "syserr " unless function.name.is_a? Symbol
       @functions << function
     end

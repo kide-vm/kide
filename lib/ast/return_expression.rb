@@ -7,8 +7,8 @@ module Ast
       expression_value = expression.compile(context)
       # copied from function expression: TODO make function
 
-      return_reg = Vm::Integer.new(Vm::RegisterMachine.instance.return_register)
-      if expression_value.is_a?(Vm::IntegerConstant) or expression_value.is_a?(Vm::ObjectConstant)
+      return_reg = Virtual::Integer.new(Virtual::RegisterMachine.instance.return_register)
+      if expression_value.is_a?(Virtual::IntegerConstant) or expression_value.is_a?(Virtual::ObjectConstant)
         return_reg.load into , expression_value 
       else
         return_reg.move( into, expression_value ) if expression_value.register_symbol != return_reg.register_symbol

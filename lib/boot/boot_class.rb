@@ -3,7 +3,7 @@ require_relative "meta_class"
 module Boot
   # class is mainly a list of functions with a name (for now)
   # layout of object is seperated into Layout
-  class BootClass < Vm::ObjectConstant
+  class BootClass < Virtual::ObjectConstant
     def initialize name , context , super_class = :Object
       super()
       @context = context
@@ -16,7 +16,7 @@ module Boot
     attr_reader :name , :functions , :meta_class , :context , :super_class
     
     def add_function function
-      raise "not a function #{function}" unless function.is_a? Vm::Function
+      raise "not a function #{function}" unless function.is_a? Virtual::Function
       raise "syserr " unless function.name.is_a? Symbol
       @functions << function
     end

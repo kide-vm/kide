@@ -1,12 +1,12 @@
 module Boot
   class String
     module ClassMethods
-      def get context , index = Vm::Integer
-        get_function = Vm::Function.new(:get , Vm::Integer , [ Vm::Integer] , Vm::Integer )
+      def get context , index = Virtual::Integer
+        get_function = Virtual::Function.new(:get , Virtual::Integer , [ Virtual::Integer] , Virtual::Integer )
         return get_function
       end
-      def set context , index = Vm::Integer , char = Vm::Integer
-        set_function = Vm::Function.new(:set , Vm::Integer ,[Vm::Integer, Vm::Integer] , Vm::Integer )
+      def set context , index = Virtual::Integer , char = Virtual::Integer
+        set_function = Virtual::Function.new(:set , Virtual::Integer ,[Virtual::Integer, Virtual::Integer] , Virtual::Integer )
         return set_function
       end
     end

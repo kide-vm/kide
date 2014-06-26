@@ -5,13 +5,13 @@ module Boot
       # return the index of the variable. Now "normal" code can't really do anything with that, but 
       # set/get instance variable use it. 
       # This is just a placeholder, as we code this in ruby, but the instance methods need the definition before.
-      def index_of context , name = Vm::Integer
-        index_function = Vm::Function.new(:index_of , Vm::Reference , [Vm::Reference] , Vm::Integer )
+      def index_of context , name = Virtual::Integer
+        index_function = Virtual::Function.new(:index_of , Virtual::Reference , [Virtual::Reference] , Virtual::Integer )
         return index_function
       end
 
       def self.layout
-        layout_function = Vm::Function.new(:layout , Vm::Reference , [ ] , Vm::Reference )
+        layout_function = Virtual::Function.new(:layout , Virtual::Reference , [ ] , Virtual::Reference )
         layout_function.at_index 2
         layout_function
       end
@@ -22,8 +22,8 @@ module Boot
       #     return at_index(i)
       #  end  
       # The at_index is just "below" the api, something we need but don't want to expose, so we can't code the above in ruby
-      def _get_instance_variable context , name = Vm::Integer
-        get_function = Vm::Function.new(:_get_instance_variable , Vm::Reference , [ Vm::Reference ] , Vm::Mystery )
+      def _get_instance_variable context , name = Virtual::Integer
+        get_function = Virtual::Function.new(:_get_instance_variable , Virtual::Reference , [ Virtual::Reference ] , Virtual::Mystery )
         me = get_function.receiver
         var_name = get_function.args.first
         return_to = get_function.return_type
@@ -42,8 +42,8 @@ module Boot
         return get_function
       end
 
-      def _set_instance_variable(context , name = Vm::Integer , value = Vm::Integer )
-        set_function = Vm::Function.new(:_set_instance_variable , Vm::Reference ,[Vm::Reference ,Vm::Reference], Vm::Mystery )
+      def _set_instance_variable(context , name = Virtual::Integer , value = Virtual::Integer )
+        set_function = Virtual::Function.new(:_set_instance_variable , Virtual::Reference ,[Virtual::Reference ,Virtual::Reference], Virtual::Mystery )
         me = set_function.receiver
         var_name = set_function.args.first
         return_to = set_function.return_type

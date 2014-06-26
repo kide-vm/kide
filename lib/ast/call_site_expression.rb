@@ -20,7 +20,7 @@ module Ast
       elsif receiver.is_a?(NameExpression) 
         if(receiver.name == :self)
           function = context.current_class.resolve_function(name)
-          value_receiver = Vm::Integer.new(Vm::RegisterMachine.instance.receiver_register)
+          value_receiver = Virtual::Integer.new(Virtual::RegisterMachine.instance.receiver_register)
         else
           value_receiver = receiver.compile(context)
           # TODO HACK warning: should determine class dynamically
@@ -35,7 +35,7 @@ module Ast
       end
       raise "No such method error #{inspect}" if (function.nil?)
       raise "No receiver error #{inspect}:#{receiver}" if (value_receiver.nil?)
-      call = Vm::CallSite.new( name ,  value_receiver , params  , function)
+      call = Virtual::CallSite.new( name ,  value_receiver , params  , function)
       current_function = context.function
       into.push([])  unless current_function.nil?
       call.load_args into

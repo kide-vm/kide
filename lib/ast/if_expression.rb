@@ -11,7 +11,7 @@ module Ast
 
       puts "compiling if condition #{cond}"
       cond_val = cond.compile(context)
-      unless cond_val.is_a? Vm::BranchCondition
+      unless cond_val.is_a? Virtual::BranchCondition
         cond_val = cond_val.is_true? f
       end
       f.b true_block , condition_code: cond_val.operator

@@ -18,28 +18,28 @@ module Boot
   
   # throwing in a context for unspecified use (well one is to pass the programm/globals around)
    
-  class BootSpace < Vm::Code
+  class BootSpace < Virtual::Code
     
     # Initialize with a string for cpu. Naming conventions are: for Machine XXX there exists a module XXX
-    #  with a XXXMachine in it that derives from Vm::RegisterMachine
+    #  with a XXXMachine in it that derives from Virtual::RegisterMachine
     def initialize machine = nil
       super()
       machine = RbConfig::CONFIG["host_cpu"] unless machine
       machine = "intel" if machine == "x86_64"
       machine = machine.capitalize
-      Vm::RegisterMachine.instance = eval("#{machine}::#{machine}Machine").new
+      Virtual::RegisterMachine.instance = eval("#{machine}::#{machine}Machine").new
       @classes = {}
-      @context = Vm::Context.new(self)
+      @context = Virtual::Context.new(self)
       @context.current_class = get_or_create_class :Object
-      @main = Vm::Function.new("main")
+      @main = Virtual::Function.new("main")
       @context.function = @main
       #global objects (data)
       @objects = []
-      @entry = Vm::RegisterMachine.instance.main_start @context
+      @entry = Virtual::RegisterMachine.instance.main_start @context
       #main gets executed between entry and exit
-      @exit = Vm::RegisterMachine.instance.main_exit @context
+      @exit = Virtual::RegisterMachine.instance.main_exit @context
       boot_classes
-      @passes = [ Vm::MoveMoveReduction.new ,  Vm::LogicMoveReduction.new, Vm::NoopReduction.new, Vm::SaveLocals.new ]
+      @passes = [ Virtual::MoveMoveReduction.new ,  Virtual::LogicMoveReduction.new, Virtual::NoopReduction.new, Virtual::SaveLocals.new ]
     end
     attr_reader :context , :main , :classes , :entry , :exit
 
@@ -81,7 +81,7 @@ module Boot
     # Objects are data and get assembled after functions
     def add_object o
       return if @objects.include? o
-      raise "must be derived from Code #{o.inspect}" unless o.is_a? Vm::Code
+      raise "must be derived from Code #{o.inspect}" unless o.is_a? Virtual::Code
       @objects << o # TODO check type , no basic values allowed (must be wrapped)
     end
 
