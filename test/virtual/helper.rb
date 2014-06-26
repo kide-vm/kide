@@ -1,13 +1,13 @@
 require_relative '../helper'
 require 'parslet/convenience'
 
-module VmHelper
+module VirtualHelper
   # need a code generator, for arm 
   def setup
-    @object_space = Boot::BootSpace.new "Arm"
+#    @object_space = Boot::BootSpace.new "Arm"
   end
 
-  def parse 
+  def check 
     parser  = Parser::Crystal.new
     syntax  = parser.parse_with_debug(@string_input)
     parts   = Parser::Transform.new.apply(syntax)

@@ -42,8 +42,14 @@ module Vm
       # storage is a linked list. Has the same api as a ha
       @bindings = List.new
     end
+    # run the instruction stream given. Instructions are a graph and executing means traversing it.
+    # If there is no next instruction the machine stops
     def run instruction
-      instruction.execute
+      while instruction do
+        next_instruction = instruction.next
+        instruction.execute
+        instruction = next_instruction
+      end
     end
   end
 end
