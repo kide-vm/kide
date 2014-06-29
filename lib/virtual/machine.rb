@@ -58,6 +58,7 @@ end
 
 require_relative "list"
 require_relative "instruction"
+require_relative "frame"
 require_relative "value"
 require_relative "mystery"
 require_relative "object"

@@ -4,7 +4,7 @@ module Ast
 
   class IntegerExpression < Expression
 #    attr_reader :value
-    def compile binding
+    def compile frame
       Virtual::IntegerConstant.new value
     end
   end
@@ -13,9 +13,10 @@ module Ast
 #    attr_reader  :name
 
     # compiling a variable resolves it. if it wasn't defined, raise an exception 
-    def compile context
-      raise "Undefined variable #{name}, defined locals #{context.locals.keys.join('-')}" unless context.locals.has_key?(name)
-      context.locals[name]
+    def compile frame
+      # either a variable or needs to be called.
+      frame.get(name)
+#      frame.send name
     end
   end
 
