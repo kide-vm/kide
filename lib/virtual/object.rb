@@ -6,10 +6,10 @@ module Virtual
   # functions on these classes express their functionality as function objects
   class Object
     def initialize
-      @layout = Layout.new([:layout])
+      @layout = Layout.new( attributes )
     end
     def attributes
-      raise "abstract #{self}"
+      [:layout]
     end
     def == other
       return false unless other.class == self.class 
@@ -28,7 +28,7 @@ module Virtual
       @members = members
     end
     def attributes
-      [:members]
+      super << :members
     end
   end
 

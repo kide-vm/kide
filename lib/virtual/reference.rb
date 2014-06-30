@@ -1,5 +1,5 @@
 module Vm
-  class Reference 
+  class Reference < Value
 
     def initialize clazz = nil
       @clazz = clazz
