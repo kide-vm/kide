@@ -32,19 +32,6 @@ class TestBasic < MiniTest::Test
     check
   end
 
-  def test_name_underscode_start
-    @string_input    = '_bar '
-    @output = Ast::NameExpression.new('_bar')
-    check
-  end
-
-  def test_name_underscode_middle
-    @string_input    = 'foo_bar '
-    @parse_output = {:name => 'foo_bar'}
-    @output = Ast::NameExpression.new('foo_bar')
-    check
-  end
-
   def test_instance_variable
     @string_input    = '@foo_bar '
     @parse_output = {:instance_variable=>{:name=>"foo_bar"}}
@@ -71,15 +58,6 @@ class TestBasic < MiniTest::Test
     @string_input    = "\"hello\""
     @parse_output =  {:string=>[{:char=>"h"}, {:char=>"e"}, {:char=>"l"}, {:char=>"l"}, {:char=>"o"}]}
     @output =  Ast::StringExpression.new('hello')
-    check
-  end
-
-  def test_string_escapes
-    out = 'hello  \nyou'
-    @string_input    = '"' + out + '"'
-    @parse_output =  {:string=>[{:char=>"h"}, {:char=>"e"}, {:char=>"l"}, {:char=>"l"}, {:char=>"o"}, 
-      {:char=>" "}, {:char=>" "}, {:esc=>"n"}, {:char=>"y"}, {:char=>"o"}, {:char=>"u"}]}
-    @output =  Ast::StringExpression.new(out)
     check
   end
 

@@ -10,11 +10,17 @@ module Virtual
   # - next exception instruction
   # - self (me)
   # - argument mappings
-  # - local variable mapping
+  # - local variable mapping, together with last called binding
   class Frame
-    def initialize
-      
+    def initialize normal , exceptional , me
+      @next_normal = normal
+      @next_exception = exceptional
+      @me = me
+      # a binding represents the local variables at a point in the program.
+      # The amount of local variables is assumed to be relatively small, and so the 
+      # storage is a linked list. Has the same api as a ha
+      @binding = List.new
     end
-    attr_reader :next_normal, :next_exception, :me, :argument_names
+    attr_reader :next_normal, :next_exception, :me, :binding
   end
 end

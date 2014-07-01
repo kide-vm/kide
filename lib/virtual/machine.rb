@@ -37,13 +37,11 @@ module Virtual
     end
 
     def initialize
-      # a binding represents the local variables at a point in the program.
-      # The amount of local variables is assumed to be relatively small, and so the 
-      # storage is a linked list. Has the same api as a ha
-      @bindings = List.new
+      the_end = HaltInstruction.new
+      @frame = Frame.new(the_end , the_end , :Object)
     end
-    attr_reader :bindings
-    
+    attr_reader :frame
+
     # run the instruction stream given. Instructions are a graph and executing means traversing it.
     # If there is no next instruction the machine stops
     def run instruction
@@ -52,6 +50,10 @@ module Virtual
         instruction.execute
         instruction = next_instruction
       end
+    end
+    #return an anonymous new function (the top level) into which code is compiled
+    def anonymous
+      
     end
   end
 end

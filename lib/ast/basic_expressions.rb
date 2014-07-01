@@ -28,11 +28,9 @@ module Ast
   class NameExpression < Expression
 #    attr_reader  :name
 
-    # compiling a variable resolves it. if it wasn't defined, raise an exception 
+    # compiling a variable resolves it. If it's not defined look call it as a menthod (which may raise NoMethodFound) 
     def compile frame
-      # either a variable or needs to be called.
       frame.get(name)
-#      frame.send name
     end
   end
 

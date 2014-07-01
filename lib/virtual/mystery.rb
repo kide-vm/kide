@@ -9,10 +9,12 @@ module Virtual
 
   end
 
-  class TrueValue < Value
+  class Singleton < Value
   end
-  class FalseValue < Value
+  class TrueValue < Singleton
   end
-  class NilValue < Value
+  class FalseValue < Singleton
+  end
+  class NilValue < Singleton
   end
 end
