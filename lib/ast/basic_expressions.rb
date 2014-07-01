@@ -9,6 +9,22 @@ module Ast
     end
   end
 
+  class TrueExpression
+    def compile frame
+      Virtual::TrueValue.new
+    end
+  end
+  class FalseExpression
+    def compile frame
+      Virtual::FalseValue.new
+    end
+  end
+  class NilExpression
+    def compile frame
+      Virtual::NilValue.new
+    end
+  end
+
   class NameExpression < Expression
 #    attr_reader  :name
 

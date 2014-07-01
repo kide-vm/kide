@@ -3,10 +3,26 @@ require_relative "virtual_helper"
 class TestBasic < MiniTest::Test
   # include the magic (setup and parse -> test method translation), see there
   include VirtualHelper
-    
+
   def test_number
     @string_input    = '42 '
     @output = [Virtual::IntegerConstant.new(42)]
+    check
+  end
+
+  def test_true
+    @string_input    = 'true '
+    @output = [Virtual::TrueValue.new()]
+    check
+  end
+  def test_false
+    @string_input    = 'false '
+    @output = [Virtual::FalseValue.new()]
+    check
+  end
+  def test_nil
+    @string_input    = 'nil '
+    @output = [Virtual::NilValue.new()]
     check
   end
 

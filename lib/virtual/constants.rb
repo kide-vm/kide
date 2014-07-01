@@ -1,7 +1,6 @@
 module Virtual
   
   class Constant < ::Virtual::Object
-    
   end
 
   # another abstract "marker" class (so we can check for it)

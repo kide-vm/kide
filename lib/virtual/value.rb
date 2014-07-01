@@ -6,6 +6,12 @@ module Virtual
   # Integer and (Object) References are the main derived classes, but float will come and ...
   # The Mystery Value has unknown type and has only casting methods. So it must be cast to be useful.
   class Value
+    def == other
+      other.class == self.class
+    end
+    def inspect
+      self.class.name + ".new()"
+    end
     def type
       self.class
     end
