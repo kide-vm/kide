@@ -28,7 +28,7 @@ class TestBasic < MiniTest::Test
 
   def test_name
     @string_input    = 'foo '
-    @output = [nil]
+    @output = [Virtual::FrameSend.new(:foo)]
     check
   end
 

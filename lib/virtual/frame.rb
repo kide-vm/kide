@@ -22,5 +22,14 @@ module Virtual
       @binding = List.new
     end
     attr_reader :next_normal, :next_exception, :me, :binding
+
+    # 
+    def compile_get name , method
+      method.add FrameGet.new(name)
+    end
+
+    def compile_send name , method
+      method.add FrameSend.new(name)
+    end
   end
 end

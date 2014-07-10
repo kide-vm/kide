@@ -14,11 +14,13 @@ module Ast
       Virtual::TrueValue.new
     end
   end
+  
   class FalseExpression
     def compile frame
       Virtual::FalseValue.new
     end
   end
+  
   class NilExpression
     def compile frame
       Virtual::NilValue.new
@@ -28,9 +30,15 @@ module Ast
   class NameExpression < Expression
 #    attr_reader  :name
 
-    # compiling a variable resolves it. If it's not defined look call it as a menthod (which may raise NoMethodFound) 
-    def compile frame
-      frame.get(name)
+    # compiling name needs to check if it's a variable and if so resolve it
+    # otherwise it's a method without args and a send is ussued.
+    # this makes the namespace static, ie when eval and co are implemented method needs recompilation
+    def compile frame , method
+      if method.has_var(name)
+        frame.compile_get(name , method )
+      else
+        frame.compile_send( name , method )
+      end
     end
   end
 

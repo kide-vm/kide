@@ -9,7 +9,11 @@ module Virtual
   
   # This is partly because jumping over this layer and doing in straight in assember was too big a step
   class Instruction
+    attr_accessor :next
     
+    def inspect
+      self.class.name + ".new()"
+    end
   end
 
   # the first instruction we need is to stop. Off course in a real machine this would be a syscall, but that is just 
@@ -19,4 +23,30 @@ module Virtual
   class Halt < Instruction 
     
   end
+
+  # following classes are stubs. currently in brainstorming mode, so anything may change anytime
+  class MethodEnter < Instruction
+  end
+
+  class FrameGet < Instruction
+    def initialize name
+      @name = name
+    end
+  end
+
+  class FrameSend < Instruction
+
+    def initialize name
+      @name = name.to_sym
+    end
+    attr_reader :name
+    
+    def == other
+      self.class == other.class && self.name == other.name
+    end
+    def inspect
+      self.class.name + ".new(:#{@name})"
+    end
+  end
+
 end
