@@ -28,28 +28,18 @@ module Virtual
   
   class StringConstant < ObjectConstant
     attr_reader :string
-    # currently aligned to 4 (ie padded with 0) and off course 0 at the end
+    def attributes 
+      [:string]
+    end
     def initialize str
-      str = str.to_s if str.is_a? Symbol
-      length = str.length 
-      # rounding up to the next 4 (always adding one for zero pad)
-      pad =  ((length / 4 ) + 1 ) * 4 - length
-      raise "#{pad} #{self}" unless pad >= 1
-      @string = str + " " * pad
+      @string = str
     end
 
     def result= value
       class_for(MoveInstruction).new(value , self , :opcode => :mov)
     end
-
-    # the strings length plus padding
-    def length
-      string.length
-    end
-    
-    # just writing the string
-    def assemble(io)
-      io << string
+    def inspect
+      self.class.name + ".new('#{@string}')"
     end
   end
   

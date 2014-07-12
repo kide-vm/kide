@@ -6,12 +6,12 @@ module Boot
       # set/get instance variable use it. 
       # This is just a placeholder, as we code this in ruby, but the instance methods need the definition before.
       def index_of context , name = Virtual::Integer
-        index_function = Virtual::Function.new(:index_of , Virtual::Reference , [Virtual::Reference] , Virtual::Integer )
+        index_function = Virtual::Method.new(:index_of , Virtual::Reference , [Virtual::Reference] , Virtual::Integer )
         return index_function
       end
 
       def self.layout
-        layout_function = Virtual::Function.new(:layout , Virtual::Reference , [ ] , Virtual::Reference )
+        layout_function = Virtual::Function.new(:layout , [ ] , Virtual::Reference  , Virtual::Reference )
         layout_function.at_index 2
         layout_function
       end
@@ -23,7 +23,8 @@ module Boot
       #  end  
       # The at_index is just "below" the api, something we need but don't want to expose, so we can't code the above in ruby
       def _get_instance_variable context , name = Virtual::Integer
-        get_function = Virtual::Function.new(:_get_instance_variable , Virtual::Reference , [ Virtual::Reference ] , Virtual::Mystery )
+        get_function = Virtual::Method.new(:_get_instance_variable , [ Virtual::Reference ] , Virtual::Reference ,Virtual::Mystery )
+        return get_function
         me = get_function.receiver
         var_name = get_function.args.first
         return_to = get_function.return_type
@@ -43,7 +44,9 @@ module Boot
       end
 
       def _set_instance_variable(context , name = Virtual::Integer , value = Virtual::Integer )
-        set_function = Virtual::Function.new(:_set_instance_variable , Virtual::Reference ,[Virtual::Reference ,Virtual::Reference], Virtual::Mystery )
+        set_function = Virtual::Method.new(:_set_instance_variable ,[Virtual::Reference ,Virtual::Reference], Virtual::Reference ,Virtual::Mystery )
+        return set_function
+        receiver set_function
         me = set_function.receiver
         var_name = set_function.args.first
         return_to = set_function.return_type

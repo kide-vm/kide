@@ -1,3 +1,7 @@
+module Boot
+  class BootSoace
+  end
+end
 module Virtual
   # our machine is made up of objects, some of which are code, some data
   #
@@ -21,6 +25,14 @@ module Virtual
       end
       return true
     end
+
+    def self.space
+      if defined? @@space
+        @@space
+      else
+        @@space = ::Boot::BootSpace.new
+      end
+    end
   end
   
   class Layout < Object
@@ -38,5 +50,7 @@ module Virtual
       @super_class = sup
     end
   end
-
 end
+
+require_relative "integer"
+require_relative "reference"

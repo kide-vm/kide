@@ -4,7 +4,7 @@ module Ast
   class CallSiteExpression < Expression
 #    attr_reader  :name, :args , :receiver
     @@counter = 0
-    def compile context
+    def compile frame , method
       into = context.function
       params = args.collect{ |a| a.compile(context) }
       puts "compiling receiver #{receiver} (call #{name})"

@@ -31,10 +31,6 @@ module Virtual
   # that the the model is such that what is a variable in ruby, never ends up being just on the pysical stack.
   # 
   class Machine
-    # the main machine is the one that runs on the main thread, if it exists or receives an uncaught exception, that's it.
-    def self.main
-      @main  || @main = Machine.new
-    end
 
     def initialize
       the_end = Halt.new
@@ -62,3 +58,4 @@ require_relative "value"
 require_relative "mystery"
 require_relative "object"
 require_relative "constants"
+require "boot/boot_space"

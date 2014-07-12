@@ -1,4 +1,6 @@
-module Vm
+require_relative "value"
+
+module Virtual
   class Reference < Value
 
     def initialize clazz = nil

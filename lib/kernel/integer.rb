@@ -7,7 +7,8 @@ module Crystal
     # As we write before we recurse (save a push) we write the number backwards
     # arguments: string address , integer
     def self.utoa context
-      utoa_function = Virtual::Function.new(:utoa , Virtual::Integer , [ Virtual::Integer ] , Virtual::Integer )
+      utoa_function = Virtual::Method.new(:utoa ,  [ Virtual::Integer ] , Virtual::Integer ,Virtual::Integer )
+      return utoa_function
       str_addr = utoa_function.receiver
       number = utoa_function.args.first
       remainder = utoa_function.new_local
@@ -24,7 +25,8 @@ module Crystal
     end
 
     def self.putint context
-      putint_function = Virtual::Function.new(:putint , Virtual::Integer , [] , Virtual::Integer )
+      putint_function = Virtual::Method.new(:putint , [] , Virtual::Integer ,Virtual::Integer )
+      return putint_function
       buffer = Virtual::StringConstant.new("           ") # create a buffer
       context.object_space.add_object buffer              # and save it (function local variable: a no no)
       int = putint_function.receiver
@@ -50,7 +52,8 @@ module Crystal
     # a hand coded version of the fibonachi numbers
     # not my hand off course, found in the net http://www.peter-cockerell.net/aalp/html/ch-5.html
     def self.fibo context
-      fibo_function = Virtual::Function.new(:fibo , Virtual::Integer , [] , Virtual::Integer )
+      fibo_function = Virtual::Method.new(:fibo ,  [] , Virtual::Integer ,Virtual::Integer )
+      return fibo_function
       result = fibo_function.return_type
       int = fibo_function.receiver
     

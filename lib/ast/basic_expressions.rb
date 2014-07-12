@@ -4,25 +4,25 @@ module Ast
 
   class IntegerExpression < Expression
 #    attr_reader :value
-    def compile frame
+    def compile frame , method
       Virtual::IntegerConstant.new value
     end
   end
 
   class TrueExpression
-    def compile frame
+    def compile frame , method
       Virtual::TrueValue.new
     end
   end
   
   class FalseExpression
-    def compile frame
+    def compile frame , method
       Virtual::FalseValue.new
     end
   end
   
   class NilExpression
-    def compile frame
+    def compile frame , method
       Virtual::NilValue.new
     end
   end
@@ -44,7 +44,7 @@ module Ast
 
   class ModuleName < NameExpression
 
-    def compile context
+    def compile frame , method
       clazz = context.object_space.get_or_create_class name
       raise "uups #{clazz}.#{name}" unless clazz
       #class qualifier, means call from metaclass
@@ -56,9 +56,9 @@ module Ast
 
   class StringExpression < Expression
 #    attr_reader  :string
-    def compile context
+    def compile frame , method
       value = Virtual::StringConstant.new(string)
-      context.object_space.add_object value 
+      ::Virtual::Object.space.add_object value 
       value
     end
   end

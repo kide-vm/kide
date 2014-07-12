@@ -12,10 +12,12 @@ module Virtual
     def Method.main
       Method.new(:main)
     end
-    def initialize name , args = []
+    def initialize name , args = [] , receiver = Virtual::Reference  , return_type = Virtual::Reference 
       @name = name
       @args = args
       @locals = []
+      @receiver = receiver
+      @return_type = return_type
       @start = MethodEnter.new
       @current = @start
     end

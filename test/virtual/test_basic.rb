@@ -46,18 +46,9 @@ class TestBasic < MiniTest::Test
     check
   end
 
-  def test_comment
-    out = "# i am a comment \n"
-    @string_input    =  out.dup #NEEDS the return, which is what delimits the comment
-    @parse_output = out
-    @output = @parse_output #dont transform
-    check
-  end
-
   def test_string
     @string_input    = "\"hello\""
-    @parse_output =  {:string=>[{:char=>"h"}, {:char=>"e"}, {:char=>"l"}, {:char=>"l"}, {:char=>"o"}]}
-    @output =  Ast::StringExpression.new('hello')
+    @output =  [Virtual::StringConstant.new('hello')]
     check
   end
 

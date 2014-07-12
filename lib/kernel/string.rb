@@ -1,7 +1,8 @@
 module Crystal
   module Kernel
     def self.putstring context 
-      function = Virtual::Function.new(:putstring , Virtual::Reference , [] )
+      function = Virtual::Method.new(:putstring , [] )
+      return function
       ret = Virtual::RegisterMachine.instance.write_stdout(function)
       function.set_return ret
       function
