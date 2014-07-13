@@ -41,8 +41,7 @@ class TestBasic < MiniTest::Test
 
   def test_module_name
     @string_input    = 'FooBar '
-    @parse_output = {:module_name=>"FooBar"}
-    @output = Ast::ModuleName.new("FooBar")
+    @output = [Boot::MetaClass.new(:FooBar)]
     check
   end
 

@@ -8,7 +8,7 @@ module Boot
   #                     PS: can't say i fancy the << self syntax and am considerernig adding a keyword for it, like meta
   #                      In effect it is a very similar construct to   def self.function(...)
   #                      So one could write               def meta.function(...) and thus define on the meta-class
-  class MetaClass < Virtual::ObjectConstant
+  class MetaClass < Virtual::Object
     # no name, nor nothing. as this is just the object really
     
     def initialize(object)
@@ -16,7 +16,11 @@ module Boot
       @functions = []
       @me_self = object
     end
-    
+
+    def attributes
+      []
+    end
+
     # in a non-booting version this should map to _add_singleton_method
     def add_function function
       raise "not a function #{function}" unless function.is_a? Virtual::Function
@@ -46,10 +50,10 @@ module Boot
     end
 
     def inspect
-      "MetaClass on #{@me_self}, #{@functions.length} functions"
+      "MetaClass.new(:#{@me_self.name})"
     end
     def to_s 
-      inspect
+      "#{inspect} on #{@me_self}, #{@functions.length} functions"
     end
   end
 end

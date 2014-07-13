@@ -45,11 +45,10 @@ module Ast
   class ModuleName < NameExpression
 
     def compile frame , method
-      clazz = context.object_space.get_or_create_class name
+      clazz = ::Virtual::Object.space.get_or_create_class name
       raise "uups #{clazz}.#{name}" unless clazz
       #class qualifier, means call from metaclass
       clazz = clazz.meta_class
-      puts "CLAZZ #{clazz}"
       clazz
     end    
   end
