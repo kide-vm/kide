@@ -24,12 +24,12 @@ module Virtual
     attr_reader :next_normal, :next_exception, :me, :binding
 
     # 
-    def compile_get name , method
+    def compile_get method , name
       method.add FrameGet.new(name)
     end
 
-    def compile_send name , method
-      method.add FrameSend.new(name)
+    def compile_send method , name , with = [] 
+      method.add FrameSend.new(name , with )
     end
   end
 end

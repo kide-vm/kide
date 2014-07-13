@@ -36,16 +36,17 @@ module Virtual
 
   class FrameSend < Instruction
 
-    def initialize name
+    def initialize name , args = []
       @name = name.to_sym
+      @args = args
     end
-    attr_reader :name
+    attr_reader :name , :args
     
     def == other
       self.class == other.class && self.name == other.name
     end
     def inspect
-      self.class.name + ".new(:#{@name})"
+      self.class.name + ".new(:#{@name} , [ " + args.collect{|a| a.inspect}.join(",")+ "])"
     end
   end
 

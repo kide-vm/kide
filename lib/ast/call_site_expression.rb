@@ -5,6 +5,11 @@ module Ast
 #    attr_reader  :name, :args , :receiver
     @@counter = 0
     def compile frame , method
+      with = args.collect{|a| a.compile(frame , method)}
+      frame.compile_send( method , @name , with )
+    end
+
+    def scratch
       into = context.function
       params = args.collect{ |a| a.compile(context) }
       puts "compiling receiver #{receiver} (call #{name})"

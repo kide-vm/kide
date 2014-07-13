@@ -35,9 +35,9 @@ module Ast
     # this makes the namespace static, ie when eval and co are implemented method needs recompilation
     def compile frame , method
       if method.has_var(name)
-        frame.compile_get(name , method )
+        frame.compile_get(method , name )
       else
-        frame.compile_send( name , method )
+        frame.compile_send( method , name  )
       end
     end
   end
