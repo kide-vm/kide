@@ -18,6 +18,9 @@ module Virtual
     def initialize nex = nil
       @next = nex
     end
+    def type
+      Reference
+    end
   end
 
   # the first instruction we need is to stop. Off course in a real machine this would be a syscall, but that is just 

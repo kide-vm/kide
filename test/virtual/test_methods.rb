@@ -19,7 +19,7 @@ def String.length(x)
   @length
 end
 HERE
-    @output = [Virtual::Method.new(:length,[Ast::NameExpression.new(:x)],Boot::BootClass.new(:String,:Object))]
+    @output = [Virtual::Method.new(:length,[Ast::NameExpression.new(:x)],Boot::BootClass.new(:String,:Object),Virtual::Reference,Virtual::MethodEnter.new(Virtual::FrameSend.new(:_get_instance_variable , [ Virtual::StringConstant.new('length')])))]
     check
   end
 
