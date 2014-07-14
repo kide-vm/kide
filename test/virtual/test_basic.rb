@@ -27,7 +27,7 @@ class TestBasic < MiniTest::Test
 
   def test_name
     @string_input    = 'foo '
-    @output = [Virtual::FrameSend.new(:foo)]
+    @output = [Virtual::Reference]
     check
   end
 
@@ -39,7 +39,7 @@ class TestBasic < MiniTest::Test
 
   def test_instance_variable
     @string_input    = '@foo_bar '
-    @output = [Virtual::ObjectGet.new(:foo_bar)]
+    @output = [Virtual::Reference]
     check
   end
 

@@ -21,6 +21,7 @@ module Virtual
       @name = name.to_sym
       @args = args
       @locals = []
+      @tmps = []
       @receiver = receiver
       @return_type = return_type
       @start = start
@@ -30,8 +31,10 @@ module Virtual
     attr_accessor :return_type
 
     def add instruction
+      raise instruction.inspect unless instruction.is_a? Instruction
       @current.next = instruction
       @current = instruction
+      instruction.type
     end
 
     # determine whether this method has a variable by the given name
@@ -40,7 +43,14 @@ module Virtual
     def has_var name
       var = @args.find {|a| a == name }
       var = @locals.find {|a| a == name } unless var
+      var = @tmps.find {|a| a == name } unless var
       var
+    end
+    
+    def get_tmp
+      name = "__tmp__#{@tmps.length}"
+      @tmps << name
+      Ast::NameExpression.new(name)
     end
   end
 end

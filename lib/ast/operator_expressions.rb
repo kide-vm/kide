@@ -2,7 +2,11 @@ module Ast
   class OperatorExpression < Expression
 #    attr_reader  :operator, :left, :right
     def compile frame , method
-      Virtual::Reference.new
+      tmp = method.get_tmp
+      ass = AssignmentExpression.new( tmp , left )
+      l = ass.compile(frame , method)
+      call = CallSiteExpression.new( operator , [right] , l)
+      call.compile(frame , method)
     end
     def scratch
       into = context.function

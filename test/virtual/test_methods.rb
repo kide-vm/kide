@@ -1,6 +1,6 @@
 require_relative "virtual_helper"
 
-class TestFunctionDefinition < MiniTest::Test
+class TestMethods < MiniTest::Test
   include VirtualHelper
   
   def test_simplest_function
@@ -9,7 +9,7 @@ def foo(x)
   5
 end
 HERE
-    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new(),Virtual::Integer,Virtual::MethodEnter.new(nil))]
+    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new(),Virtual::IntegerConstant.new(5),Virtual::MethodEnter.new(nil))]
     check
   end
 
@@ -19,7 +19,7 @@ def String.length(x)
   @length
 end
 HERE
-    @output = [Virtual::Method.new(:length,[Ast::NameExpression.new(:x)],Boot::BootClass.new(:String,:Object),Virtual::Reference,Virtual::MethodEnter.new(nil))]
+    @output = [Virtual::Method.new(:length,[Ast::NameExpression.new(:x)],Boot::BootClass.new(:String,:Object),Virtual::Reference,Virtual::MethodEnter.new(Virtual::ObjectGet.new(:length)))]
     check
   end
 

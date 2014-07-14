@@ -8,8 +8,8 @@ module Ast
       frame = frame.new_frame
       return_type = nil
       body.each do |ex|
-        val = ex.compile(frame , method )
-        return_type = val.type
+        return_type = ex.compile(frame , method )
+        raise return_type.inspect if return_type.is_a? Virtual::Instruction
       end
       method.return_type = return_type
       method

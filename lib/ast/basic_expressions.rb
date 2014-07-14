@@ -74,7 +74,7 @@ module Ast
 
   class VariableExpression < NameExpression
     def compile frame ,method
-      Virtual::ObjectGet.new(name)
+      method.add Virtual::ObjectGet.new(name)
     end
   end
 end
