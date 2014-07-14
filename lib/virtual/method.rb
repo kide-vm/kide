@@ -15,7 +15,7 @@ module Virtual
       Method.new(:main , [] , Virtual::SelfReference )
     end
     def attributes
-      [:name , :args , :receiver]
+      [:name , :args , :receiver , :start , :return_type]
     end
     def initialize name , args , receiver = Virtual::SelfReference.new , return_type = Virtual::Reference 
       @name = name.to_sym
@@ -26,7 +26,8 @@ module Virtual
       @start = MethodEnter.new
       @current = @start
     end
-    attr_reader :name , :args , :receiver
+    attr_reader :name , :args , :receiver , :start
+    attr_accessor :return_type
 
     def add instruction
       @current.next = instruction

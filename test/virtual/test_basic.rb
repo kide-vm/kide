@@ -31,6 +31,12 @@ class TestBasic < MiniTest::Test
     check
   end
 
+  def test_self
+    @string_input    = 'self '
+    @output = [Virtual::SelfReference.new()]
+    check
+  end
+
   def test_instance_variable
     @string_input    = '@foo_bar '
     @output = [Virtual::FrameSend.new(:_get_instance_variable , [ Virtual::StringConstant.new('foo_bar')])]
@@ -39,7 +45,7 @@ class TestBasic < MiniTest::Test
 
   def test_module_name
     @string_input    = 'FooBar '
-    @output = [Boot::MetaClass.new(:FooBar)]
+    @output = [Boot::BootClass.new(:FooBar,:Object)]
     check
   end
 

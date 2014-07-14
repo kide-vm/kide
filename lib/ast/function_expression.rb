@@ -5,6 +5,13 @@ module Ast
       args = params.collect{ |p| p.compile(frame , method )}
       r = receiver ? receiver.compile(frame,method) : Virtual::SelfReference.new
       method = Virtual::Method.new(name , params , r )
+      frame = frame.new_frame
+      return_type = nil
+      body.each do |ex|
+        return_type = ex.compile(frame , method )
+      end
+      method.return_type = return_type
+      method
     end
     def scratch
       args = []

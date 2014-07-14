@@ -49,9 +49,6 @@ module Boot
       fun
     end
 
-    def inspect
-      "MetaClass.new(:#{@me_self.name})"
-    end
     def to_s 
       "#{inspect} on #{@me_self}, #{@functions.length} functions"
     end

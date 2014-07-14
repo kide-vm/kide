@@ -23,6 +23,10 @@ module Virtual
     end
     attr_reader :next_normal, :next_exception, :me, :binding
 
+    # dummy for the eventual
+    def new_frame
+      self
+    end
     # 
     def compile_get method , name
       method.add FrameGet.new(name)

@@ -1,3 +1,5 @@
+require_relative "object"
+
 module Virtual
   
   # Instruction is an abstract for all the code of the object-machine. Derived classe make up the actual functionality
@@ -8,11 +10,10 @@ module Virtual
   # defining a minimal set of instructions needed to implement oo.
   
   # This is partly because jumping over this layer and doing in straight in assember was too big a step
-  class Instruction
+  class Instruction < Virtual::Object
     attr_accessor :next
-    
-    def inspect
-      self.class.name + ".new()"
+    def attributes
+      [:next]
     end
   end
 
