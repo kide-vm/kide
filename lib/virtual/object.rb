@@ -1,7 +1,3 @@
-module Boot
-  class BootSoace
-  end
-end
 module Virtual
   # our machine is made up of objects, some of which are code, some data
   #
@@ -24,6 +20,10 @@ module Virtual
         return false unless left == right
       end
       return true
+    end
+
+    def inspect
+      self.class.name + ".new(" + attributes.collect{|a| send(a).inspect }.join(",")+ ")"
     end
 
     def self.space

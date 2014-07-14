@@ -1,3 +1,4 @@
+require_relative "object"
 module Virtual
   # static description of a method
   # name
@@ -7,13 +8,16 @@ module Virtual
   # known local variable names
   # temp variables (numbered)
   #
-  class Method
+  class Method < Virtual::Object
     #return the main function (the top level) into which code is compiled
     def Method.main
       Method.new(:main)
     end
+    def attributes
+      [:name , :args]
+    end
     def initialize name , args = [] , receiver = Virtual::Reference  , return_type = Virtual::Reference 
-      @name = name
+      @name = name.to_sym
       @args = args
       @locals = []
       @receiver = receiver
@@ -21,7 +25,7 @@ module Virtual
       @start = MethodEnter.new
       @current = @start
     end
-    attr_reader :name
+    attr_reader :name , :args
 
     def add instruction
       @current.next = instruction

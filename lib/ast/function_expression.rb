@@ -1,7 +1,10 @@
 module Ast
   class FunctionExpression < Expression
 #    attr_reader  :name, :params, :body , :receiver
-    def compile context
+    def compile frame , method
+      method = Virtual::Method.new(name , params )
+    end
+    def scratch
       args = []
       locals = {}
       params.each_with_index do |param , index|

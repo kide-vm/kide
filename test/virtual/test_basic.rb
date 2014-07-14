@@ -1,7 +1,6 @@
 require_relative "virtual_helper"
 
 class TestBasic < MiniTest::Test
-  # include the magic (setup and parse -> test method translation), see there
   include VirtualHelper
 
   def test_number
