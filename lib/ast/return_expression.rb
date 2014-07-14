@@ -1,7 +1,10 @@
 module Ast
   class ReturnExpression < Expression
 #    attr_reader  :expression
-    def compile context
+    def compile frame ,method
+      nil
+    end
+    def sc
       into = context.function
       puts "compiling return expression #{expression}, now return in return_regsiter"
       expression_value = expression.compile(context)

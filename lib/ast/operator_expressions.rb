@@ -1,7 +1,10 @@
 module Ast
   class OperatorExpression < Expression
 #    attr_reader  :operator, :left, :right
-    def compile context
+    def compile frame , method
+      nil
+    end
+    def scratch
       into = context.function
       puts "compiling operator #{to_s}"
       r_val = right.compile(context)

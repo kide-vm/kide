@@ -15,15 +15,15 @@ module Virtual
       Method.new(:main , [] , Virtual::SelfReference )
     end
     def attributes
-      [:name , :args , :receiver , :start , :return_type]
+      [:name , :args , :receiver , :return_type , :start]
     end
-    def initialize name , args , receiver = Virtual::SelfReference.new , return_type = Virtual::Reference 
+    def initialize name , args , receiver = Virtual::SelfReference.new , return_type = Virtual::Reference , start = MethodEnter.new
       @name = name.to_sym
       @args = args
       @locals = []
       @receiver = receiver
       @return_type = return_type
-      @start = MethodEnter.new
+      @start = start
       @current = @start
     end
     attr_reader :name , :args , :receiver , :start

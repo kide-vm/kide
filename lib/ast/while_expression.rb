@@ -1,7 +1,10 @@
 module Ast
   class WhileExpression < Expression
 #    attr_reader  :condition, :body
-    def compile context
+    def compile frame , method
+      nil
+    end
+    def old
       into = context.function
       ret = into.new_block "while_end"
       while_block = into.new_block "while_start"

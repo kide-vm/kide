@@ -15,6 +15,9 @@ module Virtual
     def attributes
       [:next]
     end
+    def initialize nex = nil
+      @next = nex
+    end
   end
 
   # the first instruction we need is to stop. Off course in a real machine this would be a syscall, but that is just 

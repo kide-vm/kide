@@ -62,4 +62,8 @@ module Ast
       value
     end
   end
+  class AssignmentExpression < Expression
+    def compile frame , method
+    end
+  end
 end
