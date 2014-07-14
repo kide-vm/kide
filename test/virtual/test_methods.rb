@@ -31,9 +31,7 @@ def foo(x)
  2 + 5
 end
 HERE
-    @parse_output = {:function_name=>{:name=>"foo"}, :parameter_list=>[{:parameter=>{:name=>"x"}}], :expressions=>[{:l=>{:name=>"abba"}, :o=>"= ", :r=>{:integer=>"5"}}, {:l=>{:integer=>"2"}, :o=>"+ ", :r=>{:integer=>"5"}}], :end=>"end"}
-    @transform_output = Ast::FunctionExpression.new(:foo, [Ast::NameExpression.new(:x)] , [Ast::AssignmentExpression.new(Ast::NameExpression.new(:abba),Ast::IntegerExpression.new(5)),Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(2),Ast::IntegerExpression.new(5))] ,nil )
-    @parser = @parser.function_definition
+    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)])]
   end
 
   def test_function_if
