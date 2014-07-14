@@ -9,7 +9,7 @@ def foo(x)
   5
 end
 HERE
-    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new(),Virtual::IntegerConstant.new(5),Virtual::MethodEnter.new(nil))]
+    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new(),Virtual::Integer,Virtual::MethodEnter.new(nil))]
     check
   end
 
@@ -19,7 +19,7 @@ def String.length(x)
   @length
 end
 HERE
-    @output = [Virtual::Method.new(:length,[Ast::NameExpression.new(:x)],Boot::BootClass.new(:String,:Object),Virtual::Reference,Virtual::MethodEnter.new(Virtual::FrameSend.new(:_get_instance_variable , [ Virtual::StringConstant.new('length')])))]
+    @output = [Virtual::Method.new(:length,[Ast::NameExpression.new(:x)],Boot::BootClass.new(:String,:Object),Virtual::Reference,Virtual::MethodEnter.new(nil))]
     check
   end
 
@@ -30,11 +30,11 @@ def foo(x)
  2 + 5
 end
 HERE
-    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)])]
+    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new(),Virtual::Reference,Virtual::MethodEnter.new(Virtual::FrameSet.new(:abba,Virtual::IntegerConstant.new(5))))]
     check
   end
 
-  def test_function_if
+  def ttest_function_if
     @string_input    = <<HERE
 def ofthen(n)
   if(0)
@@ -48,7 +48,7 @@ HERE
       check
   end
 
-  def test_function_return
+  def ttest_function_return
     @string_input    = <<HERE
 def retvar(n)
   i = 5
@@ -59,7 +59,7 @@ HERE
     check
   end
 
-  def test_function_return_if
+  def ttest_function_return_if
     @string_input    = <<HERE
 def retvar(n)
   if( n > 5)
@@ -73,7 +73,7 @@ HERE
     check
   end
 
-  def test_function_return_while
+  def ttest_function_return_while
     @string_input    = <<HERE
 def retvar(n)
   while( n > 5) do
@@ -86,7 +86,7 @@ HERE
     check
   end
 
-  def test_function_while
+  def ttest_function_while
     @string_input    = <<HERE
 def fibonaccit(n)
   a = 0
@@ -100,7 +100,7 @@ HERE
     check
   end
 
-  def test_function_big_while
+  def ttest_function_big_while
     @string_input    = <<HERE
 def fibonaccit(n)
   a = 0 
