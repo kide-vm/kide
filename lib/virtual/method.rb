@@ -1,4 +1,5 @@
 require_relative "object"
+
 module Virtual
   # static description of a method
   # name
@@ -11,12 +12,12 @@ module Virtual
   class Method < Virtual::Object
     #return the main function (the top level) into which code is compiled
     def Method.main
-      Method.new(:main)
+      Method.new(:main , [] , Virtual::SelfReference )
     end
     def attributes
-      [:name , :args]
+      [:name , :args , :receiver]
     end
-    def initialize name , args = [] , receiver = Virtual::Reference  , return_type = Virtual::Reference 
+    def initialize name , args , receiver = Virtual::SelfReference.new , return_type = Virtual::Reference 
       @name = name.to_sym
       @args = args
       @locals = []
@@ -25,7 +26,7 @@ module Virtual
       @start = MethodEnter.new
       @current = @start
     end
-    attr_reader :name , :args
+    attr_reader :name , :args , :receiver
 
     def add instruction
       @current.next = instruction

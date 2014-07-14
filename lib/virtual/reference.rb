@@ -12,6 +12,8 @@ module Virtual
       block.ldr( self , left , right )
       self
     end
-
+  end
+  
+  class SelfReference < Reference
   end
 end

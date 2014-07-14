@@ -2,7 +2,9 @@ module Ast
   class FunctionExpression < Expression
 #    attr_reader  :name, :params, :body , :receiver
     def compile frame , method
-      method = Virtual::Method.new(name , params )
+      args = params.collect{ |p| p.compile(frame , method )}
+      r = receiver ? receiver.compile(frame,method) : Virtual::SelfReference.new
+      method = Virtual::Method.new(name , params , r )
     end
     def scratch
       args = []

@@ -9,7 +9,7 @@ def foo(x)
   5
 end
 HERE
-    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)])]
+    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new())]
     check
   end
 
@@ -19,9 +19,8 @@ def String.length(x)
   @length
 end
 HERE
-    @parse_output = {:receiver=>{:module_name=>"String"}, :function_name=>{:name=>"length"}, :parameter_list=>[{:parameter=>{:name=>"x"}}], :expressions=>[{:instance_variable=>{:name=>"length"}}], :end=>"end"}
-    @transform_output = Ast::FunctionExpression.new(:length, [Ast::NameExpression.new("x")] , [Ast::VariableExpression.new(:length)] ,Ast::ModuleName.new("String") )
-    @parser = @parser.function_definition
+    @output = [Virtual::Method.new(:length,[Ast::NameExpression.new(:x)],Boot::BootClass.new(:String,:Object))]
+    check
   end
 
   def test_function_ops

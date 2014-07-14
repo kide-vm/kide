@@ -4,9 +4,8 @@ module Boot
   # class is mainly a list of methods with a name (for now)
   # layout of object is seperated into Layout
   class BootClass < Virtual::ObjectConstant
-    def initialize name , scope , super_class = :Object
+    def initialize name , super_class = :Object
       super()
-      @scope = scope
       # class methods
       @methods = []
       @name = name.to_sym
@@ -14,7 +13,9 @@ module Boot
       @meta_class = MetaClass.new(self)
     end
     attr_reader :name , :methods , :meta_class , :context , :super_class
-    
+    def attributes
+      [:name , :super_class]
+    end
     def add_method method
       raise "not a method #{method}" unless method.is_a? Virtual::Method
       raise "syserr " unless method.name.is_a? Symbol
@@ -40,9 +41,6 @@ module Boot
       fun
     end
 
-    def inspect
-      "BootClass #{@name} < #{@super_class}:#{@methods.collect(&:name)}"
-    end
     def to_s
       inspect
     end

@@ -21,7 +21,7 @@ module Boot
     def initialize machine = nil
       super()
       @classes = {}
-      @main = Virtual::Method.new("main")
+      @main = Virtual::Method.new("main" , [] )
       #global objects (data)
       @objects = []
       boot_classes
@@ -77,7 +77,7 @@ module Boot
       raise "uups #{name}.#{name.class}" unless name.is_a? Symbol
       c = @classes[name]
       unless c
-        c = BootClass.new(name,@context)
+        c = BootClass.new(name)
         @classes[name] = c
       end
       c
