@@ -2,7 +2,7 @@ module Ast
   class WhileExpression < Expression
 #    attr_reader  :condition, :body
     def compile frame , method
-      nil
+      Virtual::Reference.new
     end
     def old
       into = context.function

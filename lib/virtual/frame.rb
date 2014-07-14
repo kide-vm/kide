@@ -35,5 +35,9 @@ module Virtual
     def compile_send method , name , with = [] 
       method.add FrameSend.new(name , with )
     end
+
+    def compile_set method , name , val
+      method.add FrameSet.new(name , val )
+    end
   end
 end

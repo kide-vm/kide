@@ -2,7 +2,9 @@ module Ast
   class IfExpression < Expression
 #    attr_reader  :cond, :if_true, :if_false
     def compile frame , method
-      return nil
+      Virtual::Reference
+    end
+    def old
       f = context.function
       # to execute the logic as the if states it, the blocks are the other way around
       # so we can the jump over the else if true ,and the else joins unconditionally after the true_block

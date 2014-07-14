@@ -39,6 +39,10 @@ module Virtual
     def initialize name
       @name = name
     end
+    attr_reader :name
+    def attributes
+      [:name]
+    end
   end
 
   class FrameSend < Instruction
@@ -48,13 +52,29 @@ module Virtual
       @args = args
     end
     attr_reader :name , :args
-    
-    def == other
-      self.class == other.class && self.name == other.name
+    def attributes
+      [:name , :args]
     end
-    def inspect
-      self.class.name + ".new(:#{@name} , [ " + args.collect{|a| a.inspect}.join(",")+ "])"
+  end
+  class FrameSet < Instruction
+
+    def initialize name , val
+      @name = name.to_sym
+      @value = val
+    end
+    attr_reader :name , :value
+    def attributes
+      [:name , :value]
     end
   end
 
+  class ObjectGet < Instruction
+    def initialize name
+      @name = name
+    end
+    attr_reader :name
+    def attributes
+      [:name]
+    end
+  end
 end

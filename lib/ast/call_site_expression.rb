@@ -53,12 +53,4 @@ module Ast
     end
   end
   
-  class VariableExpression < CallSiteExpression
-#      super( :_get_instance_variable  , [StringExpression.new(name)] )
-    def make_setter 
-      @name = :_set_instance_variable
-      @args << StringExpression.new("value")
-    end
-  end
-  
 end

@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/crystal-vm/crystal-reader.git
-  revision: bc8697c733113b19863df632b546c7eab2b429c0
+  revision: 0c88e7eff569a6c1b0f354418daacb9ad2ac621a
   specs:
     crystal-reader (0.1.0)
 

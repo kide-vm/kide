@@ -2,7 +2,7 @@ module Ast
   class OperatorExpression < Expression
 #    attr_reader  :operator, :left, :right
     def compile frame , method
-      nil
+      Virtual::Reference.new
     end
     def scratch
       into = context.function

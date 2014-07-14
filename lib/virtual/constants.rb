@@ -19,6 +19,9 @@ module Virtual
     def inspect
       self.class.name + ".new(#{@integer})"
     end
+    def type
+      Virtual::Integer
+    end
   end
 
   # The name really says it all.

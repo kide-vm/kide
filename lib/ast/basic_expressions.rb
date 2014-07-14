@@ -63,7 +63,18 @@ module Ast
     end
   end
   class AssignmentExpression < Expression
+    #attr_reader  :left, :right
+
     def compile frame , method
+      raise "must assign to NameExpression , not #{left}" unless left.instance_of? NameExpression 
+      r = right.compile(frame,method)
+      frame.compile_set( method , left.name , r )
+    end
+  end
+
+  class VariableExpression < NameExpression
+    def compile frame ,method
+      Virtual::ObjectGet.new(name)
     end
   end
 end

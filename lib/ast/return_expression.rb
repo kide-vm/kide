@@ -2,7 +2,7 @@ module Ast
   class ReturnExpression < Expression
 #    attr_reader  :expression
     def compile frame ,method
-      nil
+      Virtual::Reference.new
     end
     def sc
       into = context.function

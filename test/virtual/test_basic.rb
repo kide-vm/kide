@@ -39,7 +39,7 @@ class TestBasic < MiniTest::Test
 
   def test_instance_variable
     @string_input    = '@foo_bar '
-    @output = [Virtual::FrameSend.new(:_get_instance_variable , [ Virtual::StringConstant.new('foo_bar')])]
+    @output = [Virtual::ObjectGet.new(:foo_bar)]
     check
   end
 
