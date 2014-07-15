@@ -1,3 +1,5 @@
+require_relative "constants"
+
 module Virtual
   class Mystery < Value
     def initialize 
@@ -9,12 +11,10 @@ module Virtual
 
   end
 
-  class Singleton < Value
+  class TrueValue < Constant
   end
-  class TrueValue < Singleton
+  class FalseValue < Constant
   end
-  class FalseValue < Singleton
-  end
-  class NilValue < Singleton
+  class NilValue < Constant
   end
 end
