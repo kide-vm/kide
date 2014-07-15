@@ -30,14 +30,17 @@ module Virtual
     # 
     def compile_get method , name
       method.add FrameGet.new(name)
+      method.get_var(name)
     end
 
     def compile_send method , name , with = [] 
       method.add FrameSend.new(name , with )
+      Return.new( method.return_type )
     end
 
     def compile_set method , name , val
       method.add FrameSet.new(name , val )
+      method.get_var(name)
     end
   end
 end

@@ -17,7 +17,7 @@ module Virtual
     def attributes
       [:name , :args , :receiver , :return_type , :start]
     end
-    def initialize name , args , receiver = Virtual::SelfReference.new , return_type = Virtual::Reference , start = MethodEnter.new
+    def initialize name , args , receiver = Virtual::SelfReference.new , return_type = Virtual::Mystery , start = MethodEnter.new
       @name = name.to_sym
       @args = args
       @locals = []
@@ -34,7 +34,6 @@ module Virtual
       raise instruction.inspect unless instruction.is_a? Instruction
       @current.next = instruction
       @current = instruction
-      instruction.type
     end
 
     # determine whether this method has a variable by the given name
@@ -46,7 +45,8 @@ module Virtual
       var = @tmps.find {|a| a == name } unless var
       var
     end
-    
+    alias :get_var :has_var
+
     def get_tmp
       name = "__tmp__#{@tmps.length}"
       @tmps << name

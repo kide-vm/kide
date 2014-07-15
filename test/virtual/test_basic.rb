@@ -27,19 +27,19 @@ class TestBasic < MiniTest::Test
 
   def test_name
     @string_input    = 'foo '
-    @output = [Virtual::Reference]
+    @output = [Virtual::Return.new(Virtual::Mystery)]
     check
   end
 
   def test_self
     @string_input    = 'self '
-    @output = [Virtual::SelfReference.new()]
+    @output = [Virtual::Self.new(Virtual::Mystery.new())]
     check
   end
 
   def test_instance_variable
     @string_input    = '@foo_bar '
-    @output = [Virtual::Reference]
+    @output = [Virtual::Return.new( Virtual::Mystery.new())]
     check
   end
 

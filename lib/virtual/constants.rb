@@ -3,10 +3,13 @@ module Virtual
   class Constant < ::Virtual::Value
   end
   class TrueValue < Constant
+    def attributes ; [] ; end
   end
   class FalseValue < Constant
+    def attributes ; [] ; end
   end
   class NilValue < Constant
+    def attributes ; [] ; end
   end
 
   # another abstract "marker" class (so we can check for it)
@@ -19,7 +22,7 @@ module Virtual
       @integer = int
     end
     attr_reader :integer
-    def attributes 
+    def attributes
       [:integer]
     end
     def inspect

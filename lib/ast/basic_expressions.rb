@@ -34,7 +34,7 @@ module Ast
     # otherwise it's a method without args and a send is ussued.
     # this makes the namespace static, ie when eval and co are implemented method needs recompilation
     def compile frame , method
-      return Virtual::SelfReference.new() if name == :self
+      return Virtual::Self.new( Virtual::Mystery.new ) if name == :self
       if method.has_var(name)
         frame.compile_get(method , name )
       else
@@ -75,6 +75,7 @@ module Ast
   class VariableExpression < NameExpression
     def compile frame ,method
       method.add Virtual::ObjectGet.new(name)
+      Virtual::Return.new( Virtual::Mystery.new )
     end
   end
 end

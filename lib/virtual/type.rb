@@ -48,7 +48,9 @@ module Virtual
   class Mystery < Type
     def initialize 
     end
-
+    def attributes
+      []
+    end
     def as type
       type.new
     end

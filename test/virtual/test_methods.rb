@@ -9,7 +9,7 @@ def foo(x)
   5
 end
 HERE
-    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new(),Virtual::IntegerConstant.new(5),Virtual::MethodEnter.new(nil))]
+    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new(nil),Virtual::IntegerConstant.new(5),Virtual::MethodEnter.new(nil))]
     check
   end
 
@@ -19,7 +19,7 @@ def String.length(x)
   @length
 end
 HERE
-    @output = [Virtual::Method.new(:length,[Ast::NameExpression.new(:x)],Boot::BootClass.new(:String,:Object),Virtual::Reference,Virtual::MethodEnter.new(Virtual::ObjectGet.new(:length)))]
+    @output = [Virtual::Method.new(:length,[Ast::NameExpression.new(:x)],Boot::BootClass.new(:String,:Object),Virtual::Return.new( Virtual::Mystery.new()),Virtual::MethodEnter.new(Virtual::ObjectGet.new(:length)))]
     check
   end
 
@@ -30,7 +30,7 @@ def foo(x)
  2 + 5
 end
 HERE
-    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new(),Virtual::Reference,Virtual::MethodEnter.new(Virtual::FrameSet.new(:abba,Virtual::IntegerConstant.new(5))))]
+    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new(nil),Virtual::Return.new( Virtual::Mystery),Virtual::MethodEnter.new(Virtual::FrameSet.new(:abba,Virtual::IntegerConstant.new(5))))]
     check
   end
 

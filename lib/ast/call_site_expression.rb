@@ -6,7 +6,7 @@ module Ast
     @@counter = 0
     def compile frame , method
       with = args.collect{|a| a.compile(frame , method)}
-      frame.compile_send( method , @name , with )
+      frame.compile_send( method , name , with )
     end
 
     def scratch
