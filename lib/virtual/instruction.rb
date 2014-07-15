@@ -33,45 +33,59 @@ module Virtual
   end
 
   class FrameGet < Instruction
-    def initialize name
+    def initialize name , nex = nil
+      super(nex)
       @name = name
     end
     attr_reader :name
     def attributes
-      [:name]
+      [:name ] + super
     end
   end
 
   class FrameSend < Instruction
-
-    def initialize name , args = []
+    def initialize name , args = [] , nex = nil
+      super(nex)
       @name = name.to_sym
       @args = args
     end
     attr_reader :name , :args
     def attributes
-      [:name , :args]
+      [:name , :args ] + super
     end
   end
-  class FrameSet < Instruction
 
-    def initialize name , val
+  class FrameSet < Instruction
+    def initialize name , val , nex = nil
+      super(nex)
       @name = name.to_sym
       @value = val
     end
     attr_reader :name , :value
     def attributes
-      [:name , :value]
+      [:name , :value] + super
+    end
+  end
+
+  class LoadSelf < Instruction
+    def initialize val , nex = nil
+      super(nex)
+      @value = val
+    end
+    attr_reader  :value
+    def attributes
+      [:value] + super
     end
   end
 
   class ObjectGet < Instruction
-    def initialize name
+    def initialize name , nex = nil
+      super(nex)
       @name = name
     end
     attr_reader :name
     def attributes
-      [:name]
+      [:name] + super
     end
   end
 end

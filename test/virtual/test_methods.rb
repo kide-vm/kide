@@ -30,7 +30,17 @@ def foo(x)
  2 + 5
 end
 HERE
-    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new(nil),Virtual::Return.new( Virtual::Mystery),Virtual::MethodEnter.new(Virtual::FrameSet.new(:abba,Virtual::IntegerConstant.new(5))))]
+    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new(nil),Virtual::Return.new(Virtual::Mystery),Virtual::MethodEnter.new(Virtual::FrameSet.new(:abba,Virtual::IntegerConstant.new(5),Virtual::LoadSelf.new(Virtual::IntegerConstant.new(2),Virtual::FrameSend.new(:+,[Virtual::IntegerConstant.new(5)],nil)))))]
+    check
+  end
+
+  def test_function_ops_simple
+    @string_input    = <<HERE
+def foo()
+  2 + 5
+end
+HERE
+    @output = [Virtual::Method.new(:foo,[],Virtual::SelfReference.new(nil),Virtual::Return.new(Virtual::Mystery),Virtual::MethodEnter.new(Virtual::LoadSelf.new(Virtual::IntegerConstant.new(2),Virtual::FrameSend.new(:+,[Virtual::IntegerConstant.new(5)],nil))))]
     check
   end
 

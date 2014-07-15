@@ -5,6 +5,8 @@ module Ast
 #    attr_reader  :name, :args , :receiver
     @@counter = 0
     def compile frame , method
+      me = receiver.compile(frame , method )
+      method.add Virtual::LoadSelf.new(me)
       with = args.collect{|a| a.compile(frame , method)}
       frame.compile_send( method , name , with )
     end

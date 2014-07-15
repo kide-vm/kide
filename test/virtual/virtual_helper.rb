@@ -12,7 +12,8 @@ module VirtualHelper
     syntax  = parser.parse_with_debug(@string_input)
     parts   = Parser::Transform.new.apply(syntax)
     machine = Virtual::Machine.new
-    expressions = parts.compile(machine.frame , Virtual::Method.main )
+    main = Virtual::Method.main
+    expressions = parts.compile(machine.frame , main )
     assert_equal @output , expressions
   end
   
