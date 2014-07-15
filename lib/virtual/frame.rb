@@ -33,7 +33,8 @@ module Virtual
       method.get_var(name)
     end
 
-    def compile_send method , name , with = [] 
+    def compile_send method , name , me , with = [] 
+      method.add Virtual::LoadSelf.new(me)
       method.add FrameSend.new(name , with )
       Return.new( method.return_type )
     end

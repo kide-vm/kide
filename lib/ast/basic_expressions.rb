@@ -38,7 +38,7 @@ module Ast
       if method.has_var(name)
         frame.compile_get(method , name )
       else
-        frame.compile_send( method , name  )
+        frame.compile_send( method , name ,  Virtual::Self.new( Virtual::Mystery.new ) )
       end
     end
   end
