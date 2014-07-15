@@ -2,6 +2,12 @@ module Virtual
   
   class Constant < ::Virtual::Value
   end
+  class TrueValue < Constant
+  end
+  class FalseValue < Constant
+  end
+  class NilValue < Constant
+  end
 
   # another abstract "marker" class (so we can check for it)
   # derived classes are Boot/Meta Class and StringConstant 

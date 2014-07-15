@@ -1,10 +1,10 @@
 module Virtual
   
-  # the virtual machine is implemented in values. Values have types which are represented as classes, but it is still
-  # important to make the distinction. Values are immutable, passed by value and machine word sized.
-  
-  # Integer and (Object) References are the main derived classes, but float will come and ...
-  # The Mystery Value has unknown type and has only casting methods. So it must be cast to be useful.
+  # the virtual machine is implemented in values (a c++ version of oo). 
+  # Values have types which are represented as classes, instances of Type to be precise
+
+  # Values must really be Constants or Variables, ie have a storage space
+
   class Value
     def == other
       other.class == self.class
@@ -13,10 +13,11 @@ module Virtual
       self.class.name + ".new()"
     end
     def type
-      self.class
+      raise "abstract called"
     end
     private
     def initialize
     end
   end
+  
 end

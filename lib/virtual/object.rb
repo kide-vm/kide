@@ -51,6 +51,3 @@ module Virtual
     end
   end
 end
-
-require_relative "integer"
-require_relative "reference"
