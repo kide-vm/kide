@@ -70,6 +70,26 @@ module Ast
       r = right.compile(frame , method)
       frame.compile_set( method , left.name , r )
     end
+    def old_scratch
+      if operator == "="    # assignment, value based
+        if(left.is_a? VariableExpression)
+          left.make_setter
+          l_val = left.compile(context)
+        elsif left.is_a?(NameExpression)
+          puts context.inspect unless context.locals
+          l_val = context.locals[left.name]
+          if( l_val ) #variable existed, move data there
+            l_val = l_val.move( into , r_val) 
+          else
+            l_val = context.function.new_local.move( into , r_val )
+          end
+          context.locals[left.name] = l_val
+        else
+          raise "Can only assign variables, not #{left}" 
+        end
+        return l_val
+      end
+    end
   end
 
   class VariableExpression < NameExpression
