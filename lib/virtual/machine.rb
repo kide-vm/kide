@@ -34,7 +34,7 @@ module Virtual
 
     def initialize
       the_end = Halt.new
-      @frame = Frame.new(the_end , the_end , :Object)
+      @frame = Message.new(the_end , the_end , :Object)
     end
     attr_reader :frame
 
@@ -54,6 +54,7 @@ require_relative "list"
 require_relative "instruction"
 require_relative "method_definition"
 require_relative "frame"
+require_relative "message"
 require_relative "value"
 require_relative "type"
 require_relative "object"

@@ -1,48 +1,21 @@
 module Virtual
-  # A frame, or activation frame, represents a function call during calling. So not the static definition of the function
-  # but the dynamic invokation of it.
+  # A Message and a Frame make up the two sides of message passing:
+  # A Message (see details there) is created by the sender and control is transferred
+  # A Frame is created by the receiver
+
+  # In static languages these two objects are one, because the method is known at compile time. 
+  # In that case the whole frame is usually on the stack, for leaves even omitted and all data is held in registers
   #
-  # In a minimal c world this would be just the return address, but with exceptions and continuations things get more
-  # complicated. How much more we shall see
-  #
-  # The current list comprises
-  # - next normal instruction
-  # - next exception instruction
-  # - self (me)
-  # - argument mappings
-  # - local variable mapping, together with last called binding
+  # In a dynamic language the method is dynamically resolved, and so the size of the frame is not know to the caller
+  # Also exceptions (with the possibility of retry) and the idea of being able to take and store bindings
+  # make it to say the very least unsensibly tricky to store them on the stack. So we don't.
+
+  # Also at runtime Messages and frames remain completely "normal" objects
+
   class Frame
-    def initialize normal , exceptional , me
-      @next_normal = normal
-      @next_exception = exceptional
-      @me = me
-      # a binding represents the local variables at a point in the program.
-      # The amount of local variables is assumed to be relatively small, and so the 
-      # storage is a linked list. Has the same api as a ha
-      @binding = List.new
+    def initialize variables
+      @variables = variables
     end
-    attr_reader :next_normal, :next_exception, :me, :binding
-
-    # dummy for the eventual
-    def new_frame
-      self
-    end
-    # 
-    def compile_get method , name
-      method.add FrameGet.new(name)
-      method.get_var(name)
-    end
-
-    def compile_send method , name , me , with = [] 
-      method.add Virtual::LoadSelf.new(me)
-      method.add FrameSend.new(name , with )
-      Return.new( method.return_type )
-    end
-
-    def compile_set method , name , val
-      method.set_var(name,val)
-      method.add FrameSet.new(name , val )
-      method.get_var(name)
-    end
+    attr_accessor :variables
   end
 end
