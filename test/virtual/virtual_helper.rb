@@ -8,7 +8,7 @@ module VirtualHelper
   end
 
   def check 
-    parser  = Parser::Sapphire.new
+    parser  = Parser::Kide.new
     syntax  = parser.parse_with_debug(@string_input)
     parts   = Parser::Transform.new.apply(syntax)
     machine = Virtual::Machine.new

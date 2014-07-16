@@ -55,7 +55,7 @@ module Boot
       end
       [:putstring,:putint,:fibo,:exit].each do |f|
         #puts "Boot Kernel::#{f}"
-        obj.add_method_definition Sapphire::Kernel.send(f , @context)
+        obj.add_method_definition Kide::Kernel.send(f , @context)
       end
       obj = get_or_create_class :String
       [:get , :set].each do |f|

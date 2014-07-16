@@ -69,7 +69,7 @@ module Boot
       end
       [:utoa, :putstring,:putint,:fibo,:exit].each do |f|
         #puts "Boot Kernel::#{f}"
-        obj.add_function Sapphire::Kernel.send(f , @context)
+        obj.add_function Kide::Kernel.send(f , @context)
       end
       obj = get_or_create_class :String
       [:get , :set].each do |f|

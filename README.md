@@ -1,7 +1,7 @@
-#Sapphire
+#Kide
 
 
-Sapphire is about native code generation in and of ruby. In is done.
+Kide is about native code generation in and of ruby. In is done.
 
 ### Step 1 - Assembly
 
@@ -125,7 +125,7 @@ Celebrate New year 2030
 
 
 
-Contributing to sapphire
+Contributing to kide
 -----------------------
  
 Probably best to talk to me, if it's not a typo or so.

@@ -7,7 +7,7 @@ module Vm
   
   # Admittately it would be simpler just to create the (abstract) instructions and let the machine 
   # encode them into what-ever is neccessary, but this approach leaves more possibility to 
-  # optimize the actual instruction stream (not just the sapphire instruction stream). Makes sense?
+  # optimize the actual instruction stream (not just the kide instruction stream). Makes sense?
   
   # We have basic classes (literally) of instructions
   # - Memory

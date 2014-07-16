@@ -1,5 +1,5 @@
-# this is not a "normal" ruby file, ie it is not required by sapphire
-# instead it is parsed by sapphire to define part of the sapphire that runs
+# this is not a "normal" ruby file, ie it is not required by kide
+# instead it is parsed by kide to define part of the kide that runs
 
 class Array < BaseObject
   def initialize size

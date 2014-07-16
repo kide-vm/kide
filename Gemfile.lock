@@ -6,10 +6,10 @@ GIT
       blankslate (~> 2.0)
 
 GIT
-  remote: https://github.com/sapphire-vm/sapphire-reader.git
+  remote: https://github.com/kide-vm/kide-reader.git
   revision: 0c88e7eff569a6c1b0f354418daacb9ad2ac621a
   specs:
-    sapphire-reader (0.1.0)
+    kide-reader (0.1.0)
 
 GEM
   remote: http://rubygems.org/
@@ -87,7 +87,7 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
-  sapphire-reader (= 0.1.0)!
+  kide-reader (= 0.1.0)!
   jeweler
   minitest
   parslet!

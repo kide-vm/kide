@@ -8,7 +8,7 @@ provides the stack glue. All the stuff a compiler would usually do.
 
 Also all syscalls are abstracted as functions.
 
-The Sapphire Convention 
+The Kide Convention 
 ----------------------
 
 Since we're not in c, we use the regsters more suitably for our job:

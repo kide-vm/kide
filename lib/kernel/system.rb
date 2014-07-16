@@ -1,4 +1,4 @@
-module Sapphire
+module Kide
   module Kernel
     def self.exit context
       function = Virtual::MethodDefinition.new(:exit , [] , Virtual::Integer)

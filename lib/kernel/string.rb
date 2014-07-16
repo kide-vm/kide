@@ -1,4 +1,4 @@
-module Sapphire
+module Kide
   module Kernel
     def self.putstring context 
       function = Virtual::MethodDefinition.new(:putstring , [] )

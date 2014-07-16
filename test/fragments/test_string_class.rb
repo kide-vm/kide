@@ -75,7 +75,7 @@ HERE
   end
 
   def parse 
-    parser = Parser::Sapphire.new
+    parser = Parser::Kide.new
     syntax  = parser.parse_with_debug(@string_input)
     parts   = Parser::Transform.new.apply(syntax)
     # file is a list of expressions, all but the last must be a function
