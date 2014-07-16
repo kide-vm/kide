@@ -17,7 +17,7 @@ module Virtual
     def attributes
       [:name , :args , :receiver , :return_type , :start]
     end
-    def initialize name , args , receiver = Virtual::SelfReference.new , return_type = Virtual::Mystery , start = MethodDefinitionEnter.new
+    def initialize name , args , receiver = Virtual::SelfReference.new , return_type = Virtual::Mystery , start = MethodEnter.new
       @name = name.to_sym
       @args = args
       @locals = []
@@ -28,7 +28,7 @@ module Virtual
       @current = @start
     end
     attr_reader :name , :args , :receiver , :start
-    attr_accessor :return_type
+    attr_accessor :return_type , :current
 
     def add instruction
       raise instruction.inspect unless instruction.is_a? Instruction

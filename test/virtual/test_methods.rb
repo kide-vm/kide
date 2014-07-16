@@ -9,7 +9,7 @@ def foo(x)
   5
 end
 HERE
-    @output = [Virtual::MethodDefinition.new(:foo,[Virtual::Argument.new(:x,Virtual::Mystery.new())],Virtual::SelfReference.new(nil),Virtual::IntegerConstant.new(5),Virtual::MethodDefinitionEnter.new(nil))]
+    @output = [Virtual::MethodDefinition.new(:foo,[Virtual::Argument.new(:x,Virtual::Mystery.new())],Virtual::SelfReference.new(nil),Virtual::IntegerConstant.new(5),Virtual::MethodEnter.new(nil))]
     check
   end
 
@@ -19,7 +19,7 @@ def String.length(x)
   @length
 end
 HERE
-    @output = [Virtual::MethodDefinition.new(:length,[Virtual::Argument.new(:x,Virtual::Mystery.new())],Boot::BootClass.new(:String,:Object),Virtual::Return.new(Virtual::Mystery.new()),Virtual::MethodDefinitionEnter.new(Virtual::ObjectGet.new(:length,nil)))]
+    @output = [Virtual::MethodDefinition.new(:length,[Virtual::Argument.new(:x,Virtual::Mystery.new())],Boot::BootClass.new(:String,:Object),Virtual::Return.new(Virtual::Mystery.new()),Virtual::MethodEnter.new(Virtual::ObjectGet.new(:length,nil)))]
     check
   end
 
@@ -30,7 +30,7 @@ def foo(x)
  2 + 5
 end
 HERE
-    @output = [Virtual::MethodDefinition.new(:foo,[Virtual::Argument.new(:x,Virtual::Mystery.new())],Virtual::SelfReference.new(nil),Virtual::Return.new(Virtual::Mystery),Virtual::MethodDefinitionEnter.new(Virtual::FrameSet.new(:abba,Virtual::IntegerConstant.new(5),Virtual::LoadSelf.new(Virtual::IntegerConstant.new(2),Virtual::FrameSend.new(:+,[Virtual::IntegerConstant.new(5)],nil)))))]
+    @output = [Virtual::MethodDefinition.new(:foo,[Virtual::Argument.new(:x,Virtual::Mystery.new())],Virtual::SelfReference.new(nil),Virtual::Return.new(Virtual::Mystery),Virtual::MethodEnter.new(Virtual::FrameSet.new(:abba,Virtual::IntegerConstant.new(5),Virtual::LoadSelf.new(Virtual::IntegerConstant.new(2),Virtual::FrameSend.new(:+,[Virtual::IntegerConstant.new(5)],nil)))))]
     check
   end
 
@@ -40,7 +40,7 @@ def foo()
   2 + 5
 end
 HERE
-    @output = [Virtual::MethodDefinition.new(:foo,[],Virtual::SelfReference.new(nil),Virtual::Return.new(Virtual::Mystery),Virtual::MethodDefinitionEnter.new(Virtual::LoadSelf.new(Virtual::IntegerConstant.new(2),Virtual::FrameSend.new(:+,[Virtual::IntegerConstant.new(5)],nil))))]
+    @output = [Virtual::MethodDefinition.new(:foo,[],Virtual::SelfReference.new(nil),Virtual::Return.new(Virtual::Mystery),Virtual::MethodEnter.new(Virtual::LoadSelf.new(Virtual::IntegerConstant.new(2),Virtual::FrameSend.new(:+,[Virtual::IntegerConstant.new(5)],nil))))]
     check
   end
 
