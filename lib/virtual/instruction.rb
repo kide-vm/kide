@@ -20,6 +20,17 @@ module Virtual
     end
   end
 
+  module Named
+    def initialize name , nex = nil
+      super(nex)
+      @name = name
+    end
+    attr_reader :name
+    def attributes
+      [:name ] + super
+    end
+  end
+
   # the first instruction we need is to stop. Off course in a real machine this would be a syscall, but that is just 
   # an implementation (in a programm it would be a function). But in a virtual machine, not only do we need this instruction,
   # it is indeed the first instruction as just this instruction is the smallest possible programm for the machine.
@@ -33,6 +44,7 @@ module Virtual
 
   #resolves to nothing, but allows forward definition
   class Label < Instruction
+    include Named
   end
 
   # the next instruction represents the true branch and the other is the .... other
@@ -40,13 +52,27 @@ module Virtual
   # this is an abstract base class (though no measures are taken to prevent instantiation) and derived
   # class names indicate the actual test
   class Branch < Instruction
-    def initialize nex = nil , other = nil
+    def initialize name , nex = nil , other = nil
       super(nex)
+      @next = nex
       @other = other
+      if other
+        label = self.next
+        while label
+          break if label.is_a?(Label) and label.name == name
+          label = label.next
+        end
+        before_label = self.other
+        while before_label.next
+          break if before_label.next.is_a?(Label) and before_label.next.name == name
+          before_label = before_label.next
+        end
+        before_label.next = label
+      end
     end
-    attr_reader :other
+    attr_reader :other , :name
     def attributes
-      [:other] + super
+      [:name , :next , :other]
     end
     # so code can be "poured in" in the same way as normal, we swap the braches around in after the true condition
     # and swap them back after
@@ -64,14 +90,7 @@ module Virtual
 
   # A note: future branch conditions include OverflowBranch and other non-c 
   class FrameGet < Instruction
-    def initialize name , nex = nil
-      super(nex)
-      @name = name
-    end
-    attr_reader :name
-    def attributes
-      [:name ] + super
-    end
+    include Named
   end
 
   class FrameSend < Instruction
@@ -110,13 +129,6 @@ module Virtual
   end
 
   class ObjectGet < Instruction
-    def initialize name , nex = nil
-      super(nex)
-      @name = name
-    end
-    attr_reader :name
-    def attributes
-      [:name] + super
-    end
+    include Named
   end
 end

@@ -1,28 +1,31 @@
 module Ast
   class IfExpression < Expression
 #    attr_reader  :cond, :if_true, :if_false
+    @@counter = 0   #naming the braches by counting mainly to get them back together in testing
     def compile frame , method
       is = cond.compile(frame , method)
       #      is.is_false(frame,method)
       # TODO should/will use different branches for different conditions. 
-      branch = Virtual::ImplicitBranch.new
+      branch_name = "if_merge_#{@@counter}".to_sym
+      @@counter += 1
+      branch = Virtual::ImplicitBranch.new branch_name
       method.add branch
       last = is
       if_true.each do |part|
         last = part.compile(frame,method )
         raise part.inspect if last.nil?
       end
-      label = Virtual::Label.new
-      method.add label
+      merge = Virtual::Label.new(branch_name)
+      method.add merge
       branch.swap
       method.current = branch
       if_false.each do |part|
         last = part.compile(frame,method )
         raise part.inspect if last.nil?
       end
-      method.add label
+      method.add merge
       branch.swap
-      method.current = label
+      method.current = merge
       #TODO should return the union of the true and false types
       last
     end
