@@ -2,7 +2,14 @@ module Ast
   class IfExpression < Expression
 #    attr_reader  :cond, :if_true, :if_false
     def compile frame , method
-      Virtual::Reference
+      is = cond.compile(frame , method)
+#      is.is_false(frame,method)
+      last = is
+      if_true.each do |part|
+        last = part.compile(frame,method )
+        raise part.inspect if last.nil?
+      end
+      last
     end
     def old
       f = context.function

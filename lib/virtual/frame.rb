@@ -40,6 +40,7 @@ module Virtual
     end
 
     def compile_set method , name , val
+      method.set_var(name,val)
       method.add FrameSet.new(name , val )
       method.get_var(name)
     end

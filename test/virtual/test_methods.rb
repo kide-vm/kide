@@ -9,7 +9,7 @@ def foo(x)
   5
 end
 HERE
-    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new(nil),Virtual::IntegerConstant.new(5),Virtual::MethodEnter.new(nil))]
+    @output = [Virtual::Method.new(:foo,[Virtual::Argument.new(:x,Virtual::Mystery.new())],Virtual::SelfReference.new(nil),Virtual::IntegerConstant.new(5),Virtual::MethodEnter.new(nil))]
     check
   end
 
@@ -19,7 +19,7 @@ def String.length(x)
   @length
 end
 HERE
-    @output = [Virtual::Method.new(:length,[Ast::NameExpression.new(:x)],Boot::BootClass.new(:String,:Object),Virtual::Return.new( Virtual::Mystery.new()),Virtual::MethodEnter.new(Virtual::ObjectGet.new(:length)))]
+    @output = [Virtual::Method.new(:length,[Virtual::Argument.new(:x,Virtual::Mystery.new())],Boot::BootClass.new(:String,:Object),Virtual::Return.new(Virtual::Mystery.new()),Virtual::MethodEnter.new(Virtual::ObjectGet.new(:length,nil)))]
     check
   end
 
@@ -30,7 +30,7 @@ def foo(x)
  2 + 5
 end
 HERE
-    @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)],Virtual::SelfReference.new(nil),Virtual::Return.new(Virtual::Mystery),Virtual::MethodEnter.new(Virtual::FrameSet.new(:abba,Virtual::IntegerConstant.new(5),Virtual::LoadSelf.new(Virtual::IntegerConstant.new(2),Virtual::FrameSend.new(:+,[Virtual::IntegerConstant.new(5)],nil)))))]
+    @output = [Virtual::Method.new(:foo,[Virtual::Argument.new(:x,Virtual::Mystery.new())],Virtual::SelfReference.new(nil),Virtual::Return.new(Virtual::Mystery),Virtual::MethodEnter.new(Virtual::FrameSet.new(:abba,Virtual::IntegerConstant.new(5),Virtual::LoadSelf.new(Virtual::IntegerConstant.new(2),Virtual::FrameSend.new(:+,[Virtual::IntegerConstant.new(5)],nil)))))]
     check
   end
 
@@ -44,7 +44,7 @@ HERE
     check
   end
 
-  def ttest_function_if
+  def test_function_if
     @string_input    = <<HERE
 def ofthen(n)
   if(0)
@@ -54,7 +54,7 @@ def ofthen(n)
   end
 end
 HERE
-      @output = [Virtual::Method.new(:foo,[Ast::NameExpression.new(:x)])]
+      @output = nil
       check
   end
 

@@ -40,12 +40,29 @@ module Virtual
     # variables are locals and and arguments
     # used to determine if a send must be issued 
     def has_var name
-      var = @args.find {|a| a == name }
-      var = @locals.find {|a| a == name } unless var
-      var = @tmps.find {|a| a == name } unless var
+      name = name.to_sym
+      var = @args.find {|a| a.name == name }
+      var = @locals.find {|a| a.name == name } unless var
+      var = @tmps.find {|a| a.name == name } unless var
       var
     end
-    alias :get_var :has_var
+
+    def set_var name , var
+      v = has_var name
+      if( v )
+        puts "resetting local #{v}"
+      else
+        v = Local.new(name , var)
+        @locals << v
+      end
+      v
+    end
+
+    def get_var name
+      var = has_var name
+      raise "no var #{name} in method #{self.name} , #{@locals} #{@args}" unless var
+      var
+    end
 
     def get_tmp
       name = "__tmp__#{@tmps.length}"

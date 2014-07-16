@@ -36,7 +36,7 @@ module Virtual
   class Variable < Value
 
     def initialize name , type
-      @name = name
+      @name = name.to_sym
       @type = type
     end
     attr_accessor :name , :type

@@ -2,9 +2,12 @@ module Ast
   class FunctionExpression < Expression
 #    attr_reader  :name, :params, :body , :receiver
     def compile frame , method
-      args = params.collect{ |p| p.compile(frame , method )}
+      args = params.collect do |p|
+        raise "error, arguemnt must be a identifier, not #{p}" unless p.is_a? NameExpression
+        Virtual::Argument.new( p.name , Virtual::Mystery.new )
+      end
       r = receiver ? receiver.compile(frame,method) : Virtual::SelfReference.new
-      method = Virtual::Method.new(name , params , r )
+      method = Virtual::Method.new(name , args , r )
       frame = frame.new_frame
       return_type = nil
       body.each do |ex|
