@@ -19,7 +19,7 @@ class TestRunner < MiniTest::Test
 
   def execute file
     string = File.read(file)
-    parser = Parser::Crystal.new
+    parser = Parser::Sapphire.new
     object_space = Vm::Program.new "Arm"
     syntax  = parser.parse_with_debug(string)
     assert syntax

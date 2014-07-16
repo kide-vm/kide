@@ -1,5 +1,5 @@
 #integer related kernel functions
-module Crystal
+module Sapphire
   module Kernel
     # The conversion to base10 is quite a bit more complicated than i thought. The bulk of it is in div10
     # We set up variables, do the devision and write the result to the string

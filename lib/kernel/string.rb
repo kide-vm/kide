@@ -1,4 +1,4 @@
-module Crystal
+module Sapphire
   module Kernel
     def self.putstring context 
       function = Virtual::MethodDefinition.new(:putstring , [] )

@@ -14,8 +14,8 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
-  gem.name = "crystal"
-  gem.homepage = "http://github.com/crystal-ruby/crystal"
+  gem.name = "sapphire"
+  gem.homepage = "http://github.com/sapphire-ruby/sapphire"
   gem.license = "MIT"
   gem.summary = %Q{Create fast code}
   gem.description = %Q{A long way to china and back}
@@ -51,7 +51,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "crystal #{version}"
+  rdoc.title = "sapphire #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

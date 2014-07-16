@@ -1,5 +1,5 @@
-# this is not a "normal" ruby file, ie it is not required by crystal
-# instead it is parsed by crystal to define part of the crystal that runs
+# this is not a "normal" ruby file, ie it is not required by sapphire
+# instead it is parsed by sapphire to define part of the sapphire that runs
 
 class Array < BaseObject
   def initialize size

@@ -1,4 +1,4 @@
-module Crystal
+module Sapphire
   module Kernel
     def self.exit context
       function = Virtual::MethodDefinition.new(:exit , [] , Virtual::Integer)

@@ -17,7 +17,7 @@ module Fragments
   end
 
   def parse 
-    parser = Parser::Crystal.new
+    parser = Parser::Sapphire.new
     syntax  = parser.parse_with_debug(@string_input)
     parts   = Parser::Transform.new.apply(syntax)
     # file is a list of expressions, all but the last must be a function

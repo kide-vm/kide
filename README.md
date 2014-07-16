@@ -1,7 +1,7 @@
-#Crystal
+#Sapphire
 
 
-Crystal is about native code generation in and of ruby. In is done.
+Sapphire is about native code generation in and of ruby. In is done.
 
 ### Step 1 - Assembly
 
@@ -125,7 +125,7 @@ Celebrate New year 2030
 
 
 
-Contributing to crystal
+Contributing to sapphire
 -----------------------
  
 Probably best to talk to me, if it's not a typo or so.
