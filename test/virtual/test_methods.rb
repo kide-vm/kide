@@ -54,7 +54,7 @@ def ofthen(n)
   end
 end
 HERE
-      @output = [Virtual::MethodDefinition.new(:ofthen,[Virtual::Argument.new(:n,Virtual::Mystery.new())],Virtual::SelfReference.new(nil),Virtual::Local.new(:maybenot,Virtual::IntegerConstant.new(667)),Virtual::MethodEnter.new(Virtual::ImplicitBranch.new(nil,Virtual::FrameSet.new(:isit,Virtual::IntegerConstant.new(42),Virtual::Label.new(:if_merge_0,nil)),Virtual::FrameSet.new(:maybenot,Virtual::IntegerConstant.new(667),Virtual::Label.new(:if_merge_0,nil)))))]
+      @output = [Virtual::MethodDefinition.new(:ofthen,[Virtual::Argument.new(:n,Virtual::Mystery.new())],Virtual::SelfReference.new(nil),Virtual::Local.new(:maybenot,Virtual::IntegerConstant.new(667)),Virtual::MethodEnter.new(Virtual::ImplicitBranch.new(:if_merge_1,Virtual::FrameSet.new(:isit,Virtual::IntegerConstant.new(42),Virtual::Label.new(:if_merge_1,nil)),Virtual::FrameSet.new(:maybenot,Virtual::IntegerConstant.new(667),Virtual::Label.new(:if_merge_1,nil)))))]
       check
   end
 

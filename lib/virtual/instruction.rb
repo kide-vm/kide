@@ -52,9 +52,16 @@ module Virtual
   # this is an abstract base class (though no measures are taken to prevent instantiation) and derived
   # class names indicate the actual test
   class Branch < Instruction
+    @@counter = 1   #naming the braches by counting mainly to get them back together in testing
+    # TODO, while above sounds ok at first, it messes up with different test order fails etc, as the counter will 
+    # be different. Need a better way to create a unique but repeatable name
     def initialize name , nex = nil , other = nil
       super(nex)
-      @next = nex
+      unless(name.to_s.split("_").last.to_i > 0)
+        name = "#{name}_#{@@counter}".to_sym 
+        @@counter += 1
+      end
+      @name = name
       @other = other
       if other
         label = self.next
