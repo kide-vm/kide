@@ -9,15 +9,15 @@ module Virtual
   # known local variable names
   # temp variables (numbered)
   #
-  class Method < Virtual::Object
+  class MethodDefinition < Virtual::Object
     #return the main function (the top level) into which code is compiled
-    def Method.main
-      Method.new(:main , [] , Virtual::SelfReference )
+    def MethodDefinition.main
+      MethodDefinition.new(:main , [] , Virtual::SelfReference )
     end
     def attributes
       [:name , :args , :receiver , :return_type , :start]
     end
-    def initialize name , args , receiver = Virtual::SelfReference.new , return_type = Virtual::Mystery , start = MethodEnter.new
+    def initialize name , args , receiver = Virtual::SelfReference.new , return_type = Virtual::Mystery , start = MethodDefinitionEnter.new
       @name = name.to_sym
       @args = args
       @locals = []

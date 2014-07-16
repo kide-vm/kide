@@ -52,7 +52,7 @@ end
 
 require_relative "list"
 require_relative "instruction"
-require_relative "method"
+require_relative "method_definition"
 require_relative "frame"
 require_relative "value"
 require_relative "type"

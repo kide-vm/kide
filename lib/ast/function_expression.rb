@@ -7,7 +7,7 @@ module Ast
         Virtual::Argument.new( p.name , Virtual::Mystery.new )
       end
       r = receiver ? receiver.compile(frame,method) : Virtual::SelfReference.new
-      method = Virtual::Method.new(name , args , r )
+      method = Virtual::MethodDefinition.new(name , args , r )
       frame = frame.new_frame
       return_type = nil
       body.each do |ex|
