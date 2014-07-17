@@ -58,14 +58,28 @@ HERE
       check
   end
 
-  def ttest_function_return
+  def test_function_while
+    @string_input    = <<HERE
+def fibonaccit(n)
+  a = 0
+  while (n) do
+    some = 43
+    other = some * 4
+  end
+end
+HERE
+    @output = [Virtual::MethodDefinition.new(:ofthen,[Virtual::Argument.new(:n,Virtual::Mystery.new())],Virtual::SelfReference.new(nil),Virtual::Local.new(:maybenot,Virtual::IntegerConstant.new(667)),Virtual::MethodEnter.new(Virtual::ImplicitBranch.new(:if_merge_2,Virtual::FrameSet.new(:isit,Virtual::IntegerConstant.new(42),Virtual::Label.new(:if_merge_2,nil)),Virtual::FrameSet.new(:maybenot,Virtual::IntegerConstant.new(667),Virtual::Label.new(:if_merge_2,nil)))))]
+    check
+  end
+
+  def test_function_return
     @string_input    = <<HERE
 def retvar(n)
   i = 5
   return i 
 end
 HERE
-    @output = [Virtual::MethodDefinition.new(:foo,[Ast::NameExpression.new(:x)])]
+    @output = [Virtual::MethodDefinition.new(:retvar,[Virtual::Argument.new(:n,Virtual::Mystery.new())],Virtual::SelfReference.new(nil),Virtual::Reference.new(nil),Virtual::MethodEnter.new(Virtual::FrameSet.new(:i,Virtual::IntegerConstant.new(5),nil)))]
     check
   end
 
@@ -90,20 +104,6 @@ def retvar(n)
     n = n + 1
     return n
   end 
-end
-HERE
-    @output = [Virtual::MethodDefinition.new(:foo,[Ast::NameExpression.new(:x)])]
-    check
-  end
-
-  def ttest_function_while
-    @string_input    = <<HERE
-def fibonaccit(n)
-  a = 0
-  while (n) do
-    some = 43
-    other = some * 4
-  end
 end
 HERE
     @output = [Virtual::MethodDefinition.new(:foo,[Ast::NameExpression.new(:x)])]

@@ -77,7 +77,8 @@ module Virtual
         before_label.next = label
       end
     end
-    attr_reader :other , :name
+    attr_reader :name
+    attr_accessor :other
     def attributes
       [:name , :next , :other]
     end

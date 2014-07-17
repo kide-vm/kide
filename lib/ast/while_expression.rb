@@ -2,7 +2,24 @@ module Ast
   class WhileExpression < Expression
 #    attr_reader  :condition, :body
     def compile frame , method
-      Virtual::Reference.new
+      start = Virtual::Label.new("while_start")
+      method.add start
+      is = condition.compile(frame , method)
+      branch = Virtual::ImplicitBranch.new "while"
+      merge = Virtual::Label.new(branch.name)
+      branch.other = merge   #false jumps to end of while
+      method.add branch
+      last = is
+      body.each do |part|
+        last = part.compile(frame,method )
+        raise part.inspect if last.nil?
+      end
+      # unconditionally brnach to the start
+      method.add start
+      # here we add the end of while that the branch jumps to
+      #but don't link it in (not using add)
+      method.current =  merge
+      last
     end
     def old
       into = context.function
