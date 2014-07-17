@@ -1,5 +1,6 @@
 require_relative '../helper'
 require 'parslet/convenience'
+require "yaml"
 
 module VirtualHelper
   # need a code generator, for arm 
@@ -14,7 +15,8 @@ module VirtualHelper
     machine = Virtual::Machine.new
     main = Virtual::MethodDefinition.main
     expressions = parts.compile(machine.frame , main )
-    assert_equal @output , expressions
+    should = YAML.load(@output.gsub("_MY_MY_MARKER" , "\n"))
+    assert_equal should , expressions , expressions.to_yaml.gsub("\n" , "_MY_MY_MARKER") +  "\n" + expressions.to_yaml 
   end
   
 end

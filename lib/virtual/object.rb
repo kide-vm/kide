@@ -23,7 +23,7 @@ module Virtual
     end
 
     def inspect
-      self.class.name + ".new(" + attributes.collect{|a| send(a).inspect }.join(",")+ ")"
+      to_yaml
     end
 
     def self.space
