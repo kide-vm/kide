@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/kide-vm/kide-reader.git
-  revision: 0c88e7eff569a6c1b0f354418daacb9ad2ac621a
+  revision: 03ad97ef279cfbf27720db20130303999cdf2326
   specs:
     kide-reader (0.1.0)
 
@@ -87,8 +87,8 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
-  kide-reader (= 0.1.0)!
   jeweler
+  kide-reader (= 0.1.0)!
   minitest
   parslet!
   pry
