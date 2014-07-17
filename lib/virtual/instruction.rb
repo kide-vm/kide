@@ -18,6 +18,22 @@ module Virtual
     def initialize nex = nil
       @next = nex
     end
+    # simple thought: don't recurse for labels, just check their names
+    def == other
+      return false unless other.class == self.class 
+      attributes.each do |a|
+        left = send(a)
+        right = other.send(a)
+        return false unless left.class == right.class 
+        if( left.is_a? Label)
+          return false unless left.name == right.name
+        else
+          return false unless left == right
+        end
+      end
+      return true
+    end
+    
   end
 
   module Named
