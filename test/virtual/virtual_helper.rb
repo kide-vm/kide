@@ -15,8 +15,8 @@ module VirtualHelper
     machine = Virtual::Machine.new
     main = Virtual::MethodDefinition.main
     expressions = parts.compile(machine.frame , main )
-    should = YAML.load(@output.gsub("_MY_MY_MARKER" , "\n"))
-    assert_equal should , expressions , expressions.to_yaml.gsub("\n" , "_MY_MY_MARKER") +  "\n" + expressions.to_yaml 
+    should = YAML.load(@output.gsub("RETURN_MARKER" , "\n"))
+    assert_equal should , expressions , expressions.to_yaml.gsub("\n" , "RETURN_MARKER") +  "\n" + expressions.to_yaml 
   end
   
 end
