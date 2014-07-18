@@ -33,7 +33,13 @@ module Virtual
       end
       return true
     end
-    
+    # insert the given instruction as the next after this
+    # insert is not just set, but preserves the previous @next value as the next of the given instruction
+    # so if you think of the instructions as a linked list, it inserts the give instruction _after_ this one
+    def insert instruction
+      instruction.next = @next
+      @next = instruction
+    end
   end
 
   module Named
@@ -57,6 +63,8 @@ module Virtual
   # following classes are stubs. currently in brainstorming mode, so anything may change anytime
   class MethodEnter < Instruction
   end
+  class MethodReturn < Instruction
+  end
 
   #resolves to nothing, but allows forward definition
   class Label < Instruction
@@ -79,19 +87,6 @@ module Virtual
       end
       @name = name
       @other = other
-      if other
-        label = self.next
-        while label
-          break if label.is_a?(Label) and label.name == name
-          label = label.next
-        end
-        before_label = self.other
-        while before_label.next
-          break if before_label.next.is_a?(Label) and before_label.next.name == name
-          before_label = before_label.next
-        end
-        before_label.next = label
-      end
     end
     attr_reader :name
     attr_accessor :other
