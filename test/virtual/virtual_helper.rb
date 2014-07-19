@@ -1,6 +1,5 @@
 require_relative '../helper'
 require 'parslet/convenience'
-require "yaml"
 
 module VirtualHelper
   # need a code generator, for arm 
@@ -19,4 +18,19 @@ module VirtualHelper
     assert_equal should , expressions , expressions.to_yaml.gsub("\n" , "RETURN_MARKER") +  "\n" + expressions.to_yaml 
   end
   
+end
+
+require "yaml"   # not my first choice, but easy with graphs
+# for readability of the yaml output :next of instructions last
+
+Psych::Visitors::YAMLTree.class_eval do
+  private
+  def dump_ivars target
+    ivars = find_ivars target
+    ivars << :@next if ivars.delete(:@next)
+    ivars.each do |iv|
+      @emitter.scalar("#{iv.to_s.sub(/^@/, '')}", nil, nil, true, false, Psych::Nodes::Scalar::ANY)
+      accept target.instance_variable_get(iv)
+    end
+  end
 end
