@@ -15,7 +15,8 @@ module Ast
         raise part.inspect if last.nil?
       end
       # unconditionally brnach to the start
-      method.add start
+      merge.next = method.current.next
+      method.current.next = start
       # here we add the end of while that the branch jumps to
       #but don't link it in (not using add)
       method.current =  merge
