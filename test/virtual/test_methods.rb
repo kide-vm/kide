@@ -97,7 +97,7 @@ HERE
     check
   end
 
-  def ttest_function_return_while
+  def test_function_return_while
     @string_input    = <<HERE
 def retvar(n)
   while( n > 5) do
@@ -106,7 +106,7 @@ def retvar(n)
   end 
 end
 HERE
-    @output = ""
+    @output = "---RETURN_MARKER- !ruby/object:Virtual::MethodDefinitionRETURN_MARKER  name: :retvarRETURN_MARKER  args:RETURN_MARKER  - !ruby/object:Virtual::ArgumentRETURN_MARKER    name: :nRETURN_MARKER    type: !ruby/object:Virtual::Mystery {}RETURN_MARKER  locals: []RETURN_MARKER  tmps: []RETURN_MARKER  receiver: !ruby/object:Virtual::SelfReferenceRETURN_MARKER    clazz: RETURN_MARKER  return_type: !ruby/object:Virtual::ReferenceRETURN_MARKER    clazz: RETURN_MARKER  start: !ruby/object:Virtual::MethodEnterRETURN_MARKER    next: !ruby/object:Virtual::LabelRETURN_MARKER      name: while_startRETURN_MARKER      next: !ruby/object:Virtual::MethodReturnRETURN_MARKER        next: RETURN_MARKER  current: !ruby/object:Virtual::LabelRETURN_MARKER    name: :while_39010RETURN_MARKER    next: RETURN_MARKER"
     check
   end
 
