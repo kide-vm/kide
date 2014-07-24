@@ -4,25 +4,25 @@ module Ast
 
   class IntegerExpression < Expression
 #    attr_reader :value
-    def compile frame , method
+    def compile method , frame
       Virtual::IntegerConstant.new value
     end
   end
 
   class TrueExpression
-    def compile frame , method
+    def compile method , frame
       Virtual::TrueValue.new
     end
   end
   
   class FalseExpression
-    def compile frame , method
+    def compile method , frame
       Virtual::FalseValue.new
     end
   end
   
   class NilExpression
-    def compile frame , method
+    def compile method , frame
       Virtual::NilValue.new
     end
   end
@@ -33,7 +33,7 @@ module Ast
     # compiling name needs to check if it's a variable and if so resolve it
     # otherwise it's a method without args and a send is ussued.
     # this makes the namespace static, ie when eval and co are implemented method needs recompilation
-    def compile frame , method
+    def compile method , frame
       return Virtual::Self.new( Virtual::Mystery.new ) if name == :self
       if method.has_var(name)
         frame.compile_get(method , name )
@@ -45,7 +45,7 @@ module Ast
 
   class ModuleName < NameExpression
 
-    def compile frame , method
+    def compile method , frame
       clazz = ::Virtual::Object.space.get_or_create_class name
       raise "uups #{clazz}.#{name}" unless clazz
       #class qualifier, means call from metaclass
@@ -56,7 +56,7 @@ module Ast
 
   class StringExpression < Expression
 #    attr_reader  :string
-    def compile frame , method
+    def compile method , frame
       value = Virtual::StringConstant.new(string)
       ::Virtual::Object.space.add_object value 
       value
@@ -65,9 +65,9 @@ module Ast
   class AssignmentExpression < Expression
     #attr_reader  :left, :right
 
-    def compile frame , method
+    def compile method , frame
       raise "must assign to NameExpression , not #{left}" unless left.instance_of? NameExpression 
-      r = right.compile(frame , method)
+      r = right.compile(method,frame)
       frame.compile_set( method , left.name , r )
     end
     def old_scratch
@@ -93,7 +93,7 @@ module Ast
   end
 
   class VariableExpression < NameExpression
-    def compile frame ,method
+    def compile method , frame
       method.add Virtual::ObjectGet.new(name)
       Virtual::Return.new( Virtual::Mystery.new )
     end

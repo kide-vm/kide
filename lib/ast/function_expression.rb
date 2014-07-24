@@ -1,17 +1,17 @@
 module Ast
   class FunctionExpression < Expression
 #    attr_reader  :name, :params, :body , :receiver
-    def compile frame , method
+    def compile method , frame
       args = params.collect do |p|
         raise "error, arguemnt must be a identifier, not #{p}" unless p.is_a? NameExpression
         Virtual::Argument.new( p.name , Virtual::Mystery.new )
       end
-      r = receiver ? receiver.compile(frame,method) : Virtual::SelfReference.new
+      r = receiver ? receiver.compile(method,frame) : Virtual::SelfReference.new
       method = Virtual::MethodDefinition.new(name , args , r )
       frame = frame.new_frame
       return_type = nil
       body.each do |ex|
-        return_type = ex.compile(frame , method )
+        return_type = ex.compile(method,frame )
         raise return_type.inspect if return_type.is_a? Virtual::Instruction
       end
       method.return_type = return_type

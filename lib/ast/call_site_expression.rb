@@ -4,9 +4,9 @@ module Ast
   class CallSiteExpression < Expression
 #    attr_reader  :name, :args , :receiver
     @@counter = 0
-    def compile frame , method
-      me = receiver.compile(frame , method )
-      with = args.collect{|a| a.compile(frame , method)}
+    def compile method , frame
+      me = receiver.compile( method, frame )
+      with = args.collect{|a| a.compile( method,frame)}
       frame.compile_send( method , name , me , with  )
     end
 

@@ -1,17 +1,17 @@
 module Ast
   class WhileExpression < Expression
 #    attr_reader  :condition, :body
-    def compile frame , method
+    def compile method , frame
       start = Virtual::Label.new("while_start")
       method.add start
-      is = condition.compile(frame , method)
+      is = condition.compile(method,frame)
       branch = Virtual::ImplicitBranch.new "while"
       merge = Virtual::Label.new(branch.name)
       branch.other = merge   #false jumps to end of while
       method.add branch
       last = is
       body.each do |part|
-        last = part.compile(frame,method )
+        last = part.compile(method,frame )
         raise part.inspect if last.nil?
       end
       # unconditionally brnach to the start

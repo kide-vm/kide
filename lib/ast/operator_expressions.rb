@@ -1,9 +1,9 @@
 module Ast
   class OperatorExpression < Expression
 #    attr_reader  :operator, :left, :right
-    def compile frame , method
+    def compile method , frame
       call = CallSiteExpression.new( operator , [right] , left )
-      call.compile(frame , method)
+      call.compile(method,frame)
     end
   end
 end

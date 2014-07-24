@@ -1,8 +1,8 @@
 module Ast
   class ExpressionList < Expression
 #    attr_reader  :expressions
-    def compile binding , method
-      expressions.collect { |part|  part.compile( binding , method ) }
+    def compile method , frame
+      expressions.collect { |part|  part.compile( method, frame ) }
     end
   end
 end
