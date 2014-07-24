@@ -8,7 +8,7 @@ module Ast
       end
       r = receiver ? receiver.compile(method,frame) : Virtual::SelfReference.new
       method = Virtual::MethodDefinition.new(name , args , r )
-      frame = frame.new_frame
+      #frame = frame.new_frame
       return_type = nil
       body.each do |ex|
         return_type = ex.compile(method,frame )

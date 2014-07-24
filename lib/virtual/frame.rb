@@ -8,14 +8,16 @@ module Virtual
   #
   # In a dynamic language the method is dynamically resolved, and so the size of the frame is not know to the caller
   # Also exceptions (with the possibility of retry) and the idea of being able to take and store bindings
-  # make it to say the very least unsensibly tricky to store them on the stack. So we don't.
+  # make it, to say the very least, unsensibly tricky to store them on the stack. So we don't.
 
-  # Also at runtime Messages and frames remain completely "normal" objects
+  # Also at runtime Messages and Frames remain completely "normal" objects. Ie have layouts and so on. Which resolves the 
+  # dichotomy of objects on the stack or heap. Sama sama.
 
   class Frame
-    def initialize variables
-      @variables = variables
+    def initialize locals , temps
+      @locals = locals
+      @tmps = tmps
     end
-    attr_accessor :variables
+    attr_accessor :locals , :tmps
   end
 end

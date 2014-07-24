@@ -1,5 +1,5 @@
 module Virtual
-  # So when an object calls a method, or sends a message, this is what a sends: a Message
+  # So when an object calls a method, or sends a message, this is what it sends: a Message
 
   # A message contains the sender, return and exceptional return addresses,the arguments, and a slot for the frame.
 
@@ -24,14 +24,15 @@ module Virtual
       @me = me
       @next_normal = normal
       @next_exception = exceptional
+      @arguments = arguments
       # a frame represents the local and temporary variables at a point in the program.
-      @frame = []
+      @frame = nil
     end
-    attr_reader :me, :next_normal, :next_exception, :frame
+    attr_reader :me, :next_normal, :next_exception, :arguments , :frame
 
     # dummy for the eventual
     def new_frame
-      self
+      raise self.inspect
     end
     # 
     def compile_get method , name
