@@ -103,12 +103,14 @@ module Virtual
   class ImplicitBranch < Branch
   end
 
-  # A note: future branch conditions include OverflowBranch and other non-c 
+  class MessageGet < Instruction
+    include Named
+  end
   class FrameGet < Instruction
     include Named
   end
 
-  class FrameSend < Instruction
+  class MessageSend < Instruction
     def initialize name , args = [] , nex = nil
       super(nex)
       @name = name.to_sym
@@ -121,6 +123,18 @@ module Virtual
   end
 
   class FrameSet < Instruction
+    def initialize name , val , nex = nil
+      super(nex)
+      @name = name.to_sym
+      @value = val
+    end
+    attr_reader :name , :value
+    def attributes
+      [:name , :value] + super
+    end
+  end
+
+  class MessageSet < Instruction
     def initialize name , val , nex = nil
       super(nex)
       @name = name.to_sym

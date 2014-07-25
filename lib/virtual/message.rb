@@ -36,19 +36,27 @@ module Virtual
     end
     # 
     def compile_get method , name
-      method.add FrameGet.new(name)
+      if method.has_arg(name)
+        method.add MessageGet.new(name)
+      else
+        method.add FrameGet.new(name)
+      end
       method.get_var(name)
     end
 
     def compile_send method , name , me , with = [] 
       method.add Virtual::LoadSelf.new(me)
-      method.add FrameSend.new(name , with )
+      method.add MessageSend.new(name , with )
       Return.new( method.return_type )
     end
 
     def compile_set method , name , val
       method.set_var(name,val)
-      method.add FrameSet.new(name , val )
+      if method.has_arg(name)
+        method.add MessageSet.new(name , val )
+      else
+        method.add FrameSet.new(name , val )
+      end
       method.get_var(name)
     end
   end

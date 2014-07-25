@@ -49,6 +49,13 @@ module Virtual
       var
     end
 
+    # determine whether this method has an argument by the name
+    def has_arg name
+      name = name.to_sym
+      var = @args.find {|a| a.name == name }
+      var
+    end
+
     def set_var name , var
       v = has_var name
       if( v )
