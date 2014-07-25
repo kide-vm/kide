@@ -3,7 +3,7 @@ module Ast
   
   class CallSiteExpression < Expression
 #    attr_reader  :name, :args , :receiver
-    @@counter = 0
+
     def compile method , message
       me = receiver.compile( method, message )
       with = args.collect{|a| a.compile( method,message)}

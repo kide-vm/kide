@@ -11,7 +11,7 @@ module Virtual
   # - low level means it's basic instructions are realively easily implemented in a register machine. ie send is not
   #   a an instruction but a function.
   #
-  # So the memory model of the machine allows for indexed access into and "object" . A fixed number of objects exist
+  # So the memory model of the machine allows for indexed access into an "object" . A fixed number of objects exist
   # (ie garbage collection is reclaming, not destroying and recreating) although there may be a way to increase that number.
   #
   # The ast is transformed to virtaul-machine objects, some of which represent code, some data.
@@ -19,12 +19,12 @@ module Virtual
   # The next step transforms to the register machine layer, which is what actually executes. 
   #
 
-  # More concretely, an virtual machine is a sort of oo turing machine, it has a current instruction, executes the
+  # More concretely, a virtual machine is a sort of oo turing machine, it has a current instruction, executes the
   # instructions, fetches the next one and so on. 
   # Off course the instructions are not soo simple, but in oo terms quite so.
   # 
-  # The machine is virtual in the sense that it is completely 
-  # modeled in software, it's complete state explicitly available (not implicitly by walking stacks or something)
+  # The machine is virtual in the sense that it is completely modeled in software, 
+  # it's complete state explicitly available (not implicitly by walking stacks or something)
 
   # The machine has a no register, but local variables, a scope at each point in time. 
   # Scope changes with calls and blocks, but is saved at each level. In terms of lower level implementation this means
@@ -34,9 +34,9 @@ module Virtual
 
     def initialize
       the_end = Halt.new
-      @frame = Message.new(the_end , the_end , :Object)
+      @message = Message.new(the_end , the_end , :Object)
     end
-    attr_reader :frame
+    attr_reader :message
 
     # run the instruction stream given. Instructions are a graph and executing means traversing it.
     # If there is no next instruction the machine stops
