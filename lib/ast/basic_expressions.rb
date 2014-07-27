@@ -68,6 +68,7 @@ module Ast
     def compile method , message
       raise "must assign to NameExpression , not #{left}" unless left.instance_of? NameExpression 
       r = right.compile(method,message)
+      raise "oh noo, nil from where #{right.inspect}" unless r
       message.compile_set( method , left.name , r )
     end
     def old_scratch

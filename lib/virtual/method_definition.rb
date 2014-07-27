@@ -59,7 +59,7 @@ module Virtual
     def set_var name , var
       v = has_var name
       if( v )
-        puts "resetting local #{v.inspect}"
+        v.type = var
       else
         v = Local.new(name , var)
         @locals << v
