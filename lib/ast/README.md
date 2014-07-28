@@ -54,7 +54,9 @@ The important thing here is that Messages and Frames are normal objects.
 And interestingly we can partly use ruby to find the method, so in a way it is not just a top down transformation. but 
 the sending goes back up and then down again.
 
-The Message object is the second parameter to the compile method, the run-time part as it were.
+The Message object is the second parameter to the compile method, the run-time part as it were. Why? Since it only
+exists at runtime: to make compile time analysis possible. Especially for those times when we can resolve the method
+at compile time. (Which is for all vm code)
 
 
 * 
