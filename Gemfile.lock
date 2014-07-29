@@ -6,8 +6,8 @@ GIT
       blankslate (~> 2.0)
 
 GIT
-  remote: https://github.com/salama-vm/salama-reader.git
-  revision: 03ad97ef279cfbf27720db20130303999cdf2326
+  remote: https://github.com/salama/salama-reader.git
+  revision: 0cc0812d5ec6912bfd4753e61b3b02cfcd741283
   specs:
     salama-reader (0.1.0)
 
@@ -88,9 +88,9 @@ PLATFORMS
 
 DEPENDENCIES
   jeweler
-  salama-reader (= 0.1.0)!
   minitest
   parslet!
   pry
   roodi
+  salama-reader (= 0.1.0)!
   simplecov
