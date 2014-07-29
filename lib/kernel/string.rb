@@ -1,4 +1,4 @@
-module Kide
+module Salama
   module Kernel
     def self.putstring context 
       function = Virtual::MethodDefinition.new(:putstring , [] )

@@ -6,10 +6,10 @@ GIT
       blankslate (~> 2.0)
 
 GIT
-  remote: https://github.com/kide-vm/kide-reader.git
+  remote: https://github.com/salama-vm/salama-reader.git
   revision: 03ad97ef279cfbf27720db20130303999cdf2326
   specs:
-    kide-reader (0.1.0)
+    salama-reader (0.1.0)
 
 GEM
   remote: http://rubygems.org/
@@ -88,7 +88,7 @@ PLATFORMS
 
 DEPENDENCIES
   jeweler
-  kide-reader (= 0.1.0)!
+  salama-reader (= 0.1.0)!
   minitest
   parslet!
   pry

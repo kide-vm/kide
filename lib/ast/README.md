@@ -1,6 +1,6 @@
 ### Ast
 
-The Ast (abstract syntax tree) is created by kide-reader gem and the classes defined there
+The Ast (abstract syntax tree) is created by salama-reader gem and the classes defined there
 
 ### Compiling
 

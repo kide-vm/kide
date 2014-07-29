@@ -1,4 +1,4 @@
-module Kide
+module Salama
   module Kernel
     def self.exit context
       function = Virtual::MethodDefinition.new(:exit , [] , Virtual::Integer)
