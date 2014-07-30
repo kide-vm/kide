@@ -42,12 +42,25 @@ module Virtual
     def self.boot
       machine = Machine.new
       machine.boot
+      machine
     end
 
-    def read string
-      syntax  = @parser.parse_with_debug(string)
-      Parser::Transform.new.apply(syntax)
+    def boot
+      # read all the files needed for a minimal system at compile
+      classes = ["object"]
+      classes.each do |clazz|
+        bytes = File.read(File.join( File.dirname( __FILE__ ) , ".." , "parfait" , "#{clazz}.rb") )
+#        expression = compile_main(bytes)
+      end
     end
+
+    def compile_main bytes
+      syntax  = @parser.parse_with_debug(bytes)
+      parts = Parser::Transform.new.apply(syntax)
+      main = Virtual::MethodDefinition.main
+      expressions = parts.compile( main , self.message )
+    end
+
 
     # run the instruction stream given. Instructions are a graph and executing means traversing it.
     # If there is no next instruction the machine stops
