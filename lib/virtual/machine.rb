@@ -33,10 +33,21 @@ module Virtual
   class Machine
 
     def initialize
+      @parser  = Parser::Salama.new
       the_end = Halt.new
       @message = Message.new(the_end , the_end , :Object)
     end
     attr_reader :message
+
+    def self.boot
+      machine = Machine.new
+      machine.boot
+    end
+
+    def read string
+      syntax  = @parser.parse_with_debug(string)
+      Parser::Transform.new.apply(syntax)
+    end
 
     # run the instruction stream given. Instructions are a graph and executing means traversing it.
     # If there is no next instruction the machine stops

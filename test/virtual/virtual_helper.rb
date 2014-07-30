@@ -7,11 +7,9 @@ module VirtualHelper
 #    @object_space = Boot::BootSpace.new "Arm"
   end
 
-  def check 
-    parser  = Parser::Salama.new
-    syntax  = parser.parse_with_debug(@string_input)
-    parts   = Parser::Transform.new.apply(syntax)
+  def check
     machine = Virtual::Machine.new
+    parts = machine.read @string_input
     main = Virtual::MethodDefinition.main
     expressions = parts.compile( main, machine.message )
     should = YAML.load(@output.gsub("RETURN_MARKER" , "\n"))
