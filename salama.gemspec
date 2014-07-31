@@ -6,12 +6,12 @@ Gem::Specification.new do |s|
 
   s.authors = ['Torsten Ruger']
   s.email = 'torsten@villataika.fi'
-  s.extra_rdoc_files = ['README.markdown']
+  s.extra_rdoc_files = ['README.md']
   s.files = %w(README.md LICENSE.txt Rakefile) + Dir.glob("lib/**/*")
   s.homepage = 'https://github.com/salama-vm/salama'
   s.license = 'MIT'
   s.require_paths = ['lib']
-  s.summary = 'Salama (lightning) is a native oo vm without any c'  
+  s.summary = 'Salama is a native object vm without any c, one day possibly a ruby vm'  
   
   s.add_dependency 'parslet', '~> 1.6.1'
 end
