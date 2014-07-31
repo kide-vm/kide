@@ -8,7 +8,7 @@ function.
 A normal ruby function is one that is parsed and transformed to code. But not all functionality can be written in ruby, 
 one of those chicken and egg things. C uses Assembler in this situation, we use Kernel function.
 
-Slightly more here : http://salama-vm.github.io/2014/06/10/more-clarity.html
+Slightly more here : http://salama.github.io/2014/06/10/more-clarity.html
 
 The Kernal module is scattered into several files, but that is just so the file doesn't get too long.
 
