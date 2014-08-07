@@ -15,4 +15,17 @@ HERE
     check
   end
 
+  def test_message_tpye
+    @string_input    = <<HERE
+class Message
+  def get_type_for(name)
+    index = @layout.get_index(name)
+    get_at(index)
+  end
+end
+HERE
+    @output = "---RETURN_MARKER- &6 !ruby/object:Boot::BootClassRETURN_MARKER  method_definitions:RETURN_MARKER  - !ruby/object:Virtual::MethodDefinitionRETURN_MARKER    name: :get_type_forRETURN_MARKER    args:RETURN_MARKER    - &2 !ruby/object:Virtual::ArgumentRETURN_MARKER      name: :nameRETURN_MARKER      type: !ruby/object:Virtual::Mystery {}RETURN_MARKER    locals:RETURN_MARKER    - &4 !ruby/object:Virtual::LocalRETURN_MARKER      name: :indexRETURN_MARKER      type: &3 !ruby/object:Virtual::ReturnRETURN_MARKER        name: :returnRETURN_MARKER        type: &1 !ruby/class 'Virtual::Mystery'RETURN_MARKER    tmps: []RETURN_MARKER    receiver: !ruby/object:Virtual::SelfReferenceRETURN_MARKER      clazz: RETURN_MARKER    return_type: !ruby/object:Virtual::ReturnRETURN_MARKER      name: :returnRETURN_MARKER      type: *1RETURN_MARKER    start: !ruby/object:Virtual::MethodEnterRETURN_MARKER      next: !ruby/object:Virtual::ObjectGetRETURN_MARKER        name: :layoutRETURN_MARKER        next: !ruby/object:Virtual::MessageGetRETURN_MARKER          name: :nameRETURN_MARKER          next: !ruby/object:Virtual::LoadSelfRETURN_MARKER            value: !ruby/object:Virtual::ReturnRETURN_MARKER              name: :returnRETURN_MARKER              type: !ruby/object:Virtual::Mystery {}RETURN_MARKER            next: !ruby/object:Virtual::MessageSendRETURN_MARKER              name: :get_indexRETURN_MARKER              args:RETURN_MARKER              - *2RETURN_MARKER              next: !ruby/object:Virtual::FrameSetRETURN_MARKER                name: :indexRETURN_MARKER                value: *3RETURN_MARKER                next: !ruby/object:Virtual::FrameGetRETURN_MARKER                  name: :indexRETURN_MARKER                  next: !ruby/object:Virtual::LoadSelfRETURN_MARKER                    value: !ruby/object:Virtual::SelfRETURN_MARKER                      name: :selfRETURN_MARKER                      type: !ruby/object:Virtual::Mystery {}RETURN_MARKER                    next: &5 !ruby/object:Virtual::MessageSendRETURN_MARKER                      name: :get_atRETURN_MARKER                      args:RETURN_MARKER                      - *4RETURN_MARKER                      next: !ruby/object:Virtual::MethodReturnRETURN_MARKER                        next: RETURN_MARKER    current: *5RETURN_MARKER  name: :MessageRETURN_MARKER  super_class_name: :ObjectRETURN_MARKER  meta_class: !ruby/object:Boot::MetaClassRETURN_MARKER    layout: !ruby/object:Virtual::LayoutRETURN_MARKER      members: []RETURN_MARKER    functions: []RETURN_MARKER    me_self: *6RETURN_MARKER"
+    check
+  end
+
 end

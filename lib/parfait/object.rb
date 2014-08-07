@@ -3,7 +3,7 @@
 
 class Object
 
-  def get_class
-    @layout.get_class
+  def get_class()
+    @layout.get_class()
   end
 end

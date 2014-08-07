@@ -3,9 +3,9 @@
 
 class Message
 
-  def get_type_for name
-    index = @layout.get_index name
-    get_at index
+  def get_type_for(name)
+    index = @layout.get_index(name)
+    get_at(index)
   end
 
   def send

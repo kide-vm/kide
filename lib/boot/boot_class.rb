@@ -12,9 +12,9 @@ module Boot
       @super_class_name = super_class_name.to_sym
       @meta_class = MetaClass.new(self)
     end
-    attr_reader :name , :methods , :meta_class , :context , :super_class
+    attr_reader :name , :methods , :meta_class , :context , :super_class_name
     def attributes
-      [:name , :super_class]
+      [:name , :super_class_name]
     end
     def add_method_definition method
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Virtual::MethodDefinition
