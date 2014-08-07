@@ -17,7 +17,7 @@ module Boot
       [:name , :super_class]
     end
     def add_method_definition method
-      raise "not a method #{method}" unless method.is_a? Virtual::MethodDefinition
+      raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Virtual::MethodDefinition
       raise "syserr " unless method.name.is_a? Symbol
       @method_definitions << method
     end
