@@ -6,21 +6,21 @@ module Ast
       #      is.is_false(frame,method)
       # TODO should/will use different branches for different conditions. 
       branch = Virtual::ImplicitBranch.new "if_merge"
-      method.add branch
+      method.add_code branch
       last = is
       if_true.each do |part|
         last = part.compile(method,message )
         raise part.inspect if last.nil?
       end
       merge = Virtual::Label.new(branch.name)
-      method.add merge
+      method.add_code merge
       branch.swap
       method.current = branch
       if_false.each do |part|
         last = part.compile(method,message )
         raise part.inspect if last.nil?
       end
-      method.add merge
+      method.add_code merge
       branch.swap
       method.current = merge
       #TODO should return the union of the true and false types

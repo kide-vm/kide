@@ -3,12 +3,12 @@ module Ast
 #    attr_reader  :condition, :body
     def compile method , message
       start = Virtual::Label.new("while_start")
-      method.add start
+      method.add_code start
       is = condition.compile(method,message)
       branch = Virtual::ImplicitBranch.new "while"
       merge = Virtual::Label.new(branch.name)
       branch.other = merge   #false jumps to end of while
-      method.add branch
+      method.add_code branch
       last = is
       body.each do |part|
         last = part.compile(method,message )

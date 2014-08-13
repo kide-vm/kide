@@ -5,12 +5,6 @@ module Virtual
   # 
   # functions on these classes express their functionality as function objects
   class Object
-    def initialize
-      @layout = Layout.new( attributes )
-    end
-    def attributes
-      [:layout]
-    end
     def == other
       return false unless other.class == self.class 
       attributes.each do |a|

@@ -37,7 +37,7 @@ module Ast
       end
 
       function = Virtual::Function.new(name , me , args )
-      clazz.add_function function 
+      clazz.add_code_function function 
 
       parent_locals = context.locals
       parent_function = context.function

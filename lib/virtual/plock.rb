@@ -1,9 +1,9 @@
-module Vm
-  #Plock (Proc-Block) is mostly a Block but also somewhat Proc-ish: A Block that carries data.
+module Virtual
+  # Plock (Proc-Block) is mostly a Block but also somewhat Proc-ish: A Block that carries data.
   #
   # Data in a Block is usefull in the same way data in objects is. Plocks being otherwise just code.
   #
-  # But the concept is not quite straigtforwrd: If one think of an Plock enbedded in a normal function,
+  # But the concept is not quite straigtforwrd: If one thinks of a Plock embedded in a normal method,
   # the a data in the Plock would be static data. In OO terms this comes quite close to a Proc, if the data is the local
   # variables. Quite possibly they shall be used to implement procs, but that is not the direction now.
   #
@@ -16,7 +16,7 @@ module Vm
   # It follows that Plocks should be linear blocks.
   class Plock < Block
     
-    def initialize(name , function , next_block )
+    def initialize(name , method , next_block )
       super
       @data = []
       @branch_code = RegisterMachine.instance.b next_block
@@ -27,7 +27,7 @@ module Vm
       @branch_code = RegisterMachine.instance.b next_block
     end
 
-    # Data gets assembled after functions
+    # Data gets assembled after methods
     def add_data o
       return if @objects.include? o
       raise "must be derived from Code #{o.inspect}" unless o.is_a? Vm::Code

@@ -2,22 +2,16 @@ require_relative "object"
 
 module Virtual
   
-  # Instruction is an abstract for all the code of the object-machine. Derived classe make up the actual functionality
-  # of the machine. 
+  # Instruction is an abstract for all the code of the object-machine. 
+  # Derived classes make up the actual functionality of the machine. 
   # All functions on the machine are captured as instances of instructions
   #
-  # It is actully the point of the virtual machine layer to express oo functionality in the set of instructions, thus
-  # defining a minimal set of instructions needed to implement oo.
+  # It is actually the point of the virtual machine layer to express oo functionality in the set of instructions,
+  # thus defining a minimal set of instructions needed to implement oo.
   
   # This is partly because jumping over this layer and doing in straight in assember was too big a step
   class Instruction < Virtual::Object
-    attr_accessor :next
-    def attributes
-      [:next]
-    end
-    def initialize nex = nil
-      @next = nex
-    end
+
     # simple thought: don't recurse for labels, just check their names
     def == other
       return false unless other.class == self.class 
@@ -25,7 +19,7 @@ module Virtual
         left = send(a)
         right = other.send(a)
         return false unless left.class == right.class 
-        if( left.is_a? Label)
+        if( left.is_a? Block)
           return false unless left.name == right.name
         else
           return false unless left == right
@@ -33,23 +27,16 @@ module Virtual
       end
       return true
     end
-    # insert the given instruction as the next after this
-    # insert is not just set, but preserves the previous @next value as the next of the given instruction
-    # so if you think of the instructions as a linked list, it inserts the give instruction _after_ this one
-    def insert instruction
-      instruction.next = @next
-      @next = instruction
-    end
+
   end
 
   module Named
-    def initialize name , nex = nil
-      super(nex)
+    def initialize name
       @name = name
     end
     attr_reader :name
     def attributes
-      [:name ] + super
+      [:name ]
     end
   end
 
@@ -66,18 +53,12 @@ module Virtual
   class MethodReturn < Instruction
   end
 
-  #resolves to nothing, but allows forward definition
-  class Label < Instruction
-    include Named
-  end
-
-  # the next instruction represents the true branch and the other is the .... other
+  # the next instruction represents the "true" branch and the other is the .... other
   # could have been the false, but false is a keyword and is asymetric to next anyway
   # this is an abstract base class (though no measures are taken to prevent instantiation) and derived
   # class names indicate the actual test
   class Branch < Instruction
-    def initialize name , nex = nil , other = nil
-      super(nex)
+    def initialize name , other = nil
       unless(name.to_s.split("_").last.to_i > 0)
         name = "#{name}_#{name.to_i(36) % 65536}".to_sym 
       end
@@ -87,14 +68,7 @@ module Virtual
     attr_reader :name
     attr_accessor :other
     def attributes
-      [:name , :next , :other]
-    end
-    # so code can be "poured in" in the same way as normal, we swap the braches around in after the true condition
-    # and swap them back after
-    def swap
-      tmp = @other
-      @other = @next
-      @next = tmp
+      [:name  , :other]
     end
   end
 
@@ -111,49 +85,45 @@ module Virtual
   end
 
   class MessageSend < Instruction
-    def initialize name , args = [] , nex = nil
-      super(nex)
+    def initialize name , args = []
       @name = name.to_sym
       @args = args
     end
     attr_reader :name , :args
     def attributes
-      [:name , :args ] + super
+      [:name , :args ]
     end
   end
 
   class FrameSet < Instruction
-    def initialize name , val , nex = nil
-      super(nex)
+    def initialize name , val
       @name = name.to_sym
       @value = val
     end
     attr_reader :name , :value
     def attributes
-      [:name , :value] + super
+      [:name , :value]
     end
   end
 
   class MessageSet < Instruction
-    def initialize name , val , nex = nil
-      super(nex)
+    def initialize name , val
       @name = name.to_sym
       @value = val
     end
     attr_reader :name , :value
     def attributes
-      [:name , :value] + super
+      [:name , :value] 
     end
   end
 
   class LoadSelf < Instruction
-    def initialize val , nex = nil
-      super(nex)
+    def initialize val
       @value = val
     end
     attr_reader  :value
     def attributes
-      [:value] + super
+      [:value]
     end
   end
 

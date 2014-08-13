@@ -29,3 +29,5 @@ class Node < List
     @key == key ? @value = value : super(key,value)
   end
 end
+
+# https://www.youtube.com/watch?v=HJ-719EGIts
