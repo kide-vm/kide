@@ -53,28 +53,23 @@ module Virtual
   class MethodReturn < Instruction
   end
 
-  # the next instruction represents the "true" branch and the other is the .... other
-  # could have been the false, but false is a keyword and is asymetric to next anyway
-  # this is an abstract base class (though no measures are taken to prevent instantiation) and derived
-  # class names indicate the actual test
+  # a branch must branch to a block. This is an abstract class, names indicate the actual test
   class Branch < Instruction
-    def initialize name , other = nil
-      unless(name.to_s.split("_").last.to_i > 0)
-        name = "#{name}_#{name.to_i(36) % 65536}".to_sym 
-      end
-      @name = name
-      @other = other
+    def initialize to
+      @to = to
     end
-    attr_reader :name
-    attr_accessor :other
+    attr_reader :to
     def attributes
-      [:name  , :other]
+      [:to]
     end
   end
 
   # implicit means there is no explcit test involved.
   # normal ruby rules are false and nil are false, EVERYTHING else is true (and that includes 0)
   class ImplicitBranch < Branch
+  end
+
+  class UnconditionalBranch < Branch
   end
 
   class MessageGet < Instruction

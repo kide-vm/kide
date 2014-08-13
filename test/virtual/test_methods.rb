@@ -40,7 +40,7 @@ def foo()
   2 + 5
 end
 HERE
-    @output = ""
+    @output = "---RETURN_MARKER- &1 !ruby/object:Virtual::MethodDefinitionRETURN_MARKER  name: :fooRETURN_MARKER  args: []RETURN_MARKER  locals: []RETURN_MARKER  tmps: []RETURN_MARKER  receiver: !ruby/object:Virtual::SelfReferenceRETURN_MARKER    clazz: RETURN_MARKER  return_type: !ruby/object:Virtual::ReturnRETURN_MARKER    name: :returnRETURN_MARKER    type: !ruby/class 'Virtual::Mystery'RETURN_MARKER  blocks:RETURN_MARKER  - &2 !ruby/object:Virtual::BlockRETURN_MARKER    method: *1RETURN_MARKER    name: :fooRETURN_MARKER    branch: RETURN_MARKER    codes:RETURN_MARKER    - !ruby/object:Virtual::MethodEnter {}RETURN_MARKER    - !ruby/object:Virtual::LoadSelfRETURN_MARKER      value: !ruby/object:Virtual::IntegerConstantRETURN_MARKER        integer: 2RETURN_MARKER    - !ruby/object:Virtual::MessageSendRETURN_MARKER      name: :+RETURN_MARKER      args:RETURN_MARKER      - !ruby/object:Virtual::IntegerConstantRETURN_MARKER        integer: 5RETURN_MARKER  - !ruby/object:Virtual::BlockRETURN_MARKER    method: *1RETURN_MARKER    name: :foo_returnRETURN_MARKER    branch: RETURN_MARKER    codes:RETURN_MARKER    - !ruby/object:Virtual::MethodReturn {}RETURN_MARKER  current: *2RETURN_MARKER"
     check
   end
 

@@ -34,7 +34,7 @@ module Boot
         index = get_function.call( index_function )
         
         after_body = get_function.new_block("after_index")
-        get_function.insert_at after_body
+        get_function.current after_body
         
         get_function.pop([me])
         return_to.at_index( get_function , me , return_to )
@@ -55,7 +55,7 @@ module Boot
         set_function.call( index_function )
         after_body = set_function.new_block("after_index")
         
-        set_function.insert_at after_body
+        set_function.current after_body
         set_function.pop([me])
         return_to.at_index( set_function , me , return_to )
         set_function.set_return return_to

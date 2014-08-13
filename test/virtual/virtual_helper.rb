@@ -11,7 +11,7 @@ module VirtualHelper
     machine = Virtual::Machine.boot
     expressions = machine.compile_main @string_input
     should = YAML.load(@output.gsub("RETURN_MARKER" , "\n"))
-    assert_equal should , expressions , expressions.to_yaml.gsub("\n" , "RETURN_MARKER") +  "\n" + expressions.to_yaml.gsub("!ruby/object:","") 
+    assert_equal should , expressions , expressions.to_yaml.gsub("\n" , "RETURN_MARKER") +  "\n" + Sof::Members.write(expressions)
   end
   
 end
