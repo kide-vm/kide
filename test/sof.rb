@@ -6,12 +6,12 @@ end
 class BasicSof < MiniTest::Test
 
   def test_true
-    out = Sof::Members.write(true)
-    assert_equal  " true\n" , out
+    out = Sof::Writer.write(true)
+    assert_equal  "true" , out
   end
   def test_num
-    out = Sof::Members.write(124)
-    assert_equal  " 124\n" , out
+    out = Sof::Writer.write(124)
+    assert_equal  "124" , out
   end
 
 end

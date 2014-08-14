@@ -7,29 +7,31 @@ module Sof
       @objects = {}
       add(root ,0 )
     end
-    attr_reader :objects
+    attr_reader :objects , :root
     
     def add object , level
+      return if Members.is_value?(object)
       if( @objects.has_key?(object) )
         occurence = @objects[object]
         occurence.level = level if occurence.level > level
-      else
-        o = Occurence.new( object , @counter , level )
-        @objects[object] = o
-        c = @counter
-        @counter = @counter + 1
-        if( object.respond_to?(:attributes))
-          object.attributes.each do |a|
-            val = object.send a
-            add(val , level + 1)
-          end
-        elsif not value?(object)
-          object.add_sof(self , level)
+        return
+      end
+      o = Occurence.new( object , @counter , level )
+      @objects[object] = o
+      @counter = @counter + 1
+      attributes = attributes_for(object)
+      attributes.each do |a|
+        val = object.instance_variable_get "@#{a}".to_sym
+        add(val , level + 1)
+      end
+      if( object.is_a? Array )
+        object.each do |a|
+          add(a , level + 1)
         end
       end
     end
 
-    def value? o
+    def self.is_value? o
       return true if o == true
       return true if o == false
       return true if o == nil
@@ -38,38 +40,13 @@ module Sof
       return true if o.class == String
       return false
     end
-    def write
-      io = StringIO.new
-      output io , @root
-      io.string
-    end
 
-    def output io , object
-      occurence = @objects[object]
-      raise "no object #{object}" unless occurence
-      indent = " " * occurence.level
-      io.write indent
-      if(object.respond_to? :to_sof)
-        object.to_sof(io , self)
+    def attributes_for object
+      if( Known.is( object.class ))
+        Known.attributes(object.class)
       else
-        io.write object.class.name
-        if( object.respond_to?(:attributes))
-          object.attributes.each do |a|
-            val = object.send a
-            io.write( a )
-            io.write( " " )
-            output( io , val)
-          end
-          io.puts ""
-        else 
-          raise "General object not supported (yet), need attribute method #{object}"
-        end
+        object.instance_variables.collect{|i| i.to_s[1..-1].to_sym } # chop of @
       end
-    end
-
-    def self.write object
-      members = Members.new object
-      members.write
     end
   end
 end
