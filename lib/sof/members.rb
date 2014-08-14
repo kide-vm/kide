@@ -7,7 +7,7 @@ module Sof
       @root = root
       @counter = 1
       @objects = {}
-      add(root ,0 )
+      add(root , 0)
     end
     attr_reader :objects , :root
     

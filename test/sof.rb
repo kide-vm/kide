@@ -8,7 +8,6 @@ class ObjectWithAttributes
 end
 
 class BasicSof < MiniTest::Test
-
   def test_true
     out = Sof::Writer.write(true)
     assert_equal  "true" , out
@@ -19,6 +18,10 @@ class BasicSof < MiniTest::Test
   end
   def test_object
     out = Sof::Writer.write(ObjectWithAttributes.new)
-    assert_equal " ObjectWithAttributes(name: 'some object' ,number: 1234)\n" , out
+    assert_equal "ObjectWithAttributes(name: 'some object' ,number: 1234)\n" , out
+  end
+  def test_simple_array
+    out = Sof::Writer.write([true, 1234])
+    assert_equal "-true\n-1234\n" , out    
   end
 end

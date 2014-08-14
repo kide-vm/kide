@@ -21,7 +21,7 @@ module Sof
       indent = " " * occurence.level
       io.write indent
       if(object.respond_to? :to_sof) #mainly meant for arrays and hashes
-        object.to_sof(io , self)
+        object.to_sof(io , self , occurence.level)
       else
         object_write(object , io)
       end
