@@ -1,4 +1,6 @@
+require_relative "util"
 require_relative "members"
+require_relative "known"
 require_relative "writer"
 require_relative "array"
 require_relative "occurence"
@@ -25,7 +27,9 @@ FalseClass.class_eval do
 end
 String.class_eval do
   def to_sof(io, members)
+    io.write "'"
     io.write self
+    io.write "'"
   end
 end
 Fixnum.class_eval do
