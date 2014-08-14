@@ -12,7 +12,7 @@ module Virtual
   # This is partly because jumping over this layer and doing in straight in assember was too big a step
   class Instruction < Virtual::Object
 
-    # simple thought: don't recurse for labels, just check their names
+    # simple thought: don't recurse for Blocks, just check their names
     def == other
       return false unless other.class == self.class 
       attributes.each do |a|
@@ -27,7 +27,9 @@ module Virtual
       end
       return true
     end
-
+    def attributes
+      []
+    end
   end
 
   module Named

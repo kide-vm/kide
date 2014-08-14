@@ -35,7 +35,7 @@ module Virtual
       MethodDefinition.new(:main , [] , Virtual::SelfReference )
     end
     def attributes
-      [:name , :args , :receiver , :return_type , :start]
+      [:name , :args , :receiver , :return_type , :blocks]
     end
     def initialize name , args , receiver = Virtual::SelfReference.new , return_type = Virtual::Mystery , start = MethodEnter.new()
       @name = name.to_sym
