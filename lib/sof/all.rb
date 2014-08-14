@@ -1,6 +1,6 @@
 require_relative "util"
 require_relative "members"
-require_relative "known"
+require_relative "volotile"
 require_relative "writer"
 require_relative "array"
 require_relative "occurence"
@@ -8,11 +8,6 @@ require_relative "occurence"
 Symbol.class_eval do
   def to_sof(io, members)
     io.write ":#{to_s}"
-  end
-end
-NilClass.class_eval do
-  def to_sof(io,members)
-    io.write "nil"
   end
 end
 TrueClass.class_eval do

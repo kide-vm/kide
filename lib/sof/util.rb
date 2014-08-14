@@ -15,11 +15,8 @@ module Sof
     end
 
     def attributes_for object
-      if( Known.is( object.class ))
-        Known.attributes(object.class)
-      else
-        object.instance_variables.collect{|i| i.to_s[1..-1].to_sym } # chop of @
-      end
+      attributes = object.instance_variables.collect{|i| i.to_s[1..-1].to_sym } # chop of @
+      attributes - Volotile.attributes(object.class)
     end
     
   end
