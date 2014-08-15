@@ -18,16 +18,14 @@ module Sof
       end
       occurence = @members.objects[object]
       raise "no object #{object}" unless occurence
-      indent = " " * occurence.level
-      io.write indent
       if(object.respond_to? :to_sof) #mainly meant for arrays and hashes
         object.to_sof(io , self , occurence.level)
       else
-        object_write(object , io)
+        object_sof(object , io , occurence.level)
       end
     end
 
-    def object_write( object , io)
+    def object_sof( object , io , level)
       io.write object.class.name
       io.write "("
       attributes = attributes_for(object)
@@ -43,7 +41,8 @@ module Sof
       attributes.each_with_index do |a , i|
         val = get_value(object , a)
         next if is_value?(val)
-        io.puts " -"
+        io.write " " * (level+1)
+        io.write "-"
         io.write( a )
         io.write( ": " )
         output( io , val)

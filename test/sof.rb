@@ -24,4 +24,9 @@ class BasicSof < MiniTest::Test
     out = Sof::Writer.write([true, 1234])
     assert_equal "-true\n-1234\n" , out    
   end
+  def test_array_with_object
+    out = Sof::Writer.write([true, 1234 , ObjectWithAttributes.new])
+    assert_equal "-true\n-1234\n-ObjectWithAttributes(name: 'some object' ,number: 1234)\n\n" , out    
+  end
+
 end
