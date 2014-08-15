@@ -41,5 +41,9 @@ class BasicSof < MiniTest::Test
     out = Sof::Writer.write([true, 1 , [true , 12 , ObjectWithAttributes.new]])
     assert_equal "-true\n-1\n--true\n -12\n -#{OBJECT_STRING}\n\n\n" , out
   end
-
+  def test_simple_hash
+    out = Sof::Writer.write({ one: 1 , tru: true })
+    puts out
+    assert_equal "-:one 1\n-:tru true\n" , out
+  end
 end

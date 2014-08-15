@@ -3,6 +3,7 @@ require_relative "members"
 require_relative "volotile"
 require_relative "writer"
 require_relative "array"
+require_relative "hash"
 require_relative "occurence"
 
 Symbol.class_eval do
