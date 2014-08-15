@@ -31,6 +31,12 @@ module Sof
           add(a , level + 1)
         end
       end
+      if( object.is_a? Hash )
+        object.each do |a,b|
+          add(a , level + 1)
+          add(b , level + 1)
+        end
+      end
     end
   end
 end
