@@ -24,12 +24,21 @@ class BasicSof < MiniTest::Test
     out = Sof::Writer.write([true, 1234])
     assert_equal "-true\n-1234\n" , out    
   end
-  def test_array_with_object
+  def test_array_object
     out = Sof::Writer.write([true, 1234 , ObjectWithAttributes.new])
     assert_equal "-true\n-1234\n-ObjectWithAttributes(name: 'some object' ,number: 1234)\n\n" , out    
   end
-  def test_array_with_array
-    out = Sof::Writer.write([true, 1234 , [true , 12 ]])
+  def test_array_array
+    out = Sof::Writer.write([true, 1 , [true , 12 ]])
+    assert_equal "-true\n-1\n--true\n -12\n\n" , out    
+  end
+  def test_array_array_array
+    out = Sof::Writer.write([true, 1 , [true , 12 , [true , 123 ]]])
+    assert_equal "-true\n-1\n--true\n -12\n --true\n  -123\n\n\n" , out    
+  end
+  def ttest_array_array_object
+    out = Sof::Writer.write([true, 1 , [true , 12 , ObjectWithAttributes.new]])
+#    puts out
     assert_equal "-true\n-1234\n--true\n -12\n\n" , out    
   end
 
