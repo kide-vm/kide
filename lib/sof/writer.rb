@@ -37,7 +37,7 @@ module Sof
         output( io , val)
         io.write(" ,") unless i == (attributes.length - 1)
       end
-      io.puts ")"
+      io.write ")"
       attributes.each_with_index do |a , i|
         val = get_value(object , a)
         next if is_value?(val)

@@ -1,4 +1,5 @@
 require_relative "helper"
+require "yaml"
 
 class ObjectWithAttributes
   def initialize
@@ -19,7 +20,7 @@ class BasicSof < MiniTest::Test
   end
   def test_object
     out = Sof::Writer.write(ObjectWithAttributes.new)
-    assert_equal "#{OBJECT_STRING}\n" , out
+    assert_equal "#{OBJECT_STRING}" , out
   end
   def test_simple_array
     out = Sof::Writer.write([true, 1234])
@@ -27,7 +28,7 @@ class BasicSof < MiniTest::Test
   end
   def test_array_object
     out = Sof::Writer.write([true, 1234 , ObjectWithAttributes.new])
-    assert_equal "-true\n-1234\n-#{OBJECT_STRING}\n\n" , out
+    assert_equal "-true\n-1234\n-#{OBJECT_STRING}\n" , out
   end
   def test_array_array
     out = Sof::Writer.write([true, 1 , [true , 12 ]])
@@ -39,7 +40,7 @@ class BasicSof < MiniTest::Test
   end
   def test_array_array_object
     out = Sof::Writer.write([true, 1 , [true , 12 , ObjectWithAttributes.new]])
-    assert_equal "-true\n-1\n--true\n -12\n -#{OBJECT_STRING}\n\n\n" , out
+    assert_equal "-true\n-1\n--true\n -12\n -#{OBJECT_STRING}\n\n" , out
   end
   def test_simple_hash
     out = Sof::Writer.write({ one: 1 , tru: true })
@@ -47,7 +48,13 @@ class BasicSof < MiniTest::Test
   end
   def test_hash_object
     out = Sof::Writer.write({ one: 1 , two: ObjectWithAttributes.new })
-    puts out
+    assert_equal "-:one 1\n-:two #{OBJECT_STRING}\n" , out
+  end
+  def test_hash_array
+    out = Sof::Writer.write({ one: [1 , ObjectWithAttributes.new] , two: true })
+    puts "\n#{out}"
+    s = { :one => [1 , ObjectWithAttributes.new] , :two => true }.to_yaml
+    puts s
     assert_equal "-:one 1\n-:two #{OBJECT_STRING}\n\n" , out
   end
 end
