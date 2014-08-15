@@ -1,5 +1,5 @@
 Hash.class_eval do
-  def to_sof(io , members , level)
+  def to_sof_node(members , level)
     each_with_index do |pair , i|
       key , object = pair
       io.write(" " * level) unless i == 0

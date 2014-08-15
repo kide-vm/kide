@@ -5,31 +5,30 @@ require_relative "writer"
 require_relative "array"
 require_relative "hash"
 require_relative "occurence"
+require_relative "node"
 
 Symbol.class_eval do
-  def to_sof(io, members)
-    io.write ":#{to_s}"
+  def to_sof()
+    ":#{to_s}"
   end
 end
 TrueClass.class_eval do
-  def to_sof(io , members)
-    io.write "true"
+  def to_sof()
+    "true"
   end
 end
 FalseClass.class_eval do
-  def to_sof(io , members)
-    io.write "false"
+  def to_sof()
+    "false"
   end
 end
 String.class_eval do
-  def to_sof(io, members)
-    io.write "'"
-    io.write self
-    io.write "'"
+  def to_sof()
+    "'" + self + "'"
   end
 end
 Fixnum.class_eval do
-  def to_sof(io , members)
-    io.write to_s
+  def to_sof()
+    to_s
   end
 end

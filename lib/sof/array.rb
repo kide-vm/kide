@@ -1,10 +1,9 @@
 Array.class_eval do
-  def to_sof(io , members , level)
-    each_with_index do |object , i|
-      io.write(" " * level) unless i == 0
-      io.write("-")
-      members.output(io , object)
-      io.write("\n")
+  def to_sof_node(members , level)
+    node = Sof::Node.new(nil)
+    each do |object|
+      node.add members.to_sof_node( object )
     end
+    node
   end
 end

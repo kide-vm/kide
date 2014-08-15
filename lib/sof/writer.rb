@@ -6,47 +6,37 @@ module Sof
     end
 
     def write
+      node = to_sof_node(@members.root)
       io = StringIO.new
-      output io , @members.root
+      node.out( io )
       io.string
     end
 
-    def output io , object
+    def to_sof_node(object)
       if is_value?(object)
-        object.to_sof(io , self)
-        return
+        return Node.new(object.to_sof())
       end
       occurence = @members.objects[object]
       raise "no object #{object}" unless occurence
-      if(object.respond_to? :to_sof) #mainly meant for arrays and hashes
-        object.to_sof(io , self , occurence.level)
+      if(object.respond_to? :to_sof_node) #mainly meant for arrays and hashes
+        object.to_sof_node(self , occurence.level)
       else
-        object_sof(object , io , occurence.level)
+        object_sof_node(object , occurence.level)
       end
     end
 
-    def object_sof( object , io , level)
-      io.write object.class.name
-      io.write "("
+    def object_sof_node( object , level)
+      head = object.class.name + "("
       attributes = attributes_for(object)
-      attributes.each_with_index do |a , i|
+      immediate , extended = attributes.partition {|a| is_value?(get_value(object , a) ) }
+      head += immediate.collect {|a| "#{a}: #{get_value(object , a)}"}.join(", ") + ")"
+
+      node = Node.new(head)
+      extended.each do |a|
         val = get_value(object , a)
-        next unless is_value?(val)
-        io.write( a )
-        io.write( ": " )
-        output( io , val)
-        io.write(" ,") unless i == (attributes.length - 1)
+        node.add to_sof_node(val)
       end
-      io.write ")"
-      attributes.each_with_index do |a , i|
-        val = get_value(object , a)
-        next if is_value?(val)
-        io.write " " * (level+1)
-        io.write "-"
-        io.write( a )
-        io.write( ": " )
-        output( io , val)
-      end
+      node
     end
 
     def self.write object
