@@ -8,7 +8,7 @@ module Sof
     def write
       node = to_sof_node(@members.root)
       io = StringIO.new
-      node.out( io )
+      node.out( io , 0 )
       io.string
     end
 

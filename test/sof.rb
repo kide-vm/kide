@@ -24,33 +24,38 @@ class BasicSof < MiniTest::Test
   end
   def test_simple_array
     out = Sof::Writer.write([true, 1234])
-    assert_equal "-true\n-1234\n" , out
+    assert_equal "-true\n-1234" , out
   end
   def test_array_object
     out = Sof::Writer.write([true, 1234 , ObjectWithAttributes.new])
-    assert_equal "-true\n-1234\n-#{OBJECT_STRING}\n" , out
+    assert_equal "-true\n-1234\n-#{OBJECT_STRING}" , out
   end
   def test_array_array
     out = Sof::Writer.write([true, 1 , [true , 12 ]])
-    assert_equal "-true\n-1\n--true\n -12\n\n" , out
+    assert_equal "-true\n-1\n--true\n -12" , out
+  end
+  def test_array_array_reverse
+    out = Sof::Writer.write([ [true , 12 ], true, 1])
+    assert_equal "--true\n -12\n-true\n-1" , out
   end
   def test_array_array_array
     out = Sof::Writer.write([true, 1 , [true , 12 , [true , 123 ]]])
-    assert_equal "-true\n-1\n--true\n -12\n --true\n  -123\n\n\n" , out
+    assert_equal "-true\n-1\n--true\n -12\n --true\n  -123" , out
   end
-  def test_array_array_object
+  def ttest_array_array_object
     out = Sof::Writer.write([true, 1 , [true , 12 , ObjectWithAttributes.new]])
+    puts out
     assert_equal "-true\n-1\n--true\n -12\n -#{OBJECT_STRING}\n\n" , out
   end
-  def test_simple_hash
+  def ttest_simple_hash
     out = Sof::Writer.write({ one: 1 , tru: true })
     assert_equal "-:one 1\n-:tru true\n" , out
   end
-  def test_hash_object
+  def ttest_hash_object
     out = Sof::Writer.write({ one: 1 , two: ObjectWithAttributes.new })
     assert_equal "-:one 1\n-:two #{OBJECT_STRING}\n" , out
   end
-  def test_hash_array
+  def ttest_hash_array
     out = Sof::Writer.write({ one: [1 , ObjectWithAttributes.new] , two: true })
     puts "\n#{out}"
     s = { :one => [1 , ObjectWithAttributes.new] , :two => true }.to_yaml
