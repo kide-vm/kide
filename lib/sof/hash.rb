@@ -1,13 +1,9 @@
 Hash.class_eval do
   def to_sof_node(members , level)
-    each_with_index do |pair , i|
-      key , object = pair
-      io.write(" " * level) unless i == 0
-      io.write "-"
-      members.output( io , key)
-      io.write( " " )
-      members.output( io , object)
-      io.write("\n")
+    node = Sof::NodeList.new(nil)
+    each do |key , object|
+      k = key.to_sof() + ": "
+      v = members.to_sof_node( object )
     end
   end
 end

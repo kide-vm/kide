@@ -14,7 +14,7 @@ module Sof
 
     def to_sof_node(object)
       if is_value?(object)
-        return Node.new(object.to_sof())
+        return SimpleNode.new(object.to_sof())
       end
       occurence = @members.objects[object]
       raise "no object #{object}" unless occurence
@@ -31,7 +31,7 @@ module Sof
       immediate , extended = attributes.partition {|a| is_value?(get_value(object , a) ) }
       head += immediate.collect {|a| "#{a}: #{get_value(object , a).to_sof()}"}.join(", ") + ")"
 
-      node = Node.new(head)
+      node = SimpleNode.new(head)
       extended.each do |a|
         val = get_value(object , a)
         node.add to_sof_node(val)

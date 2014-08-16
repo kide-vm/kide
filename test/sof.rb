@@ -42,13 +42,13 @@ class BasicSof < MiniTest::Test
     out = Sof::Writer.write([true, 1 , [true , 12 , [true , 123 ]]])
     assert_equal "-true\n-1\n--true\n -12\n --true\n  -123" , out
   end
-  def ttest_array_array_object
+  def test_array_array_object
     out = Sof::Writer.write([true, 1 , [true , 12 , ObjectWithAttributes.new]])
-    puts out
-    assert_equal "-true\n-1\n--true\n -12\n -#{OBJECT_STRING}\n\n" , out
+    assert_equal "-true\n-1\n--true\n -12\n -#{OBJECT_STRING}" , out
   end
   def ttest_simple_hash
     out = Sof::Writer.write({ one: 1 , tru: true })
+    puts out
     assert_equal "-:one 1\n-:tru true\n" , out
   end
   def ttest_hash_object

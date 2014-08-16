@@ -1,7 +1,15 @@
 # We transform objects into a tree of nodes
 
 module Sof
+  #abstract base class for nodes in the tree
   class Node
+    # must be able to output to a stream
+    def out io ,level
+      raise "abstract #{self}"
+    end
+  end
+  
+  class SimpleNode < Node
     def initialize head
       @head = head
     end
@@ -11,20 +19,18 @@ module Sof
     end
   end
   
-  class ChildrenNode < Node
-    def initialize head
-      super(head)
+  class NodeList < Node
+    def initialize
       @children = []
     end
     attr_accessor  :children
 
     def add child
-      child = Node.new(child) if(child.is_a? String)
+      child = SimpleNode.new(child) if(child.is_a? String)
       @children << child
     end
 
     def out io , level = 0
-      super
       return if @children.empty?
       first = @children.first
       io.write "-"
