@@ -46,20 +46,16 @@ class BasicSof < MiniTest::Test
     out = Sof::Writer.write([true, 1 , [true , 12 , ObjectWithAttributes.new]])
     assert_equal "-true\n-1\n--true\n -12\n -#{OBJECT_STRING}" , out
   end
-  def ttest_simple_hash
+  def test_simple_hash
     out = Sof::Writer.write({ one: 1 , tru: true })
-    puts out
-    assert_equal "-:one 1\n-:tru true\n" , out
+    assert_equal "-:one: 1\n-:tru: true" , out
   end
-  def ttest_hash_object
+  def test_hash_object
     out = Sof::Writer.write({ one: 1 , two: ObjectWithAttributes.new })
-    assert_equal "-:one 1\n-:two #{OBJECT_STRING}\n" , out
+    assert_equal "-:one: 1\n-:two: #{OBJECT_STRING}" , out
   end
-  def ttest_hash_array
+  def test_hash_array
     out = Sof::Writer.write({ one: [1 , ObjectWithAttributes.new] , two: true })
-    puts "\n#{out}"
-    s = { :one => [1 , ObjectWithAttributes.new] , :two => true }.to_yaml
-    puts s
-    assert_equal "-:one 1\n-:two #{OBJECT_STRING}\n\n" , out
+    assert_equal "-:one: -1\n -#{OBJECT_STRING}\n-:two: true" , out
   end
 end

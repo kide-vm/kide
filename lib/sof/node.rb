@@ -10,17 +10,18 @@ module Sof
   end
   
   class SimpleNode < Node
-    def initialize head
-      @head = head
+    def initialize data
+      @data = data
     end
-    attr_accessor :head
+    attr_accessor :data
     def out io , level
-      io.write(head) if head
+      io.write(data) if data
     end
   end
   
-  class NodeList < Node
+  class NodeList < SimpleNode
     def initialize
+      super(nil)
       @children = []
     end
     attr_accessor  :children
@@ -31,6 +32,7 @@ module Sof
     end
 
     def out io , level = 0
+      super
       return if @children.empty?
       first = @children.first
       io.write "-"
