@@ -3,11 +3,11 @@ require "yaml"
 
 class ObjectWithAttributes
   def initialize
-    @name = "some object"
+    @name = "some name"
     @number = 1234
   end
 end
-OBJECT_STRING = "ObjectWithAttributes(name: 'some object' ,number: 1234)"
+OBJECT_STRING = "ObjectWithAttributes(name: 'some name', number: 1234)"
 
 class BasicSof < MiniTest::Test
   def test_true

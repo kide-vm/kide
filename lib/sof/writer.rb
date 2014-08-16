@@ -29,7 +29,7 @@ module Sof
       head = object.class.name + "("
       attributes = attributes_for(object)
       immediate , extended = attributes.partition {|a| is_value?(get_value(object , a) ) }
-      head += immediate.collect {|a| "#{a}: #{get_value(object , a)}"}.join(", ") + ")"
+      head += immediate.collect {|a| "#{a}: #{get_value(object , a).to_sof()}"}.join(", ") + ")"
 
       node = Node.new(head)
       extended.each do |a|
