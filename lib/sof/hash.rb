@@ -1,9 +1,9 @@
 Hash.class_eval do
-  def to_sof_node(members , level)
+  def to_sof_node(writer , level)
     node = Sof::NodeList.new()
     each do |key , object|
       k = key.to_sof() + ": "
-      v = members.to_sof_node( object )
+      v = writer.to_sof_node( object )
       v.data = "#{k}#{v.data}"
       node.add v
     end

@@ -20,8 +20,8 @@ module Sof
   end
   
   class NodeList < SimpleNode
-    def initialize
-      super(nil)
+    def initialize data = nil
+      super(data)
       @children = []
     end
     attr_accessor  :children

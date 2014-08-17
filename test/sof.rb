@@ -6,6 +6,10 @@ class ObjectWithAttributes
     @name = "some name"
     @number = 1234
   end
+  def extra_array
+    @extra = [:sym , 123]
+    self
+  end
 end
 OBJECT_STRING = "ObjectWithAttributes(name: 'some name', number: 1234)"
 
@@ -20,6 +24,10 @@ class BasicSof < MiniTest::Test
   end
   def test_object
     out = Sof::Writer.write(ObjectWithAttributes.new)
+    assert_equal "#{OBJECT_STRING}" , out
+  end
+  def test_object_extra_array
+    out = Sof::Writer.write(ObjectWithAttributes.new.extra_array)
     assert_equal "#{OBJECT_STRING}" , out
   end
   def test_simple_array
@@ -53,6 +61,10 @@ class BasicSof < MiniTest::Test
   def test_hash_object
     out = Sof::Writer.write({ one: 1 , two: ObjectWithAttributes.new })
     assert_equal "-:one: 1\n-:two: #{OBJECT_STRING}" , out
+  end
+  def test_array_hash
+    out = Sof::Writer.write([true, 1 , { one: 1 , tru: true }])
+    assert_equal "-true\n-1\n--:one: 1\n -:tru: true" , out
   end
   def test_hash_array
     out = Sof::Writer.write({ one: [1 , ObjectWithAttributes.new] , two: true })
