@@ -20,9 +20,9 @@ module Sof
       raise "no object #{object}" unless occurence
       if(level > occurence.level )
         #puts "level #{level} at #{occurence.level}"
-        return SimpleNode.new("*#{occurence.number}")
+        return SimpleNode.new("*#{occurence.referenced}")
       end
-      ref = occurence.referenced ? occurence.number : nil
+      ref = occurence.referenced
       if(object.respond_to? :to_sof_node) #mainly meant for arrays and hashes
         object.to_sof_node(self , level , ref )
       else

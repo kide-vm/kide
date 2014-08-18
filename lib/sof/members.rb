@@ -17,12 +17,12 @@ module Sof
       if( occurence = @objects[object] )
         #puts "reset level #{level} at #{occurence.level}"
         occurence.level = level if occurence.level > level
-        occurence.referenced = true
+        occurence.referenced = @counter
+        @counter = @counter + 1
         return
       end
-      o = Occurence.new( object , @counter , level )
+      o = Occurence.new( object , level )
       @objects[object] = o
-      @counter = @counter + 1
       attributes = attributes_for(object)
       attributes.each do |a|
         val = get_value( object , a)

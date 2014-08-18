@@ -1,12 +1,11 @@
 module Sof
 
   class Occurence
-    def initialize object , number , level
+    def initialize object , level
       @object = object
-      @number = number
       @level = level
     end
-    attr_reader   :object , :number
+    attr_reader   :object
     attr_accessor :level , :referenced
   end
 
