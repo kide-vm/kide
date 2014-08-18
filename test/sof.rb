@@ -84,6 +84,6 @@ class BasicSof < MiniTest::Test
     object = ObjectWithAttributes.new
     object.extra = object
     @out = Sof::Writer.write(object)
-    check "&1 #{OBJECT_STRING}\n :extra *1" 
+    check "&1 ObjectWithAttributes(name: 'some name', number: 1234, extra: *1)" 
   end
 end

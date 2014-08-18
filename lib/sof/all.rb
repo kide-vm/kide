@@ -17,6 +17,11 @@ TrueClass.class_eval do
     "true"
   end
 end
+NilClass.class_eval do
+  def to_sof()
+    "nil"
+  end
+end
 FalseClass.class_eval do
   def to_sof()
     "false"

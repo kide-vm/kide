@@ -32,13 +32,16 @@ module Sof
 
     def object_sof_node( object , level , ref)
       head = object.class.name + "("
-      atts = attributes_for(object)
-      immediate , extended = atts.partition {|a| is_value?(get_value(object , a) ) }
-      head += immediate.collect {|a| "#{a}: #{get_value(object , a).to_sof()}"}.join(", ") + ")"
-      node = ObjectNode.new(head , ref)
-      extended.each do |a|
+      atts = attributes_for(object).inject({}) do |hash , a| 
         val = get_value(object , a)
-        node.add( to_sof_node(a,level + 1) , to_sof_node(val, level + 1) )
+        hash[a] =  to_sof_node(val , level + 1)
+        hash
+      end
+      immediate , extended = atts.partition {|a,val| val.is_a?(SimpleNode) }
+      head += immediate.collect {|a,val| "#{a}: #{val.data}"}.join(", ") + ")"
+      node = ObjectNode.new(head , ref)
+      extended.each do |a , val|
+        node.add( to_sof_node(a,level + 1) , val )
       end
       node
     end
