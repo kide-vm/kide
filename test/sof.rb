@@ -81,9 +81,9 @@ class BasicSof < MiniTest::Test
     check "-true\n-1\n-*1" 
   end
   def test_object_recursive
-    ar = [true, 1 ]
-    ar << ar
-    @out = Sof::Writer.write(ar)
-    check "-true\n-1\n-*1" 
+    object = ObjectWithAttributes.new
+    object.extra = object
+    @out = Sof::Writer.write(object)
+    check "#{OBJECT_STRING}\n :extra *1" 
   end
 end
