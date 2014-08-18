@@ -38,7 +38,7 @@ module Sof
         hash
       end
       immediate , extended = atts.partition {|a,val| val.is_a?(SimpleNode) }
-      head += immediate.collect {|a,val| "#{a}: #{val.data}"}.join(", ") + ")"
+      head += immediate.collect {|a,val| "#{a.to_sof()} => #{val.data}"}.join(", ") + ")"
       node = ObjectNode.new(head , ref)
       extended.each do |a , val|
         node.add( to_sof_node(a,level + 1) , val )

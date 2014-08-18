@@ -8,7 +8,7 @@ class ObjectWithAttributes
   end
   attr_accessor :extra
 end
-OBJECT_STRING = "ObjectWithAttributes(name: 'some name', number: 1234)"
+OBJECT_STRING = "ObjectWithAttributes(:name => 'some name', :number => 1234)"
 
 class BasicSof < MiniTest::Test
   def check should
@@ -84,6 +84,6 @@ class BasicSof < MiniTest::Test
     object = ObjectWithAttributes.new
     object.extra = object
     @out = Sof::Writer.write(object)
-    check "&1 ObjectWithAttributes(name: 'some name', number: 1234, extra: *1)" 
+    check "&1 ObjectWithAttributes(:name => 'some name', :number => 1234, :extra => *1)" 
   end
 end
