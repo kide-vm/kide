@@ -22,19 +22,20 @@ module Sof
         #puts "level #{level} at #{occurence.level}"
         return SimpleNode.new("*#{occurence.number}")
       end
+      ref = occurence.referenced ? occurence.number : nil
       if(object.respond_to? :to_sof_node) #mainly meant for arrays and hashes
-        object.to_sof_node(self , level )
+        object.to_sof_node(self , level , ref )
       else
-        object_sof_node(object , level )
+        object_sof_node(object , level , ref )
       end
     end
 
-    def object_sof_node( object , level)
+    def object_sof_node( object , level , ref)
       head = object.class.name + "("
       atts = attributes_for(object)
       immediate , extended = atts.partition {|a| is_value?(get_value(object , a) ) }
       head += immediate.collect {|a| "#{a}: #{get_value(object , a).to_sof()}"}.join(", ") + ")"
-      node = ObjectNode.new(head)
+      node = ObjectNode.new(head , ref)
       extended.each do |a|
         val = get_value(object , a)
         node.add( to_sof_node(a,level + 1) , to_sof_node(val, level + 1) )

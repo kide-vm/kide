@@ -2,16 +2,22 @@
 
 module Sof
   #abstract base class for nodes in the tree
+  # may be referenced (should be a simple name or number)
   class Node
+    def initialize referenced
+      @referenced = referenced
+    end
     include Util
     # must be able to output to a stream
     def out io ,level
-      raise "abstract #{self}"
+      io.write "&#{referenced} " if referenced
     end
+    attr_reader :referenced
   end
   
   class SimpleNode < Node
     def initialize data
+      super(nil)
       @data = data
     end
     attr_reader :data
@@ -21,7 +27,8 @@ module Sof
   end
   
   class ObjectNode < Node
-    def initialize data
+    def initialize data , ref
+      super(ref)
       @data = data 
       @children = []
     end
@@ -30,6 +37,7 @@ module Sof
       @children << [k,v]
     end
     def out io , level = 0
+      super
       io.write(@data)
       indent = " " * (level + 1)
       @children.each_with_index do |child , i|

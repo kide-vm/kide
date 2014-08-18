@@ -7,7 +7,7 @@ module Sof
       @level = level
     end
     attr_reader   :object , :number
-    attr_accessor :level
+    attr_accessor :level , :referenced
   end
 
 end

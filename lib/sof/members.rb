@@ -7,15 +7,17 @@ module Sof
       @root = root
       @counter = 1
       @objects = {}
+      @referenced = false
       add(root , 0)
     end
-    attr_reader :objects , :root
+    attr_reader :objects , :root , :referenced
     
     def add object , level
       return if is_value?(object)
       if( occurence = @objects[object] )
         #puts "reset level #{level} at #{occurence.level}"
         occurence.level = level if occurence.level > level
+        occurence.referenced = true
         return
       end
       o = Occurence.new( object , @counter , level )

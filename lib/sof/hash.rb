@@ -1,6 +1,7 @@
 module Sof
   class HashNode < Node
-    def initialize 
+    def initialize ref
+      super(ref)
       @children = []
     end
     attr_reader  :children
@@ -8,6 +9,7 @@ module Sof
       @children << [key,val]
     end
     def out io , level = 0
+      super
       indent = " " * level
       @children.each_with_index do |child , i|
         key , val = child
@@ -22,8 +24,8 @@ module Sof
 end
 
 Hash.class_eval do
-  def to_sof_node(writer , level)
-    node = Sof::HashNode.new()
+  def to_sof_node(writer , level , ref)
+    node = Sof::HashNode.new(ref)
     each do |key , object|
       k = writer.to_sof_node( key ,level + 1)
       v = writer.to_sof_node( object ,level +1)

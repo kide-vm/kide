@@ -1,15 +1,7 @@
-Array.class_eval do
-  def to_sof_node(writer , level)
-    node = Sof::ArrayNode.new()
-    each do |object|
-      node.add writer.to_sof_node( object , level + 1)
-    end
-    node
-  end
-end
 module Sof
   class ArrayNode < Node
-    def initialize 
+    def initialize ref
+      super(ref)
       @children = []
     end
     attr_reader  :children
@@ -17,6 +9,7 @@ module Sof
       @children << c
     end
     def out io , level = 0
+      super
       long_out(io , level)
     end
     
@@ -29,5 +22,14 @@ module Sof
         child.out(io , level + 1)
       end
     end
+  end
+end
+Array.class_eval do
+  def to_sof_node(writer , level , ref )
+    node = Sof::ArrayNode.new(ref)
+    each do |object|
+      node.add writer.to_sof_node( object , level + 1)
+    end
+    node
   end
 end
