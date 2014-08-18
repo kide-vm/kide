@@ -75,4 +75,10 @@ class BasicSof < MiniTest::Test
     @out = Sof::Writer.write({ one: [1 , ObjectWithAttributes.new] , two: true })
     check "-:one: -1\n -#{OBJECT_STRING}\n-:two: true" 
   end
+  def test_array_recursive
+    ar = [true, 1 ]
+    ar << ar
+    @out = Sof::Writer.write(ar)
+    check "-true\n-1\n-*1" 
+  end
 end

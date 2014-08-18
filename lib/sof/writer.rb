@@ -6,22 +6,25 @@ module Sof
     end
 
     def write
-      node = to_sof_node(@members.root)
+      node = to_sof_node(@members.root , 0)
       io = StringIO.new
       node.out( io , 0 )
       io.string
     end
 
-    def to_sof_node(object)
+    def to_sof_node(object , level)
       if is_value?(object)
         return SimpleNode.new(object.to_sof())
       end
       occurence = @members.objects[object]
       raise "no object #{object}" unless occurence
+      if(level > occurence.level )
+        return SimpleNode.new("*#{occurence.number}")
+      end
       if(object.respond_to? :to_sof_node) #mainly meant for arrays and hashes
-        object.to_sof_node(self , occurence.level)
+        object.to_sof_node(self , level + 1)
       else
-        object_sof_node(object , occurence.level)
+        object_sof_node(object , level + 1 )
       end
     end
 
