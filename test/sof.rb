@@ -60,19 +60,19 @@ class BasicSof < MiniTest::Test
   end
   def test_simple_hash
     @out = Sof::Writer.write({ one: 1 , tru: true })
-    check "-:one: 1\n-:tru: true" 
+    check "-:one => 1\n-:tru => true" 
   end
   def test_hash_object
     @out = Sof::Writer.write({ one: 1 , two: ObjectWithAttributes.new })
-    check "-:one: 1\n-:two: #{OBJECT_STRING}" 
+    check "-:one => 1\n-:two => #{OBJECT_STRING}" 
   end
   def test_array_hash
     @out = Sof::Writer.write([true, 1 , { one: 1 , tru: true }])
-    check "-true\n-1\n--:one: 1\n -:tru: true" 
+    check "-true\n-1\n--:one => 1\n -:tru => true" 
   end
   def test_hash_array
     @out = Sof::Writer.write({ one: [1 , ObjectWithAttributes.new] , two: true })
-    check "-:one: -1\n -#{OBJECT_STRING}\n-:two: true" 
+    check "-:one => -1\n -#{OBJECT_STRING}\n-:two => true" 
   end
   def test_array_recursive
     ar = [true, 1 ]

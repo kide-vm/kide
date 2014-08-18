@@ -16,7 +16,7 @@ module Sof
         io.write "\n#{indent}" unless i == 0
         io.write "-"
         key.out(io , level + 1)
-        io.write ": "
+        io.write " => "
         val.out(io , level + 1)
       end
     end
