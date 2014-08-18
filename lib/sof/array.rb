@@ -10,10 +10,26 @@ module Sof
     end
     def out io , level = 0
       super
-      long_out(io , level)
+      short = true
+      children.each do |c|
+        short = false unless c.is_a?(SimpleNode)
+      end
+      if(short and children.length < 7 )
+        short_out(io,level)
+      else
+        long_out(io , level)
+      end
     end
     
     private
+    def short_out(io,level)
+      io.write("[")
+      @children.each_with_index do |child , i|
+        child.out(io , level + 1)
+        io.write ", " unless (i+1) == children.length
+      end
+      io.write("]")
+    end
     def long_out io , level
       indent = " " * level
       @children.each_with_index do |child , i|

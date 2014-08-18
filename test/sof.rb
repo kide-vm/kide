@@ -32,11 +32,11 @@ class BasicSof < MiniTest::Test
     object = ObjectWithAttributes.new
     object.extra = [:sym , 123]
     @out = Sof::Writer.write(object)
-    check "#{OBJECT_STRING}\n :extra -:sym\n  -123" 
+    check "#{OBJECT_STRING}\n :extra [:sym, 123]" 
   end
   def test_simple_array
     @out = Sof::Writer.write([true, 1234])
-    check "-true\n-1234" 
+    check "[true, 1234]" 
   end
   def test_array_object
     @out = Sof::Writer.write([true, 1234 , ObjectWithAttributes.new])
@@ -44,15 +44,15 @@ class BasicSof < MiniTest::Test
   end
   def test_array_array
     @out = Sof::Writer.write([true, 1 , [true , 12 ]])
-    check "-true\n-1\n--true\n -12" 
+    check "-true\n-1\n-[true, 12]" 
   end
   def test_array_array_reverse
     @out = Sof::Writer.write([ [true , 12 ], true, 1])
-    check "--true\n -12\n-true\n-1" 
+    check "-[true, 12]\n-true\n-1" 
   end
   def test_array_array_array
     @out = Sof::Writer.write([true, 1 , [true , 12 , [true , 123 ]]])
-    check "-true\n-1\n--true\n -12\n --true\n  -123" 
+    check "-true\n-1\n--true\n -12\n -[true, 123]" 
   end
   def test_array_array_object
     @out = Sof::Writer.write([true, 1 , [true , 12 , ObjectWithAttributes.new]])
@@ -78,7 +78,7 @@ class BasicSof < MiniTest::Test
     ar = [true, 1 ]
     ar << ar
     @out = Sof::Writer.write(ar)
-    check "&1 -true\n-1\n-*1" 
+    check "&1 [true, 1, *1]" 
   end
   def test_object_recursive
     object = ObjectWithAttributes.new
