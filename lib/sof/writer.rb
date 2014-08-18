@@ -27,13 +27,13 @@ module Sof
 
     def object_sof_node( object , level)
       head = object.class.name + "("
-      attributes = attributes_for(object)
-      immediate , extended = attributes.partition {|a| is_value?(get_value(object , a) ) }
+      atts = attributes_for(object)
+      immediate , extended = atts.partition {|a| is_value?(get_value(object , a) ) }
       head += immediate.collect {|a| "#{a}: #{get_value(object , a).to_sof()}"}.join(", ") + ")"
       node = ObjectNode.new(head)
       extended.each do |a|
         val = get_value(object , a)
-        node.add( write.to_sof_node(a) , writer.to_sof_node(val) )
+        node.add( to_sof_node(a) , to_sof_node(val) )
       end
       node
     end

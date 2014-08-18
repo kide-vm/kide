@@ -33,7 +33,7 @@ class BasicSof < MiniTest::Test
   end
   def test_object_extra_array
     @out = Sof::Writer.write(ObjectWithAttributes.new.extra_array)
-    check "#{OBJECT_STRING}" 
+    check "#{OBJECT_STRING}\n :extra -:sym\n  -123" 
   end
   def test_simple_array
     @out = Sof::Writer.write([true, 1234])

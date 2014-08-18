@@ -48,13 +48,13 @@ module Sof
     end
     def out io , level = 0
       io.write(@data)
-      indent = " " * level
+      indent = " " * (level + 1)
       @children.each_with_index do |child , i|
         k , v = child
-        io.write "\n#{indent}" 
-        io.write ".."
-        k.out(io , level + 1)
-        v.out(io , level + 1)
+        io.write "\n#{indent}"
+        k.out(io , level + 2)
+        io.write " "
+        v.out(io , level + 2)
       end
     end
   end

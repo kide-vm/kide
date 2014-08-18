@@ -13,8 +13,7 @@ module Sof
     
     def add object , level
       return if is_value?(object)
-      if( @objects.has_key?(object) )
-        occurence = @objects[object]
+      if( occurence = @objects[object] )
         occurence.level = level if occurence.level > level
         return
       end
