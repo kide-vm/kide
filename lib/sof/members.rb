@@ -14,6 +14,7 @@ module Sof
     def add object , level
       return if is_value?(object)
       if( occurence = @objects[object] )
+        #puts "reset level #{level} at #{occurence.level}"
         occurence.level = level if occurence.level > level
         return
       end

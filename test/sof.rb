@@ -6,10 +6,7 @@ class ObjectWithAttributes
     @name = "some name"
     @number = 1234
   end
-  def extra_array
-    @extra = [:sym , 123]
-    self
-  end
+  attr_accessor :extra
 end
 OBJECT_STRING = "ObjectWithAttributes(name: 'some name', number: 1234)"
 
@@ -32,7 +29,9 @@ class BasicSof < MiniTest::Test
     check "#{OBJECT_STRING}" 
   end
   def test_object_extra_array
-    @out = Sof::Writer.write(ObjectWithAttributes.new.extra_array)
+    object = ObjectWithAttributes.new
+    object.extra = [:sym , 123]
+    @out = Sof::Writer.write(object)
     check "#{OBJECT_STRING}\n :extra -:sym\n  -123" 
   end
   def test_simple_array
@@ -76,6 +75,12 @@ class BasicSof < MiniTest::Test
     check "-:one: -1\n -#{OBJECT_STRING}\n-:two: true" 
   end
   def test_array_recursive
+    ar = [true, 1 ]
+    ar << ar
+    @out = Sof::Writer.write(ar)
+    check "-true\n-1\n-*1" 
+  end
+  def test_object_recursive
     ar = [true, 1 ]
     ar << ar
     @out = Sof::Writer.write(ar)

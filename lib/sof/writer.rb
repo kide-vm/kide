@@ -19,12 +19,13 @@ module Sof
       occurence = @members.objects[object]
       raise "no object #{object}" unless occurence
       if(level > occurence.level )
+        #puts "level #{level} at #{occurence.level}"
         return SimpleNode.new("*#{occurence.number}")
       end
       if(object.respond_to? :to_sof_node) #mainly meant for arrays and hashes
-        object.to_sof_node(self , level + 1)
+        object.to_sof_node(self , level )
       else
-        object_sof_node(object , level + 1 )
+        object_sof_node(object , level )
       end
     end
 
@@ -36,7 +37,7 @@ module Sof
       node = ObjectNode.new(head)
       extended.each do |a|
         val = get_value(object , a)
-        node.add( to_sof_node(a) , to_sof_node(val) )
+        node.add( to_sof_node(a,level + 1) , to_sof_node(val, level + 1) )
       end
       node
     end
