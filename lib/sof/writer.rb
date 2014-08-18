@@ -30,13 +30,11 @@ module Sof
       attributes = attributes_for(object)
       immediate , extended = attributes.partition {|a| is_value?(get_value(object , a) ) }
       head += immediate.collect {|a| "#{a}: #{get_value(object , a).to_sof()}"}.join(", ") + ")"
-      ex = {}
+      node = ObjectNode.new(head)
       extended.each do |a|
         val = get_value(object , a)
-        ex[a] = val
+        node.add( write.to_sof_node(a) , writer.to_sof_node(val) )
       end
-      node = ex.to_sof_node(self,level+1)
-      node.data = head
       node
     end
 

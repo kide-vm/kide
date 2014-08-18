@@ -15,35 +15,66 @@ module Sof
     end
     attr_accessor :data
     def out io , level
-      io.write(data) if data
+      io.write(data)
     end
   end
   
-  class NodeList < SimpleNode
-    def initialize data = nil
-      super(data)
+  class ArrayNode < Node
+    def initialize 
       @children = []
     end
-    attr_accessor  :children
-
-    def add child
-      child = SimpleNode.new(child) if(child.is_a? String)
-      @children << child
+    attr_reader  :children
+    def add c
+      @children << c
     end
-
     def out io , level = 0
-      super
-      return if @children.empty?
-      first = @children.first
-      io.write "-"
-      first.out(io , level + 1)
-      indent = " " * level      
+      indent = " " * level
       @children.each_with_index do |child , i|
-        next if i == 0  # done already
-        io.write "\n"
-        io.write indent
+        io.write "\n#{indent}" unless i == 0
         io.write "-"
         child.out(io , level + 1)
+      end
+    end
+  end
+  class ObjectNode < Node
+    def initialize data
+      @data = data 
+      @children = []
+    end
+    attr_reader   :children
+    attr_accessor :data
+    def add k , v
+      @children << [k,v]
+    end
+    def out io , level = 0
+      io.write(@data)
+      indent = " " * level
+      @children.each_with_index do |child , i|
+        k , v = child
+        io.write "\n#{indent}" 
+        io.write ".."
+        k.out(io , level + 1)
+        v.out(io , level + 1)
+      end
+    end
+  end
+  class HashNode < Node
+    def initialize 
+      @children = []
+    end
+    attr_reader  :children
+    def add key , val
+      @children << [key,val]
+    end
+    def out io , level = 0
+      indent = " " * level
+      @children.each_with_index do |child , i|
+        key , val = child
+        io.write "\n#{indent}" unless i == 0
+        io.write "-"
+        key.out(io , level + 1)
+        io.write ": "
+        val.out(io , level + 1)
       end
     end
   end
