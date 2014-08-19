@@ -33,9 +33,7 @@ module Virtual
       @clazz = clazz
     end
     attr_accessor :clazz
-    def attributes
-      [:clazz]
-    end
+
     def at_index block , left , right
       block.ldr( self , left , right )
       self
@@ -47,9 +45,6 @@ module Virtual
 
   class Mystery < Type
     def initialize 
-    end
-    def attributes
-      []
     end
     def as type
       type.new

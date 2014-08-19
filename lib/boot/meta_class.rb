@@ -17,10 +17,6 @@ module Boot
       @me_self = object
     end
 
-    def attributes
-      []
-    end
-
     # in a non-booting version this should map to _add_singleton_method
     def add_function function
       raise "not a function #{function}" unless function.is_a? Virtual::Function

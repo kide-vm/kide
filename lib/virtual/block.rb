@@ -19,10 +19,6 @@ module Virtual
       @codes = []
     end
 
-    def attributes
-      [:name  , :codes , :branch]
-    end
-
     attr_reader :name , :codes , :method
     attr_accessor :branch
     

@@ -27,9 +27,6 @@ module Virtual
       end
       return true
     end
-    def attributes
-      []
-    end
   end
 
   module Named
@@ -37,9 +34,6 @@ module Virtual
       @name = name
     end
     attr_reader :name
-    def attributes
-      [:name ]
-    end
   end
 
   # the first instruction we need is to stop. Off course in a real machine this would be a syscall, but that is just 
@@ -61,9 +55,6 @@ module Virtual
       @to = to
     end
     attr_reader :to
-    def attributes
-      [:to]
-    end
   end
 
   # implicit means there is no explcit test involved.
@@ -87,9 +78,6 @@ module Virtual
       @args = args
     end
     attr_reader :name , :args
-    def attributes
-      [:name , :args ]
-    end
   end
 
   class FrameSet < Instruction
@@ -98,9 +86,6 @@ module Virtual
       @value = val
     end
     attr_reader :name , :value
-    def attributes
-      [:name , :value]
-    end
   end
 
   class MessageSet < Instruction
@@ -109,9 +94,6 @@ module Virtual
       @value = val
     end
     attr_reader :name , :value
-    def attributes
-      [:name , :value] 
-    end
   end
 
   class LoadSelf < Instruction
@@ -119,9 +101,6 @@ module Virtual
       @value = val
     end
     attr_reader  :value
-    def attributes
-      [:value]
-    end
   end
 
   class ObjectGet < Instruction

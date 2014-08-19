@@ -13,9 +13,6 @@ module Boot
       @meta_class = MetaClass.new(self)
     end
     attr_reader :name , :methods , :meta_class , :context , :super_class_name
-    def attributes
-      [:name , :super_class_name]
-    end
     def add_method_definition method
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Virtual::MethodDefinition
       raise "syserr " unless method.name.is_a? Symbol

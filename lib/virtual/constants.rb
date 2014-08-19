@@ -3,13 +3,10 @@ module Virtual
   class Constant < ::Virtual::Value
   end
   class TrueValue < Constant
-    def attributes ; [] ; end
   end
   class FalseValue < Constant
-    def attributes ; [] ; end
   end
   class NilValue < Constant
-    def attributes ; [] ; end
   end
 
   # another abstract "marker" class (so we can check for it)
@@ -22,12 +19,6 @@ module Virtual
       @integer = int
     end
     attr_reader :integer
-    def attributes
-      [:integer]
-    end
-    def inspect
-      self.class.name + ".new(#{@integer})"
-    end
     def type
       Virtual::Integer
     end
@@ -39,19 +30,13 @@ module Virtual
   # Mainly because that works an i aint no elf expert.
   
   class StringConstant < ObjectConstant
-    attr_reader :string
-    def attributes 
-      [:string]
-    end
     def initialize str
       @string = str
     end
+    attr_reader :string
 
     def result= value
       class_for(MoveInstruction).new(value , self , :opcode => :mov)
-    end
-    def inspect
-      self.class.name + ".new('#{@string}')"
     end
   end
   

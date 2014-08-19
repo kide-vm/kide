@@ -41,9 +41,6 @@ module Virtual
     def initialize members
       @members = members
     end
-    def attributes
-      super << :members
-    end
   end
 
   class Class < Object
