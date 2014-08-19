@@ -3,9 +3,11 @@ module Boot
   
   # described in the ruby language book as the eigenclass, what you get with 
   # class MyClass 
-  #     class << self        <--- this is called the eigenclass, or metaclass, and really is just the class object
-  #     ....                                           but gives us the ability to use the syntax as if it were a class
-  #                     PS: can't say i fancy the << self syntax and am considerernig adding a keyword for it, like meta
+  #     class << self        <--- this is called the eigenclass, or metaclass, and really is just 
+  #     ....                              the class object but gives us the ability to use the 
+  #                                       syntax as if it were a class
+  #                     PS: can't say i fancy the << self syntax and am considerernig adding a 
+  #                         keyword for it, like meta
   #                      In effect it is a very similar construct to   def self.function(...)
   #                      So one could write               def meta.function(...) and thus define on the meta-class
   class MetaClass < Virtual::Object
