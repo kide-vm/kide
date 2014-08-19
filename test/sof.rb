@@ -86,4 +86,8 @@ class BasicSof < MiniTest::Test
     @out = Sof::Writer.write(object)
     check "&1 ObjectWithAttributes(:name => 'some name', :number => 1234, :extra => *1)" 
   end
+  def test_class
+    @out = Sof::Writer.write(ObjectWithAttributes)
+    check "ObjectWithAttributes"
+  end
 end

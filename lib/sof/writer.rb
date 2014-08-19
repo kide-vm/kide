@@ -31,6 +31,9 @@ module Sof
     end
 
     def object_sof_node( object , level , ref)
+      if( object.is_a? Class )
+        return SimpleNode.new( object.name )
+      end
       head = object.class.name + "("
       atts = attributes_for(object).inject({}) do |hash , a| 
         val = get_value(object , a)
