@@ -15,9 +15,11 @@ module Sof
     end
 
     def attributes_for object
+      Sof::Util.attributes(object)
+    end
+    def self.attributes( object )
       atts = object.instance_variables.collect{|i| i.to_s[1..-1].to_sym } # chop of @
       atts - Volotile.attributes(object.class)
     end
-    
   end
 end
