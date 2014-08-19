@@ -42,6 +42,7 @@ module Sof
       end
       immediate , extended = atts.partition {|a,val| val.is_a?(SimpleNode) }
       head += immediate.collect {|a,val| "#{a.to_sof()} => #{val.data}"}.join(", ") + ")"
+      return SimpleNode.new(head) if( ref.nil? and extended.empty? and head.length < 30 )
       node = ObjectNode.new(head , ref)
       extended.each do |a , val|
         node.add( to_sof_node(a,level + 1) , val )
