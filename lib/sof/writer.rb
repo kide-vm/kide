@@ -35,10 +35,11 @@ module Sof
         return SimpleNode.new( object.name )
       end
       head = object.class.name + "("
-      atts = attributes_for(object).inject({}) do |hash , a| 
+      atts = {}
+      attributes_for(object).each() do |a| 
         val = get_value(object , a)
-        hash[a] =  to_sof_node(val , level + 1)
-        hash
+        next if val.nil?
+        atts[a] =  to_sof_node(val , level + 1)
       end
       immediate , extended = atts.partition {|a,val| val.is_a?(SimpleNode) }
       head += immediate.collect {|a,val| "#{a.to_sof()} => #{val.data}"}.join(", ") + ")"
