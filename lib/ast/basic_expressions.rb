@@ -5,7 +5,9 @@ module Ast
   class IntegerExpression < Expression
 #    attr_reader :value
     def compile method , message
-      Virtual::IntegerConstant.new value
+      to = Virtual::Return.new(Integer)
+      method.add_code Virtual::Set.new( to , Virtual::IntegerConstant.new(value))
+      to
     end
   end
 
@@ -34,10 +36,11 @@ module Ast
     # otherwise it's a method without args and a send is ussued.
     # this makes the namespace static, ie when eval and co are implemented method needs recompilation
     def compile method , message
-      return Virtual::Self.new( Virtual::Mystery.new ) if name == :self
+      return Virtual::Self.new( Virtual::Mystery ) if name == :self
       if method.has_var(name)
         message.compile_get(method , name )
       else
+        raise "Unimplemented" 
         message.compile_send( method , name ,  Virtual::Self.new( Virtual::Mystery.new ) )
       end
     end

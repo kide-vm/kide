@@ -27,37 +27,10 @@ module Virtual
       end
       return true
     end
-    private
+    private #can't instantiate, must be constant or variable
     def initialize
     end
   end
-
-  class Variable < Value
-
-    def initialize name , type
-      @name = name.to_sym
-      @type = type
-    end
-    attr_accessor :name , :type
-  end
-  # The subclasses are not strictly speaking neccessary at this def point
-  # i just don't want to destroy the information for later optimizations
-  # 
-  # All variables are stored in frames and quite possibly in order arg,local,tmp
-  class Return < Variable
-    def initialize type
-      super(:return , type)
-    end
-  end
-  class Self < Variable
-    def initialize type
-      super(:self , type)
-    end
-  end
-  class Argument < Variable
-  end
-  class Local < Variable
-  end
-  class Temp < Variable
-  end
 end
+
+require_relative "slot"

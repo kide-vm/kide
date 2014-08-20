@@ -34,7 +34,9 @@ module Virtual
       @string = str
     end
     attr_reader :string
-
+    def type
+      Virtual::Reference
+    end
     def result= value
       class_for(MoveInstruction).new(value , self , :opcode => :mov)
     end

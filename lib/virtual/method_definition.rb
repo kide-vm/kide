@@ -32,9 +32,9 @@ module Virtual
   class MethodDefinition < Virtual::Object
     #return the main function (the top level) into which code is compiled
     def MethodDefinition.main
-      MethodDefinition.new(:main , [] , Virtual::SelfReference )
+      MethodDefinition.new(:main , [] )
     end
-    def initialize name , args , receiver = Virtual::SelfReference.new , return_type = Virtual::Mystery , start = MethodEnter.new()
+    def initialize name , args , receiver = Virtual::Self.new , return_type = Virtual::Mystery , start = MethodEnter.new()
       @name = name.to_sym
       @args = args
       @locals = []

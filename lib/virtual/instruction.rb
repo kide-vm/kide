@@ -37,13 +37,6 @@ module Virtual
     end
   end
 
-  module Named
-    def initialize name
-      @name = name
-    end
-    attr_reader :name
-  end
-
   # the first instruction we need is to stop. Off course in a real machine this would be a syscall, but that is just 
   # an implementation (in a programm it would be a function). But in a virtual machine, not only do we need this instruction,
   # it is indeed the first instruction as just this instruction is the smallest possible programm for the machine.
@@ -73,13 +66,6 @@ module Virtual
   class UnconditionalBranch < Branch
   end
 
-  class MessageGet < Instruction
-    include Named
-  end
-  class FrameGet < Instruction
-    include Named
-  end
-
   class MessageSend < Instruction
     def initialize name , args = []
       @name = name.to_sym
@@ -88,30 +74,14 @@ module Virtual
     attr_reader :name , :args
   end
 
-  class FrameSet < Instruction
-    def initialize name , val
-      @name = name.to_sym
-      @value = val
+  # class for Set instructions, A set is basically a mem move.
+  # to and from are indexes into the known objects(frame,message,self and new_message), or from may be a constant
+  class Set < Instruction
+    def initialize to , from
+      @to = to
+      @from = from
     end
-    attr_reader :name , :value
+    attr_reader :to , :from
   end
 
-  class MessageSet < Instruction
-    def initialize name , val
-      @name = name.to_sym
-      @value = val
-    end
-    attr_reader :name , :value
-  end
-
-  class LoadSelf < Instruction
-    def initialize val
-      @value = val
-    end
-    attr_reader  :value
-  end
-
-  class ObjectGet < Instruction
-    include Named
-  end
 end

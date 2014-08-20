@@ -4,9 +4,9 @@ module Ast
     def compile method , message
       args = params.collect do |p|
         raise "error, arguemnt must be a identifier, not #{p}" unless p.is_a? NameExpression
-        Virtual::Argument.new( p.name , Virtual::Mystery.new )
+        p.name
       end
-      r = receiver ? receiver.compile(method,message) : Virtual::SelfReference.new
+      r = receiver ? receiver.compile(method,message) : Virtual::Self.new()
       method = Virtual::MethodDefinition.new(name , args , r )
       #frame = frame.new_frame
       return_type = nil

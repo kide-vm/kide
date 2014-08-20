@@ -1,13 +1,18 @@
 module Ast
-  # assignment, like operators are really function calls
+  # operators are really function calls
   
   class CallSiteExpression < Expression
 #    attr_reader  :name, :args , :receiver
 
     def compile method , message
       me = receiver.compile( method, message )
-      with = args.collect{|a| a.compile( method,message)}
-      message.compile_send( method , name , me , with  )
+      method.add_code Virtual::Set.new(Virtual::NewSelf.new, me)
+      args.each_with_index do |arg , i|
+        val = arg.compile( method, message) #compile in the running method, ie before passing control
+        method.add_code Virtual::Set.new(Virtual::NewMessageSlot.new(i ,val.type ) , val )
+      end
+      method.add_code Virtual::MessageSend.new(name) #and pass control
+      Virtual::Return.new( method.return_type )
     end
 
     def scratch

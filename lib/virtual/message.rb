@@ -44,12 +44,6 @@ module Virtual
       method.get_var(name)
     end
 
-    def compile_send method , name , me , with = [] 
-      method.add_code Virtual::LoadSelf.new(me)
-      method.add_code MessageSend.new(name , with )
-      Return.new( method.return_type )
-    end
-
     def compile_set method , name , val
       method.set_var(name,val)
       if method.has_arg(name)
