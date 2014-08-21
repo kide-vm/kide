@@ -96,4 +96,11 @@ class BasicSof < MiniTest::Test
     @out = Sof::Writer.write(ObjectWithAttributes)
     check "ObjectWithAttributes"
   end
+  def test_class_ref
+    object = ObjectWithAttributes.new
+    object.extra = ObjectWithAttributes
+    ar = [object , ObjectWithAttributes]
+    @out = Sof::Writer.write(ar)
+    check "-ObjectWithAttributes(:name => 'some name', :number => 1234, :extra => *1)\n-&1 ObjectWithAttributes"
+  end
 end
