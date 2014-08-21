@@ -4,9 +4,13 @@ module Sof
     def initialize object , level
       @object = object
       @level = level
+      @referenced = nil      
     end
-    attr_reader   :object
-    attr_accessor :level , :referenced
+    def set_reference r
+      @referenced = r
+    end
+    attr_reader   :object , :referenced
+    attr_accessor :level
   end
 
 end

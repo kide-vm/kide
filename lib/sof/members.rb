@@ -21,7 +21,7 @@ module Sof
         end
         unless occurence.referenced
           #puts "referencing #{@counter} , at level #{level}/#{occurence.level} "
-          occurence.referenced = @counter
+          occurence.set_reference(@counter)
           @counter = @counter + 1
         end
         return

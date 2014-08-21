@@ -4,13 +4,18 @@ module Sof
   #abstract base class for nodes in the tree
   # may be referenced (should be a simple name or number)
   class Node
-    def initialize referenced
-      @referenced = referenced
-    end
     include Util
+    def initialize ref
+      @referenced = ref
+    end
     # must be able to output to a stream
     def out io ,level
-      io.write "&#{referenced} " if referenced
+      io.write "&#{@referenced} " if @referenced
+    end
+    def as_string(level)
+      io = StringIO.new
+      out(io,level)
+      io.string
     end
     attr_reader :referenced
   end
@@ -22,7 +27,7 @@ module Sof
     end
     attr_reader :data
     def out io , level
-      super
+      super(io,level)
       io.write(data)
     end
   end

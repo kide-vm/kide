@@ -42,7 +42,7 @@ module Sof
         atts[a] =  to_sof_node(val , level + 1)
       end
       immediate , extended = atts.partition {|a,val| val.is_a?(SimpleNode) }
-      head += immediate.collect {|a,val| "#{a.to_sof()} => #{val.data}"}.join(", ") + ")"
+      head += immediate.collect {|a,val| "#{a.to_sof()} => #{val.as_string(level)}"}.join(", ") + ")"
       return SimpleNode.new(head) if( ref.nil? and extended.empty? and head.length < 30 )
       node = ObjectNode.new(head , ref)
       extended.each do |a , val|
