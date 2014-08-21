@@ -14,15 +14,20 @@ module Sof
     
     def add object , level
       return if is_value?(object)
-      if( occurence = @objects[object] )
+      if( occurence = @objects[object.object_id] )
         #puts "reset level #{level} at #{occurence.level}"
-        occurence.level = level if occurence.level > level
-        occurence.referenced = @counter
-        @counter = @counter + 1
+        if occurence.level > level
+          occurence.level = level 
+        end
+        unless occurence.referenced
+          #puts "referencing #{@counter} , at level #{level}/#{occurence.level} "
+          occurence.referenced = @counter
+          @counter = @counter + 1
+        end
         return
       end
       o = Occurence.new( object , level )
-      @objects[object] = o
+      @objects[object.object_id] = o
       attributes = attributes_for(object)
       attributes.each do |a|
         val = get_value( object , a)

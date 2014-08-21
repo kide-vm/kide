@@ -16,12 +16,13 @@ module Sof
   end
   
   class SimpleNode < Node
-    def initialize data
-      super(nil)
+    def initialize data , ref = nil
+      super(ref)
       @data = data
     end
     attr_reader :data
     def out io , level
+      super
       io.write(data)
     end
   end

@@ -16,10 +16,10 @@ module Sof
       if is_value?(object)
         return SimpleNode.new(object.to_sof())
       end
-      occurence = @members.objects[object]
+      occurence = @members.objects[object.object_id]
       raise "no object #{object}" unless occurence
       if(level > occurence.level )
-        #puts "level #{level} at #{occurence.level}"
+        #puts "ref #{occurence.referenced} level #{level} at #{occurence.level}"
         return SimpleNode.new("*#{occurence.referenced}")
       end
       ref = occurence.referenced
@@ -32,7 +32,7 @@ module Sof
 
     def object_sof_node( object , level , ref)
       if( object.is_a? Class )
-        return SimpleNode.new( object.name )
+        return SimpleNode.new( object.name , ref )
       end
       head = object.class.name + "("
       atts = {}
