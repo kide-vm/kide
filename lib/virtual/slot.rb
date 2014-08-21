@@ -11,6 +11,9 @@ module Virtual
   class Slot < Value
     RETURN = 0
     SELF = 1
+    FRAME = 2
+    NAME = 3
+    MESSAGE_PAYLOAD = 4
 
     attr_accessor :index , :type
     private #abstract base class
@@ -22,7 +25,7 @@ module Virtual
   
   class MessageSlot < Slot
     def initialize index , type = Mystery
-      super
+      super(index + MESSAGE_PAYLOAD ,type)
     end
   end
   class FrameSlot < Slot
@@ -37,28 +40,39 @@ module Virtual
   end
   class NewMessageSlot < Slot
     def initialize index , type = Mystery
-      super
+      super(index + MESSAGE_PAYLOAD , type)
     end
   end
 
   class Return < MessageSlot
     def initialize type = Mystery
-      super( RETURN , type )
-    end
-  end
-  class NewReturn < NewMessageSlot
-    def initialize type = Mystery
-      super( RETURN , type )
+      super( RETURN - MESSAGE_PAYLOAD, type )
     end
   end
   class Self < MessageSlot
     def initialize type = Mystery
-      super( SELF , type )
+      super( SELF - MESSAGE_PAYLOAD , type )
+    end
+  end
+  class Name < MessageSlot
+    def initialize type = Mystery
+      super( NAME - MESSAGE_PAYLOAD , type )
+    end
+  end
+
+  class NewReturn < NewMessageSlot
+    def initialize type = Mystery
+      super( RETURN - MESSAGE_PAYLOAD, type )
     end
   end
   class NewSelf < NewMessageSlot
     def initialize type = Mystery
-      super( SELF , type )
+      super( SELF - MESSAGE_PAYLOAD , type )
+    end
+  end
+  class NewName < NewMessageSlot
+    def initialize type = Mystery
+      super( NAME - MESSAGE_PAYLOAD , type )
     end
   end
 

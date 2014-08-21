@@ -33,6 +33,14 @@ module Virtual
       self
     end
 
+    # replace a code with an array of new codes. This is what happens in passes all the time
+    def replace_with code , new_codes
+      index = @codes.index code
+      raise "Code not found #{code} in #{self}" unless index
+      @codes.delete_at(index)
+      @codes.insert(index , *new_codes)
+    end
+
     # returns if this is a block that ends in a call (and thus needs local variable handling)
     def call_block?
       return false unless codes.last.is_a?(CallInstruction)

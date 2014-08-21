@@ -6,7 +6,8 @@ module Ast
 
     def compile method , message
       me = receiver.compile( method, message )
-      method.add_code Virtual::Set.new(Virtual::NewSelf.new, me)
+      method.add_code Virtual::Set.new(Virtual::NewSelf.new(me.type), me)
+      method.add_code Virtual::Set.new(Virtual::NewName.new(), name)
       args.each_with_index do |arg , i|
         val = arg.compile( method, message) #compile in the running method, ie before passing control
         method.add_code Virtual::Set.new(Virtual::NewMessageSlot.new(i ,val.type ) , val )

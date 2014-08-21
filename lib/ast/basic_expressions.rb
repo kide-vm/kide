@@ -5,7 +5,7 @@ module Ast
   class IntegerExpression < Expression
 #    attr_reader :value
     def compile method , message
-      to = Virtual::Return.new(Integer)
+      to = Virtual::Return.new(Virtual::Integer)
       method.add_code Virtual::Set.new( to , Virtual::IntegerConstant.new(value))
       to
     end
@@ -41,7 +41,7 @@ module Ast
         message.compile_get(method , name )
       else
         raise "Unimplemented" 
-        message.compile_send( method , name ,  Virtual::Self.new( Virtual::Mystery.new ) )
+        message.compile_send( method , name ,  Virtual::Self.new( Virtual::Mystery ) )
       end
     end
   end
@@ -99,7 +99,7 @@ module Ast
   class VariableExpression < NameExpression
     def compile method , message
       method.add_code Virtual::ObjectGet.new(name)
-      Virtual::Return.new( Virtual::Mystery.new )
+      Virtual::Return.new( Virtual::Mystery )
     end
   end
 end
