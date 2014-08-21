@@ -67,11 +67,12 @@ module Virtual
   end
 
   class MessageSend < Instruction
-    def initialize name , args = []
+    def initialize name , me , args = []
       @name = name.to_sym
+      @me = me
       @args = args
     end
-    attr_reader :name , :args
+    attr_reader :name , :me ,  :args
   end
 
   # class for Set instructions, A set is basically a mem move.

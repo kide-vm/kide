@@ -6,7 +6,10 @@ module Trickle
     def run block
       block.codes.dup.each do |code|
         next unless code.is_a? MessageSend
-         
+        if( code.me.type == Virtual::Reference)
+          
+          next
+        end
       end
     end
   end

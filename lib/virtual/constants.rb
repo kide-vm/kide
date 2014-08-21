@@ -12,6 +12,9 @@ module Virtual
   # another abstract "marker" class (so we can check for it)
   # derived classes are Boot/Meta Class and StringConstant 
   class ObjectConstant < Constant
+    def type
+      Virtual::Reference
+    end
   end
 
   class IntegerConstant < Constant
@@ -34,9 +37,6 @@ module Virtual
       @string = str
     end
     attr_reader :string
-    def type
-      Virtual::Reference
-    end
     def result= value
       class_for(MoveInstruction).new(value , self , :opcode => :mov)
     end

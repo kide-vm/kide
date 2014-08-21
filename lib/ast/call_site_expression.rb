@@ -8,11 +8,13 @@ module Ast
       me = receiver.compile( method, message )
       method.add_code Virtual::Set.new(Virtual::NewSelf.new(me.type), me)
       method.add_code Virtual::Set.new(Virtual::NewName.new(), name)
+      compiled_args = []
       args.each_with_index do |arg , i|
         val = arg.compile( method, message) #compile in the running method, ie before passing control
+        compiled_args << val
         method.add_code Virtual::Set.new(Virtual::NewMessageSlot.new(i ,val.type ) , val )
       end
-      method.add_code Virtual::MessageSend.new(name) #and pass control
+      method.add_code Virtual::MessageSend.new(name , me , compiled_args) #and pass control
       Virtual::Return.new( method.return_type )
     end
 
