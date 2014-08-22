@@ -6,9 +6,20 @@ module Trickle
     def run block
       block.codes.dup.each do |code|
         next unless code.is_a? Virtual::MessageSend
-        puts "Found me a send #{code.me.type}"
-        if( code.me.type == Virtual::Reference)
-          next
+        me = code.me
+        next unless ( me.type == Virtual::Reference)
+        if( me.is_a? Virtual::Constant)
+          Boot::BootClass
+          if( me.is_a? Boot::BootClass )
+            raise "unimplemented"
+          elsif( me.is_a? Virtual::ObjectConstant )
+            clazz = me.clazz
+            method = clazz.get_method_definition code.name
+            puts "Found me a method #{method}"
+            raise "Method not implemented #{clazz.name}.#{code.name}" unless method
+          else
+            raise "unimplemented"
+          end
         end
       end
     end

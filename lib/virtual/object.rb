@@ -25,7 +25,7 @@ module Virtual
     end
 
     def inspect
-      to_yaml
+      Sof::Writer.write(self)
     end
 
     def self.space

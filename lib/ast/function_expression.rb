@@ -3,7 +3,7 @@ module Ast
 #    attr_reader  :name, :params, :body , :receiver
     def compile method , message
       args = params.collect do |p|
-        raise "error, arguemnt must be a identifier, not #{p}" unless p.is_a? NameExpression
+        raise "error, argument must be a identifier, not #{p}" unless p.is_a? NameExpression
         p.name
       end
       r = receiver ? receiver.compile(method,message) : Virtual::Self.new()

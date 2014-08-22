@@ -15,6 +15,9 @@ module Virtual
     def type
       Virtual::Reference
     end
+    def claszz
+      raise "abstract #{self}"
+    end
   end
 
   class IntegerConstant < Constant
@@ -39,6 +42,9 @@ module Virtual
     attr_reader :string
     def result= value
       class_for(MoveInstruction).new(value , self , :opcode => :mov)
+    end
+    def clazz
+      Object.space.get_or_create_class(:String)
     end
   end
   
