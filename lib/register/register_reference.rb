@@ -1,4 +1,4 @@
-module Vm
+module Register
 
   # RegisterReference is not the name for a register, "only" for a certain use of it. 
   # In a way it is like a variable name, a storage location. The location is a register off course, 

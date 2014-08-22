@@ -1,4 +1,4 @@
-module Vm
+module Register
   # Base class for anything that we can assemble
 
   # Derived classes include instructions and constants(data)

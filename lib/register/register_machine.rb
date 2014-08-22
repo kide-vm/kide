@@ -1,4 +1,4 @@
-module Vm
+module Register
 
   # Our virtual c-machine has a number of registers of a given size and uses a stack
   # So much so standard

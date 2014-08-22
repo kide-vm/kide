@@ -1,4 +1,4 @@
-module Vm
+module Register
   class Integer < Word
     # needs to be here as Word's constructor is private (to make it abstract)
     def initialize reg

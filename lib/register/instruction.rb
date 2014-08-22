@@ -1,5 +1,5 @@
 require_relative "code"
-module Vm
+module Register
 
   # Because the idea of what one instruction does, does not always map one to one to real machine
   # instructions, and instruction may link to another instruction thus creating an arbitrary list
