@@ -1,4 +1,4 @@
-Von Neumann Machine 
+Register Machine 
 ===============
 
 This is the logic that uses the generated ast to produce code, using the asm layer.
