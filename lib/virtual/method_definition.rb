@@ -150,5 +150,44 @@ module Virtual
       @tmps << name
       Ast::NameExpression.new(name)
     end
+
+    # sugar to create instructions easily. 
+    # any method will be passed on to the RegisterMachine and the result added to the insertion block
+    #  With this trick we can write what looks like assembler, 
+    #  Example   func.instance_eval
+    #                mov( r1 , r2 )
+    #                add( r1 , r2 , 4)
+    # end
+    #           mov and add will be called on Machine and generate Inststuction that are then added 
+    #             to the current block
+    # also symbols are supported and wrapped as register usages (for bare metal programming)
+    def method_missing(meth, *args, &block)
+      add_code RegisterMachine.instance.send(meth , *args)
+    end
+
+    # following id the Code interface
+    
+    # to link we link the entry and then any blocks. The entry links the straight line
+    def link_at address , context
+      super #just sets the position
+      @entry.link_at address , context
+    end
+
+    # position of the function is the position of the entry block
+    def position
+      @entry.position
+    end
+
+    # length of a function is the entry block length (includes the straight line behind it) 
+    # plus any out of line blocks that have been added
+    def length
+      @entry.length
+    end
+    
+    # assembling assembles the entry (straight line/ no branch line) + any additional branches
+    def assemble io
+      @entry.assemble(io)
+    end
   end
+
 end
