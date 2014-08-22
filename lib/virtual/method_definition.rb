@@ -34,8 +34,9 @@ module Virtual
     def MethodDefinition.main
       MethodDefinition.new(:main , [] )
     end
-    def initialize name , args , receiver = Virtual::Self.new , return_type = Virtual::Mystery , start = MethodEnter.new()
+    def initialize name , args , receiver = Virtual::Self.new , return_type = Virtual::Mystery
       @name = name.to_sym
+      @class_name = :Object
       @args = args
       @locals = []
       @tmps = []
@@ -43,13 +44,13 @@ module Virtual
       @return_type = return_type
       @blocks = []
       # first block we have to create with .new , as new_block assumes a current
-      enter = Block.new( name  , self ).add_code(start)
+      enter = Block.new( name  , self ).add_code(MethodEnter.new())
       @blocks << enter
       @current = enter
       new_block("return").add_code(MethodReturn.new)
     end
     attr_reader :name , :args , :receiver , :blocks
-    attr_accessor :return_type , :current
+    attr_accessor :return_type , :current , :class_name
 
     # add an instruction after the current (insertion point)
     # the added instruction will become the new insertion point

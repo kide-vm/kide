@@ -3,7 +3,7 @@ require "boot/boot_class"
 require "kernel/all"
 require "boot/object"
 require "boot/string"
-
+require "trickle/send"
 module Boot
   # The BootSpace contains all objects for a program. In functional terms it is a program, but in oo
   # it is a collection of objects, some of which are data, some classes, some functions
@@ -25,7 +25,7 @@ module Boot
       #global objects (data)
       @objects = []
       boot_classes
-      @passes = [  ]
+      @passes = [ Trickle::Send ]
     end
     attr_reader :context , :main , :classes , :entry , :exit
 
@@ -33,10 +33,10 @@ module Boot
       @passes.each do |pass|
         all = main.blocks
         @classes.each_value do |c| 
-          c.functions.each {|f| all += f.blocks  }
+          c.method_definitions.each {|f| all += f.blocks  }
         end
         all.each do |block|
-          pass.run(block)
+          pass.new.run(block)
         end
       end
     end

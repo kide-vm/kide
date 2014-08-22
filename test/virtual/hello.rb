@@ -10,10 +10,10 @@ class HelloTest < MiniTest::Test
     puts Sof::Writer.write(expressions)
     Virtual::Object.space.run_passes
     puts ""
-    puts Sof::Writer.write(expressions)
+#    puts Sof::Writer.write(Virtual::Object.space)
   end
 
-  def test_simplest_function
+  def qtest_simplest_function
     @string_input    = <<HERE
 def foo(x) 
   5

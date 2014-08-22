@@ -5,9 +5,9 @@ module Trickle
   class Send
     def run block
       block.codes.dup.each do |code|
-        next unless code.is_a? MessageSend
+        next unless code.is_a? Virtual::MessageSend
+        puts "Found me a send #{code.me.type}"
         if( code.me.type == Virtual::Reference)
-          
           next
         end
       end

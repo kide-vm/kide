@@ -7,15 +7,19 @@ module Ast
         p.name
       end
       r = receiver ? receiver.compile(method,message) : Virtual::Self.new()
-      method = Virtual::MethodDefinition.new(name , args , r )
+      new_method = Virtual::MethodDefinition.new(name , args , r )
+      new_method.class_name = r.is_a?(Boot::BootClass) ? r.name : method.class_name
+      clazz = Virtual::Object.space.get_or_create_class(new_method.class_name)
+      clazz.add_method_definition new_method
+
       #frame = frame.new_frame
       return_type = nil
       body.each do |ex|
-        return_type = ex.compile(method,message )
+        return_type = ex.compile(new_method,message )
         raise return_type.inspect if return_type.is_a? Virtual::Instruction
       end
-      method.return_type = return_type
-      method
+      new_method.return_type = return_type
+      new_method
     end
     def scratch
       args = []
