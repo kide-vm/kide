@@ -82,5 +82,40 @@ module Boot
       end
       c
     end
+
+    # linking entry , exit , main , classes , objects
+    def link_at( start , context)
+      super
+      @entry.link_at( start , context )
+      start += @entry.length
+      @exit.link_at( start , context)
+      start += @exit.length
+      @main.link_at( start , context )
+      start += @main.length
+      @classes.values.each do |clazz|
+        clazz.link_at(start , context)
+        start += clazz.length
+      end
+      @objects.each do |o|
+        o.link_at(start , context)
+        start += o.length
+      end
+    end
+
+    # assemble in the same order as linked
+    def assemble( io )
+      link_at( @position , nil) #second link in case of forward declarations
+      @entry.assemble( io )
+      @exit.assemble( io )
+      @main.assemble( io )
+      @classes.values.each do |clazz|
+        clazz.assemble(io)
+      end
+      @objects.each do |o|
+        o.assemble(io)
+      end
+      io
+    end
+
   end
 end
