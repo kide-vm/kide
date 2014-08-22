@@ -1,15 +1,7 @@
 require_relative "code"
 module Register
 
-  # Because the idea of what one instruction does, does not always map one to one to real machine
-  # instructions, and instruction may link to another instruction thus creating an arbitrary list
-  # to get the job (the original instruciton) done
-  
-  # Admittately it would be simpler just to create the (abstract) instructions and let the machine 
-  # encode them into what-ever is neccessary, but this approach leaves more possibility to 
-  # optimize the actual instruction stream (not just the salama instruction stream). Makes sense?
-  
-  # We have basic classes (literally) of instructions
+  # The register machine model is close to current hardware and has following instruction classes
   # - Memory
   # - Stack
   # - Logic

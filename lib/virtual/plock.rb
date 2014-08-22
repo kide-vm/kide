@@ -30,7 +30,7 @@ module Virtual
     # Data gets assembled after methods
     def add_data o
       return if @objects.include? o
-      raise "must be derived from Code #{o.inspect}" unless o.is_a? Vm::Code
+      raise "must be derived from Code #{o.inspect}" unless o.is_a? Register::Code
       @data << o # TODO check type , no basic values allowed (must be wrapped)
     end
 

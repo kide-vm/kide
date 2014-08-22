@@ -20,7 +20,7 @@ class TestRunner < MiniTest::Test
   def execute file
     string = File.read(file)
     parser = Parser::Salama.new
-    object_space = Vm::Program.new "Arm"
+    object_space = Register::Program.new "Arm"
     syntax  = parser.parse_with_debug(string)
     assert syntax
     parts   = Parser::Transform.new.apply(syntax)
@@ -31,7 +31,7 @@ class TestRunner < MiniTest::Test
         expr    = part.compile( program.context )
       else
         expr    = part.compile( program.context )
-        raise "should be function definition for now" unless expr.is_a? Vm::Function
+        raise "should be function definition for now" unless expr.is_a? Register::Function
       end
     end
 

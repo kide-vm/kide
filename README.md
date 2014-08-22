@@ -12,7 +12,7 @@ Ie only in ruby code do i want to create machine code.
 
 Most instructions are in fact assembling correctly. Meaning i have tests, and i can use objbump to verify the correct assembler code is disasembled
 
-I even polished the dsl an so (from the tests), this is a valid hello world:
+I even polished the dsl and so (from the tests), this is a valid hello world:
 
    hello = "Hello World\n"
    @program.main do 
@@ -31,7 +31,7 @@ I even polished the dsl an so (from the tests), this is a valid hello world:
 Package the code into an executable. Run that and verify it's output. But full elf support (including externs) is eluding me for now.
 
 Still, this has proven to be a good review point for the arcitecture and means no libc for now.
-Full rationale on the web (pages rep for now), but it means starting an extra step
+Full rationale on the web pages, but it means starting an extra step.
 
 Above Hello World can be linked and run. And will say its thing.
 
@@ -46,43 +46,20 @@ Parse simple code, using Parslet.
 Parsing is a surprisingly fiddly process, very space and order sensitive. But Parslet is great and simple
 expressions (including function definitions and calls) are starting to work.
 
-I Spent some time on the parse testing framework, so it is safe to fiddle and add.
+I spent some time on the parse testing framework, so it is safe to fiddle and add.
 
-### Step 5 - Vm: Compile the Ast
+### Step 5 - Virtual: Compile the Ast
 
-Since we now have an Abstact syntax tree, it needs to be compiled to a machine Instruction format.
+Since we now have an Abstact syntax tree, it needs to be compiled to a virtual machine Instruction format.
 
-The machine/instruction/data definitions make up the Virtual Machine layer (vm directory)
+It took me a while to come up with a decent but simple machine model. I had tried to map straight to hardware
+but failed. The current Virtual directory represent a machine with basic oo features.
 
-After some trying around, something has emerged. As it uses the instructions from Step 1, we are ready to say
-our hellos in ruby
+Instead of having more Layers to go from virtual to arm, i opted to have passes that go over the data structure
+and modify it.
 
-puts("Hello World")
+This is where it's at really :-)
 
-was the first to make the trip: parsed to ast, compiled to Instructions/Code, linked and assembled to binary
-and executed, gives the surprising output of "Hello World"
-
-Time to add some meat.
-
-### Step 6 - Register allocation
-
-A first version of register allocation is done. I moved away from the standard c calling convention to pin a 
-type register and also not have passing and return overlapping.
-That at least simplified thinking about register allocation. One has to remember the machine level is completely
-value and pass by value based.
-
-As a side i got a return statement done now, and implicit return at the end has been working. Just making sure all
-branches actually return implicitly is not done. But no rush there, as one can always write the return explicitly.
-
-### Step 7 - Basic type instructions
-
-As we want to work on values, all the value methods have to be implemented to map to machine instructions.
-
-Some are done, most are not. But they are straightforward.
-
-### Step 8 - Object creation
-
-Move to objects, static memory manager, class, superclass, metaclass stuff
 
 ### Step 9 - Compound types
 

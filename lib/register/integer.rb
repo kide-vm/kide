@@ -7,19 +7,19 @@ module Register
 
     def less_or_equal block , right
       block.cmp( self ,  right )
-      Vm::BranchCondition.new :le
+      Register::BranchCondition.new :le
     end
     def greater_or_equal block , right
       block.cmp( self ,  right )
-      Vm::BranchCondition.new :ge
+      Register::BranchCondition.new :ge
     end
     def greater_than block , right
       block.cmp( self ,  right )
-      Vm::BranchCondition.new :gt
+      Register::BranchCondition.new :gt
     end
     def less_than block , right
       block.cmp( self ,  right )
-      Vm::BranchCondition.new :lt
+      Register::BranchCondition.new :lt
     end
     def plus block , first , right
       block.add( self , left ,  right )
@@ -35,12 +35,12 @@ module Register
     end
     def equals block , right
       block.cmp( self ,  right )
-      Vm::BranchCondition.new :eq
+      Register::BranchCondition.new :eq
     end
 
     def is_true? function
       function.cmp( self ,  0 )
-      Vm::BranchCondition.new :ne
+      Register::BranchCondition.new :ne
     end
 
     def move block , right

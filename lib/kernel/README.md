@@ -2,7 +2,7 @@
 
 As of writing Kernel is an "old style" module, aka a bunch of functions.
 
-These functions return their code, ie a Vm::Function object, which can then be called by ruby code as if it were a "normal" 
+These functions return their code, ie a Register::Function object, which can then be called by ruby code as if it were a "normal" 
 function.
 
 A normal ruby function is one that is parsed and transformed to code. But not all functionality can be written in ruby, 

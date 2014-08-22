@@ -85,7 +85,7 @@ module Register
       c_name = clazz.name
       my_module = self.class.name.split("::").first
       clazz_name = clazz.name.split("::").last
-      if(my_module != Vm )
+      if(my_module != Register )
         module_class = eval("#{my_module}::#{clazz_name}") rescue nil
         clazz = module_class if module_class
       end
@@ -94,11 +94,11 @@ module Register
     
     private
     #defining the instruction (opcode, symbol) as an given class.
-    # the class is a Vm::Instruction derived base class and to create machine specific function
+    # the class is a Register::Instruction derived base class and to create machine specific function
     #  an actual machine must create derived classes (from this base class) 
     # These instruction classes must follow a naming pattern and take a hash in the contructor
-    #  Example, a mov() opcode  instantiates a Vm::MoveInstruction
-    #   for an Arm machine, a class Arm::MoveInstruction < Vm::MoveInstruction exists, and it will
+    #  Example, a mov() opcode  instantiates a Register::MoveInstruction
+    #   for an Arm machine, a class Arm::MoveInstruction < Register::MoveInstruction exists, and it will
     #    be used to define the mov on an arm machine. 
     # This methods picks up that derived class and calls a define_instruction methods that can 
     #   be overriden in subclasses 
@@ -108,7 +108,7 @@ module Register
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
-        first = Vm::Integer.new(first) if first.is_a? Symbol
+        first = Register::Integer.new(first) if first.is_a? Symbol
         clazz.new(first , options)
       end
     end
@@ -119,8 +119,8 @@ module Register
       create_method(inst) do |left ,right , options = nil|
         options = {} if options == nil
         options.merge defaults
-        left = Vm::Integer.new(left) if left.is_a? Symbol
-        right = Vm::Integer.new(right) if right.is_a? Symbol
+        left = Register::Integer.new(left) if left.is_a? Symbol
+        right = Register::Integer.new(right) if right.is_a? Symbol
         options[:opcode] = inst
         clazz.new(left , right ,options)
       end
@@ -133,9 +133,9 @@ module Register
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
-        result = Vm::Integer.new(result) if result.is_a? Symbol
-        left = Vm::Integer.new(left) if left.is_a? Symbol
-        right = Vm::Integer.new(right) if right.is_a? Symbol
+        result = Register::Integer.new(result) if result.is_a? Symbol
+        left = Register::Integer.new(left) if left.is_a? Symbol
+        right = Register::Integer.new(right) if right.is_a? Symbol
         clazz.new(result, left , right ,options)
       end
     end
