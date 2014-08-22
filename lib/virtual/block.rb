@@ -34,7 +34,7 @@ module Virtual
     end
 
     # replace a code with an array of new codes. This is what happens in passes all the time
-    def replace_with code , new_codes
+    def replace code , new_codes
       index = @codes.index code
       raise "Code not found #{code} in #{self}" unless index
       @codes.delete_at(index)

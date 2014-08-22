@@ -75,6 +75,13 @@ module Virtual
     attr_reader :name , :me ,  :args
   end
 
+  class FunctionCall < Instruction
+    def initialize method
+      @method = method
+    end
+    attr_reader :method
+  end
+
   # class for Set instructions, A set is basically a mem move.
   # to and from are indexes into the known objects(frame,message,self and new_message), or from may be a constant
   class Set < Instruction

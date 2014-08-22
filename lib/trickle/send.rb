@@ -15,8 +15,9 @@ module Trickle
           elsif( me.is_a? Virtual::ObjectConstant )
             clazz = me.clazz
             method = clazz.get_method_definition code.name
-            puts "Found me a method #{method}"
             raise "Method not implemented #{clazz.name}.#{code.name}" unless method
+            call = Virtual::FunctionCall.new( method )
+            block.replace(code , [call] )
           else
             raise "unimplemented"
           end

@@ -58,7 +58,7 @@ module Boot
         obj.add_method_definition Salama::Kernel.send(f , @context)
       end
       obj = get_or_create_class :String
-      [:get , :set].each do |f|
+      [:get , :set , :puts].each do |f|
         #puts "Boot String::#{f}"
         obj.add_method_definition Boot::String.send(f , @context)
       end

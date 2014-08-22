@@ -9,6 +9,10 @@ module Boot
         set_function = Virtual::MethodDefinition.new(:set , [Virtual::Integer, Virtual::Integer] , Virtual::Integer ,Virtual::Integer )
         return set_function
       end
+      def puts context 
+        puts_function = Virtual::MethodDefinition.new(:puts , []  )
+        return puts_function
+      end
     end
     extend ClassMethods    
   end
