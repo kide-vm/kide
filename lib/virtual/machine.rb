@@ -74,7 +74,7 @@ module Virtual
   end
 end
 
-require_relative "list"
+#require_relative "list"
 require_relative "instruction"
 require_relative "method_definition"
 require_relative "frame"
