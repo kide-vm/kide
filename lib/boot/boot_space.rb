@@ -31,6 +31,7 @@ module Boot
 
     def run_passes
       @passes.each do |pass|
+        puts "Runnning pass #{pass}"
         all = main.blocks
         @classes.each_value do |c| 
           c.method_definitions.each {|f| all += f.blocks  }
@@ -51,12 +52,6 @@ module Boot
       @passes.insert(index+1 , pass)
     end
     def add_pass_before( pass , after)
-      index = @passes.index(after)
-      raise "No such pass to add after: #{after}" unless index
-      @passes.insert(index , pass)
-    end
-
-    def add_pass_after( pass , after)
       index = @passes.index(after)
       raise "No such pass to add after: #{after}" unless index
       @passes.insert(index , pass)

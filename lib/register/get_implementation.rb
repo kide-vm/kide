@@ -1,7 +1,8 @@
 module Register
-  # This implements the send logic
-  # Send is so complicated that we actually code it in ruby and stick it in
-  # That off course opens up an endless loop possibility that we stop by reducing to Class and Module methods
+  # This implements instance variable get (not the opposite of Set, such a thing does not exists, their slots)
+
+  # Ivar get needs to acces the layout, find the index of the name, and shuffle the data to return register
+  # In short it's so complicated we implement it in ruby and stick the implementation here
   class GetImplementation
     def run block
       block.codes.dup.each do |code|

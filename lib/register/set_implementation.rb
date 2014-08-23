@@ -1,7 +1,7 @@
 module Register
-  # This implements the send logic
-  # Send is so complicated that we actually code it in ruby and stick it in
-  # That off course opens up an endless loop possibility that we stop by reducing to Class and Module methods
+  # This implements setting of the various slot variables the vm defines. 
+  # Basic mem moves, but have to shuffle the type nibbles
+  
   class SetImplementation
     def run block
       block.codes.dup.each do |code|
