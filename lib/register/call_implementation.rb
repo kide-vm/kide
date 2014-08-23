@@ -12,8 +12,8 @@ module Register
         next unless code.is_a? Virtual::FunctionCall
         to = RegisterReference.new(:r0)
         tmp = RegisterReference.new(:r5)
-        move = RegisterMachine.instance.ldr( to , tmp , code.to.index )
-        block.replace(code , [move] )
+#        move = RegisterMachine.instance.ldr( to , tmp , code.to.index )
+#        block.replace(code , [move] )
 
       end
     end

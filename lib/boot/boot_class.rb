@@ -7,22 +7,21 @@ module Boot
     def initialize name , super_class_name = :Object
       super()
       # class methods
-      @method_definitions = []
+      @instance_methods = []
       @name = name.to_sym
       @super_class_name = super_class_name.to_sym
       @meta_class = MetaClass.new(self)
     end
-    attr_reader :name , :method_definitions , :meta_class , :context , :super_class_name
-    def add_method_definition method
+    attr_reader :name , :instance_methods , :meta_class , :context , :super_class_name
+    def add_instance_method method
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Virtual::MethodDefinition
       raise "syserr " unless method.name.is_a? Symbol
-      @method_definitions << method
+      @instance_methods << method
     end
 
-    def get_method_definition fname
+    def get_instance_method fname
       fname = fname.to_sym
-      f = @method_definitions.detect{ |f| f.name == fname }
-      names = @method_definitions.collect{|f| f.name } 
+      f = @instance_methods.detect{ |f| f.name == fname }
       f
     end
 

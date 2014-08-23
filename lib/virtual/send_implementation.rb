@@ -14,7 +14,7 @@ module Virtual
             raise "unimplemented"
           elsif( me.is_a? ObjectConstant )
             clazz = me.clazz
-            method = clazz.get_method_definition code.name
+            method = clazz.get_instance_method code.name
             raise "Method not implemented #{clazz.name}.#{code.name}" unless method
             call = FunctionCall.new( method )
             block.replace(code , [call] )

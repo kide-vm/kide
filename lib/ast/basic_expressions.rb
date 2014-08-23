@@ -40,7 +40,7 @@ module Ast
       if method.has_var(name)
         message.compile_get(method , name )
       else
-        raise "Unimplemented" 
+        raise "Unimplemented #{self}" 
         message.compile_send( method , name ,  Virtual::Self.new( Virtual::Mystery ) )
       end
     end

@@ -29,7 +29,7 @@ module Ast
         raise "only functions for now #{expression.inspect}" unless expression.is_a? Ast::FunctionExpression
         #puts "compiling expression #{expression}"
         expression_value = expression.compile(method,message )
-        clazz.add_method_definition(expression_value)
+        clazz.add_instance_method(expression_value)
         #puts "compiled expression #{expression_value.inspect}"
       end
 
