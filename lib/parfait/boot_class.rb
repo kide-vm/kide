@@ -1,6 +1,5 @@
-require_relative "meta_class"
+require "virtual/meta_class"
 
-module Boot
   # class is mainly a list of methods with a name (for now)
   # layout of object is seperated into Layout
   class BootClass < Virtual::ObjectConstant
@@ -10,7 +9,7 @@ module Boot
       @instance_methods = []
       @name = name.to_sym
       @super_class_name = super_class_name.to_sym
-      @meta_class = MetaClass.new(self)
+      @meta_class = Virtual::MetaClass.new(self)
     end
     attr_reader :name , :instance_methods , :meta_class , :context , :super_class_name
     def add_instance_method method
@@ -42,4 +41,3 @@ module Boot
     end
 
   end
-end

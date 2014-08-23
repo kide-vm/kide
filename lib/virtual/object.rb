@@ -32,7 +32,7 @@ module Virtual
       if defined? @@space
         @@space
       else
-        @@space = ::Boot::BootSpace.new
+        @@space = BootSpace.new
       end
     end
   end

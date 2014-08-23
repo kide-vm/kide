@@ -1,4 +1,4 @@
-module Boot
+module Salama
   class Object
     module ClassMethods
     

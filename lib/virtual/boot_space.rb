@@ -1,10 +1,7 @@
-require_relative "boot_class"
-#require "vm/call_site"
+require "parfait/boot_class"
 require "kernel/all"
-require_relative "object"
-require_relative "string"
 
-module Boot
+module Virtual
   # The BootSpace contains all objects for a program. In functional terms it is a program, but in oo
   # it is a collection of objects, some of which are data, some classes, some functions
 
@@ -66,7 +63,7 @@ module Boot
       obj = get_or_create_class :Object
       [:index_of , :_get_instance_variable , :_set_instance_variable].each do |f|
         #puts "Boot Object::#{f}"
-        obj.add_instance_method Boot::Object.send(f , @context)
+        obj.add_instance_method Salama::Object.send(f , @context)
       end
       [:putstring,:putint,:fibo,:exit].each do |f|
         #puts "Boot Kernel::#{f}"
@@ -75,7 +72,7 @@ module Boot
       obj = get_or_create_class :String
       [:get , :set , :puts].each do |f|
         #puts "Boot String::#{f}"
-        obj.add_instance_method Boot::String.send(f , @context)
+        obj.add_instance_method Salama::String.send(f , @context)
       end
     end
 

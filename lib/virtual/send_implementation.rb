@@ -9,8 +9,7 @@ module Virtual
         me = code.me
         next unless ( me.type == Reference)
         if( me.is_a? Constant)
-          Boot::BootClass
-          if( me.is_a? Boot::BootClass )
+          if( me.is_a? BootClass )
             raise "unimplemented"
           elsif( me.is_a? ObjectConstant )
             clazz = me.clazz

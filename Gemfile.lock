@@ -1,15 +1,13 @@
 GIT
   remote: https://github.com/salama/salama-reader.git
-  revision: 484990b093f0b01b61028902aa5fcafee7a7c9b6
+  revision: 1272af6c660efe0af93d7f5ad87d98bd04ce5d22
   specs:
     salama-reader (0.0.2)
-      salama (~> 0.0.1)
 
 PATH
   remote: /Users/raisa/salama-arm
   specs:
     salama-arm (0.0.1)
-      salama (~> 0.0.1)
 
 GEM
   remote: http://rubygems.org/
@@ -75,8 +73,6 @@ GEM
       ruby_parser (~> 3.2, >= 3.2.2)
     ruby_parser (3.6.1)
       sexp_processor (~> 4.1)
-    salama (0.0.1)
-      parslet (~> 1.6.1)
     sexp_processor (4.4.3)
     simplecov (0.8.2)
       docile (~> 1.1.0)

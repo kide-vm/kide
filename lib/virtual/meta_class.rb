@@ -1,4 +1,4 @@
-module Boot
+module Virtual
   # class that acts like a class, but is really the object
   
   # described in the ruby language book as the eigenclass, what you get with 
