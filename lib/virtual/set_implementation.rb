@@ -6,7 +6,13 @@ module Virtual
     def run block
       block.codes.dup.each do |code|
         next unless code.is_a? Virtual::Set
-        raise "Start coding"
+        if( code.to.is_a? NewMessageSlot)
+          to = RegisterReference.new(:r0)
+          tmp = RegisterReference.new(:r5)
+          move = RegisterMachine.mov( to , tmp , code.index )
+        else
+          raise "Start coding #{code.inspect}"
+        end
       end
     end
   end
