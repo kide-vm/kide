@@ -98,7 +98,7 @@ module Ast
 
   class VariableExpression < NameExpression
     def compile method , message
-      method.add_code Virtual::ObjectGet.new(name)
+      method.add_code Virtual::InstanceGet.new(name)
       Virtual::Return.new( Virtual::Mystery )
     end
   end

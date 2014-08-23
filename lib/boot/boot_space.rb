@@ -3,7 +3,6 @@ require_relative "boot_class"
 require "kernel/all"
 require_relative "object"
 require_relative "string"
-require "virtual/send_implementation"
 
 module Boot
   # The BootSpace contains all objects for a program. In functional terms it is a program, but in oo

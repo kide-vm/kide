@@ -26,3 +26,4 @@ module Virtual
     end
   end
 end
+require_relative "get_implementation"

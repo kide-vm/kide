@@ -83,7 +83,9 @@ module Virtual
   end
 
   # class for Set instructions, A set is basically a mem move.
-  # to and from are indexes into the known objects(frame,message,self and new_message), or from may be a constant
+  # to and from are indexes into the known objects(frame,message,self and new_message), these are represented as slots
+  # (see there) 
+  # from may be a Constant (Object,Integer,String,Class)
   class Set < Instruction
     def initialize to , from
       @to = to
@@ -91,8 +93,10 @@ module Virtual
     end
     attr_reader :to , :from
   end
-  
-  class ObjectGet < Instruction
+
+  # Get a instance variable by _name_ . So we have to resolve the name to an index to trnsform into a Slot
+  # The slot may the be used in a set on left or right hand. The transformation is done by GetImplementation
+  class InstanceGet < Instruction
     def initialize name
       @name = name.to_sym
     end
