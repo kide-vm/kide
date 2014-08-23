@@ -5,6 +5,12 @@ GIT
     salama-reader (0.0.2)
       salama (~> 0.0.1)
 
+PATH
+  remote: /Users/raisa/salama-arm
+  specs:
+    salama-arm (0.0.1)
+      salama (~> 0.0.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -90,5 +96,6 @@ DEPENDENCIES
   parslet
   pry
   roodi
+  salama-arm (= 0.0.1)!
   salama-reader (= 0.0.2)!
   simplecov

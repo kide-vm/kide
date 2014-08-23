@@ -76,6 +76,9 @@ module Register
 
 
     def self.instance
+      if(@@instance.nil?)
+        @@instance = Arm::ArmMachine.new
+      end
       @@instance
     end
     def self.instance= machine
@@ -141,3 +144,8 @@ module Register
     end
   end
 end
+require_relative "instruction"
+require_relative "register_reference"
+require_relative "get_implementation"
+require_relative "set_implementation"
+require "arm/arm_machine"
