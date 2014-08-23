@@ -1,9 +1,10 @@
-require "boot/boot_class"
+require_relative "boot_class"
 #require "vm/call_site"
 require "kernel/all"
-require "boot/object"
-require "boot/string"
-require "trickle/send"
+require_relative "object"
+require_relative "string"
+require "virtual/send_implementation"
+
 module Boot
   # The BootSpace contains all objects for a program. In functional terms it is a program, but in oo
   # it is a collection of objects, some of which are data, some classes, some functions
@@ -25,9 +26,9 @@ module Boot
       #global objects (data)
       @objects = []
       boot_classes
-      @passes = [ Trickle::Send ]
+      @passes = [ Virtual::SendImplementation ]
     end
-    attr_reader :context , :main , :classes , :entry , :exit
+    attr_reader  :main , :classes , :objects
 
     def run_passes
       @passes.each do |pass|
@@ -41,6 +42,26 @@ module Boot
       end
     end
 
+    # Passes are initiated empty and added to by anyone who want (basically)
+    # Even linking and assembly are passes and so there are quite a few system passes neccesary to result in a 
+    # working binary. Other than that, this is intentionally quite flexible
+    
+    def add_pass_after( pass , after)
+      index = @passes.index(after)
+      raise "No such pass to add after: #{after}" unless index
+      @passes.insert(index+1 , pass)
+    end
+    def add_pass_before( pass , after)
+      index = @passes.index(after)
+      raise "No such pass to add after: #{after}" unless index
+      @passes.insert(index , pass)
+    end
+
+    def add_pass_after( pass , after)
+      index = @passes.index(after)
+      raise "No such pass to add after: #{after}" unless index
+      @passes.insert(index , pass)
+    end
     # boot the classes, ie create a minimal set of classes with a minimal set of functions
     # minimal means only that which can not be coded in ruby
     # MethodDefinitions are grabbed from respective modules by sending the method name. This should return the 
