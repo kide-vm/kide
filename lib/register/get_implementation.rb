@@ -11,5 +11,5 @@ module Register
       end
     end
   end
-  Virtual::Object.space.add_pass_after GetImplementation, Virtual::SendImplementation
+  Virtual::BootSpace.space.add_pass_after GetImplementation, Virtual::SendImplementation
 end

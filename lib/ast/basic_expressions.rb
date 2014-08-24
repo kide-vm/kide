@@ -49,7 +49,7 @@ module Ast
   class ModuleName < NameExpression
 
     def compile method , message
-      clazz = ::Virtual::Object.space.get_or_create_class name
+      clazz = ::Virtual::BootSpace.space.get_or_create_class name
       raise "uups #{clazz}.#{name}" unless clazz
       #class qualifier, means call from metaclass
       #clazz = clazz.meta_class
@@ -61,7 +61,7 @@ module Ast
 #    attr_reader  :string
     def compile method , message
       value = Virtual::StringConstant.new(string)
-      ::Virtual::Object.space.add_object value 
+      ::Virtual::BootSpace.space.add_object value 
       value
     end
   end

@@ -7,9 +7,9 @@ class HelloTest < MiniTest::Test
     machine = Virtual::Machine.boot
     expressions = machine.compile_main @string_input
     puts ""
-    Virtual::Object.space.run_passes
+    Virtual::BootSpace.space.run_passes
     puts Sof::Writer.write(expressions)
-#    puts Sof::Writer.write(Virtual::Object.space)
+#    puts Sof::Writer.write(Virtual::BootSpace.space)
   end
 
   def qtest_simplest_function

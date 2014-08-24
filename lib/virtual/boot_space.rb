@@ -39,6 +39,14 @@ module Virtual
       end
     end
 
+    def self.space
+      if defined? @@space
+        @@space
+      else
+        @@space = BootSpace.new
+      end
+    end
+
     # Passes are initiated empty and added to by anyone who want (basically)
     # Even linking and assembly are passes and so there are quite a few system passes neccesary to result in a 
     # working binary. Other than that, this is intentionally quite flexible

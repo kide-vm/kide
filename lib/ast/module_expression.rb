@@ -20,7 +20,7 @@ module Ast
 
   class ClassExpression < ModuleExpression
     def compile method , message
-      clazz = ::Virtual::Object.space.get_or_create_class name
+      clazz = ::Virtual::BootSpace.space.get_or_create_class name
       puts "Created class #{clazz.name.inspect}"
 #      context.current_class = clazz
       expressions.each do |expression|

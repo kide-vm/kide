@@ -44,7 +44,7 @@ module Virtual
       class_for(MoveInstruction).new(value , self , :opcode => :mov)
     end
     def clazz
-      Object.space.get_or_create_class(:String)
+      BootSpace.space.get_or_create_class(:String)
     end
   end
   

@@ -28,13 +28,6 @@ module Virtual
       Sof::Writer.write(self)
     end
 
-    def self.space
-      if defined? @@space
-        @@space
-      else
-        @@space = BootSpace.new
-      end
-    end
   end
   
   class Layout < Object
