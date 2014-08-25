@@ -8,6 +8,8 @@ class HelloTest < MiniTest::Test
     expressions = machine.compile_main @string_input
     puts ""
     Virtual::BootSpace.space.run_passes
+    ass = Register::Assembler.new(Virtual::BootSpace.space)
+    ass.link
     puts Sof::Writer.write(expressions)
 #    puts Sof::Writer.write(Virtual::BootSpace.space)
   end

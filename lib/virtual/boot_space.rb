@@ -21,7 +21,7 @@ module Virtual
       @main = Virtual::MethodDefinition.new("main" , [] )
       #global objects (data)
       @objects = []
-      boot_classes
+      boot_classes! # boot is a verb here
       @passes = [ Virtual::SendImplementation ]
     end
     attr_reader  :main , :classes , :objects
@@ -65,7 +65,7 @@ module Virtual
     # minimal means only that which can not be coded in ruby
     # MethodDefinitions are grabbed from respective modules by sending the method name. This should return the 
     # implementation of the method (ie a method object), not actually try to implement it (as that's impossible in ruby)
-    def boot_classes
+    def boot_classes!
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we have to define some 
       # dummies, just for the other to compile
       obj = get_or_create_class :Object
