@@ -22,7 +22,7 @@ module Register
         slot = LinkSlot.new at
         @objects[object.object_id] = slot
       end
-      return if object.is_a? Instruction
+#      return if object.is_a? Instruction
       clazz = object.class.name.split("::").last
       send("link_#{clazz}".to_sym , object , at)
     end
