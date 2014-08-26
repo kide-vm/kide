@@ -10,11 +10,8 @@ module Register
     def run block
       block.codes.dup.each do |code|
         next unless code.is_a? Virtual::FunctionCall
-        to = RegisterReference.new(:r0)
-        tmp = RegisterReference.new(:r5)
-#        move = RegisterMachine.instance.ldr( to , tmp , code.to.index )
-#        block.replace(code , [move] )
-
+        call = RegisterMachine.instance.call( code.method )
+        block.replace(code , [call] )
       end
     end
   end
