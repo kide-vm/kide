@@ -62,4 +62,5 @@ module Register
     def link_Symbol sym , at    
     end
   end
+  Sof::Volotile.add(Register::Assembler , [:objects])
 end

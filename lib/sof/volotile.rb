@@ -7,5 +7,8 @@ module Sof
     def self.attributes clazz
       @@mapping[clazz] || []
     end
+    def self.add clazz , attributes
+      @@mapping[clazz] = attributes
+    end
   end
 end
