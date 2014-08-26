@@ -9,7 +9,7 @@ class HelloTest < MiniTest::Test
     puts ""
     Virtual::BootSpace.space.run_passes
     ass = Register::Assembler.new(Virtual::BootSpace.space)
-    ass.link
+    ass.assemble
     puts Sof::Writer.write(expressions)
 #    puts Sof::Writer.write(Virtual::BootSpace.space)
   end
