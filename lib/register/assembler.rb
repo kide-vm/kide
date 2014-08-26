@@ -51,12 +51,6 @@ module Register
         link_object code , at
       end
     end
-    def link_MethodEnter str , at    
-    end
-    def link_MethodReturn str , at    
-    end
-    def link_FunctionCall str , at    
-    end
     def link_String str , at    
     end
     def link_Symbol sym , at    
