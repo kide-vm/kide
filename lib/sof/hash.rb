@@ -10,8 +10,23 @@ module Sof
     end
     def out io , level = 0
       super
+      short = true
+      children.each do |k,v|
+        short = false unless k.is_a?(SimpleNode)
+        short = false unless v.is_a?(SimpleNode)
+      end
+      if(short and children.length < 7 )
+        short_out(io,level)
+      else
+        long_out(io , level)
+      end
+    end
+    def short_out(io,level)
+      long_out(io,level)
+    end
+    def long_out io , level
       indent = " " * level
-      @children.each_with_index do |child , i|
+      children.each_with_index do |child , i|
         key , val = child
         io.write "\n#{indent}" unless i == 0
         io.write "-"
