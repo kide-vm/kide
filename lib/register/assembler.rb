@@ -24,9 +24,26 @@ module Register
       puts "leng #{@stream.length}"
     end
 
+    def link_object(object , at)
+      slot = @objects[object.object_id]
+      unless slot
+        slot = LinkSlot.new at
+        @objects[object.object_id] = slot
+      end
+      if object.is_a? Instruction
+        total_length = 4
+      else
+        clazz = object.class.name.split("::").last
+        object_length = 0 #link_self(object , at)
+        total_length = object_length + send("link_#{clazz}".to_sym , object , at + object_length)
+      end
+      slot.length = total_length
+      total_length
+    end
+
     def assemble_object object
       slot = @objects[object.object_id]
-      raise "No slot for #{object_id}" unless slot
+      raise "Object not linked #{object_id}" unless slot
       if object.is_a? Instruction
         object.assemble( @stream , self )
       else
@@ -35,31 +52,17 @@ module Register
       end
     end
 
-    def link_object(object , at)
-      slot = @objects[object.object_id]
-      unless slot
-        slot = LinkSlot.new at
-        @objects[object.object_id] = slot
+    def link_Array( array , at)
+      length = 0
+      array.each do |elem| 
+        length += link_object(elem , at + length)
       end
-      if object.is_a? Instruction
-        len = 4
-      else
-        clazz = object.class.name.split("::").last
-        len = send("link_#{clazz}".to_sym , object , at)
-      end
-      slot.length = len
-      len
+      length
     end
 
     def link_BootSpace(space , at)
-      len = 0
-      space.classes.values.each do |cl|
-        len += link_object(cl , at + len)
-      end
-      space.objects.each do |o|
-        len += link_object(o , at + len)
-      end
-      len
+      length = link_Array( space.classes.values , at )
+      length + link_Array(space.objects , at + length)
     end
 
     def assemble_BootSpace(space)
@@ -73,12 +76,9 @@ module Register
     end
 
     def link_BootClass(clazz , at)
-      len = link_object(clazz.name , at)
-      len += link_object(clazz.super_class_name , at + len)
-      clazz.instance_methods.each do |meth|
-        len += link_object(meth , at + len)
-      end
-      len
+      length = link_object(clazz.name , at)
+      length += link_object(clazz.super_class_name , at + length)
+      length + link_Array(clazz.instance_methods , at + length)
     end
 
     def assemble_BootClass(clazz)
@@ -90,11 +90,8 @@ module Register
     end
 
     def link_MethodDefinition(method , at)
-      len = link_object method.name ,at
-      method.blocks.each do |block|
-        len += link_object( block , at + len)
-      end
-      len
+      length = link_object(method.name ,at)
+      length + link_Array(method.blocks ,at + length)
     end
 
     def assemble_MethodDefinition(method)
