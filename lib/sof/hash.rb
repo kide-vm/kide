@@ -22,7 +22,15 @@ module Sof
       end
     end
     def short_out(io,level)
-      long_out(io,level)
+      io.write("{")
+      children.each_with_index do |child , i|
+        key , val = child
+        key.out(io , level + 1)
+        io.write " => "
+        val.out(io , level + 1)
+        io.write ", " unless (i+1) == children.length
+      end
+      io.write("}")
     end
     def long_out io , level
       indent = " " * level

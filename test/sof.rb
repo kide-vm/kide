@@ -60,7 +60,7 @@ class BasicSof < MiniTest::Test
   end
   def test_simple_hash
     @out = Sof::Writer.write({ one: 1 , tru: true })
-    check "-:one => 1\n-:tru => true" 
+    check "{:one => 1, :tru => true}" 
   end
   def test_hash_object
     @out = Sof::Writer.write({ one: 1 , two: ObjectWithAttributes.new })
@@ -68,7 +68,7 @@ class BasicSof < MiniTest::Test
   end
   def test_array_hash
     @out = Sof::Writer.write([true, 1 , { one: 1 , tru: true }])
-    check "-true\n-1\n--:one => 1\n -:tru => true" 
+    check "-true\n-1\n-{:one => 1, :tru => true}" 
   end
   def test_hash_array
     @out = Sof::Writer.write({ one: [1 , ObjectWithAttributes.new] , two: true })
