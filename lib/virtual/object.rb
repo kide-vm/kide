@@ -3,8 +3,18 @@ module Virtual
   #
   # during compilation objects are module Virtual objects, but during execution they are not scoped
   # 
-  # functions on these classes express their functionality as function objects
+  # So compiling/linking/assembly turns ::virtual objects into binary that represents ruby objects at runtime
+  # The equivalence is listed below (i'll try and work on clearer correspondence later)
+  #  ::Virtual            Runtime / parfait
+  #   Object                  Object
+  #   BootClass               Class
+  #   MetaClass               self/Object
+  #   BootSpace               ObjectSpace
+  #   CompiledMethod          Function
+  #   (ruby)Array             Array
+  #         String            String
   class Object
+    # This could be in test, as it is used only there
     def == other
       return false unless other.class == self.class 
       Sof::Util.attributes(self).each do |a|
@@ -26,20 +36,6 @@ module Virtual
 
     def inspect
       Sof::Writer.write(self)
-    end
-
-  end
-  
-  class Layout < Object
-    def initialize members
-      @members = members
-    end
-  end
-
-  class Class < Object
-    def initialize name , sup = :Object
-      @name = name
-      @super_class = sup
     end
   end
 end

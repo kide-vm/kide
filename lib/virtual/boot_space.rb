@@ -1,4 +1,4 @@
-require "parfait/boot_class"
+require "virtual/boot_class"
 require "kernel/all"
 
 module Virtual
