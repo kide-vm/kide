@@ -1,5 +1,5 @@
 require "virtual/boot_class"
-require "kernel/object"
+require "builtin/object"
 
 module Virtual
   # The BootSpace contains all objects for a program. In functional terms it is a program, but in oo
@@ -71,20 +71,20 @@ module Virtual
       obj = get_or_create_class :Object
       [:index_of , :_get_instance_variable , :_set_instance_variable].each do |f|
         #puts "Boot Object::#{f}"
-        obj.add_instance_method Salama::Object.send(f , @context)
+        obj.add_instance_method Builtin::Object.send(f , @context)
       end
       [:putstring,:putint,:fibo,:exit].each do |f|
         #puts "Boot Kernel::#{f}"
-        obj.add_instance_method Salama::Kernel.send(f , @context)
+        obj.add_instance_method Builtin::Kernel.send(f , @context)
       end
       obj = get_or_create_class :String
       [:get , :set , :puts].each do |f|
         #puts "Boot String::#{f}"
-        obj.add_instance_method Salama::String.send(f , @context)
+        obj.add_instance_method Builtin::String.send(f , @context)
       end
       obj = get_or_create_class :Array
       [:get , :set , :push].each do |f|
-        obj.add_instance_method Salama::Array.send(f , @context)
+        obj.add_instance_method Builtin::Array.send(f , @context)
       end
     end
 
