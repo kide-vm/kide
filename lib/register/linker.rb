@@ -73,7 +73,7 @@ module Register
     end
     
     def link_String( str , at)
-      return (str.length / 4) + 1 + 2
+      return members(str.length / 4)
     end
 
     def link_Symbol(sym , at)
