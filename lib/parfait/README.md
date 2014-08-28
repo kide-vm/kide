@@ -11,7 +11,9 @@ And i finally came to the conclusion that Parfait is the ruby runtime. Aha
 
 Run - time
 
-not compile - time
+not 
+
+compile - time
 
 always mixing those up: As such it is not loaded at compile time.
 
@@ -22,17 +24,20 @@ And thus parfait can be used at run-time.
 
 It's too simple: just slips off the mind like a fish into water.
 
+Parfait has a brother, the Builtin module. Builtin contains everything that can not be coded in ruby, but we stil need
+(things like array access).
+
 #### Example: Message send
 
-I felt a little stupid that it took me so long to notice that sending a message is very closely relateed to the
+It felt a little stupid that it took me so long to notice that sending a message is very closely related to the
 existing ruby method Object.send
 
-Off course object.send takes symbol and the arguments and has the receiver, so all the elements of our Messaage are there.
+Off course Object.send takes symbol and the arguments and has the receiver, so all the elements of our Messaage are there.
 And the process that Object.send needs to do is exactly that: send that message, ie find the correct method according to 
 the old walk up the inheritance tree rules and dispatch it.
 
-And as all this happens at runtime, "all" we have to do is code this logic. And since it is at runtime, we can do it in ruby
-(as i said, this get's compiled and run, just like the program).
+And as all this happens at runtime, "all" we have to do is code this logic. And since it is at runtime, 
+we can do it in ruby (as i said, this get's compiled and run, just like the program).
 
 But what about the infinite loop problem:
 

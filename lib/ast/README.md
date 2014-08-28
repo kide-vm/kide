@@ -21,38 +21,50 @@ transformation and optimisation passes on the stream to improve it.
 
 Each ast class gets a compile method that does the compilation.
   
-#### Method Definition and Instructions
+#### Compiled Method and Instructions
 
 The first argument to the compile method is the CompiledMethod. All code is encoded as a stream of Instructions in the
-CompiledMethod. In fact Instructions are a linked list and so the CompiledMethod only hold the head, and the current
-insertion point.
+CompiledMethod. Instructions are stored as a list of Blocks, and Blocks are the smallest unit of code, which is 
+always linear.
 
-Code is added to the method (using add()), rather than working with the actual instructions. This is so each compile method
-can just do it's bit and be unaware of the larger structure that is being created. The genearal structure of the instructions
-is a graph (what with if's and whiles and breaks and what), but we build it to have one start and *one* end (return).
+Code is added to the method (using add_code), rather than working with the actual instructions. This is so each 
+compiling method can just do it's bit and be unaware of the larger structure that is being created. 
+The genearal structure of the instructions is a graph (what with if's and whiles and breaks and what), 
+but we build it to have one start and *one* end (return).
 
 
 #### Messages and frames
 
-The virtual machine instructions obviously operate on the virtual machine. Since the machine is virtual, we have to define
-it, and since it is oo we define it in objects.
+The virtual machine instructions obviously operate on the virtual machine. Since the machine is virtual, 
+we have to define it, and since it is oo we define it in objects.
 
-Also it is important to define how instructions, which is is in a ohysical machine by changing the contents of registers or 
-some stack.
+Also it is important to define how instructions operate, which is is in a physical machine would be by changing 
+the contents of registers or  some stack.
  
-Our machine is ot a register machine, but an object machine: it operates directly on objects and also has no stack.
+Our machine is ot a register machine, but an object machine: it operates directly on objects and also has no seperat
+stack, only objects. There are a number of objects which are accessible, and one can think of these (their addresses)
+as register contents. And one wouldn't be far off as that is the implementation
 
-When a Method needs to make a call, or send a message, it creates a Message object. Messages contain return addresses and
-arguemnts.
+The objects the machine works on are:
 
-Then the machine must find the method to call.
+- Message
+- Frame
+- Self
+- NewMessage
+
+and working on means, these are the only objects which the machine accesses. Ie all others would have to be moved first.
+ 
+When a Method needs to make a call, or send a message, it creates a new Message object. 
+Messages contain return addresses and arguemnts.
+
+Then the machine must find the method to call. This is a function of the virtual machine an is implemented in ruby.
 
 Then a new Method receives the message, creates a Frame for local and temporary variables and continues execution.
 
 The important thing here is that Messages and Frames are normal objects.
 
-And interestingly we can partly use ruby to find the method, so in a way it is not just a top down transformation. but 
-the sending goes back up and then down again.
+And interestingly we can partly use ruby to find the method, so in a way it is not just a top down transformation. 
+Instead the sending goes back up and then down again.
 
 The Message object is the second parameter to the compile method, the run-time part as it were. Why? Since it only
 exists at runtime: to make compile time analysis possible. Especially for those times when we can resolve the method

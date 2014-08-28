@@ -1,36 +1,49 @@
 Register Machine 
 ===============
 
-This is the logic that uses the generated ast to produce code, using the asm layer.
+This is the logic that uses the compiled virtual object space to produce code and an executable binary.
 
-Apart from shuffeling things around from one layer to the other, it keeps track about registers and
-provides the stack glue. All the stuff a compiler would usually do.
+There is a mechanism for an actual machine (derived class) to generate machine specific instructions (as the 
+plain ones in this directory don't assemble to binary). Currently there is only the Arm module to actually do
+that.
 
-Also all syscalls are abstracted as functions.
+The elf module is used to generate the actual binary from the final BootSpace. BootSpace is a virtual class representing
+all objects that will be in the executable. Other than CompiledMethods, objects get transformed to data.
 
-The Salama Convention 
-----------------------
+But CompiledMethods, which are made up of Blocks, are compiled into a stream of bytes, which are the binary code for the
+function.
 
-Since we're not in c, we use the regsters more suitably for our job:
+Virtual Objects
+----------------
 
-- return register is _not_ the same as passing registers
-- we pin one more register (ala stack/fp) for type information (this is used for returns too)
-- one line (8 registers) can be used by a function (caller saved?)
-- rest are scratch and may not hold values during call
+There are four virtual objects that are accessible (we can access their variables):
 
-For Arm this works out as:
-- 0 type word (for the line)
-- 1-6 argument passing + workspace
-- 7 return value
+- Self
+- Message (arguments, method name, self)
+- Frame (local and tmp variables)
+- NewMessage ( to build the next message sent)
 
-This means syscalls (using 7 for call number and 0 for return) must shuffle a little, but there's space to do it.
-Some more detail:
+These are pretty much the first four registers. When the code goes from virtual to register, we use register instrucitons
+to replace virtual ones.
 
-1 - returning in the same register as passing makes that one register a special case, which i want to avoid. shuffling it gets tricky and involves 2 moves for what?
-As i see it the benefitd of reusing the same register are one more argument register (not needed) and easy chaining of calls, which doen't really happen so much.
-On the plus side, not using the same register makes saving and restoring registers easy (to implement and understand!). 
-An easy to understand policy is worth gold, as register mistakes are HARD to debug and not what i want to spend my time with just now. So that's settled.
+Eg: A Virtual::Set can move data around inside those objects. And since in Arm this can not be done in one instruciton,
+we use two, one to move to an unused register and then into the destination. And then we need some fiddling of bits
+to shift the type info.
 
-2 - Tagging integers like MRI/BB is a hack which does not extend to other types, such as floats. So we don't use that and instead carry type information externally to the value. This is a burden off course, but then so is tagging. 
-The convention (to make it easier) is to handle data in lines (8 words) and have one of them carry the type info for the other 7. This is also the object layout and so we reuse that code on the stack.
+Another simple example is a Call. A simple case of a Class function call resolves the class object, and with the
+method name the function to be called at compile-time. And so this results in a Register::Call, which is an Arm 
+instruction. 
 
+A C call 
+---------
+
+Ok, there are no c calls. But syscalls are very similar. This is not at all as simple as the nice Class call described 
+above. 
+
+For syscall in Arm (linux) you have to load registers 0-x (depending on call), load R7 with the syscall number and then 
+issue the software interupt instruction. If you get back something back, it's in R0.
+
+In short, lots of shuffling. And to make it fit with our four object architecture, we need the Message to hold the data
+for the call and Sys (module) to be self. And then the actual functions do the shuffle, saving the data and restoring it.
+And setting type information according to kernel documentation (as there is no runtime info)
+ 

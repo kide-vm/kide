@@ -6,10 +6,10 @@ Hence the need for a code/object file format (remember an oo program is just obj
 
 I started with yaml, which is nice in that it has a solid implementation, reads and writes, handles arbitrary objects, handles graphs and is a sort of readable text format.
 
-But the sort of started to get to me, because 
-1) it's way to verbose (long files, object groups over many pages) and 
-2) does not allow for (easy) ordering.
-Also it was placing references in weird (first seen) places.
+But the "sort of" started to get to me, because 
+
+- 1) it's way to verbose (long files, object groups over many pages) and 
+- 2) does not allow for (easy) ordering.
 
 To fix this i started on Sof, with an eye to expand it.
 
@@ -19,7 +19,7 @@ The main starting goal was quite like yaml, but with
 - also short versions of arrays and hashes
 - Shorter class names (no ruby/object or even ruby/struct stuff)
 - references at the most shallow level
-- a possibility to order attributes and specify attributes that should not be serialized
+- an easy way to order attributes and specify attributes that should not be serialized
 
 ### Salama Object File
 
