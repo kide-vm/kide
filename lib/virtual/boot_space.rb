@@ -18,7 +18,7 @@ module Virtual
     def initialize machine = nil
       super()
       @classes = {}
-      @main = Virtual::MethodDefinition.new("main" , [] )
+      @main = Virtual::CompiledMethod.new("main" , [] )
       #global objects (data)
       @objects = []
       boot_classes! # boot is a verb here
@@ -63,7 +63,7 @@ module Virtual
     end
     # boot the classes, ie create a minimal set of classes with a minimal set of functions
     # minimal means only that which can not be coded in ruby
-    # MethodDefinitions are grabbed from respective modules by sending the method name. This should return the 
+    # CompiledMethods are grabbed from respective modules by sending the method name. This should return the 
     # implementation of the method (ie a method object), not actually try to implement it (as that's impossible in ruby)
     def boot_classes!
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we have to define some 

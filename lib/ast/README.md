@@ -14,7 +14,7 @@ When compiling we deal with two times, compile-time and run-time. All the headac
 Similarly, the result of compiling is two-fold: a static and a dynamic part.
 
 - the static part are objects like the constants, but also defined classes and their methods
-- the dynamic part is the code, which is stored as streams of instructions in the MethodDefinition
+- the dynamic part is the code, which is stored as streams of instructions in the CompiledMethod
 
 Too make things a little simpler, we create a very high level instruction stream at first and then run 
 transformation and optimisation passes on the stream to improve it. 
@@ -23,8 +23,8 @@ Each ast class gets a compile method that does the compilation.
   
 #### Method Definition and Instructions
 
-The first argument to the compile method is the MethodDefinition. All code is encoded as a stream of Instructions in the
-MethodDefinition. In fact Instructions are a linked list and so the MethodDefinition only hold the head, and the current
+The first argument to the compile method is the CompiledMethod. All code is encoded as a stream of Instructions in the
+CompiledMethod. In fact Instructions are a linked list and so the CompiledMethod only hold the head, and the current
 insertion point.
 
 Code is added to the method (using add()), rather than working with the actual instructions. This is so each compile method

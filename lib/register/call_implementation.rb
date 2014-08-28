@@ -1,7 +1,7 @@
 module Register
   # This implements call logic, which is simply like a c call (not send, that involves lookup and all sorts)
   #
-  # The only target for a call is a MethodDefinition, so we just need to get the address for the code
+  # The only target for a call is a CompiledMethod, so we just need to get the address for the code
   # and call it.
   #
   # The only slight snag is that we would need to assemble before getting the address, but to assemble

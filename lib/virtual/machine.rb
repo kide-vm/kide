@@ -57,7 +57,7 @@ module Virtual
     def compile_main bytes
       syntax  = @parser.parse_with_debug(bytes)
       parts = Parser::Transform.new.apply(syntax)
-      main = Virtual::MethodDefinition.main
+      main = Virtual::CompiledMethod.main
       expressions = parts.compile( main , self.message )
     end
 
@@ -76,7 +76,7 @@ end
 
 #require_relative "list"
 require_relative "instruction"
-require_relative "method_definition"
+require_relative "compiled_method"
 require_relative "frame"
 require_relative "message"
 require_relative "value"

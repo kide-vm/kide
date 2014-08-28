@@ -29,10 +29,10 @@ module Virtual
   #            These (eg if/while) blocks may themselves have linear blocks ,but the last of these 
   #            MUST have an uncoditional branch. And remember, all roads lead to return.
   
-  class MethodDefinition < Virtual::Object
+  class CompiledMethod < Virtual::Object
     #return the main function (the top level) into which code is compiled
-    def MethodDefinition.main
-      MethodDefinition.new(:main , [] )
+    def CompiledMethod.main
+      CompiledMethod.new(:main , [] )
     end
     def initialize name , args , receiver = Virtual::Self.new , return_type = Virtual::Mystery
       @name = name.to_sym

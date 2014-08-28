@@ -52,7 +52,7 @@ module Register
       end
     end
 
-    def assemble_MethodDefinition(method)
+    def assemble_CompiledMethod(method)
       assemble_object(method.name)
       method.blocks.each do |block|
         assemble_object(block)

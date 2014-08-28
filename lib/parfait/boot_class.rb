@@ -13,7 +13,7 @@ require "virtual/meta_class"
     end
     attr_reader :name , :instance_methods , :meta_class , :context , :super_class_name
     def add_instance_method method
-      raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Virtual::MethodDefinition
+      raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Virtual::CompiledMethod
       raise "syserr " unless method.name.is_a? Symbol
       @instance_methods << method
     end

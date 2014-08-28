@@ -53,7 +53,7 @@ module Register
       length + link_Array(clazz.instance_methods , at + length)
     end
 
-    def link_MethodDefinition(method , at)
+    def link_CompiledMethod(method , at)
       length = members(2)
       length += link_object(method.name ,at + length)
       # NOT an ARRAY, just a bag of bytes

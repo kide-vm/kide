@@ -7,7 +7,7 @@ module Salama
     # As we write before we recurse (save a push) we write the number backwards
     # arguments: string address , integer
     def self.utoa context
-      utoa_function = Virtual::MethodDefinition.new(:utoa ,  [ Virtual::Integer ] , Virtual::Integer ,Virtual::Integer )
+      utoa_function = Virtual::CompiledMethod.new(:utoa ,  [ Virtual::Integer ] , Virtual::Integer ,Virtual::Integer )
       return utoa_function
       str_addr = utoa_function.receiver
       number = utoa_function.args.first
@@ -25,7 +25,7 @@ module Salama
     end
 
     def self.putint context
-      putint_function = Virtual::MethodDefinition.new(:putint , [] , Virtual::Integer ,Virtual::Integer )
+      putint_function = Virtual::CompiledMethod.new(:putint , [] , Virtual::Integer ,Virtual::Integer )
       return putint_function
       buffer = Virtual::StringConstant.new("           ") # create a buffer
       context.object_space.add_object buffer              # and save it (function local variable: a no no)
@@ -52,7 +52,7 @@ module Salama
     # a hand coded version of the fibonachi numbers
     # not my hand off course, found in the net http://www.peter-cockerell.net/aalp/html/ch-5.html
     def self.fibo context
-      fibo_function = Virtual::MethodDefinition.new(:fibo ,  [] , Virtual::Integer ,Virtual::Integer )
+      fibo_function = Virtual::CompiledMethod.new(:fibo ,  [] , Virtual::Integer ,Virtual::Integer )
       return fibo_function
       result = fibo_function.return_type
       int = fibo_function.receiver
