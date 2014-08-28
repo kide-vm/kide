@@ -82,6 +82,10 @@ module Virtual
         #puts "Boot String::#{f}"
         obj.add_instance_method Salama::String.send(f , @context)
       end
+      obj = get_or_create_class :Array
+      [:get , :set , :push].each do |f|
+        obj.add_instance_method Salama::Array.send(f , @context)
+      end
     end
 
     # Objects are data and get assembled after functions
