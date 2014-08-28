@@ -146,7 +146,6 @@ module Register
 end
 require_relative "instruction"
 require_relative "register_reference"
-require_relative "get_implementation"
 require_relative "set_implementation"
 require_relative "call_implementation"
 require_relative "enter_implementation"
