@@ -1,4 +1,4 @@
-module Salama
+module Builtin
   module Kernel
     def self.putstring context 
       function = Virtual::CompiledMethod.new(:putstring , [] )

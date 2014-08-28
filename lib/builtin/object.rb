@@ -1,4 +1,4 @@
-module Salama
+module Builtin
   class Object
     module ClassMethods
     

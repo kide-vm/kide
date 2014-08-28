@@ -1,4 +1,4 @@
-module Salama
+module Builtin
   class Array
     module ClassMethods
       def get context , index = Virtual::Integer

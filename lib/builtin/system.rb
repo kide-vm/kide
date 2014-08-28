@@ -1,4 +1,4 @@
-module Salama
+module Builtin
   module Kernel
     def self.exit context
       function = Virtual::CompiledMethod.new(:exit , [] , Virtual::Integer)
