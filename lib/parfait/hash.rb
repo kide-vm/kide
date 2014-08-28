@@ -5,7 +5,7 @@ class Hash
     @values = Array.new()
   end
   def empty?
-    @keys.nil?
+    @keys.empty?
   end
 
   def length()
@@ -15,7 +15,7 @@ class Hash
   def get(key)
     index = key_index(key)
     if( index )
-      @keys[index]
+      @values[index]
     else
       nil
     end
@@ -41,8 +41,9 @@ class Hash
       @keys[index] = value
     else
       @keys.push(key)
-      @value.push(value)
+      @values.push(value)
     end
+    value
   end
 end
 
