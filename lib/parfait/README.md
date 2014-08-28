@@ -1,4 +1,6 @@
-### A thin layer
+### Parfait: a thin layer
+
+(not everbody likes onion)
 
 Here we have a placeholder for things i am currently developing. 
 
@@ -15,7 +17,8 @@ not
 
 compile - time
 
-always mixing those up: As such it is not loaded at compile time.
+always mixing those up: As such it is not loaded at compile time. On the other hand, we need to create data
+at compile time that matches the expectation of the code we create..
 
 A step back:  the code (program) we compile runs at run - time. 
 And so does parfait. So all we have to do is compile it with the program.

@@ -9,7 +9,7 @@ These functions return their code, ie a Virtual::CompiledMethod object, which ca
 as if it were a "normal"  function.
 
 A normal ruby function is one that is parsed and transformed to code. But not all functionality can be written in ruby, 
-one of those chicken and egg things. C uses Assembler in this situation, we use Kernel function.
+one of those chicken and egg things. C uses Assembler in this situation, we use Builtin functions.
 
 Slightly more here : http://salama.github.io/2014/06/10/more-clarity.html (then still called Kernel)
 

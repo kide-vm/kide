@@ -1,7 +1,8 @@
 Minimal elf support
 ===================
 
-This is really minnimal and works only for our current use case
+This is really minimal and works only for our current use case
+
 - no external functions (all syscalls)
 - only position independant code (no relocation)
 - embedded data (into text), no data section

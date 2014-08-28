@@ -3,7 +3,7 @@ Register Machine
 
 This is the logic that uses the compiled virtual object space to produce code and an executable binary.
 
-There is a mechanism for an actual machine (derived class) to generate machine specific instructions (as the 
+There is a mechanism for an actual machine (derived class) to generate harware specific instructions (as the 
 plain ones in this directory don't assemble to binary). Currently there is only the Arm module to actually do
 that.
 
@@ -23,7 +23,7 @@ There are four virtual objects that are accessible (we can access their variable
 - Frame (local and tmp variables)
 - NewMessage ( to build the next message sent)
 
-These are pretty much the first four registers. When the code goes from virtual to register, we use register instrucitons
+These are pretty much the first four registers. When the code goes from virtual to register, we use register instructions
 to replace virtual ones.
 
 Eg: A Virtual::Set can move data around inside those objects. And since in Arm this can not be done in one instruciton,
@@ -31,7 +31,7 @@ we use two, one to move to an unused register and then into the destination. And
 to shift the type info.
 
 Another simple example is a Call. A simple case of a Class function call resolves the class object, and with the
-method name the function to be called at compile-time. And so this results in a Register::Call, which is an Arm 
+method name the function to be found at compile-time. And so this results in a Register::Call, which is an Arm 
 instruction. 
 
 A C call 

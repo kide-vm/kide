@@ -54,12 +54,12 @@ The objects the machine works on are:
 
 and working on means, these are the only objects which the machine accesses. Ie all others would have to be moved first.
  
-When a Method needs to make a call, or send a message, it creates a new Message object. 
-Messages contain return addresses and arguemnts.
+When a Method needs to make a call, or send a Message, it creates a NewMessage object. 
+Messages contain return addresses and arguments.
 
-Then the machine must find the method to call. This is a function of the virtual machine an is implemented in ruby.
+Then the machine must find the method to call. This is a function of the virtual machine and is implemented in ruby.
 
-Then a new Method receives the message, creates a Frame for local and temporary variables and continues execution.
+Then a new Method receives the Message, creates a Frame for local and temporary variables and continues execution.
 
 The important thing here is that Messages and Frames are normal objects.
 
@@ -67,8 +67,9 @@ And interestingly we can partly use ruby to find the method, so in a way it is n
 Instead the sending goes back up and then down again.
 
 The Message object is the second parameter to the compile method, the run-time part as it were. Why? Since it only
-exists at runtime: to make compile time analysis possible. Especially for those times when we can resolve the method
-at compile time. (Which is for all vm code)
+exists at runtime: to make compile time analysis possible (it is after all the Virtual version, not Parfait. ie
+compile-time, not run-time). Especially for those times when we can resolve the method
+at compile time.
 
 
 * 
