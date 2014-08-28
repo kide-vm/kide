@@ -22,19 +22,13 @@ module Register
         @objects[object.object_id] = slot
       end
       if object.is_a? Instruction
-        total_length = 4
+        length = 4
       else
         clazz = object.class.name.split("::").last
-        object_length = link_self(object , at)
-        total_length = object_length + send("link_#{clazz}".to_sym , object , at + object_length)
+        length = send("link_#{clazz}".to_sym , object , at)
       end
-      slot.length = total_length
-      total_length
-    end
-
-    def link_self(object , at)
-      puts "Object #{object.class}"
-      0
+      slot.length = length
+      length
     end
 
     def link_Array( array , at)
@@ -42,24 +36,31 @@ module Register
       array.each do |elem| 
         length += link_object(elem , at + length)
       end
-      length
+      # also array has constant overhead, the members helper fixes it to multiple of 8
+      members(length)
     end
 
     def link_BootSpace(space , at)
-      length = link_Array( space.classes.values , at )
+      length = members( 2 )
+      length += link_Array( space.classes.values , at + length )
       length + link_Array(space.objects , at + length)
     end
 
     def link_BootClass(clazz , at)
-      length = link_object(clazz.name , at)
+      length = members(3)
+      length += link_object(clazz.name , at + length)
       length += link_object(clazz.super_class_name , at + length)
       length + link_Array(clazz.instance_methods , at + length)
     end
 
     def link_MethodDefinition(method , at)
-      length = link_object(method.name ,at)
-      # NOT an ARRAY
-      length + link_Array(method.blocks ,at + length)
+      length = members(2)
+      length += link_object(method.name ,at + length)
+      # NOT an ARRAY, just a bag of bytes
+      method.blocks.each do |block|
+        length += link_object( block ,at + length)
+      end
+      length
     end
 
     def link_Block(block , at)
@@ -81,6 +82,14 @@ module Register
 
     def link_StringConstant( sc , at)
       return link_String(sc.string,at)
+    end
+    
+    
+    # objects only come in lengths of multiple of 8
+    # but there is a constant overhead of 2, one for type, one for layout
+    # and as we would have to subtract 1 to make it work without overhead, we now have to add 1
+    def members len
+      8 * (1 + (len + 1) / 8)
     end
     
   end
