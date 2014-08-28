@@ -1,5 +1,5 @@
 require "virtual/boot_class"
-require "kernel/all"
+require "kernel/object"
 
 module Virtual
   # The BootSpace contains all objects for a program. In functional terms it is a program, but in oo
