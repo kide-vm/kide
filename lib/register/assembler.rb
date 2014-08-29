@@ -1,14 +1,19 @@
 
 module Register
   class LinkSlot
-    def initialize position
-      @position = position
-      raise "Nil not is not an allowed position" unless position  
-      @length = 0
+    def initialize 
+      @position = -1
+      @length = -1
     end
     attr_accessor :position , :length , :layout
   end
-  
+
+  # Assmble the object space into a binary.
+  # Link first to get positions, then assemble
+  # link and assemble functions for each class are close to each other, so to get them the same.
+  #  meaning: as the link function determines the length of an object and the assemble actually writes the bytes
+  #           they are pretty much dependant. In an earlier version they were functions on the objects, but now it
+  #           has gone to a visitor pattern.
   class Assembler
 
     def initialize space
@@ -17,11 +22,185 @@ module Register
     end
 
     def link
-      link_object(@space , 0)
+      link_object(@space)
+      at = 0
+      @objects.each do |id , slot|
+        slot.position = at
+        at += slot.length
+      end
     end
 
+    def assemble
+      link
+      @stream = StringIO.new
+      assemble_object( @space )
+      puts "leng #{@stream.length}"
+    end
+
+    def link_object(object)
+      slot = @objects[object.object_id]
+      unless slot
+        slot = LinkSlot.new
+        @objects[object.object_id] = slot
+      end
+      slot.layout =  layout_for(object)
+      clazz = object.class.name.split("::").last
+      slot.length = send("link_#{clazz}".to_sym , object)
+    end
+
+    def assemble_object object
+      slot = get_slot(object)
+      raise "Object not linked #{object_id}=>#{object.class}" unless slot
+      clazz = object.class.name.split("::").last
+      send("assemble_#{clazz}".to_sym , object)
+    end
+
+    def link_layout(object)
+      slot = get_slot(object)
+      layout = slot.layout
+      length = link_object(layout[:names])
+      padded( layout[:names].length)
+    end
+
+    # write type and layout of the instance, and the variables that are passed
+    # variables ar values, ie int or refs. For refs the object needs to save the object first
+    def assemble_self( object , variables )
+      slot = get_slot(object)
+      raise "Object not linked #{object.inspect}" unless slot
+      layout = slot.layout
+      @stream.write_uint32( 0 ) #TODO types
+      @stream.write_uint32( assemble_object(layout[:names]) ) #ref
+      variables.each do |var|
+        @stream.write_uint32 var
+      end
+      ## padding to the nearest 8
+      ((padded(variables.length) - variables)/4).times do
+        @stream.write_uint32 0
+      end
+      slot.position
+    end
+
+    def link_Array( array )
+      # also array has constant overhead, the padded helper fixes it to multiple of 8
+      array.each do |elem| 
+        link_object(elem)
+      end
+      padded(array.length)
+    end
+
+    def assemble_Array array
+      slot = get_slot(array)
+      raise "Array not linked #{object.inspect}" unless slot
+      layout = slot.layout
+      @stream.write_uint32( 0 ) #TODO types
+      @stream.write_uint32( assemble_object(layout[:names]) ) #ref
+      array.each do |var|
+        write_ref(var)
+      end
+      ## padding to the nearest 8
+      ((padded(array.length) - array.length)/4).times do
+        @stream.write_uint32 0
+      end
+      slot.position
+    end
+
+    def link_Hash( hash )
+      link_object(hash.keys)
+      link_object(hash.values)
+      link_layout(hash)
+      padded(2)
+    end
+
+    def assemble_Hash hash
+      assemble_self( hash , [ hash.keys , hash.values] )
+    end
+
+    def link_BootSpace(space)
+      link_object( space.classes)
+      link_object(space.objects)
+      padded( 2 )
+    end
+
+    def assemble_BootSpace(space)
+      assemble_self(space , [space.classes,space.objects] )
+    end
+
+    def link_BootClass(clazz)
+      link_object(clazz.name )
+      link_object(clazz.super_class_name)
+      link_object(clazz.instance_methods)
+      padded(3)
+    end
+
+    def assemble_BootClass(clazz)
+      assemble_object(clazz.name)
+      assemble_object(clazz.super_class_name)
+      clazz.instance_methods.each do |meth|
+        assemble_object(meth)
+      end
+    end
+
+    def link_CompiledMethod(method)
+      length = 0
+      # NOT an ARRAY, just a bag of bytes
+      method.blocks.each do |block|
+        block.codes.each do |code|
+          length += code.length
+        end
+      end
+      padded(length)
+    end
+
+
+    def assemble_CompiledMethod(method)
+      assemble_object(method.name)
+      method.blocks.each do |block|
+        block.codes.each do |code|
+          code.assemble( @stream , self )
+        end
+      end
+    end
+
+    def link_String( str)
+      return padded(str.length / 4)
+    end
+
+    def link_Symbol(sym)
+      return link_String(sym.to_s)
+    end
+
+    def link_StringConstant( sc)
+      return link_String(sc.string)
+    end
+
+    def assemble_String( str )
+      @stream.write str
+    end
+
+    def assemble_Symbol(sym)
+      return assemble_String(sym.to_s)
+    end
+
+    def assemble_StringConstant( sc)
+      return assemble_String(sc.string)
+    end
+
+    private 
     def get_slot(object)
       @objects[object.object_id]      
+    end
+
+    def write_ref object
+      slot = get_slot(object)
+      raise "Object not linked #{object.inspect}" unless slot
+      @stream.write_uint32 slot.position
+    end
+
+    # objects only come in lengths of multiple of 8
+    # but there is a constant overhead of 2, one for type, one for layout
+    # and as we would have to subtract 1 to make it work without overhead, we now have to add 1
+    def padded len
+      8 * (1 + (len + 1) / 8)
     end
 
     def layout_for(object)
@@ -37,182 +216,6 @@ module Register
       else
         raise "linker encounters unknown class #{object.class}"
       end
-    end
-
-    def write_ref object
-      slot = get_slot(object)
-      raise "Object not linked #{object.inspect}" unless slot
-      @stream.write_uint32 slot.position
-    end
-
-    def assemble
-      link
-      @stream = StringIO.new
-      assemble_object( @space )
-      puts "leng #{@stream.length}"
-    end
-
-    def link_object(object , at)
-      slot = @objects[object.object_id]
-      unless slot
-        slot = LinkSlot.new at
-        @objects[object.object_id] = slot
-      end
-      if object.is_a? Instruction
-        length = 4
-      else
-        slot.layout =  layout_for(object)
-        clazz = object.class.name.split("::").last
-        length = send("link_#{clazz}".to_sym , object , at)
-      end
-      slot.length = length
-      length
-    end
-
-    def assemble_object object
-      slot = get_slot(object)
-      raise "Object not linked #{object_id}=>#{object.class}" unless slot
-      if object.is_a? Instruction
-        object.assemble( @stream , self )
-      else
-        clazz = object.class.name.split("::").last
-        len = send("assemble_#{clazz}".to_sym , object)
-      end
-    end
-
-    def link_self(object , at)
-      slot = @objects[object.object_id]
-      layout = slot.layout
-      length = link_object(layout[:names] , at)
-      length + members( layout[:names].length) # 2 for type and layout
-    end
-
-    # assemble the instance variables of the object
-    def assemble_self( object )
-      slot = get_slot(object)
-      raise "Object not linked #{object.inspect}" unless slot
-      layout = slot.layout
-      @stream.write_uint32( 0 ) #TODO
-      @stream.write_uint32( slot.position ) #ref
-      layout.each do |name|
-        write_ref(name)
-      end
-    end
-
-    def link_Array( array , at)
-      length = 0
-      array.each do |elem| 
-        length += link_object(elem , at + length)
-      end
-      # also array has constant overhead, the members helper fixes it to multiple of 8
-      members(length)
-    end
-
-    def link_Hash( hash , at)
-      length = link_object(hash.keys , at)
-      length += link_object(hash.values , at + length)
-      length += link_self(hash , at + length)
-      members(length)
-    end
-
-    def assemble_Hash hash
-      assemble_self( hash )
-      hash.each do |key , val|
-        assemble_object(key)
-        assemble_object(val)
-      end
-    end
-
-    def link_BootSpace(space , at)
-      length = link_object( space.classes , at )
-      length += link_object(space.objects , at + length)
-      length + members( 2 )
-    end
-
-    def assemble_BootSpace(space)
-      # assemble in the same order as linked
-      assemble_object(space.classes)
-      assemble_object(space.objects)
-      assemble_self(space)
-    end
-
-    def link_BootClass(clazz , at)
-      length = link_object(clazz.name , at )
-      length += link_object(clazz.super_class_name , at + length)
-      length += link_object(clazz.instance_methods , at + length)
-      length + members(3)
-    end
-
-    def assemble_BootClass(clazz)
-      assemble_object(clazz.name)
-      assemble_object(clazz.super_class_name)
-      clazz.instance_methods.each do |meth|
-        assemble_object(meth)
-      end
-    end
-
-    def link_CompiledMethod(method , at)
-      length = members(2)
-      length += link_object(method.name ,at + length)
-      # NOT an ARRAY, just a bag of bytes
-      method.blocks.each do |block|
-        length += link_object( block ,at + length)
-      end
-      length
-    end
-
-    def link_Block(block , at)
-      len = 0 
-      # NOT linking as an array, as we need the strem that makes the method
-      block.codes.each do |code|
-        len += link_object(code , at + len)
-      end
-      len
-    end
-
-    def assemble_CompiledMethod(method)
-      assemble_object(method.name)
-      method.blocks.each do |block|
-        assemble_object(block)
-      end
-    end
-
-    def assemble_Block(block)
-      block.codes.each do |code|
-        assemble_object(code)
-      end
-    end
-
-    def link_String( str , at)
-      return members(str.length / 4)
-    end
-
-    def link_Symbol(sym , at)
-      return link_String(sym.to_s , at)
-    end
-
-    def link_StringConstant( sc , at)
-      return link_String(sc.string,at)
-    end
-    
-    
-    # objects only come in lengths of multiple of 8
-    # but there is a constant overhead of 2, one for type, one for layout
-    # and as we would have to subtract 1 to make it work without overhead, we now have to add 1
-    def members len
-      8 * (1 + (len + 1) / 8)
-    end
-
-    def assemble_String( str )
-      @stream.write str
-    end
-
-    def assemble_Symbol(sym)
-      return assemble_String(sym.to_s)
-    end
-
-    def assemble_StringConstant( sc)
-      return assemble_String(sc.string)
     end
   end
 
