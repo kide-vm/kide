@@ -8,7 +8,7 @@ module Ast
       end
       r = receiver ? receiver.compile(method,message) : Virtual::Self.new()
       new_method = Virtual::CompiledMethod.new(name , args , r )
-      new_method.class_name = r.is_a?(BootClass) ? r.name : method.class_name
+      new_method.class_name = r.is_a?(Virtual::BootClass) ? r.name : method.class_name
       clazz = Virtual::BootSpace.space.get_or_create_class(new_method.class_name)
       clazz.add_instance_method new_method
 

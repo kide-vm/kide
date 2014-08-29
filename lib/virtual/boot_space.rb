@@ -1,4 +1,4 @@
-require "virtual/boot_class"
+require_relative "boot_class"
 require "builtin/object"
 
 module Virtual

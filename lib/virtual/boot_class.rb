@@ -1,5 +1,7 @@
-require "virtual/meta_class"
+require_relative "meta_class"
 
+module Virtual
+  
   # class is mainly a list of methods with a name (for now)
   # layout of object is seperated into Layout
   class BootClass < Virtual::ObjectConstant
@@ -41,3 +43,5 @@ require "virtual/meta_class"
     end
 
   end
+
+end

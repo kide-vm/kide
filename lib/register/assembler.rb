@@ -25,7 +25,7 @@ module Register
 
     def assemble_object object
       slot = get_slot(object)
-      raise "Object not linked #{object_id}" unless slot
+      raise "Object not linked #{object_id}=>#{object.class}" unless slot
       if object.is_a? Instruction
         object.assemble( @stream , self )
       else
@@ -34,14 +34,37 @@ module Register
       end
     end
 
+    def write_ref object
+      slot = @linker.get_slot(object)
+      raise "Object not linked #{object.inspect}" unless slot
+      @stream.write_uint32 slot.position
+    end
+
+    # assemble the instance variables of the object
+    def assemble_self( object )
+      slot = @linker.get_slot(object)
+      raise "Object not linked #{object.inspect}" unless slot
+      layout = slot.layout
+      @stream.write_uint32( 0 ) #TODO
+      @stream.write_uint32( slot.position ) #ref
+      layout.each do |name|
+        write_ref(name)
+      end
+    end
+
+    def assemble_Hash hash
+      assemble_self( hash )
+      hash.each do |key , val|
+        assemble_object(key)
+        assemble_object(val)
+      end
+    end
+
     def assemble_BootSpace(space)
       # assemble in the same order as linked
-      space.classes.values.each do |cl|
-        assemble_object(cl)
-      end
-      space.objects.each do |o|
-        assemble_object(o)
-      end
+      assemble_object(space.classes)
+      assemble_object(space.objects)
+      assemble_self(space)
     end
 
     def assemble_BootClass(clazz)
