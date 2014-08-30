@@ -28,7 +28,6 @@ module Virtual
 
     def run_passes
       @passes.each do |pass|
-        puts "Runnning pass #{pass}"
         all = main.blocks
         @classes.each_value do |c| 
           c.instance_methods.each {|f| all += f.blocks  }
