@@ -111,7 +111,7 @@ module Register
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
-        first = Register::Integer.new(first) if first.is_a? Symbol
+        first = Register::RegisterReference.new(first) if first.is_a? Symbol
         clazz.new(first , options)
       end
     end
@@ -122,8 +122,8 @@ module Register
       create_method(inst) do |left ,right , options = nil|
         options = {} if options == nil
         options.merge defaults
-        left = Register::Integer.new(left) if left.is_a? Symbol
-        right = Register::Integer.new(right) if right.is_a? Symbol
+        left = Register::RegisterReference.new(left) if left.is_a? Symbol
+        right = Register::RegisterReference.new(right) if right.is_a? Symbol
         options[:opcode] = inst
         clazz.new(left , right ,options)
       end
@@ -136,9 +136,9 @@ module Register
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
-        result = Register::Integer.new(result) if result.is_a? Symbol
-        left = Register::Integer.new(left) if left.is_a? Symbol
-        right = Register::Integer.new(right) if right.is_a? Symbol
+        result = Register::RegisterReference.new(result) if result.is_a? Symbol
+        left = Register::RegisterReference.new(left) if left.is_a? Symbol
+        right = Register::RegisterReference.new(right) if right.is_a? Symbol
         clazz.new(result, left , right ,options)
       end
     end

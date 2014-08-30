@@ -111,7 +111,7 @@ module Register
     def initialize result , left , right , options = {}
       @result = result
       @left = left
-      @right = right.is_a?(Fixnum) ? IntegerConstant.new(right) : right
+      @right = right.is_a?(Fixnum) ? Virtual::IntegerConstant.new(right) : right
       super(options)
     end
     attr_accessor :result , :left ,  :right
@@ -149,7 +149,7 @@ module Register
   class MoveInstruction < Instruction
     def initialize to , from , options = {}
       @to = to
-      @from = from.is_a?(Fixnum) ? IntegerConstant.new(from) : from
+      @from = from.is_a?(Fixnum) ? Virtual::IntegerConstant.new(from) : from
       raise "move must have from set #{inspect}" unless from
       super(options)
     end
