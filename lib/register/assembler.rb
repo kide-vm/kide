@@ -50,6 +50,7 @@ module Register
         assemble_object( slot.object )
       end
       puts "Assembled #{@stream.length}"
+      return @stream.string
     end
 
     def link_object(object)
@@ -102,7 +103,7 @@ module Register
       array = slot.object
       layout = slot.layout
       @stream.write_uint32( 0 ) #TODO types
-      @stream.write_uint32( assemble_object(layout[:names]) ) #ref
+      write_ref layout[:names]  #ref
       array.each do |var|
         write_ref(var)
       end
@@ -180,21 +181,21 @@ module Register
       return link_String(sc.string)
     end
 
-    def assemble_String( str )
-      slot = get_slot(str)
-      raise "String not linked #{str}" unless slot
+    def assemble_String( slot )
+      str = slot.object
       layout = slot.layout
       @stream.write_uint32( 0 ) #TODO types
       @stream.write_uint32( assemble_object(layout[:names]) ) #ref
       @stream.write str
+      #TODO write padding 0's
     end
 
     def assemble_Symbol(sym)
-      return assemble_String(sym.to_s)
+      return assemble_String(sym)
     end
 
     def assemble_StringConstant( sc)
-      return assemble_String(sc.string)
+      return assemble_String(sc)
     end
 
     private 
