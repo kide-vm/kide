@@ -167,11 +167,13 @@ module Virtual
     # position of the function is the position of the entry block, is where we call
     def set_position at
       @blocks.each do |block|
-        blocks.set_position at
+        block.set_position at
         at = at + block.length
       end
     end
-
+    def position
+      @blocks.first.position
+    end
   end
 
 end
