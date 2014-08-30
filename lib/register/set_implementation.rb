@@ -10,7 +10,7 @@ module Register
           to = RegisterReference.new(:r0)
           tmp = RegisterReference.new(:r5)
           move = RegisterMachine.instance.ldr( to , tmp , code.to.index )
-          block.replace(code , [move] )
+          block.replace(code , move )
         else
           raise "Start coding #{code.inspect}"
         end

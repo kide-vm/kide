@@ -42,10 +42,9 @@ module Virtual
       @tmps = []
       @receiver = receiver
       @return_type = return_type
-      @blocks = []
       # first block we have to create with .new , as new_block assumes a current
       enter = Block.new( name  , self ).add_code(MethodEnter.new())
-      @blocks << enter
+      @blocks = [enter]
       @current = enter
       new_block("return").add_code(MethodReturn.new)
     end

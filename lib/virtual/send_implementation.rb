@@ -16,7 +16,7 @@ module Virtual
             method = clazz.get_instance_method code.name
             raise "Method not implemented #{clazz.name}.#{code.name}" unless method
             call = FunctionCall.new( method )
-            block.replace(code , [call] )
+            block.replace(code , call )
           else
             raise "unimplemented"
           end

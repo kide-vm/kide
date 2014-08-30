@@ -38,7 +38,11 @@ module Virtual
       index = @codes.index code
       raise "Code not found #{code} in #{self}" unless index
       @codes.delete_at(index)
-      @codes.insert(index , *new_codes)
+      if( new_codes.is_a? Array)
+        new_codes.reverse.each {|c| @codes.insert(index , c)}
+      else
+        @codes.insert(index , new_codes)
+      end
     end
 
     # returns if this is a block that ends in a call (and thus needs local variable handling)
@@ -53,6 +57,10 @@ module Virtual
     # Note: this will have to change for plocks and maybe anyway. back to oo, no more visitors
     def set_position at
       @position = at
+      @codes.each do |code|
+        code.position = at
+        at += code.length
+      end
     end
 
     def length
