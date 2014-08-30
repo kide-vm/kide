@@ -19,7 +19,7 @@ module Virtual
       @codes = []
     end
 
-    attr_reader :name , :codes , :method
+    attr_reader :name , :codes , :method , :position
     attr_accessor :branch
     
     def reachable ret = []
@@ -46,6 +46,17 @@ module Virtual
       return false unless codes.last.is_a?(CallInstruction)
       return false unless codes.last.opcode == :call
       codes.dup.reverse.find{ |c| c.is_a? StackInstruction }
+    end
+
+    # position is what another block uses to jump to. this is determined by the assembler
+    # the assembler allso assembles and assumes a linear instruction sequence
+    # Note: this will have to change for plocks and maybe anyway. back to oo, no more visitors
+    def set_position at
+      @position = at
+    end
+
+    def length
+      @codes.inject(0){|count , instruction| count += instruction.length }
     end
 
     private

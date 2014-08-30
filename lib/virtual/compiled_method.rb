@@ -162,32 +162,17 @@ module Virtual
     #             to the current block
     # also symbols are supported and wrapped as register usages (for bare metal programming)
     def method_missing(meth, *args, &block)
-      add_code RegisterMachine.instance.send(meth , *args)
+      add_code Register::RegisterMachine.instance.send(meth , *args)
     end
 
-    # following id the Code interface
-    
-    # to link we link the entry and then any blocks. The entry links the straight line
-    def link_at address , context
-      super #just sets the position
-      @entry.link_at address , context
+    # position of the function is the position of the entry block, is where we call
+    def set_position at
+      @blocks.each do |block|
+        blocks.set_position at
+        at = at + block.length
+      end
     end
 
-    # position of the function is the position of the entry block
-    def position
-      @entry.position
-    end
-
-    # length of a function is the entry block length (includes the straight line behind it) 
-    # plus any out of line blocks that have been added
-    def length
-      @entry.length
-    end
-    
-    # assembling assembles the entry (straight line/ no branch line) + any additional branches
-    def assemble io
-      @entry.assemble(io)
-    end
   end
 
 end
