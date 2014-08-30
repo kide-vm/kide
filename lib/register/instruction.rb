@@ -17,6 +17,7 @@ module Register
       @attributes = options
     end
     attr_reader :attributes
+    attr_accessor :position
     def opcode
       @attributes[:opcode]
     end

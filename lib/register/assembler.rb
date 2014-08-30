@@ -29,6 +29,7 @@ module Register
       @objects.each do |id , slot|
         next unless slot.object.is_a? Virtual::CompiledMethod
         slot.position = at
+        slot.object.set_position at
         at += slot.length
       end
       @objects.each do |id , slot|
