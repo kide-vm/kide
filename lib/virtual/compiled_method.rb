@@ -43,7 +43,7 @@ module Virtual
       @receiver = receiver
       @return_type = return_type
       # first block we have to create with .new , as new_block assumes a current
-      enter = Block.new( name  , self ).add_code(MethodEnter.new())
+      enter = Block.new( "enter"  , self ).add_code(MethodEnter.new())
       @blocks = [enter]
       @current = enter
       new_block("return").add_code(MethodReturn.new)
@@ -100,8 +100,7 @@ module Virtual
     # In code generation , the new_block is written after this one, ie zero runtime cost
     # This does _not_ change the insertion point, that has do be done with insert_at(block)
     def new_block new_name
-      block_name = "#{@current.name}_#{new_name}"
-      new_b = Block.new( block_name , self )
+      new_b = Block.new( new_name , self )
       index = @blocks.index( @current )
       @blocks.insert( index + 1 , new_b ) # + one because we want the ne after the insert_at
       return new_b

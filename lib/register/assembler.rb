@@ -22,6 +22,7 @@ module Register
       @space = space
       @objects = {}
     end
+    attr_reader :objects
 
     def link
       link_object(@space)
