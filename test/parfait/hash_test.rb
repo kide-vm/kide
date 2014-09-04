@@ -1,10 +1,9 @@
 require_relative "../helper"
-require "parfait/hash"
 
 class TestLists < MiniTest::Test
 
   def setup
-    @list = Hash.new
+    @list = ::Parfait::Hash.new
   end
   def test_list_create
     assert @list.empty?

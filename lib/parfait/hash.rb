@@ -1,5 +1,7 @@
 # almost simplest hash imaginable. make good use of arrays
-class Hash
+module Parfait
+end
+class Parfait::Hash
   def initialize
     @keys = Array.new()
     @values = Array.new()
