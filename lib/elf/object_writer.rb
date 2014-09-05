@@ -26,12 +26,12 @@ module Elf
       space.classes.values.each do |clazz| 
         clazz.instance_methods.each do |f|
           f.blocks.each do |b|
-              add_symbol "#{clazz.name}::#{f.name}@#{b.name}" , b.position
+              add_symbol "#{clazz.name}::#{f.name}@#{b.name}" , b.position * 4
             end
         end
       end
       assembler.objects.values.each do |slot| 
-        add_symbol "#{slot.object.class.name}::#{slot.position.to_s(16)}" , slot.position
+        add_symbol "#{slot.object.class.name}::#{(4*slot.position).to_s(16)}" , slot.position * 4
       end
     end
     attr_reader :text

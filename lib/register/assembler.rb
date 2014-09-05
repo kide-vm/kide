@@ -8,6 +8,10 @@ module Register
     end
     attr_reader :object
     attr_accessor :position , :length , :layout
+    def position
+      raise "position accessed but not set at #{length} for #{self.object}" if @position == -1
+      @position
+    end
   end
 
   # Assmble the object space into a binary.
@@ -25,7 +29,7 @@ module Register
     attr_reader :objects
 
     def link
-      link_object(@space)
+      collect_object(@space)
       at = 0
       @objects.each do |id , slot|
         next unless slot.object.is_a? Virtual::CompiledMethod
@@ -51,25 +55,26 @@ module Register
         next if slot.object.is_a? Virtual::CompiledMethod
         assemble_object( slot.object )
       end
-      puts "Assembled #{@stream.length}"
+      puts "Assembled #{@stream.length.to_s(16)}"
       return @stream.string
     end
 
-    def link_object(object)
+    def collect_object(object)
       slot = @objects[object.object_id]
       return slot.length if slot
       slot = LinkSlot.new object
       @objects[object.object_id] = slot
       slot.layout = layout_for(object)
+      collect_object(slot.layout[:names])
       clazz = object.class.name.split("::").last
-      slot.length = send("link_#{clazz}".to_sym , object)
-      link_object(slot.layout[:names])
-      slot.length
+      slot.length = send("collect_#{clazz}".to_sym , object)
     end
 
     def assemble_object object
       slot = get_slot(object)
       raise "Object not linked #{object_id}=>#{object.class}, #{object.inspect}" unless slot
+      puts "Assemble #{slot.object.class} at stream #{(@stream.length).to_s(16)} pos:#{(4*slot.position).to_s(16)} , len:#{slot.length}" 
+      raise "Assemble #{slot.object.class} at #{(@stream.length).to_s(16)} #{(4*slot.position).to_s(16)}" if @stream.length != slot.position*4
       clazz = object.class.name.split("::").last
       send("assemble_#{clazz}".to_sym , slot)
       slot.position
@@ -86,17 +91,14 @@ module Register
       variables.each do |var|
         write_ref var
       end
-      ## padding to the nearest 8
-      ((padded(variables.length) - variables.length)).times do
-        @stream.write_uint32 0
-      end
+      pad_to( variables.length + 2 )
       slot.position
     end
 
-    def link_Array( array )
+    def collect_Array( array )
       # also array has constant overhead, the padded helper fixes it to multiple of 8
       array.each do |elem| 
-        link_object(elem)
+        collect_object(elem)
       end
       padded(array.length)
     end
@@ -109,18 +111,15 @@ module Register
       array.each do |var|
         write_ref(var)
       end
-      ## padding to the nearest 8
-      ((padded(array.length) - array.length)/4).times do
-        @stream.write_uint32 0
-      end
+      pad_to( array.length + 2)
       slot.position
     end
 
-    def link_Hash( hash )
+    def collect_Hash( hash )
       slot = get_slot(hash)
       #hook the key/values arrays into the layout (just because it was around)
-      link_object(slot.layout[:keys])
-      link_object(slot.layout[:values])
+      collect_object(slot.layout[:keys])
+      collect_object(slot.layout[:values])
       padded(2)
     end
 
@@ -129,9 +128,9 @@ module Register
       assemble_self( slot.object , [ slot.layout[:keys] , slot.layout[:values] ] )
     end
 
-    def link_BootSpace(space)
-      link_object(space.classes)
-      link_object(space.objects)
+    def collect_BootSpace(space)
+      collect_object(space.classes)
+      collect_object(space.objects)
       padded( 2 )
     end
 
@@ -140,10 +139,10 @@ module Register
       assemble_self(space , [space.classes,space.objects] )
     end
 
-    def link_BootClass(clazz)
-      link_object(clazz.name )
-      link_object(clazz.super_class_name)
-      link_object(clazz.instance_methods)
+    def collect_BootClass(clazz)
+      collect_object(clazz.name )
+      collect_object(clazz.super_class_name)
+      collect_object(clazz.instance_methods)
       padded(3)
     end
 
@@ -152,10 +151,10 @@ module Register
       assemble_self( clazz , [clazz.name , clazz.super_class_name, clazz.instance_methods] )
     end
 
-    def link_CompiledMethod(method)
+    def collect_CompiledMethod(method)
       # NOT an ARRAY, just a bag of bytes
       length = method.blocks.inject(0) { |c , block| c += block.length }
-      padded(length)
+      padded(length/4)
     end
 
 
@@ -164,32 +163,41 @@ module Register
       @stream.write_uint32( 0 ) #TODO types
       write_ref(slot.layout[:names])  #ref of layout
       # TODO the assembly may have to move to the object to be more extensible
+      count = 2
       method.blocks.each do |block|
         block.codes.each do |code|
           code.assemble( @stream , self )
+          count += 1
         end
       end
+      pad_to( count )
     end
 
-    def link_String( str)
-      return padded(str.length / 4)
+    def collect_String( str)
+      return padded(1 + ((str.length + 1) / 4) )
     end
 
-    def link_Symbol(sym)
-      return link_String(sym.to_s)
+    def collect_Symbol(sym)
+      return collect_String(sym.to_s)
     end
 
-    def link_StringConstant(sc)
-      return link_String(sc.string)
+    def collect_StringConstant(sc)
+      return collect_String(sc.string)
     end
 
     def assemble_String( slot )
       str = slot.object
+      str = str.string if str.is_a? Virtual::StringConstant
+      str = str.to_s if str.is_a? Symbol
       layout = slot.layout
       @stream.write_uint32( 0 ) #TODO types
       @stream.write_uint32( assemble_object(layout[:names]) ) #ref
       @stream.write str
-      #TODO write padding 0's
+      pad = slot.length - 8 - str.length
+      pad.times do
+        @stream.write_uint8(0)
+      end
+      puts "String stream #{@stream.length}"
     end
 
     def assemble_Symbol(sym)
@@ -233,6 +241,13 @@ module Register
       8 * (1 + (len + 1) / 8)
     end
 
+    def pad_to length
+      pad = padded(length) - length
+      pad.times do
+        @stream.write_uint32(0)
+      end
+      #puts "padded #{length} with #{pad} stream pos #{@stream.length/4}"
+    end
     # class variables to have _identical_ objects passed back (stops recursion)
     @@ARRAY =  { :names => [] , :types => []}
     @@HASH = { :names => [:keys,:values] , :types => [Virtual::Reference,Virtual::Reference]}
