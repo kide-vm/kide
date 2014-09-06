@@ -86,9 +86,9 @@ module Register
       raise "Object(#{object.object_id}) not linked #{object.inspect}" unless slot
       layout = slot.layout
       @stream.write_uint32( 0 ) #TODO types
-      write_ref(layout[:names])
+      write_ref_for(layout[:names] , slot )
       variables.each do |var|
-        write_ref var
+        write_ref_for(var , slot)
       end
       pad_to( variables.length )
       slot.position
@@ -106,9 +106,9 @@ module Register
       array = slot.objekt
       layout = slot.layout
       @stream.write_uint32( 0 ) #TODO types
-      write_ref layout[:names]  #ref
+      write_ref_for(layout[:names],slot)  #ref
       array.each do |var|
-        write_ref(var)
+        write_ref_for(var,slot)
       end
       pad_to( array.length )
       slot.position
@@ -160,7 +160,7 @@ module Register
     def assemble_CompiledMethod(slot)
       method = slot.objekt
       @stream.write_uint32( 0 ) #TODO types
-      write_ref(slot.layout[:names])  #ref of layout
+      write_ref_for(slot.layout[:names] , slot)  #ref of layout
       # TODO the assembly may have to move to the object to be more extensible
       count = 0
       method.blocks.each do |block|
@@ -190,7 +190,7 @@ module Register
       str = str.to_s if str.is_a? Symbol
       layout = slot.layout
       @stream.write_uint32( 0 ) #TODO types
-      write_ref( slot.layout[:names] ) #ref
+      write_ref_for( slot.layout[:names] , slot) #ref
       @stream.write str
       pad = (slot.length*4) - 8 - str.length
       pad.times do
@@ -227,10 +227,16 @@ module Register
       nil
     end
 
-    def write_ref object
+    # write means we write the resulting address straight into the assembler stream (ie don't return it)
+    # ref means the object of which we write the address
+    # and we write the address into the self, given as second parameter
+    # because of position independence, references/addresses are relative to self
+    def write_ref_for object , self_slot
       slot = get_slot(object)
       raise "Object (#{object.object_id}) not linked #{object.inspect}" unless slot
-      @stream.write_uint32 slot.position
+      pos = slot.position - self_slot.position
+      puts "Writin address #{(4*pos).to_s(16)} = #{slot.position.to_s(16)} - #{self_slot.position.to_s(16)}"
+      @stream.write_sint32 pos * 4
     end
 
     # objects only come in lengths of multiple of 8
