@@ -90,7 +90,7 @@ module Register
       variables.each do |var|
         write_ref var
       end
-      pad_to( variables.length + 2 )
+      pad_to( variables.length )
       slot.position
     end
 
@@ -110,7 +110,7 @@ module Register
       array.each do |var|
         write_ref(var)
       end
-      pad_to( array.length + 2)
+      pad_to( array.length )
       slot.position
     end
 
@@ -162,7 +162,7 @@ module Register
       @stream.write_uint32( 0 ) #TODO types
       write_ref(slot.layout[:names])  #ref of layout
       # TODO the assembly may have to move to the object to be more extensible
-      count = 2
+      count = 0
       method.blocks.each do |block|
         block.codes.each do |code|
           code.assemble( @stream , self )
@@ -241,6 +241,7 @@ module Register
     end
 
     def pad_to length
+      length += length + 2 # for header, type and layout
       pad = padded(length) - length
       pad.times do
         @stream.write_uint32(0)
