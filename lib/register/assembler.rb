@@ -241,7 +241,7 @@ module Register
     end
 
     def pad_to length
-      length += length + 2 # for header, type and layout
+      length += 2 # for header, type and layout
       pad = padded(length) - length
       pad.times do
         @stream.write_uint32(0)
