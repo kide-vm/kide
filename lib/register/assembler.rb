@@ -4,12 +4,12 @@ module Register
     def initialize o 
       @position = -1
       @length = -1
-      @object = o
+      @objekt = o
     end
-    attr_reader :object
+    attr_reader :objekt
     attr_accessor :position , :length , :layout
     def position
-      raise "position accessed but not set at #{length} for #{self.object}" if @position == -1
+      raise "position accessed but not set at #{length} for #{self.objekt}" if @position == -1
       @position
     end
   end
@@ -32,13 +32,13 @@ module Register
       collect_object(@space)
       at = 0
       @objects.each do |id , slot|
-        next unless slot.object.is_a? Virtual::CompiledMethod
+        next unless slot.objekt.is_a? Virtual::CompiledMethod
         slot.position = at
-        slot.object.set_position at
+        slot.objekt.set_position at
         at += slot.length
       end
       @objects.each do |id , slot|
-        next if slot.object.is_a? Virtual::CompiledMethod
+        next if slot.objekt.is_a? Virtual::CompiledMethod
         slot.position = at
         at += slot.length
       end
@@ -48,12 +48,12 @@ module Register
       link
       @stream = StringIO.new
       @objects.each do |id , slot|
-        next unless slot.object.is_a? Virtual::CompiledMethod
-        assemble_object( slot.object )
+        next unless slot.objekt.is_a? Virtual::CompiledMethod
+        assemble_object( slot )
       end
       @objects.each do |id , slot|
-        next if slot.object.is_a? Virtual::CompiledMethod
-        assemble_object( slot.object )
+        next if slot.objekt.is_a? Virtual::CompiledMethod
+        assemble_object( slot )
       end
       puts "Assembled #{@stream.length.to_s(16)}"
       return @stream.string
@@ -70,12 +70,11 @@ module Register
       slot.length = send("collect_#{clazz}".to_sym , object)
     end
 
-    def assemble_object object
-      slot = get_slot(object)
-      raise "Object not linked #{object_id}=>#{object.class}, #{object.inspect}" unless slot
-      puts "Assemble #{slot.object.class} at stream #{(@stream.length).to_s(16)} pos:#{(4*slot.position).to_s(16)} , len:#{slot.length}" 
-      raise "Assemble #{slot.object.class} at #{(@stream.length).to_s(16)} #{(4*slot.position).to_s(16)}" if @stream.length != slot.position*4
-      clazz = object.class.name.split("::").last
+    def assemble_object slot
+      obj = slot.objekt
+      puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{(@stream.length).to_s(16)} pos:#{(4*slot.position).to_s(16)} , len:#{slot.length}" 
+      raise "Assemble #{obj.class} at #{(@stream.length).to_s(16)} #{(4*slot.position).to_s(16)}" if @stream.length != slot.position*4
+      clazz = obj.class.name.split("::").last
       send("assemble_#{clazz}".to_sym , slot)
       slot.position
     end
@@ -84,7 +83,7 @@ module Register
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def assemble_self( object , variables )
       slot = get_slot(object)
-      raise "Object not linked #{object.inspect}" unless slot
+      raise "Object(#{object.object_id}) not linked #{object.inspect}" unless slot
       layout = slot.layout
       @stream.write_uint32( 0 ) #TODO types
       write_ref(layout[:names])
@@ -104,7 +103,7 @@ module Register
     end
 
     def assemble_Array slot
-      array = slot.object
+      array = slot.objekt
       layout = slot.layout
       @stream.write_uint32( 0 ) #TODO types
       write_ref layout[:names]  #ref
@@ -125,7 +124,7 @@ module Register
 
     def assemble_Hash slot
       # so here we can be sure to have _identical_ keys/values arrays
-      assemble_self( slot.object , [ slot.layout[:keys] , slot.layout[:values] ] )
+      assemble_self( slot.objekt , [ slot.layout[:keys] , slot.layout[:values] ] )
     end
 
     def collect_BootSpace(space)
@@ -135,7 +134,7 @@ module Register
     end
 
     def assemble_BootSpace(slot)
-      space = slot.object
+      space = slot.objekt
       assemble_self(space , [space.classes,space.objects] )
     end
 
@@ -147,7 +146,7 @@ module Register
     end
 
     def assemble_BootClass(slot)
-      clazz = slot.object
+      clazz = slot.objekt
       assemble_self( clazz , [clazz.name , clazz.super_class_name, clazz.instance_methods] )
     end
 
@@ -159,7 +158,7 @@ module Register
 
 
     def assemble_CompiledMethod(slot)
-      method = slot.object
+      method = slot.objekt
       @stream.write_uint32( 0 ) #TODO types
       write_ref(slot.layout[:names])  #ref of layout
       # TODO the assembly may have to move to the object to be more extensible
@@ -186,18 +185,18 @@ module Register
     end
 
     def assemble_String( slot )
-      str = slot.object
+      str = slot.objekt
       str = str.string if str.is_a? Virtual::StringConstant
       str = str.to_s if str.is_a? Symbol
       layout = slot.layout
       @stream.write_uint32( 0 ) #TODO types
-      @stream.write_uint32( assemble_object(layout[:names]) ) #ref
+      write_ref( slot.layout[:names] ) #ref
       @stream.write str
-      pad = slot.length - 8 - str.length
+      pad = (slot.length*4) - 8 - str.length
       pad.times do
         @stream.write_uint8(0)
       end
-      puts "String stream #{@stream.length}"
+      #puts "String (#{slot.length}) stream #{@stream.length.to_s(16)}"
     end
 
     def assemble_Symbol(sym)
@@ -214,13 +213,13 @@ module Register
       return slot if slot
       if(object.is_a? Array)
         @objects.each do |k,slot|
-          next unless slot.object.is_a? Array
-          if(slot.object.length == object.length)
+          next unless slot.objekt.is_a? Array
+          if(slot.objekt.length == object.length)
             same = true
-            slot.object.each_with_index do |v,index|
+            slot.objekt.each_with_index do |v,index|
               same = false unless v == object[index]
             end
-            puts slot.object.first.class if same
+            puts slot.objekt.first.class if same
             return slot if same
           end
         end
@@ -230,7 +229,7 @@ module Register
 
     def write_ref object
       slot = get_slot(object)
-      raise "Object not linked #{object.inspect}" unless slot
+      raise "Object (#{object.object_id}) not linked #{object.inspect}" unless slot
       @stream.write_uint32 slot.position
     end
 
