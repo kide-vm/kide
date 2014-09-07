@@ -72,8 +72,8 @@ module Register
 
     def assemble_object slot
       obj = slot.objekt
-      puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{(@stream.length).to_s(16)} pos:#{(4*slot.position).to_s(16)} , len:#{slot.length}" 
-      raise "Assemble #{obj.class} at #{(@stream.length).to_s(16)} #{(4*slot.position).to_s(16)}" if @stream.length != slot.position*4
+      puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{(@stream.length).to_s(16)} pos:#{slot.position.to_s(16)} , len:#{slot.length}" 
+      raise "Assemble #{obj.class} at #{@stream.length.to_s(16)} not #{slot.position.to_s(16)}" if @stream.length != slot.position
       clazz = obj.class.name.split("::").last
       send("assemble_#{clazz}".to_sym , slot)
       slot.position
@@ -90,7 +90,7 @@ module Register
       variables.each do |var|
         write_ref_for(var , slot)
       end
-      pad_to( variables.length )
+      pad_after( variables.length * 4 )
       slot.position
     end
 
@@ -99,7 +99,7 @@ module Register
       array.each do |elem| 
         collect_object(elem)
       end
-      padded(array.length)
+      padded_words(array.length)
     end
 
     def assemble_Array slot
@@ -110,7 +110,7 @@ module Register
       array.each do |var|
         write_ref_for(var,slot)
       end
-      pad_to( array.length )
+      pad_after( array.length * 4 )
       slot.position
     end
 
@@ -119,7 +119,7 @@ module Register
       #hook the key/values arrays into the layout (just because it was around)
       collect_object(slot.layout[:keys])
       collect_object(slot.layout[:values])
-      padded(2)
+      padded_words(2)
     end
 
     def assemble_Hash slot
@@ -130,7 +130,7 @@ module Register
     def collect_BootSpace(space)
       collect_object(space.classes)
       collect_object(space.objects)
-      padded( 2 )
+      padded_words( 2 )
     end
 
     def assemble_BootSpace(slot)
@@ -142,7 +142,7 @@ module Register
       collect_object(clazz.name )
       collect_object(clazz.super_class_name)
       collect_object(clazz.instance_methods)
-      padded(3)
+      padded_words(3)
     end
 
     def assemble_BootClass(slot)
@@ -153,7 +153,7 @@ module Register
     def collect_CompiledMethod(method)
       # NOT an ARRAY, just a bag of bytes
       length = method.blocks.inject(0) { |c , block| c += block.length }
-      padded(length/4)
+      padded(length)
     end
 
 
@@ -166,14 +166,14 @@ module Register
       method.blocks.each do |block|
         block.codes.each do |code|
           code.assemble( @stream , self )
-          count += 1
+          count += code.length
         end
       end
-      pad_to( count )
+      pad_after( count )
     end
 
     def collect_String( str)
-      return padded(1 + ((str.length + 1) / 4) )
+      return padded( str.length + 1 )
     end
 
     def collect_Symbol(sym)
@@ -192,10 +192,7 @@ module Register
       @stream.write_uint32( 0 ) #TODO types
       write_ref_for( slot.layout[:names] , slot) #ref
       @stream.write str
-      pad = (slot.length*4) - 8 - str.length
-      pad.times do
-        @stream.write_uint8(0)
-      end
+      pad_after(str.length)
       #puts "String (#{slot.length}) stream #{@stream.length.to_s(16)}"
     end
 
@@ -235,25 +232,33 @@ module Register
       slot = get_slot(object)
       raise "Object (#{object.object_id}) not linked #{object.inspect}" unless slot
       pos = slot.position - self_slot.position
-      puts "Writin address #{(4*pos).to_s(16)} = #{slot.position.to_s(16)} - #{self_slot.position.to_s(16)}"
-      @stream.write_sint32 pos * 4
+      puts "Writin address #{(pos).to_s(16)} = #{slot.position.to_s(16)} - #{self_slot.position.to_s(16)}"
+      @stream.write_sint32 pos
     end
 
-    # objects only come in lengths of multiple of 8
-    # but there is a constant overhead of 2, one for type, one for layout
-    # and as we would have to subtract 1 to make it work without overhead, we now have to add 1
+    # objects only come in lengths of multiple of 8 words
+    # but there is a constant overhead of 2 words, one for type, one for layout
+    # and as we would have to subtract 1 to make it work without overhead, we now have to add 7
     def padded len
-      8 * (1 + (len + 1) / 8)
+      a = 32 * (1 + (len + 7)/32 )
+      puts "#{a} for #{len}"
+      a
     end
 
-    def pad_to length
-      length += 2 # for header, type and layout
+    def padded_words words
+      padded(words*4) # 4 == word length, a constant waiting for a home
+    end
+
+    # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
+    def pad_after length
+      length += 8 # for header, type and layout
       pad = padded(length) - length
       pad.times do
-        @stream.write_uint32(0)
+        @stream.write_uint8(0)
       end
-      #puts "padded #{length} with #{pad} stream pos #{@stream.length/4}"
+      puts "padded #{length} with #{pad} stream pos #{@stream.length.to_s(16)}"
     end
+
     # class variables to have _identical_ objects passed back (stops recursion)
     @@ARRAY =  { :names => [] , :types => []}
     @@HASH = { :names => [:keys,:values] , :types => [Virtual::Reference,Virtual::Reference]}
