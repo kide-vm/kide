@@ -21,7 +21,11 @@ module Register
   #           they are pretty much dependant. In an earlier version they were functions on the objects, but now it
   #           has gone to a visitor pattern.
   class Assembler
-
+    TYPE_REF =  0
+    TYPE_INT =  1
+    TYPE_BITS = 4
+    TYPE_LENGTH = 6
+    
     def initialize space
       @space = space
       @objects = {}
@@ -79,13 +83,24 @@ module Register
       slot.position
     end
 
+    def type_word array
+      word = 0
+      array.each_with_index do |var , index|
+        type = (var.class == Integer) ? TYPE_INT : TYPE_REF
+        word +=  type << (index * TYPE_BITS)
+      end
+      word += ( (array.length + 1 ) / 8 ) << TYPE_LENGTH * TYPE_BITS
+      word
+    end
+
     # write type and layout of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def assemble_self( object , variables )
       slot = get_slot(object)
       raise "Object(#{object.object_id}) not linked #{object.inspect}" unless slot
+      type = type_word(variables)
+      @stream.write_uint32( type )
       layout = slot.layout
-      @stream.write_uint32( 0 ) #TODO types
       write_ref_for(layout[:names] , slot )
       variables.each do |var|
         write_ref_for(var , slot)
@@ -105,7 +120,8 @@ module Register
     def assemble_Array slot
       array = slot.objekt
       layout = slot.layout
-      @stream.write_uint32( 0 ) #TODO types
+      type = type_word(array)
+      @stream.write_uint32( type )
       write_ref_for(layout[:names],slot)  #ref
       array.each do |var|
         write_ref_for(var,slot)
@@ -159,14 +175,18 @@ module Register
 
     def assemble_CompiledMethod(slot)
       method = slot.objekt
-      @stream.write_uint32( 0 ) #TODO types
+      count = method.blocks.inject(0) { |c , block| c += block.length }
+      word = (count+7) / 32  # all object are multiple of 8 words (7 for header)
+      raise "Method too long, splitting not implemented #{method.name}/#{count}" if word > 15
+      # first line is integers, convention is that following lines are the same
+      TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
+      puts "THE WORD is #{word.to_s(16)}"
+      @stream.write_uint32( word )
       write_ref_for(slot.layout[:names] , slot)  #ref of layout
       # TODO the assembly may have to move to the object to be more extensible
-      count = 0
       method.blocks.each do |block|
         block.codes.each do |code|
           code.assemble( @stream , self )
-          count += code.length
         end
       end
       pad_after( count )
@@ -189,7 +209,12 @@ module Register
       str = str.string if str.is_a? Virtual::StringConstant
       str = str.to_s if str.is_a? Symbol
       layout = slot.layout
-      @stream.write_uint32( 0 ) #TODO types
+      word = (str.length + 7) / 32  # all object are multiple of 8 words (7 for header)
+      raise "String too long (implement split string!) #{word}" if word > 15
+      # first line is integers, convention is that following lines are the same
+      TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
+      puts "THE WORD is #{word.to_s(16)}"
+      @stream.write_uint32( word )
       write_ref_for( slot.layout[:names] , slot) #ref
       @stream.write str
       pad_after(str.length)
@@ -232,7 +257,7 @@ module Register
       slot = get_slot(object)
       raise "Object (#{object.object_id}) not linked #{object.inspect}" unless slot
       pos = slot.position - self_slot.position
-      puts "Writin address #{(pos).to_s(16)} = #{slot.position.to_s(16)} - #{self_slot.position.to_s(16)}"
+      #puts "Writin address #{(pos).to_s(16)} = #{slot.position.to_s(16)} - #{self_slot.position.to_s(16)}"
       @stream.write_sint32 pos
     end
 
@@ -241,7 +266,7 @@ module Register
     # and as we would have to subtract 1 to make it work without overhead, we now have to add 7
     def padded len
       a = 32 * (1 + (len + 7)/32 )
-      puts "#{a} for #{len}"
+      #puts "#{a} for #{len}"
       a
     end
 
@@ -256,7 +281,7 @@ module Register
       pad.times do
         @stream.write_uint8(0)
       end
-      puts "padded #{length} with #{pad} stream pos #{@stream.length.to_s(16)}"
+      #puts "padded #{length} with #{pad} stream pos #{@stream.length.to_s(16)}"
     end
 
     # class variables to have _identical_ objects passed back (stops recursion)
