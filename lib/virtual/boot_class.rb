@@ -28,7 +28,7 @@ module Virtual
 
     # get the method and if not found, try superclasses. raise error if not found
     def resolve_method name
-      fun = get_method name
+      fun = get_instance_method name
       unless fun or name == :Object
         supr = @context.object_space.get_or_create_class(@super_class_name)
         fun = supr.get_method name

@@ -1,4 +1,4 @@
-module Register
+module Virtual
   # This implements instance variable get (not the opposite of Set, such a thing does not exists, their slots)
 
   # Ivar get needs to acces the layout, find the index of the name, and shuffle the data to return register
@@ -11,5 +11,5 @@ module Register
       end
     end
   end
-  Virtual::BootSpace.space.add_pass_after GetImplementation, Virtual::SendImplementation
+  Virtual::BootSpace.space.add_pass_after GetImplementation, SendImplementation
 end

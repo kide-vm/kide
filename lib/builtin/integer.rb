@@ -31,7 +31,7 @@ module Builtin
       context.object_space.add_object buffer              # and save it (function local variable: a no no)
       int = putint_function.receiver
       moved_int = putint_function.new_local
-      utoa = context.object_space.get_or_create_class(:Object).resolve_function(:utoa)
+      utoa = context.object_space.get_or_create_class(:Object).resolve_method(:utoa)
       putint_function.instance_eval do
         mov( moved_int ,  int )     # move arg up
         add( int ,  buffer ,nil )   # string to write to (add string address to pc)

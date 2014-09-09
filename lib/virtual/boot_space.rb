@@ -43,6 +43,7 @@ module Virtual
       else
         @@space = BootSpace.new
         @@space.boot_classes! # boot is a verb here
+        @@space
       end
     end
 

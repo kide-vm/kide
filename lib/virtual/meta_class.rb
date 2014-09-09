@@ -39,7 +39,7 @@ module Virtual
     end
 
     # get the function and if not found, try superclasses. raise error if not found
-    def resolve_function name 
+    def resolve_method name 
       fun = get_function name
       # TODO THE BOOK says is class A derives from B , then the metaclass of A derives from the metaclass of B
       # just get to it ! (and stop whimpering)

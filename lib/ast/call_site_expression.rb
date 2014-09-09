@@ -25,24 +25,24 @@ module Ast
       if receiver.is_a? ModuleName
         clazz = context.object_space.get_or_create_class receiver.name
         value_receiver = clazz.meta_class
-        function = value_receiver.resolve_function name
+        function = value_receiver.resolve_method name
       elsif receiver.is_a?(StringExpression) or receiver.is_a?(IntegerExpression)
         #TODO obviously the class is wrong, but you gotta start somewhere
         clazz = context.object_space.get_or_create_class :Object
-        function = clazz.resolve_function name
+        function = clazz.resolve_method name
         value_receiver = receiver.compile(context)
       elsif receiver.is_a?(NameExpression) 
         if(receiver.name == :self)
-          function = context.current_class.resolve_function(name)
+          function = context.current_class.resolve_method(name)
           value_receiver = Virtual::Integer.new(Virtual::RegisterMachine.instance.receiver_register)
         else
           value_receiver = receiver.compile(context)
           # TODO HACK warning: should determine class dynamically
-          function = context.current_class.resolve_function(name)
+          function = context.current_class.resolve_method(name)
         end
       elsif receiver.is_a? VariableExpression
         value_receiver = receiver.compile(context)
-        function = context.current_class.resolve_function(name)
+        function = context.current_class.resolve_method(name)
       else
         #This , how does one say nowadays, smells. Smells of unused polymorphism actually
         raise "Not sure this is possible, but never good to leave elses open #{receiver} #{receiver.class}"

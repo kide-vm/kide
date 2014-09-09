@@ -146,9 +146,9 @@ module Register
 end
 require_relative "instruction"
 require_relative "register_reference"
+require "arm/arm_machine"
+require_relative "assembler"
 require_relative "set_implementation"
 require_relative "call_implementation"
 require_relative "enter_implementation"
 require_relative "return_implementation"
-require "arm/arm_machine"
-require_relative "assembler"

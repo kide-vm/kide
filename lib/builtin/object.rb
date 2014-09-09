@@ -24,22 +24,22 @@ module Builtin
       # The at_index is just "below" the api, something we need but don't want to expose, so we can't code the above in ruby
       def _get_instance_variable context , name = Virtual::Integer
         get_function = Virtual::CompiledMethod.new(:_get_instance_variable , [ Virtual::Reference ] , Virtual::Reference ,Virtual::Mystery )
-        return get_function
+#        return get_function
         me = get_function.receiver
         var_name = get_function.args.first
         return_to = get_function.return_type
 
-        index_function = context.object_space.get_or_create_class(:Object).resolve_function(:index_of)
-        get_function.push( [me] )
-        index = get_function.call( index_function )
+        index_function = ::Virtual::BootSpace.space.get_or_create_class(:Object).resolve_method(:index_of)
+#        get_function.push( [me] )
+#        index = get_function.call( index_function )
         
         after_body = get_function.new_block("after_index")
         get_function.current after_body
         
-        get_function.pop([me])
-        return_to.at_index( get_function , me , return_to )
+#        get_function.pop([me])
+#        return_to.at_index( get_function , me , return_to )
         
-        get_function.set_return return_to
+#        get_function.set_return return_to
         return get_function
       end
 
@@ -50,7 +50,7 @@ module Builtin
         me = set_function.receiver
         var_name = set_function.args.first
         return_to = set_function.return_type
-        index_function = context.object_space.get_or_create_class(:Object).resolve_function(:index_of)
+        index_function = context.object_space.get_or_create_class(:Object).resolve_method(:index_of)
         set_function.push( [me] )
         set_function.call( index_function )
         after_body = set_function.new_block("after_index")

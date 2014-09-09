@@ -160,7 +160,7 @@ module Virtual
     #             to the current block
     # also symbols are supported and wrapped as register usages (for bare metal programming)
     def method_missing(meth, *args, &block)
-      add_code Register::RegisterMachine.instance.send(meth , *args)
+      add_code ::Register::RegisterMachine.instance.send(meth , *args)
     end
 
     # position of the function is the position of the entry block, is where we call
