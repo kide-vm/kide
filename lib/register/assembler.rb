@@ -180,7 +180,6 @@ module Register
       raise "Method too long, splitting not implemented #{method.name}/#{count}" if word > 15
       # first line is integers, convention is that following lines are the same
       TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
-      puts "THE WORD is #{word.to_s(16)}"
       @stream.write_uint32( word )
       write_ref_for(slot.layout[:names] , slot)  #ref of layout
       # TODO the assembly may have to move to the object to be more extensible
@@ -213,7 +212,6 @@ module Register
       raise "String too long (implement split string!) #{word}" if word > 15
       # first line is integers, convention is that following lines are the same
       TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
-      puts "THE WORD is #{word.to_s(16)}"
       @stream.write_uint32( word )
       write_ref_for( slot.layout[:names] , slot) #ref
       @stream.write str
@@ -252,13 +250,10 @@ module Register
     # write means we write the resulting address straight into the assembler stream (ie don't return it)
     # ref means the object of which we write the address
     # and we write the address into the self, given as second parameter
-    # because of position independence, references/addresses are relative to self
     def write_ref_for object , self_slot
       slot = get_slot(object)
       raise "Object (#{object.object_id}) not linked #{object.inspect}" unless slot
-      pos = slot.position - self_slot.position
-      #puts "Writin address #{(pos).to_s(16)} = #{slot.position.to_s(16)} - #{self_slot.position.to_s(16)}"
-      @stream.write_sint32 pos
+      @stream.write_sint32 slot.position
     end
 
     # objects only come in lengths of multiple of 8 words
