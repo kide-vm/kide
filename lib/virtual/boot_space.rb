@@ -21,7 +21,6 @@ module Virtual
       @main = Virtual::CompiledMethod.new("main" , [] )
       #global objects (data)
       @objects = []
-      boot_classes! # boot is a verb here
       @passes = [ Virtual::SendImplementation ]
     end
     attr_reader  :main , :classes , :objects
@@ -43,6 +42,7 @@ module Virtual
         @@space
       else
         @@space = BootSpace.new
+        @@space.boot_classes! # boot is a verb here
       end
     end
 
