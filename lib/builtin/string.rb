@@ -1,13 +1,4 @@
 module Builtin
-  module Kernel
-    def self.putstring context 
-      function = Virtual::CompiledMethod.new(:putstring , [] )
-      return function
-      ret = Virtual::RegisterMachine.instance.write_stdout(function)
-      function.set_return ret
-      function
-    end
-  end
   class String
     module ClassMethods
       def get context , index = Virtual::Integer

@@ -1,6 +1,6 @@
 #integer related kernel functions
 module Builtin
-  module Kernel
+  module Integer
     # The conversion to base10 is quite a bit more complicated than i thought. The bulk of it is in div10
     # We set up variables, do the devision and write the result to the string
     # then check if were done and recurse if neccessary
