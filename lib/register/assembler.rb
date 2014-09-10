@@ -271,8 +271,7 @@ module Register
 
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
     def pad_after length
-      length += 8 # for header, type and layout
-      pad = padded(length) - length
+      pad = padded(length) - length - 8 # for header, type and layout
       pad.times do
         @stream.write_uint8(0)
       end
