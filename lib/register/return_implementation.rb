@@ -3,12 +3,11 @@ module Register
     def run block
       block.codes.dup.each do |code|
         next unless code.is_a? Virtual::MethodReturn
-        to = RegisterReference.new(:r0)
-        tmp = RegisterReference.new(:r5)
+        #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
+        message = RegisterReference.new(:r0)
         pc = RegisterReference.new(:pc)
-        move1 = RegisterMachine.instance.ldr( to , tmp , 3 ) #TODO 3 == return reg, needs constant / layout
-        move2 = RegisterMachine.instance.ldr( pc , tmp )
-        block.replace(code , [move1,move2] )
+        move1 = RegisterMachine.instance.ldr( pc ,message , Virtual::Message::RETURN )
+        block.replace(code , [move1] )
       end
     end
   end
