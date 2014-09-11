@@ -12,6 +12,12 @@ module Builtin
       # so it is responsible for initial setup (and relocation)
       def __init__ context
         function = Virtual::CompiledMethod.new(:__init__ , [] , Virtual::Integer)
+        clazz = Virtual::BootSpace.space.get_or_create_class :Kernel
+        method = clazz.resolve_method :main
+        me = Virtual::Self.new(Virtual::Reference)
+        code = Virtual::Set.new(Virtual::NewSelf.new(me.type), me)
+        function.add_code(code)
+        function.add_code Virtual::FunctionCall.new(method)
         return function
       end
       def putstring context 

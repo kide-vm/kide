@@ -27,15 +27,16 @@ module Virtual
     end
 
     # get the method and if not found, try superclasses. raise error if not found
-    def resolve_method name
-      fun = get_instance_method name
-      unless fun or name == :Object
-        supr = @context.object_space.get_or_create_class(@super_class_name)
-        fun = supr.get_method name
-        puts "#{supr.methods.collect(&:name)} for #{name} GOT #{fun.class}" if name == :index_of
+    def resolve_method m_name
+      method = get_instance_method(m_name)
+      unless method
+        unless( @name == :Object)
+          supr = BootSpace.space.get_or_create_class(@super_class_name)
+          method = supr.resolve_method(m_name)
+        end
       end
-      raise "Method not found :#{name}, for #{inspect}" unless fun
-      fun
+      raise "Method not found #{m_name}, for #{@name}" unless method
+      method
     end
 
     def to_s
