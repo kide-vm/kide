@@ -7,7 +7,7 @@ module Register
         # save return register and create a new frame
         to = RegisterReference.new(:r0)  # message base
         pc = RegisterReference.new(:pc)
-        move1 = RegisterMachine.instance.str( pc , to , Virtual::Message::RETURN )
+        move1 = RegisterMachine.instance.str( pc , to , Virtual::Slot::RETURN )
         block.replace(code , [move1] )
       end
     end

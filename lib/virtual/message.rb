@@ -20,9 +20,6 @@ module Virtual
   # During compilation Message and frame objects are created to do type analysis
 
   class Message
-    RETURN = 2
-    EXCEPTION = 3
-    SELF = 4
 
     SELF_REG = :r0
     MESSAGE_REG = :r1
