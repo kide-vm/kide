@@ -165,6 +165,7 @@ module Virtual
 
     # position of the function is the position of the entry block, is where we call
     def set_position at
+      at += 8 #for the 2 header words
       @blocks.each do |block|
         block.set_position at
         at = at + block.length
