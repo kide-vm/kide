@@ -34,7 +34,7 @@ module Register
 
     def link
       collect_object(@space)
-      at = 0
+      at = 4
       @objects.each do |id , slot|
         next unless slot.objekt.is_a? Virtual::CompiledMethod
         slot.position = at
@@ -51,6 +51,12 @@ module Register
     def assemble
       link
       @stream = StringIO.new
+      mid , main_slot = @objects.find{|k,slot| slot.objekt.is_a?(Virtual::CompiledMethod) and (slot.objekt.name == :__init__ )}
+      main = main_slot.objekt
+      puts "function found #{main.name}"
+      initial_jump = RegisterMachine.instance.b( main )
+      initial_jump.position = 0
+      initial_jump.assemble( @stream , self )
       @objects.each do |id , slot|
         next unless slot.objekt.is_a? Virtual::CompiledMethod
         assemble_object( slot )
