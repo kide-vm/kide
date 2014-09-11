@@ -6,9 +6,13 @@ module Register
     def run block
       block.codes.dup.each do |code|
         next unless code.is_a? Virtual::Set
+        tmp = RegisterReference.new(Virtual::Message::TMP_REG)
         if( code.to.is_a? Virtual::NewMessageSlot)
-          to = RegisterReference.new(:r0)
-          tmp = RegisterReference.new(:r5)
+          to = Virtual::Message::NEW_MESSAGE_REG
+          move = RegisterMachine.instance.ldr( to , tmp , code.to.index )
+          block.replace(code , move )
+        elsif( code.to.is_a? Virtual::Self)
+          to =  RegisterReference.new(Virtual::Message::SELF_REG)
           move = RegisterMachine.instance.ldr( to , tmp , code.to.index )
           block.replace(code , move )
         else
