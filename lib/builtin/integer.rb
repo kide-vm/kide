@@ -1,12 +1,13 @@
 #integer related kernel functions
 module Builtin
   module Integer
+    module ClassMethods
     # The conversion to base10 is quite a bit more complicated than i thought. The bulk of it is in div10
     # We set up variables, do the devision and write the result to the string
     # then check if were done and recurse if neccessary
     # As we write before we recurse (save a push) we write the number backwards
     # arguments: string address , integer
-    def self.utoa context
+    def utoa context
       utoa_function = Virtual::CompiledMethod.new(:utoa ,  [ Virtual::Integer ] , Virtual::Integer ,Virtual::Integer )
       return utoa_function
       str_addr = utoa_function.receiver
@@ -24,7 +25,7 @@ module Builtin
       return utoa_function
     end
 
-    def self.putint context
+    def putint context
       putint_function = Virtual::CompiledMethod.new(:putint , [] , Virtual::Integer ,Virtual::Integer )
       return putint_function
       buffer = Virtual::StringConstant.new("           ") # create a buffer
@@ -51,7 +52,7 @@ module Builtin
     # result comes in return_register
     # a hand coded version of the fibonachi numbers
     # not my hand off course, found in the net http://www.peter-cockerell.net/aalp/html/ch-5.html
-    def self.fibo context
+    def fibo context
       fibo_function = Virtual::CompiledMethod.new(:fibo ,  [] , Virtual::Integer ,Virtual::Integer )
       return fibo_function
       result = fibo_function.return_type
@@ -84,6 +85,7 @@ module Builtin
     
       fibo_function
     end
-
+    end
+    extend ClassMethods    
   end
 end
