@@ -1,5 +1,5 @@
 module Register
-  class Integer < Word
+  class UnusedAndAbandonedInteger < Word
     # needs to be here as Word's constructor is private (to make it abstract)
     def initialize reg
       super

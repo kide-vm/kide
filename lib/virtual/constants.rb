@@ -2,11 +2,11 @@ module Virtual
   
   class Constant < ::Virtual::Value
   end
-  class TrueValue < Constant
+  class TrueConstant < Constant
   end
-  class FalseValue < Constant
+  class FalseConstant < Constant
   end
-  class NilValue < Constant
+  class NilConstant < Constant
   end
 
   # another abstract "marker" class (so we can check for it)

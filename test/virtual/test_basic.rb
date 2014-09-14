@@ -11,17 +11,17 @@ class TestBasic < MiniTest::Test
 
   def test_true
     @string_input    = 'true '
-    @output = "---RETURN_MARKER- !ruby/object:Virtual::TrueValue {}RETURN_MARKER"
+    @output = "---RETURN_MARKER- !ruby/object:Virtual::TrueConstant {}RETURN_MARKER"
     check
   end
   def test_false
     @string_input    = 'false '
-    @output = "---RETURN_MARKER- !ruby/object:Virtual::FalseValue {}RETURN_MARKER"
+    @output = "---RETURN_MARKER- !ruby/object:Virtual::FalseConstant {}RETURN_MARKER"
     check
   end
   def test_nil
     @string_input    = 'nil '
-    @output = "---RETURN_MARKER- !ruby/object:Virtual::NilValue {}RETURN_MARKER"
+    @output = "---RETURN_MARKER- !ruby/object:Virtual::NilConstant {}RETURN_MARKER"
     check
   end
 
