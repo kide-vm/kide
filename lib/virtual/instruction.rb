@@ -89,6 +89,8 @@ module Virtual
   class Set < Instruction
     def initialize to , from
       @to = to
+      # hard to find afterwards where it came from, so ensure it doesn't happen
+      raise "From must be slot or constant, not symbol #{from}" if from.is_a? Symbol
       @from = from
     end
     attr_reader :to , :from

@@ -7,10 +7,10 @@ module Virtual
       block.codes.dup.each do |code|
         next unless code.is_a? MessageSend
         me = code.me
-        next unless ( me.type == Reference)
+        raise "ahm" unless ( me.type == Reference)
         if( me.is_a? Constant)
           if( me.is_a? BootClass )
-            raise "unimplemented"
+            raise "unimplemented #{code}"
           elsif( me.is_a? ObjectConstant )
             clazz = me.clazz
             method = clazz.get_instance_method code.name
@@ -18,8 +18,10 @@ module Virtual
             call = FunctionCall.new( method )
             block.replace(code , call )
           else
-            raise "unimplemented"
+            raise "unimplemented #{code}"
           end
+        else
+          raise "unimplemented #{code.me}"
         end
       end
     end

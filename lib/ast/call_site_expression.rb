@@ -7,7 +7,7 @@ module Ast
     def compile method , message
       me = receiver.compile( method, message )
       method.add_code Virtual::Set.new(Virtual::NewSelf.new(me.type), me)
-      method.add_code Virtual::Set.new(Virtual::NewName.new(), name)
+      method.add_code Virtual::Set.new(Virtual::NewName.new(), Virtual::StringConstant.new(name))
       compiled_args = []
       args.each_with_index do |arg , i|
         #compile in the running method, ie before passing control

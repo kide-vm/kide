@@ -64,7 +64,7 @@ module Ast
 
     def compile method , message
       to = Virtual::Return.new(Virtual::Reference)
-      clazz = ::Virtual::BootSpace.space.get_or_create_class name
+      clazz = Virtual::BootSpace.space.get_or_create_class name
       raise "uups #{clazz}.#{name}" unless clazz
       method.add_code Virtual::Set.new( to , clazz )
       to
