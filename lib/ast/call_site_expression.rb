@@ -10,56 +10,17 @@ module Ast
       method.add_code Virtual::Set.new(Virtual::NewName.new(), name)
       compiled_args = []
       args.each_with_index do |arg , i|
-        val = arg.compile( method, message) #compile in the running method, ie before passing control
+        #compile in the running method, ie before passing control
+        val = arg.compile( method, message) 
         compiled_args << val
+        # move the compiled value to it's slot in the new message
+        # (doing this immediately, not after the loop, so if it's a return it won't get overwritten)
         method.add_code Virtual::Set.new(Virtual::NewMessageSlot.new(i ,val.type ) , val )
       end
       method.add_code Virtual::MessageSend.new(name , me , compiled_args) #and pass control
-      Virtual::Return.new( method.return_type )
+      # the effect of the method is that the NewMessage Return slot will be filled, return it
+      # (this is what is moved _inside_ above loop for such expressions that are calls (or constants))
+      Virtual::NewReturn.new( method.return_type )
     end
-
-    def scratch
-      into = context.function
-      params = args.collect{ |a| a.compile(context) }
-      puts "compiling receiver #{receiver} (call #{name})"
-      if receiver.is_a? ModuleName
-        clazz = context.object_space.get_or_create_class receiver.name
-        value_receiver = clazz.meta_class
-        function = value_receiver.resolve_method name
-      elsif receiver.is_a?(StringExpression) or receiver.is_a?(IntegerExpression)
-        #TODO obviously the class is wrong, but you gotta start somewhere
-        clazz = context.object_space.get_or_create_class :Object
-        function = clazz.resolve_method name
-        value_receiver = receiver.compile(context)
-      elsif receiver.is_a?(NameExpression) 
-        if(receiver.name == :self)
-          function = context.current_class.resolve_method(name)
-          value_receiver = Virtual::Integer.new(Virtual::RegisterMachine.instance.receiver_register)
-        else
-          value_receiver = receiver.compile(context)
-          # TODO HACK warning: should determine class dynamically
-          function = context.current_class.resolve_method(name)
-        end
-      elsif receiver.is_a? VariableExpression
-        value_receiver = receiver.compile(context)
-        function = context.current_class.resolve_method(name)
-      else
-        #This , how does one say nowadays, smells. Smells of unused polymorphism actually
-        raise "Not sure this is possible, but never good to leave elses open #{receiver} #{receiver.class}"
-      end
-      raise "No such method error #{inspect}" if (function.nil?)
-      raise "No receiver error #{inspect}:#{receiver}" if (value_receiver.nil?)
-      call = Virtual::CallSite.new( name ,  value_receiver , params  , function)
-      current_function = context.function
-      into.push([])  unless current_function.nil?
-      call.load_args into
-      call.do_call into
-      
-      after = into.new_block("#{name}#{@@counter+=1}")
-      into.current after
-      into.pop([]) unless current_function.nil?
-      function.return_type
-    end
-  end
-  
+  end  
 end

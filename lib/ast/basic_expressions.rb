@@ -2,10 +2,18 @@
 
 module Ast
 
+  # Constant expressions can by definition be evaluated at compile time.
+  # But that does not solve their storage, ie they need to be accessible at runtime from _somewhere_
+  # So we view ConstantExpressions like functions that return the value of the constant.
+  # In other words, their storage is the return slot as it would be for a method
+
+  # The current approach moves the constant into a varaible before using it
+  # But in the future (in the one that holds great things) we optimize those unneccesay moves away
+  
   class IntegerExpression < Expression
 #    attr_reader :value
     def compile method , message
-      to = Virtual::Return.new(Virtual::Integer)
+      to = Virtual::NewReturn.new(Virtual::Integer)
       method.add_code Virtual::Set.new( to , Virtual::IntegerConstant.new(value))
       to
     end
@@ -13,19 +21,25 @@ module Ast
 
   class TrueExpression
     def compile method , message
-      Virtual::TrueValue.new
+      to = Virtual::Return.new(Virtual::Reference)
+      method.add_code Virtual::Set.new( to , Virtual::TrueConstant.new )
+      to
     end
   end
   
   class FalseExpression
     def compile method , message
-      Virtual::FalseValue.new
+      to = Virtual::Return.new(Virtual::Reference)
+      method.add_code Virtual::Set.new( to , Virtual::FalseConstant.new )
+      to
     end
   end
   
   class NilExpression
     def compile method , message
-      Virtual::NilValue.new
+      to = Virtual::Return.new(Virtual::Reference)
+      method.add_code Virtual::Set.new( to , Virtual::NilConstant.new )
+      to
     end
   end
 
@@ -49,20 +63,22 @@ module Ast
   class ModuleName < NameExpression
 
     def compile method , message
+      to = Virtual::Return.new(Virtual::Reference)
       clazz = ::Virtual::BootSpace.space.get_or_create_class name
       raise "uups #{clazz}.#{name}" unless clazz
-      #class qualifier, means call from metaclass
-      #clazz = clazz.meta_class
-      clazz
+      method.add_code Virtual::Set.new( to , clazz )
+      to
     end    
   end
 
   class StringExpression < Expression
 #    attr_reader  :string
     def compile method , message
+      to = Virtual::Return.new(Virtual::Reference)
       value = Virtual::StringConstant.new(string)
-      ::Virtual::BootSpace.space.add_object value 
-      value
+      Virtual::BootSpace.space.add_object value 
+      method.add_code Virtual::Set.new( to , value )
+      to
     end
   end
   class AssignmentExpression < Expression
@@ -74,32 +90,12 @@ module Ast
       raise "oh noo, nil from where #{right.inspect}" unless r
       message.compile_set( method , left.name , r )
     end
-    def old_scratch
-      if operator == "="    # assignment, value based
-        if(left.is_a? VariableExpression)
-          left.make_setter
-          l_val = left.compile(context)
-        elsif left.is_a?(NameExpression)
-          puts context.inspect unless context.locals
-          l_val = context.locals[left.name]
-          if( l_val ) #variable existed, move data there
-            l_val = l_val.move( into , r_val) 
-          else
-            l_val = context.function.new_local.move( into , r_val )
-          end
-          context.locals[left.name] = l_val
-        else
-          raise "Can only assign variables, not #{left}" 
-        end
-        return l_val
-      end
-    end
   end
 
   class VariableExpression < NameExpression
     def compile method , message
       method.add_code Virtual::InstanceGet.new(name)
-      Virtual::Return.new( Virtual::Mystery )
+      Virtual::NewReturn.new( Virtual::Mystery )
     end
   end
 end
