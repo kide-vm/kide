@@ -6,14 +6,15 @@ module Virtual
     def run block
       block.codes.dup.each do |code|
         next unless code.is_a? MessageSend
-        me = code.me
-        raise "ahm" unless ( me.type == Reference)
-        if( me.is_a? Constant)
+        ref = code.me
+        raise "only refs implemented #{me.inspect}" unless ( ref.type == Reference)
+        if(ref.value)
+          me = ref.value
           if( me.is_a? BootClass )
             raise "unimplemented #{code}"
           elsif( me.is_a? ObjectConstant )
-            clazz = me.clazz
-            method = clazz.get_instance_method code.name
+            # get the function from my class. easy peasy
+            method = me.clazz.get_instance_method(code.name)
             raise "Method not implemented #{clazz.name}.#{code.name}" unless method
             call = FunctionCall.new( method )
             block.replace(code , call )
@@ -21,7 +22,7 @@ module Virtual
             raise "unimplemented #{code}"
           end
         else
-          raise "unimplemented #{code.me}"
+          raise "not constant/ known object for send #{me.inspect}"
         end
       end
     end

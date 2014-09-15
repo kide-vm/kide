@@ -13,32 +13,36 @@ module Ast
   class IntegerExpression < Expression
 #    attr_reader :value
     def compile method , message
-      to = Virtual::NewReturn.new(Virtual::Integer)
-      method.add_code Virtual::Set.new( to , Virtual::IntegerConstant.new(value))
+      int = Virtual::IntegerConstant.new(value)
+      to = Virtual::NewReturn.new(Virtual::Integer , int)
+      method.add_code Virtual::Set.new( to , int)
       to
     end
   end
 
   class TrueExpression
     def compile method , message
-      to = Virtual::Return.new(Virtual::Reference)
-      method.add_code Virtual::Set.new( to , Virtual::TrueConstant.new )
+      value = Virtual::TrueConstant.new
+      to = Virtual::Return.new(Virtual::Reference , value)
+      method.add_code Virtual::Set.new( to , value )
       to
     end
   end
   
   class FalseExpression
     def compile method , message
-      to = Virtual::Return.new(Virtual::Reference)
-      method.add_code Virtual::Set.new( to , Virtual::FalseConstant.new )
+      value = Virtual::FalseConstant.new
+      to = Virtual::Return.new(Virtual::Reference , value)
+      method.add_code Virtual::Set.new( to , value )
       to
     end
   end
   
   class NilExpression
     def compile method , message
-      to = Virtual::Return.new(Virtual::Reference)
-      method.add_code Virtual::Set.new( to , Virtual::NilConstant.new )
+      value = Virtual::NilConstant.new
+      to = Virtual::Return.new(Virtual::Reference , value)
+      method.add_code Virtual::Set.new( to , value )
       to
     end
   end
@@ -63,9 +67,9 @@ module Ast
   class ModuleName < NameExpression
 
     def compile method , message
-      to = Virtual::Return.new(Virtual::Reference)
       clazz = Virtual::BootSpace.space.get_or_create_class name
       raise "uups #{clazz}.#{name}" unless clazz
+      to = Virtual::Return.new(Virtual::Reference , clazz )
       method.add_code Virtual::Set.new( to , clazz )
       to
     end    
@@ -74,8 +78,8 @@ module Ast
   class StringExpression < Expression
 #    attr_reader  :string
     def compile method , message
-      to = Virtual::Return.new(Virtual::Reference)
       value = Virtual::StringConstant.new(string)
+      to = Virtual::Return.new(Virtual::Reference , value)
       Virtual::BootSpace.space.add_object value 
       method.add_code Virtual::Set.new( to , value )
       to

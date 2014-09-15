@@ -15,64 +15,65 @@ module Virtual
     NAME = 3
     MESSAGE_PAYLOAD = 4
 
-    attr_accessor :index , :type
+    attr_accessor :index , :type , :value
     private #abstract base class
-    def initialize index , type
+    def initialize index , type , value
       @index = index
       @type = type
+      @value = value
     end
   end
   
   class MessageSlot < Slot
-    def initialize index , type = Mystery
-      super(index + MESSAGE_PAYLOAD ,type)
+    def initialize index , type = Mystery , value = nil
+      super(index + MESSAGE_PAYLOAD ,type , value )
     end
   end
   class FrameSlot < Slot
-    def initialize index , type = Mystery
+    def initialize index , type = Mystery, value = nil
       super
     end
   end
   class SelfSlot < Slot
-    def initialize index , type = Mystery
+    def initialize index , type = Mystery, value = nil
       super
     end
   end
   class NewMessageSlot < Slot
-    def initialize index , type = Mystery
-      super(index + MESSAGE_PAYLOAD , type)
+    def initialize index , type = Mystery, value = nil
+      super(index + MESSAGE_PAYLOAD , type , value )
     end
   end
 
   class Return < MessageSlot
-    def initialize type = Mystery
-      super( RETURN - MESSAGE_PAYLOAD, type )
+    def initialize type = Mystery, value = nil
+      super( RETURN - MESSAGE_PAYLOAD, type , value  )
     end
   end
   class Self < MessageSlot
-    def initialize type = Mystery
-      super( SELF - MESSAGE_PAYLOAD , type )
+    def initialize type = Mystery, value = nil
+      super( SELF - MESSAGE_PAYLOAD , type , value  )
     end
   end
   class Name < MessageSlot
-    def initialize type = Mystery
-      super( NAME - MESSAGE_PAYLOAD , type )
+    def initialize type = Mystery, value = nil
+      super( NAME - MESSAGE_PAYLOAD , type , value  )
     end
   end
 
   class NewReturn < NewMessageSlot
-    def initialize type = Mystery
-      super( RETURN - MESSAGE_PAYLOAD, type )
+    def initialize type = Mystery, value = nil
+      super( RETURN - MESSAGE_PAYLOAD, type , value  )
     end
   end
   class NewSelf < NewMessageSlot
-    def initialize type = Mystery
-      super( SELF - MESSAGE_PAYLOAD , type )
+    def initialize type = Mystery, value = nil
+      super( SELF - MESSAGE_PAYLOAD , type , value  )
     end
   end
   class NewName < NewMessageSlot
-    def initialize type = Mystery
-      super( NAME - MESSAGE_PAYLOAD , type )
+    def initialize type = Mystery, value = nil
+      super( NAME - MESSAGE_PAYLOAD , type , value )
     end
   end
 
