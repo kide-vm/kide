@@ -28,7 +28,7 @@ module Arm
     def is_simple
       right = @from
       if right.is_a?(Virtual::ObjectConstant)
-        r_pos = assembler.position_for(right)
+        r_pos = 5 #assembler.position_for(right)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie pc pointing to fetch and not execute)
         right = Virtual::IntegerConstant.new( r_pos - self.position - 8 )

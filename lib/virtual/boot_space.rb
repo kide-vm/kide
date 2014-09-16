@@ -1,5 +1,6 @@
 require_relative "boot_class"
 require "builtin/object"
+require "parfait/hash"
 
 module Virtual
   # The BootSpace contains all objects for a program. In functional terms it is a program, but in oo
@@ -17,7 +18,7 @@ module Virtual
     #  with a XXXMachine in it that derives from Virtual::RegisterMachine
     def initialize machine = nil
       super()
-      @classes = {}
+      @classes = Parfait::Hash.new
       @main = Virtual::CompiledMethod.new("main" , [] )
       #global objects (data)
       @objects = []
@@ -28,7 +29,7 @@ module Virtual
     def run_passes
       @passes.each do |pass|
         all = main.blocks
-        @classes.each_value do |c| 
+        @classes.values.each do |c| 
           c.instance_methods.each {|f| all += f.blocks  }
         end
         all.each do |block|
@@ -88,6 +89,11 @@ module Virtual
       [:get , :set , :push].each do |f|
         obj.add_instance_method Builtin::Array.send(f , @context)
       end
+    end
+
+    @@SPACE = { :names => [:classes,:objects] , :types => [Virtual::Reference,Virtual::Reference]}
+    def layout
+      @@SPACE
     end
 
     # Objects are data and get assembled after functions

@@ -39,6 +39,10 @@ module Virtual
       method
     end
 
+    @@CLAZZ = { :names => [:name , :super_class_name , :instance_methods] , :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference]}
+    def layout
+      @@CLAZZ
+    end
     def to_s
       inspect
     end

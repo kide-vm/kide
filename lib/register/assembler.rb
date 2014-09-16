@@ -1,18 +1,4 @@
-
 module Register
-  class LinkSlot
-    def initialize o 
-      @position = -1
-      @length = -1
-      @objekt = o
-    end
-    attr_reader :objekt
-    attr_accessor :position , :length , :layout
-    def position
-      raise "position accessed but not set at #{length} for #{self.objekt}" if @position == -1
-      @position
-    end
-  end
 
   # Assmble the object space into a binary.
   # Link first to get positions, then assemble
@@ -35,58 +21,53 @@ module Register
     def link
       collect_object(@space)
       at = 4
-      @objects.each do |id , slot|
-        next unless slot.objekt.is_a? Virtual::CompiledMethod
-        slot.position = at
-        slot.objekt.set_position at
-        at += slot.length
+      @objects.each do |id , objekt|
+        next unless objekt.is_a? Virtual::CompiledMethod
+        objekt.position = at
+        objekt.set_position at
+        at += objekt.length
       end
-      @objects.each do |id , slot|
-        next if slot.objekt.is_a? Virtual::CompiledMethod
-        slot.position = at
-        at += slot.length
+      @objects.each do |id , objekt|
+        next if objekt.is_a? Virtual::CompiledMethod
+        objekt.position = at
+        at += objekt.length
       end
     end
 
     def assemble
       link
       @stream = StringIO.new
-      mid , main_slot = @objects.find{|k,slot| slot.objekt.is_a?(Virtual::CompiledMethod) and (slot.objekt.name == :__init__ )}
-      main = main_slot.objekt
+      mid , main = @objects.find{|k,objekt| objekt.is_a?(Virtual::CompiledMethod) and (objekt.name == :__init__ )}
       puts "function found #{main.name}"
       initial_jump = RegisterMachine.instance.b( main )
       initial_jump.position = 0
       initial_jump.assemble( @stream , self )
-      @objects.each do |id , slot|
-        next unless slot.objekt.is_a? Virtual::CompiledMethod
-        assemble_object( slot )
+      @objects.each do |id , objekt|
+        next unless objekt.is_a? Virtual::CompiledMethod
+        assemble_object( objekt )
       end
-      @objects.each do |id , slot|
-        next if slot.objekt.is_a? Virtual::CompiledMethod
-        assemble_object( slot )
+      @objects.each do |id , objekt|
+        next if objekt.is_a? Virtual::CompiledMethod
+        assemble_object( objekt )
       end
       puts "Assembled #{@stream.length.to_s(16)}"
       return @stream.string
     end
 
     def collect_object(object)
-      slot = @objects[object.object_id]
-      return slot.length if slot
-      slot = LinkSlot.new object
-      @objects[object.object_id] = slot
-      slot.layout = layout_for(object)
-      collect_object(slot.layout[:names])
+      return object.length if @objects[object.object_id]
+      @objects[object.object_id] = object
+      collect_object(object.layout[:names])
       clazz = object.class.name.split("::").last
-      slot.length = send("collect_#{clazz}".to_sym , object)
+      send("collect_#{clazz}".to_sym , object)
     end
 
-    def assemble_object slot
-      obj = slot.objekt
-      puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{(@stream.length).to_s(16)} pos:#{slot.position.to_s(16)} , len:#{slot.length}" 
-      raise "Assemble #{obj.class} at #{@stream.length.to_s(16)} not #{slot.position.to_s(16)}" if @stream.length != slot.position
+    def assemble_object obj
+      puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.length}" 
+      raise "Assemble #{obj.class} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}" if @stream.length != obj.position
       clazz = obj.class.name.split("::").last
-      send("assemble_#{clazz}".to_sym , slot)
-      slot.position
+      send("assemble_#{clazz}".to_sym , obj)
+      obj.position
     end
 
     def type_word array
@@ -102,17 +83,15 @@ module Register
     # write type and layout of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def assemble_self( object , variables )
-      slot = get_slot(object)
-      raise "Object(#{object.object_id}) not linked #{object.inspect}" unless slot
+      raise "Object(#{object.object_id}) not linked #{object.inspect}" unless @objects[object.object_id]
       type = type_word(variables)
       @stream.write_uint32( type )
-      layout = slot.layout
-      write_ref_for(layout[:names] , slot )
+      write_ref_for(object.layout[:names] , object )
       variables.each do |var|
-        write_ref_for(var , slot)
+        write_ref_for(var , object)
       end
       pad_after( variables.length * 4 )
-      slot.position
+      object.position
     end
 
     def collect_Array( array )
@@ -123,30 +102,27 @@ module Register
       padded_words(array.length)
     end
 
-    def assemble_Array slot
-      array = slot.objekt
-      layout = slot.layout
+    def assemble_Array array
       type = type_word(array)
       @stream.write_uint32( type )
-      write_ref_for(layout[:names],slot)  #ref
+      write_ref_for(layout[:names],array)  #ref
       array.each do |var|
-        write_ref_for(var,slot)
+        write_ref_for(var,array)
       end
       pad_after( array.length * 4 )
-      slot.position
+      array.position
     end
 
     def collect_Hash( hash )
-      slot = get_slot(hash)
       #hook the key/values arrays into the layout (just because it was around)
-      collect_object(slot.layout[:keys])
-      collect_object(slot.layout[:values])
+      collect_object(hash.keys)
+      collect_object(hash.values)
       padded_words(2)
     end
 
-    def assemble_Hash slot
+    def assemble_Hash hash
       # so here we can be sure to have _identical_ keys/values arrays
-      assemble_self( slot.objekt , [ slot.layout[:keys] , slot.layout[:values] ] )
+      assemble_self( hash , [ hash.layout[:keys] , hash.layout[:values] ] )
     end
 
     def collect_BootSpace(space)
@@ -155,8 +131,7 @@ module Register
       padded_words( 2 )
     end
 
-    def assemble_BootSpace(slot)
-      space = slot.objekt
+    def assemble_BootSpace(space)
       assemble_self(space , [space.classes,space.objects] )
     end
 
@@ -167,8 +142,7 @@ module Register
       padded_words(3)
     end
 
-    def assemble_BootClass(slot)
-      clazz = slot.objekt
+    def assemble_BootClass(clazz)
       assemble_self( clazz , [clazz.name , clazz.super_class_name, clazz.instance_methods] )
     end
 
@@ -179,15 +153,14 @@ module Register
     end
 
 
-    def assemble_CompiledMethod(slot)
-      method = slot.objekt
+    def assemble_CompiledMethod(method)
       count = method.blocks.inject(0) { |c , block| c += block.length }
       word = (count+7) / 32  # all object are multiple of 8 words (7 for header)
       raise "Method too long, splitting not implemented #{method.name}/#{count}" if word > 15
       # first line is integers, convention is that following lines are the same
       TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
       @stream.write_uint32( word )
-      write_ref_for(slot.layout[:names] , slot)  #ref of layout
+      write_ref_for(method.layout[:names] , method)  #ref of layout
       # TODO the assembly may have to move to the object to be more extensible
       method.blocks.each do |block|
         block.codes.each do |code|
@@ -209,17 +182,15 @@ module Register
       return collect_String(sc.string)
     end
 
-    def assemble_String( slot )
-      str = slot.objekt
+    def assemble_String( str )
       str = str.string if str.is_a? Virtual::StringConstant
       str = str.to_s if str.is_a? Symbol
-      layout = slot.layout
       word = (str.length + 7) / 32  # all object are multiple of 8 words (7 for header)
       raise "String too long (implement split string!) #{word}" if word > 15
       # first line is integers, convention is that following lines are the same
       TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
       @stream.write_uint32( word )
-      write_ref_for( slot.layout[:names] , slot) #ref
+      write_ref_for( str.layout[:names] , slot) #ref
       @stream.write str
       pad_after(str.length)
       #puts "String (#{slot.length}) stream #{@stream.length.to_s(16)}"
@@ -238,32 +209,13 @@ module Register
       s.position
     end
     private 
-    def get_slot(object)
-      slot = @objects[object.object_id]
-      return slot if slot
-      if(object.is_a? Array)
-        @objects.each do |k,slot|
-          next unless slot.objekt.is_a? Array
-          if(slot.objekt.length == object.length)
-            same = true
-            slot.objekt.each_with_index do |v,index|
-              same = false unless v == object[index]
-            end
-            puts slot.objekt.first.class if same
-            return slot if same
-          end
-        end
-      end
-      nil
-    end
 
     # write means we write the resulting address straight into the assembler stream (ie don't return it)
-    # ref means the object of which we write the address
+    # object means the object of which we write the address
     # and we write the address into the self, given as second parameter
-    def write_ref_for object , self_slot
-      slot = get_slot(object)
+    def write_ref_for object , self_ref
       raise "Object (#{object.object_id}) not linked #{object.inspect}" unless slot
-      @stream.write_sint32 slot.position
+      @stream.write_sint32 object.position
     end
 
     # objects only come in lengths of multiple of 8 words
@@ -288,26 +240,6 @@ module Register
       #puts "padded #{length} with #{pad} stream pos #{@stream.length.to_s(16)}"
     end
 
-    # class variables to have _identical_ objects passed back (stops recursion)
-    @@ARRAY =  { :names => [] , :types => []}
-    @@HASH = { :names => [:keys,:values] , :types => [Virtual::Reference,Virtual::Reference]}
-    @@CLAZZ = { :names => [:name , :super_class_name , :instance_methods] , :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference]}
-    @@SPACE = { :names => [:classes,:objects] , :types => [Virtual::Reference,Virtual::Reference]}
-
-    def layout_for(object)
-      case object
-      when Array , Symbol , String , Virtual::CompiledMethod , Virtual::Block , Virtual::StringConstant
-        @@ARRAY
-      when Hash
-        @@HASH.merge :keys => object.keys , :values => object.values 
-      when Virtual::BootClass
-        @@CLAZZ
-      when Virtual::BootSpace
-        @@SPACE
-      else
-        raise "linker encounters unknown class #{object.class}"
-      end
-    end
   end
 
   Sof::Volotile.add(Register::Assembler , [:objects])

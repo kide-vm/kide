@@ -17,11 +17,6 @@ module Arm
       @is_load = opcode.to_s[0] == "l" ? 1 : 0 #L (load) flag
     end
 
-    # arm intructions are pretty sensible, and always 4 bytes (thumb not supported)
-    def length
-      4
-    end
-                  
     def assemble(io , assembler )
       # don't overwrite instance variables, to make assembly repeatable
       rn = @rn

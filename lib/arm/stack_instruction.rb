@@ -5,11 +5,6 @@ module Arm
   class StackInstruction < Register::StackInstruction
     include Arm::Constants
 
-    # arm intrucioons are pretty sensible, and always 4 bytes (thumb not supported)
-    def length
-      4
-    end
-
     def initialize(first , attributes)
       super(first , attributes) 
       @attributes[:update_status] = 0 if @attributes[:update_status] == nil
