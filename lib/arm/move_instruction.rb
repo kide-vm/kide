@@ -19,7 +19,8 @@ module Arm
     # but not all constants fit into the part of the instruction that is left after the instruction code,
     # so large moves have to be split into two instrucitons. we handle this here, just this instruciton looks
     # longer
-    def length
+    def mem_length
+      return 4
       is_simple ? 4 : 8
     end
 
@@ -28,7 +29,7 @@ module Arm
     def is_simple
       right = @from
       if right.is_a?(Virtual::ObjectConstant)
-        r_pos = 5 #assembler.position_for(right)
+        r_pos = right.position
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie pc pointing to fetch and not execute)
         right = Virtual::IntegerConstant.new( r_pos - self.position - 8 )
@@ -45,7 +46,7 @@ module Arm
       return true
     end
 
-    def assemble(io, assembler)
+    def assemble(io)
       # don't overwrite instance variables, to make assembly repeatable
       rn = @rn
       operand = @operand
@@ -53,7 +54,7 @@ module Arm
       complex = false
       right = @from
       if right.is_a?(Virtual::ObjectConstant)
-        r_pos = assembler.position_for(right)
+        r_pos = right.position
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie pc pointing to fetch and not execute)
         right = Virtual::IntegerConstant.new( r_pos - self.position - 8 )

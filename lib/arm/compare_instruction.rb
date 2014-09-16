@@ -11,10 +11,6 @@ module Arm
       @rn = left
       @rd = :r0
     end
-    # arm instructions are pretty sensible, and always 4 bytes (thumb not supported)
-    def length
-      4
-    end
 
     def assemble(io, assembler)
       # don't overwrite instance variables, to make assembly repeatable

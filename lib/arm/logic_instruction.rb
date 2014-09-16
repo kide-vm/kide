@@ -12,11 +12,6 @@ module Arm
       raise "Left arg must be given #{inspect}" unless @left
       @immediate = 0      
     end
-    
-    # arm intrucioons are pretty sensible, and always 4 bytes (thumb not supported)
-    def length
-      4
-    end
 
     def assemble(io, assembler)
       # don't overwrite instance variables, to make assembly repeatable

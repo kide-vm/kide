@@ -14,11 +14,6 @@ module Arm
   
   class CallInstruction < ::Register::CallInstruction
     include Arm::Constants
-    
-    # arm intrucioons are pretty sensible, and always 4 bytes (thumb not supported)
-    def length
-      4
-    end
 
     def initialize(first, attributes)
       super(first , attributes)
@@ -26,7 +21,7 @@ module Arm
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
     end
     
-    def assemble(io, assembler)
+    def assemble(io)
       case @attributes[:opcode]
       when :b, :call
         arg = @first
