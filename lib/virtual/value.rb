@@ -5,7 +5,7 @@ module Virtual
 
   # Values must really be Constants or Variables, ie have a storage space
 
-  class Value
+  class Walue
     def type
       raise "abstract called for #{self.class}"
     end

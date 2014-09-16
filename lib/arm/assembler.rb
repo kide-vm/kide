@@ -50,13 +50,13 @@ module Arm
     # Length of all blocks. Does not take strings into account as they are added after all blocks.
     # This is used to determine where a block when it is added after creation (see add_block)
     def length
-      @blocks.inject(0) {| sum  , item | sum + item.length}
+      @blocks.inject(0) {| sum  , item | sum + item.mem_length}
     end
 
     # This is how you add a forward declared block. This is called automatically when you 
     # call block with ruby block, but has to be done manually if not
     def add_block block
-      block.at self.length
+      block.at self.mem_length
       @blocks << block
     end
 
