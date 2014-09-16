@@ -233,6 +233,10 @@ module Register
       return assemble_String(sc)
     end
 
+    def position_for object
+      s = get_slot(object)
+      s.position
+    end
     private 
     def get_slot(object)
       slot = @objects[object.object_id]

@@ -12,16 +12,37 @@ module Arm
 
       @immediate = 0      
       @rn = :r0 # register zero = zero bit pattern
-#   NO-OP -> pass   raise inspect if  to.is_a?(Virtual::Value) and 
- #                       from.is_a?(Virtual::Value) and 
-  #                      !@attributes[:shift_lsr] and
-   #                     to.symbol == from.symbol
-      raise "uups " if @to.symbol == :rr1
+      @from = Virtual::IntegerConstant.new( @from ) if( @from.is_a? Fixnum )
     end
     
     # arm intrucions are pretty sensible, and always 4 bytes (thumb not supported)
+    # but not all constants fit into the part of the instruction that is left after the instruction code,
+    # so large moves have to be split into two instrucitons. we handle this here, just this instruciton looks
+    # longer
     def length
-      4
+      is_simple ? 4 : 8
+    end
+
+    # a constant (the one we want to move) can either be < 256 or be rotated in a funny arm way
+    # if neither works (not simple !) we need two instructions to make the move
+    def is_simple
+      right = @from
+      if right.is_a?(Virtual::ObjectConstant)
+        r_pos = assembler.position_for(right)
+        # do pc relative addressing with the difference to the instuction
+        # 8 is for the funny pipeline adjustment (ie pc pointing to fetch and not execute)
+        right = Virtual::IntegerConstant.new( r_pos - self.position - 8 )
+      end
+      if (right.is_a?(Virtual::IntegerConstant))
+        if (right.integer.fits_u8?)
+          return true
+        elsif (calculate_u8_with_rr(right))
+          return true
+        else
+          return false
+        end
+      end
+      return true
     end
 
     def assemble(io, assembler)
@@ -29,16 +50,16 @@ module Arm
       rn = @rn
       operand = @operand
       immediate = @immediate
-
+      complex = false
       right = @from
       if right.is_a?(Virtual::ObjectConstant)
+        r_pos = assembler.position_for(right)
         # do pc relative addressing with the difference to the instuction
-        # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
-        right = Virtual::IntegerConstant.new( right.position - self.position - 8 )
+        # 8 is for the funny pipeline adjustment (ie pc pointing to fetch and not execute)
+        right = Virtual::IntegerConstant.new( r_pos - self.position - 8 )
+        puts "Position #{r_pos} from #{self.position} = #{right}"
+        right = Virtual::IntegerConstant.new(r_pos) if right.integer > 255
         rn = :pc
-      end
-      if( right.is_a? Fixnum )
-        right = Virtual::IntegerConstant.new( right )
       end
       if (right.is_a?(Virtual::IntegerConstant))
         if (right.integer.fits_u8?)
@@ -61,7 +82,7 @@ module Arm
       op =  shift_handling
       instuction_class = 0b00 # OPC_DATA_PROCESSING
       val = shift(operand , 0)
-      val |= shift(op , 0) # any barral action, is already shifted
+      val |= shift(op , 0) # any barrel action, is already shifted
       val |= shift(reg_code(@to) ,            12)     
       val |= shift(reg_code(rn) ,            12+4)   
       val |= shift(@attributes[:update_status] , 12+4+4)#20 

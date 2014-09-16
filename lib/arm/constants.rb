@@ -69,7 +69,7 @@ module Arm
     end
 
    def calculate_u8_with_rr(arg)
-     parts = arg.value.to_s(2).rjust(32,'0').scan(/^(0*)(.+?)0*$/).flatten
+     parts = arg.integer.to_s(2).rjust(32,'0').scan(/^(0*)(.+?)0*$/).flatten
      pre_zeros = parts[0].length
      imm_len = parts[1].length
      if ((pre_zeros+imm_len) % 2 == 1)
