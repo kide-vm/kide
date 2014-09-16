@@ -113,5 +113,11 @@ module Arm
      end
      return op
    end
+
+   # arm intrucioons are pretty sensible, and always 4 bytes (thumb not supported)
+   def length
+     4
+   end
+
   end
 end
