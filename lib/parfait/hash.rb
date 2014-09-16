@@ -6,6 +6,12 @@ class Parfait::Hash
     @keys = Array.new()
     @values = Array.new()
   end
+  def values()
+    @values
+  end
+  def keys()
+    @keys
+  end
   def empty?
     @keys.empty?
   end
@@ -21,6 +27,9 @@ class Parfait::Hash
     else
       nil
     end
+  end
+  def [](key)
+    get(key)
   end
 
   def key_index(key)
@@ -46,6 +55,9 @@ class Parfait::Hash
       @values.push(value)
     end
     value
+  end
+  def []=(key,val)
+    set(key,val)
   end
 end
 
