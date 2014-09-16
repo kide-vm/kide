@@ -19,14 +19,16 @@ module Register
     attr_reader :objects
 
     def link
-      collect_object(@space)
-      at = 4
-      @objects.each do |id , objekt|
+      add_object(@space)
+      at = 4  # first jump instruction
+      # then all functions
+      @objects.each_value do | objekt|
         next unless objekt.is_a? Virtual::CompiledMethod
         objekt.set_position(at)
         at += objekt.mem_length
       end
-      @objects.each do |id , objekt|
+      #and then all data object
+      @objects.each_value do | objekt|
         next if objekt.is_a? Virtual::CompiledMethod
         objekt.set_position at
         at += objekt.mem_length
@@ -41,24 +43,16 @@ module Register
       initial_jump = RegisterMachine.instance.b( main )
       initial_jump.set_position( 0)
       initial_jump.assemble( @stream )
-      @objects.each do |id , objekt|
+      @objects.each_value do |objekt|
         next unless objekt.is_a? Virtual::CompiledMethod
         assemble_object( objekt )
       end
-      @objects.each do |id , objekt|
+      @objects.each_value do | objekt|
         next if objekt.is_a? Virtual::CompiledMethod
         assemble_object( objekt )
       end
       puts "Assembled #{@stream.length.to_s(16)}"
       return @stream.string
-    end
-
-    def collect_object(object)
-      return object.mem_length if @objects[object.object_id]
-      @objects[object.object_id] = object
-      collect_object(object.layout[:names])
-      clazz = object.class.name.split("::").last
-      send("collect_#{clazz}".to_sym , object)
     end
 
     def assemble_object obj
@@ -93,14 +87,6 @@ module Register
       object.position
     end
 
-    def collect_Array( array )
-      # also array has constant overhead, the padded helper fixes it to multiple of 8
-      array.each do |elem| 
-        collect_object(elem)
-      end
-      padded_words(array.length)
-    end
-
     def assemble_Array array
       type = type_word(array)
       @stream.write_uint32( type )
@@ -112,40 +98,18 @@ module Register
       array.position
     end
 
-    def collect_Hash( hash )
-      #hook the key/values arrays into the layout (just because it was around)
-      collect_object(hash.keys)
-      collect_object(hash.values)
-      padded_words(2)
-    end
-
     def assemble_Hash hash
       # so here we can be sure to have _identical_ keys/values arrays
       assemble_self( hash , [ hash.layout[:keys] , hash.layout[:values] ] )
-    end
-
-    def collect_BootSpace(space)
-      collect_object(space.classes)
-      collect_object(space.objects)
     end
 
     def assemble_BootSpace(space)
       assemble_self(space , [space.classes,space.objects] )
     end
 
-    def collect_BootClass(clazz)
-      collect_object(clazz.name )
-      collect_object(clazz.super_class_name)
-      collect_object(clazz.instance_methods)
-    end
-
     def assemble_BootClass(clazz)
       assemble_self( clazz , [clazz.name , clazz.super_class_name, clazz.instance_methods] )
     end
-
-    def collect_CompiledMethod(method)
-    end
-
 
     def assemble_CompiledMethod(method)
       count = method.blocks.inject(0) { |c , block| c += block.length }
@@ -162,15 +126,6 @@ module Register
         end
       end
       pad_after( count )
-    end
-
-    def collect_String( str)
-    end
-
-    def collect_Symbol(sym)
-    end
-
-    def collect_StringConstant(sc)
     end
 
     def assemble_String( str )
@@ -195,10 +150,45 @@ module Register
       return assemble_String(sc)
     end
 
-    def position_for object
-      s = get_slot(object)
-      s.position
+    def add_object(object)
+      return if @objects[object.object_id]
+      @objects[object.object_id] = object
+      add_object(object.layout[:names])
+      clazz = object.class.name.split("::").last
+      send("add_#{clazz}".to_sym , object)
     end
+
+    def add_Array( array )
+      # also array has constant overhead, the padded helper fixes it to multiple of 8
+      array.each do |elem| 
+        add_object(elem)
+      end
+    end
+
+    def add_Hash( hash )
+      add_object(hash.keys)
+      add_object(hash.values)
+    end
+
+    def add_BootSpace(space)
+      add_object(space.classes)
+      add_object(space.objects)
+    end
+
+    def add_BootClass(clazz)
+      add_object(clazz.name )
+      add_object(clazz.super_class_name)
+      add_object(clazz.instance_methods)
+    end
+    def add_CompiledMethod(method)
+    end
+    def add_String( str)
+    end
+    def add_Symbol(sym)
+    end
+    def add_StringConstant(sc)
+    end
+
     private 
 
     # write means we write the resulting address straight into the assembler stream (ie don't return it)
