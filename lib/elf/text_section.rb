@@ -14,7 +14,7 @@ module Elf
       Elf::Constants::SHF_WRITE | Elf::Constants::SHF_ALLOC | Elf::Constants::SHF_EXECINSTR
     end
   
-    def length
+    def mem_length
       @text.length
     end
     def to_s

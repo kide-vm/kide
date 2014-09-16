@@ -19,7 +19,7 @@ module Virtual
       @codes = []
     end
 
-    attr_reader :name , :codes , :method , :position
+    attr_reader :name , :codes , :method
     attr_accessor :branch
     
     def reachable ret = []
@@ -58,13 +58,14 @@ module Virtual
     def set_position at
       @position = at
       @codes.each do |code|
-        code.position = at
-        at += code.length
+        code.set_position( at)
+        raise code.inspect unless code.mem_length
+        at += code.mem_length
       end
     end
 
-    def length
-      @codes.inject(0){|count , instruction| count += instruction.length }
+    def mem_length
+      @codes.inject(0){|count , instruction| count += instruction.mem_length }
     end
 
     private

@@ -12,7 +12,7 @@ module Virtual
   # While data ususally would live in a .data section, we may also "inline" it into the code
   # in an oo system all data is represented as objects
    
-  class BootSpace
+  class BootSpace < Virtual::Object
     
     # Initialize with a string for cpu. Naming conventions are: for Machine XXX there exists a module XXX
     #  with a XXXMachine in it that derives from Virtual::RegisterMachine
@@ -113,6 +113,9 @@ module Virtual
         @classes[name] = c
       end
       c
+    end
+    def mem_length
+      padded_words( 2 )
     end
   end
 end

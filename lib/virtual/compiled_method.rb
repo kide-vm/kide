@@ -166,12 +166,16 @@ module Virtual
       add_code ::Register::RegisterMachine.instance.send(meth , *args)
     end
 
+    def mem_length
+      l = @blocks.inject(0) { |c , block| c += block.mem_length }
+      padded(l)      
+    end
     # position of the function is the position of the entry block, is where we call
     def set_position at
       at += 8 #for the 2 header words
       @blocks.each do |block|
         block.set_position at
-        at = at + block.length
+        at = at + block.mem_length
       end
     end
     def position

@@ -12,12 +12,11 @@ module Register
   
   # Instruction derives from Code, for the assembly api
   
-  class Instruction < Code    
+  class Instruction < Virtual::Object    
     def initialize  options
       @attributes = options
     end
     attr_reader :attributes
-    attr_accessor :position
     def opcode
       @attributes[:opcode]
     end

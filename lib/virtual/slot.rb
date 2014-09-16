@@ -8,7 +8,7 @@ module Virtual
   
   # additionally frame, self and return are slots in Message and NewMessage
 
-  class Slot < Value
+  class Slot
     RETURN = 0
     SELF = 1
     FRAME = 2

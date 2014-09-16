@@ -23,14 +23,13 @@ module Register
       at = 4
       @objects.each do |id , objekt|
         next unless objekt.is_a? Virtual::CompiledMethod
-        objekt.position = at
-        objekt.set_position at
-        at += objekt.length
+        objekt.set_position(at)
+        at += objekt.mem_length
       end
       @objects.each do |id , objekt|
         next if objekt.is_a? Virtual::CompiledMethod
-        objekt.position = at
-        at += objekt.length
+        objekt.set_position at
+        at += objekt.mem_length
       end
     end
 
@@ -40,8 +39,8 @@ module Register
       mid , main = @objects.find{|k,objekt| objekt.is_a?(Virtual::CompiledMethod) and (objekt.name == :__init__ )}
       puts "function found #{main.name}"
       initial_jump = RegisterMachine.instance.b( main )
-      initial_jump.position = 0
-      initial_jump.assemble( @stream , self )
+      initial_jump.set_position( 0)
+      initial_jump.assemble( @stream )
       @objects.each do |id , objekt|
         next unless objekt.is_a? Virtual::CompiledMethod
         assemble_object( objekt )
@@ -55,7 +54,7 @@ module Register
     end
 
     def collect_object(object)
-      return object.length if @objects[object.object_id]
+      return object.mem_length if @objects[object.object_id]
       @objects[object.object_id] = object
       collect_object(object.layout[:names])
       clazz = object.class.name.split("::").last
@@ -63,7 +62,7 @@ module Register
     end
 
     def assemble_object obj
-      puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.length}" 
+      puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.mem_length}" 
       raise "Assemble #{obj.class} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}" if @stream.length != obj.position
       clazz = obj.class.name.split("::").last
       send("assemble_#{clazz}".to_sym , obj)
@@ -128,7 +127,6 @@ module Register
     def collect_BootSpace(space)
       collect_object(space.classes)
       collect_object(space.objects)
-      padded_words( 2 )
     end
 
     def assemble_BootSpace(space)
@@ -139,7 +137,6 @@ module Register
       collect_object(clazz.name )
       collect_object(clazz.super_class_name)
       collect_object(clazz.instance_methods)
-      padded_words(3)
     end
 
     def assemble_BootClass(clazz)
@@ -147,9 +144,6 @@ module Register
     end
 
     def collect_CompiledMethod(method)
-      # NOT an ARRAY, just a bag of bytes
-      length = method.blocks.inject(0) { |c , block| c += block.length }
-      padded(length)
     end
 
 
@@ -164,36 +158,33 @@ module Register
       # TODO the assembly may have to move to the object to be more extensible
       method.blocks.each do |block|
         block.codes.each do |code|
-          code.assemble( @stream , self )
+          code.assemble( @stream )
         end
       end
       pad_after( count )
     end
 
     def collect_String( str)
-      return padded( str.length + 1 )
     end
 
     def collect_Symbol(sym)
-      return collect_String(sym.to_s)
     end
 
     def collect_StringConstant(sc)
-      return collect_String(sc.string)
     end
 
     def assemble_String( str )
       str = str.string if str.is_a? Virtual::StringConstant
       str = str.to_s if str.is_a? Symbol
-      word = (str.length + 7) / 32  # all object are multiple of 8 words (7 for header)
+      word = (str.mem_length + 7) / 32  # all object are multiple of 8 words (7 for header)
       raise "String too long (implement split string!) #{word}" if word > 15
       # first line is integers, convention is that following lines are the same
       TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
       @stream.write_uint32( word )
       write_ref_for( str.layout[:names] , slot) #ref
       @stream.write str
-      pad_after(str.length)
-      #puts "String (#{slot.length}) stream #{@stream.length.to_s(16)}"
+      pad_after(str.mem_length)
+      #puts "String (#{slot.mem_length}) stream #{@stream.mem_length.to_s(16)}"
     end
 
     def assemble_Symbol(sym)
@@ -237,7 +228,7 @@ module Register
       pad.times do
         @stream.write_uint8(0)
       end
-      #puts "padded #{length} with #{pad} stream pos #{@stream.length.to_s(16)}"
+      #puts "padded #{length} with #{pad} stream pos #{@stream.mem_length.to_s(16)}"
     end
 
   end

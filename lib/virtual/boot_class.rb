@@ -43,6 +43,9 @@ module Virtual
     def layout
       @@CLAZZ
     end
+    def mem_length
+      padded_words(3)
+    end
     def to_s
       inspect
     end

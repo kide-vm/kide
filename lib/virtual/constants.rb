@@ -1,6 +1,6 @@
 module Virtual
   
-  class Constant < ::Virtual::Value
+  class Constant < ::Virtual::Object
   end
   class TrueConstant < Constant
   end
@@ -15,7 +15,7 @@ module Virtual
     def type
       Virtual::Reference
     end
-    def claszz
+    def clazz
       raise "abstract #{self}"
     end
   end
@@ -40,11 +40,18 @@ module Virtual
       @string = str
     end
     attr_reader :string
+
     def result= value
       class_for(MoveInstruction).new(value , self , :opcode => :mov)
     end
     def clazz
       BootSpace.space.get_or_create_class(:String)
+    end
+    def layout
+      Virtual::Object.layout
+    end
+    def mem_length
+      padded(1 + string.length)
     end
   end
   

@@ -9,7 +9,7 @@ module Register
   # All code is position independant once assembled.
   # But for jumps and calls two passes are neccessary. 
   # The first setting the position, the second assembling
-  class Code
+  class Bode
     
     def class_for clazz
       RegisterMachine.instance.class_for(clazz)
@@ -35,7 +35,7 @@ module Register
     end
     
     # length for this code in bytes
-    def length
+    def mem_length
       raise "Not implemented #{inspect}"
     end
     

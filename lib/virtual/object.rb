@@ -17,19 +17,24 @@ module Virtual
   #         String            String
   class Object
     def initialize
-      @position = -1
+      @position = nil
       @length = -1
     end
-    attr_accessor :position , :length , :layout
+    attr_accessor  :length , :layout
     def position
-      raise "position accessed but not set at #{length} for #{self.objekt}" if @position == -1
+      raise "position accessed but not set at #{length} for #{self.objekt}" if @position == nil
       @position
     end
-    
+    def set_position pos
+      raise "position set again #{pos}!=#{@position} for #{self}" if @position != nil and (@position != pos)
+      @position = pos
+    end
     def inspect
       Sof::Writer.write(self)
     end
-
+    def mem_length
+      raise "abstract #{self}"
+    end
     @@EMPTY =  { :names => [] , :types => []}
     def layout
       raise "Find me #{self}"
@@ -58,7 +63,27 @@ module Virtual
         raise "linker encounters unknown class #{object.class}"
       end
     end
-    
+    # objects only come in lengths of multiple of 8 words
+    # but there is a constant overhead of 2 words, one for type, one for layout
+    # and as we would have to subtract 1 to make it work without overhead, we now have to add 7
+    def padded len
+      a = 32 * (1 + (len + 7)/32 )
+      #puts "#{a} for #{len}"
+      a
+    end
+
+    def padded_words words
+      padded(words*4) # 4 == word length, a constant waiting for a home
+    end
+
+    # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
+    def pad_after length
+      pad = padded(length) - length - 8 # for header, type and layout
+      pad.times do
+        @stream.write_uint8(0)
+      end
+      #puts "padded #{length} with #{pad} stream pos #{@stream.length.to_s(16)}"
+    end
   end
 end
 Parfait::Hash.class_eval do
@@ -66,14 +91,55 @@ Parfait::Hash.class_eval do
   def layout
     @@HASH
   end
+  def set_position pos
+    @position = pos
+  end
+  def position
+    @position
+  end
+  def mem_length
+    Virtual::Object.new.padded_words(2)
+  end
 end
 Array.class_eval do
   def layout
     Virtual::Object.layout
   end
+  def set_position pos
+    @position = pos
+  end
+  def position
+    @position
+  end
+  def mem_length
+    Virtual::Object.new.padded_words(length())
+  end
 end
 Symbol.class_eval do
+  def set_position pos
+    @position = pos
+  end
+  def position
+    @position
+  end
   def layout
     Virtual::Object.layout
+  end
+  def mem_length
+    Virtual::Object.new.padded(1 + to_s.length())
+  end
+end
+String.class_eval do
+  def set_position pos
+    @position = pos
+  end
+  def position
+    @position
+  end
+  def layout
+    Virtual::Object.layout
+  end
+  def mem_length
+    Virtual::Object.new.padded(1 + length())
   end
 end
