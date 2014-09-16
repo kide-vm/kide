@@ -13,7 +13,7 @@ module Arm
   # referencing. Read function block and add_block and Block.set
   
   
-  class Assembler
+  class Bassembler #eol warning!
 
     def initialize
       @blocks = []
