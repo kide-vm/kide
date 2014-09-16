@@ -29,3 +29,24 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'test'))
 
 require 'salama'
+
+Virtual::Object.class_eval do
+  def == other
+    return false unless other.class == self.class 
+    Sof::Util.attributes(self).each do |a|
+      begin
+        left = send(a)
+      rescue NoMethodError
+        next  # not using instance variables that are not defined as attr_readers for equality
+      end
+      begin
+        right = other.send(a)
+      rescue NoMethodError
+        return false
+      end
+      return false unless left.class == right.class 
+      return false unless left == right
+    end
+    return true
+  end
+end
