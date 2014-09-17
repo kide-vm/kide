@@ -172,14 +172,12 @@ module Virtual
     end
     # position of the function is the position of the entry block, is where we call
     def set_position at
+      super
       at += 8 #for the 2 header words
       @blocks.each do |block|
         block.set_position at
         at = at + block.mem_length
       end
-    end
-    def position
-      @blocks.first.position
     end
   end
 

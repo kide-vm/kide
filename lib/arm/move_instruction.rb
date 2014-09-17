@@ -72,7 +72,10 @@ module Arm
           immediate = 1
           raise "hmm"
         else
-          raise "cannot fit numeric literal argument in operand #{right.inspect}"
+          operand = right.integer / 256
+          immediate = 1
+          
+#          raise "cannot fit numeric literal argument in operand #{right.inspect}"
         end
       elsif (right.is_a?(Symbol) or right.is_a?(Virtual::Integer))
         operand = reg_code(right)    #integer means the register the integer is in (otherwise constant)

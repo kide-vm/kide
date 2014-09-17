@@ -79,9 +79,9 @@ module Register
       raise "Object(#{object.object_id}) not linked #{object.inspect}" unless @objects[object.object_id]
       type = type_word(variables)
       @stream.write_uint32( type )
-      write_ref_for(object.layout[:names] , object )
+      write_ref_for(object.layout[:names] )
       variables.each do |var|
-        write_ref_for(var , object)
+        write_ref_for(var)
       end
       pad_after( variables.length * 4 )
       object.position
@@ -90,9 +90,9 @@ module Register
     def assemble_Array array
       type = type_word(array)
       @stream.write_uint32( type )
-      write_ref_for(layout[:names],array)  #ref
+      write_ref_for(array.layout[:names])  #ref
       array.each do |var|
-        write_ref_for(var,array)
+        write_ref_for(var)
       end
       pad_after( array.length * 4 )
       array.position
@@ -112,13 +112,13 @@ module Register
     end
 
     def assemble_CompiledMethod(method)
-      count = method.blocks.inject(0) { |c , block| c += block.length }
+      count = method.blocks.inject(0) { |c , block| c += block.mem_length }
       word = (count+7) / 32  # all object are multiple of 8 words (7 for header)
       raise "Method too long, splitting not implemented #{method.name}/#{count}" if word > 15
       # first line is integers, convention is that following lines are the same
       TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
       @stream.write_uint32( word )
-      write_ref_for(method.layout[:names] , method)  #ref of layout
+      write_ref_for(method.layout[:names])  #ref of layout
       # TODO the assembly may have to move to the object to be more extensible
       method.blocks.each do |block|
         block.codes.each do |code|
@@ -131,14 +131,14 @@ module Register
     def assemble_String( str )
       str = str.string if str.is_a? Virtual::StringConstant
       str = str.to_s if str.is_a? Symbol
-      word = (str.mem_length + 7) / 32  # all object are multiple of 8 words (7 for header)
+      word = (str.length + 7) / 32  # all object are multiple of 8 words (7 for header)
       raise "String too long (implement split string!) #{word}" if word > 15
       # first line is integers, convention is that following lines are the same
       TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
       @stream.write_uint32( word )
-      write_ref_for( str.layout[:names] , slot) #ref
+      write_ref_for( str.layout[:names] ) #ref
       @stream.write str
-      pad_after(str.mem_length)
+      pad_after(str.length)
       #puts "String (#{slot.mem_length}) stream #{@stream.mem_length.to_s(16)}"
     end
 
@@ -181,6 +181,7 @@ module Register
       add_object(clazz.instance_methods)
     end
     def add_CompiledMethod(method)
+      add_object(method.name)
     end
     def add_String( str)
     end
@@ -194,8 +195,7 @@ module Register
     # write means we write the resulting address straight into the assembler stream (ie don't return it)
     # object means the object of which we write the address
     # and we write the address into the self, given as second parameter
-    def write_ref_for object , self_ref
-      raise "Object (#{object.object_id}) not linked #{object.inspect}" unless slot
+    def write_ref_for object
       @stream.write_sint32 object.position
     end
 
@@ -218,7 +218,7 @@ module Register
       pad.times do
         @stream.write_uint8(0)
       end
-      #puts "padded #{length} with #{pad} stream pos #{@stream.mem_length.to_s(16)}"
+      puts "padded #{length} with #{pad} stream pos #{@stream.length.to_s(16)}"
     end
 
   end

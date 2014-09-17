@@ -22,7 +22,7 @@ module Virtual
     end
     attr_accessor  :length , :layout
     def position
-      raise "position accessed but not set at #{length} for #{self.objekt}" if @position == nil
+      raise "position accessed but not set at #{length} for #{self.inspect}" if @position == nil
       @position
     end
     def set_position pos
@@ -75,21 +75,12 @@ module Virtual
     def padded_words words
       padded(words*4) # 4 == word length, a constant waiting for a home
     end
-
-    # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
-    def pad_after length
-      pad = padded(length) - length - 8 # for header, type and layout
-      pad.times do
-        @stream.write_uint8(0)
-      end
-      #puts "padded #{length} with #{pad} stream pos #{@stream.length.to_s(16)}"
-    end
   end
 end
 Parfait::Hash.class_eval do
-  @@HASH = { :names => [:keys,:values] , :types => [Virtual::Reference,Virtual::Reference]}
+  HASH = { :names => [:keys,:values] , :types => [Virtual::Reference,Virtual::Reference]}
   def layout
-    @@HASH
+    HASH
   end
   def set_position pos
     @position = pos

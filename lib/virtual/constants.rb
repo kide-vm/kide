@@ -53,6 +53,11 @@ module Virtual
     def mem_length
       padded(1 + string.length)
     end
+    def position
+      return @position if @position
+      return @string.position if @string.position
+      super
+    end
   end
   
 end

@@ -17,7 +17,7 @@ module Arm
       @is_load = opcode.to_s[0] == "l" ? 1 : 0 #L (load) flag
     end
 
-    def assemble(io , assembler )
+    def assemble(io )
       # don't overwrite instance variables, to make assembly repeatable
       rn = @rn
       operand = @operand
