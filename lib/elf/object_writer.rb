@@ -31,7 +31,7 @@ module Elf
         end
       end
       assembler.objects.values.each do |slot| 
-        add_symbol "#{slot.objekt.class.name}::#{slot.position.to_s(16)}" , slot.position
+        add_symbol "#{slot.class.name}::#{slot.position.to_s(16)}" , slot.position
       end
     end
     attr_reader :text

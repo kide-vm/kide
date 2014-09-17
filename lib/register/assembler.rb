@@ -81,6 +81,7 @@ module Register
       @stream.write_uint32( type )
       write_ref_for(object.layout[:names] )
       variables.each do |var|
+        raise object.class.name unless var
         write_ref_for(var)
       end
       pad_after( variables.length * 4 )
@@ -100,7 +101,7 @@ module Register
 
     def assemble_Hash hash
       # so here we can be sure to have _identical_ keys/values arrays
-      assemble_self( hash , [ hash.layout[:keys] , hash.layout[:values] ] )
+      assemble_self( hash , [ hash.keys , hash.values ] )
     end
 
     def assemble_BootSpace(space)
