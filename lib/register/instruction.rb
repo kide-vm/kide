@@ -1,4 +1,3 @@
-require_relative "code"
 module Register
 
   # The register machine model is close to current hardware and has following instruction classes

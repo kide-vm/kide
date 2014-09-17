@@ -56,6 +56,10 @@ module Virtual
     def mem_length
       padded(1 + string.length)
     end
+    def set_position pos
+      puts "STRING #{pos} #{string}"
+      super
+    end
     def position
       return @position if @position
       return @string.position if @string.position

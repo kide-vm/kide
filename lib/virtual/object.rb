@@ -26,7 +26,10 @@ module Virtual
       @position
     end
     def set_position pos
-      raise "position set again #{pos}!=#{@position} for #{self}" if @position != nil and (@position != pos)
+      # resetting of position used to be error, but since relink and dynamic instruction size it is ok. in measures
+      if @position != nil and ((@position - pos).abs > 15)
+        raise "position set again #{pos}!=#{@position} for #{self}" 
+      end
       @position = pos
     end
     def inspect

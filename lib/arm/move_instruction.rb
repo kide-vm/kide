@@ -13,37 +13,18 @@ module Arm
       @immediate = 0      
       @rn = :r0 # register zero = zero bit pattern
       @from = Virtual::IntegerConstant.new( @from ) if( @from.is_a? Fixnum )
+      @extra = nil
     end
     
     # arm intrucions are pretty sensible, and always 4 bytes (thumb not supported)
     # but not all constants fit into the part of the instruction that is left after the instruction code,
-    # so large moves have to be split into two instrucitons. we handle this here, just this instruciton looks
-    # longer
+    # so large moves have to be split into two instructions. 
+    # we handle this "transparently", just this instruction looks longer
+    # alas, full transparency is not achieved as we only know when to use 2 instruction once we know where def the
+    # other object is, and that position is only set after code positions have been determined (in link) and so 
+    # see below in assemble 
     def mem_length
-      return 4
-      is_simple ? 4 : 8
-    end
-
-    # a constant (the one we want to move) can either be < 256 or be rotated in a funny arm way
-    # if neither works (not simple !) we need two instructions to make the move
-    def is_simple
-      right = @from
-      if right.is_a?(Virtual::ObjectConstant)
-        r_pos = right.position
-        # do pc relative addressing with the difference to the instuction
-        # 8 is for the funny pipeline adjustment (ie pc pointing to fetch and not execute)
-        right = Virtual::IntegerConstant.new( r_pos - self.position - 8 )
-      end
-      if (right.is_a?(Virtual::IntegerConstant))
-        if (right.fits_u8?)
-          return true
-        elsif (calculate_u8_with_rr(right))
-          return true
-        else
-          return false
-        end
-      end
-      return true
+      @extra ? 8 : 4
     end
 
     def assemble(io)
@@ -72,10 +53,15 @@ module Arm
           immediate = 1
           raise "hmm"
         else
-          operand = right.integer / 256
-          immediate = 1
-          
-          raise "cannot fit numeric literal argument in operand #{right.inspect}"
+          # and so it continues: when we notice that the const doesn't fit, first time we raise an 
+          # error,but set the extra flag, to say the instruction is now 8 bytes
+          # then on subsequent assemlies we can assemble
+          unless @extra
+            @extra = 1
+            raise ::Register::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}") 
+          end
+          # now we can do the actual breaking of instruction
+          raise "at leat we got here"
         end
       elsif (right.is_a?(Symbol) or right.is_a?(Virtual::Integer))
         operand = reg_code(right)    #integer means the register the integer is in (otherwise constant)

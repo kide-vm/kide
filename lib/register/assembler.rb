@@ -1,5 +1,6 @@
 module Register
-
+  class LinkException < Exception
+  end
   # Assmble the object space into a binary.
   # Link first to get positions, then assemble
   # link and assemble functions for each class are close to each other, so to get them the same.
@@ -36,20 +37,25 @@ module Register
     end
 
     def assemble
-      link
-      @stream = StringIO.new
-      mid , main = @objects.find{|k,objekt| objekt.is_a?(Virtual::CompiledMethod) and (objekt.name == :__init__ )}
-      puts "function found #{main.name}"
-      initial_jump = RegisterMachine.instance.b( main )
-      initial_jump.set_position( 0)
-      initial_jump.assemble( @stream )
-      @objects.each_value do |objekt|
-        next unless objekt.is_a? Virtual::CompiledMethod
-        assemble_object( objekt )
-      end
-      @objects.each_value do | objekt|
-        next if objekt.is_a? Virtual::CompiledMethod
-        assemble_object( objekt )
+      begin
+        link
+        @stream = StringIO.new
+        mid , main = @objects.find{|k,objekt| objekt.is_a?(Virtual::CompiledMethod) and (objekt.name == :__init__ )}
+        puts "function found #{main.name}"
+        initial_jump = RegisterMachine.instance.b( main )
+        initial_jump.set_position( 0)
+        initial_jump.assemble( @stream )
+        @objects.each_value do |objekt|
+          next unless objekt.is_a? Virtual::CompiledMethod
+          assemble_object( objekt )
+        end
+        @objects.each_value do | objekt|
+          next if objekt.is_a? Virtual::CompiledMethod
+          assemble_object( objekt )
+        end
+      rescue LinkException => e
+        puts "coought #{e}"
+        retry
       end
       puts "Assembled #{@stream.length.to_s(16)}"
       return @stream.string
