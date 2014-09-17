@@ -28,6 +28,9 @@ module Virtual
     def type
       Virtual::Integer
     end
+    def fits_u8?
+      integer >= 0 and integer <= 255
+    end
   end
 
   # The name really says it all.

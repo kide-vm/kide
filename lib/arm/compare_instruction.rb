@@ -29,7 +29,7 @@ module Arm
         arg = Register::RegisterReference.new( arg )
       end
       if (arg.is_a?(Virtual::IntegerConstant))
-        if (arg.integer.fits_u8?)
+        if (arg.fits_u8?)
           # no shifting needed
           operand = arg.integer
           immediate = 1

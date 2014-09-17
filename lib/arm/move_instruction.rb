@@ -35,7 +35,7 @@ module Arm
         right = Virtual::IntegerConstant.new( r_pos - self.position - 8 )
       end
       if (right.is_a?(Virtual::IntegerConstant))
-        if (right.integer.fits_u8?)
+        if (right.fits_u8?)
           return true
         elsif (calculate_u8_with_rr(right))
           return true
@@ -63,7 +63,7 @@ module Arm
         rn = :pc
       end
       if (right.is_a?(Virtual::IntegerConstant))
-        if (right.integer.fits_u8?)
+        if (right.fits_u8?)
           # no shifting needed
           operand = right.integer
           immediate = 1
@@ -75,7 +75,7 @@ module Arm
           operand = right.integer / 256
           immediate = 1
           
-#          raise "cannot fit numeric literal argument in operand #{right.inspect}"
+          raise "cannot fit numeric literal argument in operand #{right.inspect}"
         end
       elsif (right.is_a?(Symbol) or right.is_a?(Virtual::Integer))
         operand = reg_code(right)    #integer means the register the integer is in (otherwise constant)

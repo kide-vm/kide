@@ -78,7 +78,7 @@ module Arm
      else
        u8_imm = parts[1].to_i(2)
      end
-     if (u8_imm.fits_u8?)
+     if (Virtual::IntegerConstant.new(u8_imm).fits_u8?)
        # can do!
        rot_imm = (pre_zeros+imm_len) / 2
        if (rot_imm > 15)

@@ -31,7 +31,7 @@ module Arm
         right = Virtual::IntegerConstant.new( right )
       end
       if (right.is_a?(Virtual::IntegerConstant))
-        if true #TODO (right.integer.fits_u8?)
+        if true #TODO (right.fits_u8?)
           # no shifting needed
           operand = right.integer
           immediate = 1
