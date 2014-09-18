@@ -41,7 +41,6 @@ module Register
         link
         @stream = StringIO.new
         mid , main = @objects.find{|k,objekt| objekt.is_a?(Virtual::CompiledMethod) and (objekt.name == :__init__ )}
-        puts "function found #{main.name}"
         initial_jump = RegisterMachine.instance.b( main )
         initial_jump.set_position( 0)
         initial_jump.assemble( @stream )
@@ -54,15 +53,15 @@ module Register
           assemble_object( objekt )
         end
       rescue LinkException => e
-        puts "coought #{e}"
+        # knowing that we fix the problem, we hope to get away with retry.
         retry
       end
-      puts "Assembled #{@stream.length.to_s(16)}"
+      puts "Assembled 0x#{@stream.length.to_s(16)}/#{@stream.length} bytes"
       return @stream.string
     end
 
     def assemble_object obj
-      puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.mem_length}" 
+      #puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.mem_length}" 
       raise "Assemble #{obj.class} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}" if @stream.length != obj.position
       clazz = obj.class.name.split("::").last
       send("assemble_#{clazz}".to_sym , obj)
@@ -225,7 +224,7 @@ module Register
       pad.times do
         @stream.write_uint8(0)
       end
-      puts "padded #{length} with #{pad} stream pos #{@stream.length.to_s(16)}"
+      #puts "padded #{length} with #{pad} stream pos #{@stream.length.to_s(16)}"
     end
 
   end
