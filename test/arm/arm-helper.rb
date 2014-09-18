@@ -17,9 +17,9 @@ module ArmHelper
   def assert_code code , op , should
     assert_equal op ,  code.opcode
     io = StringIO.new
-    code.assemble(io,nil)
+    code.assemble(io)
     binary = io.string
-    assert_equal 4 , binary.length , "code length wrong for #{code.inspect}"
+    assert_equal should.length , binary.length , "code length wrong for #{code.inspect}"
     index = 0
     binary.each_byte do |byte |
       assert_equal should[index] , byte , "byte #{index} 0x#{should[index].to_s(16)} != 0x#{byte.to_s(16)}"
