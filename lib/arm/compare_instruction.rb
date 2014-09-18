@@ -12,7 +12,7 @@ module Arm
       @rd = :r0
     end
 
-    def assemble(io, assembler)
+    def assemble(io)
       # don't overwrite instance variables, to make assembly repeatable
       rn = @rn
       operand = @operand

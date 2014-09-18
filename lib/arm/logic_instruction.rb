@@ -13,7 +13,7 @@ module Arm
       @immediate = 0      
     end
 
-    def assemble(io, assembler)
+    def assemble(io)
       # don't overwrite instance variables, to make assembly repeatable
       left = @left
       operand = @operand
@@ -38,7 +38,6 @@ module Arm
         elsif (op_with_rot = calculate_u8_with_rr(right))
           operand = op_with_rot
           immediate = 1
-#          raise "hmm"
         else
           raise "cannot fit numeric literal argument in operand #{right.inspect}"
         end

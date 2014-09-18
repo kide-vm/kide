@@ -20,7 +20,7 @@ module Arm
     # but not all constants fit into the part of the instruction that is left after the instruction code,
     # so large moves have to be split into two instructions. 
     # we handle this "transparently", just this instruction looks longer
-    # alas, full transparency is not achieved as we only know when to use 2 instruction once we know where def the
+    # alas, full transparency is not achieved as we only know when to use 2 instruction once we know where the
     # other object is, and that position is only set after code positions have been determined (in link) and so 
     # see below in assemble 
     def mem_length
@@ -32,14 +32,13 @@ module Arm
       rn = @rn
       operand = @operand
       immediate = @immediate
-      complex = false
       right = @from
       if right.is_a?(Virtual::ObjectConstant)
         r_pos = right.position
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie pc pointing to fetch and not execute)
         right = Virtual::IntegerConstant.new( r_pos - self.position - 8 )
-        puts "Position #{r_pos} from #{self.position} = #{right}"
+        #puts "Position #{r_pos} from #{self.position} = #{right}"
         right = Virtual::IntegerConstant.new(r_pos) if right.integer > 255
         rn = :pc
       end
@@ -51,8 +50,8 @@ module Arm
         elsif (op_with_rot = calculate_u8_with_rr(right))
           operand = op_with_rot
           immediate = 1
-          raise "hmm"
         else
+          raise "No negatives implemented " if right.integer < 0
           # and so it continues: when we notice that the const doesn't fit, first time we raise an 
           # error,but set the extra flag, to say the instruction is now 8 bytes
           # then on subsequent assemlies we can assemble
@@ -61,10 +60,13 @@ module Arm
             raise ::Register::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}") 
           end
           # now we can do the actual breaking of instruction
-          raise "at leat we got here"
+          operand = (right.integer / 256 )
+          immediate = 1
+          raise "only simple 2 byte implemented #{self.inspect}" if operand > 255
+          @extra = ::Register::RegisterMachine.instance.add( to , to , (right.integer && 0xFF) ,  shift_lsr: 8)
         end
-      elsif (right.is_a?(Symbol) or right.is_a?(Virtual::Integer))
-        operand = reg_code(right)    #integer means the register the integer is in (otherwise constant)
+      elsif (right.is_a?(Symbol))
+        operand = reg_code(right)    
         immediate = 0                # ie not immediate is register
       else
         raise "invalid operand argument #{right.inspect} , #{inspect}"
@@ -81,6 +83,11 @@ module Arm
       val |= shift(instuction_class ,   12+4+4  +1+4+1) 
       val |= shift(cond_bit_code ,      12+4+4  +1+4+1+2)
       io.write_uint32 val
+      # by now we have the extra add so assemble that
+      if(@extra)
+        @extra.assemble(io) 
+        puts "Assemble extra at #{self.position.to_s(16)}"
+      end
     end
     def shift val , by
       raise "Not integer #{val}:#{val.class} in #{inspect}" unless val.is_a? Fixnum

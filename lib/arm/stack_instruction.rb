@@ -18,7 +18,7 @@ module Arm
       # official ARM style stack as used by gas
     end
                   
-    def assemble(io, assembler)
+    def assemble(io)
       # don't overwrite instance variables, to make assembly repeatable
       operand = @operand
       
