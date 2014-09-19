@@ -14,8 +14,8 @@ Most instructions are in fact assembling correctly. Meaning i have tests, and i 
 
 I even polished the dsl and so (from the tests), this is a valid hello world:
 
-   hello = "Hello World\n"
-   @program.main do 
+    hello = "Hello World\n"
+    @program.main do 
       mov r7, 4     # 4 == write
       mov r0 , 1    # stdout
       add r1 , pc , hello   # address of "hello World"
@@ -23,8 +23,8 @@ I even polished the dsl and so (from the tests), this is a valid hello world:
     	swi 0         #software interupt, ie kernel syscall
       mov r7, 1     # 1 == exit
     	swi 0
-   end
-   write(7 + hello.length/4 + 1 , 'hello') 
+    end
+    write(7 + hello.length/4 + 1 , 'hello') 
 
 ### Step 2 -Link to system
 
@@ -39,6 +39,9 @@ Above Hello World can be linked and run. And will say its thing.
 
 Start implementing some syscalls and add the functionality we actually need from c (basic io only really)
 
+This is surprisingly easy, framework is done. As said, "Hello world" comes out and does use syscall 4.
+Also the program stops by syscall exit. The full list is ont the net and involves mostly grunt work.
+
 ### Step 4 -Parse ruby
 
 Parse simple code, using Parslet. 
@@ -46,11 +49,13 @@ Parse simple code, using Parslet.
 Parsing is a surprisingly fiddly process, very space and order sensitive. But Parslet is great and simple
 expressions (including function definitions and calls) are starting to work.
 
-I spent some time on the parse testing framework, so it is safe to fiddle and add.
+I spent some time on the parse testing framework, so it is safe to fiddle and add. In fact it is very modular and 
+so ot is easy to add.
 
 ### Step 5 - Virtual: Compile the Ast
 
 Since we now have an Abstact syntax tree, it needs to be compiled to a virtual machine Instruction format.
+For the parsed subset that's done.
 
 It took me a while to come up with a decent but simple machine model. I had tried to map straight to hardware
 but failed. The current Virtual directory represent a machine with basic oo features.
@@ -58,28 +63,56 @@ but failed. The current Virtual directory represent a machine with basic oo feat
 Instead of having more Layers to go from virtual to arm, i opted to have passes that go over the data structure
 and modify it.
 
-This is where it's at really :-)
+This allows optimisation after every pass as we have a data structure at every point in time.
 
-
-### Step 9 - Compound types
+### Step 6 - Compound types
 
 Arrays and Hash parse. Good. But this means The Actual datastructures should be implemented. AWIP ( a work in progress)
 
 Implement Core library of arrays/hash/string , memory definition and access
 
-### Step 10
+Also compound data needs to find it's way into the executable, needs to be assembled. This is done. (though there is 
+very little to be done with it at runtime)
 
-Implement Blocks, stack/external frames
+### Step 7 - Dynmic function lookup
 
-### Step 11
+It proved to be quite a big step to go from static function calling to oo method lookup. Also ruby is very 
+introspective and that means much of the compiled code needs to be accessible in the runtime (not just present,
+ accessible).
+ 
+This has teken me the better part of three months, but is starting to come around.
 
-Implement Exceptions, frame walking
+So the current staus is that i can 
 
-### Step 12
+- parse a usable subset of ruby
+- compile that to my vm model
+- generate assembler for all higher level constructs in the vm model
+- assemle and link the code and objects (strings/arrays/hashes) into an executable
+- run the executable and debug :-(
 
-Implement a way to call libc
+### Step x + 1
 
-### Step 13
+Implement ruby Blocks, and make new vm classes to deal with that. This is in fact a little open, but i have a general
+notion that blocks are "just" methods with even more implicit arguments.
+
+### Step +2
+
+Implement Exceptions. Conceptionally this is not so difficult in an oo machine as it would be in c.
+
+I have a post about it http://salama.github.io/2014/06/27/an-exceptional-though.html
+
+which boild down to the fact that we can treat the address to return to in an exception quite like a return address
+from a function. Ie just another implicit parameter (as return is really an implicit parameter, a little like self for oo)
+
+### Step +3
+
+Implement a way to call libc and other c libraries. I am not placing a large emphasis on this personally, 
+but excpect somebody will come along and have library they want to use so much they can't stop themselves. 
+Personally i think a fresh start is what we need much more. I once counted the call chain from a simple
+printf to the actual kernel invocation in some libc once and it was getting to 10! I hope with dynamic (re)compiling
+we can do better than that.
+
+### Step +4
 
 Iterate from one:
 
@@ -91,12 +124,14 @@ Iterate from one:
 6. Different sized machines, with different register types ?
 7.  on 64bit, there would be 8 bits for types and thus allow for rational, complex, and whatnot
 8. Housekeeping (the superset of gc) is abundant
-9. Any amount of time could be spent on a decent digital tree (see judy). Also better string/arrays would be good.
-10. Inlining would be good
+9. Any amount of time could be spent on a decent digital tree (see judy). Or possibly Dr.Cliffs hash.
+10. Also better string/arrays would be good.
+11. The minor point of threads and hopefully lock free primitives to deal with that.
+12. Inlining would be good
 
 And generally optimize and work towards that perfect world (we never seem to be able to attain).
 
-### Step 14
+### Step 30
 
 Celebrate New year 2030
 
