@@ -22,9 +22,12 @@ module Virtual
       @main = Virtual::CompiledMethod.new("main" , [] )
       #global objects (data)
       @objects = []
+      @symbols = []
+      @messages = []
+      @frames = []
       @passes = [ Virtual::SendImplementation ]
     end
-    attr_reader  :main , :classes , :objects
+    attr_reader  :main , :classes , :objects , :symbols,:messages,:frames
 
     def run_passes
       @passes.each do |pass|
@@ -91,16 +94,19 @@ module Virtual
       end
     end
 
-    @@SPACE = { :names => [:classes,:objects] , :types => [Virtual::Reference,Virtual::Reference]}
+    @@SPACE = { :names => [:classes,:objects,:symbols,:messages,:frames] , 
+                :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference]}
     def layout
       @@SPACE
     end
 
     # Objects are data and get assembled after functions
     def add_object o
-      return if @objects.include? o
-#      raise "must be derived from Code #{o.inspect}" unless o.is_a? Virtual::Code
-      @objects << o # TODO check type , no basic values allowed (must be wrapped)
+      return if @objects.include?(o)
+      @objects << o
+      if o.is_a? Symbol
+        @symbols << o
+      end
     end
 
     # this is the way to instantiate classes (not BootClass.new)
@@ -115,7 +121,7 @@ module Virtual
       c
     end
     def mem_length
-      padded_words( 2 )
+      padded_words( 5 )
     end
   end
 end
