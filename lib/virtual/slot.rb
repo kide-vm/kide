@@ -9,11 +9,19 @@ module Virtual
   # additionally frame, self and return are slots in Message and NewMessage
 
   class Slot
-    RETURN = 0
-    SELF = 1
-    FRAME = 2
-    NAME = 3
-    MESSAGE_PAYLOAD = 4
+    MESSAGE_REGISTER = :r0
+    SELF_REGISTER = :r1
+    FRAME_REGISTER = :r2
+    NEW_MESSAGE_REGISTER = :r3
+
+    MESSAGE_CALLER = 0
+    MESSAGE_RETURN_ADDRESS = 1
+    MESSAGE_EXCEPTION_ADDRESS = 2
+    MESSAGE_SELF = 3
+    MESSAGE_NAME = 4
+    MESSAGE_RETURN_VALUE = 5
+    MESSAGE_FRAME = 6
+    MESSAGE_PAYLOAD = 7
 
     attr_accessor :index , :type , :value
     private #abstract base class
@@ -26,7 +34,7 @@ module Virtual
   
   class MessageSlot < Slot
     def initialize index , type = Mystery , value = nil
-      super(index + MESSAGE_PAYLOAD ,type , value )
+      super(index ,type , value )
     end
   end
   class FrameSlot < Slot
@@ -41,39 +49,39 @@ module Virtual
   end
   class NewMessageSlot < Slot
     def initialize index , type = Mystery, value = nil
-      super(index + MESSAGE_PAYLOAD , type , value )
+      super(index , type , value )
     end
   end
 
   class Return < MessageSlot
     def initialize type = Mystery, value = nil
-      super( RETURN - MESSAGE_PAYLOAD, type , value  )
+      super( MESSAGE_RETURN_VALUE , type , value  )
     end
   end
   class Self < MessageSlot
     def initialize type = Mystery, value = nil
-      super( SELF - MESSAGE_PAYLOAD , type , value  )
+      super( MESSAGE_SELF , type , value  )
     end
   end
   class Name < MessageSlot
     def initialize type = Mystery, value = nil
-      super( NAME - MESSAGE_PAYLOAD , type , value  )
+      super( MESSAGE_NAME , type , value  )
     end
   end
 
   class NewReturn < NewMessageSlot
     def initialize type = Mystery, value = nil
-      super( RETURN - MESSAGE_PAYLOAD, type , value  )
+      super( MESSAGE_RETURN_VALUE, type , value  )
     end
   end
   class NewSelf < NewMessageSlot
     def initialize type = Mystery, value = nil
-      super( SELF - MESSAGE_PAYLOAD , type , value  )
+      super( MESSAGE_SELF , type , value  )
     end
   end
   class NewName < NewMessageSlot
     def initialize type = Mystery, value = nil
-      super( NAME - MESSAGE_PAYLOAD , type , value )
+      super( MESSAGE_NAME, type , value )
     end
   end
 

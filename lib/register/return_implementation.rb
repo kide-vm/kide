@@ -6,7 +6,7 @@ module Register
         #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
         message = RegisterReference.new(:r0)
         pc = RegisterReference.new(:pc)
-        move1 = RegisterMachine.instance.ldr( pc ,message , Virtual::Slot::RETURN )
+        move1 = RegisterMachine.instance.ldr( pc ,message , Virtual::Slot::MESSAGE_RETURN_VALUE )
         block.replace(code , [move1] )
       end
     end
