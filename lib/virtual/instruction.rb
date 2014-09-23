@@ -66,6 +66,11 @@ module Virtual
   class UnconditionalBranch < Branch
   end
 
+  class NewMessage < Instruction
+  end
+  class NewFrame < Instruction
+  end
+
   class MessageSend < Instruction
     def initialize name , me , args = []
       @name = name.to_sym

@@ -1,11 +1,17 @@
 module Virtual
   # This implements the send logic
   # Send is so complicated that we actually code it in ruby and stick it in
-  # That off course opens up an endless loop possibility that we stop by reducing to Class and Module methods
+  # That off course opens up an endless loop possibility that we stop by
+  # implementing Class and Module methods
+
+  # Note: I find it slightly unsemetrical that the NewMessage object needs to be created before this instruction
+  #       This is because all expressions create a (return) value and that return value is overwritten by the next
+  #       expression unless saved. And since the message is the place to save it it needs to exist. qed
   class SendImplementation
     def run block
       block.codes.dup.each do |code|
         next unless code.is_a? MessageSend
+        new_codes = [  ]
         ref = code.me
         raise "only refs implemented #{me.inspect}" unless ( ref.type == Reference)
         if(ref.value)
@@ -16,14 +22,14 @@ module Virtual
             # get the function from my class. easy peasy
             method = me.clazz.get_instance_method(code.name)
             raise "Method not implemented #{clazz.name}.#{code.name}" unless method
-            call = FunctionCall.new( method )
-            block.replace(code , call )
+            new_codes << FunctionCall.new( method )
           else
             raise "unimplemented #{code}"
           end
         else
-          raise "not constant/ known object for send #{me.inspect}"
+          raise "not constant/ known object for send #{ref.inspect}"
         end
+        block.replace(code , new_codes )
       end
     end
   end
