@@ -2,16 +2,18 @@ module Register
   class ReturnImplementation
     def run block
       block.codes.dup.each do |code|
-        
-        #TODO
-        - move message to new meesage 
-        - restore caller message and self / frame
         next unless code.is_a? Virtual::MethodReturn
+        new_codes = []
+        # move the current message to new_message
+        new_codes << RegisterMachine.instance.mov( Slot.MESSAGE_REGISTER , Slot::NEW_MESSAGE_REGISTER )
+        # and restore the message from saved value in new_message
+        new_codes << RegisterMachine.instance.ldr( Slot.MESSAGE_REGISTER ,Slot.NEW_MESSAGE_REGISTER , Virtual::Slot::MESSAGE_CALLER )
+        # "roll out" self and frame into their registers
+        new_codes << RegisterMachine.instance.ldr( Slot.SELF_REGISTER ,Slot.MESSAGE_REGISTER , Virtual::Slot::MESSAGE_SELF )
+        new_codes << RegisterMachine.instance.ldr( Slot.FRAME_REGISTER ,Slot.MESSAGE_REGISTER , Virtual::Slot::MESSAGE_FRAME )
         #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
-        message = RegisterReference.new(:r0)
-        pc = RegisterReference.new(:pc)
-        move1 = RegisterMachine.instance.ldr( pc ,message , Virtual::Slot::MESSAGE_RETURN_VALUE )
-        block.replace(code , [move1] )
+        new_codes << RegisterMachine.instance.ldr( :pc ,Slot.MESSAGE_REGISTER , Virtual::Slot::MESSAGE_RETURN_ADDRESS )
+        block.replace(code , new_codes )
       end
     end
   end
