@@ -8,7 +8,7 @@ class Message
     get_at(index)
   end
 
-  def send
+  def __send__
     typ = get_type_for( :receiver )
     # TODO: this will obviously be recoded as case, once that is done :-)
     # depending on value type get method

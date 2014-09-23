@@ -77,7 +77,7 @@ module Virtual
         obj.add_instance_method Builtin::Object.send(f , @context)
       end
       obj = get_or_create_class :Kernel
-      [:main , :__init__,:putstring,:exit].each do |f|
+      [:main , :__init__,:putstring,:exit,:__send__].each do |f|
         obj.add_instance_method Builtin::Kernel.send(f , @context)
       end
       obj = get_or_create_class :Integer

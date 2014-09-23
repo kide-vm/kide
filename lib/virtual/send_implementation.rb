@@ -24,6 +24,11 @@ module Virtual
             raise "Method not implemented #{clazz.name}.#{code.name}" unless method
             new_codes << FunctionCall.new( method )
           else
+            # note: this is the current view: call internal send, even the method name says else
+            # but send is "special" and accesses the internal method name and resolves.
+            kernel = Virtual::BootSpace.space.get_or_create_class(:Kernel)
+            method = kernel.get_instance_method(:__send__)
+            new_codes << FunctionCall.new( method )
             raise "unimplemented #{code}"
           end
         else
