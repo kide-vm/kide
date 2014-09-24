@@ -1,4 +1,5 @@
 require_relative "type"
+require "parfait/message"
 
 module Virtual
   # our machine is made up of objects, some of which are code, some data
@@ -78,6 +79,22 @@ module Virtual
     def padded_words words
       padded(words*4) # 4 == word length, a constant waiting for a home
     end
+  end
+end
+::Message.class_eval do
+  def layout
+    Virtual::Object.layout
+  end
+  def mem_length
+    Virtual::Object.new.padded_words(2)
+  end
+end
+::Frame.class_eval do
+  def layout
+    Virtual::Object.layout
+  end
+  def mem_length
+    Virtual::Object.new.padded_words(2)
   end
 end
 Parfait::Hash.class_eval do

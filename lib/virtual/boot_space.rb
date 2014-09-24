@@ -14,17 +14,17 @@ module Virtual
    
   class BootSpace < Virtual::Object
     
-    # Initialize with a string for cpu. Naming conventions are: for Machine XXX there exists a module XXX
-    #  with a XXXMachine in it that derives from Virtual::RegisterMachine
-    def initialize machine = nil
+    def initialize
       super()
       @classes = Parfait::Hash.new
       @main = Virtual::CompiledMethod.new("main" , [] )
       #global objects (data)
       @objects = []
       @symbols = []
-      @messages = []
-      @frames = []
+      @messages = 100.times.collect{ ::Message.new }
+      @frames = 100.times.collect{ ::Frame.new }      
+      @next_message = @messages.first
+      @next_frame = @frames.first
       @passes = [ Virtual::SendImplementation ]
     end
     attr_reader  :main , :classes , :objects , :symbols,:messages,:frames
@@ -77,7 +77,7 @@ module Virtual
         obj.add_instance_method Builtin::Object.send(f , @context)
       end
       obj = get_or_create_class :Kernel
-      [:main , :__init__,:putstring,:exit,:__send__].each do |f|
+      [:main , :__init__,:putstring,:exit,:__send].each do |f|
         obj.add_instance_method Builtin::Kernel.send(f , @context)
       end
       obj = get_or_create_class :Integer

@@ -164,6 +164,10 @@ module Register
       send("add_#{clazz}".to_sym , object)
     end
 
+    def add_Message m
+    end
+    def add_Frame f
+    end
     def add_Array( array )
       # also array has constant overhead, the padded helper fixes it to multiple of 8
       array.each do |elem| 

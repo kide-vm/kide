@@ -1,6 +1,9 @@
 # this is not a "normal" ruby file, ie it is not required by salama
 # instead it is parsed by salama to define part of the program that runs
 
+class Frame #just for now
+end
+
 class Message
 
   def get_type_for(name)
@@ -8,7 +11,7 @@ class Message
     get_at(index)
   end
 
-  def __send__
+  def __send
     typ = get_type_for( :receiver )
     # TODO: this will obviously be recoded as case, once that is done :-)
     # depending on value type get method

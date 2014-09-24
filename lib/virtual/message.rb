@@ -44,6 +44,7 @@ module Virtual
     end
     # 
     def compile_get method , name
+      raise "CALLED"
       if method.has_arg(name)
         method.add_code MessageGet.new(name)
       else
