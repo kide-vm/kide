@@ -34,8 +34,8 @@ module Builtin
         function.set_return ret
         function
       end
-      def __send__ context
-        function = Virtual::CompiledMethod.new(:__send__ , [] , Virtual::Integer)
+      def __send context
+        function = Virtual::CompiledMethod.new(:__send , [] , Virtual::Integer)
         return function
       end
     end
