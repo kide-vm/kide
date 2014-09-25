@@ -65,7 +65,7 @@ module Arm
           raise "only simple 2 byte implemented #{self.inspect}" if operand > 255
           @extra = ::Register::RegisterMachine.instance.add( to , to , (right.integer && 0xFF) ,  shift_lsr: 8)
         end
-      elsif (right.is_a?(Symbol))
+      elsif (right.is_a?(Symbol) or right.is_a?(::Register::RegisterReference))
         operand = reg_code(right)    
         immediate = 0                # ie not immediate is register
       else

@@ -25,7 +25,7 @@ module Arm
       arg = @left
       arg = arg.symbol if( arg.is_a? ::Register::RegisterReference )
       #str / ldr are _serious instructions. With BIG possibilities not half are implemented
-      if (arg.is_a?(Symbol)) #symbol is register
+      if (arg.is_a?(Symbol) or arg.is_a?(::Register::RegisterReference)) #symbol is register
         rn = arg
         if @right
           operand = @right
@@ -73,7 +73,7 @@ module Arm
       w = 0 #W flag
       byte_access = opcode.to_s[-1] == "b" ? 1 : 0 #B (byte) flag
       instuction_class =  0b01 # OPC_MEMORY_ACCESS
-      if operand.is_a?(Symbol)
+      if (operand.is_a?(Symbol) or operand.is_a?(::Register::RegisterReference))
         val = reg_code(operand) 
         @pre_post_index = 0
         i = 1  # not quite sure about this, but it gives the output of as. read read read.
