@@ -1,6 +1,20 @@
 require_relative "type"
 require "parfait/message"
 
+module Positioned
+  def position
+    raise "position accessed but not set at #{length} for #{self.inspect}" if @position == nil
+    @position
+  end
+  def set_position pos
+    # resetting of position used to be error, but since relink and dynamic instruction size it is ok. in measures
+    if @position != nil and ((@position - pos).abs > 15)
+      raise "position set again #{pos}!=#{@position} for #{self}" 
+    end
+    @position = pos
+  end
+end
+
 module Virtual
   # our machine is made up of objects, some of which are code, some data
   #
@@ -17,22 +31,12 @@ module Virtual
   #   (ruby)Array             Array
   #         String            String
   class Object
+    include Positioned
     def initialize
       @position = nil
       @length = -1
     end
     attr_accessor  :length , :layout
-    def position
-      raise "position accessed but not set at #{length} for #{self.inspect}" if @position == nil
-      @position
-    end
-    def set_position pos
-      # resetting of position used to be error, but since relink and dynamic instruction size it is ok. in measures
-      if @position != nil and ((@position - pos).abs > 15)
-        raise "position set again #{pos}!=#{@position} for #{self}" 
-      end
-      @position = pos
-    end
     def inspect
       Sof::Writer.write(self)
     end
@@ -82,6 +86,7 @@ module Virtual
   end
 end
 ::Message.class_eval do
+  include Positioned
   def layout
     Virtual::Object.layout
   end
@@ -90,6 +95,7 @@ end
   end
 end
 ::Frame.class_eval do
+  include Positioned
   def layout
     Virtual::Object.layout
   end
@@ -98,41 +104,26 @@ end
   end
 end
 Parfait::Hash.class_eval do
+  include Positioned
   HASH = { :names => [:keys,:values] , :types => [Virtual::Reference,Virtual::Reference]}
   def layout
     HASH
-  end
-  def set_position pos
-    @position = pos
-  end
-  def position
-    @position
   end
   def mem_length
     Virtual::Object.new.padded_words(2)
   end
 end
 Array.class_eval do
+  include Positioned
   def layout
     Virtual::Object.layout
-  end
-  def set_position pos
-    @position = pos
-  end
-  def position
-    @position
   end
   def mem_length
     Virtual::Object.new.padded_words(length())
   end
 end
 Symbol.class_eval do
-  def set_position pos
-    @position = pos
-  end
-  def position
-    @position
-  end
+  include Positioned
   def layout
     Virtual::Object.layout
   end
@@ -141,12 +132,7 @@ Symbol.class_eval do
   end
 end
 String.class_eval do
-  def set_position pos
-    @position = pos
-  end
-  def position
-    @position
-  end
+  include Positioned
   def layout
     Virtual::Object.layout
   end
