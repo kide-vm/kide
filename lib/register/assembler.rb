@@ -110,7 +110,7 @@ module Register
     end
 
     def assemble_BootSpace(space)
-      assemble_self(space , [space.classes,space.objects, space.symbols,space.messages,space.frames] )
+      assemble_self(space , [space.classes,space.objects, space.symbols,space.messages,space.next_message,space.next_frame] )
     end
 
     def assemble_BootClass(clazz)
@@ -185,7 +185,8 @@ module Register
       add_object(space.objects)
       add_object(space.symbols)
       add_object(space.messages)
-      add_object(space.frames)
+      add_object(space.next_message)
+      add_object(space.next_frame)
     end
 
     def add_BootClass(clazz)

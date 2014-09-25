@@ -21,13 +21,13 @@ module Virtual
       #global objects (data)
       @objects = []
       @symbols = []
-      @messages = 100.times.collect{ ::Message.new }
-      @frames = 100.times.collect{ ::Frame.new }      
+      frames = 100.times.collect{ ::Frame.new }      
+      @messages = 100.times.collect{ ::Message.new } + frames
       @next_message = @messages.first
-      @next_frame = @frames.first
+      @next_frame = frames.first
       @passes = [ Virtual::SendImplementation ]
     end
-    attr_reader  :main , :classes , :objects , :symbols,:messages,:frames
+    attr_reader  :main , :classes , :objects , :symbols,:messages, :next_message , :next_frame
 
     def run_passes
       @passes.each do |pass|
