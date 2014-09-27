@@ -117,6 +117,13 @@ module Register
       assemble_self( clazz , [clazz.name , clazz.super_class_name, clazz.instance_methods] )
     end
 
+    def assemble_Message me
+      assemble_self(me , [])
+    end
+    def assemble_Frame me
+      assemble_self(me , [])
+    end
+
     def assemble_CompiledMethod(method)
       count = method.blocks.inject(0) { |c , block| c += block.mem_length }
       word = (count+7) / 32  # all object are multiple of 8 words (7 for header)

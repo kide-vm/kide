@@ -16,11 +16,24 @@ module Virtual
   class FrameImplementation
     def run block
       block.codes.dup.each do |code|
-        next unless code.is_a?(NewFrame) or code.is_a?(NewMessage)
-        new_codes = [  ]
-
+        if code.is_a?(NewFrame) 
+          kind = :next_frame
+        elsif code.is_a?(NewMessage)
+          kind = :next_message
+        else
+          next
+        end
+        space = BootSpace.space
+        machine = Register::RegisterMachine.instance
+        slot = Virtual::Slot
+        space_tmp = Register::RegisterReference.new(Virtual::Message::TMP_REG)
+        frame_tmp = space_tmp.next_reg_use
+        new_codes = [ machine.mov( frame_tmp , space )]
+        ind = space.layout[:names].index(kind)
+        new_codes << machine.ldr( frame_tmp , frame_tmp , ind)
         block.replace(code , new_codes )
       end
     end
   end
+  Virtual::BootSpace.space.add_pass_after  FrameImplementation , GetImplementation
 end

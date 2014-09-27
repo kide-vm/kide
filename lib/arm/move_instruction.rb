@@ -69,7 +69,7 @@ module Arm
         operand = reg_code(right)    
         immediate = 0                # ie not immediate is register
       else
-        raise "invalid operand argument #{right.inspect} , #{inspect}"
+        raise "invalid operand argument #{right.class} , #{self.class}"
       end
       op =  shift_handling
       instuction_class = 0b00 # OPC_DATA_PROCESSING
@@ -86,7 +86,7 @@ module Arm
       # by now we have the extra add so assemble that
       if(@extra)
         @extra.assemble(io) 
-        puts "Assemble extra at #{self.position.to_s(16)}"
+        #puts "Assemble extra at #{self.position.to_s(16)}"
       end
     end
     def shift val , by

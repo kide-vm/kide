@@ -12,7 +12,7 @@ module Virtual
   # While data ususally would live in a .data section, we may also "inline" it into the code
   # in an oo system all data is represented as objects
    
-  class BootSpace < Virtual::Object
+  class BootSpace < Virtual::ObjectConstant
     
     def initialize
       super()
