@@ -8,7 +8,7 @@ module Positioned
   end
   def set_position pos
     # resetting of position used to be error, but since relink and dynamic instruction size it is ok. in measures
-    if @position != nil and ((@position - pos).abs > 15)
+    if @position != nil and ((@position - pos).abs > 32)
       raise "position set again #{pos}!=#{@position} for #{self}" 
     end
     @position = pos

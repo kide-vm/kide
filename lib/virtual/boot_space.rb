@@ -94,7 +94,7 @@ module Virtual
       end
     end
 
-    @@SPACE = { :names => [:classes,:objects,:symbols,:messages,:frames] , 
+    @@SPACE = { :names => [:classes,:objects,:symbols,:messages, :next_message , :next_frame] , 
                 :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference]}
     def layout
       @@SPACE
