@@ -15,7 +15,7 @@ class TestAdd < MiniTest::Test
     code = @machine.add	 :r1 , :r1, 0x22
     assert_code code , :add , [0x22,0x10,0x81,0xe2] #e2 81 10 22
   end
-  def test_add_const_shift_lst
+  def test_add_const_shift
     code = @machine.add( :r1 , :r1 , 0x22 ,  shift_lsr: 8)
     assert_code code , :add , [0x22,0x14,0x81,0xe2] #e2 81 14 23
   end
@@ -25,6 +25,6 @@ class TestAdd < MiniTest::Test
   end
   def test_big_add
     code = @machine.add	 :r1 , :r1, 0x220
-    assert_code code , :add , [0x20,0x12,0x81,0xe2] #e2 81 12 20
+    assert_code code , :add , [0x20,0x12,0x81,0xe2] #e2 81 12 20  e28110dc
   end
 end
