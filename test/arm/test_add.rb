@@ -25,6 +25,6 @@ class TestAdd < MiniTest::Test
   end
   def test_big_add
     code = @machine.add	 :r1 , :r1, 0x220
-    assert_code code , :add , [0x20,0x12,0x81,0xe2] #e2 81 12 20  e28110dc
+    assert_code code , :add , [0x22,0x1e,0x81,0xe2] #e2 81 1e 22
   end
 end
