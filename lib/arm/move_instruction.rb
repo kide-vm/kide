@@ -51,6 +51,14 @@ module Arm
           operand = op_with_rot
           immediate = 1
         else
+            # unfortunately i was wrong in thinking the pi is armv7. The good news is the code below implements
+            # the movw (armv7) instruciton and works
+            #armv7 raise "Too big #{right.integer} " if (right.integer >> 16) > 0
+            #armv7 operand = (right.integer & 0xFFF)
+            #armv7 immediate = 1
+            #armv7 rn = (right.integer >> 12)
+          # a little STRANGE, that the armv7 movw (move a 2 byte word) is an old test opcode, but there it is 
+          #armv7 @attributes[:opcode] = :tst
           raise "No negatives implemented " if right.integer < 0
           # and so it continues: when we notice that the const doesn't fit, first time we raise an 
           # error,but set the extra flag, to say the instruction is now 8 bytes
