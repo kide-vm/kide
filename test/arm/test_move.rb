@@ -11,6 +11,14 @@ class TestMoves < MiniTest::Test
     code = @machine.mov  :pc,  6
     assert_code code , :mov , [0x06,0xf0,0xa0,0xe3] #e3 a0 f0 06
   end
+  def test_mov_256
+    code = @machine.mov  :r1,  256
+    assert_code code , :mov , [0x01,0x1c,0xa0,0xe3] #e3 a0 1c 01
+  end
+  def test_mov_max_128
+    code = @machine.mov  :r1,  128
+    assert_code code , :mov , [0x80,0x10,0xa0,0xe3] #e3 a0 10 80
+  end
   def test_mov_big
     code = @machine.mov  :r0,  0x222
     code.set_position(0)
