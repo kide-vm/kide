@@ -19,14 +19,6 @@ module Register
     def opcode
       @attributes[:opcode]
     end
-    #abstract, only should be called from derived
-    def to_s
-      atts = @attributes.dup
-      atts.delete(:opcode)
-      atts.delete(:update_status)
-      atts.delete(:condition_code) if atts[:condition_code] == :al
-      atts.empty? ? "" : ", #{atts}"
-    end
     # returns an array of registers (RegisterReferences) that this instruction uses.
     # ie for r1 = r2 + r3 
     # which in assembler is add r1 , r2 , r3
@@ -122,9 +114,6 @@ module Register
     def assigns
       [@result.register]
     end
-    def to_s
-      "#{opcode} #{result.to_asm} , #{left.to_asm} , #{right.to_asm} #{super}"
-    end
   end
   class CompareInstruction < Instruction
     def initialize left , right , options  = {}
@@ -157,9 +146,6 @@ module Register
     end
     def assigns
       [@to.register]
-    end
-    def to_s
-      "#{opcode} #{@to.to_asm} , #{@from.to_asm} #{super}"
     end
   end
   class CallInstruction < Instruction

@@ -40,6 +40,9 @@ module Virtual
     def inspect
       Sof::Writer.write(self)
     end
+    def to_s
+      inspect
+    end
     def mem_length
       raise "abstract #{self}"
     end
