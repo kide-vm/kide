@@ -16,7 +16,7 @@ module Arm
       @extra = nil
     end
     
-    # arm intrucions are pretty sensible, and always 4 bytes (thumb not supported)
+    # arm intructions are pretty sensible, and always 4 bytes (thumb not supported)
     # but not all constants fit into the part of the instruction that is left after the instruction code,
     # so large moves have to be split into two instructions. 
     # we handle this "transparently", just this instruction looks longer
@@ -39,8 +39,11 @@ module Arm
         # 8 is for the funny pipeline adjustment (ie pc pointing to fetch and not execute)
         right = Virtual::IntegerConstant.new( r_pos - self.position - 8 )
         #puts "Position #{r_pos} from #{self.position} = #{right}"
-        right = Virtual::IntegerConstant.new(r_pos) if right.integer > 255
-        rn = :pc
+        if right.integer > 255
+          right = Virtual::IntegerConstant.new(r_pos) 
+        else
+          rn = :pc
+        end
       end
       if (right.is_a?(Virtual::IntegerConstant))
         if (right.fits_u8?)
@@ -52,26 +55,29 @@ module Arm
           immediate = 1
         else
             # unfortunately i was wrong in thinking the pi is armv7. The good news is the code below implements
-            # the movw (armv7) instruciton and works
+            # the movw instruction (armv7 for moving a word) and works
             #armv7 raise "Too big #{right.integer} " if (right.integer >> 16) > 0
             #armv7 operand = (right.integer & 0xFFF)
             #armv7 immediate = 1
             #armv7 rn = (right.integer >> 12)
-          # a little STRANGE, that the armv7 movw (move a 2 byte word) is an old test opcode, but there it is 
-          #armv7 @attributes[:opcode] = :tst
-          raise "No negatives implemented " if right.integer < 0
+            # a little STRANGE, that the armv7 movw (move a 2 byte word) is an old test opcode, but there it is 
+            #armv7 @attributes[:opcode] = :tst
+          raise "No negatives implemented #{right} " if right.integer < 0
           # and so it continues: when we notice that the const doesn't fit, first time we raise an 
           # error,but set the extra flag, to say the instruction is now 8 bytes
-          # then on subsequent assemlies we can assemble
+          # then on subsequent assemblies we can assemble
           unless @extra
             @extra = 1
             raise ::Register::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}") 
           end
-          # now we can do the actual breaking of instruction
-          operand = (right.integer / 256 )
+          # now we can do the actual breaking of instruction, by splitting the operand
+          first = Virtual::IntegerConstant.new(right.integer & 0xFFFFFF00)
+          operand = calculate_u8_with_rr( first )
+          raise "no fit for #{right}" unless operand
           immediate = 1
-          raise "only simple 2 byte implemented #{self.inspect}" if operand > 255
-          @extra = ::Register::RegisterMachine.instance.add( to , to , (right.integer && 0xFF) ,  shift_lsr: 8)
+          @extra = ::Register::RegisterMachine.instance.add( to , to , (right.integer & 0xFF) )
+          #TODO: this is still a hack, as it does not encode all possible values. The way it _should_ be done
+          # is to check that the first part is doabe with u8_with_rr AND leaves a u8 remainder
         end
       elsif (right.is_a?(Symbol) or right.is_a?(::Register::RegisterReference))
         operand = reg_code(right)    
@@ -94,7 +100,7 @@ module Arm
       # by now we have the extra add so assemble that
       if(@extra)
         @extra.assemble(io) 
-        #puts "Assemble extra at #{self.position.to_s(16)}"
+        #puts "Assemble extra at #{val.to_s(16)}"
       end
     end
     def shift val , by
