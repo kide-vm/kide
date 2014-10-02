@@ -38,12 +38,8 @@ module Arm
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie pc pointing to fetch and not execute)
         right = Virtual::IntegerConstant.new( r_pos - self.position - 8 )
-        #puts "Position #{r_pos} from #{self.position} = #{right}"
-        if right.integer > 255
-          right = Virtual::IntegerConstant.new(r_pos) 
-        else
-          rn = :pc
-        end
+        puts "Position #{r_pos} from #{self.position} = #{right}"
+        rn = :pc
       end
       if (right.is_a?(Virtual::IntegerConstant))
         if (right.fits_u8?)
