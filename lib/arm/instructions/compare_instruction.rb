@@ -1,9 +1,11 @@
 module Arm
-  class CompareInstruction < Register::CompareInstruction
+  class CompareInstruction < Instruction
     include Arm::Constants
-
+    
     def initialize(left , right , attributes)
-      super(left , right,  attributes) 
+      super(attributes)
+      @left = left
+      @right = right.is_a?(Fixnum) ? IntegerConstant.new(right) : right
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
       @immediate = 0      
@@ -11,7 +13,7 @@ module Arm
       @rn = left
       @rd = :r0
     end
-
+    
     def assemble(io)
       # don't overwrite instance variables, to make assembly repeatable
       rn = @rn
@@ -86,6 +88,18 @@ module Arm
     def shift val , by
       raise "Not integer #{val}:#{val.class} #{inspect}" unless val.is_a? Fixnum
       val << by
+    end
+
+    def uses
+      ret = [@left.register ]
+      ret << @right.register unless @right.is_a? Constant
+      ret
+    end
+    def assigns
+      []
+    end
+    def to_s
+      "#{opcode} #{@left.to_asm} , #{@right.to_asm} #{super}"
     end
   end
 end

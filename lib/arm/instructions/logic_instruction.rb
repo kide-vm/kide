@@ -1,10 +1,16 @@
 module Arm
-
-  class LogicInstruction < Register::LogicInstruction
+  class LogicInstruction < Instruction
     include Arm::Constants
-
+    #  result = left op right
+    # 
+    # Logic instruction are your basic operator implementation. But unlike the (normal) code we write
+    #    these Instructions must have "place" to write their results. Ie when you write 4 + 5 in ruby
+    #    the result is sort of up in the air, but with Instructions the result must be assigned 
     def initialize(result , left , right , attributes = {})
-      super(result ,left , right , attributes)
+      super(attributes)
+      @result = result
+      @left = left
+      @right = right.is_a?(Fixnum) ? Virtual::IntegerConstant.new(right) : right
       @attributes[:update_status] = 0 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
@@ -13,6 +19,7 @@ module Arm
       @immediate = 0      
     end
 
+    attr_accessor :result , :left ,  :right
     def assemble(io)
       # don't overwrite instance variables, to make assembly repeatable
       left = @left
@@ -63,6 +70,16 @@ module Arm
     def shift val , by
       raise "Not integer #{val}:#{val.class} #{inspect}" unless val.is_a? Fixnum
       val << by
+    end
+  
+    def uses
+      ret = []
+      ret << @left.register if @left and not @left.is_a? Constant
+      ret << @right.register if @right and not @right.is_a?(Constant)
+      ret
+    end
+    def assigns
+      [@result.register]
     end
   end
 end

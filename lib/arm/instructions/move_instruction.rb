@@ -1,10 +1,12 @@
 module Arm
-
-  class MoveInstruction < Register::MoveInstruction
+  class MoveInstruction < Instruction
     include Arm::Constants
 
-    def initialize(to , from , attributes) 
-      super(to , from , attributes)
+    def initialize to , from , options = {}
+      super(options)
+      @to = to
+      @from = from.is_a?(Fixnum) ? Virtual::IntegerConstant.new(from) : from
+      raise "move must have from set #{inspect}" unless from
       @attributes[:update_status] = 0 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @attributes[:opcode] = attributes[:opcode]
@@ -15,7 +17,8 @@ module Arm
       @from = Virtual::IntegerConstant.new( @from ) if( @from.is_a? Fixnum )
       @extra = nil
     end
-    
+    attr_accessor :to , :from
+
     # arm intructions are pretty sensible, and always 4 bytes (thumb not supported)
     # but not all constants fit into the part of the instruction that is left after the instruction code,
     # so large moves have to be split into two instructions. 
@@ -102,6 +105,13 @@ module Arm
     def shift val , by
       raise "Not integer #{val}:#{val.class} in #{inspect}" unless val.is_a? Fixnum
       val << by
+    end
+
+    def uses
+      @from.is_a?(Constant) ? [] : [@from.register]
+    end
+    def assigns
+      [@to.register]
     end
   end
 end

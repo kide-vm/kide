@@ -1,13 +1,14 @@
-require_relative "nodes"
-
 module Arm
   # ADDRESSING MODE 2
   # Implemented: immediate offset with offset=0
-  class MemoryInstruction < ::Register::MemoryInstruction
+  
+  class MemoryInstruction < Instruction
     include Arm::Constants
-
-    def initialize(result , left , right = nil , attributes = {})
-      super(result , left , right , attributes)
+    def initialize result , left , right = nil , attributes = {}
+      super(attributes)
+      @result = result
+      @left = left
+      @right = right
       @attributes[:update_status] = 0 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
@@ -97,6 +98,15 @@ module Arm
     def shift val , by
       raise "Not integer #{val}:#{val.class} #{inspect}" unless val.is_a? Fixnum
       val << by
+    end
+
+    def uses
+      ret = [@left.register ]
+      ret << @right.register unless @right.nil?
+      ret
+    end
+    def assigns
+      [@result.register]
     end
   end
 end

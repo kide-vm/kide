@@ -1,12 +1,12 @@
-require_relative "constants"
-
 module Arm
   # ADDRESSING MODE 4
-  class StackInstruction < Register::StackInstruction
+  
+  class StackInstruction < Instruction
     include Arm::Constants
 
     def initialize(first , attributes)
-      super(first , attributes) 
+      super(attributes) 
+      @first = first
       @attributes[:update_status] = 0 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @attributes[:opcode] = attributes[:opcode]
@@ -56,5 +56,25 @@ module Arm
       val |= (cond <<                16+4+ 1+1+1+1 +2+2)
       io.write_uint32 val
     end
+
+    def is_push?
+      opcode == :push
+    end
+    def is_pop?
+      !is_push?
+    end
+    def uses
+      is_push? ? regs : []
+    end
+    def assigns
+      is_pop? ? regs : []
+    end
+    def regs
+      @first
+    end
+    def to_s
+      "#{opcode} [#{@first.collect {|f| f.to_asm}.join(',') }] #{super}"
+    end
   end
+  
 end
