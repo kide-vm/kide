@@ -79,30 +79,4 @@ module Register
       end
     end
   end
-
-  # We insert push/pops as dummies to fill them later in CallSaving
-  # as we can not know ahead of time which locals wil be live in the code to come
-  # and also we don't want to "guess" later where the push/pops should be
-  
-  # Here we check which registers need saving and add them
-  # Or sometimes just remove the push/pops, when no locals needed saving
-  class SaveLocals
-    def run block
-      push = block.call_block?
-      return unless push
-      return unless block.function
-      locals = block.function.locals_at block
-      pop = block.next.codes.first
-      if(locals.empty?)
-        #puts "Empty #{block.name}"
-        block.codes.delete(push)
-        block.next.codes.delete(pop)
-      else
-        #puts "PUSH #{push}"
-        push.set_registers(locals)
-        #puts "POP #{pop}"
-        pop.set_registers(locals)
-      end
-    end
-  end
 end

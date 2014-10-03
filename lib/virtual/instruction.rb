@@ -37,76 +37,8 @@ module Virtual
     end
   end
 
-  # the first instruction we need is to stop. Off course in a real machine this would be a syscall, but that is just 
-  # an implementation (in a programm it would be a function). But in a virtual machine, not only do we need this instruction,
-  # it is indeed the first instruction as just this instruction is the smallest possible programm for the machine.
-  # As such it is the next instruction for any first instruction that we generate.
-  class Halt < Instruction    
-  end
-
-  # following classes are stubs. currently in brainstorming mode, so anything may change anytime
-  class MethodEnter < Instruction
-  end
-  class MethodReturn < Instruction
-  end
-
-  # a branch must branch to a block. This is an abstract class, names indicate the actual test
-  class Branch < Instruction
-    def initialize to
-      @to = to
-    end
-    attr_reader :to
-  end
-
-  # implicit means there is no explcit test involved.
-  # normal ruby rules are false and nil are false, EVERYTHING else is true (and that includes 0)
-  class ImplicitBranch < Branch
-  end
-
-  class UnconditionalBranch < Branch
-  end
-
-  class NewMessage < Instruction
-  end
-  class NewFrame < Instruction
-  end
-
-  class MessageSend < Instruction
-    def initialize name , me , args = []
-      @name = name.to_sym
-      @me = me
-      @args = args
-    end
-    attr_reader :name , :me ,  :args
-  end
-
-  class FunctionCall < Instruction
-    def initialize method
-      @method = method
-    end
-    attr_reader :method
-  end
-
-  # class for Set instructions, A set is basically a mem move.
-  # to and from are indexes into the known objects(frame,message,self and new_message), these are represented as slots
-  # (see there) 
-  # from may be a Constant (Object,Integer,String,Class)
-  class Set < Instruction
-    def initialize to , from
-      @to = to
-      # hard to find afterwards where it came from, so ensure it doesn't happen
-      raise "From must be slot or constant, not symbol #{from}" if from.is_a? Symbol
-      @from = from
-    end
-    attr_reader :to , :from
-  end
-
-  # Get a instance variable by _name_ . So we have to resolve the name to an index to trnsform into a Slot
-  # The slot may the be used in a set on left or right hand. The transformation is done by GetImplementation
-  class InstanceGet < Instruction
-    def initialize name
-      @name = name.to_sym
-    end
-    attr_reader :name
-  end
 end
+
+require_relative "instructions/access.rb"
+require_relative "instructions/control.rb"
+require_relative "instructions/messaging.rb"

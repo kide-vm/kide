@@ -1,20 +1,5 @@
 module Arm
-  class ArmMachine < Register::RegisterMachine
-    # The constants are here for readablility, the code uses access functions below
-    RETURN_REG = :r0
-    TYPE_REG = :r1
-    RECEIVER_REG = :r2
-    SYSCALL_REG = :r7
-    
-    def return_register
-      RETURN_REG
-    end
-    def type_register
-      TYPE_REG
-    end
-    def receiver_register
-      RECEIVER_REG
-    end
+  class MachineCode
 
     def function_call into , call
       raise "Not CallSite #{call.inspect}" unless call.is_a? Virtual::CallSite
@@ -94,10 +79,3 @@ module Arm
   end
 end
 
-require_relative "stack_instruction"
-require_relative "logic_instruction"
-require_relative "move_instruction"
-require_relative "compare_instruction"
-require_relative "memory_instruction"
-require_relative "call_instruction"
-require_relative "constants"
