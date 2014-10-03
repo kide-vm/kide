@@ -30,5 +30,6 @@ module Register
   
 end
 
-require "instructions/variable_set"
-#require "instructions/object_set"
+require_relative "instructions/set_slot"
+require_relative "instructions/get_slot"
+require_relative "instructions/load_constant"

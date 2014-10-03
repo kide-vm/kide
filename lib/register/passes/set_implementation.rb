@@ -21,7 +21,7 @@ end
 
 module Register
   # This implements setting of the various slot variables the vm defines. 
-  # Basic mem moves, but have to shuffle the type nibbles
+  # Basic mem moves, but have to shuffle the type nibbles (TODO!)
   
   class SetImplementation
     def run block
@@ -33,11 +33,11 @@ module Register
         tmp = RegisterReference.new(Virtual::Message::TMP_REG)
         # for constants we have to "move" the constants value
         if( code.from.is_a? Virtual::Constant)
-          move1 = RegisterMachine.instance.mov( tmp , code.from )
+          move1 = LoadConstant.new( tmp , code.from )
         else # while otherwise we "load"
-          move1 = RegisterMachine.instance.ldr( tmp , code.from.reg , code.from.index )
+          move1 = GetSlot.new( tmp , code.from.reg , code.from.index )
         end
-        move2 = RegisterMachine.instance.str( tmp , to , code.to.index )
+        move2 = SetSlot.new( tmp , to , code.to.index )
         block.replace(code , [move1,move2] )
       end
     end
