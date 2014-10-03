@@ -11,5 +11,5 @@ module Virtual
       end
     end
   end
-  Virtual::BootSpace.space.add_pass_after GetImplementation, SendImplementation
+  Virtual::BootSpace.space.add_pass_after "Virtual::GetImplementation", "Virtual::SendImplementation"
 end

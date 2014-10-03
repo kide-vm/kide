@@ -41,6 +41,7 @@ module Virtual
 
     def self.boot
       machine = Machine.new
+      BootSpace.space.boot_classes! # boot is a verb here
       machine.boot
       machine
     end
@@ -87,5 +88,5 @@ require_relative "passes/send_implementation"
 require_relative "passes/get_implementation"
 require_relative "passes/frame_implementation"
 
-Sof.Volotile.add(Virtual::Block ,  [:method])
-Sof.Volotile.add(Virtual::CompiledMethod ,  [:current])
+Sof::Volotile.add(Virtual::Block ,  [:method])
+Sof::Volotile.add(Virtual::CompiledMethod ,  [:current])

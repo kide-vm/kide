@@ -25,17 +25,19 @@ module Virtual
       @messages = 100.times.collect{ ::Message.new } + frames
       @next_message = @messages.first
       @next_frame = frames.first
-      @passes = [ Virtual::SendImplementation ]
+      @passes = [ "Virtual::SendImplementation" ]
     end
     attr_reader  :main , :classes , :objects , :symbols,:messages, :next_message , :next_frame
 
     def run_passes
-      @passes.each do |pass|
+      @passes.each do |pass_class|
         all = main.blocks
         @classes.values.each do |c| 
           c.instance_methods.each {|f| all += f.blocks  }
         end
         all.each do |block|
+          pass = eval pass_class
+          raise "no such pass-class as #{pass_class}" unless pass 
           pass.new.run(block)
         end
       end
@@ -46,7 +48,6 @@ module Virtual
         @@space
       else
         @@space = BootSpace.new
-        @@space.boot_classes! # boot is a verb here
         @@space
       end
     end
@@ -57,7 +58,7 @@ module Virtual
     
     def add_pass_after( pass , after)
       index = @passes.index(after)
-      raise "No such pass to add after: #{after}" unless index
+      raise "No such pass (#{pass}) to add after: #{after}" unless index
       @passes.insert(index+1 , pass)
     end
     def add_pass_before( pass , after)

@@ -1,8 +1,6 @@
 require_relative "instruction"
 require_relative "register_reference"
-require "arm/arm_machine"
 require_relative "assembler"
 require_relative "passes/set_implementation"
-require_relative "passes/call_implementation"
 require_relative "passes/enter_implementation"
 require_relative "passes/return_implementation"

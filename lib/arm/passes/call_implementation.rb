@@ -1,4 +1,4 @@
-module Register
+module Arm
   # This implements call logic, which is simply like a c call (not send, that involves lookup and all sorts)
   #
   # The only target for a call is a CompiledMethod, so we just need to get the address for the code
@@ -10,10 +10,10 @@ module Register
     def run block
       block.codes.dup.each do |code|
         next unless code.is_a? Register::FunctionCall
-        call = RegisterMachine.instance.call( code.method )
+        call = ArmMachine.instance.call( code.method )
         block.replace(code , call )
       end
     end
   end
-  Virtual::BootSpace.space.add_pass_after CallImplementation , SetImplementation
+  Virtual::BootSpace.space.add_pass_after "Arm::CallImplementation" , "Register::SetImplementation"
 end

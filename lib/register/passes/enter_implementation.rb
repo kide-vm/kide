@@ -13,5 +13,5 @@ module Register
       end
     end
   end
-  Virtual::BootSpace.space.add_pass_after EnterImplementation , CallImplementation
+  Virtual::BootSpace.space.add_pass_after "Register::EnterImplementation" , "Virtual::GetImplementation"
 end

@@ -146,3 +146,4 @@ module Arm
     end
   end
 end
+require_relative "passes/call_implementation"
