@@ -39,6 +39,6 @@ module Virtual
 
 end
 
-require_relative "instructions/access.rb"
-require_relative "instructions/control.rb"
-require_relative "instructions/messaging.rb"
+require_relative "instructions/access"
+require_relative "instructions/control"
+require_relative "instructions/messaging"

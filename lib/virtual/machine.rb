@@ -74,7 +74,6 @@ module Virtual
   end
 end
 
-#require_relative "list"
 require_relative "instruction"
 require_relative "compiled_method"
 require_relative "frame"
@@ -87,3 +86,6 @@ require_relative "boot_space"
 require_relative "passes/send_implementation"
 require_relative "passes/get_implementation"
 require_relative "passes/frame_implementation"
+
+Sof.Volotile.add(Virtual::Block ,  [:method])
+Sof.Volotile.add(Virtual::CompiledMethod ,  [:current])

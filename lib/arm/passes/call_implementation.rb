@@ -9,7 +9,7 @@ module Register
   class CallImplementation
     def run block
       block.codes.dup.each do |code|
-        next unless code.is_a? Virtual::FunctionCall
+        next unless code.is_a? Register::FunctionCall
         call = RegisterMachine.instance.call( code.method )
         block.replace(code , call )
       end

@@ -1,9 +1,6 @@
 module Sof
   class Volotile
-    @@mapping = {
-      Virtual::Block =>  [:method],
-      Virtual::CompiledMethod =>  [:current]
-    }
+    @@mapping = {    }
     def self.attributes clazz
       @@mapping[clazz] || []
     end
