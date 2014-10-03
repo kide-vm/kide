@@ -1,5 +1,12 @@
 module Register
 
+  # the register machine has at least 8 registers, named r0-r5 , :lr and :pc (for historical reasons)
+  # we can load and store their contents and
+  # access (get/set) memory at a constant offset from a register
+  # while the vm works with objects, the register machine has registers, 
+  #             but we keep the names for better understanding, r4/5 are temporary/scratch
+  # there is no direct memory access, only through registers
+  # constants can/must be loaded into registers before use
   class Instruction
 
     # returns an array of registers (RegisterReferences) that this instruction uses.
@@ -18,17 +25,10 @@ module Register
     def assigns
       raise "abstract called for #{self.class}"
     end
-    def method_missing name , *args , &block 
-      return super unless (args.length <= 1) or block_given?
-      set , attribute = name.to_s.split("set_")
-      if set == ""
-        @attributes[attribute.to_sym] = args[0] || 1
-        return self 
-      else
-        return super
-      end
-      return @attributes[name.to_sym]
-    end
+
   end
   
 end
+
+require "instructions/variable_set"
+#require "instructions/object_set"
