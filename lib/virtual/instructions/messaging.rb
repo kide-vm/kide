@@ -18,11 +18,4 @@ module Virtual
     attr_reader :name , :me ,  :args
   end
 
-  class FunctionCall < Instruction
-    def initialize method
-      @method = method
-    end
-    attr_reader :method
-  end
-
 end
