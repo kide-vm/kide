@@ -24,25 +24,24 @@ module Virtual
           next
         end
         space = BootSpace.space
-        machine = Register::RegisterMachine.instance
         slot = Virtual::Slot
         # a place to store a reference to the space, we grab the next_frame from the space
         space_tmp = Register::RegisterReference.new(Virtual::Message::TMP_REG)
         # a temporary place to store the new frame
         frame_tmp = space_tmp.next_reg_use
         # move the spave to it's register (mov instruction gets the address of the object)
-        new_codes = [ machine.mov( space_tmp , space )]
+        new_codes = [ Register::RegisterTransfer.new( space_tmp , space )]
         # find index in the space wehre to grab frame/message
         ind = space.layout[:names].index(kind)
         raise "index not found for :#{kind}" unless ind
         # load the frame/message from space by index
-        new_codes << machine.ldr( frame_tmp , space_tmp , 5 )
+        new_codes << Register::GetSlot.new( frame_tmp , space_tmp , 5 )
         # save the frame in real frame register
-        new_codes << machine.mov( Virtual::Message::FRAME_REG , frame_tmp )
+        new_codes << Register::RegisterTransfer.new( Virtual::Message::FRAME_REG , frame_tmp )
         # get the next_frame
-        new_codes << machine.ldr( frame_tmp , frame_tmp , 2 ) # 2 index of next_frame
+        new_codes << Register::GetSlot.new( frame_tmp , frame_tmp , 2 ) # 2 index of next_frame
         # save next frame into space
-        new_codes << machine.str( frame_tmp , space_tmp , ind)
+        new_codes << Register::SetSlot.new( frame_tmp , space_tmp , ind)
         block.replace(code , new_codes )
       end
     end
