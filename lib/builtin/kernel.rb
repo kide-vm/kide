@@ -17,7 +17,7 @@ module Builtin
         me = Virtual::Self.new(Virtual::Reference)
         code = Virtual::Set.new(Virtual::Self.new(me.type), me)
         function.add_code(code)
-        function.add_code Register::FunctionCall.new(method)
+        function.add_code Virtual::MethodCall.new(method)
         return function
       end
       def putstring context 
