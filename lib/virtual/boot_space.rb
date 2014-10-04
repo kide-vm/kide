@@ -35,6 +35,7 @@ module Virtual
         @classes.values.each do |c| 
           c.instance_methods.each {|f| all += f.blocks  }
         end
+        #puts "running #{pass_class}"
         all.each do |block|
           pass = eval pass_class
           raise "no such pass-class as #{pass_class}" unless pass 
@@ -52,10 +53,14 @@ module Virtual
       end
     end
 
-    # Passes are initiated empty and added to by anyone who want (basically)
-    # Even linking and assembly are passes and so there are quite a few system passes neccesary to result in a 
-    # working binary. Other than that, this is intentionally quite flexible
-    
+    # Passes are initiated empty and added to by anyone who wants (basically)
+    # This is intentionally quite flexible, though one sometimes has to watch the order of them
+    # most ordering is achieved by ordering the requires and using add_pass
+    # but more precise control is possible with the _after and _before versions
+
+    def add_pass pass
+      @passes << pass
+    end
     def add_pass_after( pass , after)
       index = @passes.index(after)
       raise "No such pass (#{pass}) to add after: #{after}" unless index

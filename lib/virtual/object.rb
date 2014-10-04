@@ -44,7 +44,7 @@ module Virtual
       inspect
     end
     def mem_length
-      raise "abstract #{self}"
+      raise "abstract #{self.class}"
     end
     @@EMPTY =  { :names => [] , :types => []}
     def layout
