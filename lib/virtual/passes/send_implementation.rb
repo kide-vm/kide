@@ -22,13 +22,13 @@ module Virtual
             # get the function from my class. easy peasy
             method = me.clazz.get_instance_method(code.name)
             raise "Method not implemented #{clazz.name}.#{code.name}" unless method
-            new_codes << Register::FunctionCall.new( method )
+            new_codes << MethodCall.new( method )
           else
             # note: this is the current view: call internal send, even the method name says else
             # but send is "special" and accesses the internal method name and resolves.
             kernel = Virtual::BootSpace.space.get_or_create_class(:Kernel)
             method = kernel.get_instance_method(:__send)
-            new_codes << Register::FunctionCall.new( method )
+            new_codes << MethodCall.new( method )
             raise "unimplemented #{code}"
           end
         else
