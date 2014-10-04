@@ -15,5 +15,5 @@ module Arm
       end
     end
   end
-  Virtual::BootSpace.space.add_pass_after "Arm::CallImplementation" , "Register::SetImplementation"
+  Virtual::BootSpace.space.add_pass "Arm::CallImplementation"
 end
