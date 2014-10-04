@@ -1,4 +1,3 @@
-require_relative "value"
 
 module Virtual
   # Integer and (Object) References are the main derived classes, but float will come and ...
