@@ -46,5 +46,5 @@ module Virtual
       end
     end
   end
-  Virtual::BootSpace.space.add_pass_after "Virtual::FrameImplementation" , "Virtual::GetImplementation"
+  Virtual::BootSpace.space.add_pass "Virtual::FrameImplementation"
 end

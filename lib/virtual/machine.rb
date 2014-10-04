@@ -84,10 +84,11 @@ require_relative "type"
 require_relative "object"
 require_relative "constants"
 require_relative "boot_space"
+# the passes _are_ order dependant
 require_relative "passes/send_implementation"
 require_relative "passes/get_implementation"
-require_relative "passes/frame_implementation"
 require_relative "passes/enter_implementation"
+require_relative "passes/frame_implementation"
 
 Sof::Volotile.add(Virtual::Block ,  [:method])
 Sof::Volotile.add(Virtual::CompiledMethod ,  [:current])

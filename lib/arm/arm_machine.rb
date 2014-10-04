@@ -7,8 +7,7 @@ module Arm
   # Value functions are mapped to machines by concatenating the values class name + the methd name
   # Example:  IntegerValue.plus( value ) ->  Machine.signed_plus (value )
   
-  # Also, shortcuts are created to easily instantiate Instruction objects. The "standard" set of instructions
-  # (arm-influenced) provides for normal operations on a register machine, 
+  # Also, shortcuts are created to easily instantiate Instruction objects.
   # Example:  pop -> StackInstruction.new( {:opcode => :pop}.merge(options) )
   # Instructions work with options, so you can pass anything in, and the only thing the functions does
   # is save you typing the clazz.new. It passes the function name as the :opcode
@@ -114,3 +113,9 @@ module Arm
 end
 Arm::ArmMachine.init
 require_relative "passes/call_implementation"
+require_relative "passes/save_implementation"
+require_relative "passes/transfer_implementation"
+require_relative "passes/get_implementation"
+require_relative "passes/set_implementation"
+require_relative "passes/return_implementation"
+require_relative "passes/constant_implementation"
