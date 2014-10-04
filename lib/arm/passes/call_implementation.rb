@@ -10,7 +10,7 @@ module Arm
     def run block
       block.codes.dup.each do |code|
         next unless code.is_a? Register::FunctionCall
-        call = ArmMachine.instance.call( code.method )
+        call = ArmMachine.call( code.method )
         block.replace(code , call )
       end
     end

@@ -1,17 +1,6 @@
 require_relative "instruction"
 
 module Arm
-
-  # Our virtual c-machine has a number of registers of a given size and uses a stack
-  # So much so standard
-  # But our machine is oo, meaning that the register contents is typed. 
-  # Off course current hardware does not have that (a perceived issue), but for our machine we pretend.
-  # So internally we have at least 8 word registers, one of which is used to keep track of types*
-  # and any number of scratch registers
-  # but externally it's all Values (see there)
-  
-  # * Note that register content is typed externally. Not as in mri, where int's are tagged. Floats can's
-  #   be tagged and lambda should be it's own type, so tagging does not work
   
   # A Machines main responsibility in the framework is to instantiate Instruction
 
@@ -26,18 +15,6 @@ module Arm
    
   class ArmMachine
   
-    # hmm, not pretty but for now
-    @@instance = nil
-    
-    attr_reader :registers
-    attr_reader :scratch
-    attr_reader :pc
-    attr_reader :stack
-    # is often a pseudo register (ie doesn't support move or other operations).
-    # Still, using if to express tests makes sense, not just for 
-    # consistency in this code, but also because that is what is actually done
-    attr_reader :status  
-
     # conditions specify all the possibilities for branches. Branches are b +  condition
     # Example:  beq means brach if equal. 
     # :al means always, so bal is an unconditional branch (but b() also works)
@@ -45,7 +22,7 @@ module Arm
     
     # here we create the shortcuts for the "standard" instructions, see above
     # Derived machines may use own instructions and define functions for them if so desired
-    def initialize
+    def self.init
       [:push, :pop].each do |inst|
         define_instruction_one(inst , StackInstruction)
       end
@@ -72,21 +49,11 @@ module Arm
       end
     end
 
-    def create_method(name,  &block)
+    def self.create_method(name,  &block)
         self.class.send(:define_method, name , &block)
     end
 
-
-    def self.instance
-      if(@@instance.nil?)
-        @@instance = Arm::ArmMachine.new
-      end
-      @@instance
-    end
-    def self.instance= machine
-      @@instance = machine
-    end
-    def class_for clazz
+    def self.class_for clazz
       c_name = clazz.name
       my_module = self.class.name.split("::").first
       clazz_name = clazz.name.split("::").last
@@ -96,8 +63,7 @@ module Arm
       end
       clazz
     end
-    
-    private
+
     #defining the instruction (opcode, symbol) as an given class.
     # the class is a Register::Instruction derived base class and to create machine specific function
     #  an actual machine must create derived classes (from this base class) 
@@ -107,8 +73,8 @@ module Arm
     #    be used to define the mov on an arm machine. 
     # This methods picks up that derived class and calls a define_instruction methods that can 
     #   be overriden in subclasses 
-    def define_instruction_one(inst , clazz ,  defaults = {} )
-      clazz =  self.class_for(clazz)
+    def self.define_instruction_one(inst , clazz ,  defaults = {} )
+      clazz = class_for(clazz)
       create_method(inst) do |first , options = nil|
         options = {} if options == nil
         options.merge defaults
@@ -119,7 +85,7 @@ module Arm
     end
 
     # same for two args (left right, from to etc)
-    def define_instruction_two(inst , clazz ,  defaults = {} )
+    def self.define_instruction_two(inst , clazz ,  defaults = {} )
       clazz =  self.class_for(clazz)
       create_method(inst) do |left ,right , options = nil|
         options = {} if options == nil
@@ -132,7 +98,7 @@ module Arm
     end
 
     # same for three args (result = left right,)
-    def define_instruction_three(inst , clazz ,  defaults = {} )
+    def self.define_instruction_three(inst , clazz ,  defaults = {} )
       clazz =  self.class_for(clazz)
       create_method(inst) do |result , left ,right = nil , options = nil|
         options = {} if options == nil
@@ -146,4 +112,5 @@ module Arm
     end
   end
 end
+Arm::ArmMachine.init
 require_relative "passes/call_implementation"

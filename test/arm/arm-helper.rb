@@ -8,7 +8,7 @@ require_relative '../helper'
 module ArmHelper 
   # need Assembler and a block (see those classes) 
   def setup
-    @machine = Arm::ArmMachine.new
+    @machine = Arm::ArmMachine
   end
 
   # code is what the generator spits out, at least one instruction worth (.first)
