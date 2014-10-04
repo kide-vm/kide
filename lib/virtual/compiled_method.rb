@@ -54,7 +54,7 @@ module Virtual
     # add an instruction after the current (insertion point)
     # the added instruction will become the new insertion point
     def add_code instruction
-      raise instruction.inspect unless instruction.is_a? Instruction
+      raise instruction.inspect unless (instruction.is_a?(Instruction) or instruction.is_a?(Register::Instruction))
       @current.add_code(instruction) #insert after current
       self
     end

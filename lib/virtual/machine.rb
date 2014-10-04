@@ -87,6 +87,7 @@ require_relative "boot_space"
 require_relative "passes/send_implementation"
 require_relative "passes/get_implementation"
 require_relative "passes/frame_implementation"
+require_relative "passes/enter_implementation"
 
 Sof::Volotile.add(Virtual::Block ,  [:method])
 Sof::Volotile.add(Virtual::CompiledMethod ,  [:current])
