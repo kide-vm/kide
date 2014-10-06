@@ -41,7 +41,7 @@ module Register
         link
         @stream = StringIO.new
         mid , main = @objects.find{|k,objekt| objekt.is_a?(Virtual::CompiledMethod) and (objekt.name == :__init__ )}
-        initial_jump = RegisterMachine.instance.b( main )
+        initial_jump = RegisterMain.new( main )
         initial_jump.set_position( 0)
         initial_jump.assemble( @stream )
         @objects.each_value do |objekt|
