@@ -5,6 +5,7 @@ module Arm
     def initialize to , from , options = {}
       super(options)
       @to = to
+      raise "old code, fix this to use LoadConstant" if from.is_a? Virtual::ObjectConstant
       @from = from.is_a?(Fixnum) ? Virtual::IntegerConstant.new(from) : from
       raise "move must have from set #{inspect}" unless from
       @attributes[:update_status] = 0 if @attributes[:update_status] == nil

@@ -45,6 +45,7 @@ module Virtual
     attr_reader :string
 
     def result= value
+      raise "called"
       class_for(MoveInstruction).new(value , self , :opcode => :mov)
     end
     def clazz
