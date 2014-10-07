@@ -47,7 +47,7 @@ module Virtual
       padded_words(3)
     end
     def to_s
-      inspect
+      inspect[0...300]
     end
 
   end
