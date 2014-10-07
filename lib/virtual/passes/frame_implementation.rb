@@ -30,7 +30,7 @@ module Virtual
         # a temporary place to store the new frame
         frame_tmp = space_tmp.next_reg_use
         # move the spave to it's register (mov instruction gets the address of the object)
-        new_codes = [ Register::RegisterTransfer.new( space_tmp , space )]
+        new_codes = [ Register::LoadConstant.new( space_tmp , space )]
         # find index in the space wehre to grab frame/message
         ind = space.layout[:names].index(kind)
         raise "index not found for :#{kind}" unless ind
