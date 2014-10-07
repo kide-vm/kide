@@ -4,8 +4,8 @@ module Register
 
   class RegisterTransfer < Instruction
     def initialize from , to
-      @from = from
-      @to = to
+      @from = wrap_register(from)
+      @to = wrap_register(to)
     end
     attr_reader :from, :to
   end

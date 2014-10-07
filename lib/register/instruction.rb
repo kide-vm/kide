@@ -26,6 +26,11 @@ module Register
       raise "abstract called for #{self.class}"
     end
 
+    # wrap symbols into regsiter reference if needed
+    def wrap_register reg
+      return reg if reg.is_a? RegisterReference
+      RegisterReference.new(reg)
+    end
   end
   
 end
