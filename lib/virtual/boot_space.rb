@@ -17,7 +17,7 @@ module Virtual
     def initialize
       super()
       @classes = Parfait::Hash.new
-      @main = Virtual::CompiledMethod.new("main" , [] )
+      @main = Virtual::CompiledMethod.main
       #global objects (data)
       @objects = []
       @symbols = []
@@ -27,11 +27,11 @@ module Virtual
       @next_frame = frames.first
       @passes = [ "Virtual::SendImplementation" ]
     end
-    attr_reader  :main , :classes , :objects , :symbols,:messages, :next_message , :next_frame
+    attr_reader  :init , :main , :classes , :objects , :symbols,:messages, :next_message , :next_frame
 
     def run_passes
       @passes.each do |pass_class|
-        all = main.blocks
+        all = [@init] + main.blocks
         @classes.values.each do |c| 
           c.instance_methods.each {|f| all += f.blocks  }
         end
@@ -76,6 +76,8 @@ module Virtual
     # CompiledMethods are grabbed from respective modules by sending the method name. This should return the 
     # implementation of the method (ie a method object), not actually try to implement it (as that's impossible in ruby)
     def boot_classes!
+      @init = Virtual::Block.new(:_init_ , nil )
+      @init.add_code(Register::RegisterMain.new(@main))
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we have to define some 
       # dummies, just for the other to compile
       obj = get_or_create_class :Object

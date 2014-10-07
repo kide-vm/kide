@@ -74,7 +74,7 @@ module Arm
           operand = calculate_u8_with_rr( first )
           raise "no fit for #{right}" unless operand
           immediate = 1
-          @extra = ::Register::RegisterMachine.instance.add( to , to , (right.integer & 0xFF) )
+          @extra = ArmMachine.add( to , to , (right.integer & 0xFF) )
           #TODO: this is still a hack, as it does not encode all possible values. The way it _should_ be done
           # is to check that the first part is doabe with u8_with_rr AND leaves a u8 remainder
         end

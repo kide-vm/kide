@@ -21,7 +21,8 @@ module Register
 
     def link
       add_object(@space)
-      at = 4  # first jump instruction
+      @space.init.set_position(0)
+      at = @space.init.mem_length  # first jump instruction
       # then all functions
       @objects.each_value do | objekt|
         next unless objekt.is_a? Virtual::CompiledMethod
@@ -41,9 +42,10 @@ module Register
         link
         @stream = StringIO.new
         mid , main = @objects.find{|k,objekt| objekt.is_a?(Virtual::CompiledMethod) and (objekt.name == :__init__ )}
-        initial_jump = RegisterMain.new( main )
-        initial_jump.set_position( 0)
-        initial_jump.assemble( @stream )
+        initial_jump = @space.init
+        initial_jump.codes.each do |code|
+          code.assemble( @stream )
+        end
         @objects.each_value do |objekt|
           next unless objekt.is_a? Virtual::CompiledMethod
           assemble_object( objekt )
@@ -188,6 +190,7 @@ module Register
     end
 
     def add_BootSpace(space)
+      add_object(space.main)
       add_object(space.classes)
       add_object(space.objects)
       add_object(space.symbols)
