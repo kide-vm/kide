@@ -17,7 +17,6 @@ module Virtual
     def initialize
       super()
       @classes = Parfait::Hash.new
-      @main = Virtual::CompiledMethod.main
       #global objects (data)
       @objects = []
       @symbols = []
@@ -76,8 +75,6 @@ module Virtual
     # CompiledMethods are grabbed from respective modules by sending the method name. This should return the 
     # implementation of the method (ie a method object), not actually try to implement it (as that's impossible in ruby)
     def boot_classes!
-      @init = Virtual::Block.new(:_init_ , nil )
-      @init.add_code(Register::RegisterMain.new(@main))
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we have to define some 
       # dummies, just for the other to compile
       obj = get_or_create_class :Object
@@ -85,9 +82,18 @@ module Virtual
         obj.add_instance_method Builtin::Object.send(f , @context)
       end
       obj = get_or_create_class :Kernel
-      [:main , :__init__,:putstring,:exit,:__send].each do |f|
+      # create main first, __init__ calls it
+      @main = Builtin::Kernel.send(:main , @context)
+      obj.add_instance_method @main
+      underscore_init = Builtin::Kernel.send(:__init__ , @context) #store , so we don't have to resolve it below
+      obj.add_instance_method underscore_init
+      [:putstring,:exit,:__send].each do |f|
         obj.add_instance_method Builtin::Kernel.send(f , @context)
       end
+      # and the @init block in turn _jumps_ to __init__
+      # the point of which is that by the time main executes, all is "normal"
+      @init = Virtual::Block.new(:_init_ , nil )
+      @init.add_code(Register::RegisterMain.new(underscore_init))
       obj = get_or_create_class :Integer
       [:putint,:fibo].each do |f|
         obj.add_instance_method Builtin::Integer.send(f , @context)
