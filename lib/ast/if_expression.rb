@@ -13,7 +13,7 @@ module Ast
       is = cond.compile(method,message)
       # TODO should/will use different branches for different conditions. 
       # just a scetch : cond_val = cond_val.is_true?(method) unless cond_val.is_a? Virtual::BranchCondition
-      method.add_code Virtual::ImplicitBranch.new( true_block )
+      method.add_code Virtual::IsTrueBranch.new( true_block )
 
       # compile the true block (as we think of it first, even it is second in sequential order)
       method.current true_block

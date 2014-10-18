@@ -5,7 +5,7 @@ module Ast
       start = Virtual::Label.new("while_start")
       method.add_code start
       is = condition.compile(method,message)
-      branch = Virtual::ImplicitBranch.new "while"
+      branch = Virtual::IsTrueBranch.new "while"
       merge = Virtual::Label.new(branch.name)
       branch.other = merge   #false jumps to end of while
       method.add_code branch
