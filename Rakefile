@@ -38,11 +38,11 @@ task :simplecov do
   Rake::Task['test'].execute
 end
 
-require 'roodi'
-require 'roodi_task'
-RoodiTask.new do |t|
-  t.verbose = false
-end
+#require 'roodi'
+#require 'roodi_task'
+#RoodiTask.new do |t|
+#  t.verbose = false
+#end
 
 task :default => :test
 
