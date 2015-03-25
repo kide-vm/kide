@@ -1,7 +1,7 @@
 ### Builtin module
 
-The Builtin module contains functions that can not be coded in ruby. It is the other side of the parfait coin, part of 
-the runtime.
+The Builtin module contains functions that can not be coded in ruby. 
+It is the other side of the parfait coin, part of  the runtime.
 
 The functions are organized by their respective class and get loaded in boot_classes! , right at the start.
 

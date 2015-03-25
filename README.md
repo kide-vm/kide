@@ -57,8 +57,8 @@ Parse simple code, using Parslet. This has been seperated out as it's own gem, s
 Parsing is a surprisingly fiddly process, very space and order sensitive. But Parslet is great and simple
 expressions (including function definitions and calls) are starting to work.
 
-I spent some time on the parse testing framework, so it is safe to fiddle and add. In fact it is very modular and 
-so ot is easy to add.
+I spent some time on the parse testing framework, so it is safe to fiddle and add. 
+In fact it is very modular and  so ot is easy to add.
 
 ### Virtual: Compile the Ast
 
@@ -94,8 +94,8 @@ So the current staus is that i can
 
 #### Blocks
 
-Implement ruby Blocks, and make new vm classes to deal with that. This is in fact a little open, but i have a general
-notion that blocks are "just" methods with even more implicit arguments.
+Implement ruby Blocks, and make new vm classes to deal with that. This is in fact a little open,
+but i have a general notion that blocks are "just" methods with even more implicit arguments.
 
 #### Exceptions
 
@@ -103,8 +103,9 @@ Implement Exceptions. Conceptionally this is not so difficult in an oo machine a
 
 I have a post about it http://salama.github.io/2014/06/27/an-exceptional-though.html
 
-which boild down to the fact that we can treat the address to return to in an exception quite like a return address
-from a function. Ie just another implicit parameter (as return is really an implicit parameter, a little like self for oo)
+which boild down to the fact that we can treat the address to return to in an exception quite
+like a return address from a function. Ie just another implicit parameter
+(as return is really an implicit parameter, a little like self for oo)
 
 ### C linking
 
