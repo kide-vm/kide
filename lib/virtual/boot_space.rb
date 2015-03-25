@@ -1,6 +1,5 @@
 require_relative "boot_class"
 require "builtin/object"
-require "parfait/hash"
 
 module Virtual
   # The BootSpace contains all objects for a program. In functional terms it is a program, but in oo

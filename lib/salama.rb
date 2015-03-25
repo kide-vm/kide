@@ -1,6 +1,8 @@
 require 'parslet'
 
-require_relative "parfait/hash"
+module Parfait
+  eval(File.open("./lib/parfait/hash.rb").read) 
+end
 
 require "elf/object_writer"
 require 'salama-reader'
