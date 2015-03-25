@@ -5,6 +5,4 @@ gem "salama-reader" , "0.0.2" , :require => "parser" , :git => "https://github.c
 
 group :development do
   gem "minitest"
-  gem "simplecov"
-  gem "jeweler"
 end
