@@ -1,24 +1,15 @@
 ### Parfait: a thin layer
 
-(not everbody likes onion)
+Parfait is the run-time of the vm. 
+To be more precise, it is that part of the run-time that can be expressed in ruby.
 
-Here we have a placeholder for things i am currently developing. 
+The run-time needs to contain quite a lot of functionality for a dynamic system.
+And a large part of that functionality must actually be used at compile time too. 
 
-Basically Parfait is the smallest amount of code needed to make a ruby-like OO system work.
+We reuse the Parfait code at compile-time, by inlining it.
 
 A work in progress that started from here : http://salama.github.io/2014/06/10/more-clarity.html went on here
 http://salama.github.io/2014/07/05/layers-vs-passes.html
-
-And i finally came to the conclusion that Parfait is the ruby runtime. Aha
-
-Run - time
-
-not 
-
-compile - time
-
-always mixing those up: As such it is not loaded at compile time. On the other hand, we need to create data
-at compile time that matches the expectation of the code we create..
 
 A step back:  the code (program) we compile runs at run - time. 
 And so does parfait. So all we have to do is compile it with the program.
