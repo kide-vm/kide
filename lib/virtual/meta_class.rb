@@ -1,4 +1,7 @@
 module Virtual
+  
+  # TODO : rethink - possibly needs to be a module to be mixed into Object
+  #
   # class that acts like a class, but is really the object
   
   # described in the ruby language book as the eigenclass, what you get with 
