@@ -3,27 +3,26 @@ require_relative "block"
 module Virtual
   # static description of a method
   # name
-  # args (with defaults)
+  # arg_names (with defaults)
+  # receiver
   # code
   # return arg (usually mystery, but for coded ones can be more specific)
   # known local variable names
   # temp variables (numbered)
   #
-  # Methods are similar to Blocks. Where Blocks can be jumped to, Methods can be called.
+  # Methods are one step up from to VM::Blocks. Where Blocks can be jumped to, Methods can be called.
 
-  # Methods also have arguments and a return. These are Value subclass instances, ie specify
-  #   type (by class type) and register by instance
+  # Methods also have arguments and a return. These are typed by subclass instances of Value
 
-  # They also have local variables. Args take up the first n regs, then locals the rest. No 
-  #  direct manipulating of registers (ie specifying the number) should be done.
+  # They also have local variables. 
 
-  # Code-wise Methods are made up from a list of Blocks, in a similar way blocks are made up of codes
+  # Code-wise Methods are made up from a list of Blocks, in a similar way blocks are made up of Instructions
   # The function starts with one block, and that has a start and end (return)
   
   # Blocks can be linked in two ways:
-  # -linear:  flow continues from one to the next as they are sequential both logically and "physically"
-  #           use the block set_next for this. 
-  #           This "the straight line", there must be a continuous sequence from body to return
+  # -linear:  flow continues from one to the next as they are sequential both logically and
+  #           "physically" use the block set_next for this. 
+  #           This "straight line", there must be a continuous sequence from body to return
   #           Linear blocks may be created from an existing block with new_block
   # - branched: You create new blocks using function.new_block which gets added "after" return
   #            These (eg if/while) blocks may themselves have linear blocks ,but the last of these 
@@ -34,10 +33,10 @@ module Virtual
     def CompiledMethod.main
       CompiledMethod.new(:main , [] )
     end
-    def initialize name , args , receiver = Virtual::Self.new , return_type = Virtual::Mystery
+    def initialize name , arg_names , receiver = Virtual::Self.new , return_type = Virtual::Mystery
       @name = name.to_sym
       @class_name = :Object
-      @args = args
+      @arg_names = arg_names
       @locals = []
       @tmps = []
       @receiver = receiver
@@ -48,7 +47,7 @@ module Virtual
       @current = enter
       new_block("return").add_code(MethodReturn.new)
     end
-    attr_reader :name , :args , :receiver , :blocks
+    attr_reader :name , :arg_names , :receiver , :blocks
     attr_accessor :return_type , :current , :class_name
 
     # add an instruction after the current (insertion point)
@@ -113,7 +112,7 @@ module Virtual
     # used to determine if a send must be issued 
     def has_var name
       name = name.to_sym
-      var = @args.find {|a| a.name == name }
+      var = @arg_names.find {|a| a.name == name }
       var = @locals.find {|a| a.name == name } unless var
       var = @tmps.find {|a| a.name == name } unless var
       var
@@ -122,7 +121,7 @@ module Virtual
     # determine whether this method has an argument by the name
     def has_arg name
       name = name.to_sym
-      var = @args.find {|a| a.name == name }
+      var = @arg_names.find {|a| a.name == name }
       var
     end
 
@@ -139,7 +138,7 @@ module Virtual
 
     def get_var name
       var = has_var name
-      raise "no var #{name} in method #{self.name} , #{@locals} #{@args}" unless var
+      raise "no var #{name} in method #{self.name} , #{@locals} #{@arg_names}" unless var
       var
     end
 
@@ -162,8 +161,8 @@ module Virtual
     #           mov and add will be called on Machine and generate Inststuction that are then added 
     #             to the current block
     # also symbols are supported and wrapped as register usages (for bare metal programming)
-    def method_missing(meth, *args, &block)
-      add_code ::Register::RegisterMachine.instance.send(meth , *args)
+    def method_missing(meth, *arg_names, &block)
+      add_code ::Register::RegisterMachine.instance.send(meth , *arg_names)
     end
 
     def mem_length
