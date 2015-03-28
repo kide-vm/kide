@@ -19,19 +19,19 @@ module Virtual
       #global objects (data)
       @objects = []
       @symbols = []
-      frames = 100.times.collect{ ::Frame.new }      
-      @messages = 100.times.collect{ ::Message.new } + frames
+      @frames = 100.times.collect{ ::Frame.new }      
+      @messages = 100.times.collect{ ::Message.new }
       @next_message = @messages.first
-      @next_frame = frames.first
+      @next_frame = @frames.first
       @passes = [ "Virtual::SendImplementation" ]
     end
     attr_reader  :init , :main , :classes , :objects , :symbols,:messages, :next_message , :next_frame
 
     def run_passes
       @passes.each do |pass_class|
-        all = [@init] + main.blocks
-        @classes.values.each do |c| 
-          c.instance_methods.each {|f| all += f.blocks  }
+        blocks = [@init] + main.blocks
+        @classes.values.each do |c|
+          c.instance_methods.each {|f| blocks += f.blocks  }
         end
         #puts "running #{pass_class}"
         all.each do |block|
@@ -51,7 +51,7 @@ module Virtual
       end
     end
 
-    # Passes are initiated empty and added to by anyone who wants (basically)
+    # Passes may be added to by anyone who wants
     # This is intentionally quite flexible, though one sometimes has to watch the order of them
     # most ordering is achieved by ordering the requires and using add_pass
     # but more precise control is possible with the _after and _before versions
@@ -78,16 +78,16 @@ module Virtual
       # dummies, just for the other to compile
       obj = get_or_create_class :Object
       [:index_of , :_get_instance_variable , :_set_instance_variable].each do |f|
-        obj.add_instance_method Builtin::Object.send(f , @context)
+        obj.add_instance_method Builtin::Object.send(f , nil)
       end
       obj = get_or_create_class :Kernel
       # create main first, __init__ calls it
       @main = Builtin::Kernel.send(:main , @context)
       obj.add_instance_method @main
-      underscore_init = Builtin::Kernel.send(:__init__ , @context) #store , so we don't have to resolve it below
+      underscore_init = Builtin::Kernel.send(:__init__ ,nil) #store , so we don't have to resolve it below
       obj.add_instance_method underscore_init
       [:putstring,:exit,:__send].each do |f|
-        obj.add_instance_method Builtin::Kernel.send(f , @context)
+        obj.add_instance_method Builtin::Kernel.send(f , nil)
       end
       # and the @init block in turn _jumps_ to __init__
       # the point of which is that by the time main executes, all is "normal"
@@ -95,15 +95,15 @@ module Virtual
       @init.add_code(Register::RegisterMain.new(underscore_init))
       obj = get_or_create_class :Integer
       [:putint,:fibo].each do |f|
-        obj.add_instance_method Builtin::Integer.send(f , @context)
+        obj.add_instance_method Builtin::Integer.send(f , nil)
       end
       obj = get_or_create_class :String
       [:get , :set , :puts].each do |f|
-        obj.add_instance_method Builtin::String.send(f , @context)
+        obj.add_instance_method Builtin::String.send(f , nil)
       end
       obj = get_or_create_class :Array
       [:get , :set , :push].each do |f|
-        obj.add_instance_method Builtin::Array.send(f , @context)
+        obj.add_instance_method Builtin::Array.send(f , nil)
       end
     end
 
