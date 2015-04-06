@@ -1,8 +1,6 @@
-# this is not a "normal" ruby file, ie it is not required by salama
-# instead it is parsed by salama to define part of the program that runs
 
-class Frame #just for now
-end
+# A message is what is sent when you invoke a method. Args and stuff are packed up in to a Message
+# and the Message is sent to the receiver.
 
 class Message
 
