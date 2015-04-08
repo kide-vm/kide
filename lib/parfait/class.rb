@@ -13,6 +13,6 @@
 # In fact this property is implemented in the Object, as methods
 # may be added to any object at run-time
 
-class Class
+class Class < Object
 
 end

@@ -4,6 +4,6 @@
 
 # It allows for access to those variables basically 
 
-class Frame
+class Frame < Object
   
 end

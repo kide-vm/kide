@@ -1,6 +1,6 @@
 # almost simplest hash imaginable. make good use of arrays
 
-class Hash
+class Hash < Object
   def initialize
     @keys = Array.new()
     @values = Array.new()

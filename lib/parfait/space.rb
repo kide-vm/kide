@@ -8,6 +8,6 @@
 # "New" is slightly misleading in that normal operation only ever
 # recycles objects.
 
-class Space
+class Space < Object
 
 end

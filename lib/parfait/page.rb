@@ -8,6 +8,6 @@
 # object. The smallest object is usually a cache line, 16 bytes or
 # an exponent of two larger.
 
-class Page
+class Page < Object
 
 end

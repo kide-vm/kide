@@ -2,7 +2,7 @@
 # A message is what is sent when you invoke a method. Args and stuff are packed up in to a Message
 # and the Message is sent to the receiver.
 
-class Message
+class Message < Object
 
   def get_type_for(name)
     index = @layout.get_index(name)
