@@ -7,7 +7,7 @@ module Ast
   # So we view ConstantExpressions like functions that return the value of the constant.
   # In other words, their storage is the return slot as it would be for a method
 
-  # The current approach moves the constant into a varaible before using it
+  # The current approach moves the constant into a variable before using it
   # But in the future (in the one that holds great things) we optimize those unneccesay moves away
   
   class IntegerExpression < Expression
@@ -20,7 +20,7 @@ module Ast
     end
   end
 
-  class TrueExpression
+  class TrueExpression < Expression
     def compile method , message
       value = Virtual::TrueConstant.new
       to = Virtual::Return.new(Virtual::Reference , value)
@@ -29,7 +29,7 @@ module Ast
     end
   end
   
-  class FalseExpression
+  class FalseExpression < Expression
     def compile method , message
       value = Virtual::FalseConstant.new
       to = Virtual::Return.new(Virtual::Reference , value)
@@ -38,7 +38,7 @@ module Ast
     end
   end
   
-  class NilExpression
+  class NilExpression < Expression
     def compile method , message
       value = Virtual::NilConstant.new
       to = Virtual::Return.new(Virtual::Reference , value)
