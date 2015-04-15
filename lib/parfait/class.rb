@@ -1,18 +1,14 @@
 
-# A class describes the capabilities of an object, ie what data it has
-# and functions it responds to
-#
+# Class derives from and derives most of it's functionality (that you would associate with a class)
+# from there
+
+# A Class is a module that can be instantiated
+
 # An Object carries the data for the instance variables it has
 # The Layout lists the names of the instance variables
 # The class keeps a list of instance methods, these have a name and code
-# The class also keeps a list of class methods (with names+code)
-# Class methods are instance methods on the class object
 
-# So it is essential that the class (the object defining the class)
-# can carry methods. It does so as instance variables.
-# In fact this property is implemented in the Object, as methods
-# may be added to any object at run-time
-
-class Class < Object
-
+class Class < Module
+  # ruby 2.1 list (just for reference, keep at bottom)
+  #:allocate, :new, :superclass
 end
