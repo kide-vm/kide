@@ -10,4 +10,6 @@
 
 class Space < Object
 
+  # ObjectSpace
+  # :each_object, :garbage_collect, :define_finalizer, :undefine_finalizer, :_id2ref, :count_objects
 end

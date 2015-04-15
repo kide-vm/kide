@@ -21,4 +21,15 @@ class Object < Value
   def get_layout()
     @layout
   end
+
+  # Object
+  # :nil?, :===, :=~, :!~, :eql?, :hash, :<=>, :class, :singleton_class, :clone, :dup, :taint, :tainted?, :untaint,
+  # :untrust, :untrusted?, :trust, :freeze, :frozen?, :to_s, :inspect, :methods, :singleton_methods, :protected_methods,
+  # :private_methods, :public_methods, :instance_variables, :instance_variable_get, :instance_variable_set, :instance_variable_defined?,
+  # :remove_instance_variable, :instance_of?, :kind_of?, :is_a?, :tap, :send, :public_send, :respond_to?,
+  # :extend, :display, :method, :public_method, :singleton_method, :define_singleton_method,
+  # :object_id, :to_enum, :enum_for
+  #
+  # BasicObject
+  # :==, :equal?, :!, :!=, :instance_eval, :instance_exec, :__send__, :__id__
 end
