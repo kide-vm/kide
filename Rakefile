@@ -11,20 +11,6 @@ rescue Bundler::BundlerError => e
 end
 require 'rake'
 
-require 'jeweler'
-Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
-  gem.name = "salama"
-  gem.homepage = "http://github.com/salama-ruby/salama"
-  gem.license = "MIT"
-  gem.summary = %Q{Create fast code}
-  gem.description = %Q{A long way to china and back}
-  gem.email = "torsten@villataika.fi"
-  gem.authors = ["Torsten Ruger"]
-  # dependencies defined in Gemfile
-end
-Jeweler::RubygemsDotOrgTasks.new
-
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'

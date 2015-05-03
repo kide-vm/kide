@@ -15,16 +15,9 @@ time comes to move to salama, less work.
   ruby test/test_all.rb
 ''''
 
-### sof
-
-''''
-  ruby test/test_sof.rb
-''''
-
 ### vm
 
 As this is all quite new, i tend to test only when i know that the functionality will stay that way.
 Otherwise it's just too much effort to rewrite and rewrite the tests.
 
-There used to be better tests, but rewrites bring fluctuation, so poke around and make suggestion :-) 
-
+There used to be better tests, but rewrites bring fluctuation, so poke around and make suggestion :-)
