@@ -1,6 +1,6 @@
 # collection of the simple ones, int and strings and such
 
-module Ast
+module Compiler
 
   # Constant expressions can by definition be evaluated at compile time.
   # But that does not solve their storage, ie they need to be accessible at runtime from _somewhere_
@@ -9,97 +9,78 @@ module Ast
 
   # The current approach moves the constant into a variable before using it
   # But in the future (in the one that holds great things) we optimize those unneccesay moves away
-  
-  class IntegerExpression < Expression
+
 #    attr_reader :value
-    def compile method , message
+    def compile_integer expession , method , message
       int = Virtual::IntegerConstant.new(value)
       to = Virtual::NewReturn.new(Virtual::Integer , int)
       method.add_code Virtual::Set.new( to , int)
       to
     end
-  end
 
-  class TrueExpression < Expression
-    def compile method , message
+    def compile_true expession , method , message
       value = Virtual::TrueConstant.new
       to = Virtual::Return.new(Virtual::Reference , value)
       method.add_code Virtual::Set.new( to , value )
       to
     end
-  end
-  
-  class FalseExpression < Expression
-    def compile method , message
+
+    def compile_false expession , method , message
       value = Virtual::FalseConstant.new
       to = Virtual::Return.new(Virtual::Reference , value)
       method.add_code Virtual::Set.new( to , value )
       to
     end
-  end
-  
-  class NilExpression < Expression
-    def compile method , message
+
+    def compile_nil expession , method , message
       value = Virtual::NilConstant.new
       to = Virtual::Return.new(Virtual::Reference , value)
       method.add_code Virtual::Set.new( to , value )
       to
     end
-  end
 
-  class NameExpression < Expression
 #    attr_reader  :name
-
     # compiling name needs to check if it's a variable and if so resolve it
     # otherwise it's a method without args and a send is ussued.
     # this makes the namespace static, ie when eval and co are implemented method needs recompilation
-    def compile method , message
-      return Virtual::Self.new( Virtual::Mystery ) if name == :self
-      if method.has_var(name)
-        message.compile_get(method , name )
+    def compile_name expession , method , message
+      return Virtual::Self.new( Virtual::Mystery ) if expession.name == :self
+      if method.has_var(expession.name)
+        message.compile_get(method , expession.name )
       else
-        raise "Unimplemented #{self}" 
-        message.compile_send( method , name ,  Virtual::Self.new( Virtual::Mystery ) )
+        raise "Unimplemented #{self}"
+        message.compile_send( method , expession.name ,  Virtual::Self.new( Virtual::Mystery ) )
       end
     end
-  end
 
-  class ModuleName < NameExpression
 
-    def compile method , message
+    def compile_module expession , method , message
       clazz = Virtual::BootSpace.space.get_or_create_class name
       raise "uups #{clazz}.#{name}" unless clazz
       to = Virtual::Return.new(Virtual::Reference , clazz )
       method.add_code Virtual::Set.new( to , clazz )
       to
-    end    
-  end
+    end
 
-  class StringExpression < Expression
 #    attr_reader  :string
-    def compile method , message
-      value = Virtual::StringConstant.new(string)
+    def compile_string expession , method , message
+      value = Virtual::StringConstant.new(expession.string)
       to = Virtual::Return.new(Virtual::Reference , value)
-      Virtual::BootSpace.space.add_object value 
+      Virtual::BootSpace.space.add_object value
       method.add_code Virtual::Set.new( to , value )
       to
     end
-  end
-  class AssignmentExpression < Expression
+
     #attr_reader  :left, :right
-
-    def compile method , message
-      raise "must assign to NameExpression , not #{left}" unless left.instance_of? NameExpression 
+    def compile_assignment expession , method , message
+      raise "must assign to NameExpression , not #{expession.left}" unless expession.left.instance_of? NameExpression
       r = right.compile(method,message)
-      raise "oh noo, nil from where #{right.inspect}" unless r
-      message.compile_set( method , left.name , r )
+      raise "oh noo, nil from where #{expession.right.inspect}" unless r
+      message.compile_set( method , expession.left.name , r )
     end
-  end
 
-  class VariableExpression < NameExpression
-    def compile method , message
-      method.add_code Virtual::InstanceGet.new(name)
+    def compile_variable expession, method , message
+      method.add_code Virtual::InstanceGet.new(expession.name)
       Virtual::NewReturn.new( Virtual::Mystery )
     end
-  end
 end

@@ -1,16 +1,16 @@
-module Ast
-  class WhileExpression < Expression
-#    attr_reader  :condition, :body
-    def compile method , message
+module Compiler
+
+#    while- attr_reader  :condition, :body
+    def compile_while expression, method , message
       start = Virtual::Label.new("while_start")
       method.add_code start
-      is = condition.compile(method,message)
+      is = expression.condition.compile(method,message)
       branch = Virtual::IsTrueBranch.new "while"
       merge = Virtual::Label.new(branch.name)
       branch.other = merge   #false jumps to end of while
       method.add_code branch
       last = is
-      body.each do |part|
+      expression.body.each do |part|
         last = part.compile(method,message )
         raise part.inspect if last.nil?
       end
@@ -22,5 +22,4 @@ module Ast
       method.current =  merge
       last
     end
-  end
 end

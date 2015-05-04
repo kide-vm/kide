@@ -4,7 +4,7 @@ module Parfait
   eval(File.open("./lib/parfait/hash.rb").read)
 end
 
-require "ast/all"
+require "compiler"
 require "stream_reader"
 require "elf/object_writer"
 require 'salama-reader'
