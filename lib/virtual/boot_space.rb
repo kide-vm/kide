@@ -1,5 +1,5 @@
 require_relative "boot_class"
-require "builtin/object"
+require "register/builtin/object"
 
 module Virtual
   # The BootSpace contains all objects for a program. In functional terms it is a program, but in oo
@@ -10,16 +10,16 @@ module Virtual
 
   # While data ususally would live in a .data section, we may also "inline" it into the code
   # in an oo system all data is represented as objects
-   
+
   class BootSpace < Virtual::ObjectConstant
-    
+
     def initialize
       super()
       @classes = Parfait::Hash.new
       #global objects (data)
       @objects = []
       @symbols = []
-      @frames = 100.times.collect{ ::Frame.new }      
+      @frames = 100.times.collect{ ::Frame.new }
       @messages = 100.times.collect{ ::Message.new }
       @next_message = @messages.first
       @next_frame = @frames.first
@@ -36,7 +36,7 @@ module Virtual
         #puts "running #{pass_class}"
         all.each do |block|
           pass = eval pass_class
-          raise "no such pass-class as #{pass_class}" unless pass 
+          raise "no such pass-class as #{pass_class}" unless pass
           pass.new.run(block)
         end
       end
@@ -71,10 +71,10 @@ module Virtual
     end
     # boot the classes, ie create a minimal set of classes with a minimal set of functions
     # minimal means only that which can not be coded in ruby
-    # CompiledMethods are grabbed from respective modules by sending the method name. This should return the 
+    # CompiledMethods are grabbed from respective modules by sending the method name. This should return the
     # implementation of the method (ie a method object), not actually try to implement it (as that's impossible in ruby)
     def boot_classes!
-      # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we have to define some 
+      # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we have to define some
       # dummies, just for the other to compile
       obj = get_or_create_class :Object
       [:index_of , :_get_instance_variable , :_set_instance_variable].each do |f|
@@ -107,7 +107,7 @@ module Virtual
       end
     end
 
-    @@SPACE = { :names => [:classes,:objects,:symbols,:messages, :next_message , :next_frame] , 
+    @@SPACE = { :names => [:classes,:objects,:symbols,:messages, :next_message , :next_frame] ,
                 :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference]}
     def layout
       @@SPACE
