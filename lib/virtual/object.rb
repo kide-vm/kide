@@ -1,5 +1,6 @@
 require_relative "type"
 require "parfait/message"
+require "parfait/frame"
 
 module Positioned
   def position
@@ -9,7 +10,7 @@ module Positioned
   def set_position pos
     # resetting of position used to be error, but since relink and dynamic instruction size it is ok. in measures
     if @position != nil and ((@position - pos).abs > 32)
-      raise "position set again #{pos}!=#{@position} for #{self}" 
+      raise "position set again #{pos}!=#{@position} for #{self}"
     end
     @position = pos
   end
@@ -19,7 +20,7 @@ module Virtual
   # our machine is made up of objects, some of which are code, some data
   #
   # during compilation objects are module Virtual objects, but during execution they are not scoped
-  # 
+  #
   # So compiling/linking/assembly turns ::virtual objects into binary that represents ruby objects at runtime
   # The equivalence is listed below (i'll try and work on clearer correspondence later)
   #  ::Virtual            Runtime / parfait
@@ -65,7 +66,7 @@ module Virtual
       when Array , Symbol , String , Virtual::CompiledMethod , Virtual::Block , Virtual::StringConstant
         @@ARRAY
       when Hash
-        @@HASH.merge :keys => object.keys , :values => object.values 
+        @@HASH.merge :keys => object.keys , :values => object.values
       when Virtual::BootClass
         @@CLAZZ
       when Virtual::BootSpace

@@ -15,21 +15,21 @@ module Virtual
   # (ie garbage collection is reclaming, not destroying and recreating) although there may be a way to increase that number.
   #
   # The ast is transformed to virtaul-machine objects, some of which represent code, some data.
-  # 
-  # The next step transforms to the register machine layer, which is what actually executes. 
+  #
+  # The next step transforms to the register machine layer, which is what actually executes.
   #
 
   # More concretely, a virtual machine is a sort of oo turing machine, it has a current instruction, executes the
-  # instructions, fetches the next one and so on. 
+  # instructions, fetches the next one and so on.
   # Off course the instructions are not soo simple, but in oo terms quite so.
-  # 
-  # The machine is virtual in the sense that it is completely modeled in software, 
+  #
+  # The machine is virtual in the sense that it is completely modeled in software,
   # it's complete state explicitly available (not implicitly by walking stacks or something)
 
-  # The machine has a no register, but local variables, a scope at each point in time. 
+  # The machine has a no register, but local variables, a scope at each point in time.
   # Scope changes with calls and blocks, but is saved at each level. In terms of lower level implementation this means
   # that the the model is such that what is a variable in ruby, never ends up being just on the pysical stack.
-  # 
+  #
   class Machine
 
     def initialize
@@ -59,19 +59,9 @@ module Virtual
       syntax  = @parser.parse_with_debug(bytes)
       parts = Parser::Transform.new.apply(syntax)
       main = Virtual::CompiledMethod.main
-      expressions = parts.compile( main , self.message )
+      parts.compile( main , self.message )
     end
 
-
-    # run the instruction stream given. Instructions are a graph and executing means traversing it.
-    # If there is no next instruction the machine stops
-    def run instruction
-      while instruction do
-        next_instruction = instruction.next
-        instruction.execute
-        instruction = next_instruction
-      end
-    end
   end
 end
 
