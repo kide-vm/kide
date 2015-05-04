@@ -1,7 +1,7 @@
 module Compiler
 
 #    while- attr_reader  :condition, :body
-    def compile_while expression, method , message
+    def self.compile_while expression, method , message
       start = Virtual::Label.new("while_start")
       method.add_code start
       is = expression.condition.compile(method,message)

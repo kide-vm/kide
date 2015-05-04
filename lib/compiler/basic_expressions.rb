@@ -11,28 +11,28 @@ module Compiler
   # But in the future (in the one that holds great things) we optimize those unneccesay moves away
 
 #    attr_reader :value
-    def compile_integer expession , method , message
+    def self.compile_integer expession , method , message
       int = Virtual::IntegerConstant.new(value)
       to = Virtual::NewReturn.new(Virtual::Integer , int)
       method.add_code Virtual::Set.new( to , int)
       to
     end
 
-    def compile_true expession , method , message
+    def self.compile_true expession , method , message
       value = Virtual::TrueConstant.new
       to = Virtual::Return.new(Virtual::Reference , value)
       method.add_code Virtual::Set.new( to , value )
       to
     end
 
-    def compile_false expession , method , message
+    def self.compile_false expession , method , message
       value = Virtual::FalseConstant.new
       to = Virtual::Return.new(Virtual::Reference , value)
       method.add_code Virtual::Set.new( to , value )
       to
     end
 
-    def compile_nil expession , method , message
+    def self.compile_nil expession , method , message
       value = Virtual::NilConstant.new
       to = Virtual::Return.new(Virtual::Reference , value)
       method.add_code Virtual::Set.new( to , value )
@@ -43,7 +43,7 @@ module Compiler
     # compiling name needs to check if it's a variable and if so resolve it
     # otherwise it's a method without args and a send is ussued.
     # this makes the namespace static, ie when eval and co are implemented method needs recompilation
-    def compile_name expession , method , message
+    def self.compile_name expession , method , message
       return Virtual::Self.new( Virtual::Mystery ) if expession.name == :self
       if method.has_var(expession.name)
         message.compile_get(method , expession.name )
@@ -54,7 +54,7 @@ module Compiler
     end
 
 
-    def compile_module expession , method , message
+    def self.compile_module expession , method , message
       clazz = Virtual::BootSpace.space.get_or_create_class name
       raise "uups #{clazz}.#{name}" unless clazz
       to = Virtual::Return.new(Virtual::Reference , clazz )
@@ -63,7 +63,7 @@ module Compiler
     end
 
 #    attr_reader  :string
-    def compile_string expession , method , message
+    def self.compile_string expession , method , message
       value = Virtual::StringConstant.new(expession.string)
       to = Virtual::Return.new(Virtual::Reference , value)
       Virtual::BootSpace.space.add_object value
@@ -72,14 +72,14 @@ module Compiler
     end
 
     #attr_reader  :left, :right
-    def compile_assignment expession , method , message
+    def self.compile_assignment expession , method , message
       raise "must assign to NameExpression , not #{expession.left}" unless expession.left.instance_of? NameExpression
       r = right.compile(method,message)
       raise "oh noo, nil from where #{expession.right.inspect}" unless r
       message.compile_set( method , expession.left.name , r )
     end
 
-    def compile_variable expession, method , message
+    def self.compile_variable expession, method , message
       method.add_code Virtual::InstanceGet.new(expession.name)
       Virtual::NewReturn.new( Virtual::Mystery )
     end

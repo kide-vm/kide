@@ -1,9 +1,9 @@
 module Builtin
   class Object
     module ClassMethods
-    
-      # return the index of the variable. Now "normal" code can't really do anything with that, but 
-      # set/get instance variable use it. 
+
+      # return the index of the variable. Now "normal" code can't really do anything with that, but
+      # set/get instance variable use it.
       # This is just a placeholder, as we code this in ruby, but the instance methods need the definition before.
       def index_of context , name = Virtual::Integer
         index_function = Virtual::CompiledMethod.new(:index_of , Virtual::Reference , [Virtual::Reference] , Virtual::Integer )
@@ -16,15 +16,15 @@ module Builtin
         layout_function
       end
 
-      # in ruby, how this goes is   
+      # in ruby, how this goes is
       #  def _get_instance_variable var
       #     i = self.index_of(var)
       #     return at_index(i)
-      #  end  
+      #  end
       # The at_index is just "below" the api, something we need but don't want to expose, so we can't code the above in ruby
       def _get_instance_variable context , name = Virtual::Integer
         get_function = Virtual::CompiledMethod.new(:_get_instance_variable , [ Virtual::Reference ] , Virtual::Reference ,Virtual::Mystery )
-#        return get_function
+        return get_function
         me = get_function.receiver
         var_name = get_function.args.first
         return_to = get_function.return_type
@@ -32,13 +32,13 @@ module Builtin
         index_function = ::Virtual::BootSpace.space.get_or_create_class(:Object).resolve_method(:index_of)
 #        get_function.push( [me] )
 #        index = get_function.call( index_function )
-        
+
         after_body = get_function.new_block("after_index")
         get_function.current after_body
-        
+
 #        get_function.pop([me])
 #        return_to.at_index( get_function , me , return_to )
-        
+
 #        get_function.set_return return_to
         return get_function
       end
@@ -54,14 +54,14 @@ module Builtin
         set_function.push( [me] )
         set_function.call( index_function )
         after_body = set_function.new_block("after_index")
-        
+
         set_function.current after_body
         set_function.pop([me])
         return_to.at_index( set_function , me , return_to )
         set_function.set_return return_to
         return set_function
       end
-      
+
       def _get_singleton_method(context , name )
         raise name
       end

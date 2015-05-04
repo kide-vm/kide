@@ -1,7 +1,7 @@
 module Compiler
 
 #    return attr_reader  :expression
-    def compile_return expression, scope ,method
+    def self.compile_return expression, scope ,method
       Virtual::Reference.new
     end
     def old

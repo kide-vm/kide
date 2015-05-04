@@ -50,7 +50,8 @@ module Virtual
       # read all the files needed for a minimal system at compile
       classes = ["object"]
       classes.each do |clazz|
-        bytes = File.read(File.join( File.dirname( __FILE__ ) , ".." , "parfait" , "#{clazz}.rb") )
+      bytes = File.read(File.join( File.dirname( __FILE__ ) , ".." , "parfait" , "#{clazz}.rb") )
+      bytes = 0 #shuts up my atom linter
 #        expression = compile_main(bytes)
       end
     end
@@ -59,7 +60,7 @@ module Virtual
       syntax  = @parser.parse_with_debug(bytes)
       parts = Parser::Transform.new.apply(syntax)
       main = Virtual::CompiledMethod.main
-      parts.compile( main , self.message )
+      Compiler.compile( parts , main , self.message )
     end
 
   end

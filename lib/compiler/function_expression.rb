@@ -1,6 +1,6 @@
 module Compiler
 #    function attr_reader  :name, :params, :body , :receiver
-    def compile_function  expression, method , message
+    def self.compile_function  expression, method , message
       args = expession.params.collect do |p|
         raise "error, argument must be a identifier, not #{p}" unless p.is_a? NameExpression
         p.name

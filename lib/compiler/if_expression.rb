@@ -1,7 +1,7 @@
 module Compiler
 #    if - attr_reader  :cond, :if_true, :if_false
 
-    def compile_if expression , method , message
+    def self.compile_if expression , method , message
       # to execute the logic as the if states it, the blocks are the other way around
       # so we can the jump over the else if true ,and the else joins unconditionally after the true_block
       merge_block = method.new_block "if_merge"    # last one, created first

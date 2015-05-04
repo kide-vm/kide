@@ -1,9 +1,9 @@
 module Compiler
 
   def self.compile expression , method , message
-    exp_name = expression.class.split("::").last.sub("Expression","").downcase
+    exp_name = expression.class.name.split("::").last.sub("Expression","").downcase
     puts "Expression #{exp_name}"
-    self.send exp_name.to_sym , method , message
+    self.send "compile_#{exp_name}".to_sym , expression, method , message
   end
 
 end

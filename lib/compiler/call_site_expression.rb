@@ -3,7 +3,7 @@ module Compiler
 
 #    call_site - attr_reader  :name, :args , :receiver
 
-    def compile_call_site expession , method , message
+    def self.compile_call_site expession , method , message
       me = expession.receiver.compile( method, message )
       method.add_code Virtual::NewMessage.new
       method.add_code Virtual::Set.new(Virtual::NewSelf.new(me.type), me)

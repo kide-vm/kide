@@ -1,24 +1,24 @@
 require_relative "instruction"
 
 module Arm
-  
-  # A Machines main responsibility in the framework is to instantiate Instruction
+
+  # A Machines main responsibility in the framework is to instantiate Instructions
 
   # Value functions are mapped to machines by concatenating the values class name + the methd name
   # Example:  IntegerValue.plus( value ) ->  Machine.signed_plus (value )
-  
+
   # Also, shortcuts are created to easily instantiate Instruction objects.
   # Example:  pop -> StackInstruction.new( {:opcode => :pop}.merge(options) )
   # Instructions work with options, so you can pass anything in, and the only thing the functions does
   # is save you typing the clazz.new. It passes the function name as the :opcode
-   
+
   class ArmMachine
-  
+
     # conditions specify all the possibilities for branches. Branches are b +  condition
-    # Example:  beq means brach if equal. 
+    # Example:  beq means brach if equal.
     # :al means always, so bal is an unconditional branch (but b() also works)
     CONDITIONS = [ :al , :eq , :ne , :lt , :le, :ge, :gt , :cs , :mi , :hi , :cc , :pl, :ls , :vc , :vs ]
-    
+
     # here we create the shortcuts for the "standard" instructions, see above
     # Derived machines may use own instructions and define functions for them if so desired
     def self.init
@@ -40,7 +40,7 @@ module Arm
       [:b, :call , :swi].each do |inst|
         define_instruction_one(inst , CallInstruction)
       end
-      # create all possible brach instructions, but the CallInstruction demangles the 
+      # create all possible brach instructions, but the CallInstruction demangles the
       # code, and has opcode set to :b and :condition_code set to the condition
       CONDITIONS.each do |suffix|
         define_instruction_one("b#{suffix}".to_sym , CallInstruction)
@@ -53,7 +53,6 @@ module Arm
     end
 
     def self.class_for clazz
-      c_name = clazz.name
       my_module = self.class.name.split("::").first
       clazz_name = clazz.name.split("::").last
       if(my_module != Register )
@@ -65,13 +64,13 @@ module Arm
 
     #defining the instruction (opcode, symbol) as an given class.
     # the class is a Register::Instruction derived base class and to create machine specific function
-    #  an actual machine must create derived classes (from this base class) 
+    #  an actual machine must create derived classes (from this base class)
     # These instruction classes must follow a naming pattern and take a hash in the contructor
     #  Example, a mov() opcode  instantiates a Register::MoveInstruction
     #   for an Arm machine, a class Arm::MoveInstruction < Register::MoveInstruction exists, and it will
-    #    be used to define the mov on an arm machine. 
-    # This methods picks up that derived class and calls a define_instruction methods that can 
-    #   be overriden in subclasses 
+    #    be used to define the mov on an arm machine.
+    # This methods picks up that derived class and calls a define_instruction methods that can
+    #   be overriden in subclasses
     def self.define_instruction_one(inst , clazz ,  defaults = {} )
       clazz = class_for(clazz)
       create_method(inst) do |first , options = nil|
