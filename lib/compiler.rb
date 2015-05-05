@@ -2,8 +2,13 @@ module Compiler
 
   def self.compile expression , method , message
     exp_name = expression.class.name.split("::").last.sub("Expression","").downcase
-    puts "Expression #{exp_name}"
-    self.send "compile_#{exp_name}".to_sym , expression, method , message
+    #puts "Expression #{exp_name}"
+    begin
+      self.send "compile_#{exp_name}".to_sym , expression, method , message
+    rescue NoMethodError => e
+      puts exp_name
+      raise e
+    end
   end
 
 end

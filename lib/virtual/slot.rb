@@ -5,10 +5,10 @@ module Virtual
   # - the frame of the method that is executing (local variables): FrameSlot
   # - self as an object: SelfSlot
   # - a message that will be sent, NewMessageSlot
-  
+
   # additionally frame, self and return are slots in Message and NewMessage
 
-  class Slot
+  class Slot < Object
     MESSAGE_REGISTER = :r0
     SELF_REGISTER = :r1
     FRAME_REGISTER = :r2
@@ -31,7 +31,7 @@ module Virtual
       @value = value
     end
   end
-  
+
   class MessageSlot < Slot
     def initialize index , type = Mystery , value = nil
       super(index ,type , value )

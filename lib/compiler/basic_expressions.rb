@@ -12,7 +12,7 @@ module Compiler
 
 #    attr_reader :value
     def self.compile_integer expession , method , message
-      int = Virtual::IntegerConstant.new(value)
+      int = Virtual::IntegerConstant.new(expession.value)
       to = Virtual::NewReturn.new(Virtual::Integer , int)
       method.add_code Virtual::Set.new( to , int)
       to
@@ -41,14 +41,14 @@ module Compiler
 
 #    attr_reader  :name
     # compiling name needs to check if it's a variable and if so resolve it
-    # otherwise it's a method without args and a send is ussued.
+    # otherwise it's a method without args and a send is usued.
     # this makes the namespace static, ie when eval and co are implemented method needs recompilation
     def self.compile_name expession , method , message
       return Virtual::Self.new( Virtual::Mystery ) if expession.name == :self
       if method.has_var(expession.name)
         message.compile_get(method , expession.name )
       else
-        raise "Unimplemented #{self}"
+        raise "TODO unimplemented branch #{expession.class}(#{expession})"
         message.compile_send( method , expession.name ,  Virtual::Self.new( Virtual::Mystery ) )
       end
     end
