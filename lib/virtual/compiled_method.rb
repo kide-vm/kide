@@ -112,16 +112,16 @@ module Virtual
     # used to determine if a send must be issued
     def has_var name
       name = name.to_sym
-      var = @arg_names.find {|a| a.name == name }
-      var = @locals.find {|a| a.name == name } unless var
-      var = @tmps.find {|a| a.name == name } unless var
+      var = @arg_names.find {|a| a == name }
+      var = @locals.find {|a| a == name } unless var
+      var = @tmps.find {|a| a == name } unless var
       var
     end
 
     # determine whether this method has an argument by the name
     def has_arg name
       name = name.to_sym
-      var = @arg_names.find {|a| a.name == name }
+      var = @arg_names.find {|a| a == name }
       var
     end
 

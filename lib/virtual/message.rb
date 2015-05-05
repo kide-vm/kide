@@ -8,13 +8,13 @@ module Virtual
 
   # The methods that are there, are nevertheless meant to be called at compile time and generate code, rather than
   # executing it.
-  
+
   # The caller creates the Message and passes control to the receiver's method
 
   # The receiver create a new Frame to hold local and temporary variables and (later) creates default values for
   # arguments that were not passed
 
-  # How the actual finding of the method takes place (acording to the ruby rules) is not simple, but as there is a 
+  # How the actual finding of the method takes place (acording to the ruby rules) is not simple, but as there is a
   # guaranteed result (be it method_missing) it does not matter to the passing mechanism described
 
   # During compilation Message and frame objects are created to do type analysis
@@ -27,7 +27,7 @@ module Virtual
     NEW_MESSAGE_REG = :r3
 
     TMP_REG = :r4
-    
+
     def initialize me , normal , exceptional
       @me = me
       @next_normal = normal
@@ -42,7 +42,7 @@ module Virtual
     def new_frame
       raise self.inspect
     end
-    # 
+    #
     def compile_get method , name
       raise "CALLED"
       if method.has_arg(name)

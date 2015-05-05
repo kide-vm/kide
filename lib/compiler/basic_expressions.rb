@@ -73,8 +73,8 @@ module Compiler
 
     #attr_reader  :left, :right
     def self.compile_assignment expession , method , message
-      raise "must assign to NameExpression , not #{expession.left}" unless expession.left.instance_of? NameExpression
-      r = right.compile(method,message)
+      raise "must assign to NameExpression , not #{expession.left}" unless expession.left.instance_of? Ast::NameExpression
+      r = Compiler.compile(expession.right , method,message)
       raise "oh noo, nil from where #{expession.right.inspect}" unless r
       message.compile_set( method , expession.left.name , r )
     end

@@ -11,7 +11,9 @@ module VirtualHelper
   def check
     machine = Virtual::Machine.boot
     expressions = machine.compile_main @string_input
-    is = Sof::Writer.write(expressions).gsub("\n" , "*^*")
+    is = Sof::Writer.write(expressions)
+#    puts is
+    is.gsub!("\n" , "*^*")
     assert_equal is , @output
   end
 
