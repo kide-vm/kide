@@ -20,11 +20,11 @@ def foo()
 end
 foo()
 HERE
-    @output = "---RETURN_MARKER- &2 !ruby/object:Virtual::CompiledMethodRETURN_MARKER  name: :fooRETURN_MARKER  args: []RETURN_MARKER  locals: []RETURN_MARKER  tmps: []RETURN_MARKER  receiver: !ruby/object:Virtual::SelfRETURN_MARKER    index: 1RETURN_MARKER    type: &1 !ruby/class 'Virtual::Mystery'RETURN_MARKER  return_type: !ruby/object:Virtual::ReturnRETURN_MARKER    index: 0RETURN_MARKER    type: *1RETURN_MARKER  blocks:RETURN_MARKER  - &5 !ruby/object:Virtual::BlockRETURN_MARKER    method: *2RETURN_MARKER    name: :fooRETURN_MARKER    branch: RETURN_MARKER    codes:RETURN_MARKER    - !ruby/object:Virtual::MethodEnter {}RETURN_MARKER    - !ruby/object:Virtual::SetRETURN_MARKER      to: !ruby/object:Virtual::NewSelfRETURN_MARKER        index: 1RETURN_MARKER        type: *1RETURN_MARKER      from: &3 !ruby/object:Virtual::SelfRETURN_MARKER        index: 1RETURN_MARKER        type: *1RETURN_MARKER    - !ruby/object:Virtual::SetRETURN_MARKER      to: !ruby/object:Virtual::NewNameRETURN_MARKER        index: 3RETURN_MARKER        type: *1RETURN_MARKER      from: :putsRETURN_MARKER    - !ruby/object:Virtual::SetRETURN_MARKER      to: !ruby/object:Virtual::NewMessageSlotRETURN_MARKER        index: 4RETURN_MARKER        type: !ruby/class 'Virtual::Reference'RETURN_MARKER      from: &4 !ruby/object:Virtual::StringConstantRETURN_MARKER        string: HelloRETURN_MARKER    - !ruby/object:Virtual::MessageSendRETURN_MARKER      name: :putsRETURN_MARKER      me: *3RETURN_MARKER      args:RETURN_MARKER      - *4RETURN_MARKER  - !ruby/object:Virtual::BlockRETURN_MARKER    method: *2RETURN_MARKER    name: :foo_returnRETURN_MARKER    branch: RETURN_MARKER    codes:RETURN_MARKER    - !ruby/object:Virtual::MethodReturn {}RETURN_MARKER  current: *5RETURN_MARKER- !ruby/object:Virtual::ReturnRETURN_MARKER  index: 0RETURN_MARKER  type: *1RETURN_MARKER"
+    @output = "-Virtual::CompiledMethod(:name => :foo, :class_name => :Object)*^*  :arg_names []*^*  :locals []*^*  :tmps []*^*  :receiver Virtual::Self(:index => 3, :type => *1)*^*  :return_type Virtual::Return(:index => 5, :type => *1)*^*  :blocks -Virtual::Block(:length => -1, :name => :enter)*^*     :codes -Virtual::MethodEnter(:length => -1)*^*      -Virtual::NewMessage(:length => -1)*^*      -Virtual::Set()*^*        :to Virtual::NewSelf(:index => 3, :type => *1)*^*        :from &5 Virtual::Self(:index => 3, :type => *1)*^*      -Virtual::Set()*^*        :to Virtual::NewName(:index => 4, :type => *1)*^*        :from Virtual::StringConstant(:string => :puts)*^*      -Virtual::Set()*^*        :to &4 Virtual::Return(:index => 5, :type => &3 Virtual::Reference, :value => *2)*^*        :from &2 Virtual::StringConstant(:string => 'Hello')*^*      -Virtual::Set()*^*        :to &6 Virtual::NewMessageSlot(:index => 0, :type => &3 Virtual::Reference, :value => *4)*^*        :from &4 Virtual::Return(:index => 5, :type => &3 Virtual::Reference, :value => *2)*^*      -Virtual::MessageSend(:name => :puts)*^*        :me &5 Virtual::Self(:index => 3, :type => *1)*^*        :args [*6]*^*   -Virtual::Block(:length => -1, :name => :return)*^*     :codes -Virtual::MethodReturn(:length => -1)*^*-Virtual::Return(:index => 5, :type => &1 Virtual::Mystery)"
     check
   end
 
-  def test_class_function
+  def pest_class_function
     @string_input    = <<HERE
 def String.length(x)
   @length
@@ -41,7 +41,7 @@ def foo(x)
  2 + 5
 end
 HERE
-    @output =""
+    @output = "-Virtual::CompiledMethod(:name => :foo, :class_name => :Object)*^*  :arg_names [:x]*^*  :locals [:abba]*^*  :tmps []*^*  :receiver Virtual::Self(:index => 3, :type => &1 Virtual::Mystery)*^*  :return_type Virtual::Return(:index => 5, :type => &1 Virtual::Mystery)*^*  :blocks -Virtual::Block(:length => -1, :name => :enter)*^*     :codes -Virtual::MethodEnter(:length => -1)*^*      -Virtual::Set()*^*        :to &4 Virtual::Return(:index => 5, :type => &3 Virtual::Integer, :value => *2)*^*        :from &2 Virtual::IntegerConstant(:integer => 5)*^*      -Virtual::Set()*^*        :to Virtual::Return(:index => 5, :type => *1)*^*        :from Virtual::FrameSlot(:index => 1, :type => &3 Virtual::Integer, :value => *4)*^*      -Virtual::Set()*^*        :to &6 Virtual::Return(:index => 5, :type => &3 Virtual::Integer, :value => *5)*^*        :from &5 Virtual::IntegerConstant(:integer => 2)*^*      -Virtual::NewMessage(:length => -1)*^*      -Virtual::Set()*^*        :to Virtual::NewSelf(:index => 3, :type => &3 Virtual::Integer)*^*        :from &6 Virtual::Return(:index => 5, :type => &3 Virtual::Integer, :value => *5)*^*      -Virtual::Set()*^*        :to Virtual::NewName(:index => 4, :type => *1)*^*        :from Virtual::StringConstant(:string => :+)*^*      -Virtual::Set()*^*        :to &8 Virtual::Return(:index => 5, :type => &3 Virtual::Integer, :value => *7)*^*        :from &7 Virtual::IntegerConstant(:integer => 5)*^*      -Virtual::Set()*^*        :to &9 Virtual::NewMessageSlot(:index => 0, :type => &3 Virtual::Integer, :value => *8)*^*        :from &8 Virtual::Return(:index => 5, :type => &3 Virtual::Integer, :value => *7)*^*      -Virtual::MessageSend(:name => :+)*^*        :me &6 Virtual::Return(:index => 5, :type => &3 Virtual::Integer, :value => *5)*^*        :args [*9]*^*   -Virtual::Block(:length => -1, :name => :return)*^*     :codes -Virtual::MethodReturn(:length => -1)"
     check
   end
 
@@ -51,7 +51,7 @@ def foo()
   2 + 5
 end
 HERE
-    @output = ""
+    @output = "-Virtual::CompiledMethod(:name => :foo, :class_name => :Object)*^*  :arg_names []*^*  :locals []*^*  :tmps []*^*  :receiver Virtual::Self(:index => 3, :type => &1 Virtual::Mystery)*^*  :return_type Virtual::Return(:index => 5, :type => &1 Virtual::Mystery)*^*  :blocks -Virtual::Block(:length => -1, :name => :enter)*^*     :codes -Virtual::MethodEnter(:length => -1)*^*      -Virtual::Set()*^*        :to &4 Virtual::Return(:index => 5, :type => &3 Virtual::Integer, :value => *2)*^*        :from &2 Virtual::IntegerConstant(:integer => 2)*^*      -Virtual::NewMessage(:length => -1)*^*      -Virtual::Set()*^*        :to Virtual::NewSelf(:index => 3, :type => &3 Virtual::Integer)*^*        :from &4 Virtual::Return(:index => 5, :type => &3 Virtual::Integer, :value => *2)*^*      -Virtual::Set()*^*        :to Virtual::NewName(:index => 4, :type => *1)*^*        :from Virtual::StringConstant(:string => :+)*^*      -Virtual::Set()*^*        :to &6 Virtual::Return(:index => 5, :type => &3 Virtual::Integer, :value => *5)*^*        :from &5 Virtual::IntegerConstant(:integer => 5)*^*      -Virtual::Set()*^*        :to &7 Virtual::NewMessageSlot(:index => 0, :type => &3 Virtual::Integer, :value => *6)*^*        :from &6 Virtual::Return(:index => 5, :type => &3 Virtual::Integer, :value => *5)*^*      -Virtual::MessageSend(:name => :+)*^*        :me &4 Virtual::Return(:index => 5, :type => &3 Virtual::Integer, :value => *2)*^*        :args [*7]*^*   -Virtual::Block(:length => -1, :name => :return)*^*     :codes -Virtual::MethodReturn(:length => -1)"
     check
   end
 
@@ -65,11 +65,11 @@ def ofthen(n)
   end
 end
 HERE
-      @output = "---RETURN_MARKER- &2 !ruby/object:Virtual::CompiledMethodRETURN_MARKER  name: :ofthenRETURN_MARKER  args:RETURN_MARKER  - !ruby/object:Virtual::ArgumentRETURN_MARKER    name: :nRETURN_MARKER    type: !ruby/object:Virtual::Mystery {}RETURN_MARKER  locals:RETURN_MARKER  - !ruby/object:Virtual::LocalRETURN_MARKER    name: :isitRETURN_MARKER    type: &3 !ruby/object:Virtual::IntegerConstantRETURN_MARKER      integer: 42RETURN_MARKER  - &1 !ruby/object:Virtual::LocalRETURN_MARKER    name: :maybenotRETURN_MARKER    type: &4 !ruby/object:Virtual::IntegerConstantRETURN_MARKER      integer: 667RETURN_MARKER  tmps: []RETURN_MARKER  receiver: !ruby/object:Virtual::SelfReferenceRETURN_MARKER    clazz: RETURN_MARKER  return_type: *1RETURN_MARKER  blocks:RETURN_MARKER  - !ruby/object:Virtual::BlockRETURN_MARKER    method: *2RETURN_MARKER    name: :ofthenRETURN_MARKER    branch: RETURN_MARKER    codes:RETURN_MARKER    - !ruby/object:Virtual::MethodEnter {}RETURN_MARKER    - !ruby/object:Virtual::IsTrueBranchRETURN_MARKER      to: &5 !ruby/object:Virtual::BlockRETURN_MARKER        method: *2RETURN_MARKER        name: :ofthen_if_trueRETURN_MARKER        branch: RETURN_MARKER        codes:RETURN_MARKER        - !ruby/object:Virtual::FrameSetRETURN_MARKER          name: :isitRETURN_MARKER          value: *3RETURN_MARKER  - !ruby/object:Virtual::BlockRETURN_MARKER    method: *2RETURN_MARKER    name: :ofthen_if_falseRETURN_MARKER    branch: RETURN_MARKER    codes:RETURN_MARKER    - !ruby/object:Virtual::FrameSetRETURN_MARKER      name: :maybenotRETURN_MARKER      value: *4RETURN_MARKER    - !ruby/object:Virtual::UnconditionalBranchRETURN_MARKER      to: &6 !ruby/object:Virtual::BlockRETURN_MARKER        method: *2RETURN_MARKER        name: :ofthen_if_mergeRETURN_MARKER        branch: RETURN_MARKER        codes: []RETURN_MARKER  - *5RETURN_MARKER  - *6RETURN_MARKER  - !ruby/object:Virtual::BlockRETURN_MARKER    method: *2RETURN_MARKER    name: :ofthen_returnRETURN_MARKER    branch: RETURN_MARKER    codes:RETURN_MARKER    - !ruby/object:Virtual::MethodReturn {}RETURN_MARKER  current: *6RETURN_MARKER"
-      check
+    @output = "-Virtual::CompiledMethod(:name => :ofthen, :class_name => :Object)*^*  :arg_names [:n]*^*  :locals [:isit, :maybenot]*^*  :tmps []*^*  :receiver Virtual::Self(:index => 3, :type => &4 Virtual::Mystery)*^*  :return_type &6 Virtual::Return(:index => 5, :type => &1 Virtual::Integer)*^*    :value &7 Virtual::IntegerConstant(:integer => 667)*^*  :blocks -Virtual::Block(:length => -1, :name => :enter)*^*     :codes -Virtual::MethodEnter(:length => -1)*^*      -Virtual::Set()*^*        :to Virtual::Return(:index => 5, :type => *1, :value => *2)*^*        :from &2 Virtual::IntegerConstant(:integer => 0)*^*      -Virtual::IsTrueBranch(:to => *8)*^*   -Virtual::Block(:length => -1, :name => :if_false)*^*     :codes -Virtual::Set(:to => *6, :from => *7)*^*      -Virtual::Set()*^*        :to Virtual::Return(:index => 5, :type => *4)*^*        :from Virtual::FrameSlot(:index => 2, :type => *1, :value => *6)*^*      -Virtual::UnconditionalBranch(:to => *9)*^*   -&8 Virtual::Block(:length => -1, :name => :if_true)*^*     :codes -Virtual::Set()*^*        :to &5 Virtual::Return(:index => 5, :type => *1)*^*          :value &3 Virtual::IntegerConstant(:integer => 42)*^*        :from &3 Virtual::IntegerConstant(:integer => 42)*^*      -Virtual::Set()*^*        :to Virtual::Return(:index => 5, :type => *4)*^*        :from Virtual::FrameSlot(:index => 1, :type => *1)*^*          :value &5 Virtual::Return(:index => 5, :type => *1)*^*            :value &3 Virtual::IntegerConstant(:integer => 42)*^*   -&9 Virtual::Block(:length => -1, :name => :if_merge)*^*     :codes []*^*   -Virtual::Block(:length => -1, :name => :return)*^*     :codes -Virtual::MethodReturn(:length => -1)"
+    check
   end
 
-  def test_function_while
+  def pest_function_while
     @string_input    = <<HERE
 def fibonaccit(n)
   a = 0
@@ -83,7 +83,7 @@ HERE
     check
   end
 
-  def test_function_return
+  def pest_function_return
     @string_input    = <<HERE
 def retvar(n)
   i = 5
@@ -94,7 +94,7 @@ HERE
     check
   end
 
-  def test_function_return_if
+  def pest_function_return_if
     @string_input    = <<HERE
 def retvar(n)
   if( n > 5)
@@ -108,7 +108,7 @@ HERE
     check
   end
 
-  def test_function_return_while
+  def est_function_return_while
     @string_input    = <<HERE
 def retvar(n)
   while( n > 5) do
@@ -121,7 +121,7 @@ HERE
     check
   end
 
-  def test_function_big_while
+  def pest_function_big_while
     @string_input    = <<HERE
 def fibonaccit(n)
   a = 0
