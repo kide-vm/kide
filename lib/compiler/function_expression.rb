@@ -1,11 +1,11 @@
 module Compiler
 #    function attr_reader  :name, :params, :body , :receiver
-    def self.compile_function  expression, method , message
+    def self.compile_function  expression, method
       args = expression.params.collect do |p|
         raise "error, argument must be a identifier, not #{p}" unless p.is_a? Ast::NameExpression
         p.name
       end
-      r = expression.receiver ? expression.receiver.compile(method,message) : Virtual::Self.new()
+      r = expression.receiver ? Compiler.compile(expression.receiver, method ) : Virtual::Self.new()
       new_method = Virtual::CompiledMethod.new(expression.name , args , r )
       new_method.class_name = r.is_a?(Virtual::BootClass) ? r.name : method.class_name
       clazz = Virtual::BootSpace.space.get_or_create_class(new_method.class_name)
@@ -14,7 +14,7 @@ module Compiler
       #frame = frame.new_frame
       return_type = nil
       expression.body.each do |ex|
-        return_type = Compiler.compile(ex,new_method,message )
+        return_type = Compiler.compile(ex,new_method  )
         raise return_type.inspect if return_type.is_a? Virtual::Instruction
       end
       new_method.return_type = return_type

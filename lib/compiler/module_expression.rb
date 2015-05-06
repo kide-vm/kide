@@ -4,7 +4,7 @@ module Compiler
       return clazz
     end
 
-    def self.compile_class expression , method , message
+    def self.compile_class expression , method 
       clazz = ::Virtual::BootSpace.space.get_or_create_class expression.name
       puts "Created class #{clazz.name.inspect}"
       expression.expressions.each do |expr|
@@ -12,7 +12,7 @@ module Compiler
         # if not, execute it, but that does means we should be in salama (executable), not ruby. ie throw an error for now
         raise "only functions for now #{expr.inspect}" unless expr.is_a? Ast::FunctionExpression
         #puts "compiling expression #{expression}"
-        expression_value = Compiler.compile(expr,method,message )
+        expression_value = Compiler.compile(expr,method  )
         clazz.add_instance_method(expression_value)
         #puts "compiled expression #{expression_value.inspect}"
       end
