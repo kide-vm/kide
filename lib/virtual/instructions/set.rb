@@ -11,7 +11,6 @@ module Virtual
       raise "From must be slot or constant, not symbol #{from}" if from.is_a? Symbol
       @from = from
     end
-    attr_reader :to , :from
+    attr_reader :from , :to
   end
-
 end

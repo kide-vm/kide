@@ -105,35 +105,35 @@ module Virtual
       return new_b
     end
 
-
-
     # determine whether this method has a variable by the given name
     # variables are locals and and arguments
     # used to determine if a send must be issued
+    # return index of the name into the message if so
     def has_var name
       name = name.to_sym
-      var = @arg_names.find {|a| a == name }
-      var = @locals.find {|a| a == name } unless var
-      var = @tmps.find {|a| a == name } unless var
-      var
+      index = has_arg(name)
+      return index if index
+      has_local(name)
     end
 
     # determine whether this method has an argument by the name
     def has_arg name
-      name = name.to_sym
-      var = @arg_names.find {|a| a == name }
-      var
+      @arg_names.index name.to_sym
     end
 
-    def set_var name , var
-      v = has_var name
-      if( v )
-        v.type = var
-      else
-        v = Local.new(name , var)
-        @locals << v
-      end
-      v
+    # determine if method has a local variable or tmp (anonymous local) by given name
+    def has_local name
+      name = name.to_sym
+      index = @locals.index(name)
+      index = @tmps.index(name) unless index
+      index
+    end
+
+    def ensure_local name
+      index = has_local name
+      return index if index
+      @locals << name
+      @locals.length
     end
 
     def get_var name

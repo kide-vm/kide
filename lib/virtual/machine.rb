@@ -60,7 +60,7 @@ module Virtual
       syntax  = @parser.parse_with_debug(bytes)
       parts = Parser::Transform.new.apply(syntax)
       main = Virtual::CompiledMethod.main
-      Compiler.compile( parts , main , self.message )
+      Compiler.compile( parts , main )
     end
 
   end

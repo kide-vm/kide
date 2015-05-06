@@ -6,10 +6,9 @@ module Virtual
   # Derived classes make up the actual functionality of the machine.
   # All functions on the machine are captured as instances of instructions
   #
-  # It is actually the point of the virtual machine layer to express oo functionality in the set of instructions,
-  # thus defining a minimal set of instructions needed to implement oo.
+  # It is actually the point of the virtual machine layer to express oo functionality in the set of
+  #  instructions, thus defining a minimal set of instructions needed to implement oo.
 
-  # This is partly because jumping over this layer and doing in straight in assember was too big a step
   class Instruction < Virtual::Object
 
     # simple thought: don't recurse for Blocks, just check their names

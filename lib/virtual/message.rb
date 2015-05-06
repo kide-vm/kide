@@ -52,15 +52,5 @@ module Virtual
       end
       method.get_var(name)
     end
-
-    def compile_set method , name , val
-      method.set_var(name,val)
-      if method.has_arg(name)
-        method.add_code MessageSet.new(name , val )
-      else
-        method.add_code FrameSet.new(name , val )
-      end
-      method.get_var(name)
-    end
   end
 end
