@@ -5,7 +5,7 @@ class TestBasic < MiniTest::Test
 
   def test_number
     @string_input    = '42 '
-    @output = "-Virtual::NewReturn(:index => 5, :type => Virtual::Integer)*^*  :value Virtual::IntegerConstant(:integer => 42)"
+    @output = "-Virtual::Return(:index => 5, :type => Virtual::Integer)*^*  :value Virtual::IntegerConstant(:integer => 42)"
     check
   end
 
@@ -40,7 +40,7 @@ class TestBasic < MiniTest::Test
 
   def test_instance_variable
     @string_input    = '@foo_bar '
-    @output = "-Virtual::NewReturn(:index => 5, :type => Virtual::Mystery)"
+    @output = "-Virtual::Return(:index => 5, :type => Virtual::Mystery)"
     check
   end
 

@@ -13,7 +13,7 @@ module Compiler
 #    attr_reader :value
     def self.compile_integer expession , method , message
       int = Virtual::IntegerConstant.new(expession.value)
-      to = Virtual::NewReturn.new(Virtual::Integer , int)
+      to = Virtual::Return.new(Virtual::Integer , int)
       method.add_code Virtual::Set.new( to , int)
       to
     end
@@ -81,6 +81,6 @@ module Compiler
 
     def self.compile_variable expession, method , message
       method.add_code Virtual::InstanceGet.new(expession.name)
-      Virtual::NewReturn.new( Virtual::Mystery )
+      Virtual::Return.new( Virtual::Mystery )
     end
 end

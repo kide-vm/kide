@@ -21,6 +21,6 @@ module Compiler
       method.add_code Virtual::MessageSend.new(expession.name , me , compiled_args) #and pass control
       # the effect of the method is that the NewMessage Return slot will be filled, return it
       # (this is what is moved _inside_ above loop for such expressions that are calls (or constants))
-      Virtual::NewReturn.new( method.return_type )
+      Virtual::Return.new( method.return_type )
     end
 end

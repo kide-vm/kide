@@ -12,7 +12,7 @@ module VirtualHelper
     machine = Virtual::Machine.boot
     expressions = machine.compile_main @string_input
     is = Sof::Writer.write(expressions)
-#    puts is
+    #puts is
     is.gsub!("\n" , "*^*")
     assert_equal is , @output
   end

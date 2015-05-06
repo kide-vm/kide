@@ -2,14 +2,14 @@ require_relative "virtual_helper"
 
 class TestMethods < MiniTest::Test
   include VirtualHelper
-  
+
   def test_simplest_function
     @string_input    = <<HERE
-def foo(x) 
+def foo(x)
   5
 end
 HERE
-    @output = "---RETURN_MARKER- &1 !ruby/object:Virtual::CompiledMethodRETURN_MARKER  name: :fooRETURN_MARKER  args:RETURN_MARKER  - :xRETURN_MARKER  locals: []RETURN_MARKER  tmps: []RETURN_MARKER  receiver: !ruby/object:Virtual::SelfRETURN_MARKER    index: 1RETURN_MARKER    type: !ruby/class 'Virtual::Mystery'RETURN_MARKER  return_type: &2 !ruby/object:Virtual::ReturnRETURN_MARKER    index: 0RETURN_MARKER    type: !ruby/class 'Virtual::Integer'RETURN_MARKER  blocks:RETURN_MARKER  - &3 !ruby/object:Virtual::BlockRETURN_MARKER    method: *1RETURN_MARKER    name: :fooRETURN_MARKER    branch: RETURN_MARKER    codes:RETURN_MARKER    - !ruby/object:Virtual::MethodEnter {}RETURN_MARKER    - !ruby/object:Virtual::SetRETURN_MARKER      to: *2RETURN_MARKER      from: !ruby/object:Virtual::IntegerConstantRETURN_MARKER        integer: 5RETURN_MARKER  - !ruby/object:Virtual::BlockRETURN_MARKER    method: *1RETURN_MARKER    name: :foo_returnRETURN_MARKER    branch: RETURN_MARKER    codes:RETURN_MARKER    - !ruby/object:Virtual::MethodReturn {}RETURN_MARKER  current: *3RETURN_MARKER"
+    @output = "-Virtual::CompiledMethod(:name => :foo, :class_name => :Object)*^*  :arg_names [:x]*^*  :locals []*^*  :tmps []*^*  :receiver Virtual::Self(:index => 3, :type => Virtual::Mystery)*^*  :return_type &1 Virtual::Return(:index => 5, :type => Virtual::Integer)*^*    :value &2 Virtual::IntegerConstant(:integer => 5)*^*  :blocks -Virtual::Block(:length => -1, :name => :enter)*^*     :codes -Virtual::MethodEnter(:length => -1)*^*      -Virtual::Set(:to => *1, :from => *2)*^*   -Virtual::Block(:length => -1, :name => :return)*^*     :codes -Virtual::MethodReturn(:length => -1)"
     check
   end
 
@@ -36,8 +36,8 @@ HERE
 
   def test_function_ops
     @string_input    = <<HERE
-def foo(x) 
- abba = 5 
+def foo(x)
+ abba = 5
  2 + 5
 end
 HERE
@@ -87,7 +87,7 @@ HERE
     @string_input    = <<HERE
 def retvar(n)
   i = 5
-  return i 
+  return i
 end
 HERE
     @output = ""
@@ -101,7 +101,7 @@ def retvar(n)
     return 10
   else
     return 20
-  end 
+  end
 end
 HERE
     @output = ""
@@ -114,7 +114,7 @@ def retvar(n)
   while( n > 5) do
     n = n + 1
     return n
-  end 
+  end
 end
 HERE
     @output = ""
@@ -124,7 +124,7 @@ HERE
   def test_function_big_while
     @string_input    = <<HERE
 def fibonaccit(n)
-  a = 0 
+  a = 0
   b = 1
   while( n > 1 ) do
     tmp = a
@@ -137,5 +137,5 @@ end
 HERE
     @output = ""
     check
-  end  
+  end
 end
