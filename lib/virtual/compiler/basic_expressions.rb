@@ -13,30 +13,30 @@ module Virtual
 
   #    attr_reader :value
       def self.compile_integer expression , method
-        int = Virtual::IntegerConstant.new(expression.value)
-        to = Virtual::Return.new(Virtual::Integer , int)
-        method.add_code Virtual::Set.new( to , int)
+        int = IntegerConstant.new(expression.value)
+        to = Return.new(Integer , int)
+        method.add_code Set.new( to , int)
         to
       end
 
       def self.compile_true expression , method
-        value = Virtual::TrueConstant.new
-        to = Virtual::Return.new(Virtual::Reference , value)
-        method.add_code Virtual::Set.new( to , value )
+        value = TrueConstant.new
+        to = Return.new(Reference , value)
+        method.add_code Set.new( to , value )
         to
       end
 
       def self.compile_false expression , method
-        value = Virtual::FalseConstant.new
-        to = Virtual::Return.new(Virtual::Reference , value)
-        method.add_code Virtual::Set.new( to , value )
+        value = FalseConstant.new
+        to = Return.new(Reference , value)
+        method.add_code Set.new( to , value )
         to
       end
 
       def self.compile_nil expression , method
-        value = Virtual::NilConstant.new
-        to = Virtual::Return.new(Virtual::Reference , value)
-        method.add_code Virtual::Set.new( to , value )
+        value = NilConstant.new
+        to = Return.new(Reference , value)
+        method.add_code Set.new( to , value )
         to
       end
 
@@ -45,7 +45,7 @@ module Virtual
       # otherwise it's a method without args and a send is issued.
       # whichever way this goes the result is stored in the return slot (as all compiles)
       def self.compile_name expression , method
-        return Virtual::Self.new( Virtual::Mystery ) if expression.name == :self
+        return Self.new( Mystery ) if expression.name == :self
         name = expression.name
         if method.has_var(expression.name)
           # either an argument, so it's stored in message
@@ -62,19 +62,19 @@ module Virtual
 
 
       def self.compile_module expression , method
-        clazz = Virtual::BootSpace.space.get_or_create_class name
+        clazz = BootSpace.space.get_or_create_class name
         raise "uups #{clazz}.#{name}" unless clazz
-        to = Virtual::Return.new(Virtual::Reference , clazz )
-        method.add_code Virtual::Set.new( to , clazz )
+        to = Return.new(Reference , clazz )
+        method.add_code Set.new( to , clazz )
         to
       end
 
   #    attr_reader  :string
       def self.compile_string expression , method
-        value = Virtual::StringConstant.new(expression.string)
-        to = Virtual::Return.new(Virtual::Reference , value)
-        Virtual::BootSpace.space.add_object value
-        method.add_code Virtual::Set.new( to , value )
+        value = StringConstant.new(expression.string)
+        to = Return.new(Reference , value)
+        BootSpace.space.add_object value
+        method.add_code Set.new( to , value )
         to
       end
 
@@ -85,17 +85,17 @@ module Virtual
         raise "oh noo, nil from where #{expression.right.inspect}" unless r
         index = method.has_arg(name)
         if index
-          method.add_code Virtual::Set.new(Virtual::Return.new , Virtual::MessageSlot.new(index , r,type , r ))
+          method.add_code Set.new(Return.new , MessageSlot.new(index , r,type , r ))
         else
           index = method.ensure_local(expression.left.name)
-          method.add_code Virtual::Set.new(Virtual::Return.new , Virtual::FrameSlot.new(index , r.type , r ))
+          method.add_code Set.new(Return.new , FrameSlot.new(index , r.type , r ))
         end
         r
       end
 
       def self.compile_variable expression, method
-        method.add_code Virtual::InstanceGet.new(expression.name)
-        Virtual::Return.new( Virtual::Mystery )
+        method.add_code InstanceGet.new(expression.name)
+        Return.new( Mystery )
       end
   end
 end

@@ -12,8 +12,8 @@ module Virtual
 
       is = Compiler.compile(expression.cond, method )
       # TODO should/will use different branches for different conditions.
-      # just a scetch : cond_val = cond_val.is_true?(method) unless cond_val.is_a? Virtual::BranchCondition
-      method.add_code Virtual::IsTrueBranch.new( true_block )
+      # just a scetch : cond_val = cond_val.is_true?(method) unless cond_val.is_a? BranchCondition
+      method.add_code IsTrueBranch.new( true_block )
 
       # compile the true block (as we think of it first, even it is second in sequential order)
       method.current true_block
@@ -30,7 +30,7 @@ module Virtual
         last = Compiler.compile(part,method )
         raise part.inspect if last.nil?
       end
-      method.add_code Virtual::UnconditionalBranch.new( merge_block )
+      method.add_code UnconditionalBranch.new( merge_block )
 
       puts "compiled if: end"
       method.current merge_block

@@ -3,7 +3,7 @@ module Virtual
 
 #    return attr_reader  :expression
     def self.compile_return expression, scope ,method
-      Virtual::Reference.new
+      Reference.new
     end
     def old
       into = context.function
@@ -11,8 +11,8 @@ module Virtual
       expression_value = expression.compile(context)
       # copied from function expression: TODO make function
 
-      return_reg = Virtual::Integer.new(Virtual::RegisterMachine.instance.return_register)
-      if expression_value.is_a?(Virtual::IntegerConstant) or expression_value.is_a?(Virtual::ObjectConstant)
+      return_reg = Integer.new(RegisterMachine.instance.return_register)
+      if expression_value.is_a?(IntegerConstant) or expression_value.is_a?(ObjectConstant)
         return_reg.load into , expression_value
       else
         return_reg.move( into, expression_value ) if expression_value.register_symbol != return_reg.register_symbol
