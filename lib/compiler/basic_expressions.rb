@@ -39,14 +39,20 @@ module Compiler
       to
     end
 
-#    attr_reader  :name
+    #    attr_reader  :name
     # compiling name needs to check if it's a variable and if so resolve it
     # otherwise it's a method without args and a send is issued.
-    # this makes the namespace static, ie when eval and co are implemented method needs recompilation
+    # whichever way this goes the result is stored in the return slot (as all compiles)
     def self.compile_name expression , method
       return Virtual::Self.new( Virtual::Mystery ) if expression.name == :self
+      name = expression.name
       if method.has_var(expression.name)
-        message.compile_get(method , expression.name )
+        # either an argument, so it's stored in message
+        if( index = method.has_arg(name))
+          method.add_code MessageGet.new(name , index)
+        else # or a local so it is in the frame
+          method.add_code FrameGet.new(name , index)
+        end
       else
         call = Ast::CallSiteExpression.new(expression.name , [] ) #receiver self is implicit
         Compiler.compile(call, method)
