@@ -1,12 +1,29 @@
 module Compiler
 
+  # Compiling is the conversion of the AST into 2 things:
+  # - code (ie sequences of Instructions inside Blocks) carried by CompiledMethods
+  # - an object graph containing all the Methods, their classes and Constants
+  #
+  # Some compile methods just add code, some may add structure (ie Blocks) while
+  # others instantiate Class and Method objects
+  #
+  # Everything in ruby is an expression, ie returns a value. So the effect of every compile
+  # is that a value is put into the ReturnSlot of the current Message.
+  # The compile method (so every compile method) returns the value that it deposits which
+  # may be unknown Mystery value.
+  #
+  # The Compiler.compile uses a visitor patter to dispatch according to the class name of
+  # the expression. So a NameExpression is delegated to compile_name etc.
+  # This makes the dispatch extensible, ie Expressions may be added by external code,
+  # as long as matching compile methods are supplied too.
+  #
   def self.compile expression , method
     exp_name = expression.class.name.split("::").last.sub("Expression","").downcase
     #puts "Expression #{exp_name}"
     begin
       self.send "compile_#{exp_name}".to_sym , expression, method
     rescue NoMethodError => e
-      puts "no compile method foudn for " + exp_name
+      puts "No compile method found for " + exp_name
       raise e
     end
   end
