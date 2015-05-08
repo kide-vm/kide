@@ -1,12 +1,12 @@
 module Compiler
 
-  def self.compile expression , method 
+  def self.compile expression , method
     exp_name = expression.class.name.split("::").last.sub("Expression","").downcase
     #puts "Expression #{exp_name}"
     begin
-      self.send "compile_#{exp_name}".to_sym , expression, method 
+      self.send "compile_#{exp_name}".to_sym , expression, method
     rescue NoMethodError => e
-      puts exp_name
+      puts "no compile method foudn for " + exp_name
       raise e
     end
   end
@@ -14,7 +14,7 @@ module Compiler
 end
 
 require_relative "compiler/basic_expressions"
-require_relative "compiler/call_site_expression"
+require_relative "compiler/callsite_expression"
 require_relative "compiler/compound_expressions"
 require_relative "compiler/if_expression"
 require_relative "compiler/function_expression"

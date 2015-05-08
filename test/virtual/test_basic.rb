@@ -25,10 +25,9 @@ class TestBasic < MiniTest::Test
     check
   end
 
-  def pest_name
-    #TODO
+  def test_name
     @string_input    = 'foo '
-    @output = "---RETURN_MARKER- !ruby/object:Virtual::ReturnRETURN_MARKER  name: :returnRETURN_MARKER  type: !ruby/class 'Virtual::Mystery'RETURN_MARKER"
+    @output = "-Virtual::Return(:index => 5, :type => Virtual::Mystery)"
     check
   end
 

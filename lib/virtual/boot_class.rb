@@ -1,7 +1,7 @@
 require_relative "meta_class"
 
 module Virtual
-  
+
   # class is mainly a list of methods with a name (for now)
   # layout of object is seperated into Layout
   class BootClass < Virtual::ObjectConstant
@@ -22,8 +22,7 @@ module Virtual
 
     def get_instance_method fname
       fname = fname.to_sym
-      f = @instance_methods.detect{ |f| f.name == fname }
-      f
+      @instance_methods.detect{ |fun| fun.name == fname }
     end
 
     # get the method and if not found, try superclasses. raise error if not found

@@ -11,28 +11,28 @@ module Compiler
   # But in the future (in the one that holds great things) we optimize those unneccesay moves away
 
 #    attr_reader :value
-    def self.compile_integer expession , method
-      int = Virtual::IntegerConstant.new(expession.value)
+    def self.compile_integer expression , method
+      int = Virtual::IntegerConstant.new(expression.value)
       to = Virtual::Return.new(Virtual::Integer , int)
       method.add_code Virtual::Set.new( to , int)
       to
     end
 
-    def self.compile_true expession , method
+    def self.compile_true expression , method
       value = Virtual::TrueConstant.new
       to = Virtual::Return.new(Virtual::Reference , value)
       method.add_code Virtual::Set.new( to , value )
       to
     end
 
-    def self.compile_false expession , method
+    def self.compile_false expression , method
       value = Virtual::FalseConstant.new
       to = Virtual::Return.new(Virtual::Reference , value)
       method.add_code Virtual::Set.new( to , value )
       to
     end
 
-    def self.compile_nil expession , method
+    def self.compile_nil expression , method
       value = Virtual::NilConstant.new
       to = Virtual::Return.new(Virtual::Reference , value)
       method.add_code Virtual::Set.new( to , value )
@@ -41,20 +41,20 @@ module Compiler
 
 #    attr_reader  :name
     # compiling name needs to check if it's a variable and if so resolve it
-    # otherwise it's a method without args and a send is usued.
+    # otherwise it's a method without args and a send is issued.
     # this makes the namespace static, ie when eval and co are implemented method needs recompilation
-    def self.compile_name expession , method
-      return Virtual::Self.new( Virtual::Mystery ) if expession.name == :self
-      if method.has_var(expession.name)
-        message.compile_get(method , expession.name )
+    def self.compile_name expression , method
+      return Virtual::Self.new( Virtual::Mystery ) if expression.name == :self
+      if method.has_var(expression.name)
+        message.compile_get(method , expression.name )
       else
-        raise "TODO unimplemented branch #{expession.class}(#{expession})"
-        message.compile_send( method , expession.name ,  Virtual::Self.new( Virtual::Mystery ) )
+        call = Ast::CallSiteExpression.new(expression.name , [] ) #receiver self is implicit
+        Compiler.compile(call, method)
       end
     end
 
 
-    def self.compile_module expession , method
+    def self.compile_module expression , method
       clazz = Virtual::BootSpace.space.get_or_create_class name
       raise "uups #{clazz}.#{name}" unless clazz
       to = Virtual::Return.new(Virtual::Reference , clazz )
@@ -63,8 +63,8 @@ module Compiler
     end
 
 #    attr_reader  :string
-    def self.compile_string expession , method
-      value = Virtual::StringConstant.new(expession.string)
+    def self.compile_string expression , method
+      value = Virtual::StringConstant.new(expression.string)
       to = Virtual::Return.new(Virtual::Reference , value)
       Virtual::BootSpace.space.add_object value
       method.add_code Virtual::Set.new( to , value )
@@ -72,22 +72,22 @@ module Compiler
     end
 
     #attr_reader  :left, :right
-    def self.compile_assignment expession , method
-      raise "must assign to NameExpression , not #{expession.left}" unless expession.left.instance_of? Ast::NameExpression
-      r = Compiler.compile(expession.right , method )
-      raise "oh noo, nil from where #{expession.right.inspect}" unless r
+    def self.compile_assignment expression , method
+      raise "must assign to NameExpression , not #{expression.left}" unless expression.left.instance_of? Ast::NameExpression
+      r = Compiler.compile(expression.right , method )
+      raise "oh noo, nil from where #{expression.right.inspect}" unless r
       index = method.has_arg(name)
       if index
         method.add_code Virtual::Set.new(Virtual::Return.new , Virtual::MessageSlot.new(index , r,type , r ))
       else
-        index = method.ensure_local(expession.left.name)
+        index = method.ensure_local(expression.left.name)
         method.add_code Virtual::Set.new(Virtual::Return.new , Virtual::FrameSlot.new(index , r.type , r ))
       end
       r
     end
 
-    def self.compile_variable expession, method
-      method.add_code Virtual::InstanceGet.new(expession.name)
+    def self.compile_variable expression, method
+      method.add_code Virtual::InstanceGet.new(expression.name)
       Virtual::Return.new( Virtual::Mystery )
     end
 end
