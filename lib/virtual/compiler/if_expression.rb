@@ -1,4 +1,5 @@
-module Compiler
+module Virtual
+  module Compiler
 #    if - attr_reader  :cond, :if_true, :if_false
 
     def self.compile_if expression , method
@@ -37,4 +38,5 @@ module Compiler
       #TODO should return the union of the true and false types
       last
     end
+  end
 end

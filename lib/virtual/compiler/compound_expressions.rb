@@ -1,4 +1,5 @@
-module Compiler
+module Virtual
+  module Compiler
 
 #    attr_reader :values
     def self.compile_array expession, context
@@ -11,4 +12,5 @@ module Compiler
     def self.compile_hash context
       to.do
     end
+  end
 end

@@ -1,7 +1,8 @@
-module Compiler
+module Virtual
+  module Compiler
 
 #    while- attr_reader  :condition, :body
-    def self.compile_while expression, method 
+    def self.compile_while expression, method
       start = Virtual::Label.new("while_start")
       method.add_code start
       is = expression.condition.compile(method )
@@ -22,4 +23,5 @@ module Compiler
       method.current =  merge
       last
     end
+  end
 end

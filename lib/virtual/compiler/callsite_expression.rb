@@ -1,4 +1,5 @@
-module Compiler
+module Virtual
+  module Compiler
   # operators are really function calls
 
 #    call_site - attr_reader  :name, :args , :receiver
@@ -23,4 +24,5 @@ module Compiler
       # (this is what is moved _inside_ above loop for such expressions that are calls (or constants))
       Virtual::Return.new( method.return_type )
     end
+  end
 end

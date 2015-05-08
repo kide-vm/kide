@@ -1,10 +1,11 @@
-module Compiler
+module Virtual
+  module Compiler
 #    module attr_reader  :name ,:expressions
     def self.compile_module expression , context
       return clazz
     end
 
-    def self.compile_class expression , method 
+    def self.compile_class expression , method
       clazz = ::Virtual::BootSpace.space.get_or_create_class expression.name
       puts "Created class #{clazz.name.inspect}"
       expression.expressions.each do |expr|
@@ -19,4 +20,5 @@ module Compiler
 
       return clazz
     end
+  end
 end

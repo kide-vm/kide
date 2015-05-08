@@ -1,4 +1,5 @@
-module Compiler
+module Virtual
+  module Compiler
 
 #    return attr_reader  :expression
     def self.compile_return expression, scope ,method
@@ -19,4 +20,5 @@ module Compiler
       #function.set_return return_reg
       return return_reg
     end
+  end
 end

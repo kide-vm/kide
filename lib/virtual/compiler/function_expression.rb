@@ -1,4 +1,5 @@
-module Compiler
+module Virtual
+  module Compiler
 #    function attr_reader  :name, :params, :body , :receiver
     def self.compile_function  expression, method
       args = expression.params.collect do |p|
@@ -66,4 +67,5 @@ module Compiler
       context.function = parent_function
       function
     end
+  end
 end
