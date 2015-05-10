@@ -19,7 +19,7 @@ module Virtual
       #global objects (data)
       @objects = []
       @symbols = []
-      @frames = 100.times.collect{ ::Frame.new }
+      @frames = 100.times.collect{ ::Frame.new([],[])}
       @messages = 100.times.collect{ ::Message.new }
       @next_message = @messages.first
       @next_frame = @frames.first
