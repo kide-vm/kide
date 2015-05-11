@@ -8,8 +8,10 @@
 # "New" is slightly misleading in that normal operation only ever
 # recycles objects.
 
-class Space < Object
+module Parfait
+  class Space < Object
 
-  # ObjectSpace
-  # :each_object, :garbage_collect, :define_finalizer, :undefine_finalizer, :_id2ref, :count_objects
+    # ObjectSpace
+    # :each_object, :garbage_collect, :define_finalizer, :undefine_finalizer, :_id2ref, :count_objects
+  end
 end

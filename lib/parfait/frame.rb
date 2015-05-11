@@ -20,10 +20,12 @@
 # Also at runtime Messages and Frames remain completely "normal" objects. Ie have layouts and so on.
 # Which resolves the dichotomy of objects on the stack or heap. Sama sama.
 
-class Frame < Object
-  def initialize locals , temps
-    @locals = locals
-    @tmps = tmps
+module Parfait
+  class Frame < Object
+    def initialize locals , temps
+      @locals = locals
+      @tmps = tmps
+    end
+    attr_accessor :locals , :tmps
   end
-  attr_accessor :locals , :tmps
 end

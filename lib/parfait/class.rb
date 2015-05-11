@@ -8,7 +8,9 @@
 # The Layout lists the names of the instance variables
 # The class keeps a list of instance methods, these have a name and code
 
-class Class < Module
-  # ruby 2.1 list (just for reference, keep at bottom)
-  #:allocate, :new, :superclass
+module Parfait
+  class Class < Module
+    # ruby 2.1 list (just for reference, keep at bottom)
+    #:allocate, :new, :superclass
+  end
 end
