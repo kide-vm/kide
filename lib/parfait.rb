@@ -7,6 +7,7 @@ require "parfait/array"
 require "parfait/string"
 require "parfait/message"
 require "parfait/frame"
+require "parfait/space"
 
 # Below we define functions (in different classes) that are not part of the run-time
 # They are used for the boot process, ie when this codes executes in the vm that builds salama

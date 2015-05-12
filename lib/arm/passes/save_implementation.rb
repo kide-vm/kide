@@ -14,5 +14,5 @@ module Arm
       end
     end
   end
-  Virtual::BootSpace.space.add_pass "Arm::SaveImplementation"
+  Virtual::Machine.instance.add_pass "Arm::SaveImplementation"
 end

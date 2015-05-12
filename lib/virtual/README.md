@@ -20,7 +20,7 @@ also in an similar way that objects have their classes at runtime.
 *Ast* instances get created by the salama-reader gem from source. 
 Here we add compile functions to ast classes and  comile the ast layer into Virtual:: objects
 
-The main objects are BootSpace (lots of objects), BootClass (represents a class), 
+The main objects are Space (lots of objects), BootClass (represents a class), 
 CompiledMethod (with Blocks and Instruction).
 
 **Virtual** Instructions get further transformed into **register** instructions.

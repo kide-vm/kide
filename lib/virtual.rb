@@ -7,7 +7,6 @@ require "virtual/slots/slot"
 require "virtual/type"
 require "virtual/object"
 require "virtual/constants"
-require "virtual/boot_space"
 # the passes _are_ order dependant
 require "virtual/passes/send_implementation"
 require "virtual/passes/get_implementation"

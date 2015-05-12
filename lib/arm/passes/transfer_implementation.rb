@@ -9,5 +9,5 @@ module Arm
       end
     end
   end
-  Virtual::BootSpace.space.add_pass "Arm::TransferImplementation"
+  Virtual::Machine.instance.add_pass "Arm::TransferImplementation"
 end

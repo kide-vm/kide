@@ -6,7 +6,7 @@ module Virtual
     end
 
     def self.compile_class expression , method
-      clazz = ::BootSpace.space.get_or_create_class expression.name
+      clazz = ::Space.space.get_or_create_class expression.name
       puts "Created class #{clazz.name.inspect}"
       expression.expressions.each do |expr|
         # check if it's a function definition and add

@@ -62,7 +62,7 @@ module Virtual
 
 
       def self.compile_module expression , method
-        clazz = BootSpace.space.get_or_create_class name
+        clazz = Space.space.get_or_create_class name
         raise "uups #{clazz}.#{name}" unless clazz
         to = Return.new(Reference , clazz )
         method.add_code Set.new( to , clazz )
@@ -73,7 +73,7 @@ module Virtual
       def self.compile_string expression , method
         value = StringConstant.new(expression.string)
         to = Return.new(Reference , value)
-        BootSpace.space.add_object value
+        Space.space.add_object value
         method.add_code Set.new( to , value )
         to
       end

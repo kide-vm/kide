@@ -18,5 +18,5 @@ module Register
       end
     end
   end
-  Virtual::BootSpace.space.add_pass "Register::ReturnImplementation"
+  Virtual::Machine.instance.add_pass "Register::ReturnImplementation"
 end

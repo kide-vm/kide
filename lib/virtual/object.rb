@@ -26,7 +26,7 @@ module Virtual
   #   Object                  Object
   #   BootClass               Class
   #   MetaClass               self/Object
-  #   BootSpace               ObjectSpace
+  #   Space               ObjectSpace
   #   CompiledMethod          Function
   #   (ruby)Array             Array
   #         String            String
@@ -68,7 +68,7 @@ module Virtual
         @@HASH.merge :keys => object.keys , :values => object.values
       when Virtual::BootClass
         @@CLAZZ
-      when Virtual::BootSpace
+      when Virtual::Space
         @@SPACE
       else
         raise "linker encounters unknown class #{object.class}"

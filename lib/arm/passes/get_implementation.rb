@@ -9,5 +9,5 @@ module Arm
       end
     end
   end
-  Virtual::BootSpace.space.add_pass "Arm::GetImplementation"
+  Virtual::Machine.instance.add_pass "Arm::GetImplementation"
 end

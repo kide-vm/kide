@@ -15,5 +15,5 @@ module Arm
       end
     end
   end
-  Virtual::BootSpace.space.add_pass "Arm::CallImplementation"
+  Virtual::Machine.instance.add_pass "Arm::CallImplementation"
 end

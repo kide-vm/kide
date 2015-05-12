@@ -29,7 +29,7 @@ module Builtin
         var_name = get_function.args.first
         return_to = get_function.return_type
 
-        index_function = ::Virtual::BootSpace.space.get_or_create_class(:Object).resolve_method(:index_of)
+        index_function = ::Virtual::Space.space.get_or_create_class(:Object).resolve_method(:index_of)
 #        get_function.push( [me] )
 #        index = get_function.call( index_function )
 

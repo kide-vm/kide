@@ -5,7 +5,7 @@ require "yaml"
 module VirtualHelper
   # need a code generator, for arm
   def setup
-#    @object_space = Boot::BootSpace.new "Arm"
+#    @object_space = Boot::Space.new "Arm"
   end
 
   def check

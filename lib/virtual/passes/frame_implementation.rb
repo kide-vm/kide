@@ -23,7 +23,7 @@ module Virtual
         else
           next
         end
-        space = BootSpace.space
+        space = Space.space
         slot = Virtual::Slot
         # a place to store a reference to the space, we grab the next_frame from the space
         space_tmp = Register::RegisterReference.new(Virtual::Message::TMP_REG)
@@ -46,5 +46,5 @@ module Virtual
       end
     end
   end
-  Virtual::BootSpace.space.add_pass "Virtual::FrameImplementation"
+  Virtual::Machine.instance.add_pass "Virtual::FrameImplementation"
 end

@@ -35,15 +35,92 @@ module Virtual
     def initialize
       @parser  = Parser::Salama.new
       the_end = Halt.new
+      @passes = [ "Virtual::SendImplementation" ]
+      @space =  Parfait::Space.new
 #      @message = Message.new(the_end , the_end , :Object)
     end
-    attr_reader :message
+    attr_reader :message , :passes , :space
+
+    def run_passes
+      @passes.each do |pass_class|
+        blocks = [@init] + main.blocks
+        @classes.values.each do |c|
+          c.instance_methods.each {|f| blocks += f.blocks  }
+        end
+        #puts "running #{pass_class}"
+        all.each do |block|
+          pass = eval pass_class
+          raise "no such pass-class as #{pass_class}" unless pass
+          pass.new.run(block)
+        end
+      end
+    end
+
+    # Passes may be added to by anyone who wants
+    # This is intentionally quite flexible, though one sometimes has to watch the order of them
+    # most ordering is achieved by ordering the requires and using add_pass
+    # but more precise control is possible with the _after and _before versions
+
+    def add_pass pass
+      @passes << pass
+    end
+    def add_pass_after( pass , after)
+      index = @passes.index(after)
+      raise "No such pass (#{pass}) to add after: #{after}" unless index
+      @passes.insert(index+1 , pass)
+    end
+    def add_pass_before( pass , after)
+      index = @passes.index(after)
+      raise "No such pass to add after: #{after}" unless index
+      @passes.insert(index , pass)
+    end
 
     def self.boot
-      machine = Machine.new
-      BootSpace.space.boot_classes! # boot is a verb here
-      machine.boot
-      machine
+      instance = self.instance
+      instance.boot_classes! # boot is a verb here
+      instance.boot
+      instance
+    end
+    def self.instance
+      @instance ||= Machine.new
+    end
+
+    # boot the classes, ie create a minimal set of classes with a minimal set of functions
+    # minimal means only that which can not be coded in ruby
+    # CompiledMethods are grabbed from respective modules by sending the method name. This should return the
+    # implementation of the method (ie a method object), not actually try to implement it (as that's impossible in ruby)
+    def boot_classes!
+      # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we have to define some
+      # dummies, just for the other to compile
+      obj = get_or_create_class :Object
+      [:index_of , :_get_instance_variable , :_set_instance_variable].each do |f|
+        obj.add_instance_method Builtin::Object.send(f , nil)
+      end
+      obj = get_or_create_class :Kernel
+      # create main first, __init__ calls it
+      @main = Builtin::Kernel.send(:main , @context)
+      obj.add_instance_method @main
+      underscore_init = Builtin::Kernel.send(:__init__ ,nil) #store , so we don't have to resolve it below
+      obj.add_instance_method underscore_init
+      [:putstring,:exit,:__send].each do |f|
+        obj.add_instance_method Builtin::Kernel.send(f , nil)
+      end
+      # and the @init block in turn _jumps_ to __init__
+      # the point of which is that by the time main executes, all is "normal"
+      @init = Virtual::Block.new(:_init_ , nil )
+      @init.add_code(Register::RegisterMain.new(underscore_init))
+      obj = get_or_create_class :Integer
+      [:putint,:fibo].each do |f|
+        obj.add_instance_method Builtin::Integer.send(f , nil)
+      end
+      obj = get_or_create_class :String
+      [:get , :set , :puts].each do |f|
+        obj.add_instance_method Builtin::String.send(f , nil)
+      end
+      obj = get_or_create_class :Array
+      [:get , :set , :push].each do |f|
+        obj.add_instance_method Builtin::Array.send(f , nil)
+      end
     end
 
     def boot

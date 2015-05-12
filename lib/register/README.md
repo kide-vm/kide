@@ -7,7 +7,7 @@ There is a mechanism for an actual machine (derived class) to generate harware s
 plain ones in this directory don't assemble to binary). Currently there is only the Arm module to actually do
 that.
 
-The elf module is used to generate the actual binary from the final BootSpace. BootSpace is a virtual class representing
+The elf module is used to generate the actual binary from the final Space. Space is a virtual class representing
 all objects that will be in the executable. Other than CompiledMethods, objects get transformed to data.
 
 But CompiledMethods, which are made up of Blocks, are compiled into a stream of bytes, which are the binary code for the

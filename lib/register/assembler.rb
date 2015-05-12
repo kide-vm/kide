@@ -12,7 +12,7 @@ module Register
     TYPE_INT =  1
     TYPE_BITS = 4
     TYPE_LENGTH = 6
-    
+
     def initialize space
       @space = space
       @objects = {}
@@ -41,7 +41,7 @@ module Register
       begin
         link
         @stream = StringIO.new
-        mid , main = @objects.find{|k,objekt| objekt.is_a?(Virtual::CompiledMethod) and (objekt.name == :__init__ )}
+        #TODOmid , main = @objects.find{|k,objekt| objekt.is_a?(Virtual::CompiledMethod) and (objekt.name == :__init__ )}
         initial_jump = @space.init
         initial_jump.codes.each do |code|
           code.assemble( @stream )
@@ -54,7 +54,7 @@ module Register
           next if objekt.is_a? Virtual::CompiledMethod
           assemble_object( objekt )
         end
-      rescue LinkException => e
+      rescue LinkException
         # knowing that we fix the problem, we hope to get away with retry.
         retry
       end
@@ -63,7 +63,7 @@ module Register
     end
 
     def assemble_object obj
-      #puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.mem_length}" 
+      #puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.mem_length}"
       raise "Assemble #{obj.class} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}" if @stream.length != obj.position
       clazz = obj.class.name.split("::").last
       send("assemble_#{clazz}".to_sym , obj)
@@ -111,11 +111,11 @@ module Register
       assemble_self( hash , [ hash.keys , hash.values ] )
     end
 
-    def assemble_BootSpace(space)
+    def assemble_Space(space)
       assemble_self(space , [space.classes,space.objects, space.symbols,space.messages,space.next_message,space.next_frame] )
     end
 
-    def assemble_BootClass(clazz)
+    def assemble_Class(clazz)
       assemble_self( clazz , [clazz.name , clazz.super_class_name, clazz.instance_methods] )
     end
 
@@ -179,7 +179,7 @@ module Register
     end
     def add_Array( array )
       # also array has constant overhead, the padded helper fixes it to multiple of 8
-      array.each do |elem| 
+      array.each do |elem|
         add_object(elem)
       end
     end
@@ -189,7 +189,7 @@ module Register
       add_object(hash.values)
     end
 
-    def add_BootSpace(space)
+    def add_Space(space)
       add_object(space.main)
       add_object(space.classes)
       add_object(space.objects)
@@ -199,7 +199,7 @@ module Register
       add_object(space.next_frame)
     end
 
-    def add_BootClass(clazz)
+    def add_Class(clazz)
       add_object(clazz.name )
       add_object(clazz.super_class_name)
       add_object(clazz.instance_methods)
@@ -214,7 +214,7 @@ module Register
     def add_StringConstant(sc)
     end
 
-    private 
+    private
 
     # write means we write the resulting address straight into the assembler stream (ie don't return it)
     # object means the object of which we write the address

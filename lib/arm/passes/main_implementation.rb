@@ -11,5 +11,5 @@ module Arm
       end
     end
   end
-  Virtual::BootSpace.space.add_pass "Arm::MainImplementation"
+  Virtual::Machine.instance.add_pass "Arm::MainImplementation"
 end

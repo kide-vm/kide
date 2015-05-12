@@ -40,7 +40,7 @@ module Parfait
       method = get_instance_method(m_name)
       unless method
         unless( @name == :Object)
-          supr = BootSpace.space.get_or_create_class(@super_class_name)
+          supr = Space.space.get_or_create_class(@super_class_name)
           method = supr.resolve_method(m_name)
         end
       end

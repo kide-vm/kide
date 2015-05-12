@@ -7,10 +7,10 @@ class HelloTest < MiniTest::Test
     machine = Virtual::Machine.boot
     expressions = machine.compile_main @string_input
 
-    writer = Elf::ObjectWriter.new(Virtual::BootSpace.space)
+    writer = Elf::ObjectWriter.new(Virtual::Space.space)
     writer.save "hello.o"
 #    puts Sof::Writer.write(expressions)
-    puts Sof::Writer.write(Virtual::BootSpace.space)
+    puts Sof::Writer.write(Virtual::Space.space)
   end
 
   def qtest_simplest_function

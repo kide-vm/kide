@@ -16,13 +16,12 @@ module Elf
 
       @text = Elf::TextSection.new(".text")
       @object.add_section @text
-      
+
       @object_space.run_passes
       assembler = Register::Assembler.new(@object_space)
-      set_text assembler.assemble      
+      set_text assembler.assemble
 
-      # for debug add labels to the block positions 
-      blocks = []
+      # for debug add labels to the block positions
       space.classes.values.each do |clazz| 
         clazz.instance_methods.each do |f|
           f.blocks.each do |b|
@@ -51,7 +50,7 @@ module Elf
     end
 
     def save(filename)
-      to = File.open(filename, 'wb') 
+      to = File.open(filename, 'wb')
       @object.write to
       to.close
     end

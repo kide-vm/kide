@@ -26,7 +26,7 @@ module Virtual
           else
             # note: this is the current view: call internal send, even the method name says else
             # but send is "special" and accesses the internal method name and resolves.
-            kernel = Virtual::BootSpace.space.get_or_create_class(:Kernel)
+            kernel = Virtual::Space.space.get_or_create_class(:Kernel)
             method = kernel.get_instance_method(:__send)
             new_codes << MethodCall.new( method )
             raise "unimplemented #{code}"

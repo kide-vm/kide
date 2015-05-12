@@ -9,5 +9,5 @@ module Arm
       end
     end
   end
-  Virtual::BootSpace.space.add_pass "Arm::ConstantImplementation"
+  Virtual::Machine.instance.add_pass "Arm::ConstantImplementation"
 end

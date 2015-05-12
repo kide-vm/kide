@@ -23,5 +23,5 @@ module Register
       end
     end
   end
-  Virtual::BootSpace.space.add_pass "Register::CallImplementation"
+  Virtual::Machine.instance.add_pass "Register::CallImplementation"
 end
