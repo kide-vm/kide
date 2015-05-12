@@ -19,7 +19,7 @@ And thus parfait can be used at run-time.
 It's too simple: just slips off the mind like a fish into water.
 
 Parfait has a brother, the Builtin module. Builtin contains everything that can not be coded in ruby,
-but we still need (things like array access).
+but we still need (things like List access).
 
 #### Example: Message send
 

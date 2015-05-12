@@ -1,10 +1,10 @@
-# almost simplest hash imaginable. make good use of arrays
+# almost simplest hash imaginable. make good use of Lists
 
 module Parfait
-  class Hash < Object
+  class Dictionary < Object
     def initialize
-      @keys = Array.new_object()
-      @values = Array.new_object()
+      @keys = List.new_object()
+      @values = List.new_object()
     end
     def values()
       @values

@@ -3,7 +3,7 @@ require_relative "../helper"
 class TestDictionary < MiniTest::Test
 
   def setup
-    @lookup = ::Parfait::Hash.new
+    @lookup = ::Parfait::Dictionary.new
   end
   def test_list_create
     assert @lookup.empty?

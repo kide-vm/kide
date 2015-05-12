@@ -106,7 +106,7 @@ end
     Virtual::Object.new.padded_words(2)
   end
 end
-Parfait::Hash.class_eval do
+Parfait::Dictionary.class_eval do
   include Positioned
   HASH = { :names => [:keys,:values] , :types => [Virtual::Reference,Virtual::Reference]}
   def layout
@@ -116,7 +116,7 @@ Parfait::Hash.class_eval do
     Virtual::Object.new.padded_words(2)
   end
 end
-::Parfait::Array.class_eval do
+::Parfait::List.class_eval do
   include Positioned
   def layout
     Virtual::Object.layout

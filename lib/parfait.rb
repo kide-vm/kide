@@ -2,8 +2,8 @@ require "parfait/value"
 require "parfait/object"
 require "parfait/module"
 require "parfait/class"
-require "parfait/hash"
-require "parfait/array"
+require "parfait/dictionary"
+require "parfait/list"
 require "parfait/string"
 require "parfait/message"
 require "parfait/frame"
@@ -43,7 +43,7 @@ class Parfait::Object
 end
 class Parfait::Class
 end
-class Parfait::Array
+class Parfait::List
   def length
     internal_object_length
   end

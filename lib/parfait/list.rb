@@ -1,10 +1,10 @@
 
 
 module Parfait
-  class Array < Object
+  class List < Object
 
     # push means add to the end
-    # this automatically grows the array
+    # this automatically grows the List
     def push value
       self.set( length , value)
     end
@@ -40,7 +40,7 @@ module Parfait
         index += 1
       end
     end
-    #many basic array functions can not be defined in ruby, such as
+    #many basic List functions can not be defined in ruby, such as
     # get/set/length/add/delete
     # so they must be defined as CompiledMethods in Builtin::Kernel
 

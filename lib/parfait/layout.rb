@@ -14,8 +14,8 @@
 
 # In other words, the Layout is a list of names that describe
 # the values stored in an actual object.
-# The object is an array of values of length n and
-# the Layout is an array of names of length n
+# The object is an List of values of length n and
+# the Layout is an List of names of length n
 # Together they turn the object into a hash like structure
 
 module Parfait

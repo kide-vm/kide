@@ -15,7 +15,7 @@ module Parfait
   # it is a collection of objects, some of which are data, some classes, some functions
 
   # The main entry is a function called (of all things) "main", This _must be supplied by the compling
-  # There is a start and exit block that call main, which receives an array of strings
+  # There is a start and exit block that call main, which receives an List of strings
 
   # While data ususally would live in a .data section, we may also "inline" it into the code
   # in an oo system all data is represented as objects
@@ -24,7 +24,7 @@ module Parfait
 
     def initialize
       super()
-      @classes = Parfait::Hash.new_object
+      @classes = Parfait::Dictionary.new_object
       #global objects (data)
       @objects = []
       @symbols = []

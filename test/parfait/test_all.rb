@@ -1,2 +1,2 @@
-require_relative "test_array"
-require_relative "test_hash"
+require_relative "test_list"
+require_relative "test_dictionary"
