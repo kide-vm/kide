@@ -24,7 +24,7 @@ end
 class Parfait::Object
   include FakeMem
   def self.new_object *args
-    puts "I am #{self}"
+    #puts "I am #{self}"
     object = self.new(*args)
     object
   end
@@ -38,7 +38,7 @@ class Parfait::Object
     @memory[index] = value
   end
   def internal_object_grow(index)
-    @memory[index] = niL
+    @memory[index] = nil
   end
 end
 class Parfait::Class

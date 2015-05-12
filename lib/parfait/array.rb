@@ -37,6 +37,7 @@ module Parfait
       internal_object_grow(length)
       while( index < self.length )
         internal_object_set( index , nil)
+        index += 1
       end
     end
     #many basic array functions can not be defined in ruby, such as
