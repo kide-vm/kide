@@ -92,11 +92,11 @@ module Virtual
     def boot_classes!
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we have to define some
       # dummies, just for the other to compile
-      obj = get_or_create_class :Object
+      obj = @space.get_or_create_class :Object
       [:index_of , :_get_instance_variable , :_set_instance_variable].each do |f|
         obj.add_instance_method Builtin::Object.send(f , nil)
       end
-      obj = get_or_create_class :Kernel
+      obj = @space.get_or_create_class :Kernel
       # create main first, __init__ calls it
       @main = Builtin::Kernel.send(:main , @context)
       obj.add_instance_method @main
@@ -107,13 +107,13 @@ module Virtual
       end
       # and the @init block in turn _jumps_ to __init__
       # the point of which is that by the time main executes, all is "normal"
-      @init = Virtual::Block.new(:_init_ , nil )
+      @init = Block.new(:_init_ , nil )
       @init.add_code(Register::RegisterMain.new(underscore_init))
-      obj = get_or_create_class :Integer
+      obj = @space.get_or_create_class :Integer
       [:putint,:fibo].each do |f|
         obj.add_instance_method Builtin::Integer.send(f , nil)
       end
-      obj = get_or_create_class :String
+      obj = @space.get_or_create_class :String
       [:get , :set , :puts].each do |f|
         obj.add_instance_method Builtin::String.send(f , nil)
       end

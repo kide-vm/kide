@@ -23,19 +23,28 @@ end
 
 class Parfait::Object
   include FakeMem
-  def self.new_object &args
+  def self.new_object *args
     puts "I am #{self}"
     object = self.new(*args)
     object
   end
-  def object_length
+  def internal_object_length
     @memory.length
+  end
+  def internal_object_get(index)
+    @memory[index]
+  end
+  def internal_object_set(index , value)
+    @memory[index] = value
+  end
+  def internal_object_grow(index)
+    @memory[index] = niL
   end
 end
 class Parfait::Class
 end
 class Parfait::Array
   def length
-    object_length
+    internal_object_length
   end
 end

@@ -12,7 +12,7 @@
 # may be added to any object at run-time
 
 module Parfait
-  class Module
+  class Module < Object
     # :<, :<=, :>, :>=, :included_modules, :include?, :name, :ancestors, :instance_methods, :public_instance_methods,
     # :protected_instance_methods, :private_instance_methods, :constants, :const_get, :const_set, :const_defined?,
     # :const_missing, :class_variables, :remove_class_variable, :class_variable_get, :class_variable_set,

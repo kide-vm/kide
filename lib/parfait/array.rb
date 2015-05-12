@@ -2,6 +2,43 @@
 
 module Parfait
   class Array < Object
+
+    # push means add to the end
+    # this automatically grows the array
+    def push value
+      self.set( length , value)
+    end
+
+    def set( index , value)
+      raise "negative index for set #{len}" if index < 0
+      if index >= self.length
+        grow_to(index)
+      end
+      internal_object_set( index , value)
+    end
+
+    def get(index)
+      raise "negative index for get #{len}" if index < 0
+      if index >= self.length
+        return nil
+      else
+        return internal_object_get(index)
+      end
+    end
+
+    def empty?
+      self.length == 0
+    end
+
+    def grow_to(len)
+      raise "negative length for grow #{len}" if len < 0
+      return unless len > self.length
+      index = self.length
+      internal_object_grow(length)
+      while( index < self.length )
+        internal_object_set( index , nil)
+      end
+    end
     #many basic array functions can not be defined in ruby, such as
     # get/set/length/add/delete
     # so they must be defined as CompiledMethods in Builtin::Kernel

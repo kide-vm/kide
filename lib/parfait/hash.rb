@@ -23,7 +23,7 @@ module Parfait
     def get(key)
       index = key_index(key)
       if( index )
-        @values[index]
+        @values.get(index)
       else
         nil
       end
@@ -37,7 +37,7 @@ module Parfait
       index = 0
       found = nil
       while(index < len)
-        if( @keys[index] == key)
+        if( @keys.get(index) == key)
           found = index
           break
         end
@@ -49,7 +49,7 @@ module Parfait
     def set(key , value)
       index = key_index(key)
       if( index )
-        @keys[index] = value
+        @keys.set(index , value)
       else
         @keys.push(key)
         @values.push(value)
