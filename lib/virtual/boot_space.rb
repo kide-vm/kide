@@ -1,4 +1,3 @@
-require_relative "boot_class"
 require "register/builtin/object"
 
 module Virtual

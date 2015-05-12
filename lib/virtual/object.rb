@@ -1,10 +1,5 @@
 require_relative "type"
-require "parfait/message"
-require "parfait/frame"
-require "parfait/hash"
-require "parfait/array"
-require "parfait/string"
-require "parfait/frame"
+require "parfait"
 
 module Positioned
   def position
