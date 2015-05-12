@@ -3,8 +3,8 @@
 module Parfait
   class Hash < Object
     def initialize
-      @keys = Array.new()
-      @values = Array.new()
+      @keys = Array.new_object()
+      @values = Array.new_object()
     end
     def values()
       @values

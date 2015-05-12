@@ -14,7 +14,7 @@ module Virtual
 
     def initialize
       super()
-      @classes = Parfait::Hash.new
+      @classes = Parfait::Hash.new_object
       #global objects (data)
       @objects = []
       @symbols = []
