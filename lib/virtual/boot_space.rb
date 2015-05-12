@@ -19,8 +19,8 @@ module Virtual
       #global objects (data)
       @objects = []
       @symbols = []
-      @frames = 100.times.collect{ ::Frame.new([],[])}
-      @messages = 100.times.collect{ ::Message.new }
+      @frames = 100.times.collect{ ::Parfait::Frame.new([],[])}
+      @messages = 100.times.collect{ ::Parfait::Message.new }
       @next_message = @messages.first
       @next_frame = @frames.first
       @passes = [ "Virtual::SendImplementation" ]

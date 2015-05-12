@@ -1,6 +1,10 @@
 require_relative "type"
 require "parfait/message"
 require "parfait/frame"
+require "parfait/hash"
+require "parfait/array"
+require "parfait/string"
+require "parfait/frame"
 
 module Positioned
   def position
@@ -89,7 +93,7 @@ module Virtual
     end
   end
 end
-::Message.class_eval do
+::Parfait::Message.class_eval do
   include Positioned
   def layout
     Virtual::Object.layout
@@ -98,7 +102,7 @@ end
     Virtual::Object.new.padded_words(2)
   end
 end
-::Frame.class_eval do
+::Parfait::Frame.class_eval do
   include Positioned
   def layout
     Virtual::Object.layout
@@ -117,7 +121,7 @@ Parfait::Hash.class_eval do
     Virtual::Object.new.padded_words(2)
   end
 end
-Array.class_eval do
+::Parfait::Array.class_eval do
   include Positioned
   def layout
     Virtual::Object.layout
@@ -126,16 +130,7 @@ Array.class_eval do
     Virtual::Object.new.padded_words(length())
   end
 end
-Symbol.class_eval do
-  include Positioned
-  def layout
-    Virtual::Object.layout
-  end
-  def mem_length
-    Virtual::Object.new.padded(1 + to_s.length())
-  end
-end
-String.class_eval do
+::Parfait::String.class_eval do
   include Positioned
   def layout
     Virtual::Object.layout
