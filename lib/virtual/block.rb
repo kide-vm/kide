@@ -1,14 +1,12 @@
-require_relative "object"
-
 module Virtual
-  
+
   # Think flowcharts: blocks are the boxes. The smallest unit of linear code
-  
-  # Blocks must end in control instructions (jump/call/return). 
-  # And the only valid argument for a jump is a Block 
-  
+
+  # Blocks must end in control instructions (jump/call/return).
+  # And the only valid argument for a jump is a Block
+
   # Blocks form a graph, which is managed by the method
-  
+
   class Block < Virtual::Object
 
     def initialize(name , method )
@@ -21,7 +19,7 @@ module Virtual
 
     attr_reader :name , :codes , :method
     attr_accessor :branch
-    
+
     def reachable ret = []
       add_next ret
       add_branch ret
@@ -69,14 +67,14 @@ module Virtual
     end
 
     private
-    # helper for determining reachable blocks 
+    # helper for determining reachable blocks
     def add_next ret
       return if @next.nil?
       return if ret.include? @next
       ret << @next
       @next.reachable ret
     end
-    # helper for determining reachable blocks 
+    # helper for determining reachable blocks
     def add_branch ret
       return if @branch.nil?
       return if ret.include? @branch

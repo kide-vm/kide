@@ -5,7 +5,6 @@ require "virtual/instruction"
 require "virtual/compiled_method"
 require "virtual/slots/slot"
 require "virtual/type"
-require "virtual/object"
 require "virtual/constants"
 # the passes _are_ order dependant
 require "virtual/passes/send_implementation"

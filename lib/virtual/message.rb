@@ -38,19 +38,6 @@ module Virtual
     end
     attr_reader :me, :next_normal, :next_exception, :arguments , :frame
 
-    # dummy for the eventual
-    def new_frame
-      raise self.inspect
-    end
     #
-    def compile_get method , name
-      raise "CALLED"
-      if method.has_arg(name)
-        method.add_code MessageGet.new(name)
-      else
-        method.add_code FrameGet.new(name)
-      end
-      method.get_var(name)
-    end
   end
 end
