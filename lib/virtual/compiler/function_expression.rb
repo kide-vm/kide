@@ -8,8 +8,8 @@ module Virtual
       end
       r = expression.receiver ? Compiler.compile(expression.receiver, method ) : Self.new()
       new_method = CompiledMethod.new(expression.name , args , r )
-      new_method.class_name = r.is_a?(BootClass) ? r.name : method.class_name
-      clazz = Space.space.get_or_create_class(new_method.class_name)
+      new_method.class_name = r.is_a?(Parfait::Class) ? r.name : method.class_name
+      clazz = Machine.instance.space.get_or_create_class(new_method.class_name)
       clazz.add_instance_method new_method
 
       #frame = frame.new_frame

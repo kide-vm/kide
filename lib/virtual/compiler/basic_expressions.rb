@@ -73,7 +73,7 @@ module Virtual
       def self.compile_string expression , method
         value = StringConstant.new(expression.string)
         to = Return.new(Reference , value)
-        Space.space.add_object value
+        Machine.instance.space.add_object value
         method.add_code Set.new( to , value )
         to
       end
