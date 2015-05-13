@@ -7,7 +7,8 @@ module Positioned
     @position
   end
   def set_position pos
-    # resetting of position used to be error, but since relink and dynamic instruction size it is ok. in measures
+    # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
+    # in measures (of 32)
     if @position != nil and ((@position - pos).abs > 32)
       raise "position set again #{pos}!=#{@position} for #{self}"
     end
@@ -125,7 +126,7 @@ end
     Virtual::Object.new.padded_words(length())
   end
 end
-::Parfait::String.class_eval do
+::Parfait::Word.class_eval do
   include Positioned
   def layout
     Virtual::Object.layout
