@@ -36,7 +36,7 @@ module Elf
       assembler.objects.values.each do |slot|
         label = "#{slot.class.name}::#{slot.position.to_s(16)}"
         label += "=#{slot}" if slot.is_a?(Symbol) or slot.is_a?(String)
-        label += "=#{slot.string}" if slot.is_a?(Virtual::StringConstant)
+        label += "=#{slot.string}" if slot.is_a?(Parfait::Word)
         add_symbol  label , slot.position
       end
     end

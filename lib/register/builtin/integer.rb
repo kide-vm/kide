@@ -28,7 +28,7 @@ module Builtin
     def putint context
       putint_function = Virtual::CompiledMethod.new(:putint , [] , Virtual::Integer ,Virtual::Integer )
       return putint_function
-      buffer = Virtual::StringConstant.new("           ") # create a buffer
+      buffer = Parfait::Word.new("           ") # create a buffer
       context.object_space.add_object buffer              # and save it (function local variable: a no no)
       int = putint_function.receiver
       moved_int = putint_function.new_local

@@ -76,6 +76,6 @@ module Builtin
   end
 end
 require_relative "integer"
-require_relative "string"
+require_relative "word"
 require_relative "array"
 require_relative "kernel"

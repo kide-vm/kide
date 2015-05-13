@@ -63,7 +63,7 @@ module Virtual
 
     def layout_for(object)
       case object
-      when Array , Symbol , String , Virtual::CompiledMethod , Virtual::Block , Virtual::StringConstant
+      when Array , Symbol , String , Virtual::CompiledMethod , Virtual::Block , Parfait::Word
         @@ARRAY
       when Hash
         @@HASH.merge :keys => object.keys , :values => object.values

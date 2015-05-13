@@ -51,7 +51,7 @@ class TestBasic < MiniTest::Test
 
   def test_string
     @string_input    = "\"hello\""
-    @output = "-Virtual::Return(:index => 5, :type => Virtual::Reference)*^*  :value Virtual::StringConstant(:string => 'hello')"
+    @output = "-Virtual::Return(:index => 5, :type => Virtual::Reference)*^*  :value Parfait::Word(:string => 'hello')"
     check
   end
 

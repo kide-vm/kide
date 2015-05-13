@@ -1,5 +1,5 @@
 module Builtin
-  class String
+  class Word
     module ClassMethods
       def get context , index = Virtual::Integer
         get_function = Virtual::CompiledMethod.new(:get , [ Virtual::Integer] , Virtual::Integer , Virtual::Integer )
@@ -9,11 +9,11 @@ module Builtin
         set_function = Virtual::CompiledMethod.new(:set , [Virtual::Integer, Virtual::Integer] , Virtual::Integer ,Virtual::Integer )
         return set_function
       end
-      def puts context 
+      def puts context
         puts_function = Virtual::CompiledMethod.new(:puts , []  )
         return puts_function
       end
     end
-    extend ClassMethods    
+    extend ClassMethods
   end
 end

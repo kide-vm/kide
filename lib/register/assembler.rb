@@ -144,7 +144,7 @@ module Register
     end
 
     def assemble_String( str )
-      str = str.string if str.is_a? Virtual::StringConstant
+      str = str.string if str.is_a? Parfait::Word
       str = str.to_s if str.is_a? Symbol
       word = (str.length + 7) / 32  # all object are multiple of 8 words (7 for header)
       raise "String too long (implement split string!) #{word}" if word > 15

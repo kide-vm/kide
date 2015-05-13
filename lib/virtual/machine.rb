@@ -113,9 +113,9 @@ module Virtual
       [:putint,:fibo].each do |f|
         obj.add_instance_method Builtin::Integer.send(f , nil)
       end
-      obj = @space.get_or_create_class :String
+      obj = @space.get_or_create_class :Word
       [:get , :set , :puts].each do |f|
-        obj.add_instance_method Builtin::String.send(f , nil)
+        obj.add_instance_method Builtin::Word.send(f , nil)
       end
       obj = space.get_or_create_class :Array
       [:get , :set , :push].each do |f|
