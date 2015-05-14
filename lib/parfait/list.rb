@@ -3,6 +3,18 @@
 module Parfait
   class List < Object
 
+    def index_of( item )
+      max = self.length
+      counter = 0
+      while( counter < max )
+        if( internal_object_get(index) == item)
+          return counter
+        end
+        counter = counter + 1
+      end
+      return nil
+    end
+
     # push means add to the end
     # this automatically grows the List
     def push value

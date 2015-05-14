@@ -1,5 +1,6 @@
 # An Object is really a hash like structure. It is dynamic and
-# you want to store values by name.
+# you want to store values by name (instance variable names).
+#
 # One could (like mri), store the names in each object, but that is wasteful
 # Instead we store only the values, and access them by index.
 # The Layout allows the mapping of names to index.
@@ -19,15 +20,7 @@
 # Together they turn the object into a hash like structure
 
 module Parfait
-  class Layout < Object
-
-    # given a name as symbol, return the integer index of that entry
-    # we use 0 as "not found" as we don't want negatives, and can't raise
-    # luckily 0 is always the type-word in an object and so by returning
-    # one-offsets we can use the return value straight without adding 1
-    def index_of( name )
-      #internal implementation....
-    end
+  class Layout < List
 
   end
 end
