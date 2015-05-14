@@ -48,3 +48,14 @@ class Parfait::List
     internal_object_length
   end
 end
+
+# Functions to generate parfait objects
+String.class_eval do
+  def to_word
+    word = Parfait::Word.new( self.length )
+    codepoints.each_with_index do |code , index |
+      word.set_char(index , char)
+    end
+    word
+  end
+end
