@@ -19,8 +19,36 @@ module Parfait
       @layout.get_class()
     end
 
+    # class stores the "latest" layout for instances, ir the layout a new object will
+    # be created with.
+    # inside parfait (and for now everywhere) these are constant.
+    @@EMPTY =  { :names => [] , :types => []}
+    def self.class_layout()
+      @@EMPTY
+    end
+
     def get_layout()
       @layout
+    end
+
+    def instance_variables
+      @layout.instance_variables
+    end
+
+    def instance_variable_get name
+      index = instance_variable_defined(name)
+      return nil if index == nil
+      return internal_get(index)
+    end
+
+    def instance_variable_set name , value
+      index = instance_variable_defined(name)
+      return nil if index == nil
+      return internal_set(index , value)
+    end
+
+    def instance_variable_defined name
+      @layout.index_of(name)
     end
 
     # Object
