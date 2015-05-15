@@ -21,40 +21,41 @@ module FakeMem
   end
 end
 
-class Parfait::Object
-  include FakeMem
-  def self.new_object *args
-    #puts "I am #{self}"
-    object = self.new(*args)
-    object
+module Parfait
+  class Object
+    include FakeMem
+    def self.new_object *args
+      #puts "I am #{self}"
+      object = self.new(*args)
+      object
+    end
+    def internal_object_length
+      @memory.length
+    end
+    def internal_object_get(index)
+      @memory[index]
+    end
+    def internal_object_set(index , value)
+      @memory[index] = value
+    end
+    def internal_object_grow(index)
+      @memory[index] = nil
+    end
   end
-  def internal_object_length
-    @memory.length
+  class Parfait::Class
   end
-  def internal_object_get(index)
-    @memory[index]
+  class Parfait::List
+    def length
+      internal_object_length
+    end
   end
-  def internal_object_set(index , value)
-    @memory[index] = value
-  end
-  def internal_object_grow(index)
-    @memory[index] = nil
-  end
-end
-class Parfait::Class
-end
-class Parfait::List
-  def length
-    internal_object_length
-  end
-end
 
-# Functions to generate parfait objects
-String.class_eval do
-  def to_word
-    word = Parfait::Word.new( self.length )
-    codepoints.each_with_index do |code , index |
-      word.set_char(index , char)
+  # Functions to generate parfait objects
+  def self.new_word( string )
+    string = string.to_s if string.is_a? Symbol
+    word = Parfait::Word.new( string.length )
+    string.codepoints.each_with_index do |code , index |
+      word.set_char(index , code)
     end
     word
   end

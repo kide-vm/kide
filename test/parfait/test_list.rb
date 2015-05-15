@@ -8,14 +8,25 @@ class TestList < MiniTest::Test
   def test_list_create
     assert @list.empty?
   end
+  def test_list_len
+    assert_equal 0 , @list.length
+  end
   def test_empty_list_doesnt_return
     assert_equal nil , @list.get(3)
   end
   def test_one_set0
     assert_equal 1 , @list.set(0,1)
   end
+  def test_set0_len
+    @list.set(0,1)
+    assert_equal 1 , @list.length
+  end
   def test_one_set1
     assert_equal :some , @list.set(1,:some)
+  end
+  def test_set1_len
+    @list.set(1,:some)
+    assert_equal 2 , @list.length
   end
   def test_two_sets
     assert_equal 1 , @list.set(0,1)

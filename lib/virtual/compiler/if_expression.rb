@@ -26,7 +26,7 @@ module Virtual
       # compile the false block
       method.current false_block
       expression.if_false.each do |part|
-        puts "compiling in if false #{part}"
+        #puts "compiling in if false #{part}"
         last = Compiler.compile(part,method )
         raise part.inspect if last.nil?
       end
