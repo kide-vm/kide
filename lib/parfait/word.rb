@@ -68,6 +68,12 @@ module Parfait
       return true
     end
 
+    def is_value?
+      true
+    end
+    def to_sof
+      "Parfait::Word('#{to_s}')"
+    end
     def result= value
       raise "called"
       class_for(MoveInstruction).new(value , self , :opcode => :mov)
