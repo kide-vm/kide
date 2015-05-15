@@ -61,7 +61,7 @@ module Parfait
       return false if other.class != self.class
       return false if other.length != self.length
       len = self.length
-      while len
+      while(len >= 0)
         return false if self.get_char(len) != other.get_char(len)
         len = len - 1
       end

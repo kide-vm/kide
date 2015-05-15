@@ -59,4 +59,15 @@ module Parfait
     end
     word
   end
+  Word.class_eval do
+    def to_s
+      string = ""
+      index = 0
+      while( index < self.length)
+        string[index] = get_char(index).chr
+        index = index + 1
+      end
+      string
+    end
+  end
 end
