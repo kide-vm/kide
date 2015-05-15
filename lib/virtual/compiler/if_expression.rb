@@ -32,7 +32,7 @@ module Virtual
       end
       method.add_code UnconditionalBranch.new( merge_block )
 
-      puts "compiled if: end"
+      #puts "compiled if: end"
       method.current merge_block
 
       #TODO should return the union of the true and false types
