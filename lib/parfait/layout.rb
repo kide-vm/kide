@@ -22,6 +22,17 @@
 module Parfait
   class Layout < List
 
+    # set the names of the instance variables in one go
+    # used while booting the classes. At runtime the list would grow dynamically
+    def set_names list
+      self.set_length list.length
+      index = 0
+      while index < list.length do
+        list.set(index , array.get(index))
+      end
+    end
+
+    # beat the recursion! fixed known offset for class object in the layout
     def get_object_class()
       return internal_object_get(2)
     end

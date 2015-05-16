@@ -4,6 +4,7 @@ require "parfait/module"
 require "parfait/class"
 require "parfait/dictionary"
 require "parfait/list"
+require "parfait/layout"
 require "parfait/word"
 require "parfait/message"
 require "parfait/frame"
@@ -60,6 +61,16 @@ module Parfait
     end
     word
   end
+  def self.new_list array
+    list = List.new_object
+    list.set_length array.length
+    index = 0
+    while index < array.length do
+      list.set(index , array[index])
+    end
+    list
+  end
+
   Word.class_eval do
     def to_s
       string = ""

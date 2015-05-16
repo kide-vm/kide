@@ -22,12 +22,18 @@ module Parfait
       @name = name.to_sym
       @super_class_name = super_class_name.to_sym
       @meta_class = Virtual::MetaClass.new(self)
+      @object_layout = []
     end
     attr_reader :name , :instance_methods , :meta_class , :context , :super_class_name
     def add_instance_method method
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Virtual::CompiledMethod
       raise "syserr " unless method.name.is_a? Symbol
       @instance_methods << method
+    end
+
+    def set_instance_names list
+      @object_layout = Layout.new_object
+      @object_layout.set_names list
     end
 
     def get_instance_method fname

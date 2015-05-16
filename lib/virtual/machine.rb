@@ -93,11 +93,12 @@ module Virtual
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we
       # have to define some dummies, just for the other to compile
       # TODO: go through the virtual parfait layer and adjust function names to what they really are
-      obj = @space.get_class_by_name :Object
+      obj = @space.create_class :Object , []
       [:index_of , :_get_instance_variable , :_set_instance_variable].each do |f|
         obj.add_instance_method Builtin::Object.send(f , nil)
       end
-      obj = @space.get_class_by_name :Kernel
+      obj = @space.create_class :Kernel , []
+      puts "CREATE Kernel #{obj}"
       # create main first, __init__ calls it
       @main = Builtin::Kernel.send(:main , @context)
       obj.add_instance_method @main
@@ -110,15 +111,15 @@ module Virtual
       # the point of which is that by the time main executes, all is "normal"
       @init = Block.new(:_init_ , nil )
       @init.add_code(Register::RegisterMain.new(underscore_init))
-      obj = @space.get_class_by_name :Integer
+      obj = @space.create_class :Integer , []
       [:putint,:fibo].each do |f|
         obj.add_instance_method Builtin::Integer.send(f , nil)
       end
-      obj = @space.get_class_by_name :Word
+      obj = @space.create_class :Word , []
       [:get , :set , :puts].each do |f|
         obj.add_instance_method Builtin::Word.send(f , nil)
       end
-      obj = space.get_class_by_name :Array
+      obj = space.create_class :Array , []
       [:get , :set , :push].each do |f|
         obj.add_instance_method Builtin::Array.send(f , nil)
       end

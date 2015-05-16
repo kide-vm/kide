@@ -51,6 +51,10 @@ module Parfait
       end
       self
     end
+    def set_length len
+      # TODO check if not shrinking
+      grow_to len
+    end
     def grow_to(len)
       raise "negative length for grow #{len}" if len < 0
       return unless len > self.length

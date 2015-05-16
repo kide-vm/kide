@@ -55,12 +55,15 @@ module Parfait
     def get_class_by_name name
       raise "uups #{name}.#{name.class}" unless name.is_a? Symbol
       c = @classes[name]
-      unless c
-        c = Class.new_object(name)
-        @classes[name] = c
-      end
       c
     end
+
+    def create_class name , variable_names
+      c = Class.new_object(name)
+      c.set_instance_names Parfait.new_list(variable_names)
+      @classes[name] = c
+    end
+
     def mem_length
       padded_words( 5 )
     end
