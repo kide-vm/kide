@@ -16,10 +16,16 @@ module Parfait
     # In Salama we store the class in the Layout, and so the Layout is the only fixed
     # data that every object carries.
     def get_class()
-      @layout.get_class()
+      l = get_layout()
+      puts "Layout #{l}"
+      l.get_object_class()
     end
 
-    # class stores the "latest" layout for instances, ir the layout a new object will
+    def get_layout()
+      return internal_object_get(1)
+    end
+
+    # class stores the "latest" layout for instances, ie the layout a new object will
     # be created with.
     # inside parfait (and for now everywhere) these are constant.
     @@EMPTY =  { :names => [] , :types => []}
@@ -27,12 +33,8 @@ module Parfait
       @@EMPTY
     end
 
-    def get_layout()
-      @layout
-    end
-
     def instance_variables
-      @layout.instance_variables
+      get_layout().instance_variables
     end
 
     def instance_variable_get name
@@ -48,7 +50,7 @@ module Parfait
     end
 
     def instance_variable_defined name
-      @layout.index_of(name)
+      layout().index_of(name)
     end
 
     # Object

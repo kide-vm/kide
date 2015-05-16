@@ -6,9 +6,9 @@ require 'elf/string_table_section'
 module Elf
 
   class ObjectWriter
-    def initialize(space , target = Elf::Constants::TARGET_ARM )
+    def initialize(machine , target = Elf::Constants::TARGET_ARM )
       @object = Elf::ObjectFile.new(target)
-      @object_space = space
+      @object_machine = machine
       sym_strtab = Elf::StringTableSection.new(".strtab")
       @object.add_section sym_strtab
       @symbol_table = Elf::SymbolTableSection.new(".symtab", sym_strtab)
@@ -17,12 +17,12 @@ module Elf
       @text = Elf::TextSection.new(".text")
       @object.add_section @text
 
-      @object_space.run_passes
-      assembler = Register::Assembler.new(@object_space)
+      @object_machine.run_passes
+      assembler = Register::Assembler.new(@object_machine.space)
       set_text assembler.assemble
 
       # for debug add labels to the block positions
-      space.classes.values.each do |clazz| 
+      space.classes.values.each do |clazz|
         clazz.instance_methods.each do |f|
           f.blocks.each do |b|
               add_symbol "#{clazz.name}::#{f.name}@#{b.name}" , b.position

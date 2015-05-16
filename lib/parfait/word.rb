@@ -78,12 +78,6 @@ module Parfait
       raise "called"
       class_for(MoveInstruction).new(value , self , :opcode => :mov)
     end
-    def clazz
-      Space.space.get_or_create_class(:Word)
-    end
-    def layout
-      Virtual::Object.layout
-    end
     def mem_length
       padded(1 + string.length)
     end

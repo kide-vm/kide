@@ -35,6 +35,7 @@ class TestRunner < MiniTest::Test
       end
     end
 
+    #object writer takes machine
     writer = Elf::ObjectWriter.new(program , Elf::Constants::TARGET_ARM)
 
     writer.save(file.gsub(".rb" , ".o"))

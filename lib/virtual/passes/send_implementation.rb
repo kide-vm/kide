@@ -14,13 +14,15 @@ module Virtual
         new_codes = [  ]
         ref = code.me
         raise "only refs implemented #{me.inspect}" unless ( ref.type == Reference)
+        # value known at compile time, got do something with it
         if(ref.value)
           me = ref.value
-          if( me.is_a? BootClass )
+          if( me.is_a? Parfait::Class )
             raise "unimplemented #{code}"
-          elsif( me.is_a? ObjectConstant )
+          elsif( me.is_a? Parfait::Object )
             # get the function from my class. easy peasy
-            method = me.clazz.get_instance_method(code.name)
+            puts "Me is #{me.class}"
+            method = me.get_class.get_instance_method(code.name)
             raise "Method not implemented #{clazz.name}.#{code.name}" unless method
             new_codes << MethodCall.new( method )
           else
@@ -29,9 +31,11 @@ module Virtual
             kernel = Virtual::Machine.instance.space.get_or_create_class(:Kernel)
             method = kernel.get_instance_method(:__send)
             new_codes << MethodCall.new( method )
-            raise "unimplemented #{code}"
+            raise "unimplemented: \n#{code}"
           end
         else
+          # must defer send to run-time
+          # So inlining the code from message.send (in the future)
           raise "not constant/ known object for send #{ref.inspect}"
         end
         block.replace(code , new_codes )

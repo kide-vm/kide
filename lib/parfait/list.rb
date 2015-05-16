@@ -42,6 +42,15 @@ module Parfait
       self.length == 0
     end
 
+    def each
+      index = 0
+      while index < self.length
+        item = get(index)
+        yield item
+        index = index + 1
+      end
+      self
+    end
     def grow_to(len)
       raise "negative length for grow #{len}" if len < 0
       return unless len > self.length

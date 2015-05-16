@@ -22,5 +22,8 @@
 module Parfait
   class Layout < List
 
+    def get_object_class()
+      return internal_object_get(2)
+    end
   end
 end

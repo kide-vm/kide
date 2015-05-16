@@ -1,7 +1,7 @@
 require_relative '../helper'
 require 'parslet/convenience'
 
-#test the generation of code fragments. 
+#test the generation of code fragments.
 # ie parse                assumes @string_input
 #   compile
 #   assemble/write        assume a @should array with the bytes in it
@@ -11,12 +11,12 @@ require 'parslet/convenience'
 # but to get the bytes, one needs to link and run the object file to confirm correctness (to be automated)
 
 module Fragments
-  # need a code generator, for arm 
+  # need a code generator, for arm
   def setup
-    @object_space = Boot::Space.new "Arm"
+    @object_machine = Virtual::Machine.new "Arm"
   end
 
-  def parse 
+  def parse
     parser = Parser::Salama.new
     syntax  = parser.parse_with_debug(@string_input)
     parts   = Parser::Transform.new.apply(syntax)
@@ -24,27 +24,27 @@ module Fragments
     # and the last is wrapped as a main
     parts.each_with_index do |part,index|
       if part.is_a? Ast::FunctionExpression
-        expr    = part.compile( @object_space.context )
+        expr    = part.compile( @object_machine.context )
       else
         puts part.inspect if part.is_a? Hash
-        expr    = part.compile( @object_space.context )
+        expr    = part.compile( @object_machine.context )
       end
     end
   end
 
   # helper to write the file
   def write name
-    writer = Elf::ObjectWriter.new(@object_space , Elf::Constants::TARGET_ARM)
+    writer = Elf::ObjectWriter.new(@object_machine , Elf::Constants::TARGET_ARM)
     assembly = writer.text
-    writer.save("#{name}.o")    
-    function = @object_space.classes[@target[0]]
+    writer.save("#{name}.o")
+    function = @object_machine.classes[@target[0]]
     assert function , "no class #{@target[0]}"
     function = function.get_function(@target[1])
     assert function , "no function #{@target[1]}  for class #{@target[0]}"
     io = StringIO.new
     function.assemble io
     assembly = io.string
-    # use this for getting the bytes to compare to :  
+    # use this for getting the bytes to compare to :
     puts bytes(assembly)
     assembly.bytes.each_with_index do |byte , index|
       is = @should[index]
@@ -60,5 +60,5 @@ module Fragments
   def bytes string
     "[" + string.bytes.collect{|b| "0x"+ b.to_s(16)}.join(",") + "]"
   end
-  
+
 end

@@ -34,21 +34,21 @@ module Virtual
 
     def initialize
       @parser  = Parser::Salama.new
-      the_end = Halt.new
+      #the_end = Halt.new
       @passes = [ "Virtual::SendImplementation" ]
       @space =  Parfait::Space.new
 #      @message = Message.new(the_end , the_end , :Object)
     end
-    attr_reader :message , :passes , :space
+    attr_reader :message , :passes , :space , :init , :main
 
     def run_passes
       @passes.each do |pass_class|
-        blocks = [@init] + main.blocks
-        @classes.values.each do |c|
+        blocks = [@init]  + @main.blocks
+        @space.classes.values.each do |c|
           c.instance_methods.each {|f| blocks += f.blocks  }
         end
         #puts "running #{pass_class}"
-        all.each do |block|
+        blocks.each do |block|
           pass = eval pass_class
           raise "no such pass-class as #{pass_class}" unless pass
           pass.new.run(block)
@@ -90,8 +90,9 @@ module Virtual
     # CompiledMethods are grabbed from respective modules by sending the method name. This should return the
     # implementation of the method (ie a method object), not actually try to implement it (as that's impossible in ruby)
     def boot_classes!
-      # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we have to define some
-      # dummies, just for the other to compile
+      # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we
+      # have to define some dummies, just for the other to compile
+      # TODO: go through the virtual parfait layer and adjust function names to what they really are
       obj = @space.get_or_create_class :Object
       [:index_of , :_get_instance_variable , :_set_instance_variable].each do |f|
         obj.add_instance_method Builtin::Object.send(f , nil)

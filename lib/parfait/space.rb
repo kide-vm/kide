@@ -33,7 +33,7 @@ module Parfait
       @next_message = @messages.first
       @next_frame = @frames.first
     end
-    attr_reader  :init , :main , :classes , :objects , :symbols,:messages, :next_message , :next_frame
+    attr_reader :classes , :objects , :symbols,:messages, :next_message , :next_frame
 
     @@SPACE = { :names => [:classes,:objects,:symbols,:messages, :next_message , :next_frame] ,
                 :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference]}
@@ -50,7 +50,7 @@ module Parfait
       end
     end
 
-    # this is the way to instantiate classes (not BootClass.new)
+    # this is the way to instantiate classes (not Parfait::Class.new)
     # so we get and keep exactly one per name
     def get_or_create_class name
       raise "uups #{name}.#{name.class}" unless name.is_a? Symbol
