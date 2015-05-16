@@ -33,7 +33,7 @@ module Virtual
       name = name.to_sym
       f = @functions.detect{ |f| f.name == name }
       return f if f
-      if( @me_self == :Object )
+      if( @me_self == "Object" )
         puts "no function for :#{name} in Meta #{@me_self.inspect}"
         return nil
       else  #recurse up class hierachy unless we're at Object

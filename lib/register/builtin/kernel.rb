@@ -12,7 +12,7 @@ module Builtin
       # so it is responsible for initial setup (and relocation)
       def __init__ context
         function = Virtual::CompiledMethod.new(:__init__ , [] , Virtual::Integer)
-        clazz = Virtual::Machine.instance.space.get_class_by_name :Kernel
+        clazz = Virtual::Machine.instance.space.get_class_by_name "Kernel"
         method = clazz.resolve_method :main
         me = Virtual::Self.new(Virtual::Reference)
         code = Virtual::Set.new(Virtual::Self.new(me.type), me)

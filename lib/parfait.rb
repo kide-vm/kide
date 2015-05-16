@@ -27,7 +27,7 @@ module Parfait
     include FakeMem
     def self.new_object *args
 #      Space.space.get_class_by_name(:Word)
-      puts "I am #{self}"
+      #puts "I am #{self}"
       object = self.new(*args)
       object
     end

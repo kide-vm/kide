@@ -35,7 +35,7 @@ module Virtual
     end
     def initialize name , arg_names , receiver = Virtual::Self.new , return_type = Virtual::Mystery
       @name = name.to_sym
-      @class_name = :Object
+      @class_name = "Object"
       @arg_names = arg_names
       @locals = []
       @tmps = []

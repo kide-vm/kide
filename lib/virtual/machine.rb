@@ -37,7 +37,7 @@ module Virtual
       #the_end = Halt.new
       @passes = [ "Virtual::SendImplementation" ]
       @space =  Parfait::Space.new
-#      @message = Message.new(the_end , the_end , :Object)
+#      @message = Message.new(the_end , the_end , "Object" )
     end
     attr_reader :message , :passes , :space , :init , :main
 
@@ -77,28 +77,34 @@ module Virtual
 
     def self.boot
       instance = self.instance
-      instance.boot_classes! # boot is a verb here
+      instance.boot_parfait! # boot is a verb here
       instance.boot
       instance
     end
     def self.instance
       @instance ||= Machine.new
     end
-
+    
+    # for testing, make sure no old artefacts hang around
+    #maybe should be moved to test dir
+    def self.reboot
+      @instance = nil
+      self.boot
+    end
     # boot the classes, ie create a minimal set of classes with a minimal set of functions
     # minimal means only that which can not be coded in ruby
     # CompiledMethods are grabbed from respective modules by sending the method name. This should return the
     # implementation of the method (ie a method object), not actually try to implement it (as that's impossible in ruby)
-    def boot_classes!
+    def boot_parfait!
+      boot_classes!
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we
       # have to define some dummies, just for the other to compile
       # TODO: go through the virtual parfait layer and adjust function names to what they really are
-      obj = @space.create_class :Object , []
+      obj = @space.get_class_by_name "Object"
       [:index_of , :_get_instance_variable , :_set_instance_variable].each do |f|
         obj.add_instance_method Builtin::Object.send(f , nil)
       end
-      obj = @space.create_class :Kernel , []
-      puts "CREATE Kernel #{obj}"
+      obj = @space.get_class_by_name "Kernel"
       # create main first, __init__ calls it
       @main = Builtin::Kernel.send(:main , @context)
       obj.add_instance_method @main
@@ -111,20 +117,33 @@ module Virtual
       # the point of which is that by the time main executes, all is "normal"
       @init = Block.new(:_init_ , nil )
       @init.add_code(Register::RegisterMain.new(underscore_init))
-      obj = @space.create_class :Integer , []
+      obj = @space.get_class_by_name "Integer"
       [:putint,:fibo].each do |f|
         obj.add_instance_method Builtin::Integer.send(f , nil)
       end
-      obj = @space.create_class :Word , []
+      obj = @space.get_class_by_name "Word"
       [:get , :set , :puts].each do |f|
         obj.add_instance_method Builtin::Word.send(f , nil)
       end
-      obj = space.create_class :Array , []
+      obj = space.get_class_by_name "List"
       [:get , :set , :push].each do |f|
         obj.add_instance_method Builtin::Array.send(f , nil)
       end
     end
 
+    def boot_classes!
+      values = [ "Integer" , "Object" , "Value" , "Kernel"]
+      rest = ["Word" , "Class" , "Dictionary" , "Space" , "List", "Layout"]
+      (values + rest).each { |cl| @space.create_class(cl , []) }
+      value_class = @space.get_class_by_name "Value"
+      @space.get_class_by_name("Integer").set_super_class( value_class )
+      object_class = @space.get_class_by_name("Object")
+      object_class.set_super_class( value_class )
+      rest.each do |name|
+          cl = @space.get_class_by_name( name )
+          cl.set_super_class(object_class)
+      end
+    end
     def boot
       # read all the files needed for a minimal system at compile
       classes = ["object"]

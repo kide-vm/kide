@@ -9,7 +9,7 @@ module VirtualHelper
   end
 
   def check
-    machine = Virtual::Machine.boot
+    machine = Virtual::Machine.reboot
     expressions = machine.compile_main @string_input
     is = Sof::Writer.write(expressions)
     #puts is

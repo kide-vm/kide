@@ -45,7 +45,7 @@ class TestBasic < MiniTest::Test
 
   def pest_module_name
     @string_input    = 'FooBar '
-    @output = "---RETURN_MARKER- &1 !ruby/object:Boot::BootClassRETURN_MARKER  instance_methods: []RETURN_MARKER  name: :FooBarRETURN_MARKER  super_class_name: :ObjectRETURN_MARKER  meta_class: !ruby/object:Boot::MetaClassRETURN_MARKER    functions: []RETURN_MARKER    me_self: *1RETURN_MARKER"
+    @output = ""
     check
   end
 

@@ -15,12 +15,12 @@ require_relative "meta_class"
 module Parfait
   class Class < Module
 
-    def initialize name , super_class_name = :Object
+    def initialize name , super_class = nil
       super()
       # class methods
       @instance_methods = []
       @name = name.to_sym
-      @super_class_name = super_class_name.to_sym
+      @super_class = super_class
       @meta_class = Virtual::MetaClass.new(self)
       @object_layout = []
     end
@@ -29,6 +29,13 @@ module Parfait
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Virtual::CompiledMethod
       raise "syserr " unless method.name.is_a? Symbol
       @instance_methods << method
+    end
+
+    # this needs to be done during booting as we can't have all the classes and superclassses
+    # instantiated. By that logic it should maybe be part of vm rather.
+    # On the other hand vague plans to load the hierachy from sof exist, so for now...
+    def set_super_class sup
+      @super_class = sup
     end
 
     def set_instance_names list
@@ -45,7 +52,7 @@ module Parfait
     def resolve_method m_name
       method = get_instance_method(m_name)
       unless method
-        unless( @name == :Object)
+        unless( @name == "Object" )
           supr = Space.space.get_class_by_name(@super_class_name)
           method = supr.resolve_method(m_name)
         end
