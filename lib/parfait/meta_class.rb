@@ -37,7 +37,7 @@ module Virtual
         puts "no function for :#{name} in Meta #{@me_self.inspect}"
         return nil
       else  #recurse up class hierachy unless we're at Object
-        return @me_self.context.object_space.get_or_create_class(@me_self.super_class).get_function name
+        return @me_self.context.object_space.get_class_by_name(@me_self.super_class).get_function name
       end
     end
 

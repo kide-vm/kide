@@ -29,7 +29,7 @@ module Builtin
         var_name = get_function.args.first
         return_to = get_function.return_type
 
-        index_function = ::Virtual::Machine.instance.space.get_or_create_class(:Object).resolve_method(:index_of)
+        index_function = ::Virtual::Machine.instance.space.get_class_by_name(:Object).resolve_method(:index_of)
 #        get_function.push( [me] )
 #        index = get_function.call( index_function )
 
@@ -50,7 +50,7 @@ module Builtin
         me = set_function.receiver
         var_name = set_function.args.first
         return_to = set_function.return_type
-        index_function = context.object_space.get_or_create_class(:Object).resolve_method(:index_of)
+        index_function = context.object_space.get_class_by_name(:Object).resolve_method(:index_of)
         set_function.push( [me] )
         set_function.call( index_function )
         after_body = set_function.new_block("after_index")

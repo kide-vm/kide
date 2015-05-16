@@ -9,7 +9,7 @@ module Virtual
       r = expression.receiver ? Compiler.compile(expression.receiver, method ) : Self.new()
       new_method = CompiledMethod.new(expression.name , args , r )
       new_method.class_name = r.is_a?(Parfait::Class) ? r.name : method.class_name
-      clazz = Machine.instance.space.get_or_create_class(new_method.class_name)
+      clazz = Machine.instance.space.get_class_by_name(new_method.class_name)
       clazz.add_instance_method new_method
 
       #frame = frame.new_frame
@@ -36,7 +36,7 @@ module Virtual
       if expression.receiver.nil?
         clazz = context.current_class
       else
-        c = context.object_space.get_or_create_class expression.receiver.name.to_sym
+        c = context.object_space.get_class_by_name expression.receiver.name.to_sym
         clazz = c.meta_class
       end
 

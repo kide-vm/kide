@@ -52,7 +52,7 @@ module Parfait
 
     # this is the way to instantiate classes (not Parfait::Class.new)
     # so we get and keep exactly one per name
-    def get_or_create_class name
+    def get_class_by_name name
       raise "uups #{name}.#{name.class}" unless name.is_a? Symbol
       c = @classes[name]
       unless c

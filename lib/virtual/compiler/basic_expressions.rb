@@ -62,7 +62,7 @@ module Virtual
 
 
       def self.compile_module expression , method
-        clazz = Space.space.get_or_create_class name
+        clazz = Space.space.get_class_by_name name
         raise "uups #{clazz}.#{name}" unless clazz
         to = Return.new(Reference , clazz )
         method.add_code Set.new( to , clazz )
