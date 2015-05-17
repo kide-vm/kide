@@ -1,13 +1,29 @@
 
+# A List, or rather an ordered list, is just that, a list of items.
+
+# For a programmer this may be a little strange as this new start goes with trying to break old
+# bad habits. A List would be an array in some languages, but list is a better name, closer to
+# common language.
+# Another habit is to start a list from 0. This is "just" programmers lazyness, as it goes
+# with the standard c implementation. But it bends the mind, and in oo we aim not to.
+# If you have a list of three items, you they will be first, second and third, ie 1,2,3
+#
+# For the implementation we use Objects memory which is index addressable
+# But, objects are also lists where indexes start with 1, except 1 is taken for the Layout
+# so all incoming/outgoing indexes have to be shifted one up/down
 
 module Parfait
   class List < Object
 
+    def get_length
+      internal_object_length - 1
+    end
+
     def index_of( item )
-      max = self.length
-      counter = 0
+      max = self.get_length
+      counter = 1
       while( counter < max )
-        if( internal_object_get(index) == item)
+        if( get(index) == item)
           return counter
         end
         counter = counter + 1
@@ -18,52 +34,55 @@ module Parfait
     # push means add to the end
     # this automatically grows the List
     def push value
-      self.set( length , value)
+      self.set( self.get_length + 1 , value)
     end
 
+    # set the value at index.
+    # Lists start from index 1
     def set( index , value)
-      raise "negative index for set #{len}" if index < 0
-      if index >= self.length
+      raise "Only positive indexes #{index}" if index <= 0
+      if index > self.get_length
         grow_to(index)
       end
-      internal_object_set( index , value)
+      # internally 1 is reserved for the layout
+      internal_object_set( index + 1, value)
     end
 
+    # set the value at index.
+    # Lists start from index 1
     def get(index)
-      raise "negative index for get #{len}" if index < 0
-      if index >= self.length
+      raise "Only positive indexes, #{len}" if index <= 0
+      if index > self.get_length
         return nil
       else
-        return internal_object_get(index)
+        return internal_object_get(index + 1)
       end
     end
 
     def empty?
-      self.length == 0
+      self.get_length == 0
     end
 
     def each
-      index = 0
-      while index < self.length
+      index = 1
+      while index <= self.get_length
         item = get(index)
         yield item
         index = index + 1
       end
       self
     end
+
     def set_length len
       # TODO check if not shrinking
       grow_to len
     end
+
     def grow_to(len)
-      raise "negative length for grow #{len}" if len < 0
-      return unless len > self.length
-      index = self.length
-      internal_object_grow(length)
-      while( index < self.length )
-        internal_object_set( index , nil)
-        index += 1
-      end
+      raise "Only positive lenths, #{len}" if len <= 0
+      old_length = self.get_length
+      return if old_length >= len
+      internal_object_grow(len + 1)
     end
     #many basic List functions can not be defined in ruby, such as
     # get/set/length/add/delete
