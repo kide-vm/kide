@@ -148,7 +148,7 @@ module Virtual
       Ast::NameExpression.new(name)
     end
 
-    def layout
+    def old_layout
       Virtual::Object.layout
     end
     # sugar to create instructions easily.

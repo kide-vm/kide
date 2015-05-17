@@ -62,7 +62,7 @@ module Parfait
     end
 
     @@CLAZZ = { :names => [:name , :super_class_name , :instance_methods] , :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference]}
-    def layout
+    def old_layout
       @@CLAZZ
     end
     def mem_length

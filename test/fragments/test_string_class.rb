@@ -31,7 +31,7 @@ class Object
     l = @layout
     return l.index_of(name)
   end
-  def layout()
+  def old_layout()
     return @layout
   end
 end

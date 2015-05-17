@@ -8,6 +8,10 @@ module Parfait
   # Words are constant, maybe like js strings, ruby symbols
   # Words are short, but may have spaces
 
+  # Words are objects, that means they carry Layout as index 0
+  # So all indexes are offset by one in the implementation
+  # Object length is measured in non-layout cells though
+
   # big TODO , this has NO encoding, a char takes a machine word. Go fix.
   class Word < Object
     # initialize with length. For now we try to keep all non-parfait (including String) out

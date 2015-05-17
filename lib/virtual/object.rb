@@ -48,7 +48,7 @@ module Virtual
       raise "abstract #{self.class}"
     end
     @@EMPTY =  { :names => [] , :types => []}
-    def layout
+    def old_layout
       raise "Find me #{self}"
       self.class.layout
     end
@@ -61,7 +61,7 @@ module Virtual
 #    @@CLAZZ = { :names => [:name , :super_class_name , :instance_methods] , :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference]}
 #    @@SPACE = { :names => [:classes,:objects] , :types => [Virtual::Reference,Virtual::Reference]}
 
-    def layout_for(object)
+    def old_layout_for(object)
       case object
       when Array , Symbol , String , Virtual::CompiledMethod , Virtual::Block , Parfait::Word
         @@ARRAY
@@ -91,7 +91,7 @@ module Virtual
 end
 ::Parfait::Message.class_eval do
   include Positioned
-  def layout
+  def old_layout
     Virtual::Object.layout
   end
   def mem_length
@@ -100,7 +100,7 @@ end
 end
 ::Parfait::Frame.class_eval do
   include Positioned
-  def layout
+  def old_layout
     Virtual::Object.layout
   end
   def mem_length
@@ -110,7 +110,7 @@ end
 Parfait::Dictionary.class_eval do
   include Positioned
   HASH = { :names => [:keys,:values] , :types => [Virtual::Reference,Virtual::Reference]}
-  def layout
+  def old_layout
     HASH
   end
   def mem_length
@@ -119,7 +119,7 @@ Parfait::Dictionary.class_eval do
 end
 ::Parfait::List.class_eval do
   include Positioned
-  def layout
+  def old_layout
     Virtual::Object.layout
   end
   def mem_length
@@ -128,7 +128,7 @@ end
 end
 ::Parfait::Word.class_eval do
   include Positioned
-  def layout
+  def old_layout
     Virtual::Object.layout
   end
   def mem_length

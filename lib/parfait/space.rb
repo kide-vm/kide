@@ -37,7 +37,7 @@ module Parfait
 
     @@SPACE = { :names => [:classes,:objects,:symbols,:messages, :next_message , :next_frame] ,
                 :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference]}
-    def layout
+    def old_layout
       @@SPACE
     end
 

@@ -84,7 +84,7 @@ module Virtual
     def self.instance
       @instance ||= Machine.new
     end
-    
+
     # for testing, make sure no old artefacts hang around
     #maybe should be moved to test dir
     def self.reboot
@@ -143,6 +143,7 @@ module Virtual
           cl = @space.get_class_by_name( name )
           cl.set_super_class(object_class)
       end
+      #boot_layouts
     end
     def boot
       # read all the files needed for a minimal system at compile
