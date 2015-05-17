@@ -10,8 +10,9 @@
 #
 # As every object has a Layout to describe it, the name "layout" is the
 # first name in the list for every Layout.
-# But as we want every Object to have a class, this is the second
-# entry in the list. The name for the entry is "object_class"
+
+# But as we want every Object to have a class, the Layout carries that class.
+# So the layout of layout has an entry "object_class"
 
 # In other words, the Layout is a list of names that describe
 # the values stored in an actual object.
@@ -34,7 +35,7 @@ module Parfait
 
     # beat the recursion! fixed known offset for class object in the layout
     def get_object_class()
-      return internal_object_get(2)
+      return internal_object_get(CLASS_INDEX)
     end
   end
 end

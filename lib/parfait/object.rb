@@ -3,11 +3,25 @@
 
 # that does lead to the fact that we have Reference functions on the Object though
 
+# Objects are arranged or layed out (in memory) according to their Layout
+# every object has a Layout. Layout objects are immutalbe and may be resued for a group/class
+# off objects.
+# The Layout of an object may change, but then a new Layout is created
+# The Layout also defines the class of the object
+# The Layout is **always** the first entry (index 1) in an object, but the type word is index 0
+
 module Parfait
   class Object < Value
 
-    def get_type()
-      OBJECT_TYPE
+    TYPE_WORD     = 0
+    LAYOUT_INDEX  = 1
+    CLASS_INDEX   = 2  #only used in class, but keep constants together
+
+    def get_type_of( index )
+      type_word = internal_object_get( TYPE_WORD )
+      res = type_word >> (index*4)
+      # least significant nibble, this is still adhoc, not test. but the idea is there
+      res & 0xF
     end
 
     # This is the crux of the object system. The class of an object is stored in the objects
@@ -22,7 +36,8 @@ module Parfait
     end
 
     def get_layout()
-      return internal_object_get(1)
+      puts "ME #{self.class}"
+      return internal_object_get(LAYOUT)
     end
 
     # class stores the "latest" layout for instances, ie the layout a new object will
