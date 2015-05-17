@@ -7,7 +7,7 @@ class TestObject < MiniTest::Test
   end
 
   def test_list_create
-    assert_equal 0 ,  @object.internal_object_length
+    assert_equal 1 ,  @object.internal_object_length
   end
 
   def test_list_grow

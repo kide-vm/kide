@@ -18,7 +18,7 @@ require "parfait/space"
 
 module FakeMem
   def initialize
-    @memory = [0]
+    @memory = [0,nil]
   end
 end
 
@@ -65,9 +65,6 @@ module Parfait
   class Parfait::Class
   end
   class Parfait::List
-    def length
-      internal_object_length
-    end
   end
 
   # Functions to generate parfait objects
