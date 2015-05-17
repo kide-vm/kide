@@ -8,7 +8,7 @@ class TestEmptyWord < MiniTest::Test
   def def_same
     assert_equal @word , ::Parfait::Word.new_object(0)
   end
-  def test_list_create
+  def test_word_create
     assert @word.empty?
   end
   def test_empty_is_zero
@@ -59,7 +59,7 @@ class TestWord < MiniTest::Test
   def pest_one_char
     assert 32 , @word.set_char(1 , 32)
   end
-  def pest_empty_list_doesnt_return
+  def pest_empty_word_doesnt_return
     assert_equal nil , @word.get(3)
   end
   def pest_one_set0

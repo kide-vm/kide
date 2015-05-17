@@ -20,11 +20,11 @@ module Parfait
       super()
       raise "Must init with int, not #{len.class}" unless len.kind_of? Fixnum
       raise "Must init with positive, not #{len}" if len < 0
-      set_length( len - 1, 32 ) unless len == 0
+      set_length( len , 32 ) unless len == 0
     end
 
     def length()
-      obj_len = internal_object_length
+      obj_len = internal_object_length - 1
       return obj_len
     end
 
@@ -33,10 +33,10 @@ module Parfait
     end
 
     def set_length(len , fill_char)
-      return if len < 0
+      return if len <= 0
       counter = self.length()
       return if counter >= len
-      internal_object_grow( len )
+      internal_object_grow( len + 1)
       while( counter < len)
         set_char( counter , fill_char)
         counter = counter + 1
@@ -46,12 +46,12 @@ module Parfait
     def set_char at , char
       raise "char not fixnum #{char}" unless char.kind_of? Fixnum
       index = range_correct_index(at)
-      internal_object_set( index  , char )
+      internal_object_set( index + 1  , char )
     end
 
     def get_char at
       index = range_correct_index(at)
-      return internal_object_get(index)
+      return internal_object_get(index + 1)
     end
 
     def range_correct_index at
