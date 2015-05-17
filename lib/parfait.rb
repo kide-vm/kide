@@ -58,8 +58,7 @@ module Parfait
       old_length = internal_object_length()
       while( old_length < length )
         internal_object_set( old_length + 1, nil)
-
-
+        old_length = old_length + 1
       end
     end
   end
