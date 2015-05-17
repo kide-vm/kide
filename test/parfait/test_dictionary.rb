@@ -5,10 +5,10 @@ class TestDictionary < MiniTest::Test
   def setup
     @lookup = ::Parfait::Dictionary.new
   end
-  def test_list_create
+  def test_dict_create
     assert @lookup.empty?
   end
-  def test_empty_list_doesnt_return
+  def test_empty_dict_doesnt_return
     assert_equal nil , @lookup.get(3)
     assert_equal nil , @lookup.get(:any)
   end

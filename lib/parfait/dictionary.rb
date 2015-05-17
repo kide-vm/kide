@@ -17,7 +17,7 @@ module Parfait
     end
 
     def length()
-      return @keys.length()
+      return @keys.get_length()
     end
 
     def get(key)
@@ -33,10 +33,10 @@ module Parfait
     end
 
     def key_index(key)
-      len = @keys.length()
-      index = 0
+      len = @keys.get_length()
+      index = 1
       found = nil
-      while(index < len)
+      while(index <= len)
         if( @keys.get(index) == key)
           found = index
           break

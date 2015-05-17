@@ -51,7 +51,7 @@ module Parfait
     # set the value at index.
     # Lists start from index 1
     def get(index)
-      raise "Only positive indexes, #{len}" if index <= 0
+      raise "Only positive indexes, #{index}" if index <= 0
       if index > self.get_length
         return nil
       else
