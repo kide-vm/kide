@@ -18,11 +18,14 @@ require "parfait/space"
 
 module FakeMem
   def initialize
-    @memory = []
+    @memory = [0]
   end
 end
 
 module Parfait
+  # Objects memory functions. Object memory is 1 based
+  # but we implement it with ruby array (0 based) and use 0 as type-word
+  # These are the same functions that Builtin implements at run-time
   class Object
     include FakeMem
     def self.new_object *args
@@ -31,17 +34,33 @@ module Parfait
       object = self.new(*args)
       object
     end
-    def internal_object_length
-      @memory.length
+    # these internal functions are _really_ internal
+    # they respresent the smallest code needed to build larger functionality
+    # but should _never_ be used outside parfait. in fact that should be impossible
+    def internal_object_get_typeword
+      @memory[0]
     end
+    def internal_object_set_typeword w
+      @memory[0] = w
+    end
+    def internal_object_length
+      @memory.length - 1  # take of type-word
+    end
+    # 1 -based index
     def internal_object_get(index)
       @memory[index]
     end
+    # 1 -based index
     def internal_object_set(index , value)
       @memory[index] = value
     end
-    def internal_object_grow(index)
-      @memory[index] = nil
+    def internal_object_grow(length)
+      old_length = internal_object_length()
+      while( old_length < length )
+        internal_object_set( old_length + 1, nil)
+
+
+      end
     end
   end
   class Parfait::Class
