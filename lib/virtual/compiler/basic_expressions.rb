@@ -71,7 +71,7 @@ module Virtual
 
   #    attr_reader  :string
       def self.compile_string expression , method
-        value = Parfait.new_word(expression.string)
+        value = Virtual.new_word(expression.string)
         to = Return.new(Reference , value)
         Machine.instance.space.add_object value
         method.add_code Set.new( to , value )

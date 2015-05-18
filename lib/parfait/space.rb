@@ -60,7 +60,7 @@ module Parfait
 
     def create_class name , variable_names
       c = Class.new_object(name)
-      c.set_instance_names Parfait.new_list(variable_names)
+      c.set_instance_names Virtual.new_list(variable_names)
       @classes[name] = c
     end
 

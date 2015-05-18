@@ -84,6 +84,18 @@ module Parfait
       return if old_length >= len
       internal_object_grow(len + 1)
     end
+
+    def ==(other)
+      # this should call parfait get_class, alas that is not implemented yet
+      return false if other.class != self.class
+      return false if other.get_length != self.get_length
+      index = self.get_length
+      while(index > 0)
+        return false if other.get(index) != self.get(index)
+        index = index - 1
+      end
+      return true
+    end
     #many basic List functions can not be defined in ruby, such as
     # get/set/length/add/delete
     # so they must be defined as CompiledMethods in Builtin::Kernel

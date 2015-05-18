@@ -55,25 +55,6 @@ module Parfait
   class Parfait::List
   end
 
-  # Functions to generate parfait objects
-  def self.new_word( string )
-    string = string.to_s if string.is_a? Symbol
-    word = Parfait::Word.new( string.length )
-    string.codepoints.each_with_index do |code , index |
-      word.set_char(index + 1 , code)
-    end
-    word
-  end
-  def self.new_list array
-    list = List.new_object
-    list.set_length array.length
-    index = 1
-    while index < array.length do
-      list.set(index , array[index - 1])
-    end
-    list
-  end
-
   Word.class_eval do
     def to_s
       string = ""
@@ -84,5 +65,38 @@ module Parfait
       end
       string
     end
+  end
+  List.class_eval do
+    def to_a
+      array = []
+      index = 1
+      while( index <= self.get_length)
+        array[index - 1] = get(index)
+        index = index + 1
+      end
+      array
+    end
+  end
+end
+
+module Virtual
+  # Functions to generate parfait objects
+  def self.new_word( string )
+    string = string.to_s if string.is_a? Symbol
+    word = Parfait::Word.new( string.length )
+    string.codepoints.each_with_index do |code , index |
+      word.set_char(index + 1 , code)
+    end
+    word
+  end
+  def self.new_list array
+    list = Parfait::List.new_object
+    list.set_length array.length
+    index = 1
+    while index <= array.length do
+      list.set(index , array[index - 1])
+      index = index + 1
+    end
+    list
   end
 end

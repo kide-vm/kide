@@ -50,8 +50,8 @@ class TestConversion < MiniTest::Test
 
   def test_string
     string    = "hello"
-    word = Parfait.new_word string
-    assert_equal word , Parfait.new_word(string)
+    word = Virtual.new_word string
+    assert_equal word , Virtual.new_word(string)
     assert_equal string , word.to_s
   end
 

@@ -80,6 +80,19 @@ module Parfait
     def to_sof
       "Parfait::Word('#{to_s}')"
     end
+
+    def ==(other)
+      # this should call parfait get_class, alas that is not implemented yet
+      return false if other.class != self.class
+      return false if other.length != self.length
+      index = self.length
+      while(index > 0)
+        return false if other.get_char(index) != self.get_char(index)
+        index = index - 1
+      end
+      return true
+    end
+
     def result= value
       raise "called"
       class_for(MoveInstruction).new(value , self , :opcode => :mov)
