@@ -37,7 +37,7 @@ module Parfait
 
     def get_layout()
       puts "ME #{self.class}"
-      return internal_object_get(LAYOUT)
+      return internal_object_get(LAYOUT_INDEX)
     end
 
     # class stores the "latest" layout for instances, ie the layout a new object will

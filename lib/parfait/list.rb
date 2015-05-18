@@ -79,7 +79,7 @@ module Parfait
     end
 
     def grow_to(len)
-      raise "Only positive lenths, #{len}" if len <= 0
+      raise "Only positive lenths, #{len}" if len < 0
       old_length = self.get_length
       return if old_length >= len
       internal_object_grow(len + 1)

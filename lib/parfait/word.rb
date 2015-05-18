@@ -37,6 +37,7 @@ module Parfait
       counter = self.length()
       return if counter >= len
       internal_object_grow( len + 1)
+      counter = counter + 1
       while( counter < len)
         set_char( counter , fill_char)
         counter = counter + 1
@@ -57,7 +58,8 @@ module Parfait
     def range_correct_index at
       index = at
       index = self.length + at if at < 0
-      raise "index out of bounds #{at} > #{self.length}" if (index < 0) or (index > self.length)
+      raise "index must be positive , not #{at}" if (index <= 0)
+      raise "index too large #{at} > #{self.length}" if (index > self.length)
       return index
     end
 

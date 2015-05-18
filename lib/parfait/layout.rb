@@ -26,9 +26,9 @@ module Parfait
     # set the names of the instance variables in one go
     # used while booting the classes. At runtime the list would grow dynamically
     def set_names list
-      self.set_length list.length
+      self.set_length list.get_length
       index = 0
-      while index < list.length do
+      while index < list.get_length do
         list.set(index , array.get(index))
       end
     end

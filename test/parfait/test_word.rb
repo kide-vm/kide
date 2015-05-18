@@ -5,9 +5,6 @@ class TestEmptyWord < MiniTest::Test
   def setup
     @word = ::Parfait::Word.new_object(0)
   end
-  def def_same
-    assert_equal @word , ::Parfait::Word.new_object(0)
-  end
   def test_word_create
     assert @word.empty?
   end
@@ -16,7 +13,7 @@ class TestEmptyWord < MiniTest::Test
   end
   def test_index_check_get
     assert_raises RuntimeError do
-      @word.get_char(1)
+      @word.get_char(0)
     end
   end
   def test_index_check_set
@@ -32,9 +29,6 @@ class TestWord < MiniTest::Test
   end
   def test_len
     assert_equal 5 , @word.length
-  end
-  def def_same
-    assert_equal @word , ::Parfait::Word.new_object(5)
   end
   def test_index_check_get
     assert_raises RuntimeError do
@@ -56,8 +50,12 @@ class TestWord < MiniTest::Test
       @word.set_char(-6 , 32)
     end
   end
-  def pest_one_char
-    assert 32 , @word.set_char(1 , 32)
+  def test_one_char
+    assert_equal 32 , @word.set_char(1 , 32)
+  end
+  def test_one_char_doesnt_cuase_problems
+    @word.set_char(1 , 32)
+    assert_equal 32 , @word.get_char(1)
   end
   def pest_empty_word_doesnt_return
     assert_equal nil , @word.get(3)

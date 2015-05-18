@@ -72,16 +72,16 @@ module Parfait
     string = string.to_s if string.is_a? Symbol
     word = Parfait::Word.new( string.length )
     string.codepoints.each_with_index do |code , index |
-      word.set_char(index , code)
+      word.set_char(index + 1 , code)
     end
     word
   end
   def self.new_list array
     list = List.new_object
     list.set_length array.length
-    index = 0
+    index = 1
     while index < array.length do
-      list.set(index , array[index])
+      list.set(index , array[index - 1])
     end
     list
   end
@@ -89,9 +89,9 @@ module Parfait
   Word.class_eval do
     def to_s
       string = ""
-      index = 0
-      while( index < self.length)
-        string[index] = get_char(index).chr
+      index = 1
+      while( index <= self.length)
+        string[index - 1] = get_char(index).chr
         index = index + 1
       end
       string
