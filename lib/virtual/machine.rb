@@ -134,7 +134,7 @@ module Virtual
     def boot_classes!
       values = [ "Integer" , "Object" , "Value" , "Kernel"]
       rest = ["Word" , "Class" , "Dictionary" , "Space" , "List", "Layout"]
-      (values + rest).each { |cl| @space.create_class(cl , []) }
+      (values + rest).each { |cl| @space.create_class(cl) }
       value_class = @space.get_class_by_name "Value"
       @space.get_class_by_name("Integer").set_super_class( value_class )
       object_class = @space.get_class_by_name("Object")

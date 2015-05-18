@@ -16,12 +16,6 @@ module Parfait
   # These are the same functions that Builtin implements at run-time
   class Object
     include FakeMem
-    def self.new_object *args
-#      Space.space.get_class_by_name(:Word)
-      #puts "I am #{self}"
-      object = self.new(*args)
-      object
-    end
     # these internal functions are _really_ internal
     # they respresent the smallest code needed to build larger functionality
     # but should _never_ be used outside parfait. in fact that should be impossible

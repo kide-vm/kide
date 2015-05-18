@@ -13,6 +13,45 @@
 
 module Parfait
   class Module < Object
+    def initialize name , superclass
+      @instance_methods = []
+      @name = name.to_sym
+      @super_class = superclass
+      @meta_class = Virtual::MetaClass.new(self)
+    end
+
+    def add_instance_method method
+      raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Virtual::CompiledMethod
+      raise "syserr " unless method.name.is_a? Symbol
+      @instance_methods << method
+    end
+
+    # this needs to be done during booting as we can't have all the classes and superclassses
+    # instantiated. By that logic it should maybe be part of vm rather.
+    # On the other hand vague plans to load the hierachy from sof exist, so for now...
+    def set_super_class sup
+      @super_class = sup
+    end
+
+    def get_instance_method fname
+      fname = fname.to_sym
+      @instance_methods.detect{ |fun| fun.name == fname }
+    end
+
+    # get the method and if not found, try superclasses. raise error if not found
+    def resolve_method m_name
+      method = get_instance_method(m_name)
+      unless method
+        unless( @name == "Object" )
+          supr = Space.space.get_class_by_name(@super_class_name)
+          method = supr.resolve_method(m_name)
+        end
+      end
+      raise "Method not found #{m_name}, for #{@name}" unless method
+      method
+    end
+
+
     # :<, :<=, :>, :>=, :included_modules, :include?, :name, :ancestors, :instance_methods, :public_instance_methods,
     # :protected_instance_methods, :private_instance_methods, :constants, :const_get, :const_set, :const_defined?,
     # :const_missing, :class_variables, :remove_class_variable, :class_variable_get, :class_variable_set,

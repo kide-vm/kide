@@ -17,10 +17,15 @@ module Parfait
     LAYOUT_INDEX  = 1
     CLASS_INDEX   = 2  #only used in class, but keep constants together
 
+    def self.new_object *args
+      object = self.new(*args)
+      object
+    end
+
     def get_type_of( index )
       type_word = internal_object_get( TYPE_WORD )
       res = type_word >> (index*4)
-      # least significant nibble, this is still adhoc, not test. but the idea is there
+      # least significant nibble, this is still adhoc, not tested. but the idea is there
       res & 0xF
     end
 
@@ -31,7 +36,7 @@ module Parfait
     # data that every object carries.
     def get_class()
       l = get_layout()
-      puts "Layout #{l}"
+      puts "Layout #{l.class} in #{self.class}"
       l.get_object_class()
     end
 
