@@ -23,19 +23,24 @@
 module Parfait
   class Layout < List
 
-    # set the names of the instance variables in one go
-    # used while booting the classes. At runtime the list would grow dynamically
-    def set_names list
-      self.set_length list.get_length
-      index = 0
-      while index < list.get_length do
-        list.set(index , array.get(index))
-      end
+    def initialize( object_class )
+      @object_class = object_class
+    end
+
+    # add the name of an instance variable
+    # The index will be returned and can subsequently be searched with index_of
+    # The index of the name is the index of the data in the object
+    #
+    # TODO , later we would need to COPY the layout to keep the old constant
+    #        but now we are concerned with booting, ie getting a working structure
+    def add_instance_name name
+      self.push(name)
+      self.get_length
     end
 
     # beat the recursion! fixed known offset for class object in the layout
     def get_object_class()
-      return internal_object_get(CLASS_INDEX)
+      return @object_class
     end
   end
 end

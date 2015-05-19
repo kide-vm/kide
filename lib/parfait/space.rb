@@ -32,6 +32,7 @@ module Parfait
       @messages = 100.times.collect{ ::Parfait::Message.new }
       @next_message = @messages.first
       @next_frame = @frames.first
+      Parfait::Space.set_object_space self
     end
     attr_reader :classes , :objects , :symbols,:messages, :next_message , :next_frame
 
@@ -39,6 +40,16 @@ module Parfait
                 :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference]}
     def old_layout
       @@SPACE
+    end
+
+    @@object_space = nil
+    # Make the object space globally available
+    def self.object_space
+      @@object_space
+    end
+    # TODO Must get rid of the setter
+    def self.set_object_space space
+      @@space = space
     end
 
     # Objects are data and get assembled after functions

@@ -17,8 +17,13 @@ module Parfait
 
     def initialize name , super_class = nil
       super( name , super_class)
-      # class methods
-      @object_layout = Layout.new_object
+      # the layout for this class (class = object of type Class) carries the class
+      # as an instance. The relation is from an object through the Layout to it's class
+      @object_layout = Layout.new_object(self)
+    end
+
+    def allocate_object
+      #space, and ruby allocate
     end
 
     def add_instance_name name
