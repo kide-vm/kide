@@ -49,30 +49,10 @@ module Parfait
     end
 
   end
-  class Parfait::List
+  class List
     def to_sof_node(writer , level , ref )
       Sof.array_to_sof_node(self , writer , level , ref )
     end
-  end
-  class Dictionary
-    def to_sof_node(writer , level , ref)
-      Sof.hash_to_sof_node( self , writer , level , ref)
-    end
-  end
-
-
-  Word.class_eval do
-    def to_s
-      string = ""
-      index = 1
-      while( index <= self.length)
-        string[index - 1] = get_char(index).chr
-        index = index + 1
-      end
-      string
-    end
-  end
-  List.class_eval do
     def to_a
       array = []
       index = 1
@@ -81,6 +61,26 @@ module Parfait
         index = index + 1
       end
       array
+    end
+  end
+  class Dictionary
+    def to_sof_node(writer , level , ref)
+      Sof.hash_to_sof_node( self , writer , level , ref)
+    end
+  end
+
+  class Method
+    attr_accessor :info
+  end
+  class Word
+    def to_s
+      string = ""
+      index = 1
+      while( index <= self.length)
+        string[index - 1] = get_char(index).chr
+        index = index + 1
+      end
+      string
     end
   end
 end

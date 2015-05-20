@@ -15,28 +15,28 @@ module Virtual
       def self.compile_integer expression , method
         int = IntegerConstant.new(expression.value)
         to = Return.new(Integer , int)
-        method.add_code Set.new( to , int)
+        method.info.add_code Set.new( to , int)
         to
       end
 
       def self.compile_true expression , method
         value = TrueConstant.new
         to = Return.new(Reference , value)
-        method.add_code Set.new( to , value )
+        method.info.add_code Set.new( to , value )
         to
       end
 
       def self.compile_false expression , method
         value = FalseConstant.new
         to = Return.new(Reference , value)
-        method.add_code Set.new( to , value )
+        method.info.add_code Set.new( to , value )
         to
       end
 
       def self.compile_nil expression , method
         value = NilConstant.new
         to = Return.new(Reference , value)
-        method.add_code Set.new( to , value )
+        method.info.add_code Set.new( to , value )
         to
       end
 
@@ -50,9 +50,9 @@ module Virtual
         if method.has_var(expression.name)
           # either an argument, so it's stored in message
           if( index = method.has_arg(name))
-            method.add_code MessageGet.new(name , index)
+            method.info.add_code MessageGet.new(name , index)
           else # or a local so it is in the frame
-            method.add_code FrameGet.new(name , index)
+            method.info.add_code FrameGet.new(name , index)
           end
         else
           call = Ast::CallSiteExpression.new(expression.name , [] ) #receiver self is implicit
@@ -65,7 +65,7 @@ module Virtual
         clazz = Space.space.get_class_by_name name
         raise "uups #{clazz}.#{name}" unless clazz
         to = Return.new(Reference , clazz )
-        method.add_code Set.new( to , clazz )
+        method.info.add_code Set.new( to , clazz )
         to
       end
 
@@ -74,7 +74,7 @@ module Virtual
         value = Virtual.new_word(expression.string)
         to = Return.new(Reference , value)
         Machine.instance.space.add_object value
-        method.add_code Set.new( to , value )
+        method.info.add_code Set.new( to , value )
         to
       end
 
@@ -85,16 +85,16 @@ module Virtual
         raise "oh noo, nil from where #{expression.right.inspect}" unless r
         index = method.has_arg(name)
         if index
-          method.add_code Set.new(Return.new , MessageSlot.new(index , r,type , r ))
+          method.info.add_code Set.new(Return.new , MessageSlot.new(index , r,type , r ))
         else
           index = method.ensure_local(expression.left.name)
-          method.add_code Set.new(Return.new , FrameSlot.new(index , r.type , r ))
+          method.info.add_code Set.new(Return.new , FrameSlot.new(index , r.type , r ))
         end
         r
       end
 
       def self.compile_variable expression, method
-        method.add_code InstanceGet.new(expression.name)
+        method.info.add_code InstanceGet.new(expression.name)
         Return.new( Mystery )
       end
   end

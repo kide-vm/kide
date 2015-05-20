@@ -2,7 +2,7 @@ require "virtual/machine"
 
 require "virtual/compiler"
 require "virtual/instruction"
-require "virtual/compiled_method"
+require "virtual/compiled_method_info"
 require "virtual/slots/slot"
 require "virtual/type"
 require "virtual/constants"
@@ -13,4 +13,4 @@ require "virtual/passes/enter_implementation"
 require "virtual/passes/frame_implementation"
 
 Sof::Volotile.add(Virtual::Block ,  [:method])
-Sof::Volotile.add(Virtual::CompiledMethod ,  [:current])
+Sof::Volotile.add(Virtual::CompiledMethodInfo ,  [:current])

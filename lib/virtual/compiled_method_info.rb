@@ -1,14 +1,13 @@
 require_relative "block"
 
 module Virtual
-  # static description of a method
-  # name
-  # arg_names (with defaults)
+  # the static info of a method (with its compiled code, argument names etc ) is part of the
+  # runtime, ie found in Parfait::Method
+
+  # the info we create here is injected int the method and used only at compile-time
   # receiver
-  # code
   # return arg (usually mystery, but for coded ones can be more specific)
-  # known local variable names
-  # temp variables (numbered)
+
   #
   # Methods are one step up from to VM::Blocks. Where Blocks can be jumped to, Methods can be called.
 
@@ -28,27 +27,36 @@ module Virtual
   #            These (eg if/while) blocks may themselves have linear blocks ,but the last of these
   #            MUST have an uncoditional branch. And remember, all roads lead to return.
 
-  class CompiledMethod < Virtual::Object
-    #return the main function (the top level) into which code is compiled
-    def CompiledMethod.main
-      CompiledMethod.new(:main , [] )
+  class CompiledMethodInfo
+    # return the main function (the top level) into which code is compiled
+    # this just create a "main" with create_method , see there
+    def self.main
+      self.create_method( "Object" , :main , [] )
     end
-    def initialize name , arg_names , receiver = Virtual::Self.new , return_type = Virtual::Mystery
-      @name = name.to_sym
-      @class_name = "Object"
-      @arg_names = arg_names
-      @locals = []
-      @tmps = []
-      @receiver = receiver
-      @return_type = return_type
+
+    # create method does two things
+    # first it creates the parfait method, for the given class, with given argument names
+    # second, it creates CompiledMethodInfo and attaches it to the method
+    #
+    # compile code then works with the method, but adds code tot the info
+    def self.create_method( class_name , method_name , args)
+      class_name = Virtual.new_word(class_name) if class_name.is_a? String
+      method_name = Virtual.new_word(method_name) if method_name.is_a? String
+      clazz = Machine.instance.space.get_class_by_name class_name
+      raise "No such class #{class_name}" unless clazz
+      method = clazz.create_instance_method(method_name , Virtual.new_list(args))
+      method.info = CompiledMethodInfo.new
+      method
+    end
+    def initialize receiver = Virtual::Self.new , return_type = Virtual::Mystery
       # first block we have to create with .new , as new_block assumes a current
       enter = Block.new( "enter"  , self ).add_code(MethodEnter.new())
       @blocks = [enter]
       @current = enter
       new_block("return").add_code(MethodReturn.new)
     end
-    attr_reader :name , :arg_names , :receiver , :blocks
-    attr_accessor :return_type , :current , :class_name
+    attr_reader :receiver , :blocks
+    attr_accessor :return_type , :current
 
     # add an instruction after the current (insertion point)
     # the added instruction will become the new insertion point
@@ -105,52 +113,12 @@ module Virtual
       return new_b
     end
 
-    # determine whether this method has a variable by the given name
-    # variables are locals and and arguments
-    # used to determine if a send must be issued
-    # return index of the name into the message if so
-    def has_var name
-      name = name.to_sym
-      index = has_arg(name)
-      return index if index
-      has_local(name)
-    end
-
-    # determine whether this method has an argument by the name
-    def has_arg name
-      @arg_names.index name.to_sym
-    end
-
-    # determine if method has a local variable or tmp (anonymous local) by given name
-    def has_local name
-      name = name.to_sym
-      index = @locals.index(name)
-      index = @tmps.index(name) unless index
-      index
-    end
-
-    def ensure_local name
-      index = has_local name
-      return index if index
-      @locals << name
-      @locals.length
-    end
-
-    def get_var name
-      var = has_var name
-      raise "no var #{name} in method #{self.name} , #{@locals} #{@arg_names}" unless var
-      var
-    end
-
     def get_tmp
       name = "__tmp__#{@tmps.length}"
       @tmps << name
       Ast::NameExpression.new(name)
     end
 
-    def old_layout
-      Virtual::Object.layout
-    end
     # sugar to create instructions easily.
     # any method will be passed on to the RegisterMachine and the result added to the insertion block
     #  With this trick we can write what looks like assembler,
