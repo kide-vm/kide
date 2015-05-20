@@ -64,13 +64,16 @@ module Parfait
     # this is the way to instantiate classes (not Parfait::Class.new)
     # so we get and keep exactly one per name
     def get_class_by_name name
-      raise "uups #{name}.#{name.class}" unless name.is_a? String or name.is_a? Word
+      raise "uups #{name}.#{name.class}" unless name.is_a? Word
       c = @classes[name]
+      raise "uups " if name.is_a? String
+      puts "MISS, no class #{name} #{name.class}" # " #{@classes}"
       c
     end
 
     def create_class name
       c = Class.new_object(name)
+      raise "uups " if name.is_a? String
       @classes[name] = c
     end
 

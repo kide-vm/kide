@@ -16,9 +16,9 @@ module Virtual
     #  (not use the normal initialize way)
     def boot_parfait!
       @space = Parfait::Space.new_object
-      object_class = Parfait::Class.new_object "Parfait::Object"
-      space_class = Parfait::Class.new_object "Parfait::Space" , object_class
-      space_layout = Parfait::Layout.new_object space_class
+      boot_classes!
+      #space_layout =
+#      Parfait::Layout.new_object space_class
 
       puts "Space #{space.get_layout}"
     end
@@ -27,13 +27,13 @@ module Virtual
       puts "BOOT"
       values = [ "Integer" , "Object" , "Value" , "Kernel"]
       rest = ["Word" , "Class" , "Dictionary" , "Space" , "List", "Layout"]
-      (values + rest).each { |cl| @space.create_class(cl) }
-      value_class = @space.get_class_by_name "Value"
-      @space.get_class_by_name("Integer").set_super_class( value_class )
-      object_class = @space.get_class_by_name("Object")
+      (values + rest).each { |cl| @space.create_class(Virtual.new_word(cl)) }
+      value_class = @space.get_class_by_name Virtual.new_word("Value")
+      @space.get_class_by_name(Virtual.new_word("Integer")).set_super_class( value_class )
+      object_class = @space.get_class_by_name(Virtual.new_word("Object"))
       object_class.set_super_class( value_class )
       rest.each do |name|
-          cl = @space.get_class_by_name( name )
+          cl = @space.get_class_by_name( Virtual.new_word( name ))
           cl.set_super_class(object_class)
       end
       boot_layouts!
@@ -73,7 +73,7 @@ module Virtual
       [:putint,:fibo].each do |f|
         obj.add_instance_method Builtin::Integer.send(f , nil)
       end
-      obj = @space.get_class_by_name "Word"
+      obj = @space.get_class_by_name Virtual.new_word "Word"
       [:get , :set , :puts].each do |f|
         obj.add_instance_method Builtin::Word.send(f , nil)
       end

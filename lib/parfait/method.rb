@@ -34,7 +34,7 @@ module Parfait
     # used to determine if a send must be issued
     # return index of the name into the message if so
     def has_var name
-      name = name.to_sym
+      raise "uups #{name}.#{name.class}" unless name.is_a? Word
       index = has_arg(name)
       return index if index
       has_local(name)

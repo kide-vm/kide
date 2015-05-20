@@ -31,7 +31,7 @@ module Virtual
     # return the main function (the top level) into which code is compiled
     # this just create a "main" with create_method , see there
     def self.main
-      self.create_method( "Object" , :main , [] )
+      self.create_method( "Object" , "main" , [] )
     end
 
     # create method does two things
@@ -40,6 +40,8 @@ module Virtual
     #
     # compile code then works with the method, but adds code tot the info
     def self.create_method( class_name , method_name , args)
+      raise "uups #{class_name}.#{class_name.class}" if class_name.is_a? Symbol
+      raise "uups #{method_name}.#{method_name.class}" if class_name.is_a? Symbol
       class_name = Virtual.new_word(class_name) if class_name.is_a? String
       method_name = Virtual.new_word(method_name) if method_name.is_a? String
       clazz = Machine.instance.space.get_class_by_name class_name
@@ -48,15 +50,16 @@ module Virtual
       method.info = CompiledMethodInfo.new
       method
     end
-    def initialize receiver = Virtual::Self.new , return_type = Virtual::Mystery
+    def initialize return_type = Virtual::Mystery
       # first block we have to create with .new , as new_block assumes a current
       enter = Block.new( "enter"  , self ).add_code(MethodEnter.new())
+      @return_type = return_type
       @blocks = [enter]
       @current = enter
       new_block("return").add_code(MethodReturn.new)
     end
-    attr_reader :receiver , :blocks
-    attr_accessor :return_type , :current
+    attr_reader   :blocks
+    attr_accessor :return_type , :current , :receiver
 
     # add an instruction after the current (insertion point)
     # the added instruction will become the new insertion point

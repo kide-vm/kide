@@ -93,7 +93,7 @@ module Virtual
     def compile_main bytes
       syntax  = @parser.parse_with_debug(bytes)
       parts = Parser::Transform.new.apply(syntax)
-      main = Virtual::CompiledMethod.main
+      main = Virtual::CompiledMethodInfo.main
       Compiler.compile( parts , main )
     end
   end

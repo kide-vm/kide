@@ -14,15 +14,20 @@
 module Parfait
   class Module < Object
     def initialize name , superclass
+      @name = name
       @instance_methods = []
       @name = name
       @super_class = superclass
       @meta_class = Virtual::MetaClass.new(self)
     end
 
+    def name
+      @name
+    end
+
     def add_instance_method method
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Method
-      raise "syserr " unless method.name.is_a? Symbol
+      raise "syserr #{method.name.class}" unless method.name.is_a? Word
       method.for_class = self
       @instance_methods << method
       method

@@ -6,11 +6,20 @@ module Virtual
         raise "error, argument must be a identifier, not #{p}" unless p.is_a? Ast::NameExpression
         p.name
       end
-      r = expression.receiver ? Compiler.compile(expression.receiver, method ) : Self.new()
-      new_method = CompiledMethodInfo.create_method(expression.name , args , r )
-      new_method.class_name = r.is_a?(Parfait::Class) ? r.name : method.class_name
-      clazz = Machine.instance.space.get_class_by_name(new_method.class_name)
-      clazz.add_instance_method new_method
+      if expression.receiver
+        #Do something clever instead of
+        r = Compiler.compile(expression.receiver, method )
+        if( r.is_a? Parfait::Class )
+          class_name = r.name
+        else
+          raise "unimplemented #{r}"
+        end
+      else
+        r = Self.new()
+        class_name = method.for_class.name
+      end
+      new_method = CompiledMethodInfo.create_method(class_name, expression.name.to_s , args )
+      new_method.info.receiver = r
 
       #frame = frame.new_frame
       return_type = nil
@@ -18,7 +27,7 @@ module Virtual
         return_type = Compiler.compile(ex,new_method  )
         raise return_type.inspect if return_type.is_a? Instruction
       end
-      new_method.return_type = return_type
+      new_method.info.return_type = return_type
       new_method
     end
     def scratch
