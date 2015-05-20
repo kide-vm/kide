@@ -24,6 +24,7 @@ module Parfait
   class Layout < List
 
     def initialize( object_class )
+      super()
       @object_class = object_class
     end
 
