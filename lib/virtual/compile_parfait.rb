@@ -43,11 +43,23 @@ module Parfait
         old_length = old_length + 1
       end
     end
-  end
-  class Parfait::Class
+
+    def to_s
+      Sof::Writer.write(self)
+    end
+
   end
   class Parfait::List
+    def to_sof_node(writer , level , ref )
+      Sof.array_to_sof_node(self , writer , level , ref )
+    end
   end
+  class Dictionary
+    def to_sof_node(writer , level , ref)
+      Sof.hash_to_sof_node( self , writer , level , ref)
+    end
+  end
+
 
   Word.class_eval do
     def to_s

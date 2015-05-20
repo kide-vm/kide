@@ -60,6 +60,17 @@ module Parfait
       set(key,val)
     end
 
+    def each
+      index = 1
+      while index <= @keys.get_length
+        key = @keys.get(index)
+        value = @values.get(index)
+        yield key , value
+        index = index + 1
+      end
+      self
+    end
+
     # :rehash, :to_hash, :to_h, :to_a, :[], :fetch, :[]=, :store, :default, :default=, :default_proc, :default_proc=,
     # :key, :index, :size, :length, :empty?, :each_value, :each_key, :each_pair, :each, :keys, :values,
     # :values_at, :shift, :delete, :delete_if, :keep_if, :select, :select!, :reject, :reject!, :clear, :invert,

@@ -19,6 +19,7 @@ module Parfait
 
     def self.new_object *args
       object = self.new(*args)
+      puts "NEW #{object.class}"
       object
     end
 
@@ -53,17 +54,17 @@ module Parfait
       @@EMPTY
     end
 
-    def instance_variables
-      get_layout().instance_variables
+    def get_instance_variables
+      get_layout().get_instance_variables
     end
 
-    def instance_variable_get name
+    def get_instance_variable name
       index = instance_variable_defined(name)
       return nil if index == nil
       return internal_get(index)
     end
 
-    def instance_variable_set name , value
+    def set_instance_variable name , value
       index = instance_variable_defined(name)
       return nil if index == nil
       return internal_set(index , value)
@@ -76,7 +77,7 @@ module Parfait
     # Object
     # :nil?, :===, :=~, :!~, :eql?, :hash, :<=>, :class, :singleton_class, :clone, :dup, :taint, :tainted?, :untaint,
     # :untrust, :untrusted?, :trust, :freeze, :frozen?, :to_s, :inspect, :methods, :singleton_methods, :protected_methods,
-    # :private_methods, :public_methods, :instance_variables, :instance_variable_get, :instance_variable_set, :instance_variable_defined?,
+    # :private_methods, :public_methods, :get_instance_variables, :get_instance_variable, :set_instance_variable, :instance_variable_defined?,
     # :remove_instance_variable, :instance_of?, :kind_of?, :is_a?, :tap, :send, :public_send, :respond_to?,
     # :extend, :display, :method, :public_method, :singleton_method, :define_singleton_method,
     # :object_id, :to_enum, :enum_for
