@@ -6,10 +6,14 @@ To be more precise, it is that part of the run-time that can be expressed in rub
 The run-time needs to contain quite a lot of functionality for a dynamic system.
 And a large part of that functionality must actually be used at compile time too.
 
-We reuse the Parfait code at compile-time, by inlining it.
+We reuse the Parfait code at compile-time, to create the data for the compiled vm.
+To do this the vm (re) defines the object memory (in compile_parfait).
 
-A work in progress that started from here : http://salama.github.io/2014/06/10/more-clarity.html went on here
-http://salama.github.io/2014/07/05/layers-vs-passes.html
+To do the actual compiling we parse and compile the parfait code and inline it to
+appropriate places (ie send, get_instance_variable etc). We have to inline to avoid recursion.
+
+A work in progress that started from here : http://salama.github.io/2014/06/10/more-clarity.html
+went on here http://salama.github.io/2014/07/05/layers-vs-passes.html
 
 A step back:  the code (program) we compile runs at run - time.
 And so does parfait. So all we have to do is compile it with the program.
@@ -23,11 +27,11 @@ but we still need (things like List access).
 
 #### Example: Message send
 
-It felt a little stupid that it took me so long to notice that sending a message is very closely related to the
-existing ruby method Object.send
+It felt a little stupid that it took me so long to notice that sending a message is very closely
+related to the existing ruby method Object.send
 
 Off course Object.send takes symbol and the arguments and has the receiver, so all the elements of our
-Messaage are there. And the process that Object.send needs to do is exactly that:
+Message are there. And the process that Object.send needs to do is exactly that:
 send that message, ie find the correct method according to the old walk up the inheritance tree rules and dispatch it.
 
 And as all this happens at runtime, "all" we have to do is code this logic. And since it is at runtime,
@@ -48,10 +52,13 @@ which defines all the  data we need (not the object). The object receives, it do
 Parfait is not the language (ie ruby) core library. Core library functionality differs between
 languages and so the language core lib must be on top of the vm parfait.
 
+To make this point clear, i have started using different names for the core classes. Hopefully
+more sensible ones, ie List instead of Array, Dictionary instead of Hash. 
+
 Also Parfait is meant to be as thin as humanly possibly, so extra (nice to have) functionality
 will be in future modules.
 
 So the Namespace of the Runtime is actually Parfait (not nothing as in ruby).
 Only in the require does one later have to be clever and see which vm one is running in and either
-require or not. Maybe one doesn't even have to be so celver, we'll see (as requiring an existing
+require or not. Maybe one doesn't even have to be so clever, we'll see (as requiring an existing
 module should result in noop)
