@@ -15,6 +15,7 @@ module Parfait
   # big TODO , this has NO encoding, a char takes a machine word. Go fix.
   class Word < Object
     # initialize with length. For now we try to keep all non-parfait (including String) out
+    # String will contain spaces for non-zero length
     # Virtual provides methods to create Parfait objects from ruby
     def initialize len
       super()
@@ -23,38 +24,62 @@ module Parfait
       set_length( len , 32 ) unless len == 0
     end
 
+    # return a copy of self
+    def copy
+      cop = Word.new( self.length )
+      index = 1
+      while( index <= self.length )
+        cop.set_char(index , self.get_char(index))
+        index = index + 1
+      end
+      cop
+    end
+
+    # return the number of characters
     def length()
       obj_len = internal_object_length - 1
       return obj_len
     end
 
+    # true if no characters
     def empty?
       return self.length == 0
     end
 
+    # pad the string with the given character to the given length
+    #
     def set_length(len , fill_char)
       return if len <= 0
       counter = self.length()
       return if counter >= len
       internal_object_grow( len + 1)
       counter = counter + 1
-      while( counter < len)
+      while( counter <= len)
         set_char( counter , fill_char)
         counter = counter + 1
       end
     end
 
+    # set the character at the given index to the given character
+    # character must be an integer, as is the index
+    # the index starts at one, but may be negative to count from the end
+    # indexes out of range will raise an error
     def set_char at , char
       raise "char not fixnum #{char}" unless char.kind_of? Fixnum
       index = range_correct_index(at)
       internal_object_set( index + 1  , char )
     end
 
+    # get the character at the given index
+    # the index starts at one, but may be negative to count from the end
+    # indexes out of range will raise an error
+    #the return "character" is an integer
     def get_char at
       index = range_correct_index(at)
       return internal_object_get(index + 1)
     end
 
+    # private method to calculate negative indexes into positives
     def range_correct_index at
       index = at
       index = self.length + at if at < 0
@@ -63,36 +88,31 @@ module Parfait
       return index
     end
 
+    # compare the word to another
+    # currently checks for same class, though really identity of the characters
+    # in right order would suffice
     def == other
       return false if other.class != self.class
       return false if other.length != self.length
       len = self.length
-      while(len >= 0)
+      while(len > 0)
         return false if self.get_char(len) != other.get_char(len)
         len = len - 1
       end
       return true
     end
 
+    # this is a sof check if there are instance variables or "structure"
     def is_value?
       true
     end
+
+    # as we answered is_value? with true, sof will create a basic node with this string
     def to_sof
       "Parfait::Word('#{to_s}')"
     end
 
-    def ==(other)
-      # this should call parfait get_class, alas that is not implemented yet
-      return false if other.class != self.class
-      return false if other.length != self.length
-      index = self.length
-      while(index > 0)
-        return false if other.get_char(index) != self.get_char(index)
-        index = index - 1
-      end
-      return true
-    end
-
+    #below here is OLD, DUBIOUS and needs to be checked TODO
     def result= value
       raise "called"
       class_for(MoveInstruction).new(value , self , :opcode => :mov)

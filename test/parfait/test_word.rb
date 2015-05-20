@@ -30,6 +30,20 @@ class TestWord < MiniTest::Test
   def test_len
     assert_equal 5 , @word.length
   end
+  def test_first_char
+    assert_equal 32 , @word.get_char(1)
+  end
+  def test_equals_copy
+    assert_equal @word.copy , @word
+  end
+  def test_equals_copy2
+    @word.set_char(1 , 2)
+    @word.set_char(5 , 6)
+    assert_equal @word.copy , @word
+  end
+  def test_equals_same
+    assert_equal ::Parfait::Word.new_object(5) , @word
+  end
   def test_index_check_get
     assert_raises RuntimeError do
       @word.get_char(-6)
@@ -53,38 +67,28 @@ class TestWord < MiniTest::Test
   def test_one_char
     assert_equal 32 , @word.set_char(1 , 32)
   end
-  def test_one_char_doesnt_cuase_problems
+  def test_one_char_doesnt_cause_problems
     @word.set_char(1 , 32)
     assert_equal 32 , @word.get_char(1)
   end
-  def pest_empty_word_doesnt_return
-    assert_equal nil , @word.get(3)
+  def test_one_set1
+    assert_equal 44 , @word.set_char(1, 44 )
   end
-  def pest_one_set0
-    assert_equal 1 , @word.set(0,1)
+  def test_two_sets
+    assert_equal 1 , @word.set_char(1,1)
+    assert_equal 44 , @word.set_char(1,44)
   end
-  def pest_one_set1
-    assert_equal :some , @word.set(1,:some)
+  def test_one_get1
+    test_one_set1
+    assert_equal 44 , @word.get_char(1)
   end
-  def pest_two_sets
-    assert_equal 1 , @word.set(0,1)
-    assert_equal :some , @word.set(1,:some)
-  end
-  def pest_one_get1
-    pest_one_set0
-    assert_equal 1 , @word.get(0)
-  end
-  def pest_one_get2
-    pest_one_set1
-    assert_equal :some , @word.get(1)
-  end
-  def pest_many_get
-    shouldda  = { 1 => :one , 2 => :two , 3 => :three}
+  def test_many_get
+    shouldda  = { 1 => 11 , 2 => 22 , 3 => 33}
     shouldda.each do |k,v|
-      @word.set(k,v)
+      @word.set_char(k,v)
     end
     shouldda.each do |k,v|
-      assert_equal v , @word.get(k)
+      assert_equal v , @word.get_char(k)
     end
   end
 end
