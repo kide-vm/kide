@@ -42,12 +42,13 @@ module Parfait
 
     # determine whether this method has an argument by the name
     def has_arg name
-      @arg_names.index_of name.to_sym
+      raise "uups #{name}.#{name.class}" unless name.is_a? Word
+      @arg_names.index_of name
     end
 
     # determine if method has a local variable or tmp (anonymous local) by given name
     def has_local name
-      name = name.to_sym
+      raise "uups #{name}.#{name.class}" unless name.is_a? Word
       index = @locals.index(name)
       index = @tmps.index(name) unless index
       index

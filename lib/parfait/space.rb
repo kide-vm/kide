@@ -67,7 +67,7 @@ module Parfait
       raise "uups #{name}.#{name.class}" unless name.is_a? Word
       c = @classes[name]
       raise "uups " if name.is_a? String
-      puts "MISS, no class #{name} #{name.class}" # " #{@classes}"
+      puts "MISS, no class #{name} #{name.class}" unless c # " #{@classes}"
       c
     end
 

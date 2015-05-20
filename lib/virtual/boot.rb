@@ -20,11 +20,10 @@ module Virtual
       #space_layout =
 #      Parfait::Layout.new_object space_class
 
-      puts "Space #{space.get_layout}"
+#      puts "Space #{space.get_layout}"
     end
 
     def boot_classes!
-      puts "BOOT"
       values = [ "Integer" , "Object" , "Value" , "Kernel"]
       rest = ["Word" , "Class" , "Dictionary" , "Space" , "List", "Layout"]
       (values + rest).each { |cl| @space.create_class(Virtual.new_word(cl)) }

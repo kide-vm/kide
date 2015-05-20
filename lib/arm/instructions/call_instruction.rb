@@ -1,11 +1,11 @@
 module Arm
   # There are only three call instructions in arm branch (b), call (bl) and syscall (swi)
-  
+
   # A branch could be called a jump as it has no notion of returning
-  
+
   # The pc is put into the link register to make a return possible
   # a return is affected by moving the stored link register into the pc, effectively a branch
-  
+
   # swi (SoftWareInterrupt) or system call is how we call the kernel.
   # in Arm the register layout is different and so we have to place the syscall code into register 7
   # Registers 0-6 hold the call values as for a normal c call
@@ -36,7 +36,7 @@ module Arm
         if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
           arg = Virtual::IntegerConstant.new( arg )
         end
-        if arg.is_a?(Virtual::Block) or arg.is_a?(Virtual::CompiledMethod)
+        if arg.is_a?(Virtual::Block) or arg.is_a?(Virtual::CompiledMethodInfo)
           #relative addressing for jumps/calls
           diff = arg.position - self.position
           # but because of the arm "theoretical" 3- stage pipeline, we have to subtract 2 words (fetch/decode)

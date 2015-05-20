@@ -46,13 +46,13 @@ module Virtual
       # whichever way this goes the result is stored in the return slot (as all compiles)
       def self.compile_name expression , method
         return Self.new( Mystery ) if expression.name == :self
-        name = expression.name
-        if method.has_var(expression.name)
+        name = Virtual.new_word expression.name.to_s
+        if method.has_var(name)
           # either an argument, so it's stored in message
           if( index = method.has_arg(name))
-            method.info.add_code MessageGet.new(name , index)
+            method.info.add_code MessageGet.new(expression.name , index)
           else # or a local so it is in the frame
-            method.info.add_code FrameGet.new(name , index)
+            method.info.add_code FrameGet.new(expression.name , index)
           end
         else
           call = Ast::CallSiteExpression.new(expression.name , [] ) #receiver self is implicit
@@ -83,11 +83,11 @@ module Virtual
         raise "must assign to NameExpression , not #{expression.left}" unless expression.left.instance_of? Ast::NameExpression
         r = Compiler.compile(expression.right , method )
         raise "oh noo, nil from where #{expression.right.inspect}" unless r
-        index = method.has_arg(name)
+        index = method.has_arg(Virtual.new_word name)
         if index
           method.info.add_code Set.new(Return.new , MessageSlot.new(index , r,type , r ))
         else
-          index = method.ensure_local(expression.left.name)
+          index = method.ensure_local(Virtual.new_word expression.left.name)
           method.info.add_code Set.new(Return.new , FrameSlot.new(index , r.type , r ))
         end
         r

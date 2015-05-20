@@ -20,12 +20,15 @@ module Parfait
     # they respresent the smallest code needed to build larger functionality
     # but should _never_ be used outside parfait. in fact that should be impossible
     def internal_object_get_typeword
+      raise "failed init for #{self.class}" unless @memory
       @memory[0]
     end
     def internal_object_set_typeword w
+      raise "failed init for #{self.class}" unless @memory
       @memory[0] = w
     end
     def internal_object_length
+      raise "failed init for #{self.class}" unless @memory
       @memory.length - 1  # take of type-word
     end
     # 1 -based index
@@ -34,6 +37,7 @@ module Parfait
     end
     # 1 -based index
     def internal_object_set(index , value)
+      raise "failed init for #{self.class}" unless @memory
       @memory[index] = value
     end
     def internal_object_grow(length)

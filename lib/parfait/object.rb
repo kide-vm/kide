@@ -19,7 +19,7 @@ module Parfait
 
     def self.new_object *args
       object = self.new(*args)
-      puts "NEW #{object.class}"
+      #puts "NEW #{object.class}"
       object
     end
 
@@ -42,7 +42,7 @@ module Parfait
     end
 
     def get_layout()
-      puts "ME #{self.class}"
+      #puts "ME #{self.class}"
       return internal_object_get(LAYOUT_INDEX)
     end
 
