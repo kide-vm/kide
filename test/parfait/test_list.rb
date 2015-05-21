@@ -49,4 +49,14 @@ class TestList < MiniTest::Test
       assert_equal v , @list.get(k)
     end
   end
+  def test_index_of
+    test_many_get
+    assert_equal 2 , @list.index_of( :two )
+    assert_equal nil , @list.index_of( :four )
+  end
+  def test_incude
+    test_many_get
+    assert_equal true , @list.include?( :two )
+    assert_equal false , @list.include?( :four )
+  end
 end

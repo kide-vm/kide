@@ -19,16 +19,23 @@ module Parfait
       internal_object_length - 1
     end
 
+    # index of item, remeber first item has index 1
+    # return  nil if no such item
     def index_of( item )
       max = self.get_length
       counter = 1
       while( counter < max )
-        if( get(index) == item)
+        if( get(counter) == item)
           return counter
         end
         counter = counter + 1
       end
       return nil
+    end
+
+    # include? means non nil index
+    def include? item
+      return index_of(item) != nil
     end
 
     # push means add to the end
