@@ -23,6 +23,7 @@
 module Parfait
   class Frame < Object
     def initialize locals , temps
+      super()
       @locals = locals
       @tmps = tmps
     end

@@ -20,6 +20,7 @@ module Parfait
   class Method < Object
 
     def initialize name , arg_names
+      super()
       @name = name
       @arg_names = arg_names
       @locals = []
