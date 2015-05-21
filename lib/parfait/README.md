@@ -7,7 +7,7 @@ The run-time needs to contain quite a lot of functionality for a dynamic system.
 And a large part of that functionality must actually be used at compile time too.
 
 We reuse the Parfait code at compile-time, to create the data for the compiled vm.
-To do this the vm (re) defines the object memory (in compile_parfait).
+To do this the vm (re) defines the object memory (in parfait_adapter).
 
 To do the actual compiling we parse and compile the parfait code and inline it to
 appropriate places (ie send, get_instance_variable etc). We have to inline to avoid recursion.

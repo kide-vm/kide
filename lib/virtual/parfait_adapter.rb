@@ -6,11 +6,30 @@
 
 module FakeMem
   def initialize
+    if( self.class.name == "Parfait::Space")
+      puts "YES , I am SPACE"
+    end
     @memory = [0,nil]
+    if Parfait::Space.object_space and Parfait::Space.object_space.objects
+      Parfait::Space.object_space.add_object self
+      puts "got it #{self.class.name}"
+    else
+      puts "it escaped #{self.class.name}"
+    end
+  end
+  def init_layout
+    class_name = self.class.name
+    puts "CLASS #{class_name}"
+    puts "Check for #{class_name}"
+    cl = Parfait::Space.space.get_class(class_name)
+    puts "found #{cl}" if cl
   end
 end
 
 module Parfait
+   Space.class_eval do
+    attr_accessor :vm_objects
+  end
   # Objects memory functions. Object memory is 1 based
   # but we implement it with ruby array (0 based) and use 0 as type-word
   # These are the same functions that Builtin implements at run-time
