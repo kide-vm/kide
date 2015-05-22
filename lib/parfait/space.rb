@@ -24,20 +24,28 @@ module Parfait
 
     def initialize
       super()
+      Parfait::Space.set_object_space self
       @classes = Parfait::Dictionary.new_object
+      # this is like asking for troubles, but if the space instance is not registered
+      # and the @classes up, one can not register classes.
+      # all is good after this init
       #global objects (data)
-      @objects = []
-      @symbols = []
+      @objects = Parfait::List.new_object
+      #@symbols = Parfait::List.new_object
+    end
+    attr_reader :classes , :objects , :symbols, :messages, :next_message , :next_frame
+
+    @@SPACE = { :names => [:classes,:objects,:symbols,:messages, :next_message , :next_frame] ,
+                :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference]}
+
+    # need a two phase init for the object space (and generally parfait) because the space
+    # is an interconnected graph, so not everthing is ready
+    def late_init
       @frames = 100.times.collect{ ::Parfait::Frame.new([],[])}
       @messages = 100.times.collect{ ::Parfait::Message.new }
       @next_message = @messages.first
       @next_frame = @frames.first
-      Parfait::Space.set_object_space self
     end
-    attr_reader :classes , :objects , :symbols,:messages, :next_message , :next_frame
-
-    @@SPACE = { :names => [:classes,:objects,:symbols,:messages, :next_message , :next_frame] ,
-                :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference]}
     def old_layout
       @@SPACE
     end
@@ -49,13 +57,13 @@ module Parfait
     end
     # TODO Must get rid of the setter
     def self.set_object_space space
-      @@space = space
+      @@object_space = space
     end
 
     # Objects are data and get assembled after functions
     def add_object o
       return if @objects.include?(o)
-      @objects << o
+      @objects.push o
       if o.is_a? Symbol
         @symbols << o
       end
