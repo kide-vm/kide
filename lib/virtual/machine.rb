@@ -41,10 +41,15 @@ module Virtual
     attr_reader :message , :passes , :space , :init , :main
 
     def run_passes
+#TODO     puts "INIT #{@init}"
       @passes.each do |pass_class|
-        blocks = [@init]  + @main.blocks
+        blocks = []#[@init]  #TODO + @main.blocks
         @space.classes.values.each do |c|
-          c.instance_methods.each {|f| blocks += f.blocks  }
+          c.instance_methods.each do |f|
+            nb = f.info.blocks
+            raise "nil blocks " unless nb
+            blocks += nb
+          end
         end
         #puts "running #{pass_class}"
         blocks.each do |block|
