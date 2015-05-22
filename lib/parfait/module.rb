@@ -25,6 +25,9 @@ module Parfait
       @name
     end
 
+    def instance_methods
+      @instance_methods
+    end
     def add_instance_method method
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Method
       raise "syserr #{method.name.class}" unless method.name.is_a? Word

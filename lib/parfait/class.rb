@@ -22,6 +22,10 @@ module Parfait
       @object_layout = Layout.new_object(self)
     end
 
+    def object_layout
+      @object_layout
+    end
+
     def allocate_object
       #space, and ruby allocate
     end

@@ -16,29 +16,42 @@ module Virtual
     #  (not use the normal initialize way)
     def boot_parfait!
       @space = Parfait::Space.new_object
-      boot_classes!
-      #space_layout =
-#      Parfait::Layout.new_object space_class
 
-#      puts "Space #{space.get_layout}"
-    end
-
-    def boot_classes!
-      values = [ "Integer" , "Object" , "Value" , "Kernel"]
-      rest = ["Word" , "Class" , "Dictionary" , "Space" , "List", "Layout"]
-      (values + rest).each { |cl| @space.create_class(Virtual.new_word(cl)) }
-      value_class = @space.get_class_by_name Virtual.new_word("Value")
-      @space.get_class_by_name(Virtual.new_word("Integer")).set_super_class( value_class )
-      object_class = @space.get_class_by_name(Virtual.new_word("Object"))
-      object_class.set_super_class( value_class )
-      rest.each do |name|
-          cl = @space.get_class_by_name( Virtual.new_word( name ))
-          cl.set_super_class(object_class)
+      values = [  "Value"  , "Integer" , "Kernel" ,  "Object"].collect {|cl| Virtual.new_word(cl) }
+      value_classes = values.collect { |cl| @space.create_class(cl) }
+      rest = [ "Word", "Space", "Layout", "Module" ,
+                "Class" , "Dictionary", "List"]
+      rest_layouts = { Virtual.new_word("Word") => [] ,
+                       Virtual.new_word("Space") => ["classes","objects"],
+                       Virtual.new_word("Layout") => ["object_class"] ,
+                       Virtual.new_word("Module") => ["name","instance_methods", "super_class", "meta_class"],
+                       Virtual.new_word("Class") => ["object_layout"],
+                       Virtual.new_word("Dictionary") => ["keys" , "values"],
+                       Virtual.new_word("List") => [] }
+      rest_classes = rest_layouts.collect { |cl , lay| @space.create_class(cl) }
+      rest_classes[1].set_super_class( value_classes[0] ) # #set superclass for object
+      rest_classes[3].set_super_class( value_classes[0] ) # and integer
+      rest_classes.each do |cl|                         # and the rest
+        cl.set_super_class(value_classes[3])
       end
-      boot_layouts!
-    end
-    def boot_layouts!
-
+      # next create layouts by adding instance variable names to the layouts
+      rest_classes.each do |cl|
+        name = cl.name
+        variables = rest_layouts[name]
+        variables.each do |var_name|
+          cl.object_layout.add_instance_variable Virtual.new_word(var_name)
+        end
+      end
+      # now update the layout on all objects created so far,
+      # go through objects in space
+      @space.objects.each do | o |
+        vm_name = o.class.name.split("::").last
+        index = rest.index(vm_name)
+        raise "Class not found #{o.class}" unless index
+        o.set_layout rest_classes[index].object_layout
+        puts "index #{index}"
+      end
+      # and go through the space instance variables which get created before the object list
     end
 
     # boot the classes, ie create a minimal set of classes with a minimal set of functions

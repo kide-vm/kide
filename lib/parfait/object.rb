@@ -37,21 +37,18 @@ module Parfait
     # data that every object carries.
     def get_class()
       l = get_layout()
-      puts "Layout #{l.class} in #{self.class}"
+      puts "Layout #{l.class} in #{self.class} , #{self}"
       l.get_object_class()
+    end
+
+    # private
+    def set_layout(layout)
+      internal_object_set(LAYOUT_INDEX , layout)
     end
 
     def get_layout()
       #puts "ME #{self.class}"
       return internal_object_get(LAYOUT_INDEX)
-    end
-
-    # class stores the "latest" layout for instances, ie the layout a new object will
-    # be created with.
-    # inside parfait (and for now everywhere) these are constant.
-    @@EMPTY =  { :names => [] , :types => []}
-    def self.class_layout()
-      @@EMPTY
     end
 
     def get_instance_variables

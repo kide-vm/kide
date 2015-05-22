@@ -34,7 +34,7 @@ module Parfait
     #
     # TODO , later we would need to COPY the layout to keep the old constant
     #        but now we are concerned with booting, ie getting a working structure
-    def add_instance_name name
+    def add_instance_variable name
       self.push(name)
       self.get_length
     end
