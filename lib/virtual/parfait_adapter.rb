@@ -6,23 +6,20 @@
 
 module FakeMem
   def initialize
-    if( self.class.name == "Parfait::Space")
-      puts "YES , I am SPACE"
-    end
     @memory = [0,nil]
     if Parfait::Space.object_space and Parfait::Space.object_space.objects
       Parfait::Space.object_space.add_object self
-      puts "got it #{self.class.name}"
     else
-      puts "it escaped #{self.class.name}"
+      #TODO, must go through spce instance variables "by hand"
+      puts "fixme, no layout for #{self.class.name}"
     end
+    init_layout if Virtual::Machine.instance.class_mappings
   end
   def init_layout
-    class_name = self.class.name
-    puts "CLASS #{class_name}"
-    puts "Check for #{class_name}"
-    cl = Parfait::Space.space.get_class(class_name)
-    puts "found #{cl}" if cl
+    vm_name = self.class.name.split("::").last
+    clazz = Virtual::Machine.instance.class_mappings[vm_name]
+    raise "Class not found #{vm_name}" unless clazz
+    self.set_layout clazz.object_layout
   end
 end
 

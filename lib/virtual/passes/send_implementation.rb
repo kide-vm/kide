@@ -23,7 +23,7 @@ module Virtual
             # get the function from my class. easy peasy
             puts "Me is #{me.class}"
             method = me.get_class.get_instance_method(code.name)
-            raise "Method not implemented #{clazz.name}.#{code.name}" unless method
+            raise "Method not implemented #{me.class}.#{code.name}" unless method
             new_codes << MethodCall.new( method )
           else
             # note: this is the current view: call internal send, even the method name says else
