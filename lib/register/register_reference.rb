@@ -1,7 +1,7 @@
 module Register
 
-  # RegisterReference is not the name for a register, "only" for a certain use of it. 
-  # In a way it is like a variable name, a storage location. The location is a register off course, 
+  # RegisterReference is not the name for a register, "only" for a certain use of it.
+  # In a way it is like a variable name, a storage location. The location is a register off course,
   # but which register can be changed, and _all_ instructions sharing the RegisterReference then use that register
   # In other words a simple level of indirection, or change from value to reference sematics.
 
@@ -28,6 +28,31 @@ module Register
       sym = "r#{int + by}".to_sym
       RegisterReference.new( sym )
     end
+
+    SELF_REG = :r0
+    MESSAGE_REG = :r1
+    FRAME_REG = :r2
+    NEW_MESSAGE_REG = :r3
+
+    TMP_REG = :r4
+
+    def self.self_reg
+      new SELF_REG
+    end
+    def self.messsage_reg
+      new MESSAGE_REG
+    end
+    def self.frame_reg
+      new FRAME_REG
+    end
+    def self.new_messsage_reg
+      new NEW_MESSAGE_REG
+    end
+    def self.tmp_reg
+      new TMP_REG
+    end
+
+
   end
 
 end
