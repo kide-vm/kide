@@ -89,7 +89,17 @@ module Parfait
   class Method
     attr_accessor :info
   end
+
   class Word
+    def == other
+      return false unless other.is_a?(String) or other.is_a?(Word)
+      as_string = self.to_s
+      unless other.is_a? String
+        other = other.to_s
+      end
+      as_string == other
+    end
+
     def to_s
       string = ""
       index = 1
