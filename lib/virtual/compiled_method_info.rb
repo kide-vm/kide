@@ -31,7 +31,7 @@ module Virtual
     # return the main function (the top level) into which code is compiled
     # this just create a "main" with create_method , see there
     def self.main
-      self.create_method( "Object" , "main" , [] )
+      self.create_method( "Kernel" , "main" , [] )
     end
 
     # create method does two things

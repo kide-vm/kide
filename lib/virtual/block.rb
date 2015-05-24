@@ -7,7 +7,7 @@ module Virtual
 
   # Blocks form a graph, which is managed by the method
 
-  class Block 
+  class Block
 
     def initialize(name , method )
       super()
@@ -52,11 +52,16 @@ module Virtual
 
     # position is what another block uses to jump to. this is determined by the assembler
     # the assembler allso assembles and assumes a linear instruction sequence
-    # Note: this will have to change for plocks and maybe anyway. back to oo, no more visitors
+    # Note: this will have to change for plocks and maybe anyway.
     def set_position at
       @position = at
       @codes.each do |code|
-        code.set_position( at)
+        begin
+          code.set_position( at)
+        rescue => e
+          puts "BLOCK #{self}"
+          raise e
+        end
         raise code.inspect unless code.mem_length
         at += code.mem_length
       end
@@ -64,6 +69,10 @@ module Virtual
 
     def mem_length
       @codes.inject(0){|count , instruction| count += instruction.mem_length }
+    end
+
+    def to_s
+      Sof::Writer.write(self)
     end
 
     private
