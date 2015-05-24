@@ -25,7 +25,9 @@ module Virtual
       value_classes = values.collect { |cl| @space.create_class(cl,nil) }
       layouts = { "Word" => [] ,
                   "List" => [] ,
-                  "Space" => ["classes","objects"],
+                  "Message" => [],
+                  "Space" => ["classes","objects","frames","messages","next_message","next_frame"],
+                  "Frame" => ["locals" , "tmps" ],
                   "Layout" => ["object_class"] ,
                   "Class" => ["object_layout"],
                   "Dictionary" => ["keys" , "values"] ,
@@ -63,7 +65,10 @@ module Virtual
         o.init_layout
       end
       # and go through the space instance variables which get created before the object list
-
+      @space.init_layout
+      @space.classes.init_layout
+      @space.objects.init_layout
+      @space.late_init
       boot_functions!
     end
 

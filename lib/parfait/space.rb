@@ -32,7 +32,7 @@ module Parfait
       #global objects (data)
       @objects = Parfait::List.new_object
     end
-    attr_reader :classes , :objects , :symbols, :messages, :next_message , :next_frame
+    attr_reader :classes , :objects , :frames, :messages, :next_message , :next_frame
 
     # need a two phase init for the object space (and generally parfait) because the space
     # is an interconnected graph, so not everthing is ready
