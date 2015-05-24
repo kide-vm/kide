@@ -24,9 +24,6 @@ module FakeMem
 end
 
 module Parfait
-   Space.class_eval do
-    attr_accessor :vm_objects
-  end
   # Objects memory functions. Object memory is 1 based
   # but we implement it with ruby array (0 based) and use 0 as type-word
   # These are the same functions that Builtin implements at run-time

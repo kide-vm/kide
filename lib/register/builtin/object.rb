@@ -6,7 +6,8 @@ module Builtin
       # set/get instance variable use it.
       # This is just a placeholder, as we code this in ruby, but the instance methods need the definition before.
       def index_of context , name = Virtual::Integer
-        index_function = Virtual::CompiledMethod.new(:index_of , Virtual::Reference , [Virtual::Reference] , Virtual::Integer )
+        index_function = Virtual::CompiledMethodInfo.create_method("Object" , "index_of" , [Virtual::Reference]  )
+        index_function.info.return_type = Virtual::Integer
         return index_function
       end
 
@@ -23,7 +24,7 @@ module Builtin
       #  end
       # The at_index is just "below" the api, something we need but don't want to expose, so we can't code the above in ruby
       def _get_instance_variable context , name = Virtual::Integer
-        get_function = Virtual::CompiledMethod.new(:_get_instance_variable , [ Virtual::Reference ] , Virtual::Reference ,Virtual::Mystery )
+        get_function = Virtual::CompiledMethodInfo.create_method("Object","_get_instance_variable" , [ Virtual::Reference ] )
         return get_function
         me = get_function.receiver
         var_name = get_function.args.first
@@ -44,7 +45,7 @@ module Builtin
       end
 
       def _set_instance_variable(context , name = Virtual::Integer , value = Virtual::Integer )
-        set_function = Virtual::CompiledMethod.new(:_set_instance_variable ,[Virtual::Reference ,Virtual::Reference], Virtual::Reference ,Virtual::Mystery )
+        set_function = Virtual::CompiledMethodInfo.create_method("Object","_set_instance_variable" ,[Virtual::Reference ,Virtual::Reference] )
         return set_function
         receiver set_function
         me = set_function.receiver

@@ -13,7 +13,7 @@ module Virtual
         next unless code.is_a? MessageSend
         new_codes = [  ]
         ref = code.me
-        raise "only refs implemented #{me.inspect}" unless ( ref.type == Reference)
+        raise "only refs implemented #{ref.inspect}" unless ( ref.type == Reference)
         # value known at compile time, got do something with it
         if(ref.value)
           me = ref.value
@@ -22,7 +22,7 @@ module Virtual
           elsif( me.is_a? Parfait::Object )
             # get the function from my class. easy peasy
             puts "Me is #{me.class}"
-            method = me.get_class.get_instance_method(code.name)
+            method = me.get_class.get_instance_method(Virtual.new_word code.name)
             raise "Method not implemented #{me.class}.#{code.name}" unless method
             new_codes << MethodCall.new( method )
           else

@@ -31,12 +31,8 @@ module Parfait
       # all is good after this init
       #global objects (data)
       @objects = Parfait::List.new_object
-      #@symbols = Parfait::List.new_object
     end
     attr_reader :classes , :objects , :symbols, :messages, :next_message , :next_frame
-
-    @@SPACE = { :names => [:classes,:objects,:symbols,:messages, :next_message , :next_frame] ,
-                :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference,Virtual::Reference]}
 
     # need a two phase init for the object space (and generally parfait) because the space
     # is an interconnected graph, so not everthing is ready
@@ -45,9 +41,6 @@ module Parfait
       @messages = 100.times.collect{ ::Parfait::Message.new }
       @next_message = @messages.first
       @next_frame = @frames.first
-    end
-    def old_layout
-      @@SPACE
     end
 
     @@object_space = nil
@@ -64,9 +57,6 @@ module Parfait
     def add_object o
       return if @objects.include?(o)
       @objects.push o
-      if o.is_a? Symbol
-        @symbols << o
-      end
     end
 
     # this is the way to instantiate classes (not Parfait::Class.new)

@@ -22,7 +22,7 @@ HERE
     check
   end
 
-  def ttest_puts_string
+  def test_puts_string
     @string_input    = <<HERE
 def foo()
   puts("Hello")
@@ -32,7 +32,7 @@ HERE
     check
   end
 
-  def test_string_put
+  def ttest_string_put
     @string_input    = <<HERE
 def foo()
   "Hello".puts()

@@ -48,17 +48,17 @@ module Parfait
     end
 
     def get_instance_method fname
-      fname = fname.to_sym
+      raise "uups #{fname}.#{fname.class}" unless fname.is_a? Word
       @instance_methods.detect{ |fun| fun.name == fname }
     end
 
     # get the method and if not found, try superclasses. raise error if not found
     def resolve_method m_name
+      raise "uups #{m_name}.#{m_name.class}" unless m_name.is_a? Word
       method = get_instance_method(m_name)
       unless method
         unless( @name == "Object" )
-          supr = Space.space.get_class_by_name(@super_class_name)
-          method = supr.resolve_method(m_name)
+          method = @super_class.resolve_method(m_name)
         end
       end
       raise "Method not found #{m_name}, for #{@name}" unless method

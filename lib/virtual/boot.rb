@@ -1,5 +1,7 @@
 module Virtual
 
+  # Booting is a complicated, so it is extracted into this file, even it has only one entry point
+
   class Machine
 
     # The general idea is that compiling is creating an object graph. Functionally
@@ -16,24 +18,25 @@ module Virtual
     #  (not use the normal initialize way)
     def boot_parfait!
       @space = Parfait::Space.new_object
+      # map from the vm - class_name to the Parfait class (which carries parfait name)
+      class_mappings = {}        #will later become instance variable
 
       values = [  "Value"  , "Integer" , "Kernel" ,  "Object"].collect {|cl| Virtual.new_word(cl) }
       value_classes = values.collect { |cl| @space.create_class(cl) }
       layouts = { "Word" => [] ,
+                  "List" => [] ,
                   "Space" => ["classes","objects"],
                   "Layout" => ["object_class"] ,
-                  "Method" => ["name" , "arg_names" , "locals" , "tmps"] ,
-                  "Module" => ["name","instance_methods", "super_class", "meta_class"],
                   "Class" => ["object_layout"],
-                  "Dictionary" => ["keys" , "values"],
-                  "List" => [] }
-      # map from the vm - class_name to the Parfait class (which carries parfait name)
-      class_mappings = {}
+                  "Dictionary" => ["keys" , "values"] ,
+                  "Method" => ["name" , "arg_names" , "locals" , "tmps"] ,
+                  "Module" => ["name" , "instance_methods", "super_class", "meta_class"]
+                }
       layouts.each do |name , layout|
         class_mappings[name] = @space.create_class(Virtual.new_word(name))
       end
-      value_classes[1].set_super_class( value_classes[0] ) # #set superclass (value) for object
-      value_classes[3].set_super_class( value_classes[0] ) # and integer
+      value_classes[1].set_super_class( value_classes[0] ) # #set superclass (value) for integer
+      value_classes[3].set_super_class( value_classes[0] ) # and object
       class_mappings.each do |name , clazz|                # and the rest
         clazz.set_super_class(value_classes[3])            # superclasses are object
       end
@@ -49,6 +52,9 @@ module Virtual
       #   lookup half created class info
       # but it must be done before going through the objects (next step)
       @class_mappings = class_mappings
+      class_mappings["Integer"] = value_classes[1]  #need for further booting
+      class_mappings["Kernel"] = value_classes[2]  #need for further booting
+      class_mappings["Object"] = value_classes[3]  #need for further booting
 
       # now update the layout on all objects created so far,
       # go through objects in space
@@ -56,23 +62,25 @@ module Virtual
         o.init_layout
       end
       # and go through the space instance variables which get created before the object list
+
+      boot_functions!
     end
 
-    # boot the classes, ie create a minimal set of classes with a minimal set of functions
+    # classes have booted, now create a minimal set of functions
     # minimal means only that which can not be coded in ruby
-    # CompiledMethods are grabbed from respective modules by sending the method name. This should return the
-    # implementation of the method (ie a method object), not actually try to implement it (as that's impossible in ruby)
+    # Methods are grabbed from respective modules by sending the method name. This should return the
+    # implementation of the method (ie a method object), not actually try to implement it
+    #                                                     (as that's impossible in ruby)
     def boot_functions!
-      @space =  Parfait::Space.new
-      boot_classes!
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we
       # have to define some dummies, just for the other to compile
       # TODO: go through the virtual parfait layer and adjust function names to what they really are
-      obj = @space.get_class_by_name "Object"
+      obj = @class_mappings["Object"]
       [:index_of , :_get_instance_variable , :_set_instance_variable].each do |f|
         obj.add_instance_method Builtin::Object.send(f , nil)
+        puts "Object add #{f}"
       end
-      obj = @space.get_class_by_name "Kernel"
+      obj = @class_mappings["Kernel"]
       # create main first, __init__ calls it
       @main = Builtin::Kernel.send(:main , @context)
       obj.add_instance_method @main
@@ -85,17 +93,9 @@ module Virtual
       # the point of which is that by the time main executes, all is "normal"
       @init = Block.new(:_init_ , nil )
       @init.add_code(Register::RegisterMain.new(underscore_init))
-      obj = @space.get_class_by_name "Integer"
+      obj = @class_mappings["Integer"]
       [:putint,:fibo].each do |f|
         obj.add_instance_method Builtin::Integer.send(f , nil)
-      end
-      obj = @space.get_class_by_name Virtual.new_word "Word"
-      [:get , :set , :puts].each do |f|
-        obj.add_instance_method Builtin::Word.send(f , nil)
-      end
-      obj = space.get_class_by_name "List"
-      [:get , :set , :push].each do |f|
-        obj.add_instance_method Builtin::Array.send(f , nil)
       end
     end
   end
