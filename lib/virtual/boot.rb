@@ -31,7 +31,7 @@ module Virtual
                   "Layout" => ["object_class"] ,
                   "Class" => ["object_layout"],
                   "Dictionary" => ["keys" , "values"] ,
-                  "Method" => ["name" , "arg_names" , "locals" , "tmps"] ,
+                  "Method" => ["name" , "code" ,"arg_names" , "locals" , "tmps"] ,
                   "Module" => ["name" , "instance_methods", "super_class", "meta_class"]
                 }
       layouts.each do |name , layout|

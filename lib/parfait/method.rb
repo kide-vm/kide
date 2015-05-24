@@ -24,6 +24,7 @@ module Parfait
       raise "No class #{name}" unless clazz
       @for_class = clazz
       @name = name
+      @code = Word.new_object 0
       @arg_names = arg_names
       @locals = []
       @tmps = []
