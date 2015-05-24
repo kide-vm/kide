@@ -13,7 +13,7 @@ module Virtual
         next unless code.is_a? MessageSend
         new_codes = [  ]
         ref = code.me
-        raise "only refs implemented #{ref.inspect}" unless ( ref.type == Reference)
+        raise "only refs implemented #{ref.type}" unless ( ref.type.is_a? Reference)
         # value known at compile time, got do something with it
         if(ref.value)
           me = ref.value
@@ -34,9 +34,17 @@ module Virtual
             raise "unimplemented: \n#{code}"
           end
         else
-          # must defer send to run-time
-          # So inlining the code from message.send (in the future)
-          raise "not constant/ known object for send #{ref.inspect}"
+          if ref.type.is_a?(Reference) and ref.type.of_class
+            #find method and call
+            clazz = ref.type.of_class
+            method = clazz.resolve_method Virtual.new_word(code.name)
+            raise "No method found #{code.name}" unless method
+            new_codes << MethodCall.new( method )
+          else
+            # must defer send to run-time
+            # So inlining the code from message.send (in the future)
+            raise "not constant/ known object for send #{ref.inspect}"
+          end
         end
         block.replace(code , new_codes )
       end
