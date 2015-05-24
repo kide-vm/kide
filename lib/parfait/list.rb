@@ -24,7 +24,7 @@ module Parfait
     def index_of( item )
       max = self.get_length
       counter = 1
-      while( counter < max )
+      while( counter <= max )
         if( get(counter) == item)
           return counter
         end

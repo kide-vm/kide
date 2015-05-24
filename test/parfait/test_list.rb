@@ -52,6 +52,7 @@ class TestList < MiniTest::Test
   def test_index_of
     test_many_get
     assert_equal 2 , @list.index_of( :two )
+    assert_equal 3 , @list.index_of( :three )
     assert_equal nil , @list.index_of( :four )
   end
   def test_incude
