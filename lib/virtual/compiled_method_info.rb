@@ -46,7 +46,7 @@ module Virtual
       method_name = Virtual.new_word(method_name) if method_name.is_a? String
       clazz = Machine.instance.space.get_class_by_name class_name
       raise "No such class #{class_name}" unless clazz
-      method = clazz.create_instance_method(method_name , Virtual.new_list(args))
+      method = clazz.create_instance_method( method_name , Virtual.new_list(args))
       method.info = CompiledMethodInfo.new
       method
     end

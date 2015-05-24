@@ -45,7 +45,7 @@ module Virtual
       # otherwise it's a method without args and a send is issued.
       # whichever way this goes the result is stored in the return slot (as all compiles)
       def self.compile_name expression , method
-        return Self.new( Mystery ) if expression.name == :self
+        return Self.new( Reference.new(method.for_class)) if expression.name == :self
         name = Virtual.new_word expression.name.to_s
         if method.has_var(name)
           # either an argument, so it's stored in message
