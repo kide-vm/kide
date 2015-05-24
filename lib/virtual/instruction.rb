@@ -10,7 +10,9 @@ module Virtual
   #  instructions, thus defining a minimal set of instructions needed to implement oo.
 
   class Instruction
-    include Positioned
+    def to_s
+      Sof::Writer.write(self)
+    end
   end
 
 end

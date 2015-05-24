@@ -44,6 +44,11 @@ module Parfait
       self.set( self.get_length + 1 , value)
     end
 
+    def first
+      return nil unless empty?
+      get(1)
+    end
+
     # set the value at index.
     # Lists start from index 1
     def set( index , value)

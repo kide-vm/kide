@@ -37,8 +37,14 @@ module Parfait
     # need a two phase init for the object space (and generally parfait) because the space
     # is an interconnected graph, so not everthing is ready
     def late_init
-      @frames = 100.times.collect{ ::Parfait::Frame.new([],[])}
-      @messages = 100.times.collect{ ::Parfait::Message.new }
+      @frames = List.new_object
+      @messages = List.new_object
+      counter = 0
+      while( counter < 100)
+        @frames.push Frame.new_object
+        @messages.push Message.new_object
+        counter = counter + 1
+      end
       @next_message = @messages.first
       @next_frame = @frames.first
     end
@@ -70,8 +76,8 @@ module Parfait
     end
 
     def create_class name , superclass
-      c = Class.new_object(name , superclass)
       raise "uups " if name.is_a? String
+      c = Class.new_object(name , superclass)
       @classes[name] = c
     end
   end

@@ -21,12 +21,9 @@
 # Which resolves the dichotomy of objects on the stack or heap. Sama sama.
 
 module Parfait
-  class Frame < Object
-    def initialize locals , temps
+  class Frame < List
+    def initialize
       super()
-      @locals = locals
-      @tmps = tmps
     end
-    attr_accessor :locals , :tmps
   end
 end

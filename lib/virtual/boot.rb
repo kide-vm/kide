@@ -59,16 +59,20 @@ module Virtual
       class_mappings["Kernel"] = value_classes[2]  #need for further booting
       class_mappings["Object"] = value_classes[3]  #need for further booting
 
+      # add space and instances which get created before the objects list
+      @space.add_object @space
+      @space.add_object @space.classes
+      @space.add_object @space.classes.keys
+      @space.add_object @space.classes.values
+      @space.add_object @space.objects
+
+      @space.late_init
+
       # now update the layout on all objects created so far,
       # go through objects in space
       @space.objects.each do | o |
         o.init_layout
       end
-      # and go through the space instance variables which get created before the object list
-      @space.init_layout
-      @space.classes.init_layout
-      @space.objects.init_layout
-      @space.late_init
       boot_functions!
     end
 

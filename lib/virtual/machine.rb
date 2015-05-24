@@ -34,11 +34,9 @@ module Virtual
 
     def initialize
       @parser  = Parser::Salama.new
-      #the_end = Halt.new
       @passes = [ "Virtual::SendImplementation" ]
-#      @message = Message.new(the_end , the_end , "Object" )
     end
-    attr_reader :message , :passes , :space , :init , :main , :class_mappings
+    attr_reader :message , :passes , :space , :class_mappings
 
     def run_passes
 #TODO     puts "INIT #{@init}"
