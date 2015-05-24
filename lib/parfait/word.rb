@@ -109,7 +109,7 @@ module Parfait
 
     # as we answered is_value? with true, sof will create a basic node with this string
     def to_sof
-      "\"#{to_s}\""
+      "'" + to_s + "'"
     end
 
     #below here is OLD, DUBIOUS and needs to be checked TODO

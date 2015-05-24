@@ -68,7 +68,7 @@ module Parfait
     end
 
     def instance_variable_defined name
-      layout().index_of(name)
+      get_layout().index_of(name)
     end
 
     # Object

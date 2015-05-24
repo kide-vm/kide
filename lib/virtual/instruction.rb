@@ -1,4 +1,5 @@
-require_relative "object"
+
+require_relative "positioned"
 
 module Virtual
 
@@ -9,7 +10,8 @@ module Virtual
   # It is actually the point of the virtual machine layer to express oo functionality in the set of
   #  instructions, thus defining a minimal set of instructions needed to implement oo.
 
-  class Instruction < Virtual::Object
+  class Instruction
+    include Positioned
 
     # simple thought: don't recurse for Blocks, just check their names
     def == other

@@ -11,6 +11,16 @@ module VirtualHelper
   def check
     machine = Virtual::Machine.reboot
     expressions = machine.compile_main @string_input
+    if( expressions.first.is_a? Parfait::Method )
+      # stops the whole objectspace beeing tested
+      # with the class comes superclass and all methods
+      expressions.first.instance_variable_set :@for_class , nil
+    end
+    if( expressions.first.is_a? Virtual::Self )
+      # stops the whole objectspace beeing tested
+      # with the class comes superclass and all methods
+      expressions.first.type.instance_variable_set :@of_class , nil
+    end
     is = Sof::Writer.write(expressions)
     #puts is
     is.gsub!("\n" , "*^*")

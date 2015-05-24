@@ -33,7 +33,7 @@ class TestBasic < MiniTest::Test
 
   def test_self
     @string_input    = 'self '
-    @output = "-Virtual::Self(:index => 3, :type => Virtual::Mystery)"
+    @output = "-Virtual::Self(:index => 3, :type => Virtual::Reference())"
     check
   end
 
@@ -51,7 +51,7 @@ class TestBasic < MiniTest::Test
 
   def test_string
     @string_input    = "\"hello\""
-    @output = "-Virtual::Return(:index => 5, :type => Virtual::Reference, :value => Parfait::Word('hello'))"
+    @output = "-Virtual::Return(:index => 5, :type => Virtual::Reference, :value => 'hello')"
     check
   end
 
