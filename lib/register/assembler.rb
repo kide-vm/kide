@@ -15,14 +15,12 @@ module Register
 
     def initialize space
       @space = space
-      @objects = {}
     end
     attr_reader :objects
 
     def link
-      add_object(@space)
-      @space.init.set_position(0)
-      at = @space.init.mem_length  # first jump instruction
+      @space.set_position(0)
+      at = @space.mem_length  # first jump instruction
       # then all functions
       @objects.each_value do | objekt|
         next unless objekt.is_a? Virtual::CompiledMethod
@@ -163,55 +161,6 @@ module Register
 
     def assemble_StringConstant( sc)
       return assemble_String(sc)
-    end
-
-    def add_object(object)
-      return if @objects[object.object_id]
-      @objects[object.object_id] = object
-      add_object(object.layout[:names])
-      clazz = object.class.name.split("::").last
-      send("add_#{clazz}".to_sym , object)
-    end
-
-    def add_Message m
-    end
-    def add_Frame f
-    end
-    def add_Array( array )
-      # also array has constant overhead, the padded helper fixes it to multiple of 8
-      array.each do |elem|
-        add_object(elem)
-      end
-    end
-
-    def add_Hash( hash )
-      add_object(hash.keys)
-      add_object(hash.values)
-    end
-
-    def add_Space(space)
-      add_object(space.main)
-      add_object(space.classes)
-      add_object(space.objects)
-      add_object(space.symbols)
-      add_object(space.messages)
-      add_object(space.next_message)
-      add_object(space.next_frame)
-    end
-
-    def add_Class(clazz)
-      add_object(clazz.name )
-      add_object(clazz.super_class_name)
-      add_object(clazz.instance_methods)
-    end
-    def add_CompiledMethod(method)
-      add_object(method.name)
-    end
-    def add_String( str)
-    end
-    def add_Symbol(sym)
-    end
-    def add_StringConstant(sc)
     end
 
     private
