@@ -55,10 +55,10 @@ The full list is on the net and involves mostly just work.
 
 ### Parse ruby
 
-Parse simple code, using Parslet. This has been seperated out as it's own gem, salama-reader.
+Parse simple code, using Parslet. This has been separated out as it's own gem, [salama-reader](https://github.com/salama/salama-reader).
 
-Parsing is a surprisingly fiddly process, very space and order sensitive. But Parslet is great and simple
-expressions (including function definitions and calls) are starting to work.
+Parsing is a surprisingly fiddly process, very space and order sensitive. But Parslet is great and
+simple expressions (including function definitions and calls) are starting to work.
 
 I spent some time on the parse testing framework, so it is safe to fiddle and add.
 In fact it is very modular and  so ot is easy to add.

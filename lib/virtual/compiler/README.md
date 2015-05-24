@@ -1,8 +1,9 @@
 ### Compiling
 
-The Ast (abstract syntax tree) is created by salama-reader gem and the classes defined there
+The Ast (abstract syntax tree) is created by [salama-reader](https://github.com/salama/salama-reader)
+ gem and the classes defined there
 
-The code in this directory compiles the AST to the virtual machine code.
+The code in this directory compiles the AST to the virtual machine code, and Parfait object structure.
 
 If this were an interpreter, we would just walk the tree and do what it says.
 Since it's not things are a little more difficult, especially in time.
