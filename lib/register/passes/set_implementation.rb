@@ -1,28 +1,28 @@
 Virtual::MessageSlot.class_eval do
   def reg
-    Register::RegisterReference.new(Virtual::Message::MESSAGE_REG )
+    Register::RegisterReference.message_reg
   end
 end
 Virtual::FrameSlot.class_eval do
   def reg
-    Register::RegisterReference.new(Virtual::Message::FRAME_REG )
+    Register::RegisterReference.frame_reg
   end
 end
 Virtual::SelfSlot.class_eval do
   def reg
-    Register::RegisterReference.new(Virtual::Message::SELF_REG )
+    Register::RegisterReference.self_reg
   end
 end
 Virtual::NewMessageSlot.class_eval do
   def reg
-    Register::RegisterReference.new(Virtual::Message::NEW_MESSAGE_REG )
+    Register::RegisterReference.new_message_reg
   end
 end
 
 module Register
-  # This implements setting of the various slot variables the vm defines. 
+  # This implements setting of the various slot variables the vm defines.
   # Basic mem moves, but have to shuffle the type nibbles (TODO!)
-  
+
   class SetImplementation
     def run block
       block.codes.dup.each do |code|
@@ -30,9 +30,9 @@ module Register
         # resolve the register and offset that we need to move to
         to = code.to.reg
         # need a temporay place because of indexed load/store
-        tmp = RegisterReference.new(Virtual::Message::TMP_REG)
+        tmp = RegisterReference.tmp_reg
         # for constants we have to "move" the constants value
-        if( code.from.is_a? Virtual::Constant)
+        if( code.from.is_a? Parfait::Value)
           move1 = LoadConstant.new( tmp , code.from )
         else # while otherwise we "load"
           move1 = GetSlot.new( tmp , code.from.reg , code.from.index )

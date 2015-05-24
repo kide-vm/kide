@@ -17,27 +17,25 @@ module Virtual
     def run block
       block.codes.dup.each do |code|
         if code.is_a?(NewFrame)
-          kind = :next_frame
+          kind = "next_frame"
         elsif code.is_a?(NewMessage)
-          kind = :next_message
+          kind = "next_message"
         else
           next
         end
-        space = Parfait::Space.object_space
-        slot = Virtual::Slot
         # a place to store a reference to the space, we grab the next_frame from the space
-        space_tmp = Register::RegisterReference.new(Virtual::Message::TMP_REG)
+        space_tmp = Register::RegisterReference.tmp_reg
         # a temporary place to store the new frame
         frame_tmp = space_tmp.next_reg_use
         # move the spave to it's register (mov instruction gets the address of the object)
-        new_codes = [ Register::LoadConstant.new( space_tmp , space )]
-        # find index in the space wehre to grab frame/message
-        ind = space.layout[:names].index(kind)
-        raise "index not found for :#{kind}" unless ind
+        new_codes = [ Register::LoadConstant.new( space_tmp , Parfait::Space.object_space )]
+        # find index in the space where to grab frame/message
+        ind = Parfait::Space.object_space.get_layout().index_of( kind )
+        raise "index not found for #{kind}.#{kind.class}" unless ind
         # load the frame/message from space by index
         new_codes << Register::GetSlot.new( frame_tmp , space_tmp , 5 )
         # save the frame in real frame register
-        new_codes << Register::RegisterTransfer.new( Virtual::Message::FRAME_REG , frame_tmp )
+        new_codes << Register::RegisterTransfer.new( Register::RegisterReference.frame_reg , frame_tmp )
         # get the next_frame
         new_codes << Register::GetSlot.new( frame_tmp , frame_tmp , 2 ) # 2 index of next_frame
         # save next frame into space

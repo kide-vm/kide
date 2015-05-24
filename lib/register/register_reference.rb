@@ -6,7 +6,9 @@ module Register
   # In other words a simple level of indirection, or change from value to reference sematics.
 
   class RegisterReference
+
     attr_accessor :symbol
+
     def initialize r
       if( r.is_a? Fixnum)
         r = "r#{r}".to_sym
@@ -39,13 +41,13 @@ module Register
     def self.self_reg
       new SELF_REG
     end
-    def self.messsage_reg
+    def self.message_reg
       new MESSAGE_REG
     end
     def self.frame_reg
       new FRAME_REG
     end
-    def self.new_messsage_reg
+    def self.new_message_reg
       new NEW_MESSAGE_REG
     end
     def self.tmp_reg
