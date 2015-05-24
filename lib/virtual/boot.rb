@@ -22,7 +22,7 @@ module Virtual
       class_mappings = {}        #will later become instance variable
 
       values = [  "Value"  , "Integer" , "Kernel" ,  "Object"].collect {|cl| Virtual.new_word(cl) }
-      value_classes = values.collect { |cl| @space.create_class(cl) }
+      value_classes = values.collect { |cl| @space.create_class(cl,nil) }
       layouts = { "Word" => [] ,
                   "List" => [] ,
                   "Space" => ["classes","objects"],
@@ -33,10 +33,11 @@ module Virtual
                   "Module" => ["name" , "instance_methods", "super_class", "meta_class"]
                 }
       layouts.each do |name , layout|
-        class_mappings[name] = @space.create_class(Virtual.new_word(name))
+        class_mappings[name] = @space.create_class(Virtual.new_word(name) , nil)
       end
       value_classes[1].set_super_class( value_classes[0] ) # #set superclass (value) for integer
-      value_classes[3].set_super_class( value_classes[0] ) # and object
+      value_classes[2].set_super_class( value_classes[0] ) # and kernel (TODO is module)
+      value_classes[3].set_super_class( value_classes[2] ) # and object (TODO hacked to kernel)
       class_mappings.each do |name , clazz|                # and the rest
         clazz.set_super_class(value_classes[3])            # superclasses are object
       end
@@ -78,7 +79,6 @@ module Virtual
       obj = @class_mappings["Object"]
       [:index_of , :_get_instance_variable , :_set_instance_variable].each do |f|
         obj.add_instance_method Builtin::Object.send(f , nil)
-        puts "Object add #{f}"
       end
       obj = @class_mappings["Kernel"]
       # create main first, __init__ calls it

@@ -28,16 +28,19 @@ module Parfait
     def instance_methods
       @instance_methods
     end
+
     def add_instance_method method
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Method
       raise "syserr #{method.name.class}" unless method.name.is_a? Word
-      method.for_class = self
       @instance_methods << method
+      puts "#{self.name} add #{method.name}"
       method
     end
 
-    def create_instance_method name , arg_names
-      add_instance_method Method.new( name , arg_names )
+    def create_instance_method  name , arg_names
+      clazz = Space.object_space.get_class_by_name(self.name)
+      raise "??? #{self.name}" unless clazz
+      Method.new( clazz , name , arg_names )
     end
 
     # this needs to be done during booting as we can't have all the classes and superclassses
@@ -56,12 +59,11 @@ module Parfait
     def resolve_method m_name
       raise "uups #{m_name}.#{m_name.class}" unless m_name.is_a? Word
       method = get_instance_method(m_name)
-      unless method
-        unless( @name == "Object" )
-          method = @super_class.resolve_method(m_name)
-        end
+      return method if method
+      if( @super_class )
+        method = @super_class.resolve_method(m_name)
+        raise "Method not found #{m_name}, for \n#{self}" unless method
       end
-      raise "Method not found #{m_name}, for #{@name}" unless method
       method
     end
 

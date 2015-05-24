@@ -19,15 +19,16 @@ module Parfait
 
   class Method < Object
 
-    def initialize name , arg_names
+    def initialize clazz , name , arg_names
       super()
+      raise "No class #{name}" unless clazz
+      @for_class = clazz
       @name = name
       @arg_names = arg_names
       @locals = []
       @tmps = []
     end
-    attr_reader :name , :arg_names
-    attr_accessor :for_class
+    attr_reader :name , :arg_names , :for_class
 
 
     # determine whether this method has a variable by the given name

@@ -20,7 +20,8 @@ module Virtual
       end
       new_method = CompiledMethodInfo.create_method(class_name, expression.name.to_s , args )
       new_method.info.receiver = r
-
+      new_method.for_class.add_instance_method new_method
+      
       #frame = frame.new_frame
       return_type = nil
       expression.body.each do |ex|

@@ -69,8 +69,8 @@ module Parfait
       c
     end
 
-    def create_class name
-      c = Class.new_object(name)
+    def create_class name , superclass
+      c = Class.new_object(name , superclass)
       raise "uups " if name.is_a? String
       @classes[name] = c
     end
