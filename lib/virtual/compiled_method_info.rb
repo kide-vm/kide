@@ -140,9 +140,15 @@ module Virtual
       l = @blocks.inject(0) { |c , block| c += block.mem_length }
       padded(l)
     end
+
+    def padded len
+      a = 32 * (1 + (len + 7)/32 )
+      #puts "#{a} for #{len}"
+      a
+    end
+
     # position of the function is the position of the entry block, is where we call
     def set_position at
-      super
       at += 8 #for the 2 header words
       @blocks.each do |block|
         block.set_position at

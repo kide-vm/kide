@@ -71,6 +71,10 @@ module Parfait
       get_layout().index_of(name)
     end
 
+    def mem_length
+      padded_words( get_layout().get_length() + 2 )
+    end
+
     # Object
     # :nil?, :===, :=~, :!~, :eql?, :hash, :<=>, :class, :singleton_class, :clone, :dup, :taint, :tainted?, :untaint,
     # :untrust, :untrusted?, :trust, :freeze, :frozen?, :to_s, :inspect, :methods, :singleton_methods, :protected_methods,

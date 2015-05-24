@@ -74,10 +74,6 @@ module Parfait
       raise "uups " if name.is_a? String
       @classes[name] = c
     end
-
-    def mem_length
-      padded_words( 5 )
-    end
   end
   # ObjectSpace
   # :each_object, :garbage_collect, :define_finalizer, :undefine_finalizer, :_id2ref, :count_objects

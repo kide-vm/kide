@@ -30,9 +30,9 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'test'))
 
 require 'salama'
 
-Virtual::Object.class_eval do
+class Ignored
   def == other
-    return false unless other.class == self.class 
+    return false unless other.class == self.class
     Sof::Util.attributes(self).each do |a|
       begin
         left = send(a)
@@ -44,7 +44,7 @@ Virtual::Object.class_eval do
       rescue NoMethodError
         return false
       end
-      return false unless left.class == right.class 
+      return false unless left.class == right.class
       return false unless left == right
     end
     return true

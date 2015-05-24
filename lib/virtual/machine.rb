@@ -42,7 +42,9 @@ module Virtual
 
     def run_passes
 #TODO     puts "INIT #{@init}"
+
       @passes.each do |pass_class|
+        puts "run pass #{pass_class}"
         blocks = []#[@init]  #TODO + @main.blocks
         @space.classes.values.each do |c|
           c.instance_methods.each do |f|

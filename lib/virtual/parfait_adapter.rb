@@ -7,6 +7,8 @@
 module FakeMem
   def initialize
     @memory = [0,nil]
+    @position = nil
+    @length = -1
     if Parfait::Space.object_space and Parfait::Space.object_space.objects
       Parfait::Space.object_space.add_object self
     else
@@ -21,6 +23,30 @@ module FakeMem
     raise "Class not found #{vm_name}" unless clazz
     self.set_layout clazz.object_layout
   end
+  def position
+    raise "position accessed but not set at #{length} for #{self.inspect[0...500]}" if @position == nil
+    @position
+  end
+  def set_position pos
+    # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
+    # in measures (of 32)
+    if @position != nil and ((@position - pos).abs > 32)
+      raise "position set again #{pos}!=#{@position} for #{self}"
+    end
+    @position = pos
+  end
+  # objects only come in lengths of multiple of 8 words
+  # but there is a constant overhead of 2 words, one for type, one for layout
+  # and as we would have to subtract 1 to make it work without overhead, we now have to add 7
+  def padded len
+    a = 32 * (1 + (len + 7)/32 )
+    #puts "#{a} for #{len}"
+    a
+  end
+
+  def padded_words words
+    padded(words*4) # 4 == word length, a constant waiting for a home
+  end
 end
 
 module Parfait
@@ -29,6 +55,7 @@ module Parfait
   # These are the same functions that Builtin implements at run-time
   class Object
     include FakeMem
+
     # these internal functions are _really_ internal
     # they respresent the smallest code needed to build larger functionality
     # but should _never_ be used outside parfait. in fact that should be impossible
@@ -67,6 +94,9 @@ module Parfait
 
   end
   class List
+    def mem_length
+      Virtual::Object.new.padded_words(length())
+    end
     def to_sof_node(writer , level , ref )
       Sof.array_to_sof_node(self , writer , level , ref )
     end
@@ -91,6 +121,10 @@ module Parfait
   end
 
   class Word
+    def mem_length
+      Virtual::Object.new.padded(1 + length())
+    end
+
     def == other
       return false unless other.is_a?(String) or other.is_a?(Word)
       as_string = self.to_s
@@ -111,6 +145,7 @@ module Parfait
     end
   end
 end
+
 
 module Virtual
   # Functions to generate parfait objects

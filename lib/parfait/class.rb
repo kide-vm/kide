@@ -34,10 +34,6 @@ module Parfait
       @object_layout.push name
     end
 
-    def mem_length
-      padded_words(3)
-    end
-
     # ruby 2.1 list (just for reference, keep at bottom)
     #:allocate, :new, :superclass
   end

@@ -1,3 +1,4 @@
+require "parfait"
 require "virtual/machine"
 
 require "virtual/compiler"
@@ -5,7 +6,6 @@ require "virtual/instruction"
 require "virtual/compiled_method_info"
 require "virtual/slots/slot"
 require "virtual/type"
-require "virtual/constants"
 # the passes _are_ order dependant
 require "virtual/passes/send_implementation"
 require "virtual/passes/get_implementation"

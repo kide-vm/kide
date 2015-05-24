@@ -1,5 +1,4 @@
 require_relative "type"
-require "parfait"
 
 module Positioned
   def position
@@ -14,124 +13,16 @@ module Positioned
     end
     @position = pos
   end
-end
+  # objects only come in lengths of multiple of 8 words
+  # but there is a constant overhead of 2 words, one for type, one for layout
+  # and as we would have to subtract 1 to make it work without overhead, we now have to add 7
+  def padded len
+    a = 32 * (1 + (len + 7)/32 )
+    #puts "#{a} for #{len}"
+    a
+  end
 
-module Virtual
-  # our machine is made up of objects, some of which are code, some data
-  #
-  # during compilation objects are module Virtual objects, but during execution they are not scoped
-  #
-  # So compiling/linking/assembly turns ::virtual objects into binary that represents ruby objects at runtime
-  # The equivalence is listed below (i'll try and work on clearer correspondence later)
-  #  ::Virtual            Runtime / parfait
-  #   Object                  Object
-  #   BootClass               Class
-  #   MetaClass               self/Object
-  #   Space               ObjectSpace
-  #   CompiledMethod          Function
-  #   (ruby)Array             Array
-  #         String            String
-  class Object
-    include Positioned
-    def initialize
-      @position = nil
-      @length = -1
-    end
-    attr_accessor  :length , :layout
-    def inspect
-      Sof::Writer.write(self)
-    end
-    def to_s
-      inspect[0..300]
-    end
-    def mem_length
-      raise "abstract #{self.class}"
-    end
-    @@EMPTY =  { :names => [] , :types => []}
-    def old_layout
-      raise "Find me #{self}"
-      self.class.layout
-    end
-    def self.layout
-      @@EMPTY
-    end
-    # class variables to have _identical_ objects passed back (stops recursion)
-    @@ARRAY =  { :names => [] , :types => []}
-#    @@HASH = { :names => [:keys,:values] , :types => [Virtual::Reference,Virtual::Reference]}
-#    @@CLAZZ = { :names => [:name , :super_class_name , :instance_methods] , :types => [Virtual::Reference,Virtual::Reference,Virtual::Reference]}
-#    @@SPACE = { :names => [:classes,:objects] , :types => [Virtual::Reference,Virtual::Reference]}
-
-    def old_layout_for(object)
-      case object
-      when Array , Symbol , String , Virtual::CompiledMethod , Virtual::Block , Parfait::Word
-        @@ARRAY
-      when Hash
-        @@HASH.merge :keys => object.keys , :values => object.values
-      when Virtual::BootClass
-        @@CLAZZ
-      when Virtual::Space
-        @@SPACE
-      else
-        raise "linker encounters unknown class #{object.class}"
-      end
-    end
-    # objects only come in lengths of multiple of 8 words
-    # but there is a constant overhead of 2 words, one for type, one for layout
-    # and as we would have to subtract 1 to make it work without overhead, we now have to add 7
-    def padded len
-      a = 32 * (1 + (len + 7)/32 )
-      #puts "#{a} for #{len}"
-      a
-    end
-
-    def padded_words words
-      padded(words*4) # 4 == word length, a constant waiting for a home
-    end
-  end
-end
-::Parfait::Message.class_eval do
-  include Positioned
-  def old_layout
-    Virtual::Object.layout
-  end
-  def mem_length
-    Virtual::Object.new.padded_words(2)
-  end
-end
-::Parfait::Frame.class_eval do
-  include Positioned
-  def old_layout
-    Virtual::Object.layout
-  end
-  def mem_length
-    Virtual::Object.new.padded_words(2)
-  end
-end
-Parfait::Dictionary.class_eval do
-  include Positioned
-  HASH = { :names => [:keys,:values] , :types => [Virtual::Reference,Virtual::Reference]}
-  def old_layout
-    HASH
-  end
-  def mem_length
-    Virtual::Object.new.padded_words(2)
-  end
-end
-::Parfait::List.class_eval do
-  include Positioned
-  def old_layout
-    Virtual::Object.layout
-  end
-  def mem_length
-    Virtual::Object.new.padded_words(length())
-  end
-end
-::Parfait::Word.class_eval do
-  include Positioned
-  def old_layout
-    Virtual::Object.layout
-  end
-  def mem_length
-    Virtual::Object.new.padded(1 + length())
+  def padded_words words
+    padded(words*4) # 4 == word length, a constant waiting for a home
   end
 end

@@ -7,7 +7,7 @@ module Virtual
 
   # Blocks form a graph, which is managed by the method
 
-  class Block < Virtual::Object
+  class Block 
 
     def initialize(name , method )
       super()

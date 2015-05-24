@@ -33,7 +33,7 @@ module Parfait
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Method
       raise "syserr #{method.name.class}" unless method.name.is_a? Word
       @instance_methods << method
-      puts "#{self.name} add #{method.name}"
+      #puts "#{self.name} add #{method.name}"
       method
     end
 

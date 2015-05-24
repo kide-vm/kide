@@ -22,14 +22,13 @@ module Register
       @space.set_position(0)
       at = @space.mem_length  # first jump instruction
       # then all functions
-      @objects.each_value do | objekt|
-        next unless objekt.is_a? Virtual::CompiledMethod
-        objekt.set_position(at)
-        at += objekt.mem_length
+      @space.objects.each do | objekt|
+        next unless objekt.is_a? Parfait::Method
+        objekt.info.set_position(at)
+        at += objekt.info.mem_length
       end
       #and then all data object
-      @objects.each_value do | objekt|
-        next if objekt.is_a? Virtual::CompiledMethod
+      @objects.each do | objekt|
         objekt.set_position at
         at += objekt.mem_length
       end
