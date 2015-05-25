@@ -40,7 +40,7 @@ module Parfait
       @frames = List.new_object
       @messages = List.new_object
       counter = 0
-      while( counter < 100)
+      while( counter < 5)
         @frames.push Frame.new_object
         @messages.push Message.new_object
         counter = counter + 1
@@ -65,12 +65,16 @@ module Parfait
       @objects.push o
     end
 
+    def get_main
+      kernel = get_class_by_name "Kernel"
+      kernel.get_instance_method "main"
+    end
+
     # this is the way to instantiate classes (not Parfait::Class.new)
     # so we get and keep exactly one per name
     def get_class_by_name name
-      raise "uups #{name}.#{name.class}" unless name.is_a? Word
+      raise "uups #{name}.#{name.class}" unless name.is_a?(Word) or name.is_a?(String)
       c = @classes[name]
-      raise "uups " if name.is_a? String
       puts "MISS, no class #{name} #{name.class}" unless c # " #{@classes}"
       c
     end

@@ -34,7 +34,7 @@ module Parfait
     end
 
     # get a value fot the given key
-    # key ientity is checked with == not === (ie equals not identity)
+    # key identity is checked with == not === (ie equals not identity)
     # return nil if no such key
     def get(key)
       index = key_index(key)

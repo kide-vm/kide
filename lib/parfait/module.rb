@@ -40,7 +40,7 @@ module Parfait
     def create_instance_method  name , arg_names
       clazz = Space.object_space.get_class_by_name(self.name)
       raise "??? #{self.name}" unless clazz
-      Method.new( clazz , name , arg_names )
+      Method.new_object( clazz , name , arg_names )
     end
 
     # this needs to be done during booting as we can't have all the classes and superclassses
@@ -51,7 +51,7 @@ module Parfait
     end
 
     def get_instance_method fname
-      raise "uups #{fname}.#{fname.class}" unless fname.is_a? Word
+      raise "uups #{fname}.#{fname.class}" unless fname.is_a?(Word) or fname.is_a?(String)
       @instance_methods.detect{ |fun| fun.name == fname }
     end
 

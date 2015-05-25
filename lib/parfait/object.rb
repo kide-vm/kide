@@ -47,8 +47,9 @@ module Parfait
     end
 
     def get_layout()
-      #puts "ME #{self.class}"
-      return internal_object_get(LAYOUT_INDEX)
+      l = internal_object_get(LAYOUT_INDEX)
+      raise "No layout #{self.class}" unless l
+      return l
     end
 
     def get_instance_variables

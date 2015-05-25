@@ -11,10 +11,7 @@ module FakeMem
     @length = -1
     if Parfait::Space.object_space and Parfait::Space.object_space.objects
       Parfait::Space.object_space.add_object self
-    else
-      #TODO, must go through spce instance variables "by hand"
-      puts "fixme, no layout for #{self.class.name}"
-    end
+    end #Note: the else is handled in boot, by ading the space "by hand", as it slips though
     init_layout if Virtual::Machine.instance.class_mappings
   end
   def init_layout
@@ -31,7 +28,7 @@ module FakeMem
     # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
     # in measures (of 32)
     if @position != nil and ((@position - pos).abs > 32)
-      raise "position set again #{pos}!=#{@position} for #{self}"
+      raise "position set again #{pos}!=#{@position} for #{self.class}"
     end
     @position = pos
   end
@@ -95,7 +92,7 @@ module Parfait
   end
   class List
     def mem_length
-      Virtual::Object.new.padded_words(length())
+      padded_words(get_length())
     end
     def to_sof_node(writer , level , ref )
       Sof.array_to_sof_node(self , writer , level , ref )
@@ -122,7 +119,7 @@ module Parfait
 
   class Word
     def mem_length
-      Virtual::Object.new.padded(1 + length())
+      padded(1 + length())
     end
 
     def == other

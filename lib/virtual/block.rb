@@ -59,7 +59,7 @@ module Virtual
         begin
           code.set_position( at)
         rescue => e
-          puts "BLOCK #{self}"
+          puts "BLOCK #{self.to_s[0..5000]}"
           raise e
         end
         raise code.inspect unless code.mem_length
