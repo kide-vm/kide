@@ -19,31 +19,52 @@ module Register
     attr_reader :objects
 
     def link
-      @space.set_position(0)
-      at = @space.mem_length
+      # want to have the methods first in the executable
+      # so first we determine the code length for the methods and set the
+      # code array to right length
+      @space.objects.each do |objekt|
+        next unless objekt.is_a? Parfait::Method
+        objekt.code.set_length(objekt.info.mem_length / 4 , 0)
+      end
+      at = 0
+      # then we make sure we really get the binary codes first
+      @space.objects.each do |objekt|
+        next unless objekt.is_a? Parfait::BinaryCode
+        objekt.set_position at
+        at += objekt.mem_length
+      end
+      # and then everything else
       @space.objects.each do | objekt|
-        next if objekt.is_a? Parfait::Space
+        next if objekt.is_a? Parfait::BinaryCode
         objekt.set_position at
         at += objekt.mem_length
       end
     end
 
     def assemble
+      #slightly analogous to the link
       begin
         link
+        # first we need to create the binary code for the methods
+        @space.objects.each do |objekt|
+          next unless objekt.is_a? Parfait::Method
+          assemble_binary_method(objekt)
+        end
         @stream = StringIO.new
         #TODOmid , main = @objects.find{|k,objekt| objekt.is_a?(Virtual::CompiledMethod) and (objekt.name == :__init__ )}
-        initial_jump = @space.init
-        initial_jump.codes.each do |code|
-          code.assemble( @stream )
+#        initial_jump = @space.init
+#        initial_jump.codes.each do |code|
+#          code.assemble( @stream )
+#        end
+        # then write the methods to file
+        @space.objects.each do |objekt|
+          next unless objekt.is_a? Parfait::BinaryCode
+          assemble_any( objekt )
         end
-        @objects.each_value do |objekt|
-          next unless objekt.is_a? Virtual::CompiledMethod
-          assemble_object( objekt )
-        end
-        @objects.each_value do | objekt|
-          next if objekt.is_a? Virtual::CompiledMethod
-          assemble_object( objekt )
+        # and then the rest of the object space
+        @space.objects.each do | objekt|
+          next if objekt.is_a? Parfait::BinaryCode
+          assemble_any( objekt )
         end
       rescue LinkException
         # knowing that we fix the problem, we hope to get away with retry.
@@ -53,9 +74,28 @@ module Register
       return @stream.string
     end
 
-    def assemble_object obj
-      #puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.mem_length}"
-      raise "Assemble #{obj.class} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}" if @stream.length != obj.position
+    # assemble the CompiledMethodInfo into a stringio
+    # and then plonk that binary data into the method.code array
+    def assemble_binary_method method
+      stream = StringIO.new
+      method.info.blocks.each do |block|
+        block.codes.each do |code|
+          code.assemble( stream )
+        end
+      end
+      method.code.clear
+      index = 1
+      stream.each_byte do |b|
+        method.set_char(index , b )
+        index = index + 1
+        raise "length error #{method.code.get_length}" if index > method.info.get_length
+      end
+    end
+    def assemble_any obj
+      puts "Assemble #{obj.class}(\n#{obj.to_s[0..500]}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.mem_length}"
+      if @stream.length != obj.position
+        raise "Assemble #{obj.class} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}"
+      end
       clazz = obj.class.name.split("::").last
       send("assemble_#{clazz}".to_sym , obj)
       obj.position
@@ -86,7 +126,7 @@ module Register
       object.position
     end
 
-    def assemble_Array array
+    def assemble_List array
       type = type_word(array)
       @stream.write_uint32( type )
       write_ref_for(array.layout[:names])  #ref
@@ -97,7 +137,7 @@ module Register
       array.position
     end
 
-    def assemble_Hash hash
+    def assemble_Dictionary hash
       # so here we can be sure to have _identical_ keys/values arrays
       assemble_self( hash , [ hash.keys , hash.values ] )
     end
@@ -117,14 +157,14 @@ module Register
       assemble_self(me , [])
     end
 
-    def assemble_CompiledMethod(method)
-      count = method.blocks.inject(0) { |c , block| c += block.mem_length }
+    def assemble_Method(method)
+      count = method.info.blocks.inject(0) { |c , block| c += block.mem_length }
       word = (count+7) / 32  # all object are multiple of 8 words (7 for header)
       raise "Method too long, splitting not implemented #{method.name}/#{count}" if word > 15
       # first line is integers, convention is that following lines are the same
       TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
       @stream.write_uint32( word )
-      write_ref_for(method.layout[:names])  #ref of layout
+      write_ref_for(method.get_layout())  #ref of layout
       # TODO the assembly may have to move to the object to be more extensible
       method.blocks.each do |block|
         block.codes.each do |code|

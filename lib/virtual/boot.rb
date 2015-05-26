@@ -26,6 +26,7 @@ module Virtual
       layouts = { "Word" => [] ,
                   "List" => [] ,
                   "Message" => [],
+                  "BinaryCode" => [],                  
                   "Space" => ["classes","objects","frames","messages","next_message","next_frame"],
                   "Frame" => ["locals" , "tmps" ],
                   "Layout" => ["object_class"] ,

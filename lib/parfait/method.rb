@@ -24,12 +24,12 @@ module Parfait
       raise "No class #{name}" unless clazz
       @for_class = clazz
       @name = name
-      @code = Word.new_object 0
+      @code = BinaryCode.new_object 0
       @arg_names = arg_names
       @locals = []
       @tmps = []
     end
-    attr_reader :name , :arg_names , :for_class
+    attr_reader :name , :arg_names , :for_class , :code
 
 
     # determine whether this method has a variable by the given name

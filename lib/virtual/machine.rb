@@ -40,7 +40,6 @@ module Virtual
 
     def run_passes
       @passes.each do |pass_class|
-        puts "run pass #{pass_class}"
         blocks = [@init]
         @space.classes.values.each do |c|
           c.instance_methods.each do |f|
