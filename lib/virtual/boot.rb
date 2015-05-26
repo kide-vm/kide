@@ -90,22 +90,21 @@ module Virtual
         obj.add_instance_method Builtin::Object.send(f , nil)
       end
       obj = @class_mappings["Kernel"]
-      # create main first, __init__ calls it
-      @main = Builtin::Kernel.send(:main , @context)
-      obj.add_instance_method @main
-      underscore_init = Builtin::Kernel.send(:__init__ ,nil) #store , so we don't have to resolve it below
-      obj.add_instance_method underscore_init
-      [:putstring,:exit,:__send].each do |f|
+      # create dummy main first, __init__ calls it
+      [:putstring,:exit,:__send , :main ].each do |f|
         obj.add_instance_method Builtin::Kernel.send(f , nil)
       end
-      # and the @init block in turn _jumps_ to __init__
-      # the point of which is that by the time main executes, all is "normal"
-      @init = Block.new(:_init_ , nil )
-      @init.add_code(Register::RegisterMain.new(underscore_init))
+      underscore_init = obj.add_instance_method Builtin::Kernel.send(:__init__, nil)
+
       obj = @class_mappings["Integer"]
       [:putint,:fibo].each do |f|
         obj.add_instance_method Builtin::Integer.send(f , nil)
       end
+
+      # and the @init block in turn _jumps_ to __init__
+      # the point of which is that by the time main executes, all is "normal"
+      @init = Block.new(:_init_ , nil )
+      @init.add_code(Register::RegisterMain.new(underscore_init))
     end
   end
 end

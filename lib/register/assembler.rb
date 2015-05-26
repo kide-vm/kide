@@ -20,15 +20,9 @@ module Register
 
     def link
       @space.set_position(0)
-      at = @space.mem_length  # first jump instruction
-      # then all functions
+      at = @space.mem_length
       @space.objects.each do | objekt|
-        next unless objekt.is_a? Parfait::Method
-        objekt.info.set_position(at)
-        at += objekt.info.mem_length
-      end
-      #and then all data object
-      @objects.each do | objekt|
+        next if objekt.is_a? Parfait::Space
         objekt.set_position at
         at += objekt.mem_length
       end

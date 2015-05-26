@@ -36,14 +36,12 @@ module Virtual
       @parser  = Parser::Salama.new
       @passes = [ "Virtual::SendImplementation" ]
     end
-    attr_reader :message , :passes , :space , :class_mappings
+    attr_reader :message , :passes , :space , :class_mappings , :init
 
     def run_passes
-#TODO     puts "INIT #{@init}"
-
       @passes.each do |pass_class|
         puts "run pass #{pass_class}"
-        blocks = []#[@init]  #TODO + @main.blocks
+        blocks = [@init]
         @space.classes.values.each do |c|
           c.instance_methods.each do |f|
             nb = f.info.blocks
@@ -98,8 +96,7 @@ module Virtual
     def compile_main bytes
       syntax  = @parser.parse_with_debug(bytes)
       parts = Parser::Transform.new.apply(syntax)
-      main = Virtual::CompiledMethodInfo.main
-      Compiler.compile( parts , main )
+      Compiler.compile( parts , @space.get_main )
     end
   end
 end

@@ -28,11 +28,6 @@ module Virtual
   #            MUST have an uncoditional branch. And remember, all roads lead to return.
 
   class CompiledMethodInfo
-    # return the main function (the top level) into which code is compiled
-    # this just create a "main" with create_method , see there
-    def self.main
-      self.create_method( "Kernel" , "main" , [] )
-    end
 
     # create method does two things
     # first it creates the parfait method, for the given class, with given argument names
