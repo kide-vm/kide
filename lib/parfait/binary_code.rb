@@ -10,5 +10,17 @@ module Parfait
   # obviously not a "Word" but a ByteArray , but no such class yet
   # As on the other hand has no encoding (yet) it is close enough
   class BinaryCode < Word
+    def initialize name
+      super(0)
+      @name = name
+    end
+    # this is a sof check if there are instance variables or "structure"
+    # have to override false, as word answers true
+    def is_value?
+      false
+    end
+    def to_s
+      "BinaryCode #{@name}"
+    end
   end
 end

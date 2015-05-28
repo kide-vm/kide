@@ -21,7 +21,7 @@ module Register
     def link
       # want to have the methods first in the executable
       # so first we determine the code length for the methods and set the
-      # code array to right length
+      # binary code (array) to right length
       @space.objects.each do |objekt|
         next unless objekt.is_a? Parfait::Method
         objekt.code.set_length(objekt.info.mem_length / 4 , 0)
@@ -35,6 +35,11 @@ module Register
       end
       # and then everything else
       @space.objects.each do | objekt|
+        # have to tell the code that will be assembled where it is to
+        # get the jumps/calls right
+        if objekt.is_a? Parfait::Method
+          objekt.info.set_position( objekt.code.position )
+        end
         next if objekt.is_a? Parfait::BinaryCode
         objekt.set_position at
         at += objekt.mem_length
@@ -83,7 +88,7 @@ module Register
           code.assemble( stream )
         end
       end
-      method.code.clear
+      method.code.fill_with 0
       index = 1
       stream.each_byte do |b|
         method.set_char(index , b )

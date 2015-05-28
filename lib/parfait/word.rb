@@ -41,6 +41,21 @@ module Parfait
       return obj_len
     end
 
+    # make every char equal the given one
+    def fill_with char
+      fill_from_with(0 , char)
+    end
+
+    def fill_from_with from , char
+      len = self.length()
+      return if from <= 0
+      while( from <= len)
+        set_char( from , char)
+        from = from + 1
+      end
+      from
+    end
+
     # true if no characters
     def empty?
       return self.length == 0
@@ -53,11 +68,7 @@ module Parfait
       counter = self.length()
       return if counter >= len
       internal_object_grow( len + 1)
-      counter = counter + 1
-      while( counter <= len)
-        set_char( counter , fill_char)
-        counter = counter + 1
-      end
+      fill_from_with( counter + 1 , fill_char )
     end
 
     # set the character at the given index to the given character
@@ -119,11 +130,6 @@ module Parfait
     end
     def mem_length
       padded(1 + string.length)
-    end
-    def position
-      return @position if @position
-      return @string.position if @string.position
-      super
     end
   end
 end

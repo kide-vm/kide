@@ -24,7 +24,7 @@ module Parfait
       raise "No class #{name}" unless clazz
       @for_class = clazz
       @name = name
-      @code = BinaryCode.new_object 0
+      @code = BinaryCode.new_object name
       @arg_names = arg_names
       @locals = []
       @tmps = []
