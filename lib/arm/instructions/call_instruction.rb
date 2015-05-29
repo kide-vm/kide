@@ -33,33 +33,27 @@ module Arm
       when :b, :call
         arg = @first
         #puts "BLAB #{arg.inspect}"
-        if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
-          arg = Virtual::IntegerConstant.new( arg )
-        end
-        if arg.is_a?(Virtual::Block) or arg.is_a?(Virtual::CompiledMethodInfo)
+        if arg.is_a?(Virtual::Block) or arg.is_a?(Parfait::Method)
           #relative addressing for jumps/calls
           diff = arg.position - self.position
           # but because of the arm "theoretical" 3- stage pipeline, we have to subtract 2 words (fetch/decode)
           # But, for methods, this happens to be the size of the object header, so there it balances out, but not blocks
           diff -=  8 if arg.is_a?(Virtual::Block)
-          arg = Virtual::IntegerConstant.new(diff)
+          arg = diff
         end
-        if (arg.is_a?(Virtual::IntegerConstant))
-          jmp_val = arg.integer >> 2
+        if (arg.is_a?(Numeric))
+          jmp_val = arg >> 2
           packed = [jmp_val].pack('l')
           # signed 32-bit, condense to 24-bit
           # TODO add check that the value fits into 24 bits
           io << packed[0,3]
         else
-          raise "else not coded arg =#{arg}: #{inspect}"
+          raise "else not coded arg =\n#{arg.to_s[0..1000]}: #{inspect[0..1000]}"
         end
         io.write_uint8 op_bit_code | (COND_CODES[@attributes[:condition_code]] << 4)
       when :swi
         arg = @first
-        if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
-          arg = Virtual::IntegerConstant.new( arg )
-        end
-        if (arg.is_a?(Virtual::IntegerConstant))
+        if (arg.is_a?(Numeric))
           packed = [arg.integer].pack('L')[0,3]
           io << packed
           io.write_uint8 0b1111 | (COND_CODES[@attributes[:condition_code]] << 4)

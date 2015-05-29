@@ -1,19 +1,19 @@
 module Arm
   class CompareInstruction < Instruction
     include Arm::Constants
-    
+
     def initialize(left , right , attributes)
       super(attributes)
       @left = left
       @right = right.is_a?(Fixnum) ? IntegerConstant.new(right) : right
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
-      @immediate = 0      
+      @immediate = 0
       @attributes[:update_status] = 1
       @rn = left
       @rd = :r0
     end
-    
+
     def assemble(io)
       # don't overwrite instance variables, to make assembly repeatable
       rn = @rn
@@ -21,16 +21,16 @@ module Arm
       immediate = @immediate
 
       arg = @right
-      if arg.is_a?(Virtual::ObjectConstant)
+      if arg.is_a?(Parfait::Object)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
-        arg = Virtual::IntegerConstant.new( arg.position - self.position - 8 )
+        arg =  arg.position - self.position - 8
         rn = :pc
       end
-      if( arg.is_a? Fixnum ) #HACK to not have to change the code just now
+      if( arg.is_a? Symbol )
         arg = Register::RegisterReference.new( arg )
       end
-      if (arg.is_a?(Virtual::IntegerConstant))
+      if (arg.is_a?(Numeric))
         if (arg.fits_u8?)
           # no shifting needed
           operand = arg.integer
@@ -54,7 +54,7 @@ module Arm
           # ror #0 == rrx
           raise "cannot rotate by zero #{arg} #{inspect}"
         end
-    
+
         arg1 = arg.value
         if (arg1.is_a?(Virtual::IntegerConstant))
           if (arg1.value >= 32)
@@ -72,16 +72,16 @@ module Arm
         raise "invalid operand argument #{arg.inspect} , #{inspect}"
       end
       instuction_class = 0b00 # OPC_DATA_PROCESSING
-      val = (operand.is_a?(Symbol) or operand.is_a?(::Register::RegisterReference)) ? reg_code(operand) : operand 
+      val = (operand.is_a?(Symbol) or operand.is_a?(::Register::RegisterReference)) ? reg_code(operand) : operand
       val = 0 if val == nil
       val = shift(val , 0)
       raise inspect unless reg_code(@rd)
-      val |= shift(reg_code(@rd) ,            12)     
-      val |= shift(reg_code(rn) ,            12+4)   
-      val |= shift(@attributes[:update_status] , 12+4+4)#20 
+      val |= shift(reg_code(@rd) ,            12)
+      val |= shift(reg_code(rn) ,            12+4)
+      val |= shift(@attributes[:update_status] , 12+4+4)#20
       val |= shift(op_bit_code ,        12+4+4  +1)
-      val |= shift(immediate ,                  12+4+4  +1+4) 
-      val |= shift(instuction_class ,   12+4+4  +1+4+1) 
+      val |= shift(immediate ,                  12+4+4  +1+4)
+      val |= shift(instuction_class ,   12+4+4  +1+4+1)
       val |= shift(cond_bit_code ,      12+4+4  +1+4+1+2)
       io.write_uint32 val
     end

@@ -36,7 +36,7 @@ module Arm
       operand = @operand
       immediate = @immediate
       right = @from
-      if right.is_a?(Virtual::ObjectConstant)
+      if right.is_a?(Parfait::Object)
         r_pos = right.position
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie pc pointing to fetch and not execute)
@@ -44,7 +44,7 @@ module Arm
         puts "Position #{r_pos} from #{self.position} = #{right}"
         rn = :pc
       end
-      if (right.is_a?(Virtual::IntegerConstant))
+      if (right.is_a?(Numeric))
         if (right.fits_u8?)
           # no shifting needed
           operand = right.integer

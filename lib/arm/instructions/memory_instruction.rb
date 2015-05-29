@@ -1,7 +1,7 @@
 module Arm
   # ADDRESSING MODE 2
   # Implemented: immediate offset with offset=0
-  
+
   class MemoryInstruction < Instruction
     include Arm::Constants
     def initialize result , left , right = nil , attributes = {}
@@ -46,14 +46,14 @@ module Arm
             end
           end
         end
-      elsif (arg.is_a?(Virtual::ObjectConstant) ) #use pc relative
+      elsif (arg.is_a?(Parfait::Object) ) #use pc relative
         rn = :pc
         operand = arg.position - self.position  - 8 #stringtable is after code
         add_offset = 1
         if (operand.abs > 4095)
           raise "reference offset too large/small (max 4095) #{arg} #{inspect}"
         end
-      elsif( arg.is_a?(Virtual::IntegerConstant) )
+      elsif( arg.is_a?(Numeric) )
         #TODO untested brach, probably not working
         raise "is this working ??  #{arg} #{inspect}"
         @pre_post_index = 1
@@ -75,7 +75,7 @@ module Arm
       byte_access = opcode.to_s[-1] == "b" ? 1 : 0 #B (byte) flag
       instuction_class =  0b01 # OPC_MEMORY_ACCESS
       if (operand.is_a?(Symbol) or operand.is_a?(::Register::RegisterReference))
-        val = reg_code(operand) 
+        val = reg_code(operand)
         @pre_post_index = 0
         i = 1  # not quite sure about this, but it gives the output of as. read read read.
       else
@@ -83,15 +83,15 @@ module Arm
         val = operand
       end
       val = shift(val , 0 ) # for the test
-      val |= shift(reg_code(@result) ,        12 )  
-      val |= shift(reg_code(rn) ,        12+4) #16  
+      val |= shift(reg_code(@result) ,        12 )
+      val |= shift(reg_code(rn) ,        12+4) #16
       val |= shift(@is_load ,        12+4  +4)
       val |= shift(w ,              12+4  +4+1)
       val |= shift(byte_access ,    12+4  +4+1+1)
       val |= shift(add_offset ,    12+4  +4+1+1+1)
       val |= shift(@pre_post_index, 12+4  +4+1+1+1+1)#24
       val |= shift(i ,              12+4  +4+1+1+1+1  +1)
-      val |= shift(instuction_class,12+4  +4+1+1+1+1  +1+1)  
+      val |= shift(instuction_class,12+4  +4+1+1+1+1  +1+1)
       val |= shift(cond_bit_code ,  12+4  +4+1+1+1+1  +1+1+2)
       io.write_uint32 val
     end

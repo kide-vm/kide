@@ -1,4 +1,5 @@
 require "parfait/value"
+require "parfait/integer"
 require "parfait/object"
 require "parfait/module"
 require "parfait/class"
