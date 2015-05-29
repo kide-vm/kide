@@ -20,8 +20,9 @@ module FakeMem
     raise "Class not found #{vm_name}" unless clazz
     self.set_layout clazz.object_layout
   end
+  #TODO, this is copied from module Positioned, maybe avoid duplication ?
   def position
-    raise "position accessed but not set at #{length} for #{self.inspect[0...500]}" if @position == nil
+    raise "position accessed but not set at #{mem_length} for #{self.inspect[0...1000]}" if @position == nil
     @position
   end
   def set_position pos
@@ -88,7 +89,9 @@ module Parfait
     def to_s
       Sof::Writer.write(self)
     end
-
+    def inspect
+      to_s
+    end
   end
   class List
     def mem_length

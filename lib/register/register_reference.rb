@@ -10,9 +10,6 @@ module Register
     attr_accessor :symbol
 
     def initialize r
-      if( r.is_a? Fixnum)
-        r = "r#{r}".to_sym
-      end
       raise "wrong type for register init #{r}" unless r.is_a? Symbol
       raise "double r #{r}" if r == :rr1
       @symbol = r

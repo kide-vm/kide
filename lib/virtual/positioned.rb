@@ -2,7 +2,7 @@ require_relative "type"
 
 module Positioned
   def position
-    raise "position accessed but not set at #{length} for #{self.inspect[0...500]}" if @position == nil
+    raise "position accessed but not set at #{mem_length} for #{self.inspect[0...500]}" if @position == nil
     @position
   end
   def set_position pos
