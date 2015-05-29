@@ -36,7 +36,7 @@ module Arm
       if (right.is_a?(Numeric))
         if (right.fits_u8?)
           # no shifting needed
-          operand = right.integer
+          operand = right
           immediate = 1
         elsif (op_with_rot = calculate_u8_with_rr(right))
           operand = op_with_rot

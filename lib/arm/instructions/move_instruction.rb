@@ -5,7 +5,7 @@ module Arm
     def initialize to , from , options = {}
       super(options)
       @to = to
-      @from = from #from.is_a?(Fixnum) ? Virtual::IntegerConstant.new(from) : from
+      @from = from
       raise "move must have from set #{inspect}" unless from
       @attributes[:update_status] = 0 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
@@ -14,7 +14,6 @@ module Arm
 
       @immediate = 0
       @rn = :r0 # register zero = zero bit pattern
-      @from = Virtual::IntegerConstant.new( @from ) if( @from.is_a? Fixnum )
       @extra = nil
     end
     attr_accessor :to , :from
@@ -40,14 +39,14 @@ module Arm
         r_pos = right.position
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie pc pointing to fetch and not execute)
-        right = Virtual::IntegerConstant.new( r_pos - self.position - 8 )
+        right =  r_pos - self.position - 8
         puts "Position #{r_pos} from #{self.position} = #{right}"
         rn = :pc
       end
       if (right.is_a?(Numeric))
         if (right.fits_u8?)
           # no shifting needed
-          operand = right.integer
+          operand = right
           immediate = 1
         elsif (op_with_rot = calculate_u8_with_rr(right))
           operand = op_with_rot
@@ -55,13 +54,13 @@ module Arm
         else
             # unfortunately i was wrong in thinking the pi is armv7. The good news is the code below implements
             # the movw instruction (armv7 for moving a word) and works
-            #armv7 raise "Too big #{right.integer} " if (right.integer >> 16) > 0
-            #armv7 operand = (right.integer & 0xFFF)
+            #armv7 raise "Too big #{right} " if (right >> 16) > 0
+            #armv7 operand = (right & 0xFFF)
             #armv7 immediate = 1
-            #armv7 rn = (right.integer >> 12)
+            #armv7 rn = (right >> 12)
             # a little STRANGE, that the armv7 movw (move a 2 byte word) is an old test opcode, but there it is
             #armv7 @attributes[:opcode] = :tst
-          raise "No negatives implemented #{right} " if right.integer < 0
+          raise "No negatives implemented #{right} " if right < 0
           # and so it continues: when we notice that the const doesn't fit, first time we raise an
           # error,but set the extra flag, to say the instruction is now 8 bytes
           # then on subsequent assemblies we can assemble
@@ -70,11 +69,11 @@ module Arm
             raise ::Register::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
           end
           # now we can do the actual breaking of instruction, by splitting the operand
-          first = Virtual::IntegerConstant.new(right.integer & 0xFFFFFF00)
+          first = right & 0xFFFFFF00
           operand = calculate_u8_with_rr( first )
           raise "no fit for #{right}" unless operand
           immediate = 1
-          @extra = ArmMachine.add( to , to , (right.integer & 0xFF) )
+          @extra = ArmMachine.add( to , to , (right & 0xFF) )
           #TODO: this is still a hack, as it does not encode all possible values. The way it _should_ be done
           # is to check that the first part is doabe with u8_with_rr AND leaves a u8 remainder
         end

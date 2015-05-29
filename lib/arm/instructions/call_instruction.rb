@@ -54,7 +54,7 @@ module Arm
       when :swi
         arg = @first
         if (arg.is_a?(Numeric))
-          packed = [arg.integer].pack('L')[0,3]
+          packed = [arg].pack('L')[0,3]
           io << packed
           io.write_uint8 0b1111 | (COND_CODES[@attributes[:condition_code]] << 4)
         else

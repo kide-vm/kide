@@ -22,7 +22,7 @@ module Arm
     }
     #return the bit patter that the cpu uses for the current instruction @attributes[:opcode]
     def op_bit_code
-      bit_code = OPCODES[opcode] 
+      bit_code = OPCODES[opcode]
       bit_code or raise "no code found for #{opcode} #{inspect}"
     end
 
@@ -43,7 +43,7 @@ module Arm
     def cond_bit_code
       COND_CODES[@attributes[:condition_code]] or throw "no code found for #{@attributes[:condition_code]}"
     end
-    
+
     REGISTERS = { 'r0' => 0, 'r1' => 1, 'r2' => 2, 'r3' => 3, 'r4' => 4, 'r5' => 5,
                   'r6' => 6, 'r7' => 7, 'r8' => 8, 'r9' => 9, 'r10' => 10, 'r11' => 11,
                   'r12' => 12, 'r13' => 13, 'r14' => 14, 'r15' => 15, 'a1' => 0, 'a2' => 1,
@@ -56,7 +56,7 @@ module Arm
       Arm::Register.new(r_name.to_sym , code )
     end
     def reg_code r_name
-      raise "double r #{r_name}" if( :rr1 == r_name) 
+      raise "double r #{r_name}" if( :rr1 == r_name)
       if r_name.is_a? ::Register::RegisterReference
         r_name = r_name.symbol
       end
@@ -69,7 +69,7 @@ module Arm
     end
 
    def calculate_u8_with_rr(arg)
-     parts = arg.integer.to_s(2).rjust(32,'0').scan(/^(0*)(.+?)0*$/).flatten
+     parts = arg.to_s(2).rjust(32,'0').scan(/^(0*)(.+?)0*$/).flatten
      pre_zeros = parts[0].length
      imm_len = parts[1].length
      if ((pre_zeros+imm_len) % 2 == 1)
@@ -78,7 +78,7 @@ module Arm
      else
        u8_imm = parts[1].to_i(2)
      end
-     if (Virtual::IntegerConstant.new(u8_imm).fits_u8?)
+     if u8_imm.fits_u8?
        # can do!
        rot_imm = (pre_zeros+imm_len) / 2
        if (rot_imm > 15)
@@ -89,7 +89,7 @@ module Arm
        return nil
      end
    end
-   
+
    #slighly wrong place for this code, but since the module gets included in instructions anyway . . .
    # implement the barrel shifter on the operand (which is set up before as an integer)
    def shift_handling
@@ -99,12 +99,13 @@ module Arm
      {'lsl' => 0b000, 'lsr' => 0b010, 'asr' => 0b100, 'ror' => 0b110, 'rrx' => 0b110}.each do |short, bin|
        long = "shift_#{short}".to_sym
        if shif = @attributes[long]
-         shif = shif.integer if (shif.is_a?(Virtual::IntegerConstant))
-         if (shif.is_a?(Virtual::Integer))
-           raise "should not be supported, check code #{inspect}"
-           bin |= 0x1;
-           shift = shif.register << 1
-         end
+         # TODO delete this code, AFTER you understand it
+         # tests do pass without it, maybe need more tests ?
+         #if (shif.is_a?(Numeric))
+        #   raise "should not be supported, check code #{inspect}"
+      #     bin |= 0x1;
+      #     shift = shif.register << 1
+      #   end
          raise "0 < shift <= 32  #{shif} #{inspect}"  if (shif >= 32) or( shif < 0)
          op |=   shift(bin  , 4 )
          op |=   shift(shif , 4+3)

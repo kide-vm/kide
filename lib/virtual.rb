@@ -14,3 +14,9 @@ require "virtual/passes/frame_implementation"
 
 Sof::Volotile.add(Virtual::Block ,  [:method])
 Sof::Volotile.add(Virtual::CompiledMethodInfo ,  [:current])
+
+class Fixnum
+  def fits_u8?
+    self >= 0 and self <= 255
+  end
+end
