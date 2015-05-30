@@ -44,6 +44,22 @@ module Parfait
       self.set( self.get_length + 1 , value)
     end
 
+    def delete value
+      index = index_of value
+      return false unless index
+      delete_at index
+    end
+
+    def delete_at index
+      # TODO bounds check
+      while(index < self.get_length)
+        set( index , get(index + 1))
+        index = index + 1
+      end
+      set_length( self.get_length - 1)
+      true
+    end
+
     def first
       return nil unless empty?
       get(1)
@@ -86,8 +102,13 @@ module Parfait
     end
 
     def set_length len
-      # TODO check if not shrinking
-      grow_to len
+      was = self.get_length
+      return if was == len
+      if(was < len)
+        grow_to len
+      else
+        shrink_to len
+      end
     end
 
     def grow_to(len)
@@ -95,6 +116,13 @@ module Parfait
       old_length = self.get_length
       return if old_length >= len
       internal_object_grow(len + 1)
+    end
+
+    def shrink_to(len)
+      raise "Only positive lenths, #{len}" if len < 0
+      old_length = self.get_length
+      return if old_length <= len
+      internal_object_shrink(len + 1)
     end
 
     def ==(other)

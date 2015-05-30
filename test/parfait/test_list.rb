@@ -49,6 +49,19 @@ class TestList < MiniTest::Test
       assert_equal v , @list.get(k)
     end
   end
+  def test_delete_at
+    test_many_get
+    assert @list.delete_at 2
+    assert_equal 2 , @list.get_length
+    assert_equal 2 , @list.index_of( :three )
+  end
+
+  def test_delete
+    test_many_get
+    assert @list.delete :two
+    assert_equal 2 , @list.get_length
+    assert_equal 2 , @list.index_of( :three )
+  end
   def test_index_of
     test_many_get
     assert_equal 2 , @list.index_of( :two )

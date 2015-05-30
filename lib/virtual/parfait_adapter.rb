@@ -90,6 +90,13 @@ module Parfait
         old_length = old_length + 1
       end
     end
+    def internal_object_shrink(length)
+      old_length = internal_object_length()
+      while( length < old_length  )
+        @memory.delete_at(old_length)
+        old_length = old_length - 1
+      end
+    end
 
     def to_s
       Sof::Writer.write(self)
