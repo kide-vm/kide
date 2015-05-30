@@ -4,18 +4,22 @@ module Virtual
   # Data in a Block is usefull in the same way data in objects is. Plocks being otherwise just code.
   #
   # But the concept is not quite straigtforwrd: If one thinks of a Plock embedded in a normal method,
-  # the a data in the Plock would be static data. In OO terms this comes quite close to a Proc, if the data is the local
-  # variables. Quite possibly they shall be used to implement procs, but that is not the direction now.
+  # the a data in the Plock would be static data. In OO terms this comes quite close to a Proc,
+  # if the data is the local variables.
+  # Quite possibly they shall be used to implement procs, but that is not the direction now.
   #
-  # For now we use Plocks behaind the scenes as it were. In the code that you never see, method invocation mainly.
-  # 
-  # In terms of implementation the Plock is a Block with data (Not too much data, mainly a couple of references).
-  # The block writes it's instructions as normal, but a jump is inserted as the last instruction. The jump is to the 
-  # next block, over the data that is inserted after the block code (and so before the next)
+  # For now we use Plocks behaind the scenes as it were. In the code that you never see,
+  # method invocation mainly.
+  #
+  # In terms of implementation the Plock is a Block with data
+  # (Not too much data, mainly a couple of references).
+  # The block writes it's instructions as normal, but a jump is inserted as the last instruction.
+  # The jump is to the next block, over the data that is inserted after the block code
+  #   (and so before the next)
   #
   # It follows that Plocks should be linear blocks.
   class Plock < Block
-    
+
     def initialize(name , method , next_block )
       super
       @data = []

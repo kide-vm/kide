@@ -4,7 +4,8 @@ module Builtin
 
       # return the index of the variable. Now "normal" code can't really do anything with that, but
       # set/get instance variable use it.
-      # This is just a placeholder, as we code this in ruby, but the instance methods need the definition before.
+      # This is just a placeholder, as we code this in ruby,
+      # but the instance methods need the definition before.
       def index_of context , name = Virtual::Integer
         index_function = Virtual::CompiledMethodInfo.create_method("Object" , "index_of" , [Virtual::Reference]  )
         index_function.info.return_type = Virtual::Integer
@@ -22,7 +23,8 @@ module Builtin
       #     i = self.index_of(var)
       #     return at_index(i)
       #  end
-      # The at_index is just "below" the api, something we need but don't want to expose, so we can't code the above in ruby
+      # The at_index is just "below" the api, something we need but don't want to expose,
+      # so we can't code the above in ruby
       def _get_instance_variable context , name = Virtual::Integer
         get_function = Virtual::CompiledMethodInfo.create_method("Object","_get_instance_variable" , [ Virtual::Reference ] )
         return get_function

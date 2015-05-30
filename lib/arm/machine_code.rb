@@ -43,16 +43,16 @@ module Arm
       syscall( function.insertion_point , 1 ) # 1 == exit
     end
 
-    
+
     # the number (a Virtual::integer) is (itself) divided by 10, ie overwritten by the result
     #  and the remainder is overwritten (ie an out argument)
-    # not really a function, more a macro, 
+    # not really a function, more a macro,
     def div10 function, number , remainder
       # Note about division: devision is MUCH more expensive than one would have thought
-      # And coding it is a bit of a mind leap: it's all about finding a a result that gets the 
+      # And coding it is a bit of a mind leap: it's all about finding a a result that gets the
       #  remainder smaller than an int. i'll post some links sometime. This is from the arm manual
       tmp = function.new_local
-      function.instance_eval do 
+      function.instance_eval do
         sub( remainder ,  number ,  10 )
         sub( number ,  number ,  number ,  shift_lsr: 2)
         add( number ,  number ,  number ,  shift_lsr: 4)
@@ -67,7 +67,8 @@ module Arm
     end
 
     def syscall block , num
-      # This is very arm specific, syscall number is passed in r7, other arguments like a c call ie 0 and up
+      # This is very arm specific, syscall number is passed in r7,
+      # other arguments like a c call ie 0 and up
       sys = Virtual::Integer.new( Virtual::RegisterReference.new(SYSCALL_REG) )
       ret = Virtual::Integer.new( Virtual::RegisterReference.new(RETURN_REG) )
       block.add_code  mov(  sys , num )
@@ -78,4 +79,3 @@ module Arm
 
   end
 end
-

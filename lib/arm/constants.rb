@@ -28,7 +28,8 @@ module Arm
 
     #codition codes can be applied to many instructions and thus save branches
     # :al => always   , :eq => equal  and so on
-    # eq mov if equal :moveq r1 r2 (also exists as function) will only execute if the last operation was 0
+    # eq mov if equal :moveq r1 r2 (also exists as function) will only execute
+    #  if the last operation was 0
     COND_CODES = {
       :al => 0b1110, :eq => 0b0000,
       :ne => 0b0001, :cs => 0b0010,
@@ -39,7 +40,8 @@ module Arm
       :ge => 0b1010, :gt => 0b1100,
       :vs => 0b0110
     }
-    #return the bit pattern for the @attributes[:condition_code] variable, which signals the conditional code
+    # return the bit pattern for the @attributes[:condition_code] variable,
+    # which signals the conditional code
     def cond_bit_code
       COND_CODES[@attributes[:condition_code]] or throw "no code found for #{@attributes[:condition_code]}"
     end
@@ -96,7 +98,8 @@ module Arm
      op = 0
      #codes that one can shift, first two probably most common.
      # l (in lsr) means logical, ie unsigned, a (in asr) is arithmetic, ie signed
-     {'lsl' => 0b000, 'lsr' => 0b010, 'asr' => 0b100, 'ror' => 0b110, 'rrx' => 0b110}.each do |short, bin|
+     shift_codes = {'lsl' => 0b000, 'lsr' => 0b010, 'asr' => 0b100, 'ror' => 0b110, 'rrx' => 0b110}
+     shift_codes.each do |short, bin|
        long = "shift_#{short}".to_sym
        if shif = @attributes[long]
          # TODO delete this code, AFTER you understand it

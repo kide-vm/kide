@@ -1,9 +1,10 @@
 module Arm
 
   # Arm stores the return address in a register (not on the stack)
-  # The register is called link , or lr for short . Maybe because it provides the "link" back to the caller (?)
+  # The register is called link , or lr for short .
+  # Maybe because it provides the "link" back to the caller (?)
 
-  # the vm defines a register for the location, so we store it there. 
+  # the vm defines a register for the location, so we store it there.
 
   class SaveImplementation
     def run block

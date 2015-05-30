@@ -79,7 +79,9 @@ module Virtual
 
       #attr_reader  :left, :right
       def self.compile_assignment expression , method
-        raise "must assign to NameExpression , not #{expression.left}" unless expression.left.instance_of? Ast::NameExpression
+        unless expression.left.instance_of? Ast::NameExpression
+          raise "must assign to NameExpression , not #{expression.left}"
+        end
         r = Compiler.compile(expression.right , method )
         raise "oh noo, nil from where #{expression.right.inspect}" unless r
         index = method.has_arg(Virtual.new_word name)

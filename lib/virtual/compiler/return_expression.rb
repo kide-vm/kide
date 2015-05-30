@@ -15,7 +15,9 @@ module Virtual
       if expression_value.is_a?(IntegerConstant) or expression_value.is_a?(ObjectConstant)
         return_reg.load into , expression_value
       else
-        return_reg.move( into, expression_value ) if expression_value.register_symbol != return_reg.register_symbol
+        if expression_value.register_symbol != return_reg.register_symbol
+          return_reg.move( into, expression_value )
+        end
       end
       #function.set_return return_reg
       return return_reg

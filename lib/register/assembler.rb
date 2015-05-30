@@ -1,12 +1,13 @@
 module Register
   class LinkException < Exception
   end
-  # Assmble the object space into a binary.
+  # Assemble the object space into a binary.
   # Link first to get positions, then assemble
-  # link and assemble functions for each class are close to each other, so to get them the same.
-  #  meaning: as the link function determines the length of an object and the assemble actually writes the bytes
-  #           they are pretty much dependant. In an earlier version they were functions on the objects, but now it
-  #           has gone to a visitor pattern.
+
+  # The link function determines the length of an object and the assemble actually
+  #  writes the bytes they are pretty much dependant. In an earlier version they were
+  #  functions on the objects, but now it has gone to a visitor pattern.
+
   class Assembler
     TYPE_REF =  0
     TYPE_INT =  1
@@ -119,7 +120,9 @@ module Register
     # write type and layout of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def assemble_self( object , variables )
-      raise "Object(#{object.object_id}) not linked #{object.inspect}" unless @objects[object.object_id]
+      unless @objects[object.object_id]
+        raise "Object(#{object.object_id}) not linked #{object.inspect}"
+      end
       type = type_word(variables)
       @stream.write_uint32( type )
       write_ref_for(object.layout[:names] )
@@ -207,9 +210,8 @@ module Register
 
     private
 
-    # write means we write the resulting address straight into the assembler stream (ie don't return it)
+    # write means we write the resulting address straight into the assembler stream
     # object means the object of which we write the address
-    # and we write the address into the self, given as second parameter
     def write_ref_for object
       @stream.write_sint32 object.position
     end

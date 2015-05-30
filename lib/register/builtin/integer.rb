@@ -2,7 +2,8 @@
 module Builtin
   module Integer
     module ClassMethods
-    # The conversion to base10 is quite a bit more complicated than i thought. The bulk of it is in div10
+    # The conversion to base10 is quite a bit more complicated than i thought.
+    # The bulk of it is in div10
     # We set up variables, do the devision and write the result to the string
     # then check if were done and recurse if neccessary
     # As we write before we recurse (save a push) we write the number backwards

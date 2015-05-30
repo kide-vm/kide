@@ -2,7 +2,8 @@ module Register
 
   # RegisterReference is not the name for a register, "only" for a certain use of it.
   # In a way it is like a variable name, a storage location. The location is a register off course,
-  # but which register can be changed, and _all_ instructions sharing the RegisterReference then use that register
+  # but which register can be changed, and _all_ instructions sharing the RegisterReference then
+  # use that register
   # In other words a simple level of indirection, or change from value to reference sematics.
 
   class RegisterReference

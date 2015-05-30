@@ -14,7 +14,8 @@ module Parfait
   # The Space contains all objects for a program. In functional terms it is a program, but in oo
   # it is a collection of objects, some of which are data, some classes, some functions
 
-  # The main entry is a function called (of all things) "main", This _must be supplied by the compling
+  # The main entry is a function called (of all things) "main".
+  # This _must be supplied by the compled code (similar to c)
   # There is a start and exit block that call main, which receives an List of strings
 
   # While data ususally would live in a .data section, we may also "inline" it into the code

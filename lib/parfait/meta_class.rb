@@ -12,7 +12,7 @@ module Virtual
   #                     PS: can't say i fancy the << self syntax and am considerernig adding a
   #                         keyword for it, like meta
   #                      In effect it is a very similar construct to   def self.function(...)
-  #                      So one could write               def meta.function(...) and thus define on the meta-class
+  #                      So one could write def meta.function(...) and thus define on the meta-class
   class MetaClass < Object
     # no name, nor nothing. as this is just the object really
 
@@ -44,7 +44,8 @@ module Virtual
     # get the function and if not found, try superclasses. raise error if not found
     def resolve_method name
       fun = get_function name
-      # TODO THE BOOK says is class A derives from B , then the metaclass of A derives from the metaclass of B
+      # TODO THE BOOK says is class A derives from B , then the metaclass of
+      # A derives from the metaclass of B
       # just get to it ! (and stop whimpering)
       raise "Method not found #{name} , for #{inspect}" unless fun
       fun

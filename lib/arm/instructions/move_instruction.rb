@@ -19,12 +19,12 @@ module Arm
     attr_accessor :to , :from
 
     # arm intructions are pretty sensible, and always 4 bytes (thumb not supported)
-    # but not all constants fit into the part of the instruction that is left after the instruction code,
-    # so large moves have to be split into two instructions.
+    # but not all constants fit into the part of the instruction that is left after the instruction
+    # code, so large moves have to be split into two instructions.
     # we handle this "transparently", just this instruction looks longer
-    # alas, full transparency is not achieved as we only know when to use 2 instruction once we know where the
-    # other object is, and that position is only set after code positions have been determined (in link) and so
-    # see below in assemble
+    # alas, full transparency is not achieved as we only know when to use 2 instruction once we
+    # know where the other object is, and that position is only set after code positions have been
+    # determined (in link) and so see below in assemble
     def mem_length
       @extra ? 8 : 4
     end
@@ -52,13 +52,14 @@ module Arm
           operand = op_with_rot
           immediate = 1
         else
-            # unfortunately i was wrong in thinking the pi is armv7. The good news is the code below implements
-            # the movw instruction (armv7 for moving a word) and works
+            # unfortunately i was wrong in thinking the pi is armv7. The good news is the code
+            # below implements the movw instruction (armv7 for moving a word) and works
             #armv7 raise "Too big #{right} " if (right >> 16) > 0
             #armv7 operand = (right & 0xFFF)
             #armv7 immediate = 1
             #armv7 rn = (right >> 12)
-            # a little STRANGE, that the armv7 movw (move a 2 byte word) is an old test opcode, but there it is
+            # a little STRANGE, that the armv7 movw (move a 2 byte word) is an old test opcode,
+            # but there it is
             #armv7 @attributes[:opcode] = :tst
           raise "No negatives implemented #{right} " if right < 0
           # and so it continues: when we notice that the const doesn't fit, first time we raise an
@@ -74,7 +75,8 @@ module Arm
           raise "no fit for #{right}" unless operand
           immediate = 1
           @extra = ArmMachine.add( to , to , (right & 0xFF) )
-          #TODO: this is still a hack, as it does not encode all possible values. The way it _should_ be done
+          #TODO: this is still a hack, as it does not encode all possible values.
+          # The way it _should_ be done
           # is to check that the first part is doabe with u8_with_rr AND leaves a u8 remainder
         end
       elsif (right.is_a?(Symbol) or right.is_a?(::Register::RegisterReference))

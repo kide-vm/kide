@@ -36,8 +36,10 @@ module Arm
         if arg.is_a?(Virtual::Block) or arg.is_a?(Parfait::Method)
           #relative addressing for jumps/calls
           diff = arg.position - self.position
-          # but because of the arm "theoretical" 3- stage pipeline, we have to subtract 2 words (fetch/decode)
-          # But, for methods, this happens to be the size of the object header, so there it balances out, but not blocks
+          # but because of the arm "theoretical" 3- stage pipeline,
+          # we have to subtract 2 words (fetch/decode)
+          # But, for methods, this happens to be the size of the object header,
+          # so there it balances out, but not blocks
           diff -=  8 if arg.is_a?(Virtual::Block)
           arg = diff
         end

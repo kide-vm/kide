@@ -88,7 +88,7 @@ inlining, but i have at least an idea.
 
 ### Sof
 
-**S**alama **O**bject **F**ile format is a yaml ike format to look at code dumps and help testing.
+**S**alama **O**bject **F**ile format is a yaml like format to look at code dumps and help testing.
 The dumper is ok and does produce (as intended) considerably denser dumps than yaml
 
 When a reader is done (not started) the idea is to use sof as pre-compiled, language independent

@@ -25,7 +25,9 @@ module FakeMem
   end
   #TODO, this is copied from module Positioned, maybe avoid duplication ?
   def position
-    raise "position accessed but not set at #{mem_length} for #{self.inspect[0...1000]}" if @position == nil
+    if @position == nil
+      raise "position accessed but not set at #{mem_length} for #{self.inspect[0...1000]}"
+    end
     @position
   end
   def set_position pos

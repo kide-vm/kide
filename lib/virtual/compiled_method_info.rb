@@ -15,8 +15,8 @@ module Virtual
 
   # They also have local variables.
 
-  # Code-wise Methods are made up from a list of Blocks, in a similar way blocks are made up of Instructions
-  # The function starts with one block, and that has a start and end (return)
+  # Code-wise Methods are made up from a list of Blocks, in a similar way blocks are made up of
+  # Instructions. The function starts with one block, and that has a start and end (return)
 
   # Blocks can be linked in two ways:
   # -linear:  flow continues from one to the next as they are sequential both logically and
@@ -59,7 +59,9 @@ module Virtual
     # add an instruction after the current (insertion point)
     # the added instruction will become the new insertion point
     def add_code instruction
-      raise instruction.inspect unless (instruction.is_a?(Instruction) or instruction.is_a?(Register::Instruction))
+      unless (instruction.is_a?(Instruction) or instruction.is_a?(Register::Instruction))
+        raise instruction.inspect
+      end
       @current.add_code(instruction) #insert after current
       self
     end
@@ -79,21 +81,24 @@ module Virtual
       used.uniq
     end
 
-    # control structures need to see blocks as a graph, but they are stored as a list with implict branches
+    # control structures need to see blocks as a graph, but they are stored as a list with implict
+    # branches
     # So when creating a new block (with new_block), it is only added to the list, but instructions
     #   still go to the current one
     # With this function one can change the current block, to actually code it.
-    # This juggling is (unfortunately) neccessary, as all compile functions just keep puring their code into the
-    # method and don't care what other compiles (like if's) do.
+    # This juggling is (unfortunately) neccessary, as all compile functions just keep puring their
+    # code into the method and don't care what other compiles (like if's) do.
 
     # Example: while, needs  2 extra blocks
     #          1 condition code, must be its own blockas we jump back to it
     #           -       the body, can actually be after the condition as we don't need to jump there
     #          2 after while block. Condition jumps here
-    # After block 2, the function is linear again and the calling code does not need to know what happened
+    # After block 2, the function is linear again and the calling code does not need to know what
+    #  happened
 
     # But subsequent statements are still using the original block (self) to add code to
-    # So the while expression creates the extra blocks, adds them and the code and then "moves" the insertion point along
+    # So the while expression creates the extra blocks, adds them and the code and then "moves"
+    # the insertion point along
     def current block
       @current = block
       self

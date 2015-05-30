@@ -4,7 +4,8 @@ module Virtual
 
     def self.compile_if expression , method
       # to execute the logic as the if states it, the blocks are the other way around
-      # so we can the jump over the else if true ,and the else joins unconditionally after the true_block
+      # so we can the jump over the else if true ,
+      # and the else joins unconditionally after the true_block
       merge_block = method.info.new_block "if_merge"    # last one, created first
       true_block =  method.info.new_block "if_true"     # second, linked in after current, before merge
       false_block = method.info.new_block "if_false"    # directly next in order, ie if we don't jump we land here

@@ -4,9 +4,11 @@ module Virtual
   # That off course opens up an endless loop possibility that we stop by
   # implementing Class and Module methods
 
-  # Note: I find it slightly unsemetrical that the NewMessage object needs to be created before this instruction
-  #       This is because all expressions create a (return) value and that return value is overwritten by the next
-  #       expression unless saved. And since the message is the place to save it it needs to exist. qed
+  # Note: I find it slightly unsymmetrical that the NewMessage object needs to be created
+  #       before this instruction.
+  #       This is because all expressions create a (return) value and that return value is
+  #       overwritten by the next expression unless saved.
+  #       And since the message is the place to save it it needs to exist. qed
   class SendImplementation
     def run block
       block.codes.dup.each do |code|
