@@ -2,20 +2,11 @@ module Builtin
   class Object
     module ClassMethods
 
-      # return the index of the variable. Now "normal" code can't really do anything with that, but
-      # set/get instance variable use it.
-      # This is just a placeholder, as we code this in ruby,
-      # but the instance methods need the definition before.
-      def index_of context , name = Virtual::Integer
-        index_function = Virtual::CompiledMethodInfo.create_method("Object" , "index_of" , [Virtual::Reference]  )
-        index_function.info.return_type = Virtual::Integer
-        return index_function
-      end
-
-      def self.layout
-        layout_function = Virtual::Function.new(:layout , [ ] , Virtual::Reference  , Virtual::Reference )
-        layout_function.at_index 2
-        layout_function
+      # main entry point, ie __init__ calls this
+      # defined here as empty, to be redefined
+      def main context
+        function = Virtual::CompiledMethodInfo.create_method("Object","main" , [])
+        return function
       end
 
       # in ruby, how this goes is

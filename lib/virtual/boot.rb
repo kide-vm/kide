@@ -86,12 +86,12 @@ module Virtual
       # have to define some dummies, just for the other to compile
       # TODO: go through the virtual parfait layer and adjust function names to what they really are
       obj = @class_mappings["Object"]
-      [:index_of , :_get_instance_variable , :_set_instance_variable].each do |f|
+      [:main , :_get_instance_variable , :_set_instance_variable].each do |f|
         obj.add_instance_method Builtin::Object.send(f , nil)
       end
       obj = @class_mappings["Kernel"]
       # create dummy main first, __init__ calls it
-      [:putstring,:exit,:__send , :main ].each do |f|
+      [:putstring,:exit,:__send  ].each do |f|
         obj.add_instance_method Builtin::Kernel.send(f , nil)
       end
       underscore_init = obj.add_instance_method Builtin::Kernel.send(:__init__, nil)

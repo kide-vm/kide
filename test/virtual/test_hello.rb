@@ -24,10 +24,7 @@ HERE
 
   def test_puts_string
     @string_input    = <<HERE
-def foo()
-  putstring("Hello")
-end
-foo()
+putstring("Hello")
 HERE
     check
   end
