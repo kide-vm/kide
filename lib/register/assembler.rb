@@ -179,15 +179,19 @@ module Register
       pad_after( count )
     end
 
-    def assemble_String( str )
-      str = str.string if str.is_a? Parfait::Word
-      str = str.to_s if str.is_a? Symbol
+    def assemble_BinaryCode code
+        assemble_String code
+    end
+
+    def assemble_String( string )
+      str = string.to_s if string.is_a? Parfait::Word
+      str = string.to_s if str.is_a? Symbol
       word = (str.length + 7) / 32  # all object are multiple of 8 words (7 for header)
       raise "String too long (implement split string!) #{word}" if word > 15
       # first line is integers, convention is that following lines are the same
       TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
       @stream.write_uint32( word )
-      write_ref_for( str.layout[:names] ) #ref
+      write_ref_for( string.get_layout ) #ref
       @stream.write str
       pad_after(str.length)
       #puts "String (#{slot.mem_length}) stream #{@stream.mem_length.to_s(16)}"

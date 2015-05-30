@@ -26,7 +26,7 @@ module Virtual
       layouts = { "Word" => [] ,
                   "List" => [] ,
                   "Message" => [],
-                  "BinaryCode" => [],                  
+                  "BinaryCode" => [],
                   "Space" => ["classes","objects","frames","messages","next_message","next_frame"],
                   "Frame" => ["locals" , "tmps" ],
                   "Layout" => ["object_class"] ,
@@ -51,6 +51,7 @@ module Virtual
           clazz.object_layout.add_instance_variable Virtual.new_word(var_name)
         end
       end
+
       # now store the classes so we can hand them out later during object creation
       # this can not be done earlier, as parfait objects are all the time created and would
       #   lookup half created class info
@@ -61,11 +62,9 @@ module Virtual
       class_mappings["Object"] = value_classes[3]  #need for further booting
 
       # add space and instances which get created before the objects list
-      @space.add_object @space
-      @space.add_object @space.classes
-      @space.add_object @space.classes.keys
-      @space.add_object @space.classes.values
-      @space.add_object @space.objects
+      [@space,@space.classes,@space.classes.keys, @space.classes.values,@space.objects].each do |o|
+        @space.add_object o
+      end
 
       @space.late_init
 

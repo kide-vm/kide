@@ -14,6 +14,7 @@
 module Parfait
   class Module < Object
     def initialize name , superclass
+      super()
       @name = name
       @instance_methods = []
       @name = name

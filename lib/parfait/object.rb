@@ -43,6 +43,11 @@ module Parfait
 
     # private
     def set_layout(layout)
+      if( internal_object_get(LAYOUT_INDEX) )
+        #TODO find out wat these objects are
+        # puts "Layout was set for #{self.class}"
+        return
+      end
       internal_object_set(LAYOUT_INDEX , layout)
     end
 
