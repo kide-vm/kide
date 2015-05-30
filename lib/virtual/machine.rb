@@ -42,6 +42,7 @@ module Virtual
     attr_reader :message , :passes , :space , :class_mappings , :init
 
     def run_passes
+      Minimizer.new.run
       @passes.each do |pass_class|
         blocks = [@init]
         @space.classes.values.each do |c|
