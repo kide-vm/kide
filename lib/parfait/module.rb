@@ -16,7 +16,7 @@ module Parfait
     def initialize name , superclass
       super()
       @name = name
-      @instance_methods = []
+      @instance_methods = List.new_object
       @name = name
       @super_class = superclass
       @meta_class = Virtual::MetaClass.new(self)
@@ -33,7 +33,12 @@ module Parfait
     def add_instance_method method
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Method
       raise "syserr #{method.name.class}" unless method.name.is_a? Word
-      @instance_methods << method
+      found = get_instance_method( method.name )
+      if found
+        @instance_methods.delete(found)
+        raise "existed in #{self.name} #{Sof::Writer.write found.info.blocks}"
+      end
+      @instance_methods.push method
       #puts "#{self.name} add #{method.name}"
       method
     end
@@ -53,7 +58,11 @@ module Parfait
 
     def get_instance_method fname
       raise "uups #{fname}.#{fname.class}" unless fname.is_a?(Word) or fname.is_a?(String)
-      @instance_methods.detect{ |fun| fun.name == fname }
+      #if we had a hash this would be easier.  Detect or find would help too
+      @instance_methods.each do |m|
+        return m if(m.name == fname )
+      end
+      nil
     end
 
     # get the method and if not found, try superclasses. raise error if not found
