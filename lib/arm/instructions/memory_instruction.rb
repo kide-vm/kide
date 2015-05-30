@@ -51,7 +51,7 @@ module Arm
         operand = arg.position - self.position  - 8 #stringtable is after code
         add_offset = 1
         if (operand.abs > 4095)
-          raise "reference offset too large/small (max 4095) #{arg} #{inspect}"
+          raise "reference offset too large/small (4095<#{operand}) #{arg} #{inspect}"
         end
       elsif( arg.is_a?(Numeric) )
         #TODO untested brach, probably not working
