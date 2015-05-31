@@ -9,8 +9,6 @@ module FakeMem
     super()
     @memory = [0,nil]
     @position = nil
-    @length = -1
-    #    Virtual::Machine.instance.add_object self
     if Virtual::Machine.instance.class_mappings
       init_layout
     else
@@ -26,12 +24,14 @@ module FakeMem
   end
   #TODO, this is copied from module Positioned, maybe avoid duplication ?
   def position
-    if @position == nil
-      raise "position not set for #{self.class} at #{mem_length} for #{self.inspect[0...1000]}"
+    if @position.nil?
+      str = "IN machine #{Virtual::Machine.instance.objects.include?(self)}\n"
+      raise str + "position not set for #{self.class} at #{mem_length} for #{self.inspect[0...100]}"
     end
     @position
   end
   def set_position pos
+    raise "Setting of nil not allowed" if pos.nil?
     # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
     # in measures (of 32)
     if @position != nil and ((@position - pos).abs > 32)

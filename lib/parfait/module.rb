@@ -19,7 +19,7 @@ module Parfait
       @instance_methods = List.new_object
       @name = name
       @super_class = superclass
-      @meta_class = MetaClass.new(self)
+      @meta_class = nil#MetaClass.new(self)
     end
 
     def name

@@ -45,6 +45,10 @@ module Register
         objekt.set_position at
         at += objekt.mem_length
       end
+      @machine.objects.each do |objekt|
+        objekt.position
+      end
+
     end
 
     def assemble
@@ -84,10 +88,15 @@ module Register
     # and then plonk that binary data into the method.code array
     def assemble_binary_method method
       stream = StringIO.new
+      begin
       method.info.blocks.each do |block|
         block.codes.each do |code|
           code.assemble( stream )
         end
+      end
+    rescue => e
+        puts "Method error #{method.name}\n#{Sof::Writer.write(method.info.blocks).to_s[0...2000]}"
+        raise e
       end
       method.code.fill_with 0
       index = 1

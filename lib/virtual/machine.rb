@@ -60,6 +60,7 @@ module Virtual
           raise "no such pass-class as #{pass_class}" unless pass
           pass.new.run(block)
         end
+        #puts @space.get_main if pass_class == "Virtual::SendImplementation"
       end
     end
 

@@ -39,7 +39,7 @@ module Virtual
           if ref.type.is_a?(Reference) and ref.type.of_class
             #find method and call
             clazz = ref.type.of_class
-            method = clazz.resolve_method code.name
+            method = clazz.resolve_method code.name.to_s
             raise "No method found #{code.name}" unless method
             new_codes << MethodCall.new( method )
           else
