@@ -68,9 +68,23 @@ class TestList < MiniTest::Test
     assert_equal 3 , @list.index_of( :three )
     assert_equal nil , @list.index_of( :four )
   end
-  def test_incude
+  def test_inlcude
     test_many_get
     assert_equal true , @list.include?( :two )
     assert_equal false , @list.include?( :four )
+  end
+  def test_empty_empty
+    assert_equal true , @list.empty?
+  end
+  def test_empty_notempty
+    assert_equal 1 , @list.set(1,1)
+    assert_equal false , @list.empty?
+  end
+  def test_first
+    test_many_get
+    assert_equal :one , @list.first
+  end
+  def test_first_empty
+    assert_equal nil , @list.first
   end
 end

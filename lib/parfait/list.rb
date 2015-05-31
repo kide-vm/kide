@@ -65,7 +65,7 @@ module Parfait
     end
 
     def first
-      return nil unless empty?
+      return nil if empty?
       get(1)
     end
 
