@@ -6,6 +6,7 @@ module Builtin
       # so it is responsible for initial setup (and relocation)
       def __init__ context
         function = Virtual::CompiledMethodInfo.create_method("Kernel","__init__" , [])
+#        puts "INIT LAYOUT #{function.get_layout.get_layout}"
         function.info.return_type = Virtual::Integer
         main = Virtual::Machine.instance.space.get_main
         me = Virtual::Self.new(Virtual::Reference)

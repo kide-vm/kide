@@ -43,6 +43,10 @@ module Parfait
       method
     end
 
+    def remove_instance_method method
+      @instance_methods.delete method
+    end
+
     def create_instance_method  name , arg_names
       clazz = Space.object_space.get_class_by_name(self.name)
       raise "??? #{self.name}" unless clazz

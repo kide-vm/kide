@@ -6,21 +6,27 @@
 
 module FakeMem
   def initialize
+    super()
     @memory = [0,nil]
     @position = nil
     @length = -1
     if Parfait::Space.object_space and Parfait::Space.object_space.objects
       Parfait::Space.object_space.add_object self
     else
-      #Note: the else is handled in boot, by ading the space "by hand", as it slips though
-      #puts "Got away #{self.class}"
+      # Note: the else is handled in boot, by ading the space "by hand", as it slips though
+      # puts "Got away #{self.class}"
     end
-    init_layout if Virtual::Machine.instance.class_mappings
+    if Virtual::Machine.instance.class_mappings
+      init_layout
+    else
+      #puts "No init for #{self.class}:#{self.object_id}"
+    end
   end
   def init_layout
     vm_name = self.class.name.split("::").last
     clazz = Virtual::Machine.instance.class_mappings[vm_name]
     raise "Class not found #{vm_name}" unless clazz
+    raise "Layout not set #{vm_name}" unless clazz.object_layout
     self.set_layout clazz.object_layout
   end
   #TODO, this is copied from module Positioned, maybe avoid duplication ?
@@ -163,7 +169,7 @@ module Virtual
   # Functions to generate parfait objects
   def self.new_word( string )
     string = string.to_s if string.is_a? Symbol
-    word = Parfait::Word.new( string.length )
+    word = Parfait::Word.new_object( string.length )
     string.codepoints.each_with_index do |code , index |
       word.set_char(index + 1 , code)
     end

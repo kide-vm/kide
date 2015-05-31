@@ -15,6 +15,10 @@
 module Parfait
   class List < Object
 
+    def initialize(  )
+      super()
+    end
+
     def get_length
       internal_object_length - 1
     end

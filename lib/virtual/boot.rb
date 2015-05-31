@@ -44,6 +44,10 @@ module Virtual
       class_mappings.each do |name , clazz|                # and the rest
         clazz.set_super_class(value_classes[3])            # superclasses are object
       end
+      supers = { "BinaryCode" => "Word", "Layout" => "List", "Class" => "Module"}
+      supers.each do |clazz , superclaszz| # set_super_class has no sideeffects, so setting twice ok
+        class_mappings[clazz].set_super_class class_mappings[superclaszz]
+      end
       # next create layouts by adding instance variable names to the layouts
       class_mappings.each do |name , clazz|
         variables = layouts[name]
@@ -65,14 +69,15 @@ module Virtual
       [@space,@space.classes,@space.classes.keys, @space.classes.values,@space.objects].each do |o|
         @space.add_object o
       end
-
       @space.late_init
-
+      values.each {|v| v.init_layout }
+      
       # now update the layout on all objects created so far,
       # go through objects in space
       @space.objects.each do | o |
         o.init_layout
       end
+      @space.double_check
       boot_functions!
     end
 

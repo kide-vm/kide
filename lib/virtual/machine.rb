@@ -39,10 +39,11 @@ module Virtual
       @parser  = Parser::Salama.new
       @passes = [ "Virtual::SendImplementation" ]
     end
-    attr_reader :message , :passes , :space , :class_mappings , :init
+    attr_reader  :passes , :space , :class_mappings , :init
 
     def run_passes
       Minimizer.new.run
+      Collector.new.run
       @passes.each do |pass_class|
         blocks = [@init]
         @space.classes.values.each do |c|

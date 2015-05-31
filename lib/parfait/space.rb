@@ -50,6 +50,25 @@ module Parfait
       @next_frame = @frames.first
     end
 
+    # double check that all objects dependents are really in the space too (debugging)
+    def double_check
+      @objects.each do |o|
+        check o
+      end
+    end
+    # private
+    def check object , recurse = true
+      raise "No good #{self.class}" unless @objects.include? object
+      puts "#{object.class}"
+      puts "#{object}" if object.class == Parfait::Word
+      check object.get_layout
+      return unless recurse
+      object.get_layout.each do |name|
+        check name , false
+        inst = object.instance_variable_get "@#{name}".to_sym
+        check inst , false
+      end
+    end
     @@object_space = nil
     # Make the object space globally available
     def self.object_space

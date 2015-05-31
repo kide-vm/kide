@@ -37,8 +37,9 @@ module Virtual
     end
 
     def dump_remaining
-      names = @gonners.collect {|f| f.name }
-      puts "Dump #{names}"
+      @gonners.each do |method|
+        method.for_class.remove_instance_method method
+      end
     end
   end
 end
