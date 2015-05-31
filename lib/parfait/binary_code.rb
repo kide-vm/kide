@@ -14,6 +14,8 @@ module Parfait
       super(0)
       @name = name
     end
+    attr_reader :name
+    
     # this is a sof check if there are instance variables or "structure"
     # have to override false, as word answers true
     def is_value?

@@ -26,8 +26,8 @@ module Parfait
       @name = name
       @code = BinaryCode.new_object name
       @arg_names = arg_names
-      @locals = []
-      @tmps = []
+      @locals = List.new
+      @tmps = List.new
     end
     attr_reader :name , :arg_names , :for_class , :code
 

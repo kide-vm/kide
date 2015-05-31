@@ -1,4 +1,4 @@
-module Virtual
+module Parfait
 
   # TODO : rethink - possibly needs to be a module to be mixed into Object
   #

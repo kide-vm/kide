@@ -24,7 +24,7 @@ module Virtual
           elsif( me.is_a? Parfait::Object )
             # get the function from my class. easy peasy
             puts "Me is #{me.class}"
-            method = me.get_class.get_instance_method(Virtual.new_word code.name)
+            method = me.get_class.get_instance_method(code.name)
             raise "Method not implemented #{me.class}.#{code.name}" unless method
             new_codes << MethodCall.new( method )
           else
@@ -39,7 +39,7 @@ module Virtual
           if ref.type.is_a?(Reference) and ref.type.of_class
             #find method and call
             clazz = ref.type.of_class
-            method = clazz.resolve_method Virtual.new_word(code.name)
+            method = clazz.resolve_method code.name
             raise "No method found #{code.name}" unless method
             new_codes << MethodCall.new( method )
           else

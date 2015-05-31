@@ -10,12 +10,12 @@ module Virtual
     def keep object
       return if object.nil?
       return unless Machine.instance.add_object object
-#      puts "adding #{object.class}"
+      #puts "adding #{object.class}"
       unless object.has_layout?
         object.init_layout
       end
       layout = object.get_layout
-      puts "Layout #{layout.get_object_class.name} #{Machine.instance.objects.include?(layout)}"
+      #puts "Layout #{layout.get_object_class.name} #{Machine.instance.objects.include?(layout)}"
       keep layout
       layout.each do |name|
         inst = object.instance_variable_get "@#{name}".to_sym

@@ -19,7 +19,7 @@ module Parfait
       @instance_methods = List.new_object
       @name = name
       @super_class = superclass
-      @meta_class = Virtual::MetaClass.new(self)
+      @meta_class = MetaClass.new(self)
     end
 
     def name
@@ -71,7 +71,7 @@ module Parfait
 
     # get the method and if not found, try superclasses. raise error if not found
     def resolve_method m_name
-      raise "uups #{m_name}.#{m_name.class}" unless m_name.is_a? Word
+      raise "uups #{m_name}.#{m_name.class}" unless m_name.is_a?(Word) or m_name.is_a?(String)
       method = get_instance_method(m_name)
       return method if method
       if( @super_class )
