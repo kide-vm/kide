@@ -27,13 +27,8 @@ module Parfait
       super()
       Parfait::Space.set_object_space self
       @classes = Parfait::Dictionary.new_object
-      # this is like asking for troubles, but if the space instance is not registered
-      # and the @classes up, one can not register classes.
-      # all is good after this init
-      #global objects (data)
-      @objects = Parfait::List.new_object
     end
-    attr_reader :classes , :objects , :frames, :messages, :next_message , :next_frame
+    attr_reader :classes  , :frames, :messages, :next_message , :next_frame
 
     # need a two phase init for the object space (and generally parfait) because the space
     # is an interconnected graph, so not everthing is ready
@@ -50,25 +45,6 @@ module Parfait
       @next_frame = @frames.first
     end
 
-    # double check that all objects dependents are really in the space too (debugging)
-    def double_check
-      @objects.each do |o|
-        check o
-      end
-    end
-    # private
-    def check object , recurse = true
-      raise "No good #{self.class}" unless @objects.include? object
-      puts "#{object.class}"
-      puts "#{object}" if object.class == Parfait::Word
-      check object.get_layout
-      return unless recurse
-      object.get_layout.each do |name|
-        check name , false
-        inst = object.instance_variable_get "@#{name}".to_sym
-        check inst , false
-      end
-    end
     @@object_space = nil
     # Make the object space globally available
     def self.object_space
@@ -77,12 +53,6 @@ module Parfait
     # TODO Must get rid of the setter
     def self.set_object_space space
       @@object_space = space
-    end
-
-    # Objects are data and get assembled after functions
-    def add_object o
-      return if @objects.include?(o)
-      @objects.push o
     end
 
     def get_main

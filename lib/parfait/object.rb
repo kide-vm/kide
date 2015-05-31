@@ -54,9 +54,14 @@ module Parfait
       internal_object_set(LAYOUT_INDEX , layout)
     end
 
+    # so we can keep the raise in get_layout
+    def has_layout?
+      ! internal_object_get(LAYOUT_INDEX).nil?
+    end
+
     def get_layout()
       l = internal_object_get(LAYOUT_INDEX)
-      raise "No layout #{self.class}:#{self.to_s} #{self.object_id}" unless l
+      raise "No layout #{self.class}:#{self.class} #{self.object_id}" unless l
       return l
     end
 

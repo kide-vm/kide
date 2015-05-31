@@ -1,7 +1,7 @@
 module Register
   class LinkException < Exception
   end
-  # Assemble the object space into a binary.
+  # Assemble the object machine into a binary.
   # Link first to get positions, then assemble
 
   # The link function determines the length of an object and the assemble actually
@@ -14,28 +14,27 @@ module Register
     TYPE_BITS = 4
     TYPE_LENGTH = 6
 
-    def initialize space
-      @space = space
+    def initialize machine
+      @machine = machine
     end
-    attr_reader :objects
 
     def link
       # want to have the methods first in the executable
       # so first we determine the code length for the methods and set the
       # binary code (array) to right length
-      @space.objects.each do |objekt|
+      @machine.objects.each do |objekt|
         next unless objekt.is_a? Parfait::Method
         objekt.code.set_length(objekt.info.mem_length / 4 , 0)
       end
       at = 0
       # then we make sure we really get the binary codes first
-      @space.objects.each do |objekt|
+      @machine.objects.each do |objekt|
         next unless objekt.is_a? Parfait::BinaryCode
         objekt.set_position at
         at += objekt.mem_length
       end
       # and then everything else
-      @space.objects.each do | objekt|
+      @machine.objects.each do | objekt|
         # have to tell the code that will be assembled where it is to
         # get the jumps/calls right
         if objekt.is_a? Parfait::Method
@@ -52,23 +51,23 @@ module Register
       begin
         link
         # first we need to create the binary code for the methods
-        @space.objects.each do |objekt|
+        @machine.objects.each do |objekt|
           next unless objekt.is_a? Parfait::Method
           assemble_binary_method(objekt)
         end
         @stream = StringIO.new
         #TODOmid , main = @objects.find{|k,objekt| objekt.is_a?(Virtual::CompiledMethod) and (objekt.name == :__init__ )}
-#        initial_jump = @space.init
+#        initial_jump = @machine.init
 #        initial_jump.codes.each do |code|
 #          code.assemble( @stream )
 #        end
         # then write the methods to file
-        @space.objects.each do |objekt|
+        @machine.objects.each do |objekt|
           next unless objekt.is_a? Parfait::BinaryCode
           assemble_any( objekt )
         end
-        # and then the rest of the object space
-        @space.objects.each do | objekt|
+        # and then the rest of the object machine
+        @machine.objects.each do | objekt|
           next if objekt.is_a? Parfait::BinaryCode
           assemble_any( objekt )
         end
@@ -150,8 +149,8 @@ module Register
       assemble_self( hash , [ hash.keys , hash.values ] )
     end
 
-    def assemble_Space(space)
-      assemble_self(space , [space.classes,space.objects, space.symbols,space.messages,space.next_message,space.next_frame] )
+    def assemble_Space(machine)
+      assemble_self(machine , [machine.classes,machine.messages,machine.next_message,machine.next_frame] )
     end
 
     def assemble_Class(clazz)

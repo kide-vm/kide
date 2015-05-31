@@ -10,12 +10,7 @@ module FakeMem
     @memory = [0,nil]
     @position = nil
     @length = -1
-    if Parfait::Space.object_space and Parfait::Space.object_space.objects
-      Parfait::Space.object_space.add_object self
-    else
-      # Note: the else is handled in boot, by ading the space "by hand", as it slips though
-      # puts "Got away #{self.class}"
-    end
+    #    Virtual::Machine.instance.add_object self
     if Virtual::Machine.instance.class_mappings
       init_layout
     else

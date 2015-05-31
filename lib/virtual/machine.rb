@@ -38,8 +38,9 @@ module Virtual
     def initialize
       @parser  = Parser::Salama.new
       @passes = [ "Virtual::SendImplementation" ]
+      @objects = []
     end
-    attr_reader  :passes , :space , :class_mappings , :init
+    attr_reader  :passes , :space , :class_mappings , :init , :objects
 
     def run_passes
       Minimizer.new.run
@@ -61,6 +62,34 @@ module Virtual
         end
       end
     end
+
+    # double check that all objects dependents are really in the space too (debugging)
+    def double_check
+      @objects.each do |o|
+        check o
+      end
+    end
+    # Objects are data and get assembled after functions
+    def add_object o
+      return false if @objects.include?(o)
+      @objects.push o
+      true
+    end
+
+    # private
+    def check object , recurse = true
+      raise "No good #{object.class}" unless @objects.include? object
+      puts "#{object.class}"
+      puts "#{object}" if object.class == Parfait::Word
+      check object.get_layout
+      return unless recurse
+      object.get_layout.each do |name|
+        check name , false
+        inst = object.instance_variable_get "@#{name}".to_sym
+        check inst , false
+      end
+    end
+
 
     # Passes may be added to by anyone who wants
     # This is intentionally quite flexible, though one sometimes has to watch the order of them

@@ -18,7 +18,7 @@ module Elf
       @object.add_section @text
 
       @object_machine.run_passes
-      assembler = Register::Assembler.new(@object_machine.space)
+      assembler = Register::Assembler.new(@object_machine)
       set_text assembler.assemble
 
       # for debug add labels to the block positions

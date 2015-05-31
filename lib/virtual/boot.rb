@@ -27,7 +27,7 @@ module Virtual
                   "List" => [] ,
                   "Message" => [],
                   "BinaryCode" => [],
-                  "Space" => ["classes","objects","frames","messages","next_message","next_frame"],
+                  "Space" => ["classes","frames","messages","next_message","next_frame"],
                   "Frame" => ["locals" , "tmps" ],
                   "Layout" => ["object_class"] ,
                   "Class" => ["object_layout"],
@@ -65,19 +65,17 @@ module Virtual
       class_mappings["Kernel"] = value_classes[2]  #need for further booting
       class_mappings["Object"] = value_classes[3]  #need for further booting
 
-      # add space and instances which get created before the objects list
-      [@space,@space.classes,@space.classes.keys, @space.classes.values,@space.objects].each do |o|
-        @space.add_object o
-      end
       @space.late_init
+
+#      add_object @space
+
       values.each {|v| v.init_layout }
-      
+
       # now update the layout on all objects created so far,
       # go through objects in space
-      @space.objects.each do | o |
+      @objects.each do | o |
         o.init_layout
       end
-      @space.double_check
       boot_functions!
     end
 
