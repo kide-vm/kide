@@ -31,6 +31,7 @@ module Register
       @machine.objects.each do |objekt|
         next unless objekt.is_a? Parfait::BinaryCode
         objekt.set_position at
+        # puts "CODE #{objekt.name} at #{objekt.position}"
         at += objekt.mem_length
       end
       # and then everything else
@@ -47,7 +48,7 @@ module Register
     end
 
     def assemble
-      #slightly analogous to the link
+      # must be same order as link
       begin
         link
         # first we need to create the binary code for the methods
@@ -96,8 +97,9 @@ module Register
         raise "length error #{method.code.get_length}" if index > method.info.get_length
       end
     end
+
     def assemble_any obj
-      puts "Assemble #{obj.class}(\n#{obj.to_s[0..500]}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.mem_length}"
+      puts "Assemble #{obj.class} at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.mem_length}"
       if @stream.length != obj.position
         raise "Assemble #{obj.class} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}"
       end
@@ -108,28 +110,34 @@ module Register
 
     def type_word array
       word = 0
-      array.each_with_index do |var , index|
-        type = (var.class == Integer) ? TYPE_INT : TYPE_REF
-        word +=  type << (index * TYPE_BITS)
+      index = 0
+      array.each do |var |
+        #type = (var.class == Integer) ? TYPE_INT : TYPE_REF
+        #TODO
+        type = TYPE_REF
+        word += type << (index * TYPE_BITS)
+        index = index + 1
       end
-      word += ( (array.length + 1 ) / 8 ) << TYPE_LENGTH * TYPE_BITS
+      word += ( (array.get_length + 1 ) / 8 ) << TYPE_LENGTH * TYPE_BITS
       word
     end
 
     # write type and layout of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
-    def assemble_self( object , variables )
-      unless @objects[object.object_id]
+    def assemble_object( object )
+      unless @machine.objects.include? object
         raise "Object(#{object.object_id}) not linked #{object.inspect}"
       end
-      type = type_word(variables)
+      layout = object.get_layout
+      type = type_word(layout)
       @stream.write_uint32( type )
-      write_ref_for(object.layout[:names] )
-      variables.each do |var|
-        raise object.class.name unless var
-        write_ref_for(var)
+      write_ref_for(layout )
+      layout.each do |var|
+        inst = object.instance_variable_get "@#{var}".to_sym
+        puts "Nil for #{object.class}.#{var}" unless inst
+        write_ref_for(inst)
       end
-      pad_after( variables.length * 4 )
+      pad_after( layout.get_length * 4 )
       object.position
     end
 
@@ -146,22 +154,22 @@ module Register
 
     def assemble_Dictionary hash
       # so here we can be sure to have _identical_ keys/values arrays
-      assemble_self( hash , [ hash.keys , hash.values ] )
+      assemble_object( hash , [ hash.keys , hash.values ] )
     end
 
-    def assemble_Space(machine)
-      assemble_self(machine , [machine.classes,machine.messages,machine.next_message,machine.next_frame] )
+    def assemble_Space(space)
+      assemble_object(space )
     end
 
     def assemble_Class(clazz)
-      assemble_self( clazz , [clazz.name , clazz.super_class_name, clazz.instance_methods] )
+      assemble_object( clazz )
     end
 
     def assemble_Message me
-      assemble_self(me , [])
+      assemble_object(me)
     end
     def assemble_Frame me
-      assemble_self(me , [])
+      assemble_object(me )
     end
 
     def assemble_Method(method)

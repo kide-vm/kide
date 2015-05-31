@@ -26,6 +26,7 @@ module Virtual
       layouts = { "Word" => [] ,
                   "List" => [] ,
                   "Message" => [],
+                  "MetaClass" => [],
                   "BinaryCode" => [],
                   "Space" => ["classes","frames","messages","next_message","next_frame"],
                   "Frame" => ["locals" , "tmps" ],
@@ -44,15 +45,23 @@ module Virtual
       class_mappings.each do |name , clazz|                # and the rest
         clazz.set_super_class(value_classes[3])            # superclasses are object
       end
-      supers = { "BinaryCode" => "Word", "Layout" => "List", "Class" => "Module"}
-      supers.each do |clazz , superclaszz| # set_super_class has no sideeffects, so setting twice ok
-        class_mappings[clazz].set_super_class class_mappings[superclaszz]
-      end
       # next create layouts by adding instance variable names to the layouts
       class_mappings.each do |name , clazz|
         variables = layouts[name]
         variables.each do |var_name|
           clazz.object_layout.add_instance_variable Virtual.new_word(var_name)
+        end
+      end
+      # superclass and layout corrections
+      supers = { "BinaryCode" => "Word", "Layout" => "List", "Class" => "Module"}
+      supers.each do |classname , superclass_name|
+        clazz = class_mappings[classname]
+        super_class = class_mappings[superclass_name]
+        # set_super_class has no sideeffects, so setting twice ok
+        clazz.set_super_class super_class
+        # Add superclass layout too
+        super_class.object_layout.each do |var|
+          clazz.object_layout.add_instance_variable var
         end
       end
 
