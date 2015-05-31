@@ -11,7 +11,7 @@ module Virtual
           @gonners << f
         end
       end
-      init= Parfait::Space.object_space.get_class_by_name("Kernel").get_instance_method "__init__"
+      init= Parfait::Space.object_space.get_class_by_name(:Kernel).get_instance_method :__init__
       remove init
       dump_remaining
     end

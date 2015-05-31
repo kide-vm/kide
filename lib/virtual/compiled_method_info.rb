@@ -35,10 +35,8 @@ module Virtual
     #
     # compile code then works with the method, but adds code tot the info
     def self.create_method( class_name , method_name , args)
-      raise "uups #{class_name}.#{class_name.class}" if class_name.is_a? Symbol
-      raise "uups #{method_name}.#{method_name.class}" if class_name.is_a? Symbol
-      class_name = Virtual.new_word(class_name) if class_name.is_a? String
-      method_name = Virtual.new_word(method_name) if method_name.is_a? String
+      raise "uups #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
+      raise "uups #{method_name}.#{method_name.class}" unless class_name.is_a? Symbol
       clazz = Machine.instance.space.get_class_by_name class_name
       raise "No such class #{class_name}" unless clazz
       method = clazz.create_instance_method( method_name , Virtual.new_list(args))

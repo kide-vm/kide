@@ -33,7 +33,7 @@ class TestMoves < MiniTest::Test
     assert_code code , :mvn , [0x05,0x10,0xe0,0xe3] #e3 e0 10 05
   end
   def test_constant_small # like test_mov
-    const = Virtual.new_word "harvey"
+    const = :harvey
     const.set_position( 13 ) # 13 = 5 + 8 , 8 for the arm pipeline offset, gets subtracted
     code = @machine.mov :r1 , 5
     code.set_position(0)
@@ -41,7 +41,7 @@ class TestMoves < MiniTest::Test
     assert_code code , :mov , [0x05,0x10,0xa0,0xe3] #e3 ef 10 05
   end
   def test_constant_big # like test_mov_big
-    const = Virtual.new_word "harvey"
+    const = :harvey
     const.set_position( 0x222 )
     code = @machine.mov :r0 , 0x222
     code.set_position(0)

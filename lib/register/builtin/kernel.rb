@@ -5,7 +5,7 @@ module Builtin
       # it isn't really a function, ie it is jumped to (not called), exits and may not return
       # so it is responsible for initial setup (and relocation)
       def __init__ context
-        function = Virtual::CompiledMethodInfo.create_method("Kernel","__init__" , [])
+        function = Virtual::CompiledMethodInfo.create_method(:Kernel,:__init__ , [])
 #        puts "INIT LAYOUT #{function.get_layout.get_layout}"
         function.info.return_type = Virtual::Integer
         main = Virtual::Machine.instance.space.get_main
@@ -16,14 +16,14 @@ module Builtin
         return function
       end
       def putstring context
-        function = Virtual::CompiledMethodInfo.create_method("Kernel" , "putstring" , [] )
+        function = Virtual::CompiledMethodInfo.create_method(:Kernel , :putstring , [] )
         return function
         ret = Virtual::RegisterMachine.instance.write_stdout(function)
         function.set_return ret
         function
       end
       def exit context
-        function = Virtual::CompiledMethodInfo.create_method("Kernel","exit" , [])
+        function = Virtual::CompiledMethodInfo.create_method(:Kernel,:exit , [])
         function.info.return_type = Virtual::Integer
         return function
         ret = Virtual::RegisterMachine.instance.exit(function)
@@ -31,7 +31,7 @@ module Builtin
         function
       end
       def __send context
-        function = Virtual::CompiledMethodInfo.create_method("Kernel" ,"__send" , [] )
+        function = Virtual::CompiledMethodInfo.create_method(:Kernel ,:__send , [] )
         function.info.return_type = Virtual::Integer
         return function
       end

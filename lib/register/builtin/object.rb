@@ -5,7 +5,7 @@ module Builtin
       # main entry point, ie __init__ calls this
       # defined here as empty, to be redefined
       def main context
-        function = Virtual::CompiledMethodInfo.create_method("Object","main" , [])
+        function = Virtual::CompiledMethodInfo.create_method(:Object,:main , [])
         return function
       end
 
@@ -17,7 +17,7 @@ module Builtin
       # The at_index is just "below" the api, something we need but don't want to expose,
       # so we can't code the above in ruby
       def _get_instance_variable context , name = Virtual::Integer
-        get_function = Virtual::CompiledMethodInfo.create_method("Object","_get_instance_variable" , [ Virtual::Reference ] )
+        get_function = Virtual::CompiledMethodInfo.create_method(:Object,:_get_instance_variable , [ Virtual::Reference ] )
         return get_function
         me = get_function.receiver
         var_name = get_function.args.first
@@ -38,7 +38,7 @@ module Builtin
       end
 
       def _set_instance_variable(context , name = Virtual::Integer , value = Virtual::Integer )
-        set_function = Virtual::CompiledMethodInfo.create_method("Object","_set_instance_variable" ,[Virtual::Reference ,Virtual::Reference] )
+        set_function = Virtual::CompiledMethodInfo.create_method(:Object,:_set_instance_variable ,[Virtual::Reference ,Virtual::Reference] )
         return set_function
         receiver set_function
         me = set_function.receiver

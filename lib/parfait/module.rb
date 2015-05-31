@@ -30,9 +30,17 @@ module Parfait
       @instance_methods
     end
 
+    def method_names
+      names = List.new
+      @instance_methods.each do |method|
+        names.push method.name
+      end
+      names  
+    end
+
     def add_instance_method method
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Method
-      raise "syserr #{method.name.class}" unless method.name.is_a? Word
+      raise "syserr #{method.name.class}" unless method.name.is_a? Symbol
       found = get_instance_method( method.name )
       if found
         @instance_methods.delete(found)
@@ -48,6 +56,7 @@ module Parfait
     end
 
     def create_instance_method  name , arg_names
+      raise "uups #{name}.#{name.class}" unless name.is_a?(Symbol)
       clazz = Space.object_space.get_class_by_name(self.name)
       raise "??? #{self.name}" unless clazz
       Method.new_object( clazz , name , arg_names )
@@ -61,7 +70,7 @@ module Parfait
     end
 
     def get_instance_method fname
-      raise "uups #{fname}.#{fname.class}" unless fname.is_a?(Word) or fname.is_a?(String)
+      raise "uups #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
       #if we had a hash this would be easier.  Detect or find would help too
       @instance_methods.each do |m|
         return m if(m.name == fname )
@@ -71,7 +80,7 @@ module Parfait
 
     # get the method and if not found, try superclasses. raise error if not found
     def resolve_method m_name
-      raise "uups #{m_name}.#{m_name.class}" unless m_name.is_a?(Word) or m_name.is_a?(String)
+      raise "uups #{m_name}.#{m_name.class}" unless m_name.is_a?(Symbol)
       method = get_instance_method(m_name)
       return method if method
       if( @super_class )

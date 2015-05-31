@@ -21,23 +21,23 @@ module Virtual
       # map from the vm - class_name to the Parfait class (which carries parfait name)
       class_mappings = {}        #will later become instance variable
 
-      values = [  "Value"  , "Integer" , "Kernel" ,  "Object"].collect {|cl| Virtual.new_word(cl) }
+      values = [  :Value  , :Integer , :Kernel ,  :Object]
       value_classes = values.collect { |cl| @space.create_class(cl,nil) }
-      layouts = { "Word" => [] ,
-                  "List" => [] ,
-                  "Message" => [],
-                  "MetaClass" => [],
-                  "BinaryCode" => [],
-                  "Space" => ["classes","frames","messages","next_message","next_frame"],
-                  "Frame" => ["locals" , "tmps" ],
-                  "Layout" => ["object_class"] ,
-                  "Class" => ["object_layout"],
-                  "Dictionary" => ["keys" , "values"] ,
-                  "Method" => ["name" , "code" ,"arg_names" , "locals" , "tmps"] ,
-                  "Module" => ["name" , "instance_methods", "super_class", "meta_class"]
+      layouts = { :Word => [] ,
+                  :List => [] ,
+                  :Message => [],
+                  :MetaClass => [],
+                  :BinaryCode => [],
+                  :Space => [:classes ,:frames ,:messages ,:next_message ,:next_frame],
+                  :Frame => [:locals , :tmps ],
+                  :Layout => [:object_class] ,
+                  :Class => [:object_layout ],
+                  :Dictionary => [:keys , :values ] ,
+                  :Method => [:name , :code ,:arg_names , :locals , :tmps ] ,
+                  :Module => [:name , :instance_methods , :super_class , :meta_class ]
                 }
       layouts.each do |name , layout|
-        class_mappings[name] = @space.create_class(Virtual.new_word(name) , nil)
+        class_mappings[name] = @space.create_class(name , nil)
       end
       value_classes[1].set_super_class( value_classes[0] ) # #set superclass (value) for integer
       value_classes[2].set_super_class( value_classes[0] ) # and kernel (TODO is module)
@@ -49,11 +49,11 @@ module Virtual
       class_mappings.each do |name , clazz|
         variables = layouts[name]
         variables.each do |var_name|
-          clazz.object_layout.add_instance_variable Virtual.new_word(var_name)
+          clazz.object_layout.add_instance_variable var_name
         end
       end
       # superclass and layout corrections
-      supers = { "BinaryCode" => "Word", "Layout" => "List", "Class" => "Module"}
+      supers = { :BinaryCode => :Word , :Layout => :List , :Class => :Module }
       supers.each do |classname , superclass_name|
         clazz = class_mappings[classname]
         super_class = class_mappings[superclass_name]
@@ -70,9 +70,9 @@ module Virtual
       #   lookup half created class info
       # but it must be done before going through the objects (next step)
       @class_mappings = class_mappings
-      class_mappings["Integer"] = value_classes[1]  #need for further booting
-      class_mappings["Kernel"] = value_classes[2]  #need for further booting
-      class_mappings["Object"] = value_classes[3]  #need for further booting
+      class_mappings[:Integer ] = value_classes[1]  #need for further booting
+      class_mappings[:Kernel ] = value_classes[2]  #need for further booting
+      class_mappings[:Object ] = value_classes[3]  #need for further booting
 
       @space.late_init
 
@@ -96,25 +96,25 @@ module Virtual
     def boot_functions!
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we
       # have to define some dummies, just for the other to compile
-      # TODO: go through the virtual parfait layer and adjust function names to what they really are
-      obj = @class_mappings["Object"]
+      # TODO go through the virtual parfait layer and adjust function names to what they really are
+      obj = @class_mappings[:Object ]
       [:main , :_get_instance_variable , :_set_instance_variable].each do |f|
         obj.add_instance_method Builtin::Object.send(f , nil)
       end
-      obj = @class_mappings["Kernel"]
+      obj = @class_mappings[:Kernel ]
       # create dummy main first, __init__ calls it
       [:putstring,:exit,:__send  ].each do |f|
         obj.add_instance_method Builtin::Kernel.send(f , nil)
       end
       underscore_init = obj.add_instance_method Builtin::Kernel.send(:__init__, nil)
 
-      obj = @class_mappings["Integer"]
+      obj = @class_mappings[:Integer ]
       [:putint,:fibo].each do |f|
         obj.add_instance_method Builtin::Integer.send(f , nil)
       end
 
       # and the @init block in turn _jumps_ to __init__
-      # the point of which is that by the time main executes, all is "normal"
+      # the point of which is that by the time main executes, all is :normal:
       @init = Block.new(:_init_ , nil )
       @init.add_code(Register::RegisterMain.new(underscore_init))
     end

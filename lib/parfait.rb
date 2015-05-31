@@ -13,6 +13,3 @@ require "parfait/layout"
 require "parfait/message"
 require "parfait/frame"
 require "parfait/space"
-
-#if we are in the ruby run-time / generating an executable
-require "virtual/parfait_adapter"

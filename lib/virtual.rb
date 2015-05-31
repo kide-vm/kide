@@ -1,5 +1,8 @@
 require "parfait"
 require "virtual/machine"
+#if we are in the ruby run-time / generating an executable
+require "virtual/positioned"
+require "virtual/parfait_adapter"
 
 require "virtual/compiler"
 require "virtual/instruction"

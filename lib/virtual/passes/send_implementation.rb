@@ -39,8 +39,11 @@ module Virtual
           if ref.type.is_a?(Reference) and ref.type.of_class
             #find method and call
             clazz = ref.type.of_class
-            method = clazz.resolve_method code.name.to_s
-            raise "No method found #{code.name}" unless method
+            begin
+            method = clazz.resolve_method code.name
+            rescue
+            raise "No method found #{code.name} for #{clazz.name} in #{clazz.method_names}" unless method
+            end
             new_codes << MethodCall.new( method )
           else
             # must defer send to run-time

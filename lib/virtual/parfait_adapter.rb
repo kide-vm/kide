@@ -16,7 +16,7 @@ module FakeMem
     end
   end
   def init_layout
-    vm_name = self.class.name.split("::").last
+    vm_name = self.class.name.split("::").last.to_sym
     clazz = Virtual::Machine.instance.class_mappings[vm_name]
     raise "Class not found #{vm_name}" unless clazz
     raise "Layout not set #{vm_name}" unless clazz.object_layout
@@ -50,6 +50,28 @@ module FakeMem
 
   def padded_words words
     padded(words*4) # 4 == word length, a constant waiting for a home
+  end
+end
+module Virtual
+  def self.new_list array
+    list = Parfait::List.new_object
+    list.set_length array.length
+    index = 1
+    while index <= array.length do
+      list.set(index , array[index - 1])
+      index = index + 1
+    end
+    list
+  end
+end
+class Symbol
+  include Positioned
+  def init_layout;  end
+  def has_layout?
+    true
+  end
+  def get_layout
+    Virtual::Machine.instance.class_mappings[:Word].object_layout
   end
 end
 
@@ -156,28 +178,5 @@ module Parfait
       end
       string
     end
-  end
-end
-
-
-module Virtual
-  # Functions to generate parfait objects
-  def self.new_word( string )
-    string = string.to_s if string.is_a? Symbol
-    word = Parfait::Word.new_object( string.length )
-    string.codepoints.each_with_index do |code , index |
-      word.set_char(index + 1 , code)
-    end
-    word
-  end
-  def self.new_list array
-    list = Parfait::List.new_object
-    list.set_length array.length
-    index = 1
-    while index <= array.length do
-      list.set(index , array[index - 1])
-      index = index + 1
-    end
-    list
   end
 end

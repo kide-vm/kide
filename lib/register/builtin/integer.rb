@@ -9,7 +9,7 @@ module Builtin
     # As we write before we recurse (save a push) we write the number backwards
     # arguments: string address , integer
     def utoa context
-      utoa_function = Virtual::CompiledMethodInfo.create_method("Integer" ,"utoa" ,  [ Virtual::Integer ] )
+      utoa_function = Virtual::CompiledMethodInfo.create_method(:Integer ,:utoa ,  [ Virtual::Integer ] )
       function.info.return_type = Virtual::Integer
       function.info.receiver = Virtual::Integer
       return utoa_function
@@ -29,7 +29,7 @@ module Builtin
     end
 
     def putint context
-      putint_function = Virtual::CompiledMethodInfo.create_method("Integer","putint" , [] )
+      putint_function = Virtual::CompiledMethodInfo.create_method(:Integer,:putint , [] )
       putint_function.info.return_type = Virtual::Integer
       putint_function.info.receiver = Virtual::Integer
       return putint_function
@@ -58,7 +58,7 @@ module Builtin
     # a hand coded version of the fibonachi numbers
     # not my hand off course, found in the net http://www.peter-cockerell.net/aalp/html/ch-5.html
     def fibo context
-      fibo_function = Virtual::CompiledMethodInfo.create_method("Integer","fibo" ,  [] )
+      fibo_function = Virtual::CompiledMethodInfo.create_method(:Integer,:fibo ,  [] )
       fibo_function.info.return_type = Virtual::Integer
       fibo_function.info.receiver = Virtual::Integer
       return fibo_function

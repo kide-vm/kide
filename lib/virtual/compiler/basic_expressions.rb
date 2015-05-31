@@ -46,7 +46,7 @@ module Virtual
       # whichever way this goes the result is stored in the return slot (as all compiles)
       def self.compile_name expression , method
         return Self.new( Reference.new(method.for_class)) if expression.name == :self
-        name = Virtual.new_word expression.name.to_s
+        name = expression.name.to_sym
         if method.has_var(name)
           # either an argument, so it's stored in message
           if( index = method.has_arg(name))
@@ -71,7 +71,7 @@ module Virtual
 
   #    attr_reader  :string
       def self.compile_string expression , method
-        value = Virtual.new_word(expression.string)
+        value = expression.string.to_sym
         to = Return.new(Reference , value)
         method.info.add_code Set.new( to , value )
         to
@@ -84,11 +84,11 @@ module Virtual
         end
         r = Compiler.compile(expression.right , method )
         raise "oh noo, nil from where #{expression.right.inspect}" unless r
-        index = method.has_arg(Virtual.new_word name)
+        index = method.has_arg(name)
         if index
           method.info.add_code Set.new(Return.new , MessageSlot.new(index , r,type , r ))
         else
-          index = method.ensure_local(Virtual.new_word expression.left.name)
+          index = method.ensure_local(expression.left.name.to_sym)
           method.info.add_code Set.new(Return.new , FrameSlot.new(index , r.type , r ))
         end
         r
