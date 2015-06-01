@@ -26,7 +26,11 @@ module Arm
       arg = @left
       arg = arg.symbol if( arg.is_a? ::Register::RegisterReference )
       #str / ldr are _serious instructions. With BIG possibilities not half are implemented
-      if (arg.is_a?(Symbol) or arg.is_a?(::Register::RegisterReference)) #symbol is register
+      is_reg = arg.is_a?(::Register::RegisterReference)
+      if( arg.is_a?(Symbol) and not is_reg)
+        is_reg = (arg.to_s[0] == "r")
+      end
+      if (is_reg ) #symbol is register
         rn = arg
         if @right
           operand = @right
@@ -46,7 +50,7 @@ module Arm
             end
           end
         end
-      elsif (arg.is_a?(Parfait::Object) ) #use pc relative
+      elsif (arg.is_a?(Parfait::Object) or arg.is_a? Symbol ) #use pc relative
         rn = :pc
         operand = arg.position - self.position  - 8 #stringtable is after code
         add_offset = 1

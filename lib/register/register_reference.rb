@@ -12,8 +12,25 @@ module Register
 
     def initialize r
       raise "wrong type for register init #{r}" unless r.is_a? Symbol
-      raise "double r #{r}" if r == :rr1
+      raise "double r #{r}" if r.to_s[0,1] == "rr"
+      raise "not reg #{r}" unless self.class.look_like_reg r
       @symbol = r
+    end
+
+    def self.convert something
+      return something unless something.is_a? Symbol
+      return something unless look_like_reg(something)
+      return new(something)
+    end
+
+    def self.look_like_reg is_it
+      if( [:lr , :pc].include? is_it )
+        return true
+      end
+      if( (is_it.to_s.length < 3) and (is_it.to_s[0] == "r"))
+        return true
+      end
+      return false
     end
 
     def == other

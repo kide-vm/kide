@@ -77,7 +77,7 @@ module Arm
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
-        first = Register::RegisterReference.new(first) if first.is_a? Symbol
+        first = Register::RegisterReference.convert(first)
         clazz.new(first , options)
       end
     end
@@ -88,8 +88,8 @@ module Arm
       create_method(inst) do |left ,right , options = nil|
         options = {} if options == nil
         options.merge defaults
-        left = Register::RegisterReference.new(left) if left.is_a? Symbol
-        right = Register::RegisterReference.new(right) if right.is_a? Symbol
+        left = Register::RegisterReference.convert(left)
+        right = Register::RegisterReference.convert(right)
         options[:opcode] = inst
         clazz.new(left , right ,options)
       end
@@ -102,9 +102,9 @@ module Arm
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
-        result = Register::RegisterReference.new(result) if result.is_a? Symbol
-        left = Register::RegisterReference.new(left) if left.is_a? Symbol
-        right = Register::RegisterReference.new(right) if right.is_a? Symbol
+        result = Register::RegisterReference.convert(result)
+        left = Register::RegisterReference.convert(left)
+        right = Register::RegisterReference.convert(right)
         clazz.new(result, left , right ,options)
       end
     end
