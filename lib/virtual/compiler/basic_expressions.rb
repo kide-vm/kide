@@ -73,6 +73,7 @@ module Virtual
       def self.compile_string expression , method
         value = expression.string.to_sym
         to = Return.new(Reference , value)
+        method.info.constants << value
         method.info.add_code Set.new( to , value )
         to
       end

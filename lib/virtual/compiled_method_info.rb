@@ -50,8 +50,9 @@ module Virtual
       @blocks = [enter]
       @current = enter
       new_block("return").add_code(MethodReturn.new)
+      @constants = []
     end
-    attr_reader   :blocks
+    attr_reader   :blocks , :constants
     attr_accessor :return_type , :current , :receiver
 
     # add an instruction after the current (insertion point)
