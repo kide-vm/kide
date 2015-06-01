@@ -64,33 +64,12 @@ module Virtual
       end
     end
 
-    # double check that all objects dependents are really in the space too (debugging)
-    def double_check
-      @objects.each do |o|
-        check o
-      end
-    end
     # Objects are data and get assembled after functions
     def add_object o
       return false if @objects.include?(o)
       @objects.push o
       true
     end
-
-    # private
-    def check object , recurse = true
-      raise "No good #{object.class}" unless @objects.include? object
-      puts "#{object.class}"
-      puts "#{object}" if object.class == Parfait::Word
-      check object.get_layout
-      return unless recurse
-      object.get_layout.each do |name|
-        check name , false
-        inst = object.instance_variable_get "@#{name}".to_sym
-        check inst , false
-      end
-    end
-
 
     # Passes may be added to by anyone who wants
     # This is intentionally quite flexible, though one sometimes has to watch the order of them
@@ -112,10 +91,10 @@ module Virtual
     end
 
     def self.boot
-      instance = self.instance
+      me = self.instance
       # boot is a verb here. this is a somewhat tricky process which is in it's own file, boot.rb
-      instance.boot_parfait!
-      instance
+      me.boot_parfait!
+      me
     end
     def self.instance
       @instance ||= Machine.new

@@ -45,16 +45,15 @@ module Register
         objekt.set_position at
         at += objekt.mem_length
       end
-      @machine.objects.each do |objekt|
-        objekt.position
-      end
-
     end
 
     def assemble
       # must be same order as link
       begin
         link
+        @machine.objects.each do |objekt|
+          objekt.position
+        end
         # first we need to create the binary code for the methods
         @machine.objects.each do |objekt|
           next unless objekt.is_a? Parfait::Method
@@ -88,15 +87,16 @@ module Register
     # and then plonk that binary data into the method.code array
     def assemble_binary_method method
       stream = StringIO.new
-      begin
       method.info.blocks.each do |block|
         block.codes.each do |code|
+          begin
           code.assemble( stream )
+        rescue => e
+            puts "Method error #{method.name}\n#{Sof::Writer.write(method.info.blocks).to_s[0...2000]}"
+            puts Sof::Writer.write(code)
+            raise e
+          end
         end
-      end
-    rescue => e
-        puts "Method error #{method.name}\n#{Sof::Writer.write(method.info.blocks).to_s[0...2000]}"
-        raise e
       end
       method.code.fill_with 0
       index = 1
@@ -204,7 +204,7 @@ module Register
 
     def assemble_String( string )
       str = string.to_s if string.is_a? Parfait::Word
-      str = string.to_s if str.is_a? Symbol
+      str = string.to_s if string.is_a? Symbol
       word = (str.length + 7) / 32  # all object are multiple of 8 words (7 for header)
       raise "String too long (implement split string!) #{word}" if word > 15
       # first line is integers, convention is that following lines are the same

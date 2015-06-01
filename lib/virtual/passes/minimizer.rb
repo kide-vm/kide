@@ -22,13 +22,13 @@ module Virtual
         puts "function was already removed #{ function.name}"
         return
       end
+      #puts "stayer #{function.name}"
       @gonners.delete function
       function.info.blocks.each do |block|
         block.codes.each do |code|
           if code.is_a? Virtual::MessageSend
-            str_name = code.name.to_s
             @gonners.each do |stay|
-              remove stay if(stay.name == str_name)
+              remove stay if(stay.name == code.name)
             end
           end
           remove code.method if code.is_a? Virtual::MethodCall

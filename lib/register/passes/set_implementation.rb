@@ -32,7 +32,7 @@ module Register
         # need a temporay place because of indexed load/store
         tmp = RegisterReference.tmp_reg
         # for constants we have to "move" the constants value
-        if( code.from.is_a? Parfait::Value)
+        if( code.from.is_a?(Parfait::Value) or code.from.is_a?(Symbol))
           move1 = LoadConstant.new( tmp , code.from )
         else # while otherwise we "load"
           move1 = GetSlot.new( tmp , code.from.reg , code.from.index )

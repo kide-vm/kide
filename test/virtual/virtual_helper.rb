@@ -9,7 +9,7 @@ module VirtualHelper
   end
 
   def check
-    machine = Virtual::Machine.reboot
+    machine = Virtual::Machine.boot
     expressions = machine.compile_main @string_input
     if( expressions.first.is_a? Parfait::Method )
       # stops the whole objectspace beeing tested

@@ -21,9 +21,9 @@ module Virtual
     def run block
       block.codes.dup.each do |code|
         if code.is_a?(NewFrame)
-          kind = "next_frame"
+          kind = :next_frame
         elsif code.is_a?(NewMessage)
-          kind = "next_message"
+          kind = :next_message
         else
           next
         end

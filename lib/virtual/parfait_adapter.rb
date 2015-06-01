@@ -73,6 +73,35 @@ class Symbol
   def get_layout
     Virtual::Machine.instance.class_mappings[:Word].object_layout
   end
+  def mem_length
+    to_s.length
+  end
+  # not the prettiest addition to the game, but it wasn't me who decided symbols are frozen in 2.x
+  def cache_positions
+    unless defined?(@@symbol_positions)
+      @@symbol_positions = {}
+    end
+    @@symbol_positions
+  end
+  def position
+    pos = cache_positions[self]
+    if pos == nil
+      str = "position accessed but not set, "
+      str += "Machine has object=#{Virtual::Machine.instance.objects.include?(self)} "
+      raise str + " for Symbol:#{self}"
+    end
+    pos
+  end
+  def set_position pos
+    # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
+    # in measures (of 32)
+    old = cache_positions[self]
+    if old != nil and ((old - pos).abs > 32)
+      raise "position set again #{pos}!=#{old} for #{self}"
+    end
+    cache_positions[self] = pos
+  end
+
 end
 
 module Parfait

@@ -13,7 +13,7 @@ require 'parslet/convenience'
 module Fragments
   # need a code generator, for arm
   def setup
-    @object_machine = Virtual::Machine.new "Arm"
+    @object_machine = Virtual::Machin.new "Arm"
   end
 
   def parse
