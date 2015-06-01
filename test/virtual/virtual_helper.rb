@@ -28,17 +28,7 @@ module VirtualHelper
   end
 
 end
-module Virtual
-  # Functions to generate parfait objects
-  def self.new_word( string )
-    string = string.to_s if string.is_a? Symbol
-    word = Parfait::Word.new_object( string.length )
-    string.codepoints.each_with_index do |code , index |
-      word.set_char(index + 1 , code)
-    end
-    word
-  end
-end
+
 class UnusedSofEquality
   # simple thought: don't recurse for Blocks, just check their names
   def == other
