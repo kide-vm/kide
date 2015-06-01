@@ -18,5 +18,5 @@ module Register
       end
     end
   end
-  Virtual::Machine.instance.add_pass "Register::ReturnImplementation"
+  Virtual.machine.add_pass "Register::ReturnImplementation"
 end

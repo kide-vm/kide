@@ -23,5 +23,5 @@ module Register
       end
     end
   end
-  Virtual::Machine.instance.add_pass "Register::CallImplementation"
+  Virtual.machine.add_pass "Register::CallImplementation"
 end

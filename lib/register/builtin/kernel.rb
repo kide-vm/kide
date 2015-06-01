@@ -8,7 +8,7 @@ module Builtin
         function = Virtual::CompiledMethodInfo.create_method(:Kernel,:__init__ , [])
 #        puts "INIT LAYOUT #{function.get_layout.get_layout}"
         function.info.return_type = Virtual::Integer
-        main = Virtual::Machine.instance.space.get_main
+        main = Virtual.machine.space.get_main
         me = Virtual::Self.new(Virtual::Reference)
         code = Virtual::Set.new(Virtual::Self.new(me.type), me)
         function.info.add_code(code)

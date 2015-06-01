@@ -10,5 +10,5 @@ module Arm
       end
     end
   end
-  Virtual::Machine.instance.add_pass "Arm::ConstantImplementation"
+  Virtual.machine.add_pass "Arm::ConstantImplementation"
 end

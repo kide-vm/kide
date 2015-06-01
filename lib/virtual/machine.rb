@@ -39,6 +39,7 @@ module Virtual
       @parser  = Parser::Salama.new
       @passes = [ "Virtual::SendImplementation" ]
       @objects = []
+      @booted = false
     end
     attr_reader  :passes , :space , :class_mappings , :init , :objects
 
@@ -91,26 +92,30 @@ module Virtual
     end
 
     def self.boot
-      me = self.instance
+      me = Virtual.machine
       # boot is a verb here. this is a somewhat tricky process which is in it's own file, boot.rb
+      raise "already booted" if @booted
       me.boot_parfait!
       me
-    end
-    def self.instance
-      @instance ||= Machine.new
     end
 
     # for testing, make sure no old artefacts hang around
     #maybe should be moved to test dir
     def self.reboot
-      @instance = nil
-      self.boot
+      raise "redo"
     end
     def compile_main bytes
       syntax  = @parser.parse_with_debug(bytes)
       parts = Parser::Transform.new.apply(syntax)
       Compiler.compile( parts , @space.get_main )
     end
+  end
+
+  def self.machine
+    unless defined?(@machine)
+      @machine = Machine.new
+    end
+    @machine
   end
 end
 

@@ -48,5 +48,5 @@ module Virtual
       end
     end
   end
-  Virtual::Machine.instance.add_pass "Virtual::FrameImplementation"
+  Virtual.machine.add_pass "Virtual::FrameImplementation"
 end

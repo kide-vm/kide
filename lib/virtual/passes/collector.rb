@@ -9,7 +9,7 @@ module Virtual
 
     def keep object
       return if object.nil?
-      return unless Machine.instance.add_object object
+      return unless Virtual.machine.add_object object
       #puts "adding #{object.class}"
       unless object.has_layout?
         object.init_layout

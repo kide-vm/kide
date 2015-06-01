@@ -9,7 +9,7 @@ module FakeMem
     super()
     @memory = [0,nil]
     @position = nil
-    if Virtual::Machine.instance.class_mappings
+    if Virtual.machine.class_mappings
       init_layout
     else
       #puts "No init for #{self.class}:#{self.object_id}"
@@ -17,7 +17,7 @@ module FakeMem
   end
   def init_layout
     vm_name = self.class.name.split("::").last.to_sym
-    clazz = Virtual::Machine.instance.class_mappings[vm_name]
+    clazz = Virtual.machine.class_mappings[vm_name]
     raise "Class not found #{vm_name}" unless clazz
     raise "Layout not set #{vm_name}" unless clazz.object_layout
     self.set_layout clazz.object_layout
@@ -25,7 +25,7 @@ module FakeMem
   #TODO, this is copied from module Positioned, maybe avoid duplication ?
   def position
     if @position.nil?
-      str = "IN machine #{Virtual::Machine.instance.objects.include?(self)}\n"
+      str = "IN machine #{Virtual.machine.objects.include?(self)}\n"
       raise str + "position not set for #{self.class} at #{mem_length} for #{self.inspect[0...100]}"
     end
     @position
@@ -71,7 +71,7 @@ class Symbol
     true
   end
   def get_layout
-    Virtual::Machine.instance.class_mappings[:Word].object_layout
+    Virtual.machine.class_mappings[:Word].object_layout
   end
   def mem_length
     to_s.length
@@ -87,7 +87,7 @@ class Symbol
     pos = cache_positions[self]
     if pos == nil
       str = "position accessed but not set, "
-      str += "Machine has object=#{Virtual::Machine.instance.objects.include?(self)} "
+      str += "Machine has object=#{Virtual.machine.objects.include?(self)} "
       raise str + " for Symbol:#{self}"
     end
     pos
