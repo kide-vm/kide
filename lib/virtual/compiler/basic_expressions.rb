@@ -13,30 +13,27 @@ module Virtual
 
   #    attr_reader :value
       def self.compile_integer expression , method
-        int = IntegerConstant.new(expression.value)
+        int = expression.value
         to = Return.new(Integer , int)
         method.info.add_code Set.new( to , int)
         to
       end
 
       def self.compile_true expression , method
-        value = TrueConstant.new
-        to = Return.new(Reference , value)
-        method.info.add_code Set.new( to , value )
+        to = Return.new(Reference , true )
+        method.info.add_code Set.new( to , true )
         to
       end
 
       def self.compile_false expression , method
-        value = FalseConstant.new
-        to = Return.new(Reference , value)
-        method.info.add_code Set.new( to , value )
+        to = Return.new(Reference , false)
+        method.info.add_code Set.new( to , false )
         to
       end
 
       def self.compile_nil expression , method
-        value = NilConstant.new
-        to = Return.new(Reference , value)
-        method.info.add_code Set.new( to , value )
+        to = Return.new(Reference , nil)
+        method.info.add_code Set.new( to , nil )
         to
       end
 
@@ -85,7 +82,7 @@ module Virtual
         end
         r = Compiler.compile(expression.right , method )
         raise "oh noo, nil from where #{expression.right.inspect}" unless r
-        index = method.has_arg(name)
+        index = method.has_arg(expression.left.name.to_sym)
         if index
           method.info.add_code Set.new(Return.new , MessageSlot.new(index , r,type , r ))
         else
