@@ -198,7 +198,7 @@ module Parfait
       as_string == other
     end
 
-    def to_s
+    def to_string
       string = ""
       index = 1
       while( index <= self.length)

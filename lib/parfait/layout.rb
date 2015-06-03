@@ -28,6 +28,10 @@ module Parfait
       @object_class = object_class
     end
 
+    def == other
+      self.object_id == other.object_id
+    end
+
     # add the name of an instance variable
     # The index will be returned and can subsequently be searched with index_of
     # The index of the name is the index of the data in the object

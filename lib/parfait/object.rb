@@ -23,6 +23,10 @@ module Parfait
       object
     end
 
+    def == other
+      self.object_id == other.object_id
+    end
+
     def get_type_of( index )
       type_word = internal_object_get( TYPE_WORD )
       res = type_word >> (index*4)

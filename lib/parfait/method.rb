@@ -61,7 +61,7 @@ module Parfait
       index = has_local name
       return index if index
       @locals.push name
-      @locals.length
+      @locals.get_length
     end
 
     def get_var name

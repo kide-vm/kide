@@ -24,7 +24,7 @@ module Register
       # binary code (array) to right length
       @machine.objects.each do |objekt|
         next unless objekt.is_a? Parfait::Method
-        objekt.code.set_length(objekt.info.mem_length / 4 , 0)
+        objekt.code.set_length(objekt.info.mem_length , 0)
       end
       at = 0
       # then we make sure we really get the binary codes first
@@ -100,10 +100,13 @@ module Register
       end
       method.code.fill_with 0
       index = 1
+      stream.rewind
+      puts "Assembled #{method.name} with length #{stream.length}"
+      raise "length error #{method.code.length} != #{method.info.mem_length}" if method.code.length != method.info.mem_length
+      raise "length error #{stream.length} != #{method.info.mem_length}" if method.info.mem_length - stream.length > 32
       stream.each_byte do |b|
-        method.set_char(index , b )
+        method.code.set_char(index , b )
         index = index + 1
-        raise "length error #{method.code.get_length}" if index > method.info.get_length
       end
     end
 
@@ -203,13 +206,14 @@ module Register
     end
 
     def assemble_String( string )
-      str = string.to_s if string.is_a? Parfait::Word
+      str = string.to_string if string.is_a? Parfait::Word
       str = string.to_s if string.is_a? Symbol
       word = (str.length + 7) / 32  # all object are multiple of 8 words (7 for header)
       raise "String too long (implement split string!) #{word}" if word > 15
       # first line is integers, convention is that following lines are the same
       TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
       @stream.write_uint32( word )
+      puts "String is #{string} at #{string.position} length #{string.length}"
       write_ref_for( string.get_layout ) #ref
       @stream.write str
       pad_after(str.length)

@@ -15,7 +15,7 @@ module Parfait
       @name = name
     end
     attr_reader :name
-    
+
     # this is a sof check if there are instance variables or "structure"
     # have to override false, as word answers true
     def is_value?
@@ -23,6 +23,10 @@ module Parfait
     end
     def to_s
       "BinaryCode #{@name}"
+    end
+
+    def == other
+      self.object_id == other.object_id
     end
   end
 end
