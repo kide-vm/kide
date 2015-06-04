@@ -39,18 +39,6 @@ module FakeMem
     end
     @position = pos
   end
-  # objects only come in lengths of multiple of 8 words
-  # but there is a constant overhead of 2 words, one for type, one for layout
-  # and as we would have to subtract 1 to make it work without overhead, we now have to add 7
-  def padded len
-    a = 32 * (1 + (len + 7)/32 )
-    #puts "#{a} for #{len}"
-    a
-  end
-
-  def padded_words words
-    padded(words*4) # 4 == word length, a constant waiting for a home
-  end
 end
 module Virtual
   def self.new_list array
@@ -110,7 +98,8 @@ module Parfait
   # These are the same functions that Builtin implements at run-time
   class Object
     include FakeMem
-
+    include Padding
+  
     # these internal functions are _really_ internal
     # they respresent the smallest code needed to build larger functionality
     # but should _never_ be used outside parfait. in fact that should be impossible

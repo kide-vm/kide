@@ -9,6 +9,7 @@ module Register
   #  functions on the objects, but now it has gone to a visitor pattern.
 
   class Assembler
+    include Padding
     TYPE_REF =  0
     TYPE_INT =  1
     TYPE_BITS = 4
@@ -49,9 +50,12 @@ module Register
 
     def assemble
       # must be same order as link
+
       begin
         link
-        @machine.objects.each do |objekt|
+        all= @machine.objects.sort{|a,b| a.position <=> b.position}
+        all.each do |objekt|
+          puts "Linked #{objekt.class}(#{objekt.object_id.to_s(16)}) at #{objekt.position.to_s(16)} / #{objekt.mem_length.to_s(16)}"
           objekt.position
         end
         # first we need to create the binary code for the methods
@@ -76,6 +80,7 @@ module Register
           assemble_any( objekt )
         end
       rescue LinkException
+        puts "RELINK"
         # knowing that we fix the problem, we hope to get away with retry.
         retry
       end
@@ -111,9 +116,9 @@ module Register
     end
 
     def assemble_any obj
-      puts "Assemble #{obj.class} at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.mem_length}"
+      puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.mem_length}"
       if @stream.length != obj.position
-        raise "Assemble #{obj.class} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}"
+        raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}"
       end
       clazz = obj.class.name.split("::").last
       send("assemble_#{clazz}".to_sym , obj)
@@ -149,7 +154,8 @@ module Register
         puts "Nil for #{object.class}.#{var}" unless inst
         write_ref_for(inst)
       end
-      pad_after( layout.get_length * 4 )
+      puts "layout leng=#{layout.get_length.to_s(16)} mem_len=#{layout.mem_length.to_s(16)}"
+      pad_after( layout.mem_length )
       object.position
     end
 
@@ -185,6 +191,7 @@ module Register
     end
 
     def assemble_Method(method)
+      raise "no"
       count = method.info.blocks.inject(0) { |c , block| c += block.mem_length }
       word = (count+7) / 32  # all object are multiple of 8 words (7 for header)
       raise "Method too long, splitting not implemented #{method.name}/#{count}" if word > 15
@@ -236,26 +243,12 @@ module Register
       @stream.write_sint32 object.position
     end
 
-    # objects only come in lengths of multiple of 8 words
-    # but there is a constant overhead of 2 words, one for type, one for layout
-    # and as we would have to subtract 1 to make it work without overhead, we now have to add 7
-    def padded len
-      a = 32 * (1 + (len + 7)/32 )
-      #puts "#{a} for #{len}"
-      a
-    end
-
-    def padded_words words
-      padded(words*4) # 4 == word length, a constant waiting for a home
-    end
-
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
     def pad_after length
-      pad = padded(length) - length - 8 # for header, type and layout
+      pad = padding_for(lenght)
       pad.times do
         @stream.write_uint8(0)
       end
-      #puts "padded #{length} with #{pad} stream pos #{@stream.length.to_s(16)}"
     end
 
   end
