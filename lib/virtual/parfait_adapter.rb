@@ -26,7 +26,7 @@ module FakeMem
   def position
     if @position.nil?
       str = "IN machine #{Virtual.machine.objects.include?(self)}\n"
-      raise str + "position not set for #{self.class} at #{mem_length} for #{self.inspect[0...100]}"
+      raise str + "position not set for #{self.class} at #{word_length} for #{self.inspect[0...100]}"
     end
     @position
   end
@@ -61,7 +61,7 @@ class Symbol
   def get_layout
     Virtual.machine.class_mappings[:Word].object_layout
   end
-  def mem_length
+  def word_length
     to_s.length
   end
   # not the prettiest addition to the game, but it wasn't me who decided symbols are frozen in 2.x
@@ -147,7 +147,7 @@ module Parfait
     end
   end
   class List
-    def mem_length
+    def word_length
       padded_words(get_length())
     end
     def to_sof_node(writer , level , ref )
@@ -174,7 +174,7 @@ module Parfait
   end
 
   class Word
-    def mem_length
+    def word_length
       padded(1 + length())
     end
 

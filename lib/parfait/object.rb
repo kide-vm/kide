@@ -89,7 +89,7 @@ module Parfait
       get_layout().index_of(name)
     end
 
-    def mem_length
+    def word_length
       padded_words( get_layout().get_length() + 2 )
     end
 

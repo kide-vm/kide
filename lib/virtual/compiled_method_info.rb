@@ -135,9 +135,8 @@ module Virtual
       add_code ::Arm::ArmMachine.send(meth , *arg_names)
     end
 
-    def mem_length
-      l = @blocks.inject(0) { |c , block| c += block.mem_length }
-      padded(l)
+    def byte_length
+      @blocks.inject(0) { |c , block| c += block.byte_length }
     end
 
     # position of the function is the position of the entry block, is where we call
@@ -145,7 +144,7 @@ module Virtual
       at += 8 #for the 2 header words
       @blocks.each do |block|
         block.set_position at
-        at = at + block.mem_length
+        at = at + block.byte_length
       end
     end
   end

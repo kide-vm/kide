@@ -12,7 +12,7 @@ module Register
         block.mov(  self ,  right )  #move the value
       elsif right.is_a? StringConstant
         block.add( self , right , nil)   #move the address, by "adding" to pc, ie pc relative
-        block.mov( Integer.new(self.register.next_reg_use) ,  right.mem_length )  #and the length HACK TODO
+        block.mov( Integer.new(self.register.next_reg_use) ,  right.word_length )  #and the length HACK TODO
       elsif right.is_a?(Boot::BootClass) or right.is_a?(Boot::MetaClass)
         block.add( self , right , nil)   #move the address, by "adding" to pc, ie pc relative
       else

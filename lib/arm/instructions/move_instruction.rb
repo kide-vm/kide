@@ -25,7 +25,7 @@ module Arm
     # alas, full transparency is not achieved as we only know when to use 2 instruction once we
     # know where the other object is, and that position is only set after code positions have been
     # determined (in link) and so see below in assemble
-    def mem_length
+    def word_length
       @extra ? 8 : 4
     end
 

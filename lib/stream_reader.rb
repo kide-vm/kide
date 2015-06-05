@@ -2,7 +2,7 @@ module StreamReader
   def read_binary(size, count, type)
     d = __sr_read(size*count)
     ret = d.unpack(type*count)
-    return ret if ret.mem_length > 1
+    return ret if ret.word_length > 1
     return ret[0]
   end
   def read_uint32(n=1)
@@ -74,7 +74,7 @@ module StreamWriter
     return __sr_write(str + 0.chr)
   end
   def write_cstr_prefixed(str)
-    write_uint8(str.mem_length)
+    write_uint8(str.word_length)
     return __sr_write(str)
   end
   def write_str(str)

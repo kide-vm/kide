@@ -25,7 +25,7 @@ module Register
       # binary code (array) to right length
       @machine.objects.each do |objekt|
         next unless objekt.is_a? Parfait::Method
-        objekt.code.set_length(objekt.info.mem_length , 0)
+        objekt.code.set_length(objekt.info.byte_length , 0)
       end
       at = 0
       # then we make sure we really get the binary codes first
@@ -33,7 +33,7 @@ module Register
         next unless objekt.is_a? Parfait::BinaryCode
         objekt.set_position at
         # puts "CODE #{objekt.name} at #{objekt.position}"
-        at += objekt.mem_length
+        at += objekt.word_length
       end
       # and then everything else
       @machine.objects.each do | objekt|
@@ -44,7 +44,7 @@ module Register
         end
         next if objekt.is_a? Parfait::BinaryCode
         objekt.set_position at
-        at += objekt.mem_length
+        at += objekt.word_length
       end
     end
 
@@ -55,7 +55,7 @@ module Register
         link
         all= @machine.objects.sort{|a,b| a.position <=> b.position}
         all.each do |objekt|
-          puts "Linked #{objekt.class}(#{objekt.object_id.to_s(16)}) at #{objekt.position.to_s(16)} / #{objekt.mem_length.to_s(16)}"
+          puts "Linked #{objekt.class}(#{objekt.object_id.to_s(16)}) at #{objekt.position.to_s(16)} / #{objekt.word_length.to_s(16)}"
           objekt.position
         end
         # first we need to create the binary code for the methods
@@ -107,8 +107,8 @@ module Register
       index = 1
       stream.rewind
       puts "Assembled #{method.name} with length #{stream.length}"
-      raise "length error #{method.code.length} != #{method.info.mem_length}" if method.code.length != method.info.mem_length
-      raise "length error #{stream.length} != #{method.info.mem_length}" if method.info.mem_length - stream.length > 32
+      raise "length error #{method.code.length} != #{method.info.byte_length}" if method.code.length != method.info.byte_length
+      raise "length error #{stream.length} != #{method.info.byte_length}" if method.info.byte_length - stream.length > 32
       stream.each_byte do |b|
         method.code.set_char(index , b )
         index = index + 1
@@ -116,7 +116,7 @@ module Register
     end
 
     def assemble_any obj
-      puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.mem_length}"
+      puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.word_length}"
       if @stream.length != obj.position
         raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}"
       end
@@ -154,8 +154,8 @@ module Register
         puts "Nil for #{object.class}.#{var}" unless inst
         write_ref_for(inst)
       end
-      puts "layout leng=#{layout.get_length.to_s(16)} mem_len=#{layout.mem_length.to_s(16)}"
-      pad_after( layout.mem_length )
+      puts "layout leng=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
+      pad_after( layout.word_length )
       object.position
     end
 
@@ -192,7 +192,7 @@ module Register
 
     def assemble_Method(method)
       raise "no"
-      count = method.info.blocks.inject(0) { |c , block| c += block.mem_length }
+      count = method.info.blocks.inject(0) { |c , block| c += block.word_length }
       word = (count+7) / 32  # all object are multiple of 8 words (7 for header)
       raise "Method too long, splitting not implemented #{method.name}/#{count}" if word > 15
       # first line is integers, convention is that following lines are the same
@@ -224,7 +224,7 @@ module Register
       write_ref_for( string.get_layout ) #ref
       @stream.write str
       pad_after(str.length)
-      #puts "String (#{slot.mem_length}) stream #{@stream.mem_length.to_s(16)}"
+      #puts "String (#{slot.word_length}) stream #{@stream.word_length.to_s(16)}"
     end
 
     def assemble_Symbol(sym)
@@ -245,7 +245,7 @@ module Register
 
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
     def pad_after length
-      pad = padding_for(lenght)
+      pad = padding_for(length)
       pad.times do
         @stream.write_uint8(0)
       end

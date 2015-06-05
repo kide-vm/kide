@@ -24,15 +24,15 @@ end
 class TestPositioning < MiniTest::Test
   def test_list1
     list = Virtual.new_list([1])
-    assert_equal 32 , list.mem_length
+    assert_equal 32 , list.word_length
   end
   def test_list5
     list = Virtual.new_list([1,2,3,4,5])
-    assert_equal 32 , list.mem_length
+    assert_equal 32 , list.word_length
   end
   def test_layout
     layout = Parfait::Layout.new Object
     layout.push 5
-    assert_equal 32 , layout.mem_length
+    assert_equal 32 , layout.word_length
   end
 end

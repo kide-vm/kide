@@ -119,7 +119,7 @@ module Arm
    end
 
    # arm intrucioons are pretty sensible, and always 4 bytes (thumb not supported)
-   def mem_length
+   def byte_length
      4
    end
 

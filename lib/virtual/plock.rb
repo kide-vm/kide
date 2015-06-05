@@ -41,9 +41,9 @@ module Virtual
     # Code interface follows. Note position is inheitted as is from Code
 
     # length of the Plock is the length of the block, plus the branch, plus data.
-    def mem_length
-      len = @data.inject(super) {| sum  , item | sum + item.mem_length}
-      len + @branch_code.mem_length
+    def byte_length
+      len = @data.inject(super) {| sum  , item | sum + item.word_length}
+      len + @branch_code.word_length
     end
 
     # again, super +  branch plus data
@@ -52,7 +52,7 @@ module Virtual
       @branch_code.link_at pos , context
       @data.each do |code|
         code.link_at(pos , context)
-        pos += code.mem_length
+        pos += code.word_length
       end
     end
 

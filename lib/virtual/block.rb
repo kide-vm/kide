@@ -62,13 +62,13 @@ module Virtual
           puts "BLOCK #{self.to_s[0..5000]}"
           raise e
         end
-        raise code.inspect unless code.mem_length
-        at += code.mem_length
+        raise code.inspect unless code.byte_length
+        at += code.byte_length
       end
     end
 
-    def mem_length
-      @codes.inject(0){|count , instruction| count += instruction.mem_length }
+    def byte_length
+      @codes.inject(0){|count , instruction| count += instruction.byte_length }
     end
 
     def to_s

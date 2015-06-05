@@ -128,8 +128,8 @@ module Parfait
       raise "called"
       class_for(MoveInstruction).new(value , self , :opcode => :mov)
     end
-    def mem_length
-      padded(1 + string.length)
+    def word_length
+      (string.length+1) / 4
     end
   end
 end
