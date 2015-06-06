@@ -16,7 +16,6 @@ module Padding
 
   def padding_for length
     pad = padded(length) - length - 8 # for header, type and layout
-    puts "padded #{length.to_s(16)} with #{pad.to_s(16)} stream pos #{@stream.length.to_s(16)}"
     pad
   end
 end

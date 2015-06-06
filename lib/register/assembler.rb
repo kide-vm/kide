@@ -84,7 +84,7 @@ module Register
         # knowing that we fix the problem, we hope to get away with retry.
         retry
       end
-      puts "Assembled 0x#{@stream.length.to_s(16)}/#{@stream.length} bytes"
+      puts "Assembled 0x#{@stream.length.to_s(16)}/#{@stream.length.to_s(16)} bytes"
       return @stream.string
     end
 
@@ -116,7 +116,7 @@ module Register
     end
 
     def assemble_any obj
-      puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{(@stream.length).to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.word_length}"
+      puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{@stream.length.to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
       if @stream.length != obj.position
         raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}"
       end
@@ -154,8 +154,9 @@ module Register
         puts "Nil for #{object.class}.#{var}" unless inst
         write_ref_for(inst)
       end
-      puts "layout leng=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
-      pad_after( layout.word_length )
+      puts "layout length=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
+      l = layout.get_length
+      pad_after( l * 4)
       object.position
     end
 
@@ -220,7 +221,7 @@ module Register
       # first line is integers, convention is that following lines are the same
       TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
       @stream.write_uint32( word )
-      puts "String is #{string} at #{string.position} length #{string.length}"
+      puts "String is #{string} at #{string.position.to_s(16)} length #{string.length.to_s(16)}"
       write_ref_for( string.get_layout ) #ref
       @stream.write str
       pad_after(str.length)
@@ -245,10 +246,13 @@ module Register
 
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
     def pad_after length
+      before = @stream.length.to_s(16)
       pad = padding_for(length)
       pad.times do
         @stream.write_uint8(0)
       end
+      after = @stream.length.to_s(16)
+      puts "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
     end
 
   end

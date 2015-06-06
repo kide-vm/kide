@@ -99,7 +99,7 @@ module Parfait
   class Object
     include FakeMem
     include Padding
-  
+
     # these internal functions are _really_ internal
     # they respresent the smallest code needed to build larger functionality
     # but should _never_ be used outside parfait. in fact that should be impossible
@@ -174,9 +174,6 @@ module Parfait
   end
 
   class Word
-    def word_length
-      padded(1 + length())
-    end
 
     def == other
       return false unless other.is_a?(String) or other.is_a?(Word)

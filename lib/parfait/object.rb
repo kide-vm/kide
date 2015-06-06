@@ -90,7 +90,7 @@ module Parfait
     end
 
     def word_length
-      padded_words( get_layout().get_length() + 2 )
+      padded_words( get_layout().get_length() )
     end
 
     # Object

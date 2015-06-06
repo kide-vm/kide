@@ -129,7 +129,7 @@ module Parfait
       class_for(MoveInstruction).new(value , self , :opcode => :mov)
     end
     def word_length
-      (string.length+1) / 4
+      padded self.length + 1 
     end
   end
 end
