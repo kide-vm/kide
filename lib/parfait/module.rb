@@ -17,7 +17,6 @@ module Parfait
       super()
       @name = name
       @instance_methods = List.new_object
-      @name = name
       @super_class = superclass
       @meta_class = nil#MetaClass.new(self)
     end
@@ -35,7 +34,7 @@ module Parfait
       @instance_methods.each do |method|
         names.push method.name
       end
-      names  
+      names
     end
 
     def add_instance_method method

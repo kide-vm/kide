@@ -171,6 +171,9 @@ module Register
       array.position
     end
 
+    def assemble_Layout layout
+        assemble_object(layout)
+    end
     def assemble_Dictionary hash
       # so here we can be sure to have _identical_ keys/values arrays
       assemble_object( hash , [ hash.keys , hash.values ] )
