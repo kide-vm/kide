@@ -3,10 +3,12 @@ ToDo
 
 Some things that would be nice . . (if you did them :-) )
 
+- starting to think that a simulator at the register machine level would help with testing
+  and debugging
 - Better elf support. I think it should be relatively easy to produce an executable binary (so linking
     could be skipped). Off course the possibility to link in another library would be nice
 - utf8 support (string improvements generally)
-- SOF writer / parser
+- SOF parser
 - more ruby grammar niceties. At the moment i am keeping it simple, so if there is a way around it
     i won't implement it. Multi-assignments, all that chique where newline is used as expression demarcation
 
@@ -40,7 +42,7 @@ Stdlib
 Stdlib is not clean. More like a layer that accumulated over the years.
 
 Very nice solutions exist for most of the important things. Like celluloid for concurrency. Celluloid-io for
-good performance io with or without zero-mq. Fiddle looks nice addmittadly.
+good performance io with or without zero-mq. Fiddle looks nice admittedly.
 
 Anyway, as i want to use gpio mostly the whole c wrapping is not too high on the list.
 
