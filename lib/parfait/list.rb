@@ -140,6 +140,14 @@ module Parfait
       end
       return true
     end
+
+    # above, correct, implementation causes problems in the machine object space
+    # because when a second empty (newly created) list is added, it is not actually
+    # added as it exists already. TODO, but hack with below identity function
+    def == other
+      self.object_id == other.object_id
+    end
+
     #many basic List functions can not be defined in ruby, such as
     # get/set/length/add/delete
     # so they must be defined as CompiledMethods in Builtin::Kernel

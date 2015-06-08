@@ -3,8 +3,8 @@ require_relative "type"
 module Positioned
   def position
     if @position.nil?
-      str = "IN machine #{Virtual.machine.objects.include?(self)}\n"
-      raise str + "position not set for #{self.class} at #{word_length} for #{self.inspect[0...100]}"
+      str = "IN machine #{Virtual.machine.objects.include?(self)}, at #{self.object_id.to_s(16)}\n"
+      raise str + "position not set for #{self.class} len #{word_length} for #{self.inspect[0...100]}"
     end
     @position
   end

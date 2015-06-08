@@ -54,6 +54,7 @@ module Register
       begin
         link
         all= @machine.objects.sort{|a,b| a.position <=> b.position}
+        # debugging loop accesses all positions to force an error if it's not set
         all.each do |objekt|
           puts "Linked #{objekt.class}(#{objekt.object_id.to_s(16)}) at #{objekt.position.to_s(16)} / #{objekt.word_length.to_s(16)}"
           objekt.position
