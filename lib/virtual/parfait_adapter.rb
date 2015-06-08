@@ -37,6 +37,8 @@ module Virtual
 end
 class Symbol
   include Positioned
+  include Padding
+  
   def init_layout;  end
   def has_layout?
     true
@@ -45,7 +47,7 @@ class Symbol
     Virtual.machine.class_mappings[:Word].object_layout
   end
   def word_length
-    to_s.length
+    padded to_s.length
   end
   # not the prettiest addition to the game, but it wasn't me who decided symbols are frozen in 2.x
   def cache_positions

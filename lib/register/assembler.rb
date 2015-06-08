@@ -157,11 +157,20 @@ module Register
       end
       puts "layout length=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
       l = layout.get_length
+      if( object.is_a? Parfait::List)
+        object.each do |inst|
+          write_ref_for(inst)
+        end
+        l += object.get_length
+      end
       pad_after( l * 4)
       object.position
     end
 
     def assemble_List array
+      assemble_object array
+      return
+
       type = type_word(array)
       @stream.write_uint32( type )
       write_ref_for(array.layout[:names])  #ref
@@ -177,7 +186,7 @@ module Register
     end
     def assemble_Dictionary hash
       # so here we can be sure to have _identical_ keys/values arrays
-      assemble_object( hash , [ hash.keys , hash.values ] )
+      assemble_object( hash )
     end
 
     def assemble_Space(space)
@@ -196,7 +205,8 @@ module Register
     end
 
     def assemble_Method(method)
-      raise "no"
+      assemble_object(method)
+      return
       count = method.info.blocks.inject(0) { |c , block| c += block.word_length }
       word = (count+7) / 32  # all object are multiple of 8 words (7 for header)
       raise "Method too long, splitting not implemented #{method.name}/#{count}" if word > 15
@@ -245,7 +255,12 @@ module Register
     # write means we write the resulting address straight into the assembler stream
     # object means the object of which we write the address
     def write_ref_for object
-      @stream.write_sint32 object.position
+      if object.nil?
+        pos = 0
+      else
+        pos =  object.position
+      end
+      @stream.write_sint32 pos
     end
 
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary

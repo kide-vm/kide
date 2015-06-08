@@ -22,9 +22,9 @@ module Elf
       set_text assembler.assemble
 
       # for debug add labels to the block positions
-      space.classes.values.each do |clazz|
+      @object_machine.space.classes.values.each do |clazz|
         clazz.instance_methods.each do |f|
-          f.blocks.each do |b|
+          f.info.blocks.each do |b|
               add_symbol "#{clazz.name}::#{f.name}@#{b.name}" , b.position
             end
         end
