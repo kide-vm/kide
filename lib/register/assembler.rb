@@ -121,8 +121,11 @@ module Register
       if @stream.length != obj.position
         raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}"
       end
-      clazz = obj.class.name.split("::").last
-      send("assemble_#{clazz}".to_sym , obj)
+      if obj.is_a?(Parfait::Word) or obj.is_a?(Symbol)
+        assemble_String obj
+      else
+        assemble_object obj
+      end
       obj.position
     end
 
@@ -167,62 +170,6 @@ module Register
       object.position
     end
 
-    def assemble_List array
-      assemble_object array
-      return
-
-      type = type_word(array)
-      @stream.write_uint32( type )
-      write_ref_for(array.layout[:names])  #ref
-      array.each do |var|
-        write_ref_for(var)
-      end
-      pad_after( array.length * 4 )
-      array.position
-    end
-
-    def assemble_Layout layout
-        assemble_object(layout)
-    end
-    def assemble_Dictionary hash
-      # so here we can be sure to have _identical_ keys/values arrays
-      assemble_object( hash )
-    end
-
-    def assemble_Space(space)
-      assemble_object(space )
-    end
-
-    def assemble_Class(clazz)
-      assemble_object( clazz )
-    end
-
-    def assemble_Message me
-      assemble_object(me)
-    end
-    def assemble_Frame me
-      assemble_object(me )
-    end
-
-    def assemble_Method(method)
-      assemble_object(method)
-      return
-      count = method.info.blocks.inject(0) { |c , block| c += block.word_length }
-      word = (count+7) / 32  # all object are multiple of 8 words (7 for header)
-      raise "Method too long, splitting not implemented #{method.name}/#{count}" if word > 15
-      # first line is integers, convention is that following lines are the same
-      TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
-      @stream.write_uint32( word )
-      write_ref_for(method.get_layout())  #ref of layout
-      # TODO the assembly may have to move to the object to be more extensible
-      method.blocks.each do |block|
-        block.codes.each do |code|
-          code.assemble( @stream )
-        end
-      end
-      pad_after( count )
-    end
-
     def assemble_BinaryCode code
         assemble_String code
     end
@@ -244,10 +191,6 @@ module Register
 
     def assemble_Symbol(sym)
       return assemble_String(sym)
-    end
-
-    def assemble_StringConstant( sc)
-      return assemble_String(sc)
     end
 
     private
