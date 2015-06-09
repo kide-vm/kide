@@ -19,7 +19,7 @@ module Elf
 
       @object_machine.run_passes
       assembler = Register::Assembler.new(@object_machine)
-      set_text assembler.assemble
+      set_text assembler.write_as_string
 
       # for debug add labels to the block positions
       @object_machine.space.classes.values.each do |clazz|

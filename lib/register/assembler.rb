@@ -19,7 +19,7 @@ module Register
       @machine = machine
     end
 
-    def link
+    def assemble
       # want to have the methods first in the executable
       # so first we determine the code length for the methods and set the
       # binary code (array) to right length
@@ -48,11 +48,10 @@ module Register
       end
     end
 
-    def assemble
-      # must be same order as link
-
+    def write_as_string
+      # must be same order as assemble
       begin
-        link
+        assemble
         all= @machine.objects.sort{|a,b| a.position <=> b.position}
         # debugging loop accesses all positions to force an error if it's not set
         all.each do |objekt|
@@ -73,12 +72,12 @@ module Register
         # then write the methods to file
         @machine.objects.each do |objekt|
           next unless objekt.is_a? Parfait::BinaryCode
-          assemble_any( objekt )
+          write_any( objekt )
         end
         # and then the rest of the object machine
         @machine.objects.each do | objekt|
           next if objekt.is_a? Parfait::BinaryCode
-          assemble_any( objekt )
+          write_any( objekt )
         end
       rescue LinkException
         puts "RELINK"
@@ -116,15 +115,15 @@ module Register
       end
     end
 
-    def assemble_any obj
+    def write_any obj
       puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{@stream.length.to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
       if @stream.length != obj.position
         raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}"
       end
       if obj.is_a?(Parfait::Word) or obj.is_a?(Symbol)
-        assemble_String obj
+        write_String obj
       else
-        assemble_object obj
+        write_object obj
       end
       obj.position
     end
@@ -145,7 +144,7 @@ module Register
 
     # write type and layout of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
-    def assemble_object( object )
+    def write_object( object )
       unless @machine.objects.include? object
         raise "Object(#{object.object_id}) not linked #{object.inspect}"
       end
@@ -170,11 +169,11 @@ module Register
       object.position
     end
 
-    def assemble_BinaryCode code
-        assemble_String code
+    def write_BinaryCode code
+        write_String code
     end
 
-    def assemble_String( string )
+    def write_String( string )
       str = string.to_string if string.is_a? Parfait::Word
       str = string.to_s if string.is_a? Symbol
       word = (str.length + 7) / 32  # all object are multiple of 8 words (7 for header)
@@ -189,8 +188,8 @@ module Register
       #puts "String (#{slot.word_length}) stream #{@stream.word_length.to_s(16)}"
     end
 
-    def assemble_Symbol(sym)
-      return assemble_String(sym)
+    def write_Symbol(sym)
+      return write_String(sym)
     end
 
     private
