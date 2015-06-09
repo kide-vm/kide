@@ -17,7 +17,7 @@ module Virtual
       @codes = []
     end
 
-    attr_reader :name , :codes , :method
+    attr_reader :name , :codes , :method , :position
     attr_accessor :branch
 
     def reachable ret = []

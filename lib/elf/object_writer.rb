@@ -29,14 +29,14 @@ module Elf
             end
         end
       end
-      space.main.blocks.each do |b|
-        add_symbol "main@#{b.name}" , b.position
-      end
-      add_symbol "#register@#{space.init.name}" , space.init.position
-      assembler.objects.values.each do |slot|
+#      @object_machine.space.main.blocks.each do |b|
+#        add_symbol "main@#{b.name}" , b.position
+#      end
+#      add_symbol "#register@#{@object_machine.space.init.name}" , @object_machine.space.init.position
+      @object_machine.objects.each do |slot|
         label = "#{slot.class.name}::#{slot.position.to_s(16)}"
         label += "=#{slot}" if slot.is_a?(Symbol) or slot.is_a?(String)
-        label += "=#{slot.string}" if slot.is_a?(Parfait::Word)
+        label += "=#{slot.name}" if slot.is_a?(Parfait::BinaryCode)
         add_symbol  label , slot.position
       end
     end

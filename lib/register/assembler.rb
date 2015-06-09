@@ -2,9 +2,9 @@ module Register
   class LinkException < Exception
   end
   # Assemble the object machine into a binary.
-  # Link first to get positions, then assemble
+  # Assemble first to get positions, then write
 
-  # The link function determines the length of an object and the assemble actually
+  # The assemble function determines the length of an object and then actually
   #  writes the bytes they are pretty much dependant. In an earlier version they were
   #  functions on the objects, but now it has gone to a visitor pattern.
 
@@ -25,6 +25,7 @@ module Register
       # binary code (array) to right length
       @machine.objects.each do |objekt|
         next unless objekt.is_a? Parfait::Method
+        # should be fill_to_length (with zeros)
         objekt.code.set_length(objekt.info.byte_length , 0)
       end
       at = 0
