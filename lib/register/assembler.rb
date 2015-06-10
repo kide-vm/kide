@@ -28,7 +28,10 @@ module Register
         # should be fill_to_length (with zeros)
         objekt.code.set_length(objekt.info.byte_length , 0)
       end
-      at = 0
+      #need the initial jump at 0 and then functions
+      @machine.init.set_position(0)
+      at = @machine.init.byte_length
+
       # then we make sure we really get the binary codes first
       @machine.objects.each do |objekt|
         next unless objekt.is_a? Parfait::BinaryCode
@@ -65,11 +68,10 @@ module Register
           assemble_binary_method(objekt)
         end
         @stream = StringIO.new
-        #TODOmid , main = @objects.find{|k,objekt| objekt.is_a?(Virtual::CompiledMethod) and (objekt.name == :__init__ )}
-#        initial_jump = @machine.init
-#        initial_jump.codes.each do |code|
-#          code.assemble( @stream )
-#        end
+        @machine.init.codes.each do |code|
+          code.assemble( @stream )
+        end
+
         # then write the methods to file
         @machine.objects.each do |objekt|
           next unless objekt.is_a? Parfait::BinaryCode

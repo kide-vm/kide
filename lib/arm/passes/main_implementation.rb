@@ -1,6 +1,8 @@
 module Arm
 
   # "Boot" the register machine at the function given
+  # meaning jump to that function currently. Maybe better to do some machine setup
+  # and possibly some cleanup/exit has to tie in, but that is not this day
 
   class MainImplementation
     def run block

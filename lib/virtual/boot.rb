@@ -113,10 +113,6 @@ module Virtual
         obj.add_instance_method Builtin::Integer.send(f , nil)
       end
 
-      # and the @init block in turn _jumps_ to __init__
-      # the point of which is that by the time main executes, all is :normal:
-      @init = Block.new(:_init_ , nil )
-      @init.add_code(Register::RegisterMain.new(underscore_init))
     end
   end
 end

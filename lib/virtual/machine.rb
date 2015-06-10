@@ -44,6 +44,8 @@ module Virtual
     attr_reader  :passes , :space , :class_mappings , :init , :objects
 
     def run_passes
+      @init = Block.new("init",nil)
+      @init.add_code  Register::RegisterMain.new( self.space.get_main )
       Minimizer.new.run
       Collector.new.run
       @passes.each do |pass_class|
@@ -51,12 +53,12 @@ module Virtual
         @space.classes.values.each do |c|
           c.instance_methods.each do |f|
             nb = f.info.blocks
-            raise "nil blocks " unless nb
             blocks += nb
           end
         end
         #puts "running #{pass_class}"
         blocks.each do |block|
+          raise "nil block " unless block
           pass = eval pass_class
           raise "no such pass-class as #{pass_class}" unless pass
           pass.new.run(block)
