@@ -59,7 +59,7 @@ module Register
         all= @machine.objects.sort{|a,b| a.position <=> b.position}
         # debugging loop accesses all positions to force an error if it's not set
         all.each do |objekt|
-          puts "Linked #{objekt.class}(#{objekt.object_id.to_s(16)}) at #{objekt.position.to_s(16)} / #{objekt.word_length.to_s(16)}"
+          #puts "Linked #{objekt.class}(#{objekt.object_id.to_s(16)}) at #{objekt.position.to_s(16)} / #{objekt.word_length.to_s(16)}"
           objekt.position
         end
         # first we need to create the binary code for the methods
@@ -109,7 +109,7 @@ module Register
       method.code.fill_with 0
       index = 1
       stream.rewind
-      puts "Assembled #{method.name} with length #{stream.length}"
+      #puts "Assembled #{method.name} with length #{stream.length}"
       raise "length error #{method.code.length} != #{method.info.byte_length}" if method.code.length != method.info.byte_length
       raise "length error #{stream.length} != #{method.info.byte_length}" if method.info.byte_length - stream.length > 32
       stream.each_byte do |b|
@@ -119,7 +119,7 @@ module Register
     end
 
     def write_any obj
-      puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{@stream.length.to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
+      #puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{@stream.length.to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
       if @stream.length != obj.position
         raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}"
       end
@@ -160,7 +160,7 @@ module Register
         puts "Nil for #{object.class}.#{var}" unless inst
         write_ref_for(inst)
       end
-      puts "layout length=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
+      #puts "layout length=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
       l = layout.get_length
       if( object.is_a? Parfait::List)
         object.each do |inst|
@@ -216,7 +216,7 @@ module Register
         @stream.write_uint8(0)
       end
       after = @stream.length.to_s(16)
-      puts "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
+      #puts "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
     end
 
   end
