@@ -6,11 +6,11 @@ class HelloTest < MiniTest::Test
   def check
     machine = Virtual::Machine.boot
     expressions = machine.compile_main @string_input
+    puts Sof::Writer.write(machine.space)
+    machine.run_passes
 
     writer = Elf::ObjectWriter.new(machine)
     writer.save "hello.o"
-#    puts Sof::Writer.write(expressions)
-    puts Sof::Writer.write(machine.space)
   end
 
   def qtest_simplest_function
