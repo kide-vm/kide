@@ -18,6 +18,7 @@ require "virtual/passes/get_implementation"
 require "virtual/passes/enter_implementation"
 require "virtual/passes/frame_implementation"
 
+Sof::Volotile.add(Parfait::BinaryCode ,  [:memory])
 Sof::Volotile.add(Virtual::Block ,  [:method])
 Sof::Volotile.add(Virtual::CompiledMethodInfo ,  [:current])
 
