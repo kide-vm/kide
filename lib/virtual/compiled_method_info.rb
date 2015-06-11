@@ -43,7 +43,7 @@ module Virtual
       method.info = CompiledMethodInfo.new
       method
     end
-    def initialize return_type = Virtual::Mystery
+    def initialize return_type = Virtual::Unknown
       # first block we have to create with .new , as new_block assumes a current
       enter = Block.new( "enter"  , self ).add_code(MethodEnter.new())
       @return_type = return_type

@@ -68,6 +68,7 @@ module Virtual
 
   #    attr_reader  :string
       def self.compile_string expression , method
+        # Clearly a TODO here to implement strings rather than reusing symbols
         value = expression.string.to_sym
         to = Return.new(Reference , value)
         method.info.constants << value
@@ -94,7 +95,7 @@ module Virtual
 
       def self.compile_variable expression, method
         method.info.add_code InstanceGet.new(expression.name)
-        Return.new( Mystery )
+        Return.new( Unknown )
       end
   end
 end

@@ -11,7 +11,7 @@ module Virtual
     # Everything in ruby is an expression, ie returns a value. So the effect of every compile
     # is that a value is put into the ReturnSlot of the current Message.
     # The compile method (so every compile method) returns the value that it deposits which
-    # may be unknown Mystery value.
+    # may be unknown Unknown value.
     #
     # The Compiler.compile uses a visitor patter to dispatch according to the class name of
     # the expression. So a NameExpression is delegated to compile_name etc.

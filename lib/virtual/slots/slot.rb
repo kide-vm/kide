@@ -42,13 +42,13 @@ module Virtual
   end
 
   class FrameSlot < Slot
-    def initialize index , type = Mystery, value = nil
+    def initialize index , type = Unknown, value = nil
       super
     end
   end
 
   class SelfSlot < Slot
-    def initialize index , type = Mystery, value = nil
+    def initialize index , type = Unknown, value = nil
       super
     end
   end

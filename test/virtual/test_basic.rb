@@ -27,7 +27,7 @@ class TestBasic < MiniTest::Test
 
   def test_name
     @string_input    = 'foo '
-    @output = "-Virtual::Return(:index => 5, :type => Virtual::Mystery)"
+    @output = "-Virtual::Return(:index => 5, :type => Virtual::Unknown)"
     check
   end
 
@@ -39,7 +39,7 @@ class TestBasic < MiniTest::Test
 
   def test_instance_variable
     @string_input    = '@foo_bar '
-    @output = "-Virtual::Return(:index => 5, :type => Virtual::Mystery)"
+    @output = "-Virtual::Return(:index => 5, :type => Virtual::Unknown)"
     check
   end
 
