@@ -43,28 +43,47 @@ module Virtual
     end
     attr_reader  :passes , :space , :class_mappings , :init , :objects
 
-    def run_passes
-      @init = Block.new("init",nil)
-      @init.add_code  Register::RegisterMain.new( self.space.get_main )
+    # run all passes before the pass given
+    # also collect the  block to run the passes on and
+    # runs housekeeping Minimizer and Collector
+    # Has to be called before run_after
+    def run_before stop_at
       Minimizer.new.run
       Collector.new.run
-      @passes.each do |pass_class|
-        blocks = [@init]
-        @space.classes.values.each do |c|
-          c.instance_methods.each do |f|
-            nb = f.info.blocks
-            blocks += nb
-          end
+      @blocks = [@init]
+      @space.classes.values.each do |c|
+        c.instance_methods.each do |f|
+          nb = f.info.blocks
+          @blocks += nb
         end
-        #puts "running #{pass_class}"
-        blocks.each do |block|
-          raise "nil block " unless block
-          pass = eval pass_class
-          raise "no such pass-class as #{pass_class}" unless pass
-          pass.new.run(block)
-        end
-        #puts @space.get_main if pass_class == "Virtual::SendImplementation"
       end
+      @passes.each do |pass_class|
+        puts "running #{pass_class}"
+        run_blocks_for pass_class
+        return if stop_at == pass_class
+      end
+    end
+
+    # run all passes after the pass given
+    # run_before MUST be called first.
+    # the two are meant as a poor mans breakoint
+    def run_after start_at
+      run = false
+      @passes.each do |pass_class|
+        if run
+          puts "running #{pass_class}"
+          run_blocks_for pass_class
+        else
+          run = true if start_at == pass_class
+        end
+      end
+    end
+
+    # as before, run all passes that are registered
+    # (but now finer control with before/after versions)
+    def run_passes
+      run_before "Virtual::SendImplementation"
+      run_after "Virtual::SendImplementation"
     end
 
     # Objects are data and get assembled after functions
@@ -97,8 +116,15 @@ module Virtual
       me = Virtual.machine
       # boot is a verb here. this is a somewhat tricky process which is in it's own file, boot.rb
       raise "already booted" if @booted
-      me.boot_parfait!
+      me.boot
       me
+    end
+
+    def boot
+      boot_parfait!
+      @init = Block.new("init",nil)
+      @init.add_code  Register::RegisterMain.new( self.space.get_main )
+      @booted = true
     end
 
     # for testing, make sure no old artefacts hang around
@@ -111,14 +137,27 @@ module Virtual
       parts = Parser::Transform.new.apply(syntax)
       Compiler.compile( parts , @space.get_main )
     end
+
+    private
+    def run_blocks_for pass_class
+      pass = eval pass_class
+      raise "no such pass-class as #{pass_class}" unless pass
+      @blocks.each do |block|
+        raise "nil block " unless block
+        pass.new.run(block)
+      end
+    end
+
   end
 
+  # Module function to retrieve singleton
   def self.machine
     unless defined?(@machine)
       @machine = Machine.new
     end
     @machine
   end
+
 end
 
 require_relative "boot"
