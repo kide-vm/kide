@@ -100,8 +100,8 @@ module Register
           begin
           code.assemble( stream )
         rescue => e
-            puts "Method error #{method.name}\n#{Sof::Writer.write(method.info.blocks).to_s[0...2000]}"
-            puts Sof::Writer.write(code)
+            puts "Method error #{method.name}\n#{Sof.write(method.info.blocks).to_s[0...2000]}"
+            puts Sof.write(code)
             raise e
           end
         end

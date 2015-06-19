@@ -7,7 +7,7 @@ class HelloTest < MiniTest::Test
     machine = Virtual::Machine.boot
     expressions = machine.compile_main @string_input
     machine.run_before "Register::CallImplementation"
-    puts Sof::Writer.write(machine.space)
+    puts Sof.write(machine.space)
     machine.run_after "Register::CallImplementation"
 
 

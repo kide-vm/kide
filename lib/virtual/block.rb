@@ -72,7 +72,7 @@ module Virtual
     end
 
     def to_s
-      Sof::Writer.write(self)
+      Sof.write(self)
     end
 
     private

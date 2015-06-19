@@ -126,7 +126,7 @@ module Parfait
     end
 
     def to_s
-      Sof::Writer.write(self)
+      Sof.write(self)
     end
     def inspect
       to_s

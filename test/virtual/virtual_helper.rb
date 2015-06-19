@@ -21,7 +21,7 @@ module VirtualHelper
       # with the class comes superclass and all methods
       expressions.first.type.instance_variable_set :@of_class , nil
     end
-    is = Sof::Writer.write(expressions)
+    is = Sof.write(expressions)
     #puts is
     is.gsub!("\n" , "*^*")
     assert_equal is , @output

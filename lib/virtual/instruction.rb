@@ -10,7 +10,7 @@ module Virtual
 
   class Instruction
     def to_s
-      Sof::Writer.write(self)
+      Sof.write(self)
     end
   end
 
