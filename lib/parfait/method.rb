@@ -70,5 +70,9 @@ module Parfait
       var
     end
 
+    def sof_reference_name
+      @name
+    end
+
   end
 end

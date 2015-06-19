@@ -74,6 +74,11 @@ module Parfait
       c = Class.new_object(name , superclass)
       @classes[name] = c
     end
+
+    def sof_reference_name
+      "space"
+    end
+
   end
   # ObjectSpace
   # :each_object, :garbage_collect, :define_finalizer, :undefine_finalizer, :_id2ref, :count_objects

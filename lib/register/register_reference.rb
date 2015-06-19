@@ -69,6 +69,9 @@ module Register
       new TMP_REG
     end
 
+    def sof_reference_name
+      @symbol
+    end
 
   end
 

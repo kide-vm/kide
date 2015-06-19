@@ -47,5 +47,10 @@ module Parfait
     def get_object_class()
       return @object_class
     end
+
+    def sof_reference_name
+      "#{@object_class.name}_Layout"
+    end
+
   end
 end

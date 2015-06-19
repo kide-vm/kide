@@ -34,6 +34,9 @@ module Parfait
       @object_layout.push name
     end
 
+    def sof_reference_name
+      name
+    end
     # ruby 2.1 list (just for reference, keep at bottom)
     #:allocate, :new, :superclass
   end
