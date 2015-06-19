@@ -38,7 +38,7 @@ end
 class Symbol
   include Positioned
   include Padding
-  
+
   def init_layout;  end
   def has_layout?
     true
@@ -109,6 +109,10 @@ module Parfait
     def internal_object_set(index , value)
       raise "failed init for #{self.class}" unless @memory
       @memory[index] = value
+      #shaddowing layout so we can ignore memory in Sof
+      if(index == LAYOUT_INDEX)
+        @layout = value
+      end
     end
     def internal_object_grow(length)
       old_length = internal_object_length()
