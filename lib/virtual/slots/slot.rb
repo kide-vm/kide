@@ -8,7 +8,7 @@ module Virtual
   # - the message that has been received: MessageSlot
   # - the frame of the method that is executing (local variables): FrameSlot
   # - self as an object: SelfSlot
-  # - a message that will be sent, NewMessageSlot
+  # - a message that will be sent, NextMessageSlot
 
   # additionally frame, self and return are slots in Message and NewMessage
 

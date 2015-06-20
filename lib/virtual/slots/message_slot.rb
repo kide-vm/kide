@@ -21,20 +21,24 @@ module Virtual
     end
   end
 
+  # named classes exist for slots that often accessed
+
+  # Return is the MessageSlot(MESSAGE_RETURN_VALUE)
   class Return < MessageSlot
     def initialize type = Unknown, value = nil
       super( MESSAGE_RETURN_VALUE , type , value  )
     end
   end
 
+  # Self is the MessageSlot(MESSAGE_SELF)
   class Self < MessageSlot
     def initialize type = Unknown, value = nil
       super( MESSAGE_SELF , type , value  )
     end
   end
 
-  # Name of the current message
-  class Name < MessageSlot
+  # MessageName of the current message
+  class MessageName < MessageSlot
     def initialize type = Unknown, value = nil
       super( MESSAGE_NAME , type , value  )
     end

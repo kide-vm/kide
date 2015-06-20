@@ -13,7 +13,7 @@ Virtual::SelfSlot.class_eval do
     Register::RegisterReference.self_reg
   end
 end
-Virtual::NewMessageSlot.class_eval do
+Virtual::NextMessageSlot.class_eval do
   def reg
     Register::RegisterReference.new_message_reg
   end
