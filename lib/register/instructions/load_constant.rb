@@ -1,7 +1,7 @@
 module Register
   # load a constant into a register
   #
-  # first arguemnt is the register the constant is loaded into
+  # first argument is the register the constant is loaded into
   # second is the actual constant
 
   class LoadConstant < Instruction

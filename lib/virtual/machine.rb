@@ -1,8 +1,5 @@
 module Virtual
-  # The Virtual Machine is a value based virtual machine in which ruby is implemented.
-  # While it is value based, it resembles oo in basic ways of object encapsulation and method
-  # invocation, it is a "closed" / static sytem in that all types are know and there is no
-  # dynamic dispatch (so we don't bite our tail here).
+  # The Virtual Machine is a object based virtual machine in which ruby is implemented.
   #
   # It is minimal and realistic and low level
   # - minimal means that if one thing can be implemented by another, it is left out. This is quite
@@ -10,17 +7,13 @@ module Virtual
   # - realistic means it is easy to implement on a 32 bit machine (arm) and possibly 64 bit.
   #     Memory access,some registers of same size are the underlying hardware. (not ie byte machine)
   # - low level means it's basic instructions are realively easily implemented in a register machine.
-  #      ie send is not a an instruction but a function.
+  #      Low level means low level in oo terms though, so basic instruction to implement oo
+  #  #
+  # The ast is transformed to virtual-machine objects, some of which represent code, some data.
   #
-  # So the memory model of the machine allows for indexed access into an "object" .
-  # A fixed number of objects exist (ie garbage collection is reclaming, not destroying and
-  #  recreating) although there may be a way to increase that number.
+  # The next step transforms to the register machine layer, which is quite close to what actually
+  #  executes. The step after transforms to Arm, which creates executables.
   #
-  # The ast is transformed to virtaul-machine objects, some of which represent code, some data.
-  #
-  # The next step transforms to the register machine layer, which is what actually executes.
-  #
-
   # More concretely, a virtual machine is a sort of oo turing machine, it has a current instruction,
   # executes the instructions, fetches the next one and so on.
   # Off course the instructions are not soo simple, but in oo terms quite so.
@@ -28,16 +21,23 @@ module Virtual
   # The machine is virtual in the sense that it is completely modeled in software,
   # it's complete state explicitly available (not implicitly by walking stacks or something)
 
-  # The machine has a no register, but local variables, a scope at each point in time.
-  # Scope changes with calls and blocks, but is saved at each level. In terms of lower level
-  #  implementation this means that the the model is such that what is a variable in ruby,
-  #  never ends up being just on the pysical stack.
+  # The machine has a no register, but objects that represent it's state. There are four
+  # - message : the currently executing message (See Parfait::Message)
+  # - receiver : or self.  This is actually an instance of Message, but "hoisted" out
+  # -  frame : A pssible frame for temporary data. Also part of the message and "hoisted" out
+  # - next_message: A message object that the current activation wants to send.
   #
+  # Messages form a linked list (not a stack) and the Space is responsible for storing
+  # and handing out empty messages
+  #
+  # The "machine" is not part of the run-time (Parfait)
+
   class Machine
 
+    FIRST_PASS = "Virtual::SendImplementation"
     def initialize
       @parser  = Parser::Salama.new
-      @passes = [ "Virtual::SendImplementation" ]
+      @passes = [  FIRST_PASS ]
       @objects = []
       @booted = false
     end
@@ -82,8 +82,8 @@ module Virtual
     # as before, run all passes that are registered
     # (but now finer control with before/after versions)
     def run_passes
-      run_before "Virtual::SendImplementation"
-      run_after "Virtual::SendImplementation"
+      run_before FIRST_PASS
+      run_after FIRST_PASS
     end
 
     # Objects are data and get assembled after functions
