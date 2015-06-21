@@ -1,13 +1,17 @@
 module Virtual
 
-  MESSAGE_CALLER = 0
-  MESSAGE_RETURN_ADDRESS = 1
-  MESSAGE_EXCEPTION_ADDRESS = 2
-  MESSAGE_SELF = 3
-  MESSAGE_NAME = 4
-  MESSAGE_RETURN_VALUE = 5
-  MESSAGE_FRAME = 6
-  MESSAGE_PAYLOAD = 7
+  #TODO : this constant approach is a bit old, from before PArfait adapter
+  #      nowadays these are unneccessary as we can resolve the names by using the
+  #      layout of the class. (get Class from space)
+  TYPE_INDEX = 0
+  LAYOUT_INDEX = 1
+  CALLER_INDEX = 2
+  RETURN_INDEX = 3
+  EXCEPTION_INDEX = 4
+  SELF_INDEX = 5
+  NAME_INDEX = 6
+  FRAME_INDEX = 7
+  ARGUMENT_START = 8
 
   # The current Message is one of four objects the virtual machine knows
   #
@@ -23,24 +27,24 @@ module Virtual
 
   # named classes exist for slots that often accessed
 
-  # Return is the MessageSlot(MESSAGE_RETURN_VALUE)
+  # Return is the MessageSlot(RETURN_INDEX)
   class Return < MessageSlot
     def initialize type = Unknown, value = nil
-      super( MESSAGE_RETURN_VALUE , type , value  )
+      super( RETURN_INDEX , type , value  )
     end
   end
 
-  # Self is the MessageSlot(MESSAGE_SELF)
+  # Self is the MessageSlot(SELF_INDEX)
   class Self < MessageSlot
     def initialize type = Unknown, value = nil
-      super( MESSAGE_SELF , type , value  )
+      super( SELF_INDEX , type , value  )
     end
   end
 
   # MessageName of the current message
   class MessageName < MessageSlot
     def initialize type = Unknown, value = nil
-      super( MESSAGE_NAME , type , value  )
+      super( NAME_INDEX , type , value  )
     end
   end
 end
