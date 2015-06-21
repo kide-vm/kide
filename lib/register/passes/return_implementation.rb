@@ -8,10 +8,10 @@ module Register
         # move the current message to new_message
         new_codes << RegisterTransfer.new( slot::MESSAGE_REGISTER , slot::NEW_MESSAGE_REGISTER )
         # and restore the message from saved value in new_message
-        new_codes << GetSlot.new( slot::MESSAGE_REGISTER , slot::NEW_MESSAGE_REGISTER , Virtual::MESSAGE_CALLER )
+        new_codes << GetSlot.new( slot::NEW_MESSAGE_REGISTER , Virtual::MESSAGE_CALLER , slot::MESSAGE_REGISTER)
         # "roll out" self and frame into their registers
-        new_codes << GetSlot.new( slot::SELF_REGISTER ,slot::MESSAGE_REGISTER , Virtual::MESSAGE_SELF )
-        new_codes << GetSlot.new( slot::FRAME_REGISTER ,slot::MESSAGE_REGISTER , Virtual::MESSAGE_FRAME )
+        new_codes << GetSlot.new( slot::MESSAGE_REGISTER , Virtual::MESSAGE_SELF , slot::SELF_REGISTER )
+        new_codes << GetSlot.new( slot::MESSAGE_REGISTER , Virtual::MESSAGE_FRAME , slot::FRAME_REGISTER )
         #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
         new_codes << FunctionReturn.new( slot::MESSAGE_REGISTER , Virtual::MESSAGE_RETURN_ADDRESS )
         block.replace(code , new_codes )

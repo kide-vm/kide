@@ -35,7 +35,7 @@ module Register
         if( code.from.is_a?(Parfait::Value) or code.from.is_a?(Symbol))
           move1 = LoadConstant.new( tmp , code.from )
         else # while otherwise we "load"
-          move1 = GetSlot.new( tmp , code.from.reg , code.from.index )
+          move1 = GetSlot.new( code.from.reg , code.from.index , tmp )
         end
         move2 = SetSlot.new( tmp , to , code.to.index )
         block.replace(code , [move1,move2] )

@@ -39,11 +39,11 @@ module Register
         ind = Parfait::Space.object_space.get_layout().index_of( kind )
         raise "index not found for #{kind}.#{kind.class}" unless ind
         # load the frame/message from space by index
-        new_codes << GetSlot.new( frame_tmp , space_tmp , 5 )
+        new_codes << GetSlot.new( space_tmp , 5 , frame_tmp )
         # save the frame in real frame register
         new_codes << RegisterTransfer.new( RegisterReference.frame_reg , frame_tmp )
         # get the next_frame
-        new_codes << GetSlot.new( frame_tmp , frame_tmp , 2 ) # 2 index of next_frame
+        new_codes << GetSlot.new( frame_tmp , 2 , frame_tmp) # 2 index of next_frame
         # save next frame into space
         new_codes << SetSlot.new( frame_tmp , space_tmp , ind)
         block.replace(code , new_codes )

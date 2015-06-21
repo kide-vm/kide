@@ -1,16 +1,27 @@
 module Register
-  # offset memory set access
-  # so the value must be given as the first register
-  # the second argument holds the base address
-  # and the third a possible (small) offset into the "object"
+
+  # SetSlot moves data into memory from a register.
+  # GetSlot moves data into a register from memory.
+  # Both use a base memory (a register)
+
+  # While the virtual machine has only one instruction (Set) to move data between slots,
+  # the register has two, namely GetSlot and SetSlot
   #
-  # if for example the value is pointed to by a register, a VariableGet (load) is needed first
+  # This is because that is what cpu's can do. In programming terms this would be accessing
+  #  an element in an array, in the case of SetSlot setting the register in the array.
+
+  # btw: to move data between registers, use RegisterTransfer
+
   class SetSlot < Instruction
-    def initialize value , reference , index = 0
-      @value = value
-      @reference = reference
+
+    # If you had a c array and index offset
+    # the instruction would do array[index] = register
+    # So SGetSlot means the register (first argument) moves to the slot (array and index)
+    def initialize register , array , index
+      @register = register
+      @array = array
       @index = index
     end
-    attr_accessor :value , :reference , :index
+    attr_accessor :register , :array , :index
   end
 end
