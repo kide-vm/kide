@@ -16,7 +16,7 @@ require "virtual/passes/collector"
 require "virtual/passes/send_implementation"
 require "virtual/passes/get_implementation"
 require "virtual/passes/enter_implementation"
-require "virtual/passes/frame_implementation"
+require "virtual/passes/set_optimisation"
 
 Sof::Volotile.add(Parfait::Object ,  [:memory])
 Sof::Volotile.add(Parfait::Method ,  [:memory])
