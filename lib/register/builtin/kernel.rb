@@ -10,7 +10,7 @@ module Builtin
         function.info.return_type = Virtual::Integer
         main = Virtual.machine.space.get_main
         me = Virtual::Self.new(Virtual::Reference)
-        code = Virtual::Set.new(Virtual::Self.new(me.type), me)
+        code = Virtual::Set.new(me , Virtual::Self.new(me.type))
         function.info.add_code(code)
         function.info.add_code Virtual::MethodCall.new(main)
         return function

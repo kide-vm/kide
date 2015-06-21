@@ -37,4 +37,4 @@ end
 require_relative "message_slot"
 require_relative "self_slot"
 require_relative "frame_slot"
-require_relative "new_message_slot"
+require_relative "next_message_slot"

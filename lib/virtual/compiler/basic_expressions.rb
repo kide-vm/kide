@@ -15,25 +15,25 @@ module Virtual
       def self.compile_integer expression , method
         int = expression.value
         to = Return.new(Integer , int)
-        method.info.add_code Set.new( to , int)
+        method.info.add_code Set.new( int , to )
         to
       end
 
       def self.compile_true expression , method
         to = Return.new(Reference , true )
-        method.info.add_code Set.new( to , true )
+        method.info.add_code Set.new( true , to )
         to
       end
 
       def self.compile_false expression , method
         to = Return.new(Reference , false)
-        method.info.add_code Set.new( to , false )
+        method.info.add_code Set.new( false , to )
         to
       end
 
       def self.compile_nil expression , method
         to = Return.new(Reference , nil)
-        method.info.add_code Set.new( to , nil )
+        method.info.add_code Set.new( nil , to )
         to
       end
 
@@ -62,7 +62,7 @@ module Virtual
         clazz = Space.space.get_class_by_name name
         raise "uups #{clazz}.#{name}" unless clazz
         to = Return.new(Reference , clazz )
-        method.info.add_code Set.new( to , clazz )
+        method.info.add_code Set.new( clazz , to )
         to
       end
 
@@ -72,7 +72,7 @@ module Virtual
         value = expression.string.to_sym
         to = Return.new(Reference , value)
         method.info.constants << value
-        method.info.add_code Set.new( to , value )
+        method.info.add_code Set.new( value , to )
         to
       end
 
@@ -85,10 +85,10 @@ module Virtual
         raise "oh noo, nil from where #{expression.right.inspect}" unless r
         index = method.has_arg(expression.left.name.to_sym)
         if index
-          method.info.add_code Set.new(Return.new , MessageSlot.new(index , r,type , r ))
+          method.info.add_code Set.new(MessageSlot.new(index , r,type , r ) , Return.new)
         else
           index = method.ensure_local(expression.left.name.to_sym)
-          method.info.add_code Set.new(Return.new , FrameSlot.new(index , r.type , r ))
+          method.info.add_code Set.new(FrameSlot.new(index , r.type , r ) , Return.new)
         end
         r
       end

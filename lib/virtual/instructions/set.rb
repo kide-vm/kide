@@ -5,9 +5,9 @@ module Virtual
   # these are represented as slots  (see there)
   # from may be a Constant (Object,Integer,String,Class)
   class Set < Instruction
-    def initialize to , from
-      @to = to
+    def initialize from , to
       @from = from
+      @to = to
     end
     attr_reader :from , :to
   end
