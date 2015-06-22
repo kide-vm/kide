@@ -6,7 +6,7 @@ class HelloTest < MiniTest::Test
   def check
     machine = Virtual::Machine.boot
     expressions = machine.compile_main @string_input
-    output_at = "Virtual::SetOptimisation"
+    output_at = "Register::CallImplementation"
     #{}"Register::CallImplementation"
     machine.run_before output_at
     puts Sof.write(machine.space)

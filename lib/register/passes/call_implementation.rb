@@ -16,7 +16,7 @@ module Register
         # move the current new_message to message
         new_codes << RegisterTransfer.new( slot::NEW_MESSAGE_REGISTER , slot::MESSAGE_REGISTER )
         # "roll out" self into its register
-        new_codes << GetSlot.new( slot::SELF_REGISTER ,slot::MESSAGE_REGISTER , Virtual::SELF_INDEX )
+        new_codes << GetSlot.new( slot::MESSAGE_REGISTER , Virtual::SELF_INDEX, slot::SELF_REGISTER )
         # do the register call
         new_codes << FunctionCall.new( code.method )
         block.replace(code , new_codes )

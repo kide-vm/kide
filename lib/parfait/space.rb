@@ -43,6 +43,7 @@ module Parfait
       end
       @next_message = @messages.first
       @next_frame = @frames.first
+      init_layout
     end
 
     @@object_space = nil

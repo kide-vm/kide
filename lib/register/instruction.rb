@@ -38,6 +38,7 @@ end
 require_relative "instructions/set_slot"
 require_relative "instructions/get_slot"
 require_relative "instructions/load_constant"
+require_relative "instructions/syscall"
 require_relative "instructions/function_call"
 require_relative "instructions/function_return"
 require_relative "instructions/save_return"
