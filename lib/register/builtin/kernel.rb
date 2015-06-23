@@ -18,8 +18,6 @@ module Builtin
       def putstring context
         function = Virtual::CompiledMethodInfo.create_method(:Kernel , :putstring , [] )
         emit_syscall( function , :putstring )
-        ret = Virtual::RegisterMachine.instance.write_stdout(function)
-        function.set_return ret
         function
       end
       def exit context
@@ -51,22 +49,23 @@ module Builtin
         space_tmp = Register::RegisterReference.tmp_reg
         ind = Parfait::Space.object_space.get_layout().index_of( :syscall_message )
         raise "index not found for :syscall_message" unless ind
-        function.info.add_code LoadConstant.new( space_tmp , Parfait::Space.object_space )
-        function.info.add_code << SetSlot.new( Virtual::Slot::MESSAGE_REGISTER , space_tmp , ind)
+        function.info.add_code Register::LoadConstant.new( space_tmp , Parfait::Space.object_space )
+        function.info.add_code Register::SetSlot.new( Virtual::Slot::MESSAGE_REGISTER , space_tmp , ind)
       end
       def restore_message(function)
         # get the sys return out of the way
         return_tmp = Register::RegisterReference.tmp_reg
         # load the space into the base register
-        function.info.add_code RegisterTransfer.new( Virtual::Slot::MESSAGE_REGISTER , return_tmp )
+        function.info.add_code Register::RegisterTransfer.new( Virtual::Slot::MESSAGE_REGISTER , return_tmp )
+        slot = Virtual::Slot
         # find the stored message
         ind = Parfait::Space.object_space.get_layout().index_of( :syscall_message )
         raise "index not found for #{kind}.#{kind.class}" unless ind
         # and load it into the base RegisterMachine
-        function.info.add_code GetSlot.new( Virtual::Slot::MESSAGE_REGISTER , ind , Virtual::Slot::MESSAGE_REGISTER )
+        function.info.add_code Register::GetSlot.new( slot::MESSAGE_REGISTER , ind , slot::MESSAGE_REGISTER )
         # and "unroll" self and frame
-        function.info.add_code GetSlot.new( slot::MESSAGE_REGISTER , Virtual::SELF_INDEX, slot::SELF_REGISTER )
-        function.info.add_code GetSlot.new( slot::MESSAGE_REGISTER , Virtual::FRAME_INDEX, slot::FRAME_REGISTER )
+        function.info.add_code Register::GetSlot.new( slot::MESSAGE_REGISTER , Virtual::SELF_INDEX, slot::SELF_REGISTER )
+        function.info.add_code Register::GetSlot.new( slot::MESSAGE_REGISTER , Virtual::FRAME_INDEX, slot::FRAME_REGISTER )
       end
     end
     extend ClassMethods

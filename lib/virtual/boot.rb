@@ -28,7 +28,7 @@ module Virtual
                   :Message => [],
                   :MetaClass => [],
                   :BinaryCode => [],
-                  :Space => [:classes ,:frames ,:messages ,:next_message ,:next_frame],
+                  :Space => [:classes ,:frames ,:messages ,:next_message ,:next_frame, :syscall_message],
                   :Frame => [:locals , :tmps ],
                   :Layout => [:object_class] ,
                   :Class => [:object_layout ],
