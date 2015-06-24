@@ -112,6 +112,7 @@ module Arm
 end
 Arm::ArmMachine.init
 require_relative "passes/call_implementation"
+require_relative "passes/syscall_implementation"
 require_relative "passes/save_implementation"
 require_relative "passes/transfer_implementation"
 require_relative "passes/get_implementation"

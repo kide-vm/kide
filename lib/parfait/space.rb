@@ -27,6 +27,7 @@ module Parfait
       super()
       Parfait::Space.set_object_space self
       @classes = Parfait::Dictionary.new_object
+      @syscall_message = nil  # a hack sto store the message during syscall
     end
     attr_reader :classes  , :frames, :messages, :next_message , :next_frame
 
