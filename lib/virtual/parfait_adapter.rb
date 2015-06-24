@@ -137,9 +137,6 @@ module Parfait
     end
   end
   class List
-    def word_length
-      padded_words(get_length())
-    end
     def to_sof_node(writer , level , ref )
       Sof.array_to_sof_node(self , writer , level , ref )
     end

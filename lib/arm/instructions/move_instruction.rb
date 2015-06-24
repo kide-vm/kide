@@ -4,8 +4,8 @@ module Arm
 
     def initialize to , from , options = {}
       super(options)
-      @to = to
       @from = from
+      @to = to
       raise "move must have from set #{inspect}" unless from
       @attributes[:update_status] = 0 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil

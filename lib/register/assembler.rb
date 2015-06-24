@@ -30,7 +30,7 @@ module Register
       end
       #need the initial jump at 0 and then functions
       @machine.init.set_position(0)
-      at = @machine.init.byte_length
+      at = 0x20 # @machine.init.byte_length
 
       # then we make sure we really get the binary codes first
       @machine.objects.each do |objekt|
@@ -71,6 +71,7 @@ module Register
         @machine.init.codes.each do |code|
           code.assemble( @stream )
         end
+        pad_after @machine.init.byte_length - 8 # no header (8)
 
         # then write the methods to file
         @machine.objects.each do |objekt|
@@ -119,7 +120,7 @@ module Register
     end
 
     def write_any obj
-      #puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{@stream.length.to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
+      puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{@stream.length.to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
       if @stream.length != obj.position
         raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}"
       end
@@ -160,7 +161,7 @@ module Register
         puts "Nil for #{object.class}.#{var}" unless inst
         write_ref_for(inst)
       end
-      #puts "layout length=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
+      puts "layout length=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
       l = layout.get_length
       if( object.is_a? Parfait::List)
         object.each do |inst|
@@ -216,7 +217,7 @@ module Register
         @stream.write_uint8(0)
       end
       after = @stream.length.to_s(16)
-      #puts "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
+      puts "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
     end
 
   end

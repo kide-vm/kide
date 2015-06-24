@@ -148,6 +148,15 @@ module Parfait
       self.object_id == other.object_id
     end
 
+    # word length (padded) is the amount of space taken by the object
+    # For your basic object this means the number of instance variables as determined by layout
+    # This is off course 0 for a list, unless someone squeezed an instance variable in
+    # but additionally, the amount of data comes on top.
+    # unfortuntely we can't just use super because of the Padding
+    def word_length
+      padded_words( get_layout().get_length() +  get_length() )
+    end
+
     #many basic List functions can not be defined in ruby, such as
     # get/set/length/add/delete
     # so they must be defined as CompiledMethods in Builtin::Kernel
