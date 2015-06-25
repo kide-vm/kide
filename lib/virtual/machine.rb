@@ -123,7 +123,7 @@ module Virtual
     def boot
       boot_parfait!
       @init = Block.new("init",nil)
-      @init.add_code  Register::RegisterMain.new( self.space.get_main )
+      @init.add_code  Register::RegisterMain.new( self.space.get_init )
       @booted = true
     end
 

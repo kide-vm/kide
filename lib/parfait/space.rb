@@ -62,6 +62,11 @@ module Parfait
       kernel.get_instance_method :main
     end
 
+    def get_init
+      kernel = get_class_by_name :Kernel
+      kernel.get_instance_method :__init__
+    end
+
     # this is the way to instantiate classes (not Parfait::Class.new)
     # so we get and keep exactly one per name
     def get_class_by_name name

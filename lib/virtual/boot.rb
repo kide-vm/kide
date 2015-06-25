@@ -103,10 +103,9 @@ module Virtual
       end
       obj = @class_mappings[:Kernel ]
       # create dummy main first, __init__ calls it
-      [:putstring,:exit,:__send  ].each do |f|
+      [:putstring,:exit,:__send , :__init__ ].each do |f|
         obj.add_instance_method Builtin::Kernel.send(f , nil)
       end
-      underscore_init = obj.add_instance_method Builtin::Kernel.send(:__init__, nil)
 
       obj = @class_mappings[:Integer ]
       [:putint,:fibo].each do |f|

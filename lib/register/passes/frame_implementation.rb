@@ -34,7 +34,7 @@ module Register
         # a temporary place to store the new frame
         frame_tmp = space_tmp.next_reg_use
         # move the spave to it's register (mov instruction gets the address of the object)
-        new_codes = [ LoadConstant.new( space_tmp , Parfait::Space.object_space )]
+        new_codes = [ LoadConstant.new( Parfait::Space.object_space , space_tmp )]
         # find index in the space where to grab frame/message
         ind = Parfait::Space.object_space.get_layout().index_of( kind )
         raise "index not found for #{kind}.#{kind.class}" unless ind

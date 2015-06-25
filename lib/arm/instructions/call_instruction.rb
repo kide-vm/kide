@@ -14,6 +14,7 @@ module Arm
 
     def initialize(first, attributes)
       super(attributes)
+      raise "no target" if first.nil?
       @first = first
       opcode = @attributes[:opcode].to_s
       if opcode.length == 3 and opcode[0] == "b"
@@ -32,7 +33,7 @@ module Arm
       case @attributes[:opcode]
       when :b, :call
         arg = @first
-        #puts "BLAB #{arg.inspect}"
+        puts "BLAB #{arg.class}"
         if arg.is_a?(Virtual::Block) or arg.is_a?(Parfait::Method)
           #relative addressing for jumps/calls
           # but because of the arm "theoretical" 3- stage pipeline,

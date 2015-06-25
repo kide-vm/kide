@@ -1,18 +1,24 @@
 module Builtin
   module Kernel
     module ClassMethods
-      # this is the really really first place the machine starts.
+      # this is the really really first place the machine starts (apart from the jump here)
       # it isn't really a function, ie it is jumped to (not called), exits and may not return
-      # so it is responsible for initial setup (and relocation)
+      # so it is responsible for initial setup
       def __init__ context
         function = Virtual::CompiledMethodInfo.create_method(:Kernel,:__init__ , [])
-#        puts "INIT LAYOUT #{function.get_layout.get_layout}"
         function.info.return_type = Virtual::Integer
-        main = Virtual.machine.space.get_main
-        me = Virtual::Self.new(Virtual::Reference)
-        code = Virtual::Set.new(me , Virtual::Self.new(me.type))
-        function.info.add_code(code)
-        function.info.add_code Virtual::MethodCall.new(main)
+        # no method enter or return (automatically added), remove
+        function.info.blocks.first.codes.pop # no Method enter
+        function.info.blocks.last.codes.pop # no Method return
+        #Set up the Space as self upon init
+        space = Parfait::Space.object_space
+        function.info.add_code Register::LoadConstant.new( space , Virtual::Slot::SELF_REGISTER)
+        message_ind = space.get_layout().index_of( :next_message )
+        # Load the message to message register (0)
+        function.info.add_code Register::GetSlot.new( Virtual::Slot::SELF_REGISTER , message_ind , Virtual::Slot::MESSAGE_REGISTER)
+        # now we are set up to issue a call to the main
+        function.info.add_code Virtual::MethodCall.new(Virtual.machine.space.get_main)
+        emit_syscall( function , :exit )
         return function
       end
       def putstring context
@@ -49,7 +55,7 @@ module Builtin
         space_tmp = Register::RegisterReference.tmp_reg
         ind = Parfait::Space.object_space.get_layout().index_of( :syscall_message )
         raise "index not found for :syscall_message" unless ind
-        function.info.add_code Register::LoadConstant.new( space_tmp , Parfait::Space.object_space )
+        function.info.add_code Register::LoadConstant.new( Parfait::Space.object_space , space_tmp)
         function.info.add_code Register::SetSlot.new( Virtual::Slot::MESSAGE_REGISTER , space_tmp , ind)
       end
       def restore_message(function)

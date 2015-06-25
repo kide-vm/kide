@@ -33,7 +33,7 @@ module Register
         tmp = RegisterReference.tmp_reg
         # for constants we have to "move" the constants value
         if( code.from.is_a?(Parfait::Value) or code.from.is_a?(Symbol))
-          move1 = LoadConstant.new( tmp , code.from )
+          move1 = LoadConstant.new( code.from , tmp )
         else # while otherwise we "load"
           move1 = GetSlot.new( code.from.reg , code.from.index , tmp )
         end
