@@ -24,10 +24,12 @@ module Register
     end
 
     def self.look_like_reg is_it
+      return false unless is_it.is_a? Symbol
       if( [:lr , :pc].include? is_it )
         return true
       end
       if( (is_it.to_s.length < 3) and (is_it.to_s[0] == "r"))
+        # could tighten this by checking that the rest is a number
         return true
       end
       return false
