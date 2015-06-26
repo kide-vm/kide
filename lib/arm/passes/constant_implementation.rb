@@ -7,7 +7,7 @@ module Arm
         constant = code.constant
 
         if constant.is_a?(Parfait::Object) or constant.is_a? Symbol
-          load = ArmMachine.add( code.register , :pc , constant )
+          load = ArmMachine.add( code.register , constant )
         else
           load = ArmMachine.mov( code.register ,  code.constant )
         end
