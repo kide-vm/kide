@@ -136,7 +136,7 @@ module Virtual
     end
 
     def byte_length
-      @blocks.inject(0) { |c , block| c += block.byte_length }
+      @blocks.inject(0) { |c , block| c += block.byte_length } + 8
     end
 
     # position of the function is the position of the entry block, is where we call
