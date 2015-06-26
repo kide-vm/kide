@@ -33,7 +33,6 @@ module Arm
       case @attributes[:opcode]
       when :b, :call
         arg = @first
-        puts "BLAB #{arg.class}"
         if arg.is_a?(Virtual::Block) or arg.is_a?(Parfait::Method)
           #relative addressing for jumps/calls
           # but because of the arm "theoretical" 3- stage pipeline,
