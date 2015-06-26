@@ -4,6 +4,9 @@ module Arm
 
     def initialize to , from , options = {}
       super(options)
+      if( from.is_a?(Symbol) and Register::RegisterReference.look_like_reg(from) )
+        from = Register::RegisterReference.new(from)
+      end
       @from = from
       @to = to
       raise "move must have from set #{inspect}" unless from
@@ -35,14 +38,6 @@ module Arm
       operand = @operand
       immediate = @immediate
       right = @from
-      if right.is_a?(Parfait::Object)
-        r_pos = right.position
-        # do pc relative addressing with the difference to the instuction
-        # 8 is for the funny pipeline adjustment (ie pc pointing to fetch and not execute)
-        right =  r_pos - self.position - 8
-        puts "Position #{r_pos} from #{self.position} = #{right}"
-        rn = :pc
-      end
       if (right.is_a?(Numeric))
         if (right.fits_u8?)
           # no shifting needed
@@ -79,7 +74,7 @@ module Arm
           # The way it _should_ be done
           # is to check that the first part is doabe with u8_with_rr AND leaves a u8 remainder
         end
-      elsif (right.is_a?(Symbol) or right.is_a?(::Register::RegisterReference))
+      elsif( right.is_a? Register::RegisterReference)
         operand = reg_code(right)
         immediate = 0                # ie not immediate is register
       else
@@ -92,10 +87,10 @@ module Arm
       val |= shift(reg_code(@to) ,            12)
       val |= shift(reg_code(rn) ,            12+4)
       val |= shift(@attributes[:update_status] , 12+4+4)#20
-      val |= shift(op_bit_code ,        12+4+4  +1)
-      val |= shift(immediate ,                  12+4+4  +1+4)
-      val |= shift(instuction_class ,   12+4+4  +1+4+1)
-      val |= shift(cond_bit_code ,      12+4+4  +1+4+1+2)
+      val |= shift(op_bit_code ,        12+4+4  + 1)
+      val |= shift(immediate ,          12+4+4  + 1+4)
+      val |= shift(instuction_class ,   12+4+4  + 1+4+1)
+      val |= shift(cond_bit_code ,      12+4+4  + 1+4+1+2)
       io.write_uint32 val
       # by now we have the extra add so assemble that
       if(@extra)
