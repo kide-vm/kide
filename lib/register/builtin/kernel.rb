@@ -62,7 +62,7 @@ module Builtin
         # get the sys return out of the way
         return_tmp = Register::RegisterReference.tmp_reg
         # load the space into the base register
-        function.info.add_code Register::RegisterTransfer.new( Virtual::Slot::MESSAGE_REGISTER , return_tmp )
+        function.info.add_code Register::RegisterTransfer.new( return_tmp , Virtual::Slot::MESSAGE_REGISTER )
         slot = Virtual::Slot
         # find the stored message
         ind = Parfait::Space.object_space.get_layout().index_of( :syscall_message )

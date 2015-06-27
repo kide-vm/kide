@@ -41,7 +41,7 @@ module Register
         # load the frame/message from space by index
         new_codes << GetSlot.new( space_tmp , 5 , frame_tmp )
         # save the frame in real frame register
-        new_codes << RegisterTransfer.new( RegisterReference.frame_reg , frame_tmp )
+        new_codes << RegisterTransfer.new( frame_tmp , RegisterReference.frame_reg )
         # get the next_frame
         new_codes << GetSlot.new( frame_tmp , 2 , frame_tmp) # 2 index of next_frame
         # save next frame into space
