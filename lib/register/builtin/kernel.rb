@@ -12,10 +12,12 @@ module Builtin
         function.info.blocks.last.codes.pop # no Method return
         #Set up the Space as self upon init
         space = Parfait::Space.object_space
-        function.info.add_code Register::LoadConstant.new( space , Virtual::Slot::SELF_REGISTER)
+        function.info.add_code Register::LoadConstant.new( space , Register::RegisterReference.self_reg)
         message_ind = space.get_layout().index_of( :next_message )
         # Load the message to message register (0)
-        function.info.add_code Register::GetSlot.new( Virtual::Slot::SELF_REGISTER , message_ind , Virtual::Slot::MESSAGE_REGISTER)
+        function.info.add_code Register::GetSlot.new( Register::RegisterReference.self_reg , message_ind , Register::RegisterReference.new_message_reg)
+        # And store the space as the new self (so the call can move it back as self)
+        function.info.add_code Register::SetSlot.new( Register::RegisterReference.self_reg , Register::RegisterReference.new_message_reg , Virtual::SELF_INDEX)
         # now we are set up to issue a call to the main
         function.info.add_code Virtual::MethodCall.new(Virtual.machine.space.get_main)
         emit_syscall( function , :exit )
@@ -56,22 +58,22 @@ module Builtin
         ind = Parfait::Space.object_space.get_layout().index_of( :syscall_message )
         raise "index not found for :syscall_message" unless ind
         function.info.add_code Register::LoadConstant.new( Parfait::Space.object_space , space_tmp)
-        function.info.add_code Register::SetSlot.new( Virtual::Slot::MESSAGE_REGISTER , space_tmp , ind)
+        function.info.add_code Register::SetSlot.new( Register::RegisterReference.message_reg , space_tmp , ind)
       end
       def restore_message(function)
         # get the sys return out of the way
         return_tmp = Register::RegisterReference.tmp_reg
         # load the space into the base register
-        function.info.add_code Register::RegisterTransfer.new( return_tmp , Virtual::Slot::MESSAGE_REGISTER )
+        function.info.add_code Register::RegisterTransfer.new( return_tmp , Register::RegisterReference.message_reg )
         slot = Virtual::Slot
         # find the stored message
         ind = Parfait::Space.object_space.get_layout().index_of( :syscall_message )
         raise "index not found for #{kind}.#{kind.class}" unless ind
         # and load it into the base RegisterMachine
-        function.info.add_code Register::GetSlot.new( slot::MESSAGE_REGISTER , ind , slot::MESSAGE_REGISTER )
+        function.info.add_code Register::GetSlot.new( Register::RegisterReference.message_reg , ind , Register::RegisterReference.message_reg )
         # and "unroll" self and frame
-        function.info.add_code Register::GetSlot.new( slot::MESSAGE_REGISTER , Virtual::SELF_INDEX, slot::SELF_REGISTER )
-        function.info.add_code Register::GetSlot.new( slot::MESSAGE_REGISTER , Virtual::FRAME_INDEX, slot::FRAME_REGISTER )
+        function.info.add_code Register::GetSlot.new( Register::RegisterReference.message_reg , Virtual::SELF_INDEX, Register::RegisterReference.self_reg )
+        function.info.add_code Register::GetSlot.new( Register::RegisterReference.message_reg , Virtual::FRAME_INDEX, Register::RegisterReference.frame_reg )
       end
     end
     extend ClassMethods

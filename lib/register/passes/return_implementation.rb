@@ -6,14 +6,14 @@ module Register
         next unless code.is_a? Virtual::MethodReturn
         new_codes = []
         # move the current message to new_message
-        new_codes << RegisterTransfer.new( slot::MESSAGE_REGISTER , slot::NEW_MESSAGE_REGISTER )
+        new_codes << RegisterTransfer.new( RegisterReference.message_reg , RegisterReference.new_message_reg )
         # and restore the message from saved value in new_message
-        new_codes << GetSlot.new( slot::NEW_MESSAGE_REGISTER , Virtual::CALLER_INDEX , slot::MESSAGE_REGISTER)
+        new_codes << GetSlot.new( RegisterReference.new_message_reg , Virtual::CALLER_INDEX , RegisterReference.message_reg)
         # "roll out" self and frame into their registers
-        new_codes << GetSlot.new( slot::MESSAGE_REGISTER , Virtual::SELF_INDEX , slot::SELF_REGISTER )
-        new_codes << GetSlot.new( slot::MESSAGE_REGISTER , Virtual::FRAME_INDEX , slot::FRAME_REGISTER )
+        new_codes << GetSlot.new( RegisterReference.message_reg , Virtual::SELF_INDEX , RegisterReference.self_reg )
+        new_codes << GetSlot.new( RegisterReference.message_reg , Virtual::FRAME_INDEX , RegisterReference.frame_reg )
         #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
-        new_codes << FunctionReturn.new( slot::MESSAGE_REGISTER , Virtual::RETURN_INDEX )
+        new_codes << FunctionReturn.new( RegisterReference.message_reg , Virtual::RETURN_INDEX )
         block.replace(code , new_codes )
       end
     end

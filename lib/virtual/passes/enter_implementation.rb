@@ -7,7 +7,7 @@ module Virtual
         new_codes = []
         # save return register and create a new frame
         # lr is link register, ie where arm stores the return address when call is issued
-        new_codes << Register::SaveReturn.new( Virtual::Slot::MESSAGE_REGISTER , Virtual::RETURN_INDEX )
+        new_codes << Register::SaveReturn.new( Register::RegisterReference.message_reg , Virtual::RETURN_INDEX )
         new_codes << Virtual::NewFrame.new
         block.replace(code , new_codes )
       end

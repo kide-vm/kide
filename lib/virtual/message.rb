@@ -23,13 +23,6 @@ module Virtual
 
   class Message
 
-    SELF_REG = :r0
-    MESSAGE_REG = :r1
-    FRAME_REG = :r2
-    NEW_MESSAGE_REG = :r3
-
-    TMP_REG = :r4
-
     def initialize me , normal , exceptional
       @me = me
       @next_normal = normal

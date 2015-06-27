@@ -36,7 +36,7 @@ module Virtual
       locals = {}
       expression.params.each_with_index do |param , index|
         arg = param.name
-        register = RegisterReference.new(RegisterMachine.instance.receiver_register).next_reg_use(index + 1)
+        register = Register::RegisterReference.new(RegisterMachine.instance.receiver_register).next_reg_use(index + 1)
         arg_value = Integer.new(register)
         locals[arg] = arg_value
         args << arg_value

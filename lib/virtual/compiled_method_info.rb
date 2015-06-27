@@ -70,7 +70,7 @@ module Virtual
     def locals_at l_block
       used =[]
       # call assigns the return register, but as it is in l_block, it is not asked.
-      assigned = [ RegisterReference.new(Virtual::RegisterMachine.instance.return_register) ]
+      assigned = [ Register::RegisterReference.new(Virtual::RegisterMachine.instance.return_register) ]
       l_block.reachable.each do |b|
         b.uses.each {|u|
           (used << u) unless assigned.include?(u)

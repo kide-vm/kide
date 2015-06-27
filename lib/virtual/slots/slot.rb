@@ -16,10 +16,6 @@ module Virtual
   # Names for the slots avoid indexes
 
   class Slot < Object
-    MESSAGE_REGISTER = :r0
-    SELF_REGISTER = :r1
-    FRAME_REGISTER = :r2
-    NEW_MESSAGE_REGISTER = :r3
 
     attr_accessor :index , :type , :value
 

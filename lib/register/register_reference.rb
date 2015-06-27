@@ -48,27 +48,27 @@ module Register
       RegisterReference.new( sym )
     end
 
-    SELF_REG = :r0
-    MESSAGE_REG = :r1
-    FRAME_REG = :r2
-    NEW_MESSAGE_REG = :r3
+    MESSAGE_REGISTER = :r0
+    SELF_REGISTER = :r1
+    FRAME_REGISTER = :r2
+    NEW_MESSAGE_REGISTER = :r3
 
-    TMP_REG = :r4
+    TMP_REGISTER = :r4
 
     def self.self_reg
-      new SELF_REG
+      new SELF_REGISTER
     end
     def self.message_reg
-      new MESSAGE_REG
+      new MESSAGE_REGISTER
     end
     def self.frame_reg
-      new FRAME_REG
+      new FRAME_REGISTER
     end
     def self.new_message_reg
-      new NEW_MESSAGE_REG
+      new NEW_MESSAGE_REGISTER
     end
     def self.tmp_reg
-      new TMP_REG
+      new TMP_REGISTER
     end
 
     def sof_reference_name
