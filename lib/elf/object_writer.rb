@@ -33,7 +33,11 @@ module Elf
 #      end
 #      add_symbol "#register@#{@object_machine.space.init.name}" , @object_machine.space.init.position
       @object_machine.objects.each do |slot|
-        label = "#{slot.class.name}::#{slot.position.to_s(16)}"
+        if( slot.respond_to? :sof_reference_name )
+          label = "#{slot.sof_reference_name}"
+        else
+          label = "#{slot.class.name}::#{slot.position.to_s(16)}"
+        end
         label += "=#{slot}" if slot.is_a?(Symbol) or slot.is_a?(String)
         label += "=#{slot.name}" if slot.is_a?(Parfait::BinaryCode)
         add_symbol  label , slot.position
