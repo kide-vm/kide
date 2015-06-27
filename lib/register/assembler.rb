@@ -17,9 +17,11 @@ module Register
 
     def initialize machine
       @machine = machine
+      @load_at = 0x8054 # this is linux/arm
     end
 
     def assemble
+      at = 0
       # want to have the methods first in the executable
       # so first we determine the code length for the methods and set the
       # binary code (array) to right length
@@ -29,8 +31,9 @@ module Register
         objekt.code.set_length(objekt.info.byte_length , 0)
       end
       #need the initial jump at 0 and then functions
-      @machine.init.set_position(0)
-      at = 0x20 # @machine.init.byte_length
+      @machine.init.set_position(at)
+      at += @machine.init.byte_length
+      at +=  8 # thats the padding
 
       # then we make sure we really get the binary codes first
       @machine.objects.each do |objekt|
@@ -56,7 +59,7 @@ module Register
       # must be same order as assemble
       begin
         assemble
-        all= @machine.objects.sort{|a,b| a.position <=> b.position}
+        all = @machine.objects.sort{|a,b| a.position <=> b.position}
         # debugging loop accesses all positions to force an error if it's not set
         all.each do |objekt|
           #puts "Linked #{objekt.class}(#{objekt.object_id.to_s(16)}) at #{objekt.position.to_s(16)} / #{objekt.word_length.to_s(16)}"
@@ -71,7 +74,10 @@ module Register
         @machine.init.codes.each do |code|
           code.assemble( @stream )
         end
-        pad_after @machine.init.byte_length - 8 # no header (8)
+        8.times do
+          @stream.write_uint8(0)
+        end
+
 
         # then write the methods to file
         @machine.objects.each do |objekt|
@@ -88,7 +94,7 @@ module Register
         # knowing that we fix the problem, we hope to get away with retry.
         retry
       end
-      puts "Assembled 0x#{@stream.length.to_s(16)}/#{@stream.length.to_s(16)} bytes"
+      puts "Assembled 0x#{stream_position.to_s(16)}/#{stream_position.to_s(16)} bytes"
       return @stream.string
     end
 
@@ -120,9 +126,9 @@ module Register
     end
 
     def write_any obj
-      puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{@stream.length.to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
-      if @stream.length != obj.position
-        raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{@stream.length.to_s(16)} not #{obj.position.to_s(16)}"
+      puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{stream_position.to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
+      if stream_position != obj.position
+        raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{stream_position.to_s(16)} not #{obj.position.to_s(16)}"
       end
       if obj.is_a?(Parfait::Word) or obj.is_a?(Symbol)
         write_String obj
@@ -202,24 +208,27 @@ module Register
     # object means the object of which we write the address
     def write_ref_for object
       if object.nil?
-        pos = 0
+        pos = 0 - @load_at
       else
         pos =  object.position
       end
-      @stream.write_sint32 pos
+      @stream.write_sint32(pos + @load_at)
     end
 
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
     def pad_after length
-      before = @stream.length.to_s(16)
+      before = stream_position.to_s(16)
       pad = padding_for(length)
       pad.times do
         @stream.write_uint8(0)
       end
-      after = @stream.length.to_s(16)
+      after = stream_position.to_s(16)
       puts "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
     end
 
+    def stream_position
+      @stream.length
+    end
   end
 
   Sof::Volotile.add(Register::Assembler , [:objects])
