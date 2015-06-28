@@ -12,7 +12,6 @@ module Register
       block.codes.dup.each do |code|
         next unless code.is_a? Virtual::MethodCall
         new_codes = []
-        slot = Virtual::Slot
         # move the current new_message to message
         new_codes << RegisterTransfer.new( RegisterReference.new_message_reg , RegisterReference.message_reg )
         # "roll out" self into its register

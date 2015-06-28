@@ -1,7 +1,6 @@
 module Register
   class ReturnImplementation
     def run block
-      slot = Virtual::Slot
       block.codes.dup.each do |code|
         next unless code.is_a? Virtual::MethodReturn
         new_codes = []
