@@ -18,6 +18,9 @@ module Arm
       @immediate = 0
       @rn = :r0 # register zero = zero bit pattern
       @extra = nil
+      if @rn.is_a?(Numeric) and !@rn.fits_u8? and !calculate_u8_with_rr(@rn)
+        @extra = 1
+      end
     end
     attr_accessor :to , :from
 

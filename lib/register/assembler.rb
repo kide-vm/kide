@@ -105,8 +105,8 @@ module Register
       method.info.blocks.each do |block|
         block.codes.each do |code|
           begin
-          code.assemble( stream )
-        rescue => e
+            code.assemble( stream )
+          rescue => e
             puts "Method error #{method.name}\n#{Sof.write(method.info.blocks).to_s[0...2000]}"
             puts Sof.write(code)
             raise e
@@ -118,7 +118,7 @@ module Register
       stream.rewind
       #puts "Assembled #{method.name} with length #{stream.length}"
       raise "length error #{method.code.length} != #{method.info.byte_length}" if method.code.length != method.info.byte_length
-      raise "length error #{stream.length} != #{method.info.byte_length}" if method.info.byte_length - stream.length > 32
+      raise "length error #{stream.length} != #{method.info.byte_length}" if method.info.byte_length - stream.length > 6
       stream.each_byte do |b|
         method.code.set_char(index , b )
         index = index + 1
