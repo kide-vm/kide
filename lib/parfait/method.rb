@@ -29,7 +29,7 @@ module Parfait
       @locals = List.new
       @tmps = List.new
     end
-    attr_reader :name , :arg_names , :for_class , :code
+    attr_reader :name , :arg_names , :for_class , :code , :locals , :tmps
 
 
     # determine whether this method has a variable by the given name

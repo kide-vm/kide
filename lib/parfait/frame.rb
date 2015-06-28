@@ -21,8 +21,9 @@
 # Which resolves the dichotomy of objects on the stack or heap. Sama sama.
 
 module Parfait
-  class Frame < List
-    def initialize
+  class Frame < Object
+    def initialize next_f
+      @next_frame = next_f
       super()
     end
   end

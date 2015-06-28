@@ -5,6 +5,11 @@
 module Parfait
   class Message < Object
 
+    def initialize next_m
+      @next_message = next_m
+      super()
+    end
+
     def get_type_for(name)
       index = @layout.get_index(name)
       get_at(index)
