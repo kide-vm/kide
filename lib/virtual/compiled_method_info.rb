@@ -40,16 +40,17 @@ module Virtual
       clazz = Virtual.machine.space.get_class_by_name class_name
       raise "No such class #{class_name}" unless clazz
       method = clazz.create_instance_method( method_name , Virtual.new_list(args))
-      method.info = CompiledMethodInfo.new
+      method.info = CompiledMethodInfo.new(method)
       method
     end
-    def initialize return_type = Virtual::Unknown
+    # just passing the method object in for Instructions to make decisions (later)
+    def initialize method , return_type = Virtual::Unknown
       # first block we have to create with .new , as new_block assumes a current
-      enter = Block.new( "enter"  , self ).add_code(MethodEnter.new())
+      enter = Block.new( "enter"  , self ).add_code(MethodEnter.new( method ))
       @return_type = return_type
       @blocks = [enter]
       @current = enter
-      new_block("return").add_code(MethodReturn.new)
+      new_block("return").add_code(MethodReturn.new(method))
       @constants = []
     end
     attr_reader   :blocks , :constants
