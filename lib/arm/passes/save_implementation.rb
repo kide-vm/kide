@@ -10,7 +10,7 @@ module Arm
     def run block
       block.codes.dup.each do |code|
         next unless code.is_a? Register::SaveReturn
-        store = ArmMachine.str( :lr ,  code.register , code.index )
+        store = ArmMachine.str( :lr ,  code.register , 4 * code.index )
         block.replace(code , store )
       end
     end

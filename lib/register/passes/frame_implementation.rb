@@ -31,19 +31,17 @@ module Register
         end
         # a place to store a reference to the space, we grab the next_frame from the space
         space_tmp = RegisterReference.tmp_reg
-        # a temporary place to store the new frame
-        frame_tmp = space_tmp.next_reg_use
         # move the spave to it's register (mov instruction gets the address of the object)
         new_codes = [ LoadConstant.new( Parfait::Space.object_space , space_tmp )]
         # find index in the space where to grab frame/message
         ind = Parfait::Space.object_space.get_layout().index_of( kind )
         raise "index not found for #{kind}.#{kind.class}" unless ind
         # load the frame/message from space by index
-        new_codes << GetSlot.new( space_tmp , 5 , frame_tmp )
-        # save the frame in real frame register
-        new_codes << RegisterTransfer.new( frame_tmp , RegisterReference.frame_reg )
+        new_codes << GetSlot.new( space_tmp , ind , RegisterReference.frame_reg )
+        # a temporary place to store the new frame
+        frame_tmp = space_tmp.next_reg_use
         # get the next_frame
-        new_codes << GetSlot.new( frame_tmp , 2 , frame_tmp) # 2 index of next_frame
+        new_codes << GetSlot.new( RegisterReference.frame_reg , 2 , frame_tmp) # 2 index of next_frame
         # save next frame into space
         new_codes << SetSlot.new( frame_tmp , space_tmp , ind)
         block.replace(code , new_codes )
