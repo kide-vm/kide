@@ -15,7 +15,7 @@ module Arm
 
     def putstring int_code , codes
       codes << ArmMachine.mov( :r1 ,  20 ) # String length, obvious TODO
-      codes << ArmMachine.ldr( :r0 , Register::RegisterReference.message_reg, Virtual::SELF_INDEX)
+      codes << ArmMachine.ldr( :r0 , Register::RegisterReference.message_reg, 4 * Virtual::SELF_INDEX)
       syscall(int_code , codes )
     end
 
