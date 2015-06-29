@@ -24,6 +24,7 @@ module Register
     end
 
     def self.look_like_reg is_it
+      return true if is_it.is_a? RegisterReference
       return false unless is_it.is_a? Symbol
       if( [:lr , :pc].include? is_it )
         return true
@@ -84,13 +85,26 @@ module Register
     GetSlot.new( from , index , to)
   end
 
+  def self.set_slot from , to , index
+    index = resolve_index( to , index)
+    from = resolve_to_register from
+    to = resolve_to_register to
+    SetSlot.new( from , to , index)
+  end
+
+  def self.save_return from , index
+    index = resolve_index( from , index)
+    from = resolve_to_register from
+    SaveReturn.new( from , index )
+  end
+
   def self.resolve_index( clazz_name , instance_name )
     return instance_name unless instance_name.is_a? Symbol
-    real_name = "#{clazz_name}".capitalize.to_sym
+    real_name = clazz_name.to_s.split('_').last.capitalize.to_sym
     clazz = Parfait::Space.object_space.get_class_by_name(real_name)
     raise "Class name not given #{real_name}" unless clazz
     index = clazz.object_layout.index_of( instance_name )
-    raise "Instance name=#{instance_name} not found on #{real_name}" unless index
+    raise "Instance name=#{instance_name} not found on #{real_name}" unless index.is_a?(Numeric)
     return index
   end
 
@@ -100,6 +114,8 @@ module Register
       case reference
       when :message
         register = message_reg
+      when :new_message
+        register = new_message_reg
       when :self
         register = self_reg
       when :frame
