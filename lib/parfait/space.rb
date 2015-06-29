@@ -8,8 +8,6 @@
 # "New" is slightly misleading in that normal operation only ever
 # recycles objects.
 
-require "register/builtin/object"
-
 module Parfait
   # The Space contains all objects for a program. In functional terms it is a program, but in oo
   # it is a collection of objects, some of which are data, some classes, some functions
