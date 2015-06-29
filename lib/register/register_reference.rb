@@ -48,33 +48,66 @@ module Register
       RegisterReference.new( sym )
     end
 
-    MESSAGE_REGISTER = :r0
-    SELF_REGISTER = :r1
-    FRAME_REGISTER = :r2
-    NEW_MESSAGE_REGISTER = :r3
-
-    TMP_REGISTER = :r4
-
-    def self.self_reg
-      new SELF_REGISTER
-    end
-    def self.message_reg
-      new MESSAGE_REGISTER
-    end
-    def self.frame_reg
-      new FRAME_REGISTER
-    end
-    def self.new_message_reg
-      new NEW_MESSAGE_REGISTER
-    end
-    def self.tmp_reg
-      new TMP_REGISTER
-    end
-
     def sof_reference_name
       @symbol
     end
 
   end
 
+  MESSAGE_REGISTER = :r0
+  SELF_REGISTER = :r1
+  FRAME_REGISTER = :r2
+  NEW_MESSAGE_REGISTER = :r3
+
+  TMP_REGISTER = :r4
+
+  def self.self_reg
+    RegisterReference.new SELF_REGISTER
+  end
+  def self.message_reg
+    RegisterReference.new MESSAGE_REGISTER
+  end
+  def self.frame_reg
+    RegisterReference.new FRAME_REGISTER
+  end
+  def self.new_message_reg
+    RegisterReference.new NEW_MESSAGE_REGISTER
+  end
+  def self.tmp_reg
+    RegisterReference.new TMP_REGISTER
+  end
+
+  def self.get_slot from , index , to
+    index = resolve_index( from , index)
+    from = resolve_to_register from
+    to = resolve_to_register to
+    GetSlot.new( from , index , to)
+  end
+
+  def self.resolve_index( clazz_name , instance_name )
+    return instance_name unless instance_name.is_a? Symbol
+    real_name = "#{clazz_name}".capitalize.to_sym
+    clazz = Parfait::Space.object_space.get_class_by_name(real_name)
+    raise "Class name not given #{real_name}" unless clazz
+    index = clazz.object_layout.index_of( instance_name )
+    raise "Instance name=#{instance_name} not found on #{real_name}" unless index
+    return index
+  end
+
+  def self.resolve_to_register reference
+    register = reference
+    if reference.is_a? Symbol
+      case reference
+      when :message
+        register = message_reg
+      when :self
+        register = self_reg
+      when :frame
+        register = frame_reg
+      else
+        raise "not recognized register reference #{reference}"
+      end
+    end
+    return register
+  end
 end

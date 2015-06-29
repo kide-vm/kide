@@ -14,7 +14,7 @@ module Virtual
   #  that object
   #
   class SelfSlot < Slot
-    def initialize index , type = Unknown, value = nil
+    def initialize type = Unknown, value = nil
       super
     end
   end

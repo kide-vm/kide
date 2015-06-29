@@ -2,7 +2,8 @@ module Virtual
   # A slot is a slot in an object. It is the storage location for a value.
   #             (Remember, values are typed)
   # From a memory perspective a slot is an index into an array (the object)
-  # We are not modelling the array here, but the index into it.
+  # The mapping into arrays is a straightforward matter, but happens in the
+  # next level down, the register machine.
 
   # Four known objects exist and those correspond to subclasses:
   # - the message that has been received: MessageSlot
@@ -17,12 +18,11 @@ module Virtual
 
   class Slot < Object
 
-    attr_accessor :index , :type , :value
+    attr_accessor :type , :value
 
     private #abstract base class
 
-    def initialize index , type , value
-      @index = index
+    def initialize type , value
       @type = type
       @value = value
     end

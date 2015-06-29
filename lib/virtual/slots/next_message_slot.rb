@@ -7,31 +7,31 @@ module Virtual
   # The Message has a layout as per the constant above
 
   class NextMessageSlot < Slot
-    def initialize index , type = Unknown, value = nil
-      super(index , type , value )
+    def initialize type = Unknown, value = nil
+      super( type , value )
     end
   end
 
   # named classes exist for slots that often accessed
 
-  # NextReturn is the NextMessageSlot(RETURN_INDEX)
+  # NextReturn is the return of NextMessageSlot
   class NextReturn < NextMessageSlot
     def initialize type = Unknown, value = nil
-      super( RETURN_INDEX, type , value  )
+      super( type , value  )
     end
   end
 
-  # NextSelf is the NextMessageSlot(SELF_INDEX)
+  # NextSelf is the self of NextMessageSlot
   class NextSelf < NextMessageSlot
     def initialize type = Unknown, value = nil
-      super( SELF_INDEX , type , value  )
+      super( type , value  )
     end
   end
 
   # NextMessageName of the next message
   class NextMessageName < NextMessageSlot
     def initialize type = Unknown, value = nil
-      super( NAME_INDEX, type , value )
+      super( type , value )
     end
   end
 end
