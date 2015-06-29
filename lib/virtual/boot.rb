@@ -25,7 +25,8 @@ module Virtual
       value_classes = values.collect { |cl| @space.create_class(cl,nil) }
       layouts = { :Word => [] ,
                   :List => [] ,
-                  :Message => [:next_message],
+                  # Assumtion is that name is the last of message
+                  :Message => [:next_message , :receiver , :frame , :return_address , :caller , :name ],
                   :MetaClass => [],
                   :BinaryCode => [],
                   :Space => [:classes ,:next_message ,:next_frame, :syscall_message],
@@ -99,17 +100,17 @@ module Virtual
       # TODO go through the virtual parfait layer and adjust function names to what they really are
       obj = @class_mappings[:Object ]
       [:main , :_get_instance_variable , :_set_instance_variable].each do |f|
-        obj.add_instance_method Builtin::Object.send(f , nil)
+        obj.add_instance_method Register::Builtin::Object.send(f , nil)
       end
       obj = @class_mappings[:Kernel ]
       # create dummy main first, __init__ calls it
       [:putstring,:exit,:__send , :__init__ ].each do |f|
-        obj.add_instance_method Builtin::Kernel.send(f , nil)
+        obj.add_instance_method Register::Builtin::Kernel.send(f , nil)
       end
 
       obj = @class_mappings[:Integer ]
       [:putint,:fibo].each do |f|
-        obj.add_instance_method Builtin::Integer.send(f , nil)
+        obj.add_instance_method Register::Builtin::Integer.send(f , nil)
       end
 
     end
