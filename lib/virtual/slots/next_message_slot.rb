@@ -2,11 +2,11 @@ module Virtual
 
   # The next Message is one of four objects the virtual machine knows
   #
-  # Slots represent instance variables of objects, so NextMessageSlots
-  # represent instance variables of NextMessage objects.
+  # Slots represent instance variables of objects, so NewMessageSlots
+  # represent instance variables of NewMessage objects.
   # The Message has a layout as per the constant above
 
-  class NextMessageSlot < Slot
+  class NewMessageSlot < Slot
     def initialize type = Unknown, value = nil
       super( type , value )
     end
@@ -14,24 +14,34 @@ module Virtual
 
   # named classes exist for slots that often accessed
 
-  # NextReturn is the return of NextMessageSlot
-  class NextReturn < NextMessageSlot
+  # NewReturn is the return of NewMessageSlot
+  class NewReturn < NewMessageSlot
     def initialize type = Unknown, value = nil
       super( type , value  )
     end
   end
 
-  # NextSelf is the self of NextMessageSlot
-  class NextSelf < NextMessageSlot
+  # NewSelf is the self of NewMessageSlot
+  class NewSelf < NewMessageSlot
     def initialize type = Unknown, value = nil
       super( type , value  )
     end
   end
 
-  # NextMessageName of the next message
-  class NextMessageName < NextMessageSlot
+  # NewMessageName of the next message
+  class NewMessageName < NewMessageSlot
     def initialize type = Unknown, value = nil
       super( type , value )
     end
   end
+
+  # NewMessageName of the next message
+  class NewArgSlot < NewMessageSlot
+    def initialize index , type = Unknown, value = nil
+      @index = index
+      super( type , value )
+    end
+    attr_reader :index
+  end
+
 end

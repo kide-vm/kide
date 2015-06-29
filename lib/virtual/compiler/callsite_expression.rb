@@ -7,14 +7,14 @@ module Virtual
     def self.compile_callsite expession , method
       me = Compiler.compile( expession.receiver , method )
       method.info.add_code NewMessage.new
-      method.info.add_code Set.new( me , NextSelf.new(me.type))
-      method.info.add_code Set.new( expession.name.to_sym , NextMessageName.new())
+      method.info.add_code Set.new( me , NewSelf.new(me.type))
+      method.info.add_code Set.new( expession.name.to_sym , NewMessageName.new())
       compiled_args = []
       expession.args.each_with_index do |arg , i|
         #compile in the running method, ie before passing control
         val = Compiler.compile( arg , method)
         # move the compiled value to it's slot in the new message
-        to = NextMessageSlot.new(i ,val.type , val)
+        to = NewArgSlot.new(i ,val.type , val)
         # (doing this immediately, not after the loop, so if it's a return it won't get overwritten)
         method.info.add_code Set.new( val , to )
         compiled_args << to

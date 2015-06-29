@@ -5,7 +5,7 @@ module Virtual
   # want to send a message it puts the new self into the next_message.
   #
   # The slot in the Message is represented by instances of class Self
-  # (and slots in the next_message by instances of NextSelf)
+  # (and slots in the next_message by instances of NewSelf)
   #
   #  Additionally the current Self is represented as it's own top-level object.
   # If self is an Object one can refer to it's instance variables as Slots in SelfSlot
