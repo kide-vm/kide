@@ -6,6 +6,6 @@ require 'salama-reader'
 require 'parser/transform'
 require "salama-object-file"
 require "virtual"
-require "register/register_machine"
+require "register/register"
 require "register/builtin/object"
 require "arm/arm_machine"
