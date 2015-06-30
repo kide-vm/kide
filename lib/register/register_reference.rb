@@ -86,35 +86,6 @@ module Register
     RegisterReference.new :r4
   end
 
-  # Produce a GetSlot instruction (see there).
-  # From and to are registers or symbols that can be transformed to a register by resolve_to_register
-  # index resolves with resolve_index.
-  def self.get_slot from , index , to
-    index = resolve_index( from , index)
-    from = resolve_to_register from
-    to = resolve_to_register to
-    GetSlot.new( from , index , to)
-  end
-
-  # Produce a SetSlot instruction (see there).
-  # From and to are registers or symbols that can be transformed to a register by resolve_to_register
-  # index resolves with resolve_index.
-  def self.set_slot from , to , index
-    index = resolve_index( to , index)
-    from = resolve_to_register from
-    to = resolve_to_register to
-    SetSlot.new( from , to , index)
-  end
-
-  # Produce a SaveReturn instruction (see there).
-  # From is a register or symbol that can be transformed to a register by resolve_to_register
-  # index resolves with resolve_index.
-  def self.save_return from , index
-    index = resolve_index( from , index)
-    from = resolve_to_register from
-    SaveReturn.new( from , index )
-  end
-
   # The first arg is a class name (possibly lowercase) and the second an instance variable name.
   # By looking up the class and the layout for that class, we can resolve the instance
   # variable name to an index.

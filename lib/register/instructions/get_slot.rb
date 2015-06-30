@@ -28,4 +28,15 @@ module Register
     end
     attr_accessor :register , :array , :index
   end
+
+  # Produce a GetSlot instruction.
+  # From and to are registers or symbols that can be transformed to a register by resolve_to_register
+  # index resolves with resolve_index.
+  def self.get_slot from , index , to
+    index = resolve_index( from , index)
+    from = resolve_to_register from
+    to = resolve_to_register to
+    GetSlot.new( from , index , to)
+  end
+
 end

@@ -27,4 +27,15 @@ module Register
     end
     attr_accessor :register , :array , :index
   end
+
+  # Produce a SetSlot instruction.
+  # From and to are registers or symbols that can be transformed to a register by resolve_to_register
+  # index resolves with resolve_index.
+  def self.set_slot from , to , index
+    index = resolve_index( to , index)
+    from = resolve_to_register from
+    to = resolve_to_register to
+    SetSlot.new( from , to , index)
+  end
+
 end
