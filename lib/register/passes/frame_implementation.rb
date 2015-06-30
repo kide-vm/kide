@@ -42,9 +42,9 @@ module Register
         frame_tmp = space_tmp.next_reg_use
         # get the next_frame
         from = Parfait::Space.object_space.send( kind )
-        kind_index = from.get_layout().index_of( kind )
+        kind_index = from.get_layout().index_of( kind ) + 1 # should be resolve_index to hide the +1
         raise "index not found for #{kind}.#{kind.class}" unless kind_index
-        new_codes << GetSlot.new( Register.frame_reg , kind_index , frame_tmp) # 2 index of next_frame
+        new_codes << GetSlot.new( Register.frame_reg , kind_index , frame_tmp)
         # save next frame into space
         new_codes << SetSlot.new( frame_tmp , space_tmp , space_index)
         block.replace(code , new_codes )

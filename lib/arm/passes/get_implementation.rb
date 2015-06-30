@@ -5,8 +5,7 @@ module Arm
       block.codes.dup.each do |code|
         next unless code.is_a? Register::GetSlot
         # times 4 because arm works in bytes, but vm in words
-        # + 1 because of the type word
-        load = ArmMachine.ldr( code.register ,  code.array , 4 * (code.index + 1) )
+        load = ArmMachine.ldr( code.register ,  code.array , 4 * code.index )
         block.replace(code , load )
       end
     end

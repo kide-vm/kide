@@ -56,21 +56,23 @@ module Register
         # TODO : fix this to use global (later per thread) variable
         def save_message(function)
           space_tmp = Register.tmp_reg
-          ind = Parfait::Space.object_space.get_layout().index_of( :syscall_message )
-          raise "index not found for :syscall_message" unless ind
+          ind = Register.resolve_index( :space , :syscall_message )
           function.info.add_code LoadConstant.new( Parfait::Space.object_space , space_tmp)
           function.info.add_code SetSlot.new( Register.message_reg , space_tmp , ind)
         end
+
         def restore_message(function)
           # get the sys return out of the way
           return_tmp = Register.tmp_reg
+          function.info.add_code RegisterTransfer.new( Register.message_reg , return_tmp )
           # load the space into the base register
-          function.info.add_code RegisterTransfer.new( return_tmp , Register.message_reg )
+          function.info.add_code LoadConstant.new(Parfait::Space.object_space ,Register.message_reg)
           # find the stored message
-          ind = Parfait::Space.object_space.get_layout().index_of( :syscall_message )
-          raise "index not found for #{kind}.#{kind.class}" unless ind
+          ind = Register.resolve_index( :space , :syscall_message )
           # and load it into the base RegisterMachine
           function.info.add_code Register.get_slot :message , ind , :message
+          # save the return value into the message
+          function.info.add_code Register.set_slot( return_tmp , :message , :return_value )
           # and "unroll" self and frame
           function.info.add_code Register.get_slot(:message , :receiver, :self )
           function.info.add_code Register.get_slot(:message , :frame , :frame)

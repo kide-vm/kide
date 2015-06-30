@@ -97,7 +97,7 @@ module Register
     raise "Class name not given #{real_name}" unless clazz
     index = clazz.object_layout.index_of( instance_name )
     raise "Instance name=#{instance_name} not found on #{real_name}" unless index.is_a?(Numeric)
-    return index
+    return index + 1 # one for the type word that is at index 0
   end
 
   # if a symbol is given, it may be one of the four objects that the vm knows.

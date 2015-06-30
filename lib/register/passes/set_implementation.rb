@@ -28,7 +28,7 @@ module Register
         return Register.resolve_index( :message , :name)
       when Virtual::NewArgSlot
         puts "from: #{from.index}"
-        return Register.resolve_index( :message , :name) + 1 + from.index
+        return Register.resolve_index( :message , :name) + from.index
       else
         raise "not implemented for #{from.class}"
       end
