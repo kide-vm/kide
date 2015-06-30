@@ -55,29 +55,40 @@ module Register
 
   end
 
-  MESSAGE_REGISTER = :r0
-  SELF_REGISTER = :r1
-  FRAME_REGISTER = :r2
-  NEW_MESSAGE_REGISTER = :r3
+  # Here we define the mapping from virtual machine objects, to register machine registers
+  #
 
-  TMP_REGISTER = :r4
-
-  def self.self_reg
-    RegisterReference.new SELF_REGISTER
-  end
+  # The register we use to store the current message object is :r0
   def self.message_reg
-    RegisterReference.new MESSAGE_REGISTER
-  end
-  def self.frame_reg
-    RegisterReference.new FRAME_REGISTER
-  end
-  def self.new_message_reg
-    RegisterReference.new NEW_MESSAGE_REGISTER
-  end
-  def self.tmp_reg
-    RegisterReference.new TMP_REGISTER
+    RegisterReference.new :r0
   end
 
+  # A register to hold the receiver of the current message, in oo terms the self. :r1
+  def self.self_reg
+    RegisterReference.new :r1
+  end
+
+  # The register to hold a possible frame of the currently executing method. :r2
+  # May be nil if the method has no local variables
+  def self.frame_reg
+    RegisterReference.new :r2
+  end
+
+  # The register we use to store the new message object is :r3
+  # The new message is the one being built, to be sent
+  def self.new_message_reg
+    RegisterReference.new :r3
+  end
+
+  # The first scratch register. There is a next_reg_use to get a next and next.
+  # Current thinking is that scratch is schatch between instructions
+  def self.tmp_reg
+    RegisterReference.new :r4
+  end
+
+  # Produce a GetSlot instruction (see there).
+  # From and to are registers or symbols that can be transformed to a register by resolve_to_register
+  # index resolves with resolve_index.
   def self.get_slot from , index , to
     index = resolve_index( from , index)
     from = resolve_to_register from
@@ -85,6 +96,9 @@ module Register
     GetSlot.new( from , index , to)
   end
 
+  # Produce a SetSlot instruction (see there).
+  # From and to are registers or symbols that can be transformed to a register by resolve_to_register
+  # index resolves with resolve_index.
   def self.set_slot from , to , index
     index = resolve_index( to , index)
     from = resolve_to_register from
@@ -92,12 +106,19 @@ module Register
     SetSlot.new( from , to , index)
   end
 
+  # Produce a SaveReturn instruction (see there).
+  # From is a register or symbol that can be transformed to a register by resolve_to_register
+  # index resolves with resolve_index.
   def self.save_return from , index
     index = resolve_index( from , index)
     from = resolve_to_register from
     SaveReturn.new( from , index )
   end
 
+  # The first arg is a class name (possibly lowercase) and the second an instance variable name.
+  # By looking up the class and the layout for that class, we can resolve the instance
+  # variable name to an index.
+  # The class can be mapped to a register, and so we get a memory address (reg+index)
   def self.resolve_index( clazz_name , instance_name )
     return instance_name unless instance_name.is_a? Symbol
     real_name = clazz_name.to_s.split('_').last.capitalize.to_sym
@@ -108,6 +129,11 @@ module Register
     return index
   end
 
+  # if a symbol is given, it may be one of the four objects that the vm knows.
+  # These are mapped to register references.
+  # The valid symbols (:message, :self,:frame,:new_message) are the same that are returned
+  # by the slots. All data (at any time) is in one of the instance variables of these four
+  # objects. Register defines module methods with the same names (and _reg)
   def self.resolve_to_register reference
     register = reference
     if reference.is_a? Symbol
