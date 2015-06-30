@@ -18,6 +18,13 @@ module Virtual
 
   class Slot < Object
 
+    # the name of the object of a slot is a symbol that represents what the class name describes
+    # ie it is one of :message , :self , :frame , :new_message
+    # one of the objects the machine works on. 
+    def object_name
+      raise "abstract called #{self}"
+    end
+
     attr_accessor :type , :value
 
     private #abstract base class

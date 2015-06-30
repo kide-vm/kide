@@ -10,6 +10,9 @@ module Virtual
     def initialize type = Unknown, value = nil
       super( type , value )
     end
+    def object_name
+      :new_message
+    end
   end
 
   # named classes exist for slots that often accessed

@@ -17,5 +17,8 @@ module Virtual
     def initialize type = Unknown, value = nil
       super
     end
+    def object_name
+      :self
+    end
   end
 end

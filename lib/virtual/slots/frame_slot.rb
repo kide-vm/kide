@@ -7,6 +7,10 @@ module Virtual
     def initialize type = Unknown, value = nil
       super
     end
+
+    def object_name
+      return :frame
+    end
   end
 
 end
