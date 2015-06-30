@@ -126,7 +126,7 @@ module Register
     end
 
     def write_any obj
-      puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{stream_position.to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
+      #puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{stream_position.to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
       if stream_position != obj.position
         raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{stream_position.to_s(16)} not #{obj.position.to_s(16)}"
       end
@@ -164,10 +164,10 @@ module Register
       write_ref_for(layout )
       layout.each do |var|
         inst = object.instance_variable_get "@#{var}".to_sym
-        puts "Nil for #{object.class}.#{var}" unless inst
+        #puts "Nil for #{object.class}.#{var}" unless inst
         write_ref_for(inst)
       end
-      puts "layout length=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
+      #puts "layout length=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
       l = layout.get_length
       if( object.is_a? Parfait::List)
         object.each do |inst|
@@ -191,7 +191,7 @@ module Register
       # first line is integers, convention is that following lines are the same
       TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
       @stream.write_uint32( word )
-      puts "String is #{string} at #{string.position.to_s(16)} length #{string.length.to_s(16)}"
+      #puts "String is #{string} at #{string.position.to_s(16)} length #{string.length.to_s(16)}"
       write_ref_for( string.get_layout ) #ref
       @stream.write str
       pad_after(str.length)
@@ -223,7 +223,7 @@ module Register
         @stream.write_uint8(0)
       end
       after = stream_position.to_s(16)
-      puts "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
+      #puts "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
     end
 
     def stream_position

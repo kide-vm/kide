@@ -9,7 +9,7 @@ class HelloTest < MiniTest::Test
     output_at = "Register::CallImplementation"
     #{}"Register::CallImplementation"
     machine.run_before output_at
-    puts Sof.write(machine.space)
+    #puts Sof.write(machine.space)
     machine.run_after output_at
     writer = Elf::ObjectWriter.new(machine)
     writer.save "hello.o"
