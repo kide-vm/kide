@@ -39,6 +39,7 @@ module Parfait
         @next_message = Message.new @next_message
         @next_frame = Frame.new @next_frame
       end
+      @init_message = Message.new @next_message
       init_layout
     end
 

@@ -29,7 +29,7 @@ module Virtual
                   :Message => [:next_message , :receiver , :frame , :return_address , :caller , :name ],
                   :MetaClass => [],
                   :BinaryCode => [],
-                  :Space => [:classes ,:next_message ,:next_frame, :syscall_message],
+                  :Space => [:classes ,:init_message , :next_message ,:next_frame, :syscall_message],
                   :Frame => [:next_frame ],
                   :Layout => [:object_class] ,
                   :Class => [:object_layout ],
