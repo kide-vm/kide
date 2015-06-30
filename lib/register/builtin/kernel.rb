@@ -15,10 +15,10 @@ module Register
           space = Parfait::Space.object_space
           function.info.add_code LoadConstant.new( space , Register.self_reg)
           message_ind = space.get_layout().index_of( :next_message )
-          # Load the message to message register (0)
-          function.info.add_code Register.get_slot( :self , message_ind , :message)
+          # Load the message to new message register (r3)
+          function.info.add_code Register.get_slot( :self , message_ind , :new_message)
           # And store the space as the new self (so the call can move it back as self)
-          function.info.add_code Register.set_slot( :self , :message , :receiver)
+          function.info.add_code Register.set_slot( :self , :new_message , :receiver)
           # now we are set up to issue a call to the main
           function.info.add_code Virtual::MethodCall.new(Virtual.machine.space.get_main)
           emit_syscall( function , :exit )
