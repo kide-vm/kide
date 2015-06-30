@@ -58,41 +58,46 @@ module Register
     def write_as_string
       # must be same order as assemble
       begin
-        assemble
-        all = @machine.objects.sort{|a,b| a.position <=> b.position}
-        # debugging loop accesses all positions to force an error if it's not set
-        all.each do |objekt|
-          #puts "Linked #{objekt.class}(#{objekt.object_id.to_s(16)}) at #{objekt.position.to_s(16)} / #{objekt.word_length.to_s(16)}"
-          objekt.position
-        end
-        # first we need to create the binary code for the methods
-        @machine.objects.each do |objekt|
-          next unless objekt.is_a? Parfait::Method
-          assemble_binary_method(objekt)
-        end
-        @stream = StringIO.new
-        @machine.init.codes.each do |code|
-          code.assemble( @stream )
-        end
-        8.times do
-          @stream.write_uint8(0)
-        end
-
-
-        # then write the methods to file
-        @machine.objects.each do |objekt|
-          next unless objekt.is_a? Parfait::BinaryCode
-          write_any( objekt )
-        end
-        # and then the rest of the object machine
-        @machine.objects.each do | objekt|
-          next if objekt.is_a? Parfait::BinaryCode
-          write_any( objekt )
-        end
+        return try_write
       rescue LinkException
         puts "RELINK"
         # knowing that we fix the problem, we hope to get away with retry.
-        retry
+        return try_write
+      end
+    end
+
+    # private method to implement write_as_string. May throw link Exception in which
+    # case we try again. Once.
+    def try_write
+      assemble
+      all = @machine.objects.sort{|a,b| a.position <=> b.position}
+      # debugging loop accesses all positions to force an error if it's not set
+      all.each do |objekt|
+        #puts "Linked #{objekt.class}(#{objekt.object_id.to_s(16)}) at #{objekt.position.to_s(16)} / #{objekt.word_length.to_s(16)}"
+        objekt.position
+      end
+      # first we need to create the binary code for the methods
+      @machine.objects.each do |objekt|
+        next unless objekt.is_a? Parfait::Method
+        assemble_binary_method(objekt)
+      end
+      @stream = StringIO.new
+      @machine.init.codes.each do |code|
+        code.assemble( @stream )
+      end
+      8.times do
+        @stream.write_uint8(0)
+      end
+
+      # then write the methods to file
+      @machine.objects.each do |objekt|
+        next unless objekt.is_a? Parfait::BinaryCode
+        write_any( objekt )
+      end
+      # and then the rest of the object machine
+      @machine.objects.each do | objekt|
+        next if objekt.is_a? Parfait::BinaryCode
+        write_any( objekt )
       end
       puts "Assembled 0x#{stream_position.to_s(16)}/#{stream_position.to_s(16)} bytes"
       return @stream.string
