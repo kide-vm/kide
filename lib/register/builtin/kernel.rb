@@ -24,11 +24,6 @@ module Register
           emit_syscall( function , :exit )
           return function
         end
-        def putstring context
-          function = Virtual::CompiledMethodInfo.create_method(:Kernel , :putstring , [] )
-          emit_syscall( function , :putstring )
-          function
-        end
         def exit context
           function = Virtual::CompiledMethodInfo.create_method(:Kernel,:exit , [])
           function.info.return_type = Virtual::Integer
@@ -43,7 +38,6 @@ module Register
           return function
         end
 
-        private
         def emit_syscall function , name
           save_message( function )
           function.info.add_code Syscall.new( name )

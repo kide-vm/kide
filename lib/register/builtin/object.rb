@@ -73,5 +73,6 @@ module Register
 end
 
 require_relative "integer"
-require_relative "array"
+require_relative "list"
 require_relative "kernel"
+require_relative "word"

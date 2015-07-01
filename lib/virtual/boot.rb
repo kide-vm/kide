@@ -105,9 +105,11 @@ module Virtual
       end
       obj = @class_mappings[:Kernel ]
       # create dummy main first, __init__ calls it
-      [:putstring,:exit,:__send , :__init__ ].each do |f|
+      [:exit,:__send , :__init__ ].each do |f|
         obj.add_instance_method Register::Builtin::Kernel.send(f , nil)
       end
+
+      @class_mappings[:Word].add_instance_method Register::Builtin::Word.send(:putstring , nil)
 
       obj = @class_mappings[:Integer ]
       [:putint,:fibo].each do |f|
