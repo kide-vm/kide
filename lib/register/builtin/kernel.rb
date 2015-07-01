@@ -14,7 +14,7 @@ module Register
           #Set up the Space as self upon init
           space = Parfait::Space.object_space
           function.info.add_code LoadConstant.new( space , Register.self_reg)
-          message_ind = space.get_layout().index_of( :init_message )
+          message_ind = Register.resolve_index( :space , :init_message )
           # Load the message to new message register (r3)
           function.info.add_code Register.get_slot( :self , message_ind , :new_message)
           # And store the space as the new self (so the call can move it back as self)

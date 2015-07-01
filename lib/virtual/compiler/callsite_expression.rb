@@ -14,7 +14,9 @@ module Virtual
         #compile in the running method, ie before passing control
         val = Compiler.compile( arg , method)
         # move the compiled value to it's slot in the new message
-        to = NewArgSlot.new(i ,val.type , val)
+        # + 1 as this is a ruby 0-start , but 0 is the last message ivar.
+        # so the next free is +1 
+        to = NewArgSlot.new(i + 1 ,val.type , val)
         # (doing this immediately, not after the loop, so if it's a return it won't get overwritten)
         method.info.add_code Set.new( val , to )
         compiled_args << to

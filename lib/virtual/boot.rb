@@ -26,7 +26,8 @@ module Virtual
       layouts = { :Word => [] ,
                   :List => [] ,
                   # Assumtion is that name is the last of message
-                  :Message => [:next_message , :receiver , :frame , :return_address , :caller , :name ],
+                  :Message => [:next_message , :receiver , :frame , :return_address , :return_value, 
+                                :caller , :name ],
                   :MetaClass => [],
                   :BinaryCode => [],
                   :Space => [:classes ,:init_message , :next_message ,:next_frame, :syscall_message],
