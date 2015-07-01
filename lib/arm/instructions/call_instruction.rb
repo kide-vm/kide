@@ -44,7 +44,6 @@ module Arm
             # so there it balances out, but not blocks
             # have to use the code, not the mthod object for methods
             diff = arg.code.position - self.position
-            diff -= 4 if diff > 0 # hmm, stil having troubles with this one. but it works :-)
           end
           arg = diff
         end

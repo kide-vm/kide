@@ -48,6 +48,7 @@ module Arm
           #TODO this is copied from MoveInstruction, should rework
           unless @extra
             @extra = 1
+            puts "RELINK L at #{self.position.to_s(16)}"
             raise ::Register::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
           end
           # now we can do the actual breaking of instruction, by splitting the operand
@@ -87,7 +88,7 @@ module Arm
       val << by
     end
 
-    def word_length
+    def byte_length
       @extra ? 8 : 4
     end
 

@@ -60,7 +60,6 @@ module Register
       begin
         return try_write
       rescue LinkException
-        puts "RELINK"
         # knowing that we fix the problem, we hope to get away with retry.
         return try_write
       end
@@ -123,7 +122,7 @@ module Register
       stream.rewind
       #puts "Assembled #{method.name} with length #{stream.length}"
       raise "length error #{method.code.length} != #{method.info.byte_length}" if method.code.length != method.info.byte_length
-      raise "length error #{stream.length} != #{method.info.byte_length}" if method.info.byte_length - stream.length > 6
+      raise "length error #{stream.length} != #{method.info.byte_length}" if method.info.byte_length != stream.length
       stream.each_byte do |b|
         method.code.set_char(index , b )
         index = index + 1

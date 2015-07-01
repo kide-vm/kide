@@ -18,9 +18,6 @@ module Arm
       @immediate = 0
       @rn = :r0 # register zero = zero bit pattern
       @extra = nil
-      if @rn.is_a?(Numeric) and !@rn.fits_u8? and !calculate_u8_with_rr(@rn)
-        @extra = 1
-      end
     end
     attr_accessor :to , :from
 
@@ -31,7 +28,7 @@ module Arm
     # alas, full transparency is not achieved as we only know when to use 2 instruction once we
     # know where the other object is, and that position is only set after code positions have been
     # determined (in link) and so see below in assemble
-    def word_length
+    def byte_length
       @extra ? 8 : 4
     end
 
@@ -65,6 +62,7 @@ module Arm
           # then on subsequent assemblies we can assemble
           unless @extra
             @extra = 1
+            puts "RELINK M at #{self.position.to_s(16)}"
             raise ::Register::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
           end
           # now we can do the actual breaking of instruction, by splitting the operand
