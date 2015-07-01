@@ -24,7 +24,7 @@ module Elf
       @object_machine.space.classes.values.each do |clazz|
         clazz.instance_methods.each do |f|
           f.info.blocks.each do |b|
-              add_symbol "#{clazz.name}::#{f.name}-#{b.name}" , b.position
+              add_symbol "#{clazz.name}::#{f.name}:#{b.name}" , b.position
             end
         end
       end
