@@ -31,8 +31,8 @@ module Virtual
     end
   end
 
-  # MessageName of the current message
-  class MessageName < MessageSlot
+  # MessageMethod of the current message
+  class MessageMethod < MessageSlot
     def initialize type = Unknown, value = nil
       super( type , value  )
     end

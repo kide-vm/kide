@@ -8,7 +8,7 @@ module Virtual
       me = Compiler.compile( expession.receiver , method )
       method.info.add_code NewMessage.new
       method.info.add_code Set.new( me , NewSelf.new(me.type))
-      method.info.add_code Set.new( expession.name.to_sym , NewMessageName.new())
+      method.info.add_code Set.new( expession.name.to_sym , NewMessageMethod.new())
       compiled_args = []
       expession.args.each_with_index do |arg , i|
         #compile in the running method, ie before passing control
