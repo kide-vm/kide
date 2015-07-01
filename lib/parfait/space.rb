@@ -27,19 +27,17 @@ module Parfait
       @classes = Parfait::Dictionary.new_object
       @syscall_message = nil  # a hack sto store the message during syscall
     end
-    attr_reader :classes , :next_message , :next_frame
+    attr_reader :classes , :first_message
 
     # need a two phase init for the object space (and generally parfait) because the space
     # is an interconnected graph, so not everthing is ready
     def late_init
-      counter = 0
-      @next_message = Message.new(nil)
-      @next_frame = Frame.new(nil)
-      5.times do |i|
-        @next_message = Message.new @next_message
-        @next_frame = Frame.new @next_frame
+      message = Message.new(nil)
+      5.times do
+        new_message = Message.new message
+        message.set_caller new_message
       end
-      @init_message = Message.new @next_message
+      @first_message = Message.new message
       init_layout
     end
 

@@ -7,6 +7,10 @@
 # A Message and a Frame make up the two sides of message passing:
 # A Message (see details there) is created by the sender and control is transferred
 # A Frame is created by the receiver
+# PS: it turns out that both messages and frames are created at compile, not run-time, and
+#  just constantly reused. Each message has a frame object ready and ist also linked
+#  to the next message.
+# The better way to say above is that a messages is *used* by the caller, and a frame by the callee.
 
 # In static languages these two objects are one, because the method is known at compile time.
 # In that case the whole frame is usually on the stack, for leaves even omitted and all data is
@@ -22,9 +26,5 @@
 
 module Parfait
   class Frame < Object
-    def initialize next_f
-      @next_frame = next_f
-      super()
-    end
   end
 end
