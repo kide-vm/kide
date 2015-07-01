@@ -20,7 +20,7 @@ module Virtual
 
     # the name of the object of a slot is a symbol that represents what the class name describes
     # ie it is one of :message , :self , :frame , :new_message
-    # one of the objects the machine works on. 
+    # one of the objects the machine works on.
     def object_name
       raise "abstract called #{self}"
     end
@@ -40,4 +40,4 @@ end
 require_relative "message_slot"
 require_relative "self_slot"
 require_relative "frame_slot"
-require_relative "next_message_slot"
+require_relative "new_message_slot"
