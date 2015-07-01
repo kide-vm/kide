@@ -61,7 +61,7 @@ module Register
         return try_write
       rescue LinkException
         # knowing that we fix the problem, we hope to get away with retry.
-        return try_write
+        retry
       end
     end
 
