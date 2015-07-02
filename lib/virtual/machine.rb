@@ -41,7 +41,7 @@ module Virtual
       @objects = []
       @booted = false
     end
-    attr_reader  :passes , :space , :class_mappings , :init , :objects
+    attr_reader  :passes , :space , :class_mappings , :init , :objects , :booted
 
     # run all passes before the pass given
     # also collect the  block to run the passes on and

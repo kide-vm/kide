@@ -30,7 +30,7 @@ module VirtualHelper
       expressions.first.type.instance_variable_set :@of_class , nil
     end
     is = Sof.write(expressions)
-    puts is
+    #puts is
     is.gsub!("\n" , "*^*")
     assert_equal @output , is
   end

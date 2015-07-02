@@ -34,10 +34,10 @@ module Parfait
     def late_init
       message = Message.new(nil)
       5.times do
-        new_message = Message.new message
-        message.set_caller new_message
+        @first_message = Message.new message
+        message.set_caller @first_message
+        message = @first_message
       end
-      @first_message = Message.new message
       init_layout
     end
 
