@@ -24,7 +24,7 @@ module VirtualHelper
     is = Sof.write(expressions)
     #puts is
     is.gsub!("\n" , "*^*")
-    assert_equal is , @output
+    assert_equal @output , is
   end
 
 end

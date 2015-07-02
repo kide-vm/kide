@@ -4,8 +4,9 @@ module Virtual
 
   # Slots in the Frame are local or temporary variables in a message
   class FrameSlot < Slot
-    def initialize type = Unknown, value = nil
-      super
+    def initialize index , type = Unknown, value = nil
+      super(type, value)
+      @index = index
     end
 
     def object_name

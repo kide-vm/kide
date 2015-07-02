@@ -108,11 +108,11 @@ module Parfait
     # 1 -based index
     def internal_object_set(index , value)
       raise "failed init for #{self.class}" unless @memory
-      @memory[index] = value
       #shaddowing layout so we can ignore memory in Sof
       if(index == LAYOUT_INDEX)
         @layout = value
       end
+      @memory[index] = value
     end
     def internal_object_grow(length)
       old_length = internal_object_length()
@@ -164,9 +164,9 @@ module Parfait
 
     def == other
       return false unless other.is_a?(String) or other.is_a?(Word)
-      as_string = self.to_s
+      as_string = self.to_string
       unless other.is_a? String
-        other = other.to_s
+        other = other.to_string
       end
       as_string == other
     end
