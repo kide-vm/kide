@@ -43,28 +43,21 @@ module Register
           function.info.add_code Syscall.new( name )
           restore_message(function)
         end
+
         # save the current message, as the syscall destroys all context
         #
-        # currently HACKED into the space as a temporary varaible. As the space is a globally
-        # unique object we can retrieve it from there
-        # TODO : fix this to use global (later per thread) variable
+        # This relies on linux to save and restore all registers
+        # 
         def save_message(function)
-          space_tmp = Register.tmp_reg
-          ind = Register.resolve_index( :space , :syscall_message )
-          function.info.add_code LoadConstant.new( Parfait::Space.object_space , space_tmp)
-          function.info.add_code SetSlot.new( Register.message_reg , space_tmp , ind)
+          function.info.add_code RegisterTransfer.new( Register.message_reg , :r8 )
         end
 
         def restore_message(function)
-          # get the sys return out of the way
           return_tmp = Register.tmp_reg
+          # get the sys return out of the way
           function.info.add_code RegisterTransfer.new( Register.message_reg , return_tmp )
-          # load the space into the base register
-          function.info.add_code LoadConstant.new(Parfait::Space.object_space ,Register.message_reg)
-          # find the stored message
-          ind = Register.resolve_index( :space , :syscall_message )
-          # and load it into the base RegisterMachine
-          function.info.add_code Register.get_slot :message , ind , :message
+          # load the stored message into the base RegisterMachine
+          function.info.add_code RegisterTransfer.new( :r8 , Register.message_reg )
           # save the return value into the message
           function.info.add_code Register.set_slot( return_tmp , :message , :return_value )
           # and "unroll" self and frame

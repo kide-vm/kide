@@ -30,7 +30,7 @@ module Virtual
                                 :caller , :name ],
                   :MetaClass => [],
                   :BinaryCode => [],
-                  :Space => [:classes , :first_message , :syscall_message],
+                  :Space => [:classes , :first_message ],
                   :Frame => [:next_frame ],
                   :Layout => [:object_class] ,
                   :Class => [:object_layout ],
