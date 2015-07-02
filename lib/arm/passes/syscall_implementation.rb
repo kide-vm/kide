@@ -1,7 +1,7 @@
 module Arm
 
   class SyscallImplementation
-    CALLS_CODES = { :putstring => 4 , :exit => 0    }
+    CALLS_CODES = { :putstring => 4 , :exit => 1    }
     def run block
       block.codes.dup.each do |code|
         next unless code.is_a? Register::Syscall
@@ -17,7 +17,7 @@ module Arm
       codes << ArmMachine.ldr( :r1 , Register.message_reg, 4 * Register.resolve_index(:message , :receiver))
       codes << ArmMachine.add( :r1 ,  :r1 , 8 )
       codes << ArmMachine.mov( :r0 ,  1 ) # stdout == 1
-      codes << ArmMachine.mov( :r2 ,  20 ) # String length, obvious TODO
+      codes << ArmMachine.mov( :r2 ,  12 ) # String length, obvious TODO
       syscall(int_code , codes )
     end
 
