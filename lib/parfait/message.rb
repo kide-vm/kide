@@ -17,7 +17,7 @@ module Parfait
     end
 
     attr_reader :next_message , :frame , :caller # aka prev_message
-    attr_reader :receiver ,  :return_address , :return_value , :method
+    attr_reader :receiver ,  :return_address , :return_value , :name
 
     def set_caller caller
       @caller = caller

@@ -24,11 +24,13 @@ module Register
       case from
       when Virtual::Self , Virtual::NewSelf
         return Register.resolve_index( :message , :receiver)
-      when Virtual::MessageMethod , Virtual::NewMessageMethod
-        return Register.resolve_index( :message , :method)
+      when Virtual::MessageName , Virtual::NewMessageName
+        return Register.resolve_index( :message , :name)
+      when Virtual::Return
+        return Register.resolve_index( :message , :return_value)
       when Virtual::NewArgSlot
         puts "from: #{from.index}"
-        return Register.resolve_index( :message , :method) + from.index
+        return Register.resolve_index( :message , :name) + from.index
       else
         raise "not implemented for #{from.class}"
       end

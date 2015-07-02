@@ -31,14 +31,14 @@ module Virtual
     end
   end
 
-  # NewMessageMethod of the next message
-  class NewMessageMethod < NewMessageSlot
+  # NewMessageName of the next message
+  class NewMessageName < NewMessageSlot
     def initialize type = Unknown, value = nil
       super( type , value )
     end
   end
 
-  # NewMessageMethod of the next message
+  # NewMessageName of the next message
   class NewArgSlot < NewMessageSlot
     def initialize index , type = Unknown, value = nil
       @index = index

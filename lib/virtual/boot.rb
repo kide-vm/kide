@@ -27,7 +27,7 @@ module Virtual
                   :List => [] ,
                   # Assumtion is that name is the last of message
                   :Message => [:next_message , :receiver , :frame , :return_address , :return_value,
-                                :caller , :method ],
+                                :caller , :name ],
                   :MetaClass => [],
                   :BinaryCode => [],
                   :Space => [:classes , :first_message , :syscall_message],
