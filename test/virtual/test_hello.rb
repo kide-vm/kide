@@ -33,7 +33,7 @@ HERE
 
   def test_string_put
     @string_input    = <<HERE
-"Hello".putstring()
+"Hello again\n".putstring()
 HERE
     check
   end

@@ -39,7 +39,7 @@ module Register
       @machine.objects.each do |objekt|
         next unless objekt.is_a? Parfait::BinaryCode
         objekt.set_position at
-        # puts "CODE #{objekt.name} at #{objekt.position}"
+        #puts "CODE #{objekt.name} at #{objekt.position}"
         at += objekt.word_length
       end
       # and then everything else
@@ -98,7 +98,7 @@ module Register
         next if objekt.is_a? Parfait::BinaryCode
         write_any( objekt )
       end
-      puts "Assembled 0x#{stream_position.to_s(16)}/#{stream_position.to_s(16)} bytes"
+      puts "Assembled #{stream_position} bytes"
       return @stream.string
     end
 
@@ -130,9 +130,9 @@ module Register
     end
 
     def write_any obj
-      #puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{stream_position.to_s(16)} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
-      if stream_position != obj.position
-        raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{stream_position.to_s(16)} not #{obj.position.to_s(16)}"
+      #puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{stream_position} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
+      if @stream.length != obj.position
+        raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{stream_position} not #{obj.position.to_s(16)}"
       end
       if obj.is_a?(Parfait::Word) or obj.is_a?(Symbol)
         write_String obj
@@ -191,15 +191,14 @@ module Register
       str = string.to_string if string.is_a? Parfait::Word
       str = string.to_s if string.is_a? Symbol
       word = (str.length + 7) / 32  # all object are multiple of 8 words (7 for header)
-      raise "String too long (implement split string!) #{word}" if word > 15
       # first line is integers, convention is that following lines are the same
       TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
       @stream.write_uint32( word )
-      #puts "String is #{string} at #{string.position.to_s(16)} length #{string.length.to_s(16)}"
+      #puts "String is #{string} at #{string.position.to_s(16)} length #{string.length}"
       write_ref_for( string.get_layout ) #ref
       @stream.write str
       pad_after(str.length)
-      #puts "String (#{slot.word_length}) stream #{@stream.word_length.to_s(16)}"
+      #puts "String (#{string.length.to_s(16)}) stream #{@stream.length.to_s(16)}"
     end
 
     def write_Symbol(sym)
@@ -221,17 +220,18 @@ module Register
 
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
     def pad_after length
-      before = stream_position.to_s(16)
+      before = stream_position
       pad = padding_for(length)
       pad.times do
         @stream.write_uint8(0)
       end
-      after = stream_position.to_s(16)
+      after = stream_position
       #puts "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
     end
 
+    # return the stream length as hex
     def stream_position
-      @stream.length
+      @stream.length.to_s(16)
     end
   end
 
