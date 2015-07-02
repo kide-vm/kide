@@ -12,9 +12,9 @@ module Virtual
   # another abstract "marker" class (so we can check for it)
   # derived classes are Boot/Meta Class and StringConstant
   class ObjectConstant < Constant
-    def type
-      Virtual::Reference
-    end
+#    def type
+#      Virtual::Reference
+#    end
     def clazz
       raise "abstract #{self}"
     end
@@ -32,5 +32,5 @@ module Virtual
       integer >= 0 and integer <= 255
     end
   end
-  
+
 end

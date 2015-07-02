@@ -15,7 +15,6 @@ module Virtual
         next unless code.is_a? MessageSend
         new_codes = [  ]
         ref = code.me
-        raise "only refs implemented #{ref.type}" unless ( ref.type.is_a? Reference)
         # value known at compile time, got do something with it
         if(ref.value)
           me = ref.value
@@ -27,13 +26,18 @@ module Virtual
             method = me.get_class.get_instance_method(code.name)
             raise "Method not implemented #{me.class}.#{code.name}" unless method
             new_codes << MethodCall.new( method )
+          elsif( me.is_a? Symbol )
+            # get the function from my class. easy peasy
+            method = Virtual.machine.space.get_class_by_name(:Word).get_instance_method(code.name)
+            raise "Method not implemented #{me.class}.#{code.name}" unless method
+            new_codes << MethodCall.new( method )
           else
             # note: this is the current view: call internal send, even the method name says else
             # but send is "special" and accesses the internal method name and resolves.
-            kernel = Virtual.machine.space.get_class_by_name("Kernel")
+            kernel = Virtual.machine.space.get_class_by_name(:Kernel)
             method = kernel.get_instance_method(:__send)
             new_codes << MethodCall.new( method )
-            raise "unimplemented: \n#{code}"
+            raise "unimplemented: \n#{code} \nfor #{ref.inspect}"
           end
         else
           if ref.type.is_a?(Reference) and ref.type.of_class

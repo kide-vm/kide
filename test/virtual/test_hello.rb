@@ -24,18 +24,16 @@ HERE
     check
   end
 
-  def test_puts_string
+  def ttest_puts_string
     @string_input    = <<HERE
 putstring("Hello")
 HERE
     check
   end
 
-  def ttest_string_put
+  def test_string_put
     @string_input    = <<HERE
-def foo()
-  "Hello".puts()
-end
+"Hello".putstring()
 HERE
     check
   end
