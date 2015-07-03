@@ -15,25 +15,25 @@ module Virtual
       def self.compile_integer expression , method
         int = expression.value
         to = Return.new(Integer , int)
-        method.info.add_code Set.new( int , to )
+        method.source.add_code Set.new( int , to )
         to
       end
 
       def self.compile_true expression , method
         to = Return.new(Reference , true )
-        method.info.add_code Set.new( true , to )
+        method.source.add_code Set.new( true , to )
         to
       end
 
       def self.compile_false expression , method
         to = Return.new(Reference , false)
-        method.info.add_code Set.new( false , to )
+        method.source.add_code Set.new( false , to )
         to
       end
 
       def self.compile_nil expression , method
         to = Return.new(Reference , nil)
-        method.info.add_code Set.new( nil , to )
+        method.source.add_code Set.new( nil , to )
         to
       end
 
@@ -47,9 +47,9 @@ module Virtual
         if method.has_var(name)
           # either an argument, so it's stored in message
           if( index = method.has_arg(name))
-            method.info.add_code MessageGet.new(expression.name , index)
+            method.source.add_code MessageGet.new(expression.name , index)
           else # or a local so it is in the frame
-            method.info.add_code FrameGet.new(expression.name , index)
+            method.source.add_code FrameGet.new(expression.name , index)
           end
         else
           call = Ast::CallSiteExpression.new(expression.name , [] ) #receiver self is implicit
@@ -62,7 +62,7 @@ module Virtual
         clazz = Space.space.get_class_by_name name
         raise "uups #{clazz}.#{name}" unless clazz
         to = Return.new(Reference , clazz )
-        method.info.add_code Set.new( clazz , to )
+        method.source.add_code Set.new( clazz , to )
         to
       end
 
@@ -71,8 +71,8 @@ module Virtual
         # Clearly a TODO here to implement strings rather than reusing symbols
         value = expression.string.to_sym
         to = Return.new(Reference , value)
-        method.info.constants << value
-        method.info.add_code Set.new( value , to )
+        method.source.constants << value
+        method.source.add_code Set.new( value , to )
         to
       end
 
@@ -85,16 +85,16 @@ module Virtual
         raise "oh noo, nil from where #{expression.right.inspect}" unless r
         index = method.has_arg(expression.left.name.to_sym)
         if index
-          method.info.add_code Set.new(MessageSlot.new(index , r,type , r ) , Return.new)
+          method.source.add_code Set.new(MessageSlot.new(index , r,type , r ) , Return.new)
         else
           index = method.ensure_local(expression.left.name.to_sym)
-          method.info.add_code Set.new(FrameSlot.new(index , r.type , r ) , Return.new)
+          method.source.add_code Set.new(FrameSlot.new(index , r.type , r ) , Return.new)
         end
         r
       end
 
       def self.compile_variable expression, method
-        method.info.add_code InstanceGet.new(expression.name)
+        method.source.add_code InstanceGet.new(expression.name)
         Return.new( Unknown )
       end
   end

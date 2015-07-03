@@ -159,7 +159,7 @@ module Parfait
 
     #many basic List functions can not be defined in ruby, such as
     # get/set/length/add/delete
-    # so they must be defined as CompiledMethods in Builtin::Kernel
+    # so they must be defined as Methods in Builtin::Kernel
 
     #ruby 2.1 list (just for reference, keep at bottom)
     # :at, :fetch, :first, :last, :concat, :<<, :push, :pop, :shift, :unshift, :insert, :each, :each_index, :reverse_each,

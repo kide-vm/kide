@@ -28,7 +28,7 @@ module Register
       @machine.objects.each do |objekt|
         next unless objekt.is_a? Parfait::Method
         # should be fill_to_length (with zeros)
-        objekt.code.set_length(objekt.info.byte_length , 0)
+        objekt.code.set_length(objekt.source.byte_length , 0)
       end
       #need the initial jump at 0 and then functions
       @machine.init.set_position(at)
@@ -47,7 +47,7 @@ module Register
         # have to tell the code that will be assembled where it is to
         # get the jumps/calls right
         if objekt.is_a? Parfait::Method
-          objekt.info.set_position( objekt.code.position )
+          objekt.source.set_position( objekt.code.position )
         end
         next if objekt.is_a? Parfait::BinaryCode
         objekt.set_position at
@@ -102,16 +102,16 @@ module Register
       return @stream.string
     end
 
-    # assemble the CompiledMethodInfo into a stringio
+    # assemble the MethodSource into a stringio
     # and then plonk that binary data into the method.code array
     def assemble_binary_method method
       stream = StringIO.new
-      method.info.blocks.each do |block|
+      method.source.blocks.each do |block|
         block.codes.each do |code|
           begin
             code.assemble( stream )
           rescue => e
-            puts "Method error #{method.name}\n#{Sof.write(method.info.blocks).to_s[0...2000]}"
+            puts "Method error #{method.name}\n#{Sof.write(method.source.blocks).to_s[0...2000]}"
             puts Sof.write(code)
             raise e
           end
@@ -121,8 +121,8 @@ module Register
       index = 1
       stream.rewind
       #puts "Assembled #{method.name} with length #{stream.length}"
-      raise "length error #{method.code.length} != #{method.info.byte_length}" if method.code.length != method.info.byte_length
-      raise "length error #{stream.length} != #{method.info.byte_length}" if method.info.byte_length != stream.length
+      raise "length error #{method.code.length} != #{method.source.byte_length}" if method.code.length != method.source.byte_length
+      raise "length error #{stream.length} != #{method.source.byte_length}" if method.source.byte_length != stream.length
       stream.each_byte do |b|
         method.code.set_char(index , b )
         index = index + 1

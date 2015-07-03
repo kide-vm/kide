@@ -15,7 +15,7 @@ module Virtual
         object.init_layout
       end
       if( object.is_a? Parfait::Method)
-        object.info.constants.each{|c| keep(c) }
+        object.source.constants.each{|c| keep(c) }
       end
       layout = object.get_layout
       keep layout

@@ -21,8 +21,8 @@ also in an similar way that objects have their classes at runtime.
 source.  Here we add compile functions to ast classes and  compile the AST layer into
 Virtual::Objects and Parfait::Values
 
-The main objects are Space (lots of objects), BootClass (represents a class),
-CompiledMethod (with Blocks and Instruction).
+The main objects are Space (lots of objects), Parfait::Class ,
+Method and MethodSource (with Blocks and Instruction).
 
 **Virtual** Instructions get further transformed into **register** instructions.
 This is done by an abstractly defined Register Machine with basic Intructions.
@@ -59,4 +59,4 @@ and also implement very machine dependent functionality which nevertheless is fu
 **Parfait** is that part of the runtime that can be coded in ruby.
 It is parsed, like any other code and always included in the resulting binary.
 **Builtin** is the part of the runtime that can not be coded in ruby (but is still needed).
-This is coded by construction CompiledMethods in code and neccesarily machine dependant.
+This is coded by construction MethodSource in code and necessarily machine dependant.

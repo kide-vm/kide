@@ -4,7 +4,7 @@ module Virtual
   # the static info of a method (with its compiled code, argument names etc ) is part of the
   # runtime, ie found in Parfait::Method
 
-  # the info we create here is injected int the method and used only at compile-time
+  # the source we create here is injected into the method and used only at compile-time
   # receiver
   # return arg (usually mystery, but for coded ones can be more specific)
 
@@ -27,11 +27,11 @@ module Virtual
   #            These (eg if/while) blocks may themselves have linear blocks ,but the last of these
   #            MUST have an uncoditional branch. And remember, all roads lead to return.
 
-  class CompiledMethodInfo
+  class MethodSource
 
     # create method does two things
     # first it creates the parfait method, for the given class, with given argument names
-    # second, it creates CompiledMethodInfo and attaches it to the method
+    # second, it creates MethodSource and attaches it to the method
     #
     # compile code then works with the method, but adds code tot the info
     def self.create_method( class_name , method_name , args)
@@ -40,7 +40,7 @@ module Virtual
       clazz = Virtual.machine.space.get_class_by_name class_name
       raise "No such class #{class_name}" unless clazz
       method = clazz.create_instance_method( method_name , Virtual.new_list(args))
-      method.info = CompiledMethodInfo.new(method)
+      method.source = MethodSource.new(method)
       method
     end
     # just passing the method object in for Instructions to make decisions (later)

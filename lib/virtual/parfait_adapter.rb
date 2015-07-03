@@ -157,7 +157,7 @@ module Parfait
   end
 
   class Method
-    attr_accessor :info
+    attr_accessor :source
   end
 
   class Word

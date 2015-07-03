@@ -1,17 +1,17 @@
-Register Machine 
+Register Machine
 ===============
 
 This is the logic that uses the compiled virtual object space to produce code and an executable binary.
 
-There is a mechanism for an actual machine (derived class) to generate harware specific instructions (as the 
+There is a mechanism for an actual machine (derived class) to generate harware specific instructions (as the
 plain ones in this directory don't assemble to binary). Currently there is only the Arm module to actually do
 that.
 
 The elf module is used to generate the actual binary from the final Space. Space is a virtual class representing
-all objects that will be in the executable. Other than CompiledMethods, objects get transformed to data.
+all objects that will be in the executable. Other than MethodSource, objects get transformed to data.
 
-But CompiledMethods, which are made up of Blocks, are compiled into a stream of bytes, which are the binary code for the
-function.
+But MethodSource, which are made up of Blocks, are compiled into a stream of bytes,
+which are the binary code for the function.
 
 Virtual Objects
 ----------------
@@ -32,13 +32,13 @@ and then into the destination. And then we need some fiddling of bits to shift t
 
 Another simple example is a Call. A simple case of a Class function call resolves the class object,
 and with the method name the function to be found at compile-time.
-And so this results in a Register::Call, which is an Arm  instruction. 
+And so this results in a Register::Call, which is an Arm  instruction.
 
-A C call 
+A C call
 ---------
 
 Ok, there are no c calls. But syscalls are very similar.
-This is not at all as simple as the nice Class call described  above. 
+This is not at all as simple as the nice Class call described  above.
 
 For syscall in Arm (linux) you have to load registers 0-x (depending on call), load R7 with the
 syscall number and then  issue the software interupt instruction.

@@ -14,24 +14,24 @@ All the headache comes from mixing those two up.*
 Similarly, the result of compiling is two-fold: a static and a dynamic part.
 
 - the static part are objects like the constants, but also defined classes and their methods
-- the dynamic part is the code, which is stored as streams of instructions in the CompiledMethod
+- the dynamic part is the code, which is stored as streams of instructions in the MethodSource
 
 Too make things a little simpler, we create a very high level instruction stream at first and then
 run transformation and optimization passes on the stream to improve it.
 
 Each ast class gets a compile method that does the compilation.
 
-#### Compiled Method and Instructions
+#### MethodSource and Instructions
 
-The first argument to the compile method is the CompiledMethod.
-All code is encoded as a stream of Instructions in the CompiledMethod.
+The first argument to the compile method is the MethodSource.
+All code is encoded as a stream of Instructions in the MethodSource.
 Instructions are stored as a list of Blocks, and Blocks are the smallest unit of code,
 which is always linear.
 
 Code is added to the method (using add_code), rather than working with the actual instructions.
 This is so each compiling method can just do it's bit and be unaware of the larger structure
 that is being created.
-The genearal structure of the instructions is a graph
+The general structure of the instructions is a graph
 (with if's and whiles and breaks and what), but we build it to have one start and *one* end (return).
 
 

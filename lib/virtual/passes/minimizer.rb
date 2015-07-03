@@ -24,7 +24,7 @@ module Virtual
       end
       #puts "stayer #{function.name}"
       @gonners.delete function
-      function.info.blocks.each do |block|
+      function.source.blocks.each do |block|
         block.codes.each do |code|
           if code.is_a? Virtual::MessageSend
             @gonners.each do |stay|

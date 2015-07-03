@@ -7,7 +7,7 @@ require "virtual/parfait_adapter"
 
 require "virtual/compiler"
 require "virtual/instruction"
-require "virtual/compiled_method_info"
+require "virtual/method_source"
 require "virtual/slots/slot"
 require "virtual/type"
 # the passes _are_ order dependant
@@ -27,7 +27,7 @@ Sof::Volotile.add(Parfait::Frame ,  [:memory])
 Sof::Volotile.add(Parfait::Message ,  [:memory])
 Sof::Volotile.add(Parfait::BinaryCode ,  [:memory])
 Sof::Volotile.add(Virtual::Block ,  [:method])
-Sof::Volotile.add(Virtual::CompiledMethodInfo ,  [:current])
+Sof::Volotile.add(Virtual::MethodSource ,  [:current])
 
 class Fixnum
   def fits_u8?

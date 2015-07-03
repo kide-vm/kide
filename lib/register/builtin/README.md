@@ -6,8 +6,8 @@ It is the other side of the parfait coin, part of  the runtime.
 The functions are organized by their respective class and get loaded in boot_classes! ,
 right at the start. (see virtual/boot.rb)
 
-These functions return their code, ie a Virtual::CompiledMethod object, which can then be called by
-ruby code as if it were a "normal"  function.
+These functions return their code, ie a Parfait::Method with a Virtual::MethodSource object,
+which can then be called by ruby code as if it were a "normal"  function.
 
 A normal ruby function is one that is parsed and transformed to code. But not all functionality can
 be written in ruby, one of those chicken and egg things.

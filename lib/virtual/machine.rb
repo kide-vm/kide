@@ -53,7 +53,7 @@ module Virtual
       @blocks = [@init]
       @space.classes.values.each do |c|
         c.instance_methods.each do |f|
-          nb = f.info.blocks
+          nb = f.source.blocks
           @blocks += nb
         end
       end

@@ -43,7 +43,7 @@ module Parfait
       found = get_instance_method( method.name )
       if found
         @instance_methods.delete(found)
-        raise "existed in #{self.name} #{Sof.write found.info.blocks}"
+        raise "existed in #{self.name} #{Sof.write found.source.blocks}"
       end
       @instance_methods.push method
       #puts "#{self.name} add #{method.name}"

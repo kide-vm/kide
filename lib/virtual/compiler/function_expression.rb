@@ -18,8 +18,8 @@ module Virtual
         r = Self.new()
         class_name = method.for_class.name
       end
-      new_method = CompiledMethodInfo.create_method(class_name, expression.name , args )
-      new_method.info.receiver = r
+      new_method = MethodSource.create_method(class_name, expression.name , args )
+      new_method.source.receiver = r
       new_method.for_class.add_instance_method new_method
 
       #frame = frame.new_frame
@@ -28,7 +28,7 @@ module Virtual
         return_type = Compiler.compile(ex,new_method  )
         raise return_type.inspect if return_type.is_a? Instruction
       end
-      new_method.info.return_type = return_type
+      new_method.source.return_type = return_type
       new_method
     end
     def scratch

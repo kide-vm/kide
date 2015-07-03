@@ -2,7 +2,7 @@ module Virtual
   module Compiler
 
     # Compiling is the conversion of the AST into 2 things:
-    # - code (ie sequences of Instructions inside Blocks) carried by CompiledMethods
+    # - code (ie sequences of Instructions inside Blocks) carried by MethodSource
     # - an object graph containing all the Methods, their classes and Constants
     #
     # Some compile methods just add code, some may add structure (ie Blocks) while
