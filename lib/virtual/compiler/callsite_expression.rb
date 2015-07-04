@@ -6,6 +6,9 @@ module Virtual
 
     def self.compile_callsite expession , method
       me = Compiler.compile( expession.receiver , method )
+
+      ## need two step process, compile and save to frame
+      # then move from frame to new message
       method.source.add_code NewMessage.new
       method.source.add_code Set.new( me , NewSelf.new(me.type))
       method.source.add_code Set.new( expession.name.to_sym , NewMessageName.new())
