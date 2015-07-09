@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = 'salama'
-  s.version = '0.0.1'
+  s.version = '0.2.0'
 
   s.authors = ['Torsten Ruger']
   s.email = 'torsten@villataika.fi'
@@ -11,7 +11,9 @@ Gem::Specification.new do |s|
   s.homepage = 'https://github.com/salama/salama'
   s.license = 'MIT'
   s.require_paths = ['lib']
-  s.summary = 'Salama is a native object vm without any c, one day possibly a ruby vm'  
-  
-  s.add_dependency 'parslet', '~> 1.6.1'
+  s.summary = 'Salama is a native object vm without any c, one day possibly a ruby vm'
+
+  s.add_dependency "salama-reader" , "~> 0.2"
+  s.add_dependency "salama-object-file" , "~> 0.2"
+
 end

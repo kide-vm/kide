@@ -18,19 +18,10 @@ Rake::TestTask.new(:test) do |test|
   test.verbose = true
 end
 
-desc "Code coverage detail"
-task :simplecov do
-  ENV['COVERAGE'] = "true"
-  Rake::Task['test'].execute
-end
-
-#require 'roodi'
-#require 'roodi_task'
-#RoodiTask.new do |t|
-#  t.verbose = false
-#end
-
 task :default => :test
+
+require 'rubygems/tasks'
+Gem::Tasks.new
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|

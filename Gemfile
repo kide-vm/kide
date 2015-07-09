@@ -1,10 +1,13 @@
 source "http://rubygems.org"
 
-gem "parslet"
-gem "salama-reader" , "0.0.3" , :require => "parser" #, :git => "https://github.com/salama/salama-reader.git"
-gem "salama-object-file" , "0.1"  , :git => "https://github.com/salama/salama-object-file.git"
-#gem "salama-object-file" , "0.1"  , :path => "../salama-object-file"
+gem "salama" , :path => "."
+
+gem "rake"
+
+#gem "salama-reader" , :path => "../salama-reader"
+#gem "salama-object-file" , :path => "../salama-object-file"
 
 group :development do
   gem "minitest"
+  gem "rubygems-tasks"
 end
