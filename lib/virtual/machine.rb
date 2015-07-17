@@ -121,17 +121,13 @@ module Virtual
     end
 
     def boot
+      return if @booted
       boot_parfait!
       @init = Block.new("init",nil)
       @init.add_code  Register::RegisterMain.new( self.space.get_init )
       @booted = true
     end
 
-    # for testing, make sure no old artefacts hang around
-    #maybe should be moved to test dir
-    def self.reboot
-      raise "redo"
-    end
     def compile_main bytes
       syntax  = @parser.parse_with_debug(bytes)
       parts = Parser::Transform.new.apply(syntax)
@@ -140,7 +136,8 @@ module Virtual
 
     private
     def run_blocks_for pass_class
-      pass = eval pass_class
+      parts = pass_class.split("::")
+      pass = Object.const_get(parts[0]).const_get parts[1]
       raise "no such pass-class as #{pass_class}" unless pass
       @blocks.each do |block|
         raise "nil block " unless block
