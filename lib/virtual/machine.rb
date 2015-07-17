@@ -124,7 +124,7 @@ module Virtual
       return if @booted
       boot_parfait!
       @init = Block.new("init",nil)
-      @init.add_code  Register::RegisterMain.new( self.space.get_init )
+      @init.add_code Virtual::VirtualMain.new( self.space.get_init )
       @booted = true
     end
 

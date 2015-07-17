@@ -23,7 +23,7 @@ module Elf
       # for debug add labels to the block positions
       @object_machine.space.classes.values.each do |clazz|
         clazz.instance_methods.each do |f|
-          f.info.blocks.each do |b|
+          f.source.blocks.each do |b|
               add_symbol "#{clazz.name}::#{f.name}:#{b.name}" , b.position
             end
         end
