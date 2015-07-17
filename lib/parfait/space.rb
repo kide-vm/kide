@@ -70,7 +70,7 @@ module Parfait
     end
 
     def create_class name , superclass
-      raise "uups " if name.is_a? String
+      raise "uups #{name.class}" unless name.is_a? Symbol
       c = Class.new_object(name , superclass)
       @classes[name] = c
     end
