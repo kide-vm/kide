@@ -1,34 +1,15 @@
 require_relative '../helper'
-require 'parslet/convenience'
 
-#test the generation of code fragments.
-# ie parse                assumes @string_input
-#   compile
-#   assemble/write        assume a @should array with the bytes in it
-
-# since the bytes are store, the test can be run on any machine.
-
-# but to get the bytes, one needs to link and run the object file to confirm correctness (to be automated)
+# simple tests to check parsing pworks and the first classes come out right.
+#
+# build up from small to check larger expressions are correct
 
 module Fragments
-  # need a code generator, for arm
-  def setup
-    @object_machine = Virtual::Machin.new "Arm"
-  end
 
-  def parse
-    parser = Parser::Salama.new
-    syntax  = parser.parse_with_debug(@string_input)
-    parts   = Parser::Transform.new.apply(syntax)
-    # file is a list of expressions, all but the last must be a function
-    # and the last is wrapped as a main
-    parts.each_with_index do |part,index|
-      if part.is_a? Ast::FunctionExpression
-        expr    = part.compile( @object_machine.context )
-      else
-        puts part.inspect if part.is_a? Hash
-        expr    = part.compile( @object_machine.context )
-      end
+  def check
+    expressions = Virtual.machine.boot.compile_main @string_input
+    @expect.each_with_index do | should , i |
+      assert_equal should , expressions[i].class
     end
   end
 

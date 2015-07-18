@@ -1,3 +1,5 @@
+require 'parslet/convenience'
+
 module Virtual
   # The Virtual Machine is a object based virtual machine in which ruby is implemented.
   #
