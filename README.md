@@ -1,5 +1,9 @@
-# Salama
+[![Build Status](https://travis-ci.org/salama/salama.svg?branch=master)](https://travis-ci.org/salama/salama)
+[![Gem Version](https://badge.fury.io/rb/salama.svg)](http://badge.fury.io/rb/salama)
+[![Code Climate](https://codeclimate.com/github/salama/salama/badges/gpa.svg)](https://codeclimate.com/github/salama/salama)
+[![Test Coverage](https://codeclimate.com/github/salama/salama/badges/coverage.svg)](https://codeclimate.com/github/salama/salama)
 
+# Salama
 
 Salama is about native code generation in and of ruby.
 
