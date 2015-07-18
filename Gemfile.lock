@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/salama/salama-arm.git
+  revision: 9a1c18dfe974909e02e33f7b086ac516e3384f4b
+  specs:
+    salama-arm (0.0.1)
+
+GIT
   remote: git://github.com/salama/salama-object-file.git
   revision: 9e49f2e725dbad48edc151419882b159505b2e9b
   specs:
@@ -47,5 +53,6 @@ DEPENDENCIES
   rake
   rubygems-tasks
   salama!
+  salama-arm!
   salama-object-file!
   salama-reader!
