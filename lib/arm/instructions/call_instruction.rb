@@ -86,7 +86,7 @@ module Arm
       end
     end
     def to_s
-      "#{opcode} #{@first.to_asm} #{super}"
+      "#{opcode} #{@first} #{super}"
     end
   end
 end

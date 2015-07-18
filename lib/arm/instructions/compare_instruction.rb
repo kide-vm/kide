@@ -99,7 +99,7 @@ module Arm
       []
     end
     def to_s
-      "#{opcode} #{@left.to_asm} , #{@right.to_asm} #{super}"
+      "#{opcode} #{@left} , #{@right} #{super}"
     end
   end
 end

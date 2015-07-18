@@ -73,7 +73,7 @@ module Arm
       @first
     end
     def to_s
-      "#{opcode} [#{@first.collect {|f| f.to_asm}.join(',') }] #{super}"
+      "#{opcode} [#{@first.join(',') }] #{super}"
     end
   end
 

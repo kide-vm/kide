@@ -5,8 +5,8 @@ require_relative '../helper'
 # tests are named as per assembler code, ie test_mov testing mov instruction
 #  adc add and bic eor orr rsb rsc sbc sub mov mvn cmn cmp teq tst b call bx swi strb
 
-module ArmHelper 
-  # need Assembler and a block (see those classes) 
+module ArmHelper
+  # need Assembler and a block (see those classes)
   def setup
     @machine = Arm::ArmMachine
   end
