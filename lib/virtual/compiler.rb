@@ -24,7 +24,7 @@ module Virtual
       begin
         self.send "compile_#{exp_name}".to_sym , expression, method
       rescue NoMethodError => e
-        puts "No compile method found for " + exp_name
+        puts "No compile method found for " + exp_name + " #{e}"
         raise e
       end
     end

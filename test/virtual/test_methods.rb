@@ -1,5 +1,4 @@
 require_relative "virtual_helper"
-
 module Virtual
   class TestMethods < MiniTest::Test
 
@@ -34,7 +33,7 @@ def foo(x)
   x
 end
 HERE
-    @output = nil
+    @output = [[1,2,3,4],[],[],[]]
     check
   end
 
@@ -91,6 +90,16 @@ def ofthen(n)
 end
 HERE
     @output = nil
+    check
+  end
+
+  def test_while
+    @string_input    = <<HERE
+while(1) do
+  3
+end
+HERE
+    @output = [[MethodEnter],[Set,IsTrueBranch,Set,UnconditionalBranch],[],[MethodReturn]]
     check
   end
 

@@ -3,24 +3,26 @@ module Virtual
 
 #    while- attr_reader  :condition, :body
     def self.compile_while expression, method
-      start = Label.new("while_start")
-      method.add_code start
-      is = expression.condition.compile(method )
-      branch = IsTrueBranch.new "while"
-      merge = Label.new(branch.name)
-      branch.other = merge   #false jumps to end of while
-      method.add_code branch
-      last = is
+      # this is where the while ends and both branches meet
+      merge = method.source.new_block("while merge")
+      # this comes after the current and beofre the merge
+      start = method.source.new_block("while_start" )
+      method.source.current start
+
+      cond = Compiler.compile(expression.condition, method)
+
+      method.source.add_code IsTrueBranch.new(merge)
+
+      last = cond
       expression.body.each do |part|
-        last = part.compile(method  )
+        last = Compiler.compile(part , method)
         raise part.inspect if last.nil?
       end
-      # unconditionally brnach to the start
-      merge.next = method.current.next
-      method.current.next = start
-      # here we add the end of while that the branch jumps to
-      #but don't link it in (not using add)
-      method.current =  merge
+      # unconditionally branch to the start
+      method.source.add_code UnconditionalBranch.new(start)
+
+      # continue execution / compiling at the merge block
+      method.source.current merge
       last
     end
   end
