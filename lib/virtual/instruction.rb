@@ -9,9 +9,6 @@ module Virtual
   #  instructions, thus defining a minimal set of instructions needed to implement oo.
 
   class Instruction
-    def to_s
-      Sof.write(self)
-    end
   end
 
 end

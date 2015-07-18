@@ -1,7 +1,16 @@
 require_relative "virtual_helper"
 
+
 class TestBasic < MiniTest::Test
-  include VirtualHelper
+  def check
+    expressions = Virtual.machine.boot.compile_main @string_input
+    if( expressions.first.is_a? Virtual::Self )
+      expressions.first.type.instance_variable_set :@of_class , nil
+    end
+    is = Sof.write(expressions)
+    #puts is
+    assert_equal @output , is
+  end
 
   def test_number
     @string_input    = '42 '

@@ -5,7 +5,7 @@ class TestFoo < MiniTest::Test
 
   def test_foo2
     @string_input = <<HERE
-def foo(x)
+def foo2(x)
   a = 5
 end
 3.foo( 4 )

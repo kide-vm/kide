@@ -128,13 +128,6 @@ module Parfait
         old_length = old_length - 1
       end
     end
-
-    def to_s
-      Sof.write(self)
-    end
-    def inspect
-      to_s
-    end
   end
   class List
     def to_sof_node(writer , level , ref )

@@ -1,37 +1,13 @@
 require_relative '../helper'
 require 'parslet/convenience'
-require "yaml"
 
-Parfait::Object.class_eval do
-  def secret_layout_hammer
-    internal_object_set(Parfait::Object::LAYOUT_INDEX , nil)
-  end
-end
 
 module VirtualHelper
-  # need a code generator, for arm
-  def setup
-    @machine = Virtual.machine.boot
-  end
 
   def check
-    expressions = @machine.compile_main @string_input
-    if( expressions.first.is_a? Parfait::Method )
-      # stops the whole objectspace beeing tested
-      # with the class comes superclass and all methods
-      expressions.first.instance_variable_set :@for_class , nil
-      expressions.first.secret_layout_hammer
-      expressions.first.code.secret_layout_hammer
-    end
-    if( expressions.first.is_a? Virtual::Self )
-      # stops the whole objectspace beeing tested
-      # with the class comes superclass and all methods
-      expressions.first.type.instance_variable_set :@of_class , nil
-    end
-    is = Sof.write(expressions)
-    #puts is
-    is.gsub!("\n" , "*^*")
-    assert_equal @output , is
+    Virtual.machine.boot.compile_main @string_input
+    produced = Virtual.machine.space.get_main.source
+    assert_equal @output , produced
   end
 
 end

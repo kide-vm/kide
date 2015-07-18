@@ -71,10 +71,6 @@ module Virtual
       @codes.inject(0){|count , instruction| count += instruction.byte_length }
     end
 
-    def to_s
-      Sof.write(self)
-    end
-
     private
     # helper for determining reachable blocks
     def add_next ret
