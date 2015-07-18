@@ -1,3 +1,16 @@
+GIT
+  remote: git://github.com/salama/salama-object-file.git
+  revision: 9e49f2e725dbad48edc151419882b159505b2e9b
+  specs:
+    salama-object-file (0.2.0)
+
+GIT
+  remote: git://github.com/salama/salama-reader.git
+  revision: f790b5d76a2c3473d2503bca65e998985b3e67cc
+  specs:
+    salama-reader (0.2.0)
+      parslet (~> 1.7.0)
+
 PATH
   remote: .
   specs:
@@ -14,9 +27,6 @@ GEM
       blankslate (>= 2.0, <= 4.0)
     rake (10.4.2)
     rubygems-tasks (0.2.4)
-    salama-object-file (0.2.0)
-    salama-reader (0.2.0)
-      parslet (~> 1.7.0)
 
 PLATFORMS
   ruby
@@ -27,3 +37,5 @@ DEPENDENCIES
   rake
   rubygems-tasks
   salama!
+  salama-object-file!
+  salama-reader!

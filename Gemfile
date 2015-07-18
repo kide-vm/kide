@@ -4,8 +4,8 @@ gem "salama" , :path => "."
 
 gem "rake"
 
-#gem "salama-reader" , :path => "../salama-reader"
-#gem "salama-object-file" , :path => "../salama-object-file"
+gem "salama-reader" , :github => "salama/salama-reader"
+gem "salama-object-file" , :github => "salama/salama-object-file"
 
 group :development do
   gem "minitest"
