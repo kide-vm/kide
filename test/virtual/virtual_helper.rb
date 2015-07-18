@@ -11,12 +11,11 @@ end
 module VirtualHelper
   # need a code generator, for arm
   def setup
-#    @object_space = Boot::Space.new "Arm"
+    @machine = Virtual.machine.boot
   end
 
   def check
-    machine = Virtual::Machine.boot
-    expressions = machine.compile_main @string_input
+    expressions = @machine.compile_main @string_input
     if( expressions.first.is_a? Parfait::Method )
       # stops the whole objectspace beeing tested
       # with the class comes superclass and all methods

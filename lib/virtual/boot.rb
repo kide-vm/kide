@@ -80,7 +80,7 @@ module Virtual
 
 #      add_object @space
 
-      values.each {|v| v.init_layout }
+      class_mappings.values.each {|v| v.init_layout }
 
       # now update the layout on all objects created so far,
       # go through objects in space

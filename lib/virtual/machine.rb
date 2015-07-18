@@ -36,7 +36,7 @@ module Virtual
 
     FIRST_PASS = "Virtual::SendImplementation"
     LAST_PASS = "Virtual::SetOptimisation"
-    
+
     def initialize
       @parser  = Parser::Salama.new
       @passes = [  FIRST_PASS ]
@@ -114,20 +114,13 @@ module Virtual
       @passes.insert(index , pass)
     end
 
-    def self.boot
-      me = Virtual.machine
-      # boot is a verb here. this is a somewhat tricky process which is in it's own file, boot.rb
-      raise "already booted" if @booted
-      me.boot
-      me
-    end
-
     def boot
-      return if @booted
+      return self if @booted
       boot_parfait!
       @init = Block.new("init",nil)
       @init.add_code Virtual::VirtualMain.new( self.space.get_init )
       @booted = true
+      self
     end
 
     def compile_main bytes
