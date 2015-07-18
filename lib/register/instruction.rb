@@ -9,6 +9,11 @@ module Register
   # constants can/must be loaded into registers before use
   class Instruction
 
+    def initialize source
+        @source = source
+    end
+    attr_reader :block , :source
+
     # returns an array of registers (RegisterReferences) that this instruction uses.
     # ie for r1 = r2 + r3
     # which in assembler is add r1 , r2 , r3

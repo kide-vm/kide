@@ -8,7 +8,7 @@ module Register
     def run block
       block.codes.dup.each do |code|
         next unless code.is_a? Virtual::VirtualMain
-        branch = Register::Branch.new( code.method.source.blocks.first )
+        branch = Register::Branch.new( code , code.method.source.blocks.first )
         block.replace(code , branch )
       end
     end

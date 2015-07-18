@@ -15,5 +15,9 @@ module Virtual
     def word_length
       4
     end
+
+    def to_s
+      "#{self.class.name}( method: #{method.name})"
+    end
   end
 end
