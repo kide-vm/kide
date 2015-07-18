@@ -117,7 +117,10 @@ module Virtual
     end
 
     def boot
-      return self if @booted
+      if @booted
+        self.space.get_main.clear_source
+        return self
+      end
       boot_parfait!
       @init = Block.new("init",nil)
       @init.add_code Virtual::VirtualMain.new( self.space.get_init )
@@ -150,6 +153,15 @@ module Virtual
       @machine = Machine.new
     end
     @machine
+  end
+
+end
+
+Parfait::Method.class_eval do
+  # for testing we need to reuse the main function (or do we?)
+  # so remove the code that is there
+  def clear_source
+    self.source.send :initialize , self
   end
 
 end

@@ -132,9 +132,9 @@ module Virtual
     #           mov and add will be called on Machine and generate Instructions that are then added
     #             to the current block
     # also symbols are supported and wrapped as register usages (for bare metal programming)
-    def method_missing(meth, *arg_names, &block)
-      add_code ::Arm::ArmMachine.send(meth , *arg_names)
-    end
+#    def method_missing(meth, *arg_names, &block)
+#      add_code ::Arm::ArmMachine.send(meth , *arg_names)
+#    end
 
     def byte_length
       @blocks.inject(0) { |c , block| c += block.byte_length }
@@ -148,6 +148,7 @@ module Virtual
         at = at + block.byte_length
       end
     end
+
   end
 
 end
