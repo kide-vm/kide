@@ -62,7 +62,7 @@ module Arm
           # then on subsequent assemblies we can assemble
           unless @extra
             @extra = 1
-            puts "RELINK M at #{self.position.to_s(16)}"
+            #puts "RELINK M at #{self.position.to_s(16)}"
             raise ::Register::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
           end
           # now we can do the actual breaking of instruction, by splitting the operand

@@ -47,13 +47,7 @@ module Parfait
 
     # private
     def set_layout(layout)
-      #if( was = internal_object_get(LAYOUT_INDEX) )
-        #TODO find out wat these objects are
-        #puts "Layout was set for #{self.class}"
-        #puts "#{self}" if self.class == Parfait::Word
-        #        Space.object_space.check was
-        #        return
-      #end
+      # puts "Layout was set for #{self.class}"
       raise "Nil layout" unless layout
       internal_object_set(LAYOUT_INDEX , layout)
     end
@@ -65,7 +59,7 @@ module Parfait
 
     def get_layout()
       l = internal_object_get(LAYOUT_INDEX)
-      raise "No layout #{self.to_s}:#{self.class} #{self.object_id}" unless l
+      raise "No layout #{self.object_id.to_s(16)}=#{self.to_s[0 ... 100]}:#{self.class} " unless l
       return l
     end
 

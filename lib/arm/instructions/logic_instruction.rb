@@ -48,7 +48,7 @@ module Arm
           #TODO this is copied from MoveInstruction, should rework
           unless @extra
             @extra = 1
-            puts "RELINK L at #{self.position.to_s(16)}"
+            #puts "RELINK L at #{self.position.to_s(16)}"
             raise ::Register::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
           end
           # now we can do the actual breaking of instruction, by splitting the operand
