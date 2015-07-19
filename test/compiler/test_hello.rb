@@ -4,7 +4,7 @@ class HelloTest < MiniTest::Test
   include CompilerHelper
 
   def check
-    machine = Virtual::Machine.boot
+    machine = Virtual.machine.boot
     expressions = machine.compile_main @string_input
     output_at = "Register::CallImplementation"
     #{}"Register::CallImplementation"
