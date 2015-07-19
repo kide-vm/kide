@@ -64,7 +64,7 @@ module Virtual
         raise "oh noo, nil from where #{expression.right.inspect}" unless r
         index = method.has_arg(expression.left.name.to_sym)
         if index
-          method.source.add_code Set.new(MessageSlot.new(index , r,type , r ) , Return.new)
+          method.source.add_code Set.new(ArgSlot.new(index , r.type , r ) , Return.new)
         else
           index = method.ensure_local(expression.left.name.to_sym)
           method.source.add_code Set.new(FrameSlot.new(index , r.type , r ) , Return.new)

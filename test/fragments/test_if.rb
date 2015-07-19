@@ -24,7 +24,7 @@ HERE
   end
 
 
-  def ttest_if_function
+  def test_if_function
     @string_input = <<HERE
 def itest(n)
   if( n < 12)

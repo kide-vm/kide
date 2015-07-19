@@ -10,11 +10,14 @@ module Virtual
         name = expression.name.to_sym
         if method.has_var(name)
           # either an argument, so it's stored in message
+          ret = Return.new
           if( index = method.has_arg(name))
-            method.source.add_code Set.new( MessageSlot.new(expression.name) , Return.new)
+            method.source.add_code Set.new( ArgSlot.new(index ) , ret)
           else # or a local so it is in the frame
-            method.source.add_code FrameGet.new(expression.name , index)
+            index = method.ensure_local( name )
+            method.source.add_code Set.new(FrameSlot.new(index ) , ret )
           end
+          return ret
         else
           call = Ast::CallSiteExpression.new(expression.name , [] ) #receiver self is implicit
           Compiler.compile(call, method)

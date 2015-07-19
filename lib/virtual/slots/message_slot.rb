@@ -37,4 +37,15 @@ module Virtual
       super( type , value  )
     end
   end
+
+  # NewMessageName of the next message
+  class ArgSlot < MessageSlot
+    def initialize index , type = Unknown, value = nil
+      @index = index
+      super( type , value )
+    end
+    attr_reader :index
+  end
+
+
 end
