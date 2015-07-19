@@ -11,6 +11,7 @@ module Fragments
     @expect.each_with_index do | should , i |
       assert_equal should , expressions[i].class
     end
+#    Virtual.machine.run_passes
   end
 
   # helper to write the file

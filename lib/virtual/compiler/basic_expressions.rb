@@ -47,7 +47,7 @@ module Virtual
         if method.has_var(name)
           # either an argument, so it's stored in message
           if( index = method.has_arg(name))
-            method.source.add_code MessageGet.new(expression.name , index)
+            method.source.add_code Set.new( MessageSlot.new(expression.name) , Return.new)
           else # or a local so it is in the frame
             method.source.add_code FrameGet.new(expression.name , index)
           end

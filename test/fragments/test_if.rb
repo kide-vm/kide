@@ -18,11 +18,11 @@ HERE
   def ttest_if_function
     @string_input = <<HERE
 def itest(n)
-      if( n < 12)
-        "then".putstring()
-      else
-        "else".putstring()
-      end
+  if( n < 12)
+    "then".putstring()
+  else
+    "else".putstring()
+  end
 end
 
 itest(20)
