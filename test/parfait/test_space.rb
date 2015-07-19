@@ -17,6 +17,7 @@ class TestSpace < MiniTest::Test
   end
   def test_classes
     [:Kernel,:Word,:List,:Message,:Frame,:Layout,:Class,:Dictionary,:Method].each do |name|
+      assert_equal :Class , @machine.space.classes[name].get_class.name
       assert_equal Parfait::Class , @machine.space.classes[name].class
       assert_equal Parfait::Layout , @machine.space.classes[name].get_layout.class
     end
