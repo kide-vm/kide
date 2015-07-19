@@ -15,6 +15,15 @@ HERE
   check
   end
 
+  def test_return
+    @string_input = <<HERE
+return 5
+HERE
+  @expect =  [Virtual::Return ]
+  check
+  end
+
+
   def ttest_if_function
     @string_input = <<HERE
 def itest(n)

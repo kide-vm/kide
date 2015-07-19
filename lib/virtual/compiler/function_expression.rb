@@ -31,51 +31,5 @@ module Virtual
       new_method.source.return_type = return_type
       Return.new(return_type)
     end
-    def scratch
-      args = []
-      locals = {}
-      expression.params.each_with_index do |param , index|
-        arg = param.name
-        register = Register::RegisterReference.new(RegisterMachine.instance.receiver_register).next_reg_use(index + 1)
-        arg_value = Integer.new(register)
-        locals[arg] = arg_value
-        args << arg_value
-      end
-      # class depends on receiver
-      me = Integer.new( RegisterMachine.instance.receiver_register )
-      if expression.receiver.nil?
-        clazz = context.current_class
-      else
-        c = context.object_space.get_class_by_name expression.receiver.name.to_sym
-        clazz = c.meta_class
-      end
-
-      function = Function.new(name , me , args )
-      clazz.add_code_function function
-
-      parent_locals = context.locals
-      parent_function = context.function
-      context.locals = locals
-      context.function = function
-
-      last_compiled = nil
-      expression.body.each do |b|
-        puts "compiling in function #{b}"
-        last_compiled = b.compile(context)
-        raise "alarm #{last_compiled} \n #{b}" unless last_compiled.is_a? Word
-      end
-
-      return_reg = Integer.new(RegisterMachine.instance.return_register)
-      if last_compiled.is_a?(IntegerConstant) or last_compiled.is_a?(ObjectConstant)
-        return_reg.load function , last_compiled if last_compiled.register_symbol != return_reg.register_symbol
-      else
-        return_reg.move( function, last_compiled ) if last_compiled.register_symbol != return_reg.register_symbol
-      end
-      function.set_return return_reg
-
-      context.locals = parent_locals
-      context.function = parent_function
-      function
-    end
   end
 end
