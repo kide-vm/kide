@@ -10,7 +10,7 @@ def foo2(x)
 end
 3.foo( 4 )
 HERE
-    @expect =  [Parfait::Method , Virtual::Return ]
+    @expect =  [ Virtual::Return ]
     check
   end
 

@@ -6,7 +6,7 @@ class TestFunctions < MiniTest::Test
   def test_functions
     @string_input = <<HERE
 def minus(a,b)
-      a - b
+    a - b
 end
 def plus(a, b)
   a + b
