@@ -33,6 +33,7 @@ module Virtual
 end
 
 require_relative "compiler/basic_expressions"
+require_relative "compiler/name_expression"
 require_relative "compiler/callsite_expression"
 require_relative "compiler/compound_expressions"
 require_relative "compiler/if_expression"
