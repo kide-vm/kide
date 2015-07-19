@@ -37,8 +37,8 @@ module Virtual
         to
       end
 
-      def self.compile_module expression , method
-        clazz = Space.space.get_class_by_name name
+      def self.compile_modulename expression , method
+        clazz = Parfait::Space.object_space.get_class_by_name expression.name
         raise "uups #{clazz}.#{name}" unless clazz
         to = Return.new(Reference , clazz )
         method.source.add_code Set.new( clazz , to )

@@ -7,10 +7,10 @@ module Virtual
         p.name
       end
       if expression.receiver
-        #Do something clever instead of
+        # compiler will always return slot. with known value or not
         r = Compiler.compile(expression.receiver, method )
-        if( r.is_a? Parfait::Class )
-          class_name = r.name
+        if( r.value.is_a? Parfait::Class )
+          class_name = r.value.name
         else
           raise "unimplemented #{r}"
         end
