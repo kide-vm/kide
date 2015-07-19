@@ -29,7 +29,7 @@ module Virtual
         raise return_type.inspect if return_type.is_a? Instruction
       end
       new_method.source.return_type = return_type
-      new_method
+      Return.new(return_type)
     end
     def scratch
       args = []

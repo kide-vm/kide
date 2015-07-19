@@ -8,6 +8,7 @@ module Virtual
     def self.compile_class expression , method
       clazz = Parfait::Space.object_space.get_class_by_name! expression.name
       puts "Created class #{clazz.name.inspect}"
+      expression_value = nil
       expression.expressions.each do |expr|
         # check if it's a function definition and add
         # if not, execute it, but that does means we should be in salama (executable), not ruby.
@@ -15,11 +16,10 @@ module Virtual
         raise "only functions for now #{expr.inspect}" unless expr.is_a? Ast::FunctionExpression
         #puts "compiling expression #{expression}"
         expression_value = Compiler.compile(expr,method  )
-        clazz.add_instance_method(expression_value)
         #puts "compiled expression #{expression_value.inspect}"
       end
 
-      return clazz
+      return expression_value
     end
   end
 end
