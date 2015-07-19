@@ -1,7 +1,7 @@
-require_relative "virtual_helper"
+require_relative "compiler_helper"
 
 class HelloTest < MiniTest::Test
-  include VirtualHelper
+  include CompilerHelper
 
   def check
     machine = Virtual::Machine.boot

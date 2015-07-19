@@ -1,7 +1,7 @@
-require_relative "virtual_helper"
+require_relative "compiler_helper"
 
-class TestMethods < MiniTest::Test
-  include VirtualHelper
+class TestMachine < MiniTest::Test
+  include CompilerHelper
 
   def test_object
     @string_input    = <<HERE

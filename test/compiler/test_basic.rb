@@ -1,4 +1,4 @@
-require_relative "virtual_helper"
+require_relative "compiler_helper"
 
 
 class TestBasic < MiniTest::Test

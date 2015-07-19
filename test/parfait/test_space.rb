@@ -16,7 +16,6 @@ class TestSpace < MiniTest::Test
     assert_equal Parfait::Space , Parfait::Space.object_space.class
   end
   def test_classes
-    assert_equal 16 , @machine.space.classes.length
     [:Kernel,:Word,:List,:Message,:Frame,:Layout,:Class,:Dictionary,:Method].each do |name|
       assert_equal Parfait::Class , @machine.space.classes[name].class
       assert_equal Parfait::Layout , @machine.space.classes[name].get_layout.class
