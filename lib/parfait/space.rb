@@ -60,8 +60,8 @@ module Parfait
       kernel.get_instance_method :__init__
     end
 
-    # this is the way to instantiate classes (not Parfait::Class.new)
-    # so we get and keep exactly one per name
+    # get a class by name (symbol)
+    # return nili if no such class. Use bang version if create should be implicit
     def get_class_by_name name
       raise "uups #{name}.#{name.class}" unless name.is_a?(Symbol)
       c = @classes[name]
@@ -69,6 +69,16 @@ module Parfait
       c
     end
 
+    # get or create the class by the (symbol) name
+    # notice that this method of creating classes implies Object superclass
+    def get_class_by_name! name
+      c = get_class_by_name(name)
+      return c if c
+      create_class name , get_class_by_name(:Object)
+    end
+
+    # this is the way to instantiate classes (not Parfait::Class.new)
+    # so we get and keep exactly one per name
     def create_class name , superclass
       raise "uups #{name.class}" unless name.is_a? Symbol
       c = Class.new_object(name , superclass)

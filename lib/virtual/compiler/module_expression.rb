@@ -6,7 +6,7 @@ module Virtual
     end
 
     def self.compile_class expression , method
-      clazz = ::Space.space.get_class_by_name expression.name
+      clazz = Parfait::Space.object_space.get_class_by_name! expression.name
       puts "Created class #{clazz.name.inspect}"
       expression.expressions.each do |expr|
         # check if it's a function definition and add

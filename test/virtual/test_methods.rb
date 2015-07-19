@@ -17,6 +17,18 @@ module Virtual
       end
     end
 
+    def test_module
+      @string_input    = <<HERE
+class Some
+  def foo()
+    5
+  end
+end
+HERE
+      @output = [[MethodEnter] ,[MethodReturn]]
+      check
+    end
+
     def test_simplest_function
       @string_input    = <<HERE
 def foo(x)
