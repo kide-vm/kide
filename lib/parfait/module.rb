@@ -16,7 +16,7 @@ module Parfait
     def initialize name , superclass
       super()
       @name = name
-      @instance_methods = List.new_object
+      @instance_methods = List.new
       @super_class = superclass
       @meta_class = nil#MetaClass.new(self)
     end
@@ -58,7 +58,7 @@ module Parfait
       raise "uups #{name}.#{name.class}" unless name.is_a?(Symbol)
       clazz = Space.object_space.get_class_by_name(self.name)
       raise "??? #{self.name}" unless clazz
-      Method.new_object( clazz , name , arg_names )
+      Method.new( clazz , name , arg_names )
     end
 
     # this needs to be done during booting as we can't have all the classes and superclassses

@@ -17,8 +17,9 @@ module Parfait
     LAYOUT_INDEX  = 1
     CLASS_INDEX   = 2  #only used in class, but keep constants together
 
-    def self.new_object *args
-      object = self.new(*args)
+    def self.new *args
+      object = self.allocate
+      object.send :initialize , *args
       #puts "NEW #{object.class}"
       object
     end
@@ -59,7 +60,7 @@ module Parfait
 
     def get_layout()
       l = internal_object_get(LAYOUT_INDEX)
-      raise "No layout #{self.object_id.to_s(16)}=#{self.to_s[0 ... 100]}:#{self.class} " unless l
+      raise "No layout #{self.object_id.to_s(16)}:#{self.class} " unless l
       return l
     end
 
@@ -70,13 +71,13 @@ module Parfait
     def get_instance_variable name
       index = instance_variable_defined(name)
       return nil if index == nil
-      return internal_get(index)
+      return internal_object_get(index)
     end
 
     def set_instance_variable name , value
       index = instance_variable_defined(name)
       return nil if index == nil
-      return internal_set(index , value)
+      return internal_object_set(index , value)
     end
 
     def instance_variable_defined name

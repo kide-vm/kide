@@ -3,7 +3,7 @@ require_relative "../helper"
 class TestEmptyWord < MiniTest::Test
 
   def setup
-    @word = ::Parfait::Word.new_object(0)
+    @word = ::Parfait::Word.new(0)
   end
   def test_word_create
     assert @word.empty?
@@ -25,7 +25,7 @@ end
 class TestWord < MiniTest::Test
 
   def setup
-    @word = ::Parfait::Word.new_object(5)
+    @word = ::Parfait::Word.new(5)
   end
   def test_len
     assert_equal 5 , @word.length
@@ -42,7 +42,7 @@ class TestWord < MiniTest::Test
     assert_equal @word.copy , @word
   end
   def test_equals_same
-    assert_equal ::Parfait::Word.new_object(5) , @word
+    assert_equal ::Parfait::Word.new(5) , @word
   end
   def test_index_check_get
     assert_raises RuntimeError do

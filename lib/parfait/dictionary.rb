@@ -7,8 +7,8 @@ module Parfait
     # internally we store keys and values in lists, which means this does **not** scale well
     def initialize
       super()
-      @keys = List.new_object()
-      @values = List.new_object()
+      @keys = List.new()
+      @values = List.new()
     end
 
     # return all values as a list

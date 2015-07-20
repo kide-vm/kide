@@ -3,7 +3,7 @@ require_relative "../helper"
 class TestList < MiniTest::Test
 
   def setup
-    @list = ::Parfait::List.new_object
+    @list = ::Parfait::List.new
   end
   def test_list_create
     assert @list.empty?

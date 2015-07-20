@@ -25,7 +25,7 @@ module FakeMem
 end
 module Virtual
   def self.new_list array
-    list = Parfait::List.new_object
+    list = Parfait::List.new
     list.set_length array.length
     index = 1
     while index <= array.length do

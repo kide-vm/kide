@@ -24,7 +24,7 @@ module Parfait
     def initialize
       super()
       Parfait::Space.set_object_space self
-      @classes = Parfait::Dictionary.new_object
+      @classes = Parfait::Dictionary.new
     end
     attr_reader :classes , :first_message
 
@@ -81,7 +81,7 @@ module Parfait
     # so we get and keep exactly one per name
     def create_class name , superclass
       raise "uups #{name.class}" unless name.is_a? Symbol
-      c = Class.new_object(name , superclass)
+      c = Class.new(name , superclass)
       @classes[name] = c
     end
 

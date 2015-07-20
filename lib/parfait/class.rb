@@ -19,7 +19,7 @@ module Parfait
       super( name , super_class)
       # the layout for this class (class = object of type Class) carries the class
       # as an instance. The relation is from an object through the Layout to it's class
-      @object_layout = Layout.new_object(self)
+      @object_layout = Layout.new(self)
     end
 
     def object_layout

@@ -3,7 +3,7 @@ require_relative "../helper"
 class TestObject < MiniTest::Test
 
   def setup
-     @object = ::Parfait::Object.new_object
+     @object = ::Parfait::Object.new
   end
 
   def test_object_create

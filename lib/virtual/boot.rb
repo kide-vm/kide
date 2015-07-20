@@ -17,7 +17,7 @@ module Virtual
     # The way out is to build empty shell objects and stuff the neccessary data into them
     #  (not use the normal initialize way)
     def boot_parfait!
-      @space = Parfait::Space.new_object
+      @space = Parfait::Space.new
       # map from the vm - class_name to the Parfait class (which carries parfait name)
       class_mappings = {}        #will later become instance variable
 
