@@ -34,13 +34,19 @@ class TestSpace < MiniTest::Test
     # there is a 5.times in space, but one Message gets created before
     assert_equal  5 + 1 , all.length
   end
+  def test_message_vars
+    mess = @machine.space.first_message
+    all = mess.get_instance_variables
+    assert all
+    assert all.include?(:next_message)
+  end
+
   def test_message_layout
     mess = @machine.space.first_message
     one_way = mess.get_layout
     assert one_way
     assert mess.instance_variable_defined :next_message
-    other_way = mess.get_instance_variable :layout
-    #puts mess.get_instance_variables
+#    other_way = mess.get_instance_variable :layout
 #    assert other_way
 #    assert_equal one_way , other_way , "not same "
 

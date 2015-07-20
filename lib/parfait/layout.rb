@@ -48,6 +48,18 @@ module Parfait
       return @object_class
     end
 
+    def object_instance_names
+      names = List.new
+      index = 1
+      while index <= self.get_length
+        item = get(index)
+        names.push item
+        index = index + 1
+      end
+      self
+
+      names
+    end
     def sof_reference_name
       "#{@object_class.name}_Layout"
     end

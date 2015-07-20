@@ -65,7 +65,7 @@ module Parfait
     end
 
     def get_instance_variables
-      get_layout().get_instance_variables
+      get_layout().object_instance_names
     end
 
     def get_instance_variable name
