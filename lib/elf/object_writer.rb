@@ -32,7 +32,7 @@ module Elf
 #        add_symbol "main@#{b.name}" , b.position
 #      end
 #      add_symbol "#register@#{@object_machine.space.init.name}" , @object_machine.space.init.position
-      @object_machine.objects.each do |slot|
+      @object_machine.objects.each do |id,slot|
         if( slot.respond_to? :sof_reference_name )
           label = "#{slot.sof_reference_name}"
         else

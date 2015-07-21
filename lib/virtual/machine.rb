@@ -93,6 +93,7 @@ module Virtual
     # Objects are data and get assembled after functions
     def add_object o
       return false if @objects[o.object_id]
+      raise "adding non parfait #{o.class}" unless o.is_a? Parfait::Object or o.is_a? Symbol
       @objects[o.object_id] = o
       true
     end

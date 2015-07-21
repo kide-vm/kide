@@ -30,7 +30,7 @@ HERE
     check
   end
 
-  def ttest_string_put
+  def test_string_put
     @string_input    = <<HERE
 "Hello again\n".putstring()
 HERE

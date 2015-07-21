@@ -25,7 +25,7 @@ module Register
       # want to have the methods first in the executable
       # so first we determine the code length for the methods and set the
       # binary code (array) to right length
-      @machine.objects.each do |objekt|
+      @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::Method
         # should be fill_to_length (with zeros)
         objekt.code.set_length(objekt.source.byte_length , 0)
@@ -36,14 +36,14 @@ module Register
       at +=  8 # thats the padding
 
       # then we make sure we really get the binary codes first
-      @machine.objects.each do |objekt|
+      @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::BinaryCode
         objekt.set_position at
         #puts "CODE #{objekt.name} at #{objekt.position}"
         at += objekt.word_length
       end
       # and then everything else
-      @machine.objects.each do | objekt|
+      @machine.objects.each do | id , objekt|
         # have to tell the code that will be assembled where it is to
         # get the jumps/calls right
         if objekt.is_a? Parfait::Method
@@ -69,14 +69,14 @@ module Register
     # case we try again. Once.
     def try_write
       assemble
-      all = @machine.objects.sort{|a,b| a.position <=> b.position}
+      all = @machine.objects.values.sort{|a,b| a.position <=> b.position}
       # debugging loop accesses all positions to force an error if it's not set
       all.each do |objekt|
         #puts "Linked #{objekt.class}(#{objekt.object_id.to_s(16)}) at #{objekt.position.to_s(16)} / #{objekt.word_length.to_s(16)}"
         objekt.position
       end
       # first we need to create the binary code for the methods
-      @machine.objects.each do |objekt|
+      @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::Method
         assemble_binary_method(objekt)
       end
@@ -89,12 +89,12 @@ module Register
       end
 
       # then write the methods to file
-      @machine.objects.each do |objekt|
+      @machine.objects.each do |id, objekt|
         next unless objekt.is_a? Parfait::BinaryCode
         write_any( objekt )
       end
       # and then the rest of the object machine
-      @machine.objects.each do | objekt|
+      @machine.objects.each do | id, objekt|
         next if objekt.is_a? Parfait::BinaryCode
         write_any( objekt )
       end
@@ -159,7 +159,7 @@ module Register
     # write type and layout of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def write_object( object )
-      unless @machine.objects.include? object
+      unless @machine.objects.has_key? object.object_id
         raise "Object(#{object.object_id}) not linked #{object.inspect}"
       end
       layout = object.get_layout

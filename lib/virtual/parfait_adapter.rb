@@ -25,7 +25,7 @@ class Symbol
   end
   def get_layout
     l = Virtual.machine.space.classes[:Word].object_layout
-    puts "LL #{l.class}"
+    #puts "LL #{l.class}"
     l
   end
   def word_length
@@ -42,7 +42,7 @@ class Symbol
     pos = cache_positions[self]
     if pos == nil
       str = "position accessed but not set, "
-      str += "Machine has object=#{Virtual.machine.objects.include?(self)} "
+      str += "Machine has object=#{Virtual.machine.objects.has_key?(self.object_id)} "
       raise str + " for Symbol:#{self}"
     end
     pos
@@ -168,7 +168,7 @@ module Parfait
     # name comes in as a ruby @var name
     def instance_variable_get name
       var = get_instance_variable name.to_s[1 .. -1].to_sym
-      puts "getting #{name}  #{var}"
+      #puts "getting #{name}  #{var}"
       var
     end
   end
