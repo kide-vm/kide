@@ -9,25 +9,25 @@ module Register
       # then check if were done and recurse if neccessary
       # As we write before we recurse (save a push) we write the number backwards
       # arguments: string address , integer
-      def utoa context
-        utoa_function = Virtual::MethodSource.create_method(:Integer ,:utoa ,  [ Virtual::Integer ] )
-        function.source.return_type = Virtual::Integer
-        function.source.receiver = Virtual::Integer
-        return utoa_function
-        # str_addr = utoa_function.receiver
-        # number = utoa_function.args.first
-        # remainder = utoa_function.new_local
-        # Virtual::RegisterMachine.instance.div10( utoa_function , number  , remainder )
-        # # make char out of digit (by using ascii encoding) 48 == "0"
-        # utoa_function.instance_eval do
-        #   add(  remainder , remainder , 48)
-        #   strb( remainder, str_addr )
-        #   sub(  str_addr,  str_addr ,  1 )
-        #   cmp(  number ,  0 )
-        #   callne( utoa_function  )
-        # end
-        # return utoa_function
-      end
+      # def utoa context
+      #   utoa_function = Virtual::MethodSource.create_method(:Integer ,:utoa ,  [ Virtual::Integer ] )
+      #   function.source.return_type = Virtual::Integer
+      #   function.source.receiver = Virtual::Integer
+      #   return utoa_function
+      #   # str_addr = utoa_function.receiver
+      #   # number = utoa_function.args.first
+      #   # remainder = utoa_function.new_local
+      #   # Virtual::RegisterMachine.instance.div10( utoa_function , number  , remainder )
+      #   # # make char out of digit (by using ascii encoding) 48 == "0"
+      #   # utoa_function.instance_eval do
+      #   #   add(  remainder , remainder , 48)
+      #   #   strb( remainder, str_addr )
+      #   #   sub(  str_addr,  str_addr ,  1 )
+      #   #   cmp(  number ,  0 )
+      #   #   callne( utoa_function  )
+      #   # end
+      #   # return utoa_function
+      # end
 
       def putint context
         putint_function = Virtual::MethodSource.create_method(:Integer,:putint , [] )

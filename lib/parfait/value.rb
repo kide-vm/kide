@@ -30,10 +30,10 @@ module Parfait
     # Get class works on the type. The value's type is stored by the machine.
     # So this function is not overriden in derived classes, because it is used
     # to espablish what class a value has! (it's that "fake" oo i mentioned)
-    def get_class()
-      type = self.get_type()
-      return Integer if( type == INTEGER_VALUE )
-      raise "invalid type"
-    end
+    # def get_class()
+    #   type = self.get_type()
+    #   return Integer if( type == INTEGER_VALUE )
+    #   raise "invalid type"
+    # end
   end
 end
