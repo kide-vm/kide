@@ -16,43 +16,43 @@ module Parfait
   class MetaClass < Object
     # no name, nor nothing. as this is just the object really
 
-    def initialize(object)
-      super()
-      self.functions = []
-      self.me_self = object
-    end
+    # def initialize(object)
+    #   super()
+    #   self.functions = []
+    #   self.me_self = object
+    # end
 
     # in a non-booting version this should map to _add_singleton_method
-    def add_function function
-      raise "not a function #{function}" unless function.is_a? Virtual::Function
-      raise "syserr " unless function.name.is_a? Symbol
-      self.functions << function
-    end
+    # def add_function function
+    #   raise "not a function #{function}" unless function.is_a? Virtual::Function
+    #   raise "syserr " unless function.name.is_a? Symbol
+    #   self.functions << function
+    # end
 
-    def get_function name
-      name = name.to_sym
-      f = self.functions.detect{ |f| f.name == name }
-      return f if f
-      if( self.me_self == "Object" )
-        puts "no function for :#{name} in Meta #{self.me_self.inspect}"
-        return nil
-      else  #recurse up class hierachy unless we're at Object
-        return self.me_self.context.object_space.get_class_by_name(self.me_self.super_class).get_function name
-      end
-    end
+    # def get_function name
+    #   name = name.to_sym
+    #   f = self.functions.detect{ |f| f.name == name }
+    #   return f if f
+    #   if( self.me_self == "Object" )
+    #     puts "no function for :#{name} in Meta #{self.me_self.inspect}"
+    #     return nil
+    #   else  #recurse up class hierachy unless we're at Object
+    #     return self.me_self.context.object_space.get_class_by_name(self.me_self.super_class).get_function name
+    #   end
+    # end
 
     # get the function and if not found, try superclasses. raise error if not found
-    def resolve_method name
-      fun = get_function name
-      # TODO THE BOOK says is class A derives from B , then the metaclass of
-      # A derives from the metaclass of B
-      # just get to it ! (and stop whimpering)
-      raise "Method not found #{name} , for #{inspect}" unless fun
-      fun
-    end
+    # def resolve_method name
+    #   fun = get_function name
+    #   # TODO THE BOOK says is class A derives from B , then the metaclass of
+    #   # A derives from the metaclass of B
+    #   # just get to it ! (and stop whimpering)
+    #   raise "Method not found #{name} , for #{inspect}" unless fun
+    #   fun
+    # end
 
-    def to_s
-      "#{inspect} on #{self.me_self}, #{self.functions.length} functions"
-    end
+    # def to_s
+    #   "#{inspect} on #{self.me_self}, #{self.functions.length} functions"
+    # end
   end
 end
