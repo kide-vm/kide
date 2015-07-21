@@ -18,16 +18,6 @@ require "virtual/passes/get_implementation"
 require "virtual/passes/enter_implementation"
 require "virtual/passes/set_optimisation"
 
-Sof::Volotile.add(Parfait::Object ,  [:memory])
-Sof::Volotile.add(Parfait::Method ,  [:memory])
-Sof::Volotile.add(Parfait::Class ,  [:memory])
-Sof::Volotile.add(Parfait::Layout ,  [:memory])
-Sof::Volotile.add(Parfait::Space ,  [:memory])
-Sof::Volotile.add(Parfait::Frame ,  [:memory])
-Sof::Volotile.add(Parfait::Message ,  [:memory])
-Sof::Volotile.add(Parfait::BinaryCode ,  [:memory])
-Sof::Volotile.add(Virtual::Block ,  [:method])
-Sof::Volotile.add(Virtual::MethodSource ,  [:current])
 
 class Fixnum
   def fits_u8?

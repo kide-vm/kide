@@ -13,25 +13,23 @@
 
 module Parfait
   class Module < Object
+    attribute :name
+    attribute :instance_methods
+    attribute :super_class
+    attribute :meta_class
+
     def initialize name , superclass
       super()
-      @name = name
-      @instance_methods = List.new
-      @super_class = superclass
-      @meta_class = nil#MetaClass.new(self)
+      self.name = name
+      self.instance_methods = List.new
+      self.super_class = superclass
+      self.meta_class = nil#MetaClass.new(self)
     end
 
-    def name
-      @name
-    end
-
-    def instance_methods
-      @instance_methods
-    end
 
     def method_names
       names = List.new
-      @instance_methods.each do |method|
+      self.instance_methods.each do |method|
         names.push method.name
       end
       names
@@ -42,36 +40,36 @@ module Parfait
       raise "syserr #{method.name.class}" unless method.name.is_a? Symbol
       found = get_instance_method( method.name )
       if found
-        @instance_methods.delete(found)
+        self.instance_methods.delete(found)
         #raise "existed in #{self.name} #{Sof.write found.source.blocks}"
       end
-      @instance_methods.push method
+      self.instance_methods.push method
       #puts "#{self.name} add #{method.name}"
       method
     end
 
     def remove_instance_method method
-      @instance_methods.delete method
+      self.instance_methods.delete method
     end
 
-    def create_instance_method  name , arg_names
-      raise "uups #{name}.#{name.class}" unless name.is_a?(Symbol)
-      clazz = Space.object_space.get_class_by_name(self.name)
-      raise "??? #{self.name}" unless clazz
-      Method.new( clazz , name , arg_names )
+    def create_instance_method  method_name , arg_names
+      raise "uups #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
+      clazz = get_layout().object_class()
+      raise "??? #{method_name}" unless clazz
+      Method.new( clazz , method_name , arg_names )
     end
 
     # this needs to be done during booting as we can't have all the classes and superclassses
     # instantiated. By that logic it should maybe be part of vm rather.
     # On the other hand vague plans to load the hierachy from sof exist, so for now...
     def set_super_class sup
-      @super_class = sup
+      self.super_class = sup
     end
 
     def get_instance_method fname
       raise "uups #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
       #if we had a hash this would be easier.  Detect or find would help too
-      @instance_methods.each do |m|
+      self.instance_methods.each do |m|
         return m if(m.name == fname )
       end
       nil
@@ -82,8 +80,8 @@ module Parfait
       raise "uups #{m_name}.#{m_name.class}" unless m_name.is_a?(Symbol)
       method = get_instance_method(m_name)
       return method if method
-      if( @super_class )
-        method = @super_class.resolve_method(m_name)
+      if( self.super_class )
+        method = self.super_class.resolve_method(m_name)
         raise "Method not found #{m_name}, for \n#{self}" unless method
       end
       method

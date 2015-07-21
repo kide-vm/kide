@@ -9,18 +9,19 @@
 
 module Parfait
   class Message < Object
+    attributes [:next_message , :frame, :caller]
+    attributes [:receiver ,  :return_address , :return_value , :name]
+
     def initialize next_m
-      @next_message = next_m
-      @frame = Frame.new()
-      @caller = nil
+      self.next_message = next_m
+      self.frame = Frame.new()
+      self.caller = nil
       super()
     end
 
-    attr_reader :next_message , :frame , :caller # aka prev_message
-    attr_reader :receiver ,  :return_address , :return_value , :name
 
     def set_caller caller
-      @caller = caller
+      self.caller = caller
     end
 
     def get_type_for(name)

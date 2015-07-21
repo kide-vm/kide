@@ -6,7 +6,7 @@ GIT
 
 GIT
   remote: git://github.com/salama/salama-object-file.git
-  revision: 9e49f2e725dbad48edc151419882b159505b2e9b
+  revision: fbae6a02764dbe97e01e4833f9ffffe09879b100
   specs:
     salama-object-file (0.2.0)
 
@@ -56,3 +56,6 @@ DEPENDENCIES
   salama-arm!
   salama-object-file!
   salama-reader!
+
+BUNDLED WITH
+   1.10.5

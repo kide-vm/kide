@@ -14,16 +14,13 @@ require_relative "meta_class"
 
 module Parfait
   class Class < Module
+    attribute :object_layout
 
     def initialize name , super_class
       super( name , super_class)
       # the layout for this class (class = object of type Class) carries the class
       # as an instance. The relation is from an object through the Layout to it's class
-      @object_layout = Layout.new(self)
-    end
-
-    def object_layout
-      @object_layout
+      self.object_layout = Layout.new(self)
     end
 
     def allocate_object
@@ -31,7 +28,7 @@ module Parfait
     end
 
     def add_instance_name name
-      @object_layout.push name
+      self.object_layout.push name
     end
 
     def sof_reference_name

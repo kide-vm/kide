@@ -4,25 +4,6 @@
 # To stay sane, we use the same classes that we use later, but "adapt" them to work in ruby
 # This affects mainly memory layout
 
-module FakeMem
-  def initialize
-    super()
-    @memory = [0,nil]
-    @position = nil
-    if Virtual.machine.class_mappings
-      init_layout
-    else
-      #puts "No init for #{self.class}:#{self.object_id}"
-    end
-  end
-  def init_layout
-    vm_name = self.class.name.split("::").last.to_sym
-    clazz = Virtual.machine.class_mappings[vm_name]
-    raise "Class not found #{vm_name}" unless clazz
-    raise "Layout not set #{vm_name}" unless clazz.object_layout
-    self.set_layout clazz.object_layout
-  end
-end
 module Virtual
   def self.new_list array
     list = Parfait::List.new
@@ -39,12 +20,13 @@ class Symbol
   include Positioned
   include Padding
 
-  def init_layout;  end
   def has_layout?
     true
   end
   def get_layout
-    Virtual.machine.class_mappings[:Word].object_layout
+    l = Virtual.machine.space.classes[:Word].object_layout
+    puts "LL #{l.class}"
+    l
   end
   def word_length
     padded to_s.length
@@ -82,9 +64,14 @@ module Parfait
   # but we implement it with ruby array (0 based) and use 0 as type-word
   # These are the same functions that Builtin implements at run-time
   class Object
-    include FakeMem
     include Padding
     include Positioned
+
+    def fake_init
+      @memory = [0,nil]
+      @position = nil
+      self # for chaining
+    end
 
     # these internal functions are _really_ internal
     # they respresent the smallest code needed to build larger functionality
@@ -108,10 +95,6 @@ module Parfait
     # 1 -based index
     def internal_object_set(index , value)
       raise "failed init for #{self.class}" unless @memory
-      #shaddowing layout so we can ignore memory in Sof
-      if(index == LAYOUT_INDEX)
-        @layout = value
-      end
       @memory[index] = value
     end
     def internal_object_grow(length)
@@ -174,4 +157,20 @@ module Parfait
       string
     end
   end
+
+  ## sof related stuff
+  class Object
+    # parfait versions are deliberately called different, so we "relay"
+    # have to put the "@" on the names for sof to take them off again
+    def instance_variables
+      get_instance_variables.to_a.collect{ |n| "@#{n}".to_sym }
+    end
+    # name comes in as a ruby @var name
+    def instance_variable_get name
+      var = get_instance_variable name.to_s[1 .. -1].to_sym
+      puts "getting #{name}  #{var}"
+      var
+    end
+  end
+
 end

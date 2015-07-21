@@ -22,14 +22,14 @@ module Parfait
     def initialize clazz , name , arg_names
       super()
       raise "No class #{name}" unless clazz
-      @for_class = clazz
-      @name = name
-      @code = BinaryCode.new name
-      @arg_names = arg_names
-      @locals = List.new
-      @tmps = List.new
+      self.for_class = clazz
+      self.name = name
+      self.code = BinaryCode.new name
+      self.arg_names = arg_names
+      self.locals = List.new
+      self.tmps = List.new
     end
-    attr_reader :name , :arg_names , :for_class , :code , :locals , :tmps
+    attributes [:name , :arg_names , :for_class , :code , :locals , :tmps]
 
 
     # determine whether this method has a variable by the given name
@@ -46,32 +46,32 @@ module Parfait
     # determine whether this method has an argument by the name
     def has_arg name
       raise "uups #{name}.#{name.class}" unless name.is_a? Symbol
-      @arg_names.index_of name
+      self.arg_names.index_of name
     end
 
     # determine if method has a local variable or tmp (anonymous local) by given name
     def has_local name
       raise "uups #{name}.#{name.class}" unless name.is_a? Symbol
-      index = @locals.index_of(name)
-      index = @tmps.index_of(name) unless index
+      index = self.locals.index_of(name)
+      index = self.tmps.index_of(name) unless index
       index
     end
 
     def ensure_local name
       index = has_local name
       return index if index
-      @locals.push name
-      @locals.get_length
+      self.locals.push name
+      self.locals.get_length
     end
 
     def get_var name
       var = has_var name
-      raise "no var #{name} in method #{self.name} , #{@locals} #{@arg_names}" unless var
+      raise "no var #{name} in method #{self.name} , #{self.locals} #{self.arg_names}" unless var
       var
     end
 
     def sof_reference_name
-      @name
+      self.name
     end
 
   end

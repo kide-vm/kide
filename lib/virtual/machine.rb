@@ -42,7 +42,7 @@ module Virtual
     def initialize
       @parser  = Parser::Salama.new
       @passes = [  FIRST_PASS ]
-      @objects = []
+      @objects = {}
       @booted = false
     end
     attr_reader  :passes , :space , :class_mappings , :init , :objects , :booted
@@ -92,8 +92,8 @@ module Virtual
 
     # Objects are data and get assembled after functions
     def add_object o
-      return false if @objects.include?(o)
-      @objects.push o
+      return false if @objects[o.object_id]
+      @objects[o.object_id] = o
       true
     end
 

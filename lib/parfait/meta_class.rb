@@ -18,26 +18,26 @@ module Parfait
 
     def initialize(object)
       super()
-      @functions = []
-      @me_self = object
+      self.functions = []
+      self.me_self = object
     end
 
     # in a non-booting version this should map to _add_singleton_method
     def add_function function
       raise "not a function #{function}" unless function.is_a? Virtual::Function
       raise "syserr " unless function.name.is_a? Symbol
-      @functions << function
+      self.functions << function
     end
 
     def get_function name
       name = name.to_sym
-      f = @functions.detect{ |f| f.name == name }
+      f = self.functions.detect{ |f| f.name == name }
       return f if f
-      if( @me_self == "Object" )
-        puts "no function for :#{name} in Meta #{@me_self.inspect}"
+      if( self.me_self == "Object" )
+        puts "no function for :#{name} in Meta #{self.me_self.inspect}"
         return nil
       else  #recurse up class hierachy unless we're at Object
-        return @me_self.context.object_space.get_class_by_name(@me_self.super_class).get_function name
+        return self.me_self.context.object_space.get_class_by_name(self.me_self.super_class).get_function name
       end
     end
 
@@ -52,7 +52,7 @@ module Parfait
     end
 
     def to_s
-      "#{inspect} on #{@me_self}, #{@functions.length} functions"
+      "#{inspect} on #{self.me_self}, #{self.functions.length} functions"
     end
   end
 end

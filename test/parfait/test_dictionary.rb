@@ -1,6 +1,7 @@
 require_relative "../helper"
 
 class TestDictionary < MiniTest::Test
+  Virtual.machine.boot  #have to book, otherwise layouts etc not set
 
   def setup
     @lookup = ::Parfait::Dictionary.new

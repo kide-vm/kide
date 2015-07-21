@@ -11,6 +11,7 @@ module Virtual
       return if object.nil?
       return unless Virtual.machine.add_object object
       #puts "adding #{object.class}"
+      return unless object.respond_to? :has_layout?
       unless object.has_layout?
         object.init_layout
       end
@@ -19,8 +20,8 @@ module Virtual
       end
       layout = object.get_layout
       keep layout
-      #puts "Layout #{layout.get_object_class.name} #{Machine.instance.objects.include?(layout)}"
-      layout.each do |name|
+      #puts "Layout #{layout.object_class.name} #{Machine.instance.objects.include?(layout)}"
+      layout.object_instance_names.each do |name|
         inst = object.instance_variable_get "@#{name}".to_sym
         keep inst
       end

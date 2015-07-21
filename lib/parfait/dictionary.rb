@@ -2,35 +2,25 @@
 
 module Parfait
   class Dictionary < Object
+    attribute :keys
+    attribute  :values
     # only empty initialization for now
     #
     # internally we store keys and values in lists, which means this does **not** scale well
     def initialize
       super()
-      @keys = List.new()
-      @values = List.new()
-    end
-
-    # return all values as a list
-    # TODO, list should be copied to avoid inconcisencies
-    def values()
-      @values
-    end
-
-    # return all keys as a list
-    # TODO, list should be copied to avoid inconcisencies
-    def keys()
-      @keys
+      self.keys = List.new()
+      self.values = List.new()
     end
 
     # are there any key/value items in the list
     def empty?
-      @keys.empty?
+      self.keys.empty?
     end
 
     # How many key/value pairs there are
     def length()
-      return @keys.get_length()
+      return self.keys.get_length()
     end
 
     # get a value fot the given key
@@ -39,7 +29,7 @@ module Parfait
     def get(key)
       index = key_index(key)
       if( index )
-        @values.get(index)
+        self.values.get(index)
       else
         nil
       end
@@ -52,11 +42,11 @@ module Parfait
 
     # private method
     def key_index(key)
-      len = @keys.get_length()
+      len = self.keys.get_length()
       index = 1
       found = nil
       while(index <= len)
-        if( @keys.get(index) == key)
+        if( self.keys.get(index) == key)
           found = index
           break
         end
@@ -69,10 +59,10 @@ module Parfait
     def set(key , value)
       index = key_index(key)
       if( index )
-        @keys.set(index , value)
+        self.keys.set(index , value)
       else
-        @keys.push(key)
-        @values.push(value)
+        self.keys.push(key)
+        self.values.push(value)
       end
       value
     end
@@ -85,9 +75,9 @@ module Parfait
     # yield to each key value pair
     def each
       index = 1
-      while index <= @keys.get_length
-        key = @keys.get(index)
-        value = @values.get(index)
+      while index <= self.keys.get_length
+        key = self.keys.get(index)
+        value = self.values.get(index)
         yield key , value
         index = index + 1
       end

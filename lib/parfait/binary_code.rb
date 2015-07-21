@@ -12,9 +12,9 @@ module Parfait
   class BinaryCode < Word
     def initialize name
       super(0)
-      @name = name
+      self.name = name
     end
-    attr_reader :name
+    attribute :name
 
     # this is a sof check if there are instance variables or "structure"
     # have to override false, as word answers true
@@ -22,7 +22,7 @@ module Parfait
       false
     end
     def to_s
-      "BinaryCode #{@name}"
+      "BinaryCode #{self.name}"
     end
 
     def == other

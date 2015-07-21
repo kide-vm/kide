@@ -19,9 +19,24 @@ module Parfait
 
     def self.new *args
       object = self.allocate
+      #HACK, but used to do the adapter in the init, bu that is too late now
+      object.fake_init if object.respond_to?(:fake_init) # at compile, not run-time
+      # have to grab the class, because we are in the ruby class not the parfait one
+      cl = Space.object_space.get_class_by_name( self.name.split("::").last.to_sym)
+      # and have to set the layout before we let the object do anything. otherwise boom
+      object.set_layout cl.object_layout
+
       object.send :initialize , *args
-      #puts "NEW #{object.class}"
       object
+    end
+
+    def self.attributes names
+      names.each{|name| attribute(name) }
+    end
+
+    def self.attribute name
+      define_method(name) { get_instance_variable(name) }
+      define_method("#{name}=".to_sym) { |value| set_instance_variable(name , value) }
     end
 
     def == other
@@ -42,8 +57,8 @@ module Parfait
     # data that every object carries.
     def get_class()
       l = get_layout()
-      puts "Layout #{l.class} in #{self.class} , #{self}"
-      l.get_object_class()
+      #puts "Layout #{l.class} in #{self.class} , #{self}"
+      l.object_class()
     end
 
     # private
@@ -60,6 +75,7 @@ module Parfait
 
     def get_layout()
       l = internal_object_get(LAYOUT_INDEX)
+      #puts "get layout for #{self.class} returns #{l.class}"
       raise "No layout #{self.object_id.to_s(16)}:#{self.class} " unless l
       return l
     end
@@ -70,6 +86,7 @@ module Parfait
 
     def get_instance_variable name
       index = instance_variable_defined(name)
+      #puts "getting #{name} at #{index}"
       return nil if index == nil
       return internal_object_get(index)
     end
@@ -81,7 +98,7 @@ module Parfait
     end
 
     def instance_variable_defined name
-      get_layout().index_of(name)
+      get_layout().variable_index(name)
     end
 
     def word_length

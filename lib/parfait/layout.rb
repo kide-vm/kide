@@ -22,10 +22,11 @@
 
 module Parfait
   class Layout < List
+    attribute :object_class
 
     def initialize( object_class )
       super()
-      @object_class = object_class
+      self.object_class = object_class
     end
 
     def == other
@@ -45,23 +46,30 @@ module Parfait
 
     # beat the recursion! fixed known offset for class object in the layout
     def get_object_class()
-      return @object_class
+      return self.object_class
     end
 
     def object_instance_names
       names = List.new
-      index = 1
+      index = 2 # first is object_class
       while index <= self.get_length
         item = get(index)
         names.push item
         index = index + 1
       end
-      self
-
       names
     end
+
+    # index of a variable name into the layout.
+    # layout is a list, so lowest index is 1
+    # :layout is a variable for every object, so 1 is taken for :layout
+    # still, the index is the same.
+    def variable_index name
+      index_of(name)
+    end
+
     def sof_reference_name
-      "#{@object_class.name}_Layout"
+      "#{self.object_class.name}_Layout"
     end
 
   end

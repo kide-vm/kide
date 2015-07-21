@@ -22,22 +22,19 @@ module Parfait
   class Space < Object
 
     def initialize
-      super()
-      Parfait::Space.set_object_space self
-      @classes = Parfait::Dictionary.new
+      raise "Space can not be instantiated by new, you'd need a space to do so. Chicken and egg"
     end
-    attr_reader :classes , :first_message
+    attributes [:classes , :first_message]
 
     # need a two phase init for the object space (and generally parfait) because the space
     # is an interconnected graph, so not everthing is ready
     def late_init
       message = Message.new(nil)
       5.times do
-        @first_message = Message.new message
-        message.set_caller @first_message
-        message = @first_message
+        self.first_message = Message.new message
+        message.set_caller self.first_message
+        message = self.first_message
       end
-      init_layout
     end
 
     @@object_space = nil
@@ -64,8 +61,8 @@ module Parfait
     # return nili if no such class. Use bang version if create should be implicit
     def get_class_by_name name
       raise "uups #{name}.#{name.class}" unless name.is_a?(Symbol)
-      c = @classes[name]
-      puts "MISS, no class #{name} #{name.class}" unless c # " #{@classes}"
+      c = self.classes[name]
+      #puts "MISS, no class #{name} #{name.class}" unless c # " #{self.classes}"
       c
     end
 
@@ -82,7 +79,7 @@ module Parfait
     def create_class name , superclass
       raise "uups #{name.class}" unless name.is_a? Symbol
       c = Class.new(name , superclass)
-      @classes[name] = c
+      self.classes[name] = c
     end
 
     def sof_reference_name
