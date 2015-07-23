@@ -11,7 +11,7 @@ module Virtual
           @gonners << f
         end
       end
-      init= Parfait::Space.object_space.get_class_by_name(:Kernel).get_instance_method :__init__
+      init = Parfait::Space.object_space.get_class_by_name(:Kernel).get_instance_method :__init__
       remove init
       dump_remaining
     end
@@ -19,7 +19,7 @@ module Virtual
     def remove function
       index = @gonners.index function
       unless index
-        puts "function was already removed #{ function.name}"
+        puts "function was already removed #{function.name}"
         return
       end
       #puts "stayer #{function.name}"
@@ -27,7 +27,7 @@ module Virtual
       function.source.blocks.each do |block|
         block.codes.each do |code|
           if code.is_a? Virtual::MessageSend
-            @gonners.each do |stay|
+            @gonners.dup.each do |stay|
               remove stay if(stay.name == code.name)
             end
           end
