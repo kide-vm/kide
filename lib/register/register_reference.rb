@@ -32,7 +32,7 @@ module Register
       if( [:lr , :pc].include? is_it )
         return true
       end
-      if( (is_it.to_s.length < 3) and (is_it.to_s[0] == "r"))
+      if( (is_it.to_s.length <= 3) and (is_it.to_s[0] == "r"))
         # could tighten this by checking that the rest is a number
         return true
       end
