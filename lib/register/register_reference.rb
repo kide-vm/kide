@@ -17,6 +17,9 @@ module Register
       @symbol = r
     end
 
+    def to_s
+      symbol.to_s
+    end
     def self.convert something
       return something unless something.is_a? Symbol
       return something unless look_like_reg(something)

@@ -8,10 +8,10 @@ module Register
       raise "No block" unless to
       @block = to
     end
-    attr_reader :block 
+    attr_reader :block
 
     def to_s
-      "Branch(to: #{block.name})"
+      "Branch(block: #{block.name})"
     end
 
   end

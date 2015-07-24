@@ -10,5 +10,10 @@ module Register
       @constant = constant
     end
     attr_accessor :register , :constant
+
+    def to_s
+      "LoadConstant(#{register}: #{constant})"
+    end
+
   end
 end

@@ -26,6 +26,10 @@ module Register
       raise "Not register #{array}" unless Register::RegisterReference.look_like_reg(array)
     end
     attr_accessor :register , :array , :index
+    def to_s
+      "SetSlot(#{register}: #{array}[#{index}])"
+    end
+
   end
 
   # Produce a SetSlot instruction.

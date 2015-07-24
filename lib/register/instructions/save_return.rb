@@ -12,6 +12,11 @@ module Register
       @index = index
     end
     attr_reader :register , :index
+
+    def to_s
+      "SaveReturn(#{register}[#{index}])"
+    end
+
   end
 
   # Produce a SaveReturn instruction.

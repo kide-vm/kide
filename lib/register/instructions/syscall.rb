@@ -13,5 +13,10 @@ module Register
       @name = name
     end
     attr_reader :name
+
+    def to_s
+      "Syscall(#{name})"
+    end
+
   end
 end

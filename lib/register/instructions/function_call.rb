@@ -8,5 +8,10 @@ module Register
       @method = method
     end
     attr_reader :method
+
+    def to_s
+      "FunctionCall(#{method.name})"
+    end
+
   end
 end

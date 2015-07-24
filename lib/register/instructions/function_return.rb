@@ -9,5 +9,10 @@ module Register
       @index = index
     end
     attr_reader :register , :index
+
+    def to_s
+      "FunctionReturn(#{register}: #{index})"
+    end
+
   end
 end

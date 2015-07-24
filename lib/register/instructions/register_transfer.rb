@@ -15,11 +15,16 @@ module Register
     # First argument from
     # second arguemnt to
     #
-    # Note: this may be reversed from some assembler notations (also arm) 
+    # Note: this may be reversed from some assembler notations (also arm)
     def initialize from , to
       @from = wrap_register(from)
       @to = wrap_register(to)
     end
     attr_reader :from, :to
+
+    def to_s
+      "RegisterTransfer(#{from} -> #{to})"
+    end
+
   end
 end
