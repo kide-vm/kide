@@ -14,7 +14,7 @@ module Register
     attr_reader :register , :index
 
     def to_s
-      "SaveReturn(#{register}[#{index}])"
+      "SaveReturn: #{register} [#{index}]"
     end
 
   end

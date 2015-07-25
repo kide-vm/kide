@@ -15,7 +15,7 @@ module Register
     attr_reader :name
 
     def to_s
-      "Syscall(#{name})"
+      "Syscall: #{name}"
     end
 
   end

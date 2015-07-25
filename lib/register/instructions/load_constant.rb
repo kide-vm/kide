@@ -12,7 +12,7 @@ module Register
     attr_accessor :register , :constant
 
     def to_s
-      "LoadConstant(#{register}: #{constant})"
+      "LoadConstant: #{register} <- #{constant}"
     end
 
   end

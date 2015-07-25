@@ -27,7 +27,7 @@ module Register
     end
     attr_accessor :register , :array , :index
     def to_s
-      "SetSlot(#{register}: #{array}[#{index}])"
+      "SetSlot: #{register} -> #{array} [#{index}]"
     end
 
   end

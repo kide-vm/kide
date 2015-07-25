@@ -11,7 +11,7 @@ module Register
     attr_reader :register , :index
 
     def to_s
-      "FunctionReturn(#{register}: #{index})"
+      "FunctionReturn: #{register} [#{index}]"
     end
 
   end

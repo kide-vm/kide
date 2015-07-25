@@ -11,7 +11,7 @@ module Register
     attr_reader :block
 
     def to_s
-      "Branch(block: #{block.name})"
+      "Branch: #{block.name}"
     end
 
   end

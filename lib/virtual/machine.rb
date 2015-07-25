@@ -62,7 +62,7 @@ module Virtual
         end
       end
       @passes.each do |pass_class|
-        puts "running #{pass_class}"
+        #puts "running #{pass_class}"
         run_blocks_for pass_class
         return if stop_at == pass_class
       end
@@ -75,7 +75,7 @@ module Virtual
       run = false
       @passes.each do |pass_class|
         if run
-          puts "running #{pass_class}"
+          #puts "running #{pass_class}"
           run_blocks_for pass_class
         else
           run = true if start_at == pass_class

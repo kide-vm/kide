@@ -23,7 +23,7 @@ module Register
     attr_reader :from, :to
 
     def to_s
-      "RegisterTransfer(#{from} -> #{to})"
+      "RegisterTransfer: #{from} -> #{to}"
     end
 
   end
