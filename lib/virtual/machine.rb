@@ -123,7 +123,7 @@ module Virtual
         return self
       end
       boot_parfait!
-      @init = Block.new("init",nil)
+      @init = Block.new("init", :dummy )
       @init.add_code Virtual::VirtualMain.new( self.space.get_init )
       @booted = true
       self
