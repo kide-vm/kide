@@ -6,7 +6,7 @@ module Virtual
         next unless code.is_a? Virtual::MethodEnter
         new_codes = []
         # save return register to the message at instance return_address
-        new_codes << Register.save_return(:message , :return_address)
+        new_codes << Register.save_return(code, :message , :return_address)
         # and create a new frame if needed
         unless code.method.locals.empty? and code.method.tmps.empty?
           new_codes << Virtual::NewFrame.new

@@ -13,7 +13,7 @@ module Register
       block.codes.dup.each do |code|
         next unless code.is_a?(Virtual::NewFrame)
         # load the frame from message by index, simple get_slot
-        new_codes = [ Register.get_slot( :message , :frame , Register.resolve_to_register(:frame))]
+        new_codes = [ Register.get_slot( code, :message , :frame , Register.resolve_to_register(:frame))]
         block.replace(code , new_codes )
       end
     end

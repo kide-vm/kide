@@ -12,7 +12,7 @@ module Register
     def initialize source
         @source = source
     end
-    attr_reader :block , :source
+    attr_reader :source
 
     # returns an array of registers (RegisterReferences) that this instruction uses.
     # ie for r1 = r2 + r3

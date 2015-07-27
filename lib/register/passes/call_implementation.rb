@@ -13,11 +13,11 @@ module Register
         next unless code.is_a? Virtual::MethodCall
         new_codes = []
         # move the current new_message to message
-        new_codes << RegisterTransfer.new( Register.new_message_reg , Register.message_reg )
+        new_codes << RegisterTransfer.new(code, Register.new_message_reg , Register.message_reg )
         # "roll out" self into its register
-        new_codes << Register.get_slot( :message , :receiver, :self )
+        new_codes << Register.get_slot( code , :message , :receiver, :self )
         # do the register call
-        new_codes << FunctionCall.new( code.method )
+        new_codes << FunctionCall.new( code , code.method )
         block.replace(code , new_codes )
       end
     end

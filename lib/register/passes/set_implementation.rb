@@ -11,11 +11,11 @@ module Register
         tmp = Register.tmp_reg
         # for constants we have to "move" the constants value
         if( code.from.is_a?(Parfait::Value) or code.from.is_a?(Symbol))
-          move1 = LoadConstant.new( code.from , tmp )
+          move1 = LoadConstant.new(code, code.from , tmp )
         else # while otherwise we "load"
-          move1 = Register.get_slot( code.from.object_name , get_index(code.from) , tmp )
+          move1 = Register.get_slot(code, code.from.object_name , get_index(code.from) , tmp )
         end
-        move2 = Register.set_slot( tmp , code.to.object_name , get_index(code.to) )
+        move2 = Register.set_slot( code , tmp , code.to.object_name , get_index(code.to) )
         block.replace(code , [move1,move2] )
       end
     end

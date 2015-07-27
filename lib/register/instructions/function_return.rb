@@ -4,7 +4,8 @@ module Register
   # register and index specify where the return address is stored
 
   class FunctionReturn < Instruction
-    def initialize register , index
+    def initialize source , register , index
+      super(source)
       @register = register
       @index = index
     end

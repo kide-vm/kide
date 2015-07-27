@@ -13,12 +13,12 @@ module Register
           function.source.blocks.last.codes.pop # no Method return
           #Set up the Space as self upon init
           space = Parfait::Space.object_space
-          function.source.add_code LoadConstant.new( space , Register.self_reg)
+          function.source.add_code LoadConstant.new(function, space , Register.self_reg)
           message_ind = Register.resolve_index( :space , :first_message )
           # Load the message to new message register (r3)
-          function.source.add_code Register.get_slot( :self , message_ind , :new_message)
+          function.source.add_code Register.get_slot( function , :self , message_ind , :new_message)
           # And store the space as the new self (so the call can move it back as self)
-          function.source.add_code Register.set_slot( :self , :new_message , :receiver)
+          function.source.add_code Register.set_slot( function, :self , :new_message , :receiver)
           # now we are set up to issue a call to the main
           function.source.add_code Virtual::MethodCall.new(Virtual.machine.space.get_main)
           emit_syscall( function , :exit )
@@ -40,29 +40,29 @@ module Register
 
         def emit_syscall function , name
           save_message( function )
-          function.source.add_code Syscall.new( name )
+          function.source.add_code Syscall.new(function, name )
           restore_message(function)
         end
 
         # save the current message, as the syscall destroys all context
         #
         # This relies on linux to save and restore all registers
-        # 
+        #
         def save_message(function)
-          function.source.add_code RegisterTransfer.new( Register.message_reg , :r8 )
+          function.source.add_code RegisterTransfer.new(function, Register.message_reg , :r8 )
         end
 
         def restore_message(function)
           return_tmp = Register.tmp_reg
           # get the sys return out of the way
-          function.source.add_code RegisterTransfer.new( Register.message_reg , return_tmp )
+          function.source.add_code RegisterTransfer.new(function, Register.message_reg , return_tmp )
           # load the stored message into the base RegisterMachine
-          function.source.add_code RegisterTransfer.new( :r8 , Register.message_reg )
+          function.source.add_code RegisterTransfer.new(function, :r8 , Register.message_reg )
           # save the return value into the message
-          function.source.add_code Register.set_slot( return_tmp , :message , :return_value )
+          function.source.add_code Register.set_slot( function, return_tmp , :message , :return_value )
           # and "unroll" self and frame
-          function.source.add_code Register.get_slot(:message , :receiver, :self )
-          function.source.add_code Register.get_slot(:message , :frame , :frame)
+          function.source.add_code Register.get_slot(function, :message , :receiver, :self )
+          function.source.add_code Register.get_slot(function, :message , :frame , :frame)
         end
       end
       extend ClassMethods

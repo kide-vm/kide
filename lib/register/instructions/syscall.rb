@@ -9,7 +9,8 @@ module Register
 
   class Syscall < Instruction
 
-    def initialize name
+    def initialize source ,name
+      super(source)
       @name = name
     end
     attr_reader :name

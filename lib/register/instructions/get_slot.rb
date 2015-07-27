@@ -18,30 +18,31 @@ module Register
     # the instruction would do register = array[index]
     # The arguments are in the order that makes sense for the Instruciton name
     # So GetSlot means the slot (array and index) moves to the register (last argument)
-    def initialize array , index , register
-      @register = register
+    def initialize source , array , index , register
+      super(source)
       @array = array
       @index = index
+      @register = register
       raise "not integer #{index}" unless index.is_a? Numeric
       raise "Not register #{register}" unless Register::RegisterReference.look_like_reg(register)
       raise "Not register #{array}" unless Register::RegisterReference.look_like_reg(array)
     end
-    attr_accessor :register , :array , :index
+    attr_accessor :array , :index , :register
 
     def to_s
-      "GetSlot: #{register} -> #{array} [#{index}]"
+      "GetSlot: #{array} [#{index}] -> #{register}"
     end
 
   end
 
   # Produce a GetSlot instruction.
-  # From and to are registers or symbols that can be transformed to a register by resolve_to_register
+  # Array and to are registers or symbols that can be transformed to a register by resolve_to_register
   # index resolves with resolve_index.
-  def self.get_slot from , index , to
-    index = resolve_index( from , index)
-    from = resolve_to_register from
+  def self.get_slot source , array , index , to
+    index = resolve_index( array , index)
+    array = resolve_to_register array
     to = resolve_to_register to
-    GetSlot.new( from , index , to)
+    GetSlot.new( source , array , index , to)
   end
 
 end

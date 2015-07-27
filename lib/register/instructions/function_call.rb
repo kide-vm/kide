@@ -4,7 +4,8 @@ module Register
   # assembly takes care of the rest (ie getting the address)
 
   class FunctionCall < Instruction
-    def initialize method
+    def initialize source , method
+      super(source)
       @method = method
     end
     attr_reader :method

@@ -7,7 +7,8 @@ module Register
   # address. In arm that is a register, but intel may (?) push it, and who knows, what other machines do.
 
   class SaveReturn < Instruction
-    def initialize register , index
+    def initialize source , register , index
+      super(source)
       @register = register
       @index = index
     end
@@ -22,10 +23,10 @@ module Register
   # Produce a SaveReturn instruction.
   # From is a register or symbol that can be transformed to a register by resolve_to_register
   # index resolves with resolve_index.
-  def self.save_return from , index
+  def self.save_return code, from , index
     index = resolve_index( from , index)
     from = resolve_to_register from
-    SaveReturn.new( from , index )
+    SaveReturn.new( code , from , index )
   end
 
 end

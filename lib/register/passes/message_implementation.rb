@@ -23,7 +23,7 @@ module Register
       block.codes.dup.each do |code|
         next unless code.is_a?(Virtual::NewMessage)
         # load the new_message from message by index, simple get_slot
-        new_codes = [ Register.get_slot( :message , :next_message , Register.resolve_to_register(:new_message))]
+        new_codes = [ Register.get_slot(code, :message , :next_message , Register.resolve_to_register(:new_message))]
         block.replace(code , new_codes )
       end
     end

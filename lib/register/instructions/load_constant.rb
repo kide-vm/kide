@@ -5,7 +5,8 @@ module Register
   # second argument is the register the constant is loaded into
 
   class LoadConstant < Instruction
-    def initialize constant , register
+    def initialize source , constant , register
+      super(source)
       @register = register
       @constant = constant
     end

@@ -16,7 +16,8 @@ module Register
     # second arguemnt to
     #
     # Note: this may be reversed from some assembler notations (also arm)
-    def initialize from , to
+    def initialize source , from , to
+      super(source)
       @from = wrap_register(from)
       @to = wrap_register(to)
     end
