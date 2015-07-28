@@ -6,9 +6,9 @@ module Virtual
 
     # The general idea is that compiling is creating an object graph. Functionally
     # one tends to think of methods, and that is complicated enough, sure.
-    # but for an object system the graph includes classes and all instance variables
+    # But for an object system the graph includes classes and all instance variables
     #
-    # And so we have a chicken and egg problem. At the end of the function we want to have a
+    # And so we have a chicken and egg problem. At the end of the boot function we want to have a
     # working Space object
     # But that has instance variables (List and Dictionary) and off course a class.
     # Or more precisely in salama, a Layout, that points to a class.
@@ -16,20 +16,27 @@ module Virtual
     #
     # The way out is to build empty shell objects and stuff the neccessary data into them
     #  (not use the normal initialize way)
-    #
+    #  (PPS: The "real" solution is to read a sof graph and not do this by hand
+    #    That graph can be programatically built and written (with this to boot that process :-))
+
     # There are some helpers below, but the roadmap is something like:
     # - create all the layouts, with thier layouts, but no classes
     # - create a space by "hand" , using allocate, not new
     # - create the class objects and assign them to the layouts
-    def boot_space
-      space_dict = object_with_layout Parfait::Dictionary
-      space_dict.keys = object_with_layout Parfait::List
-      space_dict.values = object_with_layout Parfait::List
+    def boot_parfait!
+      boot_layouts
+      boot_space
+      boot_classes
 
-      @space = object_with_layout Parfait::Space
-      @space.classes = space_dict
-      Parfait::Space.set_object_space @space
+      @space.late_init
+
+      #puts Sof.write(@space)
+      boot_functions!
     end
+
+    # layouts is where the snake bites its tail. Every chain end at a layout and then it
+    # goes around (circular references). We create them from the list below and keep them
+    # in an instance variable (that is a smell, because after booting it is not needed)
     def boot_layouts
       @layouts = {}
       layout_names.each do |name , ivars |
@@ -41,11 +48,23 @@ module Virtual
       end
     end
 
+    # once we have the layouts we can create the space by creating the instance variables
+    # by hand (can't call new yet as that uses the space)
+    def boot_space
+      space_dict = object_with_layout Parfait::Dictionary
+      space_dict.keys = object_with_layout Parfait::List
+      space_dict.values = object_with_layout Parfait::List
+
+      @space = object_with_layout Parfait::Space
+      @space.classes = space_dict
+      Parfait::Space.set_object_space @space
+    end
+
+    # when running code instantiates a class, a layout is created automatically
+    # but even to get our space up, we have already instantiated all layouts
+    # so we have to continue and allocate classes and fill the data by hand
+    # and off cource we can't use space.create_class , but still they need to go there
     def boot_classes
-      # when running code instantiates a class, a layout is created automatically
-      # but even to get our space up, we have already instantiated all layouts
-      # so we have to continue and allocate classes and fill the data by hand
-      # and off cource we can't use space.create_class , but still they need to go there
       classes = space.classes
       layout_names.each do |name , vars|
         cl = object_with_layout Parfait::Class
@@ -72,17 +91,6 @@ module Virtual
       end
     end
 
-    def boot_parfait!
-      boot_layouts
-      boot_space
-      boot_classes
-
-      @space.late_init
-
-      #puts Sof.write(@space)
-      boot_functions!
-    end
-
     # helper to create a Layout, name is the parfait name, ie :Layout
     def layout_for( name , ivars )
       l = Parfait::Layout.allocate.fake_init
@@ -101,6 +109,9 @@ module Virtual
       o
     end
 
+    # the function really just returns a constant (just avoiding the constant)
+    # unfortuantely that constant condenses every detail about the system, class names
+    # and all instance variable names. Really have to find a better way
     def layout_names
        {  :Word => [] ,
           :List => [] ,
@@ -138,7 +149,7 @@ module Virtual
         obj.add_instance_method Register::Builtin::Object.send(f , nil)
       end
       obj = @space.get_class_by_name(:Kernel)
-      # create dummy main first, __init__ calls it
+      # create __init__ main first, __init__ calls it
       [:exit,:__send , :__init__ ].each do |f|
         obj.add_instance_method Register::Builtin::Kernel.send(f , nil)
       end

@@ -12,7 +12,7 @@ module Virtual
     def initialize(name , method )
       super()
       @method = method
-      raise "Method is not Method, but #{method.class}" unless method == :dummy or method.is_a?(Parfait::Method)
+      raise "Method is not Method, but #{method.class}" unless method == :__init__ or method.is_a?(Parfait::Method)
       @name = name.to_sym
       @branch = nil
       @codes = []
