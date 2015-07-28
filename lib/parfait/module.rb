@@ -54,8 +54,9 @@ module Parfait
 
     def create_instance_method  method_name , arg_names
       raise "uups #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
-      clazz = get_layout().object_class()
+      clazz = object_layout().object_class()
       raise "??? #{method_name}" unless clazz
+      puts "Self: #{self.class} clazz: #{clazz.name}"
       Method.new( clazz , method_name , arg_names )
     end
 
