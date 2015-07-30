@@ -26,5 +26,7 @@
 
 module Parfait
   class Frame < Object
+    attribute :next_frame
+
   end
 end

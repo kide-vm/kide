@@ -3,8 +3,7 @@ require_relative "../helper"
 class TestSpace < MiniTest::Test
 
   def setup
-    @machine = Virtual.machine
-    @machine.boot
+    @machine = Virtual.machine.boot
   end
   def classes
     [:Kernel,:Word,:List,:Message,:Frame,:Layout,:Class,:Dictionary,:Method]
@@ -46,7 +45,7 @@ class TestSpace < MiniTest::Test
     classes.each do |name|
       cl = @machine.space.classes[name]
       cl.method_names.each do |mname|
-        puts "Mehtod #{mname}"
+        #puts "Mehtod #{mname}"
         method = cl.get_instance_method(mname)
         assert_equal mname , method.name
         assert_equal name , method.for_class.name

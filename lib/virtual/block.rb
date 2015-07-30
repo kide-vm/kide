@@ -46,6 +46,7 @@ module Virtual
 
     # returns if this is a block that ends in a call (and thus needs local variable handling)
     def call_block?
+      raise "called"
       return false unless codes.last.is_a?(CallInstruction)
       return false unless codes.last.opcode == :call
       codes.dup.reverse.find{ |c| c.is_a? StackInstruction }

@@ -56,7 +56,7 @@ module Parfait
       raise "uups #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
       clazz = object_layout().object_class()
       raise "??? #{method_name}" unless clazz
-      puts "Self: #{self.class} clazz: #{clazz.name}"
+      #puts "Self: #{self.class} clazz: #{clazz.name}"
       Method.new( clazz , method_name , arg_names )
     end
 

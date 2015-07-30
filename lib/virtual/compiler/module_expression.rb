@@ -7,7 +7,7 @@ module Virtual
 
     def self.compile_class expression , method
       clazz = Parfait::Space.object_space.get_class_by_name! expression.name
-      puts "Compiling class #{clazz.name.inspect}"
+      #puts "Compiling class #{clazz.name.inspect}"
       expression_value = nil
       expression.expressions.each do |expr|
         # check if it's a function definition and add
