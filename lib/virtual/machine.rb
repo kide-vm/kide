@@ -118,10 +118,12 @@ module Virtual
     end
 
     def boot
-      if @booted
-        self.space.get_main.clear_source
-        return self
-      end
+#      if @booted
+#        boot_functions!
+#        @init = Block.new("init", :__init__ )
+#        @init.add_code Virtual::VirtualMain.new( self.space.get_init )
+#        return self
+#      end
       boot_parfait!
       @init = Block.new("init", :__init__ )
       @init.add_code Virtual::VirtualMain.new( self.space.get_init )
