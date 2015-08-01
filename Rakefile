@@ -10,7 +10,6 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 require 'rake'
-
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
@@ -20,8 +19,7 @@ end
 
 task :default => :test
 
-require 'rubygems/tasks'
-Gem::Tasks.new
+require "bundler/gem_tasks"
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
