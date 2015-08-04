@@ -7,7 +7,7 @@ module Register
           plus_function = Virtual::MethodSource.create_method(:Integer,:plus , [Virtual::Integer] )
           plus_function.source.return_type = Virtual::Integer
           plus_function.source.receiver = Virtual::Integer
-          plus_function.source.add_code Register::Math.new( plus_function, :add , 0 )
+          plus_function.source.add_code Register::OperatorInstruction.new( plus_function, :add , 0 , 0 )
 
           return plus_function
         end

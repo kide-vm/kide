@@ -1,10 +1,10 @@
 require_relative "helper"
 
-class TestPuts < MiniTest::Test
+class AddTest < MiniTest::Test
 
   def setup
     Virtual.machine.boot
-    code = Ast::ExpressionList.new( [Ast::CallSiteExpression.new(:putstring, [] ,Ast::StringExpression.new("Hello again"))])
+    code = Ast::FunctionExpression.new(:foo, [] , [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(2),Ast::IntegerExpression.new(5))] ,nil )
     Virtual::Compiler.compile( code , Virtual.machine.space.get_main )
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
@@ -44,40 +44,33 @@ class TestPuts < MiniTest::Test
     assert_equal Register::FunctionCall ,  ticks(7).class
     assert @interpreter.link
   end
-  def test_save
-    done = ticks(8)
-    assert_equal Register::SaveReturn ,  done.class
+  def test_get
+    done = ticks(10)
+    assert_equal Register::GetSlot ,  done.class
+    assert @interpreter.get_register done.register.symbol
+    puts @interpreter.get_register(done.register.symbol).class
+    done = ticks(1)
+    assert_equal Register::GetSlot ,  done.class
     assert @interpreter.get_register done.register.symbol
   end
 
   def test_chain
     ["Branch" , "LoadConstant" , "GetSlot" , "SetSlot" , "RegisterTransfer" ,
-     "GetSlot" , "FunctionCall" , "SaveReturn" , "LoadConstant"  , "SetSlot" ,
+     "GetSlot" , "FunctionCall" , "SaveReturn" , "RegisterTransfer"  , "GetSlot" ,
      "GetSlot" ,  "GetSlot" , "SetSlot" , "LoadConstant" , "SetSlot" ,
      "RegisterTransfer" ,  "GetSlot" ,  "FunctionCall" , "SaveReturn" , "RegisterTransfer" ,
      "Syscall" , "RegisterTransfer" , "RegisterTransfer" , "SetSlot" , "GetSlot" ,
      "GetSlot" , "RegisterTransfer" ,"GetSlot" , "GetSlot","GetSlot",
      "FunctionReturn" , "RegisterTransfer" , "Syscall" , "NilClass"].each_with_index do |name , index|
       got = ticks(1)
+      puts got
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
     end
   end
 
-  def test_putstring
-    done = ticks(21)
-    assert_equal Register::Syscall ,  done.class
-    assert_equal "Hello again" , @interpreter.stdout
-  end
 
-  def test_return
-    done = ticks(31)
-    assert_equal Register::FunctionReturn ,  done.class
-    assert @interpreter.block.is_a?(Virtual::Block)
-    assert @interpreter.instruction.is_a?(Register::Instruction) , "not instruction #{@interpreter.instruction}"
-  end
-
-  def test_exit
-    done = ticks(34)
-    assert_equal NilClass ,  done.class
-  end
+#  def test_exit
+#    done = ticks(34)
+#    assert_equal NilClass ,  done.class
+#  end
 end

@@ -157,9 +157,10 @@ module Virtual
       @space.get_class_by_name(:Word).add_instance_method Register::Builtin::Word.send(:putstring , nil)
 
       obj = @space.get_class_by_name(:Integer)
-      [:putint,:fibo].each do |f|
+      [:putint,:fibo , :plus].each do |f|
         obj.add_instance_method Register::Builtin::Integer.send(f , nil)
       end
+#      obj.alias :plus , :+
 
     end
   end
