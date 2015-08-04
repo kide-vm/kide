@@ -10,19 +10,18 @@ GIT
   specs:
     salama-object-file (0.2.0)
 
-GIT
-  remote: git://github.com/salama/salama-reader.git
-  revision: 841592c667acea1e796f950851262e6938b231bc
-  specs:
-    salama-reader (0.2.0)
-      parslet (~> 1.7.0)
-
 PATH
   remote: .
   specs:
     salama (0.2.0)
       salama-object-file (~> 0.2)
       salama-reader (~> 0.2)
+
+PATH
+  remote: ../salama-reader
+  specs:
+    salama-reader (0.2.0)
+      parslet (~> 1.7.0)
 
 GEM
   remote: http://rubygems.org/

@@ -19,7 +19,7 @@ module Virtual
         if(ref.value)
           me = ref.value
           if( me.is_a? Parfait::Class )
-            raise "unimplemented #{code}"
+            raise "unimplemented #{code}  me is #{me}"
           elsif( me.is_a? Parfait::Object )
             # get the function from my class. easy peasy
             puts "Me is #{me.class}"
@@ -29,6 +29,11 @@ module Virtual
           elsif( me.is_a? Symbol )
             # get the function from my class. easy peasy
             method = Virtual.machine.space.get_class_by_name(:Word).get_instance_method(code.name)
+            raise "Method not implemented #{me.class}.#{code.name}" unless method
+            new_codes << MethodCall.new( method )
+          elsif( me.is_a? Fixnum )
+            # get the function from my class. easy peasy
+            method = Virtual.machine.space.get_class_by_name(:Integer).get_instance_method(code.name)
             raise "Method not implemented #{me.class}.#{code.name}" unless method
             new_codes << MethodCall.new( method )
           else

@@ -12,7 +12,7 @@ module Virtual
         if( r.value.is_a? Parfait::Class )
           class_name = r.value.name
         else
-          raise "unimplemented #{r}"
+          raise "unimplemented case in function #{r}"
         end
       else
         r = Self.new()

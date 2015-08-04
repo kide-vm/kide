@@ -134,6 +134,7 @@ module Virtual
     def compile_main bytes
       syntax  = @parser.parse_with_debug(bytes)
       parts = Parser::Transform.new.apply(syntax)
+      #puts parts.to_s
       Compiler.compile( parts , @space.get_main )
     end
 

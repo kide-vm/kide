@@ -27,6 +27,9 @@ module Virtual
 
     attr_accessor :type , :value
 
+    def to_s
+      "#{self.class.name}.new(#{type}, #{value})"
+    end
     private #abstract base class
 
     def initialize type , value

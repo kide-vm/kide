@@ -3,6 +3,14 @@ module Register
   module Builtin
     module Integer
       module ClassMethods
+        def plus c
+          plus_function = Virtual::MethodSource.create_method(:Integer,:plus , [Virtual::Integer] )
+          plus_function.source.return_type = Virtual::Integer
+          plus_function.source.receiver = Virtual::Integer
+          plus_function.source.add_code Register::Math.new( plus_function, :add , 0 )
+
+          return plus_function
+        end
       # The conversion to base10 is quite a bit more complicated than i thought.
       # The bulk of it is in div10
       # We set up variables, do the devision and write the result to the string

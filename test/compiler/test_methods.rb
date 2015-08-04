@@ -81,13 +81,22 @@ HERE
     check
   end
 
-  def ttest_function_ops_simple
+  def test_function_ops_simple
     @string_input    = <<HERE
 def foo()
   2 + 5
 end
 HERE
-    @output = nil
+    @output = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
+    check
+  end
+
+  def test_ops_simple
+    @string_input    = <<HERE
+2 + 5
+HERE
+    @output = [[Virtual::MethodEnter , Virtual::Set,Virtual::NewMessage,Virtual::Set,
+        Virtual::Set ,Virtual::Set,Virtual::Set,Virtual::MessageSend] , [Virtual::MethodReturn]]
     check
   end
 

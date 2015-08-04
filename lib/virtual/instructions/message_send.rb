@@ -7,6 +7,10 @@ module Virtual
       @args = args
     end
     attr_reader :name , :me ,  :args
+
+    def to_s
+      "MessageSend.new(:#{name} , #{me} , #{args})"
+    end
   end
 
 end
