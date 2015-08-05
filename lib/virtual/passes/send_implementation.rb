@@ -32,9 +32,10 @@ module Virtual
             raise "Method not implemented #{me.class}.#{code.name}" unless method
             new_codes << MethodCall.new( method )
           elsif( me.is_a? Fixnum )
-            # get the function from my class. easy peasy
-            method = Virtual.machine.space.get_class_by_name(:Integer).get_instance_method(code.name)
-            raise "Method not implemented #{me.class}.#{code.name}" unless method
+            name = code.name
+            name = :plus if name == :+
+            method = Virtual.machine.space.get_class_by_name(:Integer).get_instance_method(name)
+            raise "Method not implemented Integer.#{name}" unless method
             new_codes << MethodCall.new( method )
           else
             # note: this is the current view: call internal send, even the method name says else

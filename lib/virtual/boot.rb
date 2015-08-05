@@ -160,8 +160,6 @@ module Virtual
       [:putint,:fibo , :plus].each do |f|
         obj.add_instance_method Register::Builtin::Integer.send(f , nil)
       end
-#      obj.alias :plus , :+
-
     end
   end
 end
