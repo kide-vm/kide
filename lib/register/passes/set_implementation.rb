@@ -1,7 +1,6 @@
 
 module Register
   # This implements setting of the various slot variables the vm defines.
-  # Basic mem moves, but have to shuffle the type nibbles (TODO!)
 
   class SetImplementation
     def run block
@@ -10,11 +9,13 @@ module Register
         # need a temporay place because of indexed load/store
         tmp = Register.tmp_reg
         # for constants we have to "move" the constants value
-        if( code.from.is_a?(Parfait::Value) or code.from.is_a?(Symbol))
+        if( code.from.is_a?(Parfait::Value) or code.from.is_a?(Symbol) or code.from.is_a?(Fixnum) )
           move1 = LoadConstant.new(code, code.from , tmp )
         else # while otherwise we "load"
+          #puts "from #{code.from}"
           move1 = Register.get_slot(code, code.from.object_name , get_index(code.from) , tmp )
         end
+        #puts "to #{code.to}"
         move2 = Register.set_slot( code , tmp , code.to.object_name , get_index(code.to) )
         block.replace(code , [move1,move2] )
       end
@@ -29,7 +30,7 @@ module Register
       when Virtual::Return
         return Register.resolve_index( :message , :return_value)
       when Virtual::NewArgSlot
-        puts "from: #{from.index}"
+        #puts "from: #{from.index}"
         return Register.resolve_index( :message , :name) + from.index
       else
         raise "not implemented for #{from.class}"
