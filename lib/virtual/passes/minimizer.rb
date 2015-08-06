@@ -11,11 +11,11 @@ module Virtual
           @gonners << f
         end
       end
-      remove Virtual.machine.space.get_init
-      dump_remaining
+      keep Virtual.machine.space.get_init
+      remove_remaining
     end
 
-    def remove function
+    def keep function
       index = @gonners.index function
       unless index
         puts "function was already removed #{function.name}"
@@ -27,16 +27,17 @@ module Virtual
         block.codes.each do |code|
           if code.is_a? Virtual::MessageSend
             @gonners.dup.each do |stay|
-              remove stay if(stay.name == code.name)
+              keep stay if(stay.name == code.name)
             end
           end
-          remove code.method if code.is_a? Virtual::MethodCall
+          keep code.method if code.is_a? Virtual::MethodCall
         end
       end
     end
 
-    def dump_remaining
+    def remove_remaining
       @gonners.each do |method|
+        next if(method.name == :plus)
         method.for_class.remove_instance_method method
       end
     end
