@@ -48,8 +48,14 @@ module Parfait
       method
     end
 
-    def remove_instance_method method
-      self.instance_methods.delete method
+    def remove_instance_method method_name
+      found = get_instance_method( method_name )
+      if found
+        self.instance_methods.delete(found)
+      else
+        raise "No such method #{method_name} in #{self.name}"
+      end
+      self.instance_methods.delete found
     end
 
     def create_instance_method  method_name , arg_names

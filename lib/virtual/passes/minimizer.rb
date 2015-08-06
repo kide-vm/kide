@@ -38,7 +38,7 @@ module Virtual
     def remove_remaining
       @gonners.each do |method|
         next if(method.name == :plus)
-        method.for_class.remove_instance_method method
+        method.for_class.remove_instance_method method.name
       end
     end
   end
