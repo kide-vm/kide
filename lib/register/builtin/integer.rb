@@ -4,7 +4,7 @@ module Register
     module Integer
       module ClassMethods
         def plus c
-          plus_function = Virtual::MethodSource.create_method(:Integer,:plus , [Virtual::Integer] )
+          plus_function = Virtual::MethodSource.create_method(:Integer,:plus , [:Integer] )
           plus_function.source.return_type = Virtual::Integer
           plus_function.source.receiver = Virtual::Integer
           plus_function.source.add_code Register::OperatorInstruction.new( plus_function, :add , 0 , 0 )
