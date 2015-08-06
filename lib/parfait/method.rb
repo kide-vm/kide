@@ -25,6 +25,7 @@ module Parfait
       self.for_class = clazz
       self.name = name
       self.code = BinaryCode.new name
+      raise "Wrong type, expect List not #{arg_names.class}" unless arg_names.is_a? List
       self.arg_names = arg_names
       self.locals = List.new
       self.tmps = List.new

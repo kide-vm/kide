@@ -35,6 +35,7 @@ module Virtual
             name = code.name
             name = :plus if name == :+
             method = Virtual.machine.space.get_class_by_name(:Integer).get_instance_method(name)
+            #puts Virtual.machine.space.get_class_by_name(:Integer).method_names.to_a
             raise "Method not implemented Integer.#{name}" unless method
             new_codes << MethodCall.new( method )
           else

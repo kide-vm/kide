@@ -23,11 +23,13 @@ module Virtual
       layout = object.get_layout
       keep(layout  , depth + 1)
       layout.object_instance_names.each do |name|
+        #puts "Keep #{name}"
         inst = object.get_instance_variable name
         keep(inst , depth + 1)
       end
       if object.is_a? Parfait::List
         object.each do |item|
+          #puts "Keep item "
           keep(item , depth + 1)
         end
       end
