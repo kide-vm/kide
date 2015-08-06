@@ -6,7 +6,7 @@ class TestSpace < MiniTest::Test
     @machine = Virtual.machine.boot
   end
   def classes
-    [:Kernel,:Word,:List,:Message,:Frame,:Layout,:Class,:Dictionary,:Method]
+    [:Kernel,:Word,:List,:Message,:Frame,:Layout,:Class,:Dictionary,:Method , :Integer]
   end
   def test_booted
     assert_equal true , @machine.booted
@@ -16,6 +16,11 @@ class TestSpace < MiniTest::Test
   end
   def test_global_space
     assert_equal Parfait::Space , Parfait::Space.object_space.class
+  end
+  def test_intger
+    int = Parfait::Space.object_space.get_class_by_name :Integer
+    assert_equal 3, int.method_names.get_length
+    assert int.get_instance_method( :plus )
   end
   def test_classes_class
     classes.each do |name|
