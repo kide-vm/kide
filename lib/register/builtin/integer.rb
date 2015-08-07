@@ -7,9 +7,15 @@ module Register
           plus_function = Virtual::MethodSource.create_method(:Integer,:plus , [:Integer] )
           plus_function.source.return_type = Virtual::Integer
           plus_function.source.receiver = Virtual::Integer
-          plus_function.source.add_code Register::OperatorInstruction.new( plus_function, :add , 0 , 0 )
+          
+          tmp = Register.tmp_reg
+          index = Register.arg_index 1
+          plus_function.source.add_code Register.get_slot( plus_function , :message , index , tmp )
+          add = Register::OperatorInstruction.new( plus_function, :add ,  tmp , Register.self_reg )
+          plus_function.source.add_code add
           return plus_function
         end
+
         # The conversion to base10 is quite a bit more complicated than i thought.
         # The bulk of it is in div10
         # We set up variables, do the devision and write the result to the string

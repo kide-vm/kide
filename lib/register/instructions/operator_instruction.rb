@@ -7,7 +7,7 @@ module Register
       @left = left
       @right = right
     end
-    attr_reader :left , :right
+    attr_reader :operator, :left , :right
 
     def to_s
       "OperatorInstruction: #{left} #{operator} #{right}"

@@ -170,5 +170,17 @@ module Interpreter
       # we jump back to the call instruction. so it is as if the call never happened and we continue
       true
     end
+
+    def execute_OperatorInstruction
+      case @instruction.operator
+      when :add
+        puts @instruction
+        
+      else
+        raise "unimplemented operator #{@instruction}"
+      end
+
+      true
+    end
   end
 end

@@ -4,7 +4,7 @@ class AddTest < MiniTest::Test
 
   def setup
     Virtual.machine.boot
-    code = Ast::FunctionExpression.new(:foo, [] , [Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(2),Ast::IntegerExpression.new(5))] ,nil )
+    code =Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(2),Ast::IntegerExpression.new(5))
     Virtual::Compiler.compile( code , Virtual.machine.space.get_main )
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
@@ -44,24 +44,23 @@ class AddTest < MiniTest::Test
     assert_equal Register::FunctionCall ,  ticks(7).class
     assert @interpreter.link
   end
-  def test_get
-    done = ticks(10)
-    assert_equal Register::GetSlot ,  done.class
-    assert @interpreter.get_register done.register.symbol
-    puts @interpreter.get_register(done.register.symbol).class
+  def test_adding
+    done = ticks(23)
+    assert_equal Register::OperatorInstruction ,  done.class
+    assert @interpreter.get_register done.left.symbol
+    puts @interpreter.get_register(done.left.symbol).class
     done = ticks(1)
-    assert_equal Register::GetSlot ,  done.class
-    assert @interpreter.get_register done.register.symbol
+    assert_equal Register::RegisterTransfer ,  done.class
+    assert @interpreter.get_register done.from.symbol
   end
 
   def test_chain
     ["Branch" , "LoadConstant" , "GetSlot" , "SetSlot" , "RegisterTransfer" ,
-     "GetSlot" , "FunctionCall" , "SaveReturn" , "RegisterTransfer"  , "GetSlot" ,
+     "GetSlot" , "FunctionCall" , "SaveReturn" , "LoadConstant"  , "SetSlot" ,
      "GetSlot" ,  "GetSlot" , "SetSlot" , "LoadConstant" , "SetSlot" ,
-     "RegisterTransfer" ,  "GetSlot" ,  "FunctionCall" , "SaveReturn" , "RegisterTransfer" ,
-     "Syscall" , "RegisterTransfer" , "RegisterTransfer" , "SetSlot" , "GetSlot" ,
-     "GetSlot" , "RegisterTransfer" ,"GetSlot" , "GetSlot","GetSlot",
-     "FunctionReturn" , "RegisterTransfer" , "Syscall" , "NilClass"].each_with_index do |name , index|
+     "LoadConstant" ,  "SetSlot" ,  "RegisterTransfer" , "GetSlot" , "FunctionCall" ,
+     "SaveReturn" ,  "GetSlot", "OperatorInstruction" , "RegisterTransfer" , "GetSlot" , "GetSlot" ,
+     "GetSlot" , "FunctionReturn" ,"RegisterTransfer" , "Syscall", "NilClass"].each_with_index do |name , index|
       got = ticks(1)
       puts got
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"

@@ -126,4 +126,11 @@ module Register
     end
     return register
   end
+
+  # when knowing the index of the argument, return the index into the message
+  # index passed is parfait, ie stats at 1
+  def self.arg_index i
+    last = resolve_index :message , :name
+    return last + i
+  end
 end
