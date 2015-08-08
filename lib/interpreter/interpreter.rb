@@ -31,7 +31,7 @@ module Interpreter
       @stdout = ""
       @registers = {}
       @clock = 0
-      (0...16).each do |r|
+      (0...12).each do |r|
         set_register "r#{r}".to_sym , "r#{r}:unknown"
       end
     end
@@ -103,7 +103,8 @@ module Interpreter
 
     def execute_LoadConstant
       to = @instruction.register
-      value = @instruction.constant.object_id
+      value = @instruction.constant
+      value = value.object_id unless value.is_a?(Fixnum)
       set_register( to , value )
       true
     end
@@ -174,8 +175,12 @@ module Interpreter
     def execute_OperatorInstruction
       case @instruction.operator
       when :add
-        puts @instruction
-        
+        left = get_register(@instruction.left)
+        rr = @instruction.right
+        right = get_register(rr)
+        result = left + right
+        puts "#{@instruction} == #{result}"
+        right = set_register(rr , result)
       else
         raise "unimplemented operator #{@instruction}"
       end
