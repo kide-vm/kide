@@ -47,11 +47,16 @@ class AddTest < MiniTest::Test
   def test_adding
     done = ticks(23)
     assert_equal Register::OperatorInstruction ,  done.class
-    assert @interpreter.get_register done.left.symbol
-    puts @interpreter.get_register(done.left.symbol).class
+    left = @interpreter.get_register(done.left)
+    rr = done.right
+    right = @interpreter.get_register(rr)
+    assert_equal Fixnum , left.class
+    assert_equal Fixnum , right.class
+    assert_equal 5 , right
     done = ticks(1)
     assert_equal Register::RegisterTransfer ,  done.class
-    assert @interpreter.get_register done.from.symbol
+    result = @interpreter.get_register(rr)
+    assert_equal result , left + right
   end
 
   def test_chain

@@ -7,11 +7,11 @@ module Register
           plus_function = Virtual::MethodSource.create_method(:Integer,:plus , [:Integer] )
           plus_function.source.return_type = Virtual::Integer
           plus_function.source.receiver = Virtual::Integer
-          
+
           tmp = Register.tmp_reg
           index = Register.arg_index 1
           plus_function.source.add_code Register.get_slot( plus_function , :message , index , tmp )
-          add = Register::OperatorInstruction.new( plus_function, :add ,  tmp , Register.self_reg )
+          add = Register::OperatorInstruction.new( plus_function, :add ,  Register.self_reg , tmp )
           plus_function.source.add_code add
           return plus_function
         end
