@@ -76,14 +76,4 @@ class TestSpace < MiniTest::Test
     assert all.include?(:next_message)
   end
 
-  def test_message_layout
-    mess = @machine.space.first_message
-    one_way = mess.get_layout
-    assert one_way
-    assert mess.instance_variable_defined :next_message
-#    other_way = mess.get_instance_variable :layout
-#    assert other_way
-#    assert_equal one_way , other_way , "not same "
-
-  end
 end

@@ -60,12 +60,18 @@ module Parfait
       names
     end
 
+    alias :list_index :index_of
+    # private inheritance is something to think off, we don't really want the list api exported
+    def index_of name
+      raise "should not rely on layout internal structure, use variable_index"
+    end
+
     # index of a variable name into the layout.
     # layout is a list, so lowest index is 1
     # :layout is a variable for every object, so 1 is taken for :layout
     # still, the index is the same.
     def variable_index name
-      index_of(name)
+      list_index(name)
     end
 
     def sof_reference_name
