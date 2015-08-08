@@ -15,5 +15,6 @@ gem "codeclimate-test-reporter", require: nil
 
 group :development do
   gem "minitest"
-
+  gem 'guard' # NOTE: this is necessary in newer versions
+  gem 'guard-minitest'
 end

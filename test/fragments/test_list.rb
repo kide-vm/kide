@@ -3,7 +3,7 @@ require_relative 'helper'
 class TestList < MiniTest::Test
   include Fragments
 
-  def test_list_clas
+  def ttest_list_clas
     @string_input = <<HERE
 class Object
 end
