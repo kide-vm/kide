@@ -13,8 +13,21 @@ module Register
     attr_accessor :register , :constant
 
     def to_s
-      "LoadConstant: #{register} <- #{constant}"
+      "LoadConstant: #{register} <- #{constant_str}"
     end
 
+    private
+    def constant_str
+        case @constant
+        when String , Symbol , Fixnum , Integer
+          @constant.to_s
+        else
+          if( @constant.respond_to? :sof_reference_name )
+            constant.sof_reference_name
+          else
+            constant.class.name.to_s
+          end
+        end
+    end
   end
 end
