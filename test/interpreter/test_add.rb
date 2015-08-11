@@ -44,7 +44,7 @@ class AddTest < MiniTest::Test
     assert_equal Register::FunctionCall ,  ticks(7).class
     assert @interpreter.link
   end
-  def test_adding
+  def ttest_adding
     done = ticks(23)
     assert_equal Register::OperatorInstruction ,  done.class
     left = @interpreter.get_register(done.left)
