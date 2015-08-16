@@ -59,7 +59,7 @@ module Parfait
     end
 
     def create_instance_method  method_name , arg_names
-      raise "uups #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
+      raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
       clazz = object_layout().object_class()
       raise "??? #{method_name}" unless clazz
       #puts "Self: #{self.class} clazz: #{clazz.name}"
@@ -74,7 +74,7 @@ module Parfait
     end
 
     def get_instance_method fname
-      raise "uups #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
+      raise "get_instance_method #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
       #if we had a hash this would be easier.  Detect or find would help too
       self.instance_methods.each do |m|
         return m if(m.name == fname )
@@ -84,7 +84,7 @@ module Parfait
 
     # get the method and if not found, try superclasses. raise error if not found
     def resolve_method m_name
-      raise "uups #{m_name}.#{m_name.class}" unless m_name.is_a?(Symbol)
+      raise "resolve_method #{m_name}.#{m_name.class}" unless m_name.is_a?(Symbol)
       method = get_instance_method(m_name)
       return method if method
       if( self.super_class )

@@ -38,7 +38,7 @@ module Parfait
     # used to determine if a send must be issued
     # return index of the name into the message if so
     def has_var name
-      raise "uups #{name}.#{name.class}" unless name.is_a? Symbol
+      raise "has_var #{name}.#{name.class}" unless name.is_a? Symbol
       index = has_arg(name)
       return index if index
       has_local(name)
@@ -46,13 +46,13 @@ module Parfait
 
     # determine whether this method has an argument by the name
     def has_arg name
-      raise "uups #{name}.#{name.class}" unless name.is_a? Symbol
+      raise "has_arg #{name}.#{name.class}" unless name.is_a? Symbol
       self.arg_names.index_of name
     end
 
     # determine if method has a local variable or tmp (anonymous local) by given name
     def has_local name
-      raise "uups #{name}.#{name.class}" unless name.is_a? Symbol
+      raise "has_local #{name}.#{name.class}" unless name.is_a? Symbol
       index = self.locals.index_of(name)
       index = self.tmps.index_of(name) unless index
       index

@@ -60,7 +60,7 @@ module Parfait
     # get a class by name (symbol)
     # return nili if no such class. Use bang version if create should be implicit
     def get_class_by_name name
-      raise "uups #{name}.#{name.class}" unless name.is_a?(Symbol)
+      raise "get_class_by_name #{name}.#{name.class}" unless name.is_a?(Symbol)
       c = self.classes[name]
       #puts "MISS, no class #{name} #{name.class}" unless c # " #{self.classes}"
       #puts "CLAZZ, #{name} #{c.get_layout.get_length}" if c
@@ -78,7 +78,7 @@ module Parfait
     # this is the way to instantiate classes (not Parfait::Class.new)
     # so we get and keep exactly one per name
     def create_class name , superclass
-      raise "uups #{name.class}" unless name.is_a? Symbol
+      raise "create_class #{name.class}" unless name.is_a? Symbol
       c = Class.new(name , superclass)
       self.classes[name] = c
     end
