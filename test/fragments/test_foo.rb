@@ -15,9 +15,13 @@ HERE
   end
 
   def test_foo
-    @string_input = <<HERE
-3.foo( 4 )
-HERE
+    @string_input = "3.foo( 4 )"
+    @expect =  [Virtual::Return ]
+    check
+  end
+
+  def test_add
+    @string_input = "2 + 5"
     @expect =  [Virtual::Return ]
     check
   end
