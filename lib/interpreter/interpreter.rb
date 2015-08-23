@@ -121,7 +121,7 @@ module Interpreter
       value = object_for( @instruction.register )
       object = object_for( @instruction.array )
       object.internal_object_set( @instruction.index , value )
-      trigger(:object_changed, @instruction.array )
+      trigger(:object_changed, @instruction.array , @instruction.index)
       true
     end
 
@@ -141,7 +141,7 @@ module Interpreter
     def execute_SaveReturn
       object = object_for @instruction.register
       raise "save return has nothing to save" unless @link
-      trigger(:object_changed, @instruction.register )
+      trigger(:object_changed, @instruction.register , @instruction.index )
       object.internal_object_set @instruction.index , @link
       @link = nil
       true
