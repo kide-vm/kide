@@ -2,8 +2,8 @@ module Bosl
   module Compiler
 #    operator attr_reader  :operator, :left, :right
     def self.compile_operator expression, method
-      call = Ast::CallSiteExpression.new(expression.operator , [expression.right] , expression.left )
-      Compiler.compile(call, method)
+      operator , left , right = *expression
+      nil
     end
 
     def self.compile_assign expression, method

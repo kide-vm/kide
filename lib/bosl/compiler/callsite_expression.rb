@@ -8,8 +8,11 @@ module Bosl
       name , arguments , receiver = *expession
       name = name.to_a.first
 
-      me = Compiler.compile( receiver.to_a.first , method )
-
+      if receiver
+        me = Compiler.compile( receiver.to_a.first , method )
+      else
+        me = Virtual::Self.new
+      end
       ## need two step process, compile and save to frame
       # then move from frame to new message
       method.source.add_code Virtual::NewMessage.new

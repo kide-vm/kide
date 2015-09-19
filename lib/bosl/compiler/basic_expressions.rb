@@ -48,8 +48,8 @@ module Bosl
   #    attr_reader  :string
       def self.compile_string expression , method
         # Clearly a TODO here to implement strings rather than reusing symbols
-        value = expression.string.to_sym
-        to = Virtual::Return.new(Reference , value)
+        value = expression.first.to_sym
+        to = Virtual::Return.new(Virtual::Reference , value)
         method.source.constants << value
         method.source.add_code Virtual::Set.new( value , to )
         to

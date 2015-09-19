@@ -26,7 +26,7 @@ HERE
 
   def test_if_function
     @string_input = <<HERE
-def itest(n)
+int itest(int n)
   if( n < 12)
     "then".putstring()
   else
