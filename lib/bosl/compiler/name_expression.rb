@@ -5,9 +5,9 @@ module Bosl
       # compiling name needs to check if it's a variable and if so resolve it
       # otherwise it's a method without args and a send is issued.
       # whichever way this goes the result is stored in the return slot (as all compiles)
-      def on_name expression 
+      def on_name expression
         name = expression.to_a.first
-        return Virtual::Self.new( Reference.new(method.for_class)) if name == :self
+        return Virtual::Self.new( Virtual::Reference.new(method.for_class)) if name == :self
         # either an argument, so it's stored in message
         ret =  Virtual::Return.new
         if( index = method.has_arg(name))

@@ -2,7 +2,7 @@ require_relative '../helper'
 require 'parslet/convenience'
 
 
-Compiler.class_eval doHelper
+Bosl::Compiler.class_eval do
 
   def check
     Virtual.machine.boot.compile_main @string_input
