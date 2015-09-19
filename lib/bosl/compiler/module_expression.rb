@@ -1,4 +1,4 @@
-module Virtual
+module Bosl
   module Compiler
 #    module attr_reader  :name ,:expressions
     def self.compile_module expression , context

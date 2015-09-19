@@ -1,8 +1,8 @@
-module Virtual
+module Bosl
   module Compiler
 #    list - attr_reader  :expressions
-    def self.compile_list expession , method
-      expession.expressions.collect do |part|
+    def self.compile_expressions expession , method
+      expession.children.collect do |part|
         Compiler.compile(  part , method )
       end
     end

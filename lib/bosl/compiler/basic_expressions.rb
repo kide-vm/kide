@@ -1,4 +1,4 @@
-module Virtual
+module Bosl
   # collection of the simple ones, int and strings and such
 
   module Compiler
@@ -12,36 +12,36 @@ module Virtual
     # But in the future (in the one that holds great things) we optimize those unneccesay moves away
 
   #    attr_reader :value
-      def self.compile_integer expression , method
-        int = expression.value
-        to = Return.new(Integer , int)
-        method.source.add_code Set.new( int , to )
+      def self.compile_int expression , method
+        int = *expression
+        to =  Virtual::Return.new(Integer , int)
+        method.source.add_code Virtual::Set.new( int , to )
         to
       end
 
       def self.compile_true expression , method
-        to = Return.new(Reference , true )
-        method.source.add_code Set.new( true , to )
+        to = Virtual::Return.new(Reference , true )
+        method.source.add_code Virtual::Set.new( true , to )
         to
       end
 
       def self.compile_false expression , method
-        to = Return.new(Reference , false)
-        method.source.add_code Set.new( false , to )
+        to = Virtual::Return.new(Reference , false)
+        method.source.add_code Virtual::Set.new( false , to )
         to
       end
 
       def self.compile_nil expression , method
-        to = Return.new(Reference , nil)
-        method.source.add_code Set.new( nil , to )
+        to = Virtual::Return.new(Reference , nil)
+        method.source.add_code Virtual::Set.new( nil , to )
         to
       end
 
       def self.compile_modulename expression , method
         clazz = Parfait::Space.object_space.get_class_by_name expression.name
         raise "compile_modulename #{clazz}.#{name}" unless clazz
-        to = Return.new(Reference , clazz )
-        method.source.add_code Set.new( clazz , to )
+        to = Virtual::Return.new(Reference , clazz )
+        method.source.add_code Virtual::Set.new( clazz , to )
         to
       end
 
@@ -49,9 +49,9 @@ module Virtual
       def self.compile_string expression , method
         # Clearly a TODO here to implement strings rather than reusing symbols
         value = expression.string.to_sym
-        to = Return.new(Reference , value)
+        to = Virtual::Return.new(Reference , value)
         method.source.constants << value
-        method.source.add_code Set.new( value , to )
+        method.source.add_code Virtual::Set.new( value , to )
         to
       end
 
@@ -64,17 +64,17 @@ module Virtual
         raise "oh noo, nil from where #{expression.right.inspect}" unless r
         index = method.has_arg(expression.left.name.to_sym)
         if index
-          method.source.add_code Set.new(ArgSlot.new(index , r.type , r ) , Return.new)
+          method.source.add_code Virtual::Set.new(ArgSlot.new(index , r.type , r ) , Virtual::Return.new)
         else
           index = method.ensure_local(expression.left.name.to_sym)
-          method.source.add_code Set.new(FrameSlot.new(index , r.type , r ) , Return.new)
+          method.source.add_code Virtual::Set.new(FrameSlot.new(index , r.type , r ) , Virtual::Return.new)
         end
         r
       end
 
       def self.compile_variable expression, method
         method.source.add_code InstanceGet.new(expression.name)
-        Return.new( Unknown )
+        Virtual::Return.new( Unknown )
       end
   end
 end

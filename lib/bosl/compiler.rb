@@ -1,4 +1,4 @@
-module Virtual
+module Bosl
   module Compiler
 
     # Compiling is the conversion of the AST into 2 things:
@@ -14,19 +14,14 @@ module Virtual
     # may be unknown Unknown value.
     #
     # The Compiler.compile uses a visitor patter to dispatch according to the class name of
-    # the expression. So a NameExpression is delegated to compile_name etc.
+    # the expression. So a NameExpression is delegated to Virtual::Set.new etc.
     # This makes the dispatch extensible, ie Expressions may be added by external code,
     # as long as matching compile methods are supplied too.
     #
     def self.compile expression , method
-      exp_name = expression.class.name.split("::").last.sub("Expression","").downcase
-      #puts "Expression #{exp_name}"
-      begin
-        self.send "compile_#{exp_name}".to_sym , expression, method
-      rescue NoMethodError => e
-        puts "No compile method found for " + exp_name + " #{e}"
-        raise e
-      end
+      exp_name = expression.type
+      puts "Expression #{expression.to_sexp}"
+      self.send "compile_#{exp_name}".to_sym , expression, method
     end
 
   end

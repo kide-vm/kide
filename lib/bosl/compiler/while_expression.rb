@@ -1,4 +1,4 @@
-module Virtual
+module Bosl
   module Compiler
 
 #    while- attr_reader  :condition, :body

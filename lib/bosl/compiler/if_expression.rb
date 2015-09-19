@@ -1,4 +1,4 @@
-module Virtual
+module Bosl
   module Compiler
 #    if - attr_reader  :cond, :if_true, :if_false
 

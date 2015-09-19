@@ -5,8 +5,9 @@ class TestFoo < MiniTest::Test
 
   def test_foo2
     @string_input = <<HERE
-def foo2(x)
-  a = 5
+int foo(int x)
+  int a = 5
+  return a
 end
 3.foo( 4 )
 HERE
@@ -14,16 +15,5 @@ HERE
     check
   end
 
-  def test_foo
-    @string_input = "3.foo( 4 )"
-    @expect =  [Virtual::Return ]
-    check
-  end
-
-  def test_add
-    @string_input = "2 + 5"
-    @expect =  [Virtual::Return ]
-    check
-  end
 
 end

@@ -1,4 +1,4 @@
-module Virtual
+module Bosl
   module Compiler
 
 #    attr_reader :values
