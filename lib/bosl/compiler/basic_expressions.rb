@@ -1,7 +1,7 @@
 module Bosl
   # collection of the simple ones, int and strings and such
 
-  module Compiler
+  Compiler.class_eval do
 
     # Constant expressions can by definition be evaluated at compile time.
     # But that does not solve their storage, ie they need to be accessible at runtime from _somewhere_
@@ -12,32 +12,32 @@ module Bosl
     # But in the future (in the one that holds great things) we optimize those unneccesay moves away
 
   #    attr_reader :value
-      def self.compile_int expression , method
+      def on_int expression
         int = *expression
         to =  Virtual::Return.new(Integer , int)
         method.source.add_code Virtual::Set.new( int , to )
         to
       end
 
-      def self.compile_true expression , method
+      def on_true expression
         to = Virtual::Return.new(Reference , true )
         method.source.add_code Virtual::Set.new( true , to )
         to
       end
 
-      def self.compile_false expression , method
+      def on_false expression
         to = Virtual::Return.new(Reference , false)
         method.source.add_code Virtual::Set.new( false , to )
         to
       end
 
-      def self.compile_nil expression , method
+      def on_nil expression
         to = Virtual::Return.new(Reference , nil)
         method.source.add_code Virtual::Set.new( nil , to )
         to
       end
 
-      def self.compile_modulename expression , method
+      def on_modulename expression
         clazz = Parfait::Space.object_space.get_class_by_name expression.name
         raise "compile_modulename #{clazz}.#{name}" unless clazz
         to = Virtual::Return.new(Reference , clazz )
@@ -46,7 +46,7 @@ module Bosl
       end
 
   #    attr_reader  :string
-      def self.compile_string expression , method
+      def on_string expression
         # Clearly a TODO here to implement strings rather than reusing symbols
         value = expression.first.to_sym
         to = Virtual::Return.new(Virtual::Reference , value)
@@ -56,11 +56,11 @@ module Bosl
       end
 
       #attr_reader  :left, :right
-      def self.compile_assignment expression , method
+      def on_assignment expression
         unless expression.left.instance_of? Ast::NameExpression
           raise "must assign to NameExpression , not #{expression.left}"
         end
-        r = Compiler.compile(expression.right , method )
+        r = process(expression.right  )
         raise "oh noo, nil from where #{expression.right.inspect}" unless r
         index = method.has_arg(expression.left.name.to_sym)
         if index
@@ -72,7 +72,7 @@ module Bosl
         r
       end
 
-      def self.compile_variable expression, method
+      def on_variable expression
         method.source.add_code InstanceGet.new(expression.name)
         Virtual::Return.new( Unknown )
       end

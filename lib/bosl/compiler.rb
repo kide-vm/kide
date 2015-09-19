@@ -1,6 +1,13 @@
 module Bosl
-  module Compiler
+  class Compiler < AST::Processor
+    attr_reader :method
 
+    def initialize(method)
+      @method = method
+    end
+    def handler_missing node
+      raise "No handler  on_#{node.type}(node)"
+    end
     # Compiling is the conversion of the AST into 2 things:
     # - code (ie sequences of Instructions inside Blocks) carried by MethodSource
     # - an object graph containing all the Methods, their classes and Constants
@@ -13,15 +20,14 @@ module Bosl
     # The compile method (so every compile method) returns the value that it deposits which
     # may be unknown Unknown value.
     #
-    # The Compiler.compile uses a visitor patter to dispatch according to the class name of
-    # the expression. So a NameExpression is delegated to Virtual::Set.new etc.
+    # The process uses a visitor pattern (from AST::Processor) to dispatch according to the
+    # type the expression. So a s(:if xx) will become an on_if(node) call.
     # This makes the dispatch extensible, ie Expressions may be added by external code,
     # as long as matching compile methods are supplied too.
     #
     def self.compile expression , method
-      exp_name = expression.type
-      puts "Expression #{expression.to_sexp}"
-      self.send "compile_#{exp_name}".to_sym , expression, method
+      compiler = Compiler.new method
+      compiler.process expression
     end
 
   end

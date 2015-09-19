@@ -1,15 +1,15 @@
 module Bosl
-  module Compiler
+  Compiler.class_eval do
 
 #    attr_reader :values
-    def self.compile_array expession, context
+    def on_array expession, context
 #      to.do
     end
 #    attr_reader :key , :value
-    def self.compile_association context
+    def on_association context
 #      to.do
     end
-    def self.compile_hash context
+    def on_hash context
 #      to.do
     end
   end

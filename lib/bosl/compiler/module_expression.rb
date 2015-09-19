@@ -1,11 +1,11 @@
 module Bosl
-  module Compiler
+  Compiler.class_eval do
 #    module attr_reader  :name ,:expressions
-    def self.compile_module expression , context
+    def on_module expression 
       return clazz
     end
 
-    def self.compile_class expression , method
+    def on_class expression
       clazz = Parfait::Space.object_space.get_class_by_name! expression.name
       #puts "Compiling class #{clazz.name.inspect}"
       expression_value = nil
@@ -15,7 +15,7 @@ module Bosl
         #  ie throw an error for now
         raise "only functions for now #{expr.inspect}" unless expr.is_a? Ast::FunctionExpression
         #puts "compiling expression #{expression}"
-        expression_value = Compiler.compile(expr,method  )
+        expression_value = process(expr  )
         #puts "compiled expression #{expression_value.inspect}"
       end
 

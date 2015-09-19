@@ -5,7 +5,7 @@ class AddTest < MiniTest::Test
   def setup
     Virtual.machine.boot
     code =Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(2),Ast::IntegerExpression.new(5))
-    Virtual::Compiler.compile( code , Virtual.machine.space.get_main )
+    Bosl::Compiler.compile( code , Virtual.machine.space.get_main )
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init

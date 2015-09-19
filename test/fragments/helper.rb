@@ -8,9 +8,11 @@ module Fragments
 
   def check
     expressions = Virtual.machine.boot.compile_main @string_input
+    puts expressions
     @expect.each_with_index do | should , i |
-      assert expressions[i].is_a?(Virtual::Slot) , "compiles should return slots, not #{should.class}"
-      assert_equal should , expressions[i].class
+      exp_i = expressions[i]
+      assert exp_i.is_a?(Virtual::Slot) , "compiles should return #{should}, not #{exp_i}"
+      assert_equal should , exp_i.class
     end
 #    Virtual.machine.run_passes
   end

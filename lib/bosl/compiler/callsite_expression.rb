@@ -1,15 +1,15 @@
 module Bosl
-  module Compiler
+  Compiler.class_eval do
   # operators are really function calls
 
 #    call_site - attr_reader  :name, :args , :receiver
 
-    def self.compile_call expession , method
+    def on_call expession 
       name , arguments , receiver = *expession
       name = name.to_a.first
 
       if receiver
-        me = Compiler.compile( receiver.to_a.first , method )
+        me = process( receiver.to_a.first  )
       else
         me = Virtual::Self.new
       end
@@ -21,7 +21,7 @@ module Bosl
       compiled_args = []
       arguments.to_a.each_with_index do |arg , i|
         #compile in the running method, ie before passing control
-        val = Compiler.compile( arg , method)
+        val = process( arg)
         # move the compiled value to it's slot in the new message
         # + 1 as this is a ruby 0-start , but 0 is the last message ivar.
         # so the next free is +1

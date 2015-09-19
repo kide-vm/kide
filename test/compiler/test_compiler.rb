@@ -6,7 +6,7 @@ class CompilerTest < MiniTest::Test
     Virtual.machine.boot
   end
   def check
-    res = Virtual::Compiler.compile( @expression , Virtual.machine.space.get_main )
+    res = Bosl::Compiler.compile( @expression , Virtual.machine.space.get_main )
     assert res.is_a?(Virtual::Slot) , "compiler must compile to slot, not #{res.class}"
   end
   def true_ex

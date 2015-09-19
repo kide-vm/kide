@@ -1,21 +1,21 @@
 module Bosl
-  module Compiler
+  Compiler.class_eval do
 
 #    while- attr_reader  :condition, :body
-    def self.compile_while expression, method
+    def on_while expression
       # this is where the while ends and both branches meet
       merge = method.source.new_block("while merge")
       # this comes after the current and beofre the merge
       start = method.source.new_block("while_start" )
       method.source.current start
 
-      cond = Compiler.compile(expression.condition, method)
+      cond = process(expression.condition)
 
       method.source.add_code IsTrueBranch.new(merge)
 
       last = cond
       expression.body.each do |part|
-        last = Compiler.compile(part , method)
+        last = process(part)
         raise part.inspect if last.nil?
       end
       # unconditionally branch to the start

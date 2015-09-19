@@ -1,7 +1,7 @@
 module Bosl
-  module Compiler
+  Compiler.class_eval do
 #    function attr_reader  :name, :params, :body , :receiver
-    def self.compile_function  expression, method
+    def on_function  expression
       return_type , name , parameters, kids = *expression
       name =  name.to_a.first
       args = parameters.to_a.collect do |p|
@@ -11,7 +11,7 @@ module Bosl
 
       if expression[:receiver]
         # compiler will always return slot. with known value or not
-        r = Compiler.compile(expression.receiver, method )
+        r = process(expression.receiver )
         if( r.value.is_a? Parfait::Class )
           class_name = r.value.name
         else
@@ -25,11 +25,15 @@ module Bosl
       new_method.source.receiver = r
       new_method.for_class.add_instance_method new_method
 
+      old_method = @method
+      @method = new_method
+
       #frame = frame.new_frame
       kids.to_a.each do |ex|
-        return_type = Compiler.compile(ex,new_method  )
+        return_type = process(ex)
         raise return_type.inspect if return_type.is_a? Virtual::Instruction
       end
+      @method = old_method
       new_method.source.return_type = return_type
       Virtual::Return.new(return_type)
     end

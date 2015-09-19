@@ -1,11 +1,11 @@
 module Bosl
-  module Compiler
+  Compiler.class_eval do
 
       #    attr_reader  :name
       # compiling name needs to check if it's a variable and if so resolve it
       # otherwise it's a method without args and a send is issued.
       # whichever way this goes the result is stored in the return slot (as all compiles)
-      def self.compile_name expression , method
+      def on_name expression 
         name = expression.to_a.first
         return Virtual::Self.new( Reference.new(method.for_class)) if name == :self
         # either an argument, so it's stored in message

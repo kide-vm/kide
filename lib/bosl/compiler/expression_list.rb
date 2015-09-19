@@ -1,10 +1,8 @@
 module Bosl
-  module Compiler
+  Compiler.class_eval do
 #    list - attr_reader  :expressions
-    def self.compile_expressions expession , method
-      expession.children.collect do |part|
-        Compiler.compile(  part , method )
-      end
+    def on_expressions expession
+      process_all(  expession.children  )
     end
   end
 end
