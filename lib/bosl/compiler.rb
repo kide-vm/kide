@@ -34,13 +34,14 @@ module Bosl
 end
 
 require_relative "compiler/basic_expressions"
-require_relative "compiler/name_expression"
 require_relative "compiler/callsite_expression"
 require_relative "compiler/compound_expressions"
-require_relative "compiler/if_expression"
+require_relative "compiler/expression_list"
+require_relative "compiler/field_def"
 require_relative "compiler/function_expression"
+require_relative "compiler/if_expression"
 require_relative "compiler/module_expression"
+require_relative "compiler/name_expression"
 require_relative "compiler/operator_expressions"
 require_relative "compiler/return_expression"
 require_relative "compiler/while_expression"
-require_relative "compiler/expression_list"

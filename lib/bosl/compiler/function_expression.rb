@@ -2,10 +2,11 @@ module Bosl
   Compiler.class_eval do
 #    function attr_reader  :name, :params, :body , :receiver
     def on_function  expression
+#      puts expression.inspect
       return_type , name , parameters, kids = *expression
       name =  name.to_a.first
       args = parameters.to_a.collect do |p|
-        raise "error, argument must be a identifier, not #{p}" unless p.type == :field
+        raise "error, argument must be a identifier, not #{p}" unless p.type == :parameter
         p[2]
       end
 

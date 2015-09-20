@@ -5,23 +5,26 @@ class TestFunctions < MiniTest::Test
 
   def test_functions
     @string_input = <<HERE
-def minus(a,b)
-    a - b
+int minus(int a,int b)
+    return a - b
 end
-def plus(a, b)
-  a + b
+
+int plus(int a, int b)
+  return a + b
 end
-def times(a, b)
+
+int times(int a, int b)
   if( b == 0 )
     a = 0
   else
-    m = minus(b, 1)
-    t = times(a, m)
+    int m = minus(b, 1)
+    int t = times(a, m)
     a = plus(a,t)
   end
 end
-def t_seven()
-  tim = times(7,6)
+
+int t_seven()
+  int tim = times(7,6)
   tim.putint()
 end
 
