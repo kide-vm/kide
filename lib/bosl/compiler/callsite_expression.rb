@@ -4,8 +4,8 @@ module Bosl
 
 #    call_site - attr_reader  :name, :args , :receiver
 
-    def on_call expession 
-      name , arguments , receiver = *expession
+    def on_call expression
+      name , arguments , receiver = *expression
       name = name.to_a.first
 
       if receiver
