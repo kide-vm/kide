@@ -3,20 +3,25 @@ module Bosl
 #    function attr_reader  :name, :params, :body , :receiver
     def on_function  expression
 #      puts expression.inspect
-      return_type , name , parameters, kids = *expression
+      return_type , name , parameters, kids , receiver = *expression
       name =  name.to_a.first
       args = parameters.to_a.collect do |p|
         raise "error, argument must be a identifier, not #{p}" unless p.type == :parameter
         p[2]
       end
 
-      if expression[:receiver]
+      if receiver
         # compiler will always return slot. with known value or not
-        r = process(expression.receiver )
-        if( r.value.is_a? Parfait::Class )
+        r = receiver.first
+        if( r.is_a? Parfait::Class )
           class_name = r.value.name
         else
-          raise "unimplemented case in function #{r}"
+          if( r != :self)
+            raise "unimplemented case in function #{r}"
+          else
+            r = Virtual::Self.new()
+            class_name = method.for_class.name
+          end
         end
       else
         r = Virtual::Self.new()

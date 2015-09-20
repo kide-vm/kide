@@ -20,12 +20,12 @@ module Bosl
 
       # compile the true block (as we think of it first, even it is second in sequential order)
       method.source.current true_block
-      last = is
+
       last = process_all(if_true).last
 
       # compile the false block
       method.source.current false_block
-      last = process_all(if_false).last
+      last = process_all(if_false).last if if_false
       method.source.add_code Virtual::UnconditionalBranch.new( merge_block )
 
       #puts "compiled if: end"

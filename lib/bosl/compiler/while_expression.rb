@@ -2,7 +2,7 @@ module Bosl
   Compiler.class_eval do
 
     def on_while expression
-      puts expression.inspect
+      #puts expression.inspect
       condition , expressions = *expression
       condition = condition.first
 

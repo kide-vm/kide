@@ -46,8 +46,8 @@ class TestBasic < MiniTest::Test
     check
   end
 
-  def test_instance_variable
-    @string_input    = '@foo_bar '
+  def ttest_field
+    @string_input    = 'self.foo_bar '
     @output = "- Virtual::Return(:type => Virtual::Unknown)"
     check
   end

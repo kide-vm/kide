@@ -20,8 +20,8 @@ module Virtual
     def test_module
       @string_input    = <<HERE
 class Some
-  def foo()
-    5
+  int foo()
+    return 5
   end
 end
 HERE
@@ -31,39 +31,40 @@ HERE
 
     def test_simplest_function
       @string_input    = <<HERE
-def foo(x)
-  5
+int foo(int x)
+  return x
 end
 HERE
       @output = [[MethodEnter] ,[MethodReturn]]
       check
     end
 
-  def ttest_second_simplest_function
+  def test_second_simplest_function
     @string_input    = <<HERE
-def foo(x)
-  x
+ref foo(ref x)
+  return x
 end
 HERE
-    @output = [[1,2,3,4],[],[],[]]
+    @output = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
     check
   end
 
-  def ttest_puts_string
+  def test_puts_string
     @string_input    = <<HERE
-def foo()
+int foo()
   puts("Hello")
 end
 foo()
 HERE
-    @output = nil
+    @output = [[Virtual::MethodEnter ,  Virtual::NewMessage, Virtual::Set, Virtual::Set, Virtual::MessageSend],
+                [Virtual::MethodReturn]]
     check
   end
 
   def ttest_class_function
     @string_input    = <<HERE
-def String.length(x)
-  @length
+int self.length(int x)
+  self.length
 end
 HERE
     @output = nil
@@ -81,7 +82,7 @@ HERE
     check
   end
 
-  def test_function_ops_simple
+  def ttest_function_ops_simple
     @string_input    = <<HERE
 def foo()
   2 + 5
@@ -91,7 +92,8 @@ HERE
     check
   end
 
-  def test_ops_simple
+  def ttest_ops_simple
+    #TODO ops still botched
     @string_input    = <<HERE
 2 + 5
 HERE
@@ -116,7 +118,7 @@ HERE
 
   def test_while
     @string_input    = <<HERE
-while(1) do
+while(1)
   3
 end
 HERE

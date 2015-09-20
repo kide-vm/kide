@@ -13,26 +13,26 @@ module Bosl
 
   #    attr_reader :value
       def on_int expression
-        int = *expression
-        to =  Virtual::Return.new(Integer , int)
+        int = expression.first
+        to =  Virtual::Return.new(Virtual::Integer , int)
         method.source.add_code Virtual::Set.new( int , to )
         to
       end
 
       def on_true expression
-        to = Virtual::Return.new(Reference , true )
+        to = Virtual::Return.new(Virtual::Reference , true )
         method.source.add_code Virtual::Set.new( true , to )
         to
       end
 
       def on_false expression
-        to = Virtual::Return.new(Reference , false)
+        to = Virtual::Return.new(Virtual::Reference , false)
         method.source.add_code Virtual::Set.new( false , to )
         to
       end
 
       def on_nil expression
-        to = Virtual::Return.new(Reference , nil)
+        to = Virtual::Return.new(Virtual::Reference , nil)
         method.source.add_code Virtual::Set.new( nil , to )
         to
       end
@@ -40,7 +40,7 @@ module Bosl
       def on_modulename expression
         clazz = Parfait::Space.object_space.get_class_by_name expression.name
         raise "compile_modulename #{clazz}.#{name}" unless clazz
-        to = Virtual::Return.new(Reference , clazz )
+        to = Virtual::Return.new(Virtual::Reference , clazz )
         method.source.add_code Virtual::Set.new( clazz , to )
         to
       end
