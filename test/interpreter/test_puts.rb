@@ -1,10 +1,15 @@
 require_relative "helper"
 
 class TestPuts < MiniTest::Test
-
+  include AST::Sexp
   def setup
     Virtual.machine.boot
-    code = Ast::ExpressionList.new( [Ast::CallSiteExpression.new(:putstring, [] ,Ast::StringExpression.new("Hello again"))])
+    code = s(:call,
+              s(:name,  :putstring),
+              s(:arguments),
+              s(:receiver,
+                s(:string,  "Hello again")))
+
     Bosl::Compiler.compile( code , Virtual.machine.space.get_main )
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new

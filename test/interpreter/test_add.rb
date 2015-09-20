@@ -1,10 +1,13 @@
 require_relative "helper"
 
 class AddTest < MiniTest::Test
-
+  include AST::Sexp
   def setup
     Virtual.machine.boot
-    code =Ast::OperatorExpression.new("+", Ast::IntegerExpression.new(2),Ast::IntegerExpression.new(5))
+    code =    s(:call,
+                s(:name,  :plus),
+                s(:arguments , s(:int , 5)),
+                s(:receiver, s(:int,  2)))
     Bosl::Compiler.compile( code , Virtual.machine.space.get_main )
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
