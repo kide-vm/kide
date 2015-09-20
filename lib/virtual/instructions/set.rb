@@ -6,7 +6,7 @@ module Virtual
   # from may be a Constant (Object,Integer,String,Class)
   class Set < Instruction
     def initialize from , to
-      raise "no to slot #{to}" unless to.is_a? Slot
+      raise "no to slot #{to.inspect}" unless to.is_a? Slot
       @from = from
       @to = to
     end

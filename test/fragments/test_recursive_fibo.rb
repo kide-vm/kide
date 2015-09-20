@@ -5,18 +5,20 @@ class TestRecursinveFibo < MiniTest::Test
 
   def test_recursive_fibo
     @string_input = <<HERE
-def fibonaccir( n )
-      if( n <= 1 )
-        return n
-      else
-        a = fibonaccir( n - 1 )
-        b = fibonaccir( n - 2 )
-        return a + b
-      end
-end
-def fib_print(n)
+int fib_print(int n)
   fib = fibonaccir( n )
   fib.putint()
+end
+int fibonaccir( int n )
+  if( n <= 1 )
+    return n
+  else
+    int tmp = n - 1
+    a = fibonaccir( tmp )
+    tmp = n - 2
+    b = fibonaccir( tmp )
+    return a + b
+  end
 end
 
 fib_print(10)

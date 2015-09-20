@@ -1,8 +1,5 @@
 module Bosl
   Compiler.class_eval do
-  # operators are really function calls
-
-#    call_site - attr_reader  :name, :args , :receiver
 
     def on_call expression
       name , arguments , receiver = *expression

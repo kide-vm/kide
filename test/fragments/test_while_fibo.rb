@@ -5,18 +5,18 @@ class TestWhileFragment < MiniTest::Test
 
   def test_while_fibo
     @string_input = <<HERE
-def fibonaccit(n) # n == r0
-      a = 0           # a == r1
-      b = 1           # b = r2
-      while( n > 1 ) do                   #BUG comment lines + comments behind function calls
-        tmp = a       # r3 <- r1
-        a = b         # r1 <- r2
-        b = tmp + b   #  r4 = r2 + r3  (r4 transient)  r2 <- r4
-        n = n - 1      # r0 <- r2   for call,    #call ok
-      end             #r5 <- r0 - 1    n=n-1 through r5 tmp
+int fibonaccit(int n)
+      int a = 0
+      int b = 1
+      while( n > 1 )
+        int tmp = a
+        a = b
+        b = tmp + b
+        n = n - 1
+      end
       b.putint()
       return b
-end               # r0 <- r5
+end
 
 fibonaccit( 10 )
 HERE

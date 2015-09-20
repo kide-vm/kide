@@ -6,7 +6,7 @@ module Bosl
     end
 
     def on_class expression
-      puts expression.inspect
+      #puts expression.inspect
       name , derives , expressions = *expression
       clazz = Parfait::Space.object_space.get_class_by_name! name
       #puts "Compiling class #{clazz.name.inspect}"
