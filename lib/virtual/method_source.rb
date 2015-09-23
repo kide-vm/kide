@@ -34,17 +34,18 @@ module Virtual
     # second, it creates MethodSource and attaches it to the method
     #
     # compile code then works with the method, but adds code tot the info
-    def self.create_method( class_name , method_name , args)
+    def self.create_method( class_name , return_type , method_name , args)
       raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
       clazz = Virtual.machine.space.get_class_by_name class_name
       raise "No such class #{class_name}" unless clazz
+      return_type = Virtual::Type.from_sym return_type
       method = clazz.create_instance_method( method_name , Virtual.new_list(args))
-      method.source = MethodSource.new(method)
+      method.source = MethodSource.new(method , return_type)
       method
     end
     # just passing the method object in for Instructions to make decisions (later)
-    def initialize method , return_type = Virtual::Unknown
+    def initialize method , return_type
       # first block we have to create with .new , as new_block assumes a current
       enter = Block.new( "enter"  , method ).add_code(MethodEnter.new( method ))
       @return_type = return_type

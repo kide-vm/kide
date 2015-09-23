@@ -24,10 +24,10 @@ module Bosl
           end
         end
       else
-        r = Virtual::Self.new()
+        r = Virtual::Self.new(:int)
         class_name = method.for_class.name
       end
-      new_method = Virtual::MethodSource.create_method(class_name, name , args )
+      new_method = Virtual::MethodSource.create_method(class_name, return_type, name , args )
       new_method.source.receiver = r
       new_method.for_class.add_instance_method new_method
 

@@ -4,7 +4,7 @@ module Register
     module Integer
       module ClassMethods
         def plus c
-          plus_function = Virtual::MethodSource.create_method(:Integer,:plus , [:Integer] )
+          plus_function = Virtual::MethodSource.create_method(:Integer,:int,:plus , [:Integer] )
           plus_function.source.return_type = Virtual::Integer
           plus_function.source.receiver = Virtual::Integer
 
@@ -43,7 +43,7 @@ module Register
         # end
 
         def putint context
-          putint_function = Virtual::MethodSource.create_method(:Integer,:putint , [] )
+          putint_function = Virtual::MethodSource.create_method(:Integer,:int,:putint , [] )
           putint_function.source.return_type = Virtual::Integer
           putint_function.source.receiver = Virtual::Integer
           return putint_function
@@ -72,7 +72,7 @@ module Register
         # a hand coded version of the fibonachi numbers
         # not my hand off course, found in the net http://www.peter-cockerell.net/aalp/html/ch-5.html
         def fibo context
-          fibo_function = Virtual::MethodSource.create_method(:Integer,:fibo ,  [] )
+          fibo_function = Virtual::MethodSource.create_method(:Integer,:int,:fibo ,  [] )
           fibo_function.source.return_type = Virtual::Integer
           fibo_function.source.receiver = Virtual::Integer
           return fibo_function

@@ -6,7 +6,7 @@ module Register
         # it isn't really a function, ie it is jumped to (not called), exits and may not return
         # so it is responsible for initial setup
         def __init__ context
-          function = Virtual::MethodSource.create_method(:Kernel,:__init__ , [])
+          function = Virtual::MethodSource.create_method(:Kernel,:int,:__init__ , [])
           function.source.return_type = Virtual::Integer
           # no method enter or return (automatically added), remove
           function.source.blocks.first.codes.pop # no Method enter
@@ -25,7 +25,7 @@ module Register
           return function
         end
         def exit context
-          function = Virtual::MethodSource.create_method(:Kernel,:exit , [])
+          function = Virtual::MethodSource.create_method(:Kernel,:int,:exit , [])
           function.source.return_type = Virtual::Integer
           return function
           ret = Virtual::RegisterMachine.instance.exit(function)
@@ -33,7 +33,7 @@ module Register
           function
         end
         def __send context
-          function = Virtual::MethodSource.create_method(:Kernel ,:__send , [] )
+          function = Virtual::MethodSource.create_method(:Kernel,:int ,:__send , [] )
           function.source.return_type = Virtual::Integer
           return function
         end

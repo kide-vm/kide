@@ -4,7 +4,7 @@ module Virtual
 
   # Slots in the Frame are local or temporary variables in a message
   class FrameSlot < Slot
-    def initialize index , type = Unknown, value = nil
+    def initialize index , type , value = nil
       super(type, value)
       @index = index
     end

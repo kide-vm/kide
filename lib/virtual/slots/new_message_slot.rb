@@ -7,7 +7,7 @@ module Virtual
   # The Message has a layout as per the constant above
 
   class NewMessageSlot < Slot
-    def initialize type = Unknown, value = nil
+    def initialize type , value = nil
       super( type , value )
     end
     def object_name
@@ -19,28 +19,28 @@ module Virtual
 
   # NewReturn is the return of NewMessageSlot
   class NewReturn < NewMessageSlot
-    def initialize type = Unknown, value = nil
+    def initialize type , value = nil
       super( type , value  )
     end
   end
 
   # NewSelf is the self of NewMessageSlot
   class NewSelf < NewMessageSlot
-    def initialize type = Unknown, value = nil
+    def initialize type , value = nil
       super( type , value  )
     end
   end
 
   # NewMessageName of the next message
   class NewMessageName < NewMessageSlot
-    def initialize type = Unknown, value = nil
+    def initialize type , value = nil
       super( type , value )
     end
   end
 
   # NewMessageName of the next message
   class NewArgSlot < NewMessageSlot
-    def initialize index , type = Unknown, value = nil
+    def initialize index , type , value = nil
       @index = index
       super( type , value )
     end

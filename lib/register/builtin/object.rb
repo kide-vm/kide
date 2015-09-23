@@ -6,7 +6,7 @@ module Register
         # main entry point, ie __init__ calls this
         # defined here as empty, to be redefined
         def main context
-          function = Virtual::MethodSource.create_method(:Object,:main , [])
+          function = Virtual::MethodSource.create_method(:Object, :int , :main , [])
           return function
         end
 
@@ -18,7 +18,7 @@ module Register
         # The at_index is just "below" the api, something we need but don't want to expose,
         # so we can't code the above in ruby
         def _get_instance_variable context , name = Virtual::Integer
-          get_function = Virtual::MethodSource.create_method(:Object,:_get_instance_variable , [  ] )
+          get_function = Virtual::MethodSource.create_method(:Object,:int, :_get_instance_variable , [  ] )
           return get_function
   #         me = get_function.receiver
   #         var_name = get_function.args.first
@@ -39,7 +39,7 @@ module Register
         end
 
         def _set_instance_variable(context , name = Virtual::Integer , value = Virtual::Integer )
-          set_function = Virtual::MethodSource.create_method(:Object,:_set_instance_variable ,[] )
+          set_function = Virtual::MethodSource.create_method(:Object,:int,:_set_instance_variable ,[] )
           return set_function
           # receiver set_function
           # me = set_function.receiver

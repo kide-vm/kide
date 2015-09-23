@@ -8,13 +8,13 @@ module Bosl
       if receiver
         me = process( receiver.to_a.first  )
       else
-        me = Virtual::Self.new
+        me = Virtual::Self.new :int
       end
       ## need two step process, compile and save to frame
       # then move from frame to new message
       method.source.add_code Virtual::NewMessage.new
       method.source.add_code Virtual::Set.new( me , Virtual::NewSelf.new(me.type))
-      method.source.add_code Virtual::Set.new( name.to_sym , Virtual::NewMessageName.new())
+      method.source.add_code Virtual::Set.new( name.to_sym , Virtual::NewMessageName.new(:int))
       compiled_args = []
       arguments.to_a.each_with_index do |arg , i|
         #compile in the running method, ie before passing control

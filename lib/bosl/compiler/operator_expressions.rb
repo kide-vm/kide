@@ -3,7 +3,7 @@ module Bosl
 #    operator attr_reader  :operator, :left, :right
     def on_operator expression
       operator , left , right = *expression
-      Virtual::Return.new()
+      Virtual::Return.new(:int)
     end
 
     def on_assign expression
@@ -11,7 +11,7 @@ module Bosl
       name = name.to_a.first
       v = process(value)
       index = method.ensure_local( name )
-      method.source.add_code Virtual::Set.new(Virtual::FrameSlot.new(index ) , v )
+      method.source.add_code Virtual::Set.new(Virtual::FrameSlot.new(:int,index ) , v )
     end
 
   end

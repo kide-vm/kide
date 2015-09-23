@@ -36,7 +36,7 @@ class TestBasic < MiniTest::Test
 
   def test_name
     @string_input    = 'foo '
-    @output = "- Virtual::Return(:type => Virtual::Unknown)"
+    @output = "- Virtual::Return(:type => :int)"
     check
   end
 

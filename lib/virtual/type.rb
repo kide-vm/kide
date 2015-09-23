@@ -7,6 +7,19 @@ module Virtual
       return false unless other.class == self.class
       return true
     end
+
+    # map from a type sym (currently :int/:ref) to a class of subtype of Type
+    # TODO needs to be made extensible in a defined way.  
+    def self.from_sym type
+      case type
+      when :int
+        Virtual::Integer
+      when :ref
+        Virtual::Reference
+      else
+        raise "No type maps to:#{type}"
+      end
+    end
   end
 
   class Integer < Type
@@ -18,9 +31,6 @@ module Virtual
       @of_class = clazz
     end
     attr_reader :of_class
-  end
-
-  class Unknown < Type
   end
 
 end
