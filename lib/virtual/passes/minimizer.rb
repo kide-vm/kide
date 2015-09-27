@@ -25,11 +25,6 @@ module Virtual
       @gonners.delete function
       function.source.blocks.each do |block|
         block.codes.each do |code|
-          if code.is_a? Virtual::MessageSend
-            @gonners.dup.each do |stay|
-              keep stay if(stay.name == code.name)
-            end
-          end
           keep code.method if code.is_a? Virtual::MethodCall
         end
       end
