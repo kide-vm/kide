@@ -2,6 +2,7 @@ require_relative "helper"
 
 class TestPuts < MiniTest::Test
   include AST::Sexp
+  include Ticker
   def setup
     Virtual.machine.boot
     code = s(:call,
@@ -14,15 +15,6 @@ class TestPuts < MiniTest::Test
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init
-  end
-
-  def ticks num
-    last = nil
-    num.times do
-      last = @interpreter.instruction
-      @interpreter.tick
-    end
-    return last
   end
 
   def test_branch
@@ -85,5 +77,6 @@ class TestPuts < MiniTest::Test
   def test_exit
     done = ticks(34)
     assert_equal NilClass ,  done.class
+    assert_equal "Hello again" , @interpreter.stdout
   end
 end

@@ -2,6 +2,8 @@ require_relative "helper"
 
 class AddTest < MiniTest::Test
   include AST::Sexp
+  include Ticker
+  
   def setup
     Virtual.machine.boot
     code =    s(:call,
@@ -12,15 +14,6 @@ class AddTest < MiniTest::Test
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init
-  end
-
-  def ticks num
-    last = nil
-    num.times do
-      last = @interpreter.instruction
-      @interpreter.tick
-    end
-    return last
   end
 
   def test_branch
@@ -47,7 +40,7 @@ class AddTest < MiniTest::Test
     assert_equal Register::FunctionCall ,  ticks(7).class
     assert @interpreter.link
   end
-  def ttest_adding
+  def test_adding
     done = ticks(23)
     assert_equal Register::OperatorInstruction ,  done.class
     left = @interpreter.get_register(done.left)
@@ -55,11 +48,12 @@ class AddTest < MiniTest::Test
     right = @interpreter.get_register(rr)
     assert_equal Fixnum , left.class
     assert_equal Fixnum , right.class
-    assert_equal 5 , right
+    assert_equal 16 , right
+    assert_equal 8 , left
     done = ticks(1)
     assert_equal Register::RegisterTransfer ,  done.class
     result = @interpreter.get_register(rr)
-    assert_equal result , left + right
+    assert_equal result , 16
   end
 
   def test_chain
