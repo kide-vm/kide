@@ -13,7 +13,6 @@ require "virtual/type"
 # the passes _are_ order dependant
 require "virtual/passes/minimizer"
 require "virtual/passes/collector"
-require "virtual/passes/send_implementation"
 require "virtual/passes/get_implementation"
 require "virtual/passes/enter_implementation"
 require "virtual/passes/set_optimisation"
