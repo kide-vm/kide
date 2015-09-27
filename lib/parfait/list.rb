@@ -157,6 +157,17 @@ module Parfait
       padded_words( get_layout().get_length() +  get_length() )
     end
 
+    def inspect
+      ret = ""
+      index = 1
+      while index <= self.get_length
+        item = get(index)
+        ret += item.inspect
+        ret += "," unless index == self.get_length
+        index = index + 1
+      end
+      ret
+    end
     #many basic List functions can not be defined in ruby, such as
     # get/set/length/add/delete
     # so they must be defined as Methods in Builtin::Kernel
