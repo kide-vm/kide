@@ -33,11 +33,12 @@ module Bosl
   end
 end
 
-require_relative "compiler/basic_expressions"
+require_relative "ast_helper"
 require_relative "compiler/callsite_expression"
 require_relative "compiler/compound_expressions"
 require_relative "compiler/expression_list"
 require_relative "compiler/field_def"
+require_relative "compiler/field_access"
 require_relative "compiler/function_expression"
 require_relative "compiler/if_expression"
 require_relative "compiler/module_expression"
