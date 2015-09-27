@@ -44,7 +44,7 @@ int foo()
 end
 foo()
 HERE
-    @output = [[Virtual::MethodEnter ,  Virtual::NewMessage, Virtual::Set, Virtual::Set, Virtual::MessageSend],
+    @output = [[Virtual::MethodEnter ,  Virtual::NewMessage, Virtual::Set, Virtual::Set, Virtual::MethodCall],
                 [Virtual::MethodReturn]]
     check
   end

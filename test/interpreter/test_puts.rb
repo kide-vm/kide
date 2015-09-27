@@ -64,6 +64,7 @@ class TestPuts < MiniTest::Test
      "GetSlot" , "RegisterTransfer" ,"GetSlot" , "GetSlot","GetSlot",
      "FunctionReturn" , "RegisterTransfer" , "Syscall" , "NilClass"].each_with_index do |name , index|
       got = ticks(1)
+      #puts "TICK #{index}"
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
     end
   end

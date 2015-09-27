@@ -13,5 +13,4 @@ module Virtual
       end
     end
   end
-  Virtual.machine.add_pass "Virtual::GetImplementation"
 end

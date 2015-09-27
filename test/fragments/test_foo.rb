@@ -9,7 +9,7 @@ int foo(int x)
   int a = 5
   return a
 end
-3.foo( 4 )
+foo( 4 )
 HERE
     @expect =  [ Virtual::Return ]
     check
