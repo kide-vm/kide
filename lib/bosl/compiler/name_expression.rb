@@ -11,10 +11,10 @@ module Bosl
         # either an argument, so it's stored in message
         ret =  Virtual::Return.new :int
         if( index = method.has_arg(name))
-          method.source.add_code Virtual::Set.new( Virtual::ArgSlot.new(:int,index ) , ret)
+          method.source.add_code Virtual::Set.new( Virtual::ArgSlot.new(index,:int ) , ret)
         else # or a local so it is in the frame
           index = method.ensure_local( name )
-          method.source.add_code Virtual::Set.new(Virtual::FrameSlot.new(:int,index ) , ret )
+          method.source.add_code Virtual::Set.new(Virtual::FrameSlot.new(index,:int ) , ret )
         end
         return ret
       end

@@ -7,16 +7,18 @@ module Virtual
   # The slot in the Message is represented by instances of class Self
   # (and slots in the next_message by instances of NewSelf)
   #
-  #  Additionally the current Self is represented as it's own top-level object.
+  # Additionally the current Self is represented as it's own top-level object.
   # If self is an Object one can refer to it's instance variables as Slots in SelfSlot
   #
   # In Summary: class Self represents the self object and SelfSlot instances variables of
   #  that object
   #
   class SelfSlot < Slot
-    def initialize type , value = nil
-      super
+    def initialize index , type , value = nil
+      @index = index
+      super( type , value )
     end
+    attr_reader :index
     def object_name
       :self
     end
