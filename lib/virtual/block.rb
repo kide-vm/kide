@@ -21,12 +21,6 @@ module Virtual
     attr_reader :name , :codes , :method , :position
     attr_accessor :branch
 
-    def reachable ret = []
-      add_next ret
-      add_branch ret
-      ret
-    end
-
     def add_code kode
       @codes << kode
       self
@@ -73,20 +67,24 @@ module Virtual
       @codes.inject(0){|count , instruction| count += instruction.byte_length }
     end
 
-    private
-    # helper for determining reachable blocks
-    def add_next ret
-      return if @next.nil?
-      return if ret.include? @next
-      ret << @next
-      @next.reachable ret
-    end
-    # helper for determining reachable blocks
-    def add_branch ret
-      return if @branch.nil?
-      return if ret.include? @branch
-      ret << @branch
-      @branch.reachable ret
-    end
+    # def reachable ret = []
+    #   add_next ret
+    #   add_branch ret
+    #   ret
+    # end
+    # # helper for determining reachable blocks
+    # def add_next ret
+    #   return if @next.nil?
+    #   return if ret.include? @next
+    #   ret << @next
+    #   @next.reachable ret
+    # end
+    # # helper for determining reachable blocks
+    # def add_branch ret
+    #   return if @branch.nil?
+    #   return if ret.include? @branch
+    #   ret << @branch
+    #   @branch.reachable ret
+    # end
   end
 end

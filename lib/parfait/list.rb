@@ -129,7 +129,7 @@ module Parfait
       internal_object_shrink(len + 1)
     end
 
-    def ==(other)
+    def equal?(other)
       # this should call parfait get_class, alas that is not implemented yet
       return false if other.class != self.class
       return false if other.get_length != self.get_length

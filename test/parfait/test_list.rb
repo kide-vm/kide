@@ -5,6 +5,16 @@ class TestList < MiniTest::Test
   def setup
     @list = ::Parfait::List.new
   end
+  def test_list_inspect
+    @list.set(1,1)
+    assert_equal "1" , @list.inspect
+  end
+  def test_list_equal
+    @list.set(1,1)
+    list = ::Parfait::List.new
+    list.set(1,1)
+    assert @list.equal? list
+  end
   def test_list_create
     assert @list.empty?
   end

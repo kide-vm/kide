@@ -2,7 +2,8 @@ module Bosl
   Compiler.class_eval do
 #    module attr_reader  :name ,:expressions
     def on_module expression
-      return clazz
+      name , rest = *expression
+      return process_all(rest).last
     end
 
     def on_class expression
