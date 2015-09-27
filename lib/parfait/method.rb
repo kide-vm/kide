@@ -9,7 +9,7 @@ module Parfait
 
   # static description of a method
   # name
-  # arg_names
+  # arguments
   # known local variable names
   # executable code
 
@@ -18,17 +18,20 @@ module Parfait
 
   class Method < Object
 
-    def initialize clazz , name , arg_names
+    def initialize clazz , name , arguments
       super()
       raise "No class #{name}" unless clazz
       self.for_class = clazz
       self.name = name
       self.code = BinaryCode.new name
-      raise "Wrong type, expect List not #{arg_names.class}" unless arg_names.is_a? List
-      self.arg_names = arg_names
+      raise "Wrong type, expect List not #{arguments.class}" unless arguments.is_a? List
+      arguments.each do |var|
+        raise "Must be variable argument, not #{var}" unless var.is_a? Variable
+      end
+      self.arguments = arguments
       self.locals = List.new
     end
-    attributes [:name , :arg_names , :for_class , :code , :locals ]
+    attributes [:name , :arguments , :for_class , :code , :locals ]
 
 
     # determine whether this method has a variable by the given name
@@ -45,7 +48,7 @@ module Parfait
     # determine whether this method has an argument by the name
     def has_arg name
       raise "has_arg #{name}.#{name.class}" unless name.is_a? Symbol
-      self.arg_names.index_of name
+      self.arguments.index_of name
     end
 
     # determine if method has a local variable or tmp (anonymous local) by given name
@@ -64,7 +67,7 @@ module Parfait
 
     def get_var name
       var = has_var name
-      raise "no var #{name} in method #{self.name} , #{self.locals} #{self.arg_names}" unless var
+      raise "no var #{name} in method #{self.name} , #{self.locals} #{self.arguments}" unless var
       var
     end
 

@@ -58,12 +58,12 @@ module Parfait
       self.instance_methods.delete found
     end
 
-    def create_instance_method  method_name , arg_names
+    def create_instance_method  method_name , arguments
       raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
       clazz = object_layout().object_class()
       raise "??? #{method_name}" unless clazz
       #puts "Self: #{self.class} clazz: #{clazz.name}"
-      Method.new( clazz , method_name , arg_names )
+      Method.new( clazz , method_name , arguments )
     end
 
     # this needs to be done during booting as we can't have all the classes and superclassses

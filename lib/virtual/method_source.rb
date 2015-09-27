@@ -38,7 +38,15 @@ module Virtual
       clazz = Virtual.machine.space.get_class_by_name class_name
       raise "No such class #{class_name}" unless clazz
       return_type = Virtual::Type.from_sym return_type
-      method = clazz.create_instance_method( method_name , Virtual.new_list(args))
+      arguemnts = []
+      args.each_with_index do | arg , index |
+        unless arg.is_a? Parfait::Variable
+          raise "not type #{arg}:#{arg.class}" unless arg == :int || arg == :ref
+          arg = Parfait::Variable.new arg , "arg#{index}".to_sym
+        end
+        arguemnts << arg
+      end
+      method = clazz.create_instance_method( method_name , Virtual.new_list(arguemnts))
       method.source = MethodSource.new(method , return_type)
       method
     end
@@ -125,8 +133,8 @@ module Virtual
     #           mov and add will be called on Machine and generate Instructions that are then added
     #             to the current block
     # also symbols are supported and wrapped as register usages (for bare metal programming)
-#    def method_missing(meth, *arg_names, &block)
-#      add_code ::Arm::ArmMachine.send(meth , *arg_names)
+#    def method_missing(meth, *arguments, &block)
+#      add_code ::Arm::ArmMachine.send(meth , *arguments)
 #    end
 
     def byte_length

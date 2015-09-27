@@ -7,7 +7,7 @@ module Bosl
       name =  name.to_a.first
       args = parameters.to_a.collect do |p|
         raise "error, argument must be a identifier, not #{p}" unless p.type == :parameter
-        p[2]
+        Parfait::Variable.new( p.first , p[1])
       end
 
       if receiver
