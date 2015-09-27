@@ -117,12 +117,6 @@ module Virtual
       return new_b
     end
 
-    def get_tmp
-      name = "__tmp__#{@tmps.length}"
-      @tmps << name
-      Ast::NameExpression.new(name)
-    end
-
     # sugar to create instructions easily.
     # any method will be passed on to the RegisterMachine and the result added to the insertion block
     #  With this trick we can write what looks like assembler,

@@ -28,9 +28,8 @@ module Parfait
       raise "Wrong type, expect List not #{arg_names.class}" unless arg_names.is_a? List
       self.arg_names = arg_names
       self.locals = List.new
-      self.tmps = List.new
     end
-    attributes [:name , :arg_names , :for_class , :code , :locals , :tmps]
+    attributes [:name , :arg_names , :for_class , :code , :locals ]
 
 
     # determine whether this method has a variable by the given name
@@ -54,7 +53,6 @@ module Parfait
     def has_local name
       raise "has_local #{name}.#{name.class}" unless name.is_a? Symbol
       index = self.locals.index_of(name)
-      index = self.tmps.index_of(name) unless index
       index
     end
 

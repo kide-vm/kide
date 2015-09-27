@@ -8,7 +8,7 @@ module Virtual
         # save return register to the message at instance return_address
         new_codes << Register.save_return(code, :message , :return_address)
         # and create a new frame if needed
-        unless code.method.locals.empty? and code.method.tmps.empty?
+        unless code.method.locals.empty?
           new_codes << Virtual::NewFrame.new
         end
         block.replace(code , new_codes )
