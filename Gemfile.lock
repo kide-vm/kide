@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: git://github.com/salama/salama-reader.git
-  revision: e8bc570d2530e501a08ed35eb5b6fac26dc78309
+  revision: 34691f36d13f68d2c39cea266f26ea201bc78bb6
   specs:
     salama-reader (0.2.0)
       ast (~> 2.1.0)
