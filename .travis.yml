@@ -4,7 +4,6 @@ cache: bundler
 script:
   - CODECLIMATE_REPO_TOKEN=e778c5658e8488a37795ec48f8c6990135f7a2ec35ceadc2e816a4ed1e3f20ab ruby test/test_all.rb
 rvm:
-  - 1.9.3
   - 2.0.0
   - 2.1.7
   - 2.2.3

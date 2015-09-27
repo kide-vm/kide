@@ -112,7 +112,7 @@ module Interpreter
     def execute_GetSlot
       object = object_for( @instruction.array )
       value = object.internal_object_get( @instruction.index )
-      value = value.object_id unless value.is_a? Integer
+      value = value.object_id unless value.is_a? Fixnum
       set_register( @instruction.register , value )
       true
     end
