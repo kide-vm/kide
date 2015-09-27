@@ -11,10 +11,9 @@ module Parfait
   # name
   # arg_names
   # known local variable names
-  # temp variables (numbered)
   # executable code
 
-  # ps, the compiler injects its own info, see virtual::compiled_method_info
+  # ps, the compiler injects its own info, see Virtual::MethodSource
 
 
   class Method < Object

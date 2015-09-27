@@ -72,9 +72,5 @@ module Bosl
         r
       end
 
-      def on_variable expression
-        method.source.add_code InstanceGet.new(expression.name)
-        Virtual::Return.new( Unknown )
-      end
   end
 end

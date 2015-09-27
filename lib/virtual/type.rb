@@ -1,7 +1,7 @@
 
 module Virtual
-  # Integer and (Object) References are the main derived classes, but float will come and ...
-  # The Unknown Type has unknown type and has only casting methods. So it must be cast to be useful.
+  # Integer and (Object) References are the main derived classes, but float will come.
+  
   class Type
     def == other
       return false unless other.class == self.class
@@ -9,7 +9,7 @@ module Virtual
     end
 
     # map from a type sym (currently :int/:ref) to a class of subtype of Type
-    # TODO needs to be made extensible in a defined way.  
+    # TODO needs to be made extensible in a defined way.
     def self.from_sym type
       case type
       when :int

@@ -46,12 +46,6 @@ class TestBasic < MiniTest::Test
     check
   end
 
-  def ttest_field
-    @string_input    = 'self.foo_bar '
-    @output = "- Virtual::Return(:type => Virtual::Unknown)"
-    check
-  end
-
   def pest_module_name
     @string_input    = 'FooBar '
     @output = ""

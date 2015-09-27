@@ -5,8 +5,6 @@ module Virtual
   # runtime, ie found in Parfait::Method
 
   # the source we create here is injected into the method and used only at compile-time
-  # receiver
-  # return arg (usually mystery, but for coded ones can be more specific)
 
   #
   # Methods are one step up from to VM::Blocks. Where Blocks can be jumped to, Methods can be called.

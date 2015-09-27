@@ -17,8 +17,7 @@ module Bosl
     #
     # Everything in ruby is an expression, ie returns a value. So the effect of every compile
     # is that a value is put into the ReturnSlot of the current Message.
-    # The compile method (so every compile method) returns the value that it deposits which
-    # may be unknown Unknown value.
+    # The compile method (so every compile method) returns the value that it deposits.
     #
     # The process uses a visitor pattern (from AST::Processor) to dispatch according to the
     # type the expression. So a s(:if xx) will become an on_if(node) call.
