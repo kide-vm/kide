@@ -7,13 +7,13 @@ module Virtual
 
     def test_foo2
       @string_input = <<HERE
-int a
+field int a
 int foo(int x)
   int b = self.a
   return b +x
 end
 HERE
-      @expect =  [ Virtual::Return ]
+      @output =  [ [Virtual::MethodEnter] , [Virtual::MethodReturn] ]
       check
     end
 
