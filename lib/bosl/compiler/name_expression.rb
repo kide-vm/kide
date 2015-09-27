@@ -13,8 +13,12 @@ module Bosl
         if( index = method.has_arg(name))
           method.source.add_code Virtual::Set.new( Virtual::ArgSlot.new(index,:int ) , ret)
         else # or a local so it is in the frame
-          index = method.ensure_local( name )
-          method.source.add_code Virtual::Set.new(Virtual::FrameSlot.new(index,:int ) , ret )
+          index = method.has_local( name )
+          if(index)
+            method.source.add_code Virtual::Set.new(Virtual::FrameSlot.new(index,:int ) , ret )
+          else
+            raise "must define variable #{name} before using it"
+          end
         end
         return ret
       end

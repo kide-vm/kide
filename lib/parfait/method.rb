@@ -34,46 +34,48 @@ module Parfait
     attributes [:name , :arguments , :for_class , :code , :locals ]
 
 
-    # determine whether this method has a variable by the given name
-    # variables are locals and and arguments
-    # used to determine if a send must be issued
-    # return index of the name into the message if so
-    def has_var name
-      raise "has_var #{name}.#{name.class}" unless name.is_a? Symbol
-      index = has_arg(name)
-      return index if index
-      has_local(name)
-    end
-
     # determine whether this method has an argument by the name
     def has_arg name
       raise "has_arg #{name}.#{name.class}" unless name.is_a? Symbol
-      self.arguments.index_of name
+      max = self.arguments.get_length
+      counter = 1
+      while( counter <= max )
+        if( self.arguments.get(counter).name == name)
+          return counter
+        end
+        counter = counter + 1
+      end
+      return nil
     end
 
     # determine if method has a local variable or tmp (anonymous local) by given name
     def has_local name
       raise "has_local #{name}.#{name.class}" unless name.is_a? Symbol
-      index = self.locals.index_of(name)
-      index
+      max = self.locals.get_length
+      counter = 1
+      while( counter <= max )
+        if( self.locals.get(counter).name == name)
+          return counter
+        end
+        counter = counter + 1
+      end
+      return nil
     end
 
-    def ensure_local name
+    def ensure_local name , type
       index = has_local name
       return index if index
-      self.locals.push name
+      var = Variable.new( type , name)
+      self.locals.push var
       self.locals.get_length
-    end
-
-    def get_var name
-      var = has_var name
-      raise "no var #{name} in method #{self.name} , #{self.locals} #{self.arguments}" unless var
-      var
     end
 
     def sof_reference_name
       self.name
     end
 
+    def inspect
+      "#{self.for_class.name}:#{name}(#{arguments.inspect})"
+    end
   end
 end

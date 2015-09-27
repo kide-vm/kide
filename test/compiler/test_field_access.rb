@@ -5,7 +5,7 @@ module Virtual
   class TestFoo < MiniTest::Test
     include CodeChecker
 
-    def test_foo2
+    def test_foo3
       @string_input = <<HERE
 field int a
 int foo(int x)

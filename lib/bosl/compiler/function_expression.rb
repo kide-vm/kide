@@ -2,12 +2,12 @@ module Bosl
   Compiler.class_eval do
 #    function attr_reader  :name, :params, :body , :receiver
     def on_function  expression
-#      puts expression.inspect
+      #puts expression.inspect
       return_type , name , parameters, kids , receiver = *expression
       name =  name.to_a.first
       args = parameters.to_a.collect do |p|
         raise "error, argument must be a identifier, not #{p}" unless p.type == :parameter
-        Parfait::Variable.new( p.first , p[1])
+        Parfait::Variable.new( *p)
       end
 
       if receiver
