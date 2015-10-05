@@ -18,6 +18,12 @@ GIT
       ast (~> 2.1.0)
       parslet (~> 1.7.0)
 
+GIT
+  remote: git://github.com/whitequark/ast.git
+  revision: 82e280fe0f9d528a581721d02d22d1fbf3755142
+  specs:
+    ast (2.1.0)
+
 PATH
   remote: .
   specs:
@@ -28,7 +34,6 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    ast (2.1.0)
     blankslate (3.1.3)
     codeclimate-test-reporter (0.4.6)
       simplecov (>= 0.7.1, < 1.0.0)
@@ -91,6 +96,7 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
+  ast!
   codeclimate-test-reporter
   guard
   guard-minitest
@@ -102,4 +108,4 @@ DEPENDENCIES
   salama-reader!
 
 BUNDLED WITH
-   1.10.5
+   1.10.6
