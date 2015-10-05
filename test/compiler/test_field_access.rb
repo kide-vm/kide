@@ -7,10 +7,12 @@ module Virtual
 
     def test_foo3
       @string_input = <<HERE
-field int a
-int foo(int x)
-  int b = self.a
-  return b +x
+class Object
+  field int a
+  int foo(int x)
+    int b = self.a
+    return b +x
+  end
 end
 HERE
       @output =  [ [Virtual::MethodEnter] , [Virtual::MethodReturn] ]

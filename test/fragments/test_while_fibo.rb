@@ -5,20 +5,24 @@ class TestWhileFragment < MiniTest::Test
 
   def test_while_fibo
     @string_input = <<HERE
-int fibonaccit(int n)
-      int a = 0
-      int b = 1
-      while( n > 1 )
-        int tmp = a
-        a = b
-        b = tmp + b
-        n = n - 1
-      end
-      b.putint()
-      return b
-end
+class Object
+  int fibonaccit(int n)
+        int a = 0
+        int b = 1
+        while( n > 1 )
+          int tmp = a
+          a = b
+          b = tmp + b
+          n = n - 1
+        end
+        b.putint()
+        return b
+  end
 
-fibonaccit( 10 )
+  int main()
+    fibonaccit( 10 )
+  end
+end
 HERE
     @expect =  [Virtual::Return ]
     check

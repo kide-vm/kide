@@ -5,10 +5,14 @@ class TestIf < MiniTest::Test
 
   def test_if_basic
     @string_input = <<HERE
-if( n < 12)
-  3
-else
-  4
+class Object
+  int main()
+    if( n < 12)
+      3
+    else
+      4
+    end
+  end
 end
 HERE
   @expect =  [Virtual::Return ]
@@ -17,7 +21,11 @@ HERE
 
   def test_return
     @string_input = <<HERE
-return 5
+class Object
+  int main()
+    return 5
+  end
+end
 HERE
   @expect =  [Virtual::Return ]
   check
@@ -26,15 +34,19 @@ HERE
 
   def test_if_function
     @string_input = <<HERE
-int itest(int n)
-  if( n < 12)
-    "then".putstring()
-  else
-    "else".putstring()
+class Object
+  int itest(int n)
+    if( n < 12)
+      "then".putstring()
+    else
+      "else".putstring()
+    end
+  end
+
+  int main()
+    itest(20)
   end
 end
-
-itest(20)
 HERE
   @expect =  [Virtual::Return ]
   check

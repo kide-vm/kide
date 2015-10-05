@@ -5,7 +5,8 @@ module Bosl
       #puts expression.inspect
       type , name , value = *expression
 
-      for_class = self.method.for_class
+      for_class = @clazz
+      raise "no class" unless for_class
       index = for_class.object_layout.variable_index(name)
       #raise "class field already defined:#{name} for class #{for_class.name}" if index
       puts "Define field #{name} on class #{for_class.name}"

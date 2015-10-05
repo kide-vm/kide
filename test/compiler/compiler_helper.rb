@@ -5,7 +5,7 @@ require 'parslet/convenience'
 Bosl::Compiler.class_eval do
 
   def check
-    Virtual.machine.boot.compile_main @string_input
+    Virtual.machine.boot.parse_and_compile @string_input
     produced = Virtual.machine.space.get_main.source
     assert_equal @output , produced
     Virtual.machine.run_passes

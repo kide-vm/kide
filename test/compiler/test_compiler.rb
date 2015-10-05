@@ -7,11 +7,11 @@ class CompilerTest < MiniTest::Test
     Virtual.machine.boot
   end
   def check
-    res = Bosl::Compiler.compile( @expression , Virtual.machine.space.get_main )
+    res = Bosl::Compiler.compile( @expression )
     assert res.is_a?(Virtual::Slot) , "compiler must compile to slot, not #{res.inspect}"
   end
   def ttest_if_expression
-#TODO review constant : all expressions return a slot 
+#TODO review constant : all expressions return a slot
     @expression = s(:if,
                     s(:condition,
                       s(:int,  0)),
@@ -21,9 +21,12 @@ class CompilerTest < MiniTest::Test
     check
   end
   def test_function_expression
-    @expression =   s(:function, :int, s(:name, :foo),
-                        s(:parameters, s(:parameter, :ref, :x)),
-                        s(:expressions, s(:int, 5)))
+    @expression =    s(:class, :Foo,
+                        s(:derives, :Object),
+                          s(:expressions,
+                            s(:function, :int, s(:name, :foo),
+                              s(:parameters, s(:parameter, :ref, :x)),
+                                s(:expressions, s(:int, 5)))))
     check
   end
 end

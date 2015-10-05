@@ -14,25 +14,25 @@ module Bosl
     def on_int expression
       int = expression.first
       to =  Virtual::Return.new(Virtual::Integer , int)
-      method.source.add_code Virtual::Set.new( int , to )
+      @method.source.add_code Virtual::Set.new( int , to )
       to
     end
 
     def on_true expression
       to = Virtual::Return.new(Virtual::Reference , true )
-      method.source.add_code Virtual::Set.new( true , to )
+      @method.source.add_code Virtual::Set.new( true , to )
       to
     end
 
     def on_false expression
       to = Virtual::Return.new(Virtual::Reference , false)
-      method.source.add_code Virtual::Set.new( false , to )
+      @method.source.add_code Virtual::Set.new( false , to )
       to
     end
 
     def on_nil expression
       to = Virtual::Return.new(Virtual::Reference , nil)
-      method.source.add_code Virtual::Set.new( nil , to )
+      @method.source.add_code Virtual::Set.new( nil , to )
       to
     end
 
@@ -40,8 +40,8 @@ module Bosl
       # Clearly a TODO here to implement strings rather than reusing symbols
       value = expression.first.to_sym
       to = Virtual::Return.new(Virtual::Reference , value)
-      method.source.constants << value
-      method.source.add_code Virtual::Set.new( value , to )
+      @method.source.constants << value
+      @method.source.add_code Virtual::Set.new( value , to )
       to
     end
   end

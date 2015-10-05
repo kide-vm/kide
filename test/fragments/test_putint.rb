@@ -5,7 +5,11 @@ class TestPutint < MiniTest::Test
 
   def test_putint
     @string_input = <<HERE
-42.putint()
+class Object
+  int main()
+    42.putint()
+  end
+end
 HERE
     @expect = []
     check

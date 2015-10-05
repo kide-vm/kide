@@ -90,6 +90,7 @@ module Parfait
         return internal_object_get(index + 1)
       end
     end
+    alias :[] :get
 
     def empty?
       self.get_length == 0

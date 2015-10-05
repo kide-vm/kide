@@ -1,9 +1,7 @@
 module Bosl
   class Compiler < AST::Processor
-    attr_reader :method
 
-    def initialize(method)
-      @method = method
+    def initialize()
     end
     def handler_missing node
       raise "No handler  on_#{node.type}(node)"
@@ -24,8 +22,8 @@ module Bosl
     # This makes the dispatch extensible, ie Expressions may be added by external code,
     # as long as matching compile methods are supplied too.
     #
-    def self.compile expression , method
-      compiler = Compiler.new method
+    def self.compile expression
+      compiler = Compiler.new
       compiler.process expression
     end
 

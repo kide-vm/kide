@@ -132,11 +132,11 @@ module Virtual
       self
     end
 
-    def compile_main bytes
+    def parse_and_compile bytes
       syntax  = @parser.parse_with_debug(bytes)
       parts = Parser::Transform.new.apply(syntax)
       #puts parts.inspect
-      Bosl::Compiler.compile( parts , @space.get_main )
+      Bosl::Compiler.compile( parts )
     end
 
     private

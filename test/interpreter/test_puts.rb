@@ -5,13 +5,20 @@ class TestPuts < MiniTest::Test
   include Ticker
   def setup
     Virtual.machine.boot
-    code = s(:call,
-              s(:name,  :putstring),
-              s(:arguments),
-              s(:receiver,
-                s(:string,  "Hello again")))
+    code =   s(:class, :Object,
+                        s(:derives, nil),
+                          s(:expressions,
+                            s(:function, :int,
+                              s(:name, :main),
+                              s(:parameters),
+                              s(:expressions,
+                                s(:call,
+                                  s(:name,  :putstring),
+                                  s(:arguments),
+                                  s(:receiver,
+                                    s(:string,  "Hello again")))))))
 
-    Bosl::Compiler.compile( code , Virtual.machine.space.get_main )
+    Bosl::Compiler.compile( code )
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init

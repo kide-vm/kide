@@ -3,14 +3,21 @@ require_relative "helper"
 class AddTest < MiniTest::Test
   include AST::Sexp
   include Ticker
-  
+
   def setup
     Virtual.machine.boot
-    code =    s(:call,
-                s(:name,  :plus),
-                s(:arguments , s(:int , 5)),
-                s(:receiver, s(:int,  2)))
-    Bosl::Compiler.compile( code , Virtual.machine.space.get_main )
+    code  =   s(:class, :Object,
+                s(:derives, nil),
+                  s(:expressions,
+                    s(:function, :int,
+                      s(:name, :main),
+                      s(:parameters),
+                      s(:expressions,
+                        s(:call,
+                          s(:name,  :plus),
+                          s(:arguments , s(:int , 5)),
+                          s(:receiver, s(:int,  2)))))))
+    Bosl::Compiler.compile( code  )
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init

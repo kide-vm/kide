@@ -3,7 +3,15 @@ require_relative "compiler_helper"
 
 class TestBasic < MiniTest::Test
   def check
-    expressions = Virtual.machine.boot.compile_main @string_input
+    input =  <<HERE
+class Object
+  int main()
+  #{@string_input}
+  end
+end
+HERE
+
+    expressions = Virtual.machine.boot.parse_and_compile input
     if( expressions.first.is_a? Virtual::Self )
       expressions.first.type.instance_variable_set :@of_class , nil
     end

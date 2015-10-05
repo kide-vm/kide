@@ -1,6 +1,6 @@
 module CodeChecker
   def check
-    Virtual.machine.boot.compile_main @string_input
+    Virtual.machine.boot.parse_and_compile @string_input
     produced = Virtual.machine.space.get_main.source
     assert @output , "No output given"
     assert_equal @output.length ,  produced.blocks.length , "Block length"

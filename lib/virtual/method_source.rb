@@ -38,23 +38,27 @@ module Virtual
       clazz = Virtual.machine.space.get_class_by_name class_name
       raise "No such class #{class_name}" unless clazz
       return_type = Virtual::Type.from_sym return_type
-      arguemnts = []
+      arguments = []
       args.each_with_index do | arg , index |
         unless arg.is_a? Parfait::Variable
           raise "not type #{arg}:#{arg.class}" unless arg == :int || arg == :ref
           arg = Parfait::Variable.new arg , "arg#{index}".to_sym
         end
-        arguemnts << arg
+        arguments << arg
       end
-      method = clazz.create_instance_method( method_name , Virtual.new_list(arguemnts))
+      method = clazz.create_instance_method( method_name , Virtual.new_list(arguments))
       method.source = MethodSource.new(method , return_type)
       method
     end
     # just passing the method object in for Instructions to make decisions (later)
     def initialize method , return_type
+      init( method , return_type)
+    end
+
+    def init method , return_type = nil
       # first block we have to create with .new , as new_block assumes a current
       enter = Block.new( "enter"  , method ).add_code(MethodEnter.new( method ))
-      @return_type = return_type
+      @return_type = return_type if return_type
       @blocks = [enter]
       @current = enter
       new_block("return").add_code(MethodReturn.new(method))

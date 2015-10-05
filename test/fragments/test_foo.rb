@@ -5,11 +5,16 @@ class TestFoo < MiniTest::Test
 
   def test_foo2
     @string_input = <<HERE
-int foo(int x)
-  int a = 5
-  return a
+class Object
+  int foo(int x)
+    int a = 5
+    return a
+  end
+
+  int main()
+    foo( 4 )
+  end
 end
-foo( 4 )
 HERE
     @expect =  [ Virtual::Return ]
     check

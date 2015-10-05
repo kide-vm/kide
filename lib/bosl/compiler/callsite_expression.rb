@@ -4,7 +4,7 @@ module Bosl
     def on_call expression
       name , arguments , receiver = *expression
       name = name.to_a.first
-
+      raise "not inside method " unless @method
       if receiver
         me = process( receiver.to_a.first  )
       else
@@ -12,9 +12,9 @@ module Bosl
       end
       ## need two step process, compile and save to frame
       # then move from frame to new message
-      method.source.add_code Virtual::NewMessage.new
-      method.source.add_code Virtual::Set.new( me , Virtual::NewSelf.new(me.type))
-      method.source.add_code Virtual::Set.new( name.to_sym , Virtual::NewMessageName.new(:int))
+      @method.source.add_code Virtual::NewMessage.new
+      @method.source.add_code Virtual::Set.new( me , Virtual::NewSelf.new(me.type))
+      @method.source.add_code Virtual::Set.new( name.to_sym , Virtual::NewMessageName.new(:int))
       compiled_args = []
       arguments.to_a.each_with_index do |arg , i|
         #compile in the running method, ie before passing control
@@ -24,7 +24,7 @@ module Bosl
         # so the next free is +1
         to = Virtual::NewArgSlot.new(i + 1 ,val.type , val)
         # (doing this immediately, not after the loop, so if it's a return it won't get overwritten)
-        method.source.add_code Virtual::Set.new( val , to )
+        @method.source.add_code Virtual::Set.new( val , to )
         compiled_args << to
       end
       #method.source.add_code Virtual::MessageSend.new(name , me , compiled_args) #and pass control
@@ -41,7 +41,7 @@ module Bosl
         elsif( me.is_a? Fixnum )
           name = :plus if name == :+
           method = Virtual.machine.space.get_class_by_name(:Integer).get_instance_method(name)
-          #puts Virtual.machine.space.get_class_by_name(:Integer).method_names.to_a
+          puts Virtual.machine.space.get_class_by_name(:Integer).method_names.to_a
           raise "Method not implemented Integer.#{name}" unless method
           @method.source.add_code Virtual::MethodCall.new( method )
         else

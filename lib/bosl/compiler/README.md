@@ -19,11 +19,16 @@ Similarly, the result of compiling is two-fold: a static and a dynamic part.
 Too make things a little simpler, we create a very high level instruction stream at first and then
 run transformation and optimization passes on the stream to improve it.
 
-Each ast class gets a compile method that does the compilation.
+The compiler has a method for each type for ast, named along on_xxx with xxx as the type
 
-#### MethodSource and Instructions
+#### Compiler holds scope
 
-The first argument to the compile method is the MethodSource.
+The Compiler instance can hold arbitrary scope needed during the compilation. Since we compile bosl
+(a static language) things have become more simple.
+
+A class statement sets the current @clazz scope , a method definition the @method.
+If either are not set when needed compile errors will follow. So easy, so nice.
+
 All code is encoded as a stream of Instructions in the MethodSource.
 Instructions are stored as a list of Blocks, and Blocks are the smallest unit of code,
 which is always linear.
@@ -57,29 +62,17 @@ The objects the machine works on are:
 and working on means, these are the only objects which the machine accesses.
 Ie all others would have to be moved first.
 
-When a Method needs to make a call, or send a Message, it creates a NewMessage object.
-Messages contain return addresses and arguments.
-
-Then the machine must find the method to call.
-This is a function of the virtual machine and is implemented in ruby.
-
-Then a new Method receives the Message, creates a Frame for local and temporary variables
-and continues execution.
+When a Method needs to make a call, it creates a NewMessage object.
+Messages contain return addresses (yes, plural) and arguments.
 
 The important thing here is that Messages and Frames are normal objects.
 
-And interestingly we can partly use ruby to find the method, so in a way it is not just a top
-down transformation. Instead the sending goes back up and then down again.
+### Distinclty future proof
 
-The Message object is the second parameter to the compile method, the run-time part as it were.
-Why? Since it only exists at runtime: to make compile time analysis possible
-(it is after all the Virtual version, not Parfait. ie compile-time, not run-time).
-Especially for those times when we can resolve the method at compile time.
+Bosl is designed to be used as an implementation language for a higher oo language. Some, or
+even many, features may not make sense on their own. But these features, like several return
+addresses are important to implement the higher language.
 
-
-*
-As ruby is a dynamic language, it also compiles at run-time. This line of thought does not help
-though as it sort of mixes the seperate times up, even they are not.
-Even in a running ruby programm the stages of compile and run are seperate.
-Similarly it does not help to argue that the code is static too, not dynamic,
-as that leaves us with a worse working model.
+In fact, Bosl main purpose is not even to be written. The main purpose is to have a language to
+compile ruby to. In the same way that the assembler layer in salama is not designed to be written,
+we just need it to create our layers.

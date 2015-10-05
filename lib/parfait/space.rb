@@ -32,6 +32,7 @@ module Parfait
       message = Message.new(nil)
       5.times do
         self.first_message = Message.new message
+        #puts "INIT caller #{message.object_id} to #{self.first_message.object_id}"
         message.set_caller self.first_message
         message = self.first_message
       end

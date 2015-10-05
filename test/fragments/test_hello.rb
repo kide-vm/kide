@@ -5,7 +5,11 @@ class TestHello < MiniTest::Test
 
   def test_hello
     @string_input = <<HERE
-"Hello Raisa, I am salama".putstring()
+class Object
+  int main()
+    "Hello Raisa, I am salama".putstring()
+  end
+end
 HERE
     @expect = []
     check

@@ -111,7 +111,7 @@ module Register
           begin
             code.assemble( stream )
           rescue => e
-            puts "Method error #{method.name}\n#{Sof.write(method.source.blocks).to_s[0...2000]}"
+            puts "Assembly error #{method.name}\n#{Sof.write(method.source.blocks).to_s[0...2000]}"
             puts Sof.write(code)
             raise e
           end

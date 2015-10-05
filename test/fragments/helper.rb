@@ -7,7 +7,7 @@ require_relative '../helper'
 module Fragments
 
   def check
-    expressions = Virtual.machine.boot.compile_main @string_input
+    expressions = Virtual.machine.boot.parse_and_compile @string_input
     @expect.each_with_index do | should , i |
       exp_i = expressions[i]
       assert exp_i.is_a?(Virtual::Slot) , "compiles should return #{should}, not #{exp_i}"

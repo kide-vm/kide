@@ -1,6 +1,6 @@
 module Bosl
   Compiler.class_eval do
-#    function attr_reader  :name, :params, :body , :receiver
+
     def on_function  expression
       #puts expression.inspect
       return_type , name , parameters, kids , receiver = *expression
@@ -24,23 +24,30 @@ module Bosl
           end
         end
       else
-        r = Virtual::Self.new(:int)
-        class_name = method.for_class.name
+        r = @clazz
+        class_name = @clazz.name
       end
-      new_method = Virtual::MethodSource.create_method(class_name, return_type, name , args )
-      new_method.source.receiver = r
-      new_method.for_class.add_instance_method new_method
+      raise "Already in method #{@method}" if @method
+      @method = @clazz.get_instance_method( name )
+      if(@method)
+        puts "Warning, redefining method #{name}" unless name == :main
+        #TODO check args / type compatibility
+        @method.source.init @method
+      else
+        @method = Virtual::MethodSource.create_method(class_name, return_type, name , args )
+        @method.for_class.add_instance_method @method
+      end
+      @method.source.receiver = r
+      puts "compile method #{@method.name}"
 
-      old_method = @method
-      @method = new_method
 
       #frame = frame.new_frame
       kids.to_a.each do |ex|
         return_type = process(ex)
         raise return_type.inspect if return_type.is_a? Virtual::Instruction
       end
-      @method = old_method
-      new_method.source.return_type = return_type
+      @method.source.return_type = return_type
+      @method = nil
       Virtual::Return.new(return_type)
     end
   end

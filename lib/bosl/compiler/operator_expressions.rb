@@ -3,6 +3,7 @@ module Bosl
 #    operator attr_reader  :operator, :left, :right
     def on_operator expression
       operator , left , right = *expression
+      #raise "not quite there"
       Virtual::Return.new(:int)
     end
 
@@ -10,13 +11,13 @@ module Bosl
       name , value = *expression
       name = name.to_a.first
       v = process(value)
-      index = method.has_local( name )
+      index = @method.has_local( name )
       if(index)
-        method.source.add_code Virtual::Set.new(Virtual::FrameSlot.new(:int,index ) , v )
+        @method.source.add_code Virtual::Set.new(Virtual::FrameSlot.new(:int,index ) , v )
       else
-        index = method.has_arg( name )
+        index = @method.has_arg( name )
         if(index)
-          method.source.add_code Virtual::Set.new(Virtual::ArgSlot.new(:int,index ) , v )
+          @method.source.add_code Virtual::Set.new(Virtual::ArgSlot.new(:int,index ) , v )
         else
           raise "must define variable #{name} before using it in #{@method.inspect}"
         end

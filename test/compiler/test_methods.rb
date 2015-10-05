@@ -19,8 +19,10 @@ HERE
 
     def test_simplest_function
       @string_input    = <<HERE
-int foo(int x)
-  return x
+class Object
+  int foo(int x)
+    return x
+  end
 end
 HERE
       @output = [[MethodEnter] ,[MethodReturn]]
@@ -29,8 +31,10 @@ HERE
 
   def test_second_simplest_function
     @string_input    = <<HERE
-ref foo(ref x)
-  return x
+class Object
+  ref foo(ref x)
+    return x
+  end
 end
 HERE
     @output = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
@@ -39,24 +43,28 @@ HERE
 
   def test_puts_string
     @string_input    = <<HERE
-int foo()
-  puts("Hello")
+class Object
+  int main()
+    puts("Hello")
+  end
 end
-foo()
 HERE
-    @output = [[Virtual::MethodEnter ,  Virtual::NewMessage, Virtual::Set, Virtual::Set, Virtual::MethodCall],
-                [Virtual::MethodReturn]]
+    @output = [[MethodEnter ,  NewMessage, Set, Set , Set, Set, MethodCall],[MethodReturn]]
     check
   end
 
-  def ttest_class_function
+  def test_int_function
     @string_input    = <<HERE
-int self.length(int x)
-  self.length
+class Integer < Object
+int times(int x)
+  self * x
+end
 end
 HERE
-    @output = nil
+    @output = [[Virtual::MethodEnter] , [Virtual::MethodReturn]]
     check
+    cla = Virtual.machine.space.get_class_by_name :Integer
+    assert cla.get_instance_method( :times )
   end
 
   def ttest_function_ops
@@ -106,11 +114,15 @@ HERE
 
   def test_while
     @string_input    = <<HERE
-while(1)
-  3
+class Object
+  int foo()
+    while(1)
+      3
+    end
+  end
 end
 HERE
-    @output = [[MethodEnter],[Set,IsTrueBranch,Set,UnconditionalBranch],[],[MethodReturn]]
+    @output = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
     check
   end
 

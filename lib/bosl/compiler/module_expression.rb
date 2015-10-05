@@ -9,10 +9,11 @@ module Bosl
     def on_class expression
       #puts expression.inspect
       name , derives , expressions = *expression
-      clazz = Parfait::Space.object_space.get_class_by_name! name
-      #puts "Compiling class #{clazz.name.inspect}"
+      raise "classes dont yet play babushka, get coding #{name}" if @clazz
+      @clazz = Parfait::Space.object_space.get_class_by_name! name
+      puts "Compiling class #{@clazz.name.inspect}"
       expression_value = process_all(expressions).last
-
+      @clazz = nil
       return expression_value
     end
   end

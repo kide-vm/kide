@@ -7,15 +7,15 @@ module Bosl
       # whichever way this goes the result is stored in the return slot (as all compiles)
       def on_name expression
         name = expression.to_a.first
-        return Virtual::Self.new( Virtual::Reference.new(method.for_class)) if name == :self
+        return Virtual::Self.new( Virtual::Reference.new(@clazz)) if name == :self
         # either an argument, so it's stored in message
         ret =  Virtual::Return.new :int
-        if( index = method.has_arg(name))
-          method.source.add_code Virtual::Set.new( Virtual::ArgSlot.new(index,:int ) , ret)
+        if( index = @method.has_arg(name))
+          @method.source.add_code Virtual::Set.new( Virtual::ArgSlot.new(index,:int ) , ret)
         else # or a local so it is in the frame
-          index = method.has_local( name )
+          index = @method.has_local( name )
           if(index)
-            method.source.add_code Virtual::Set.new(Virtual::FrameSlot.new(index,:int ) , ret )
+            @method.source.add_code Virtual::Set.new(Virtual::FrameSlot.new(index,:int ) , ret )
           else
             raise "must define variable #{name} before using it"
           end

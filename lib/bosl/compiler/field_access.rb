@@ -9,11 +9,10 @@ module Bosl
 
       case receiver
       when :self
-        for_class = self.method.for_class
-        index = for_class.object_layout.variable_index(field_name)
-        raise "field access, but no such field:#{field_name} for class #{for_class.name}" unless index
+        index = @clazz.object_layout.variable_index(field_name)
+        raise "field access, but no such field:#{field_name} for class #{@clazz.name}" unless index
         value = Virtual::Return.new(:int)
-        method.source.add_code Virtual::Set.new( Virtual::SelfSlot.new(index, :int ) , value )
+        @method.source.add_code Virtual::Set.new( Virtual::SelfSlot.new(index, :int ) , value )
       when :message
         #message Slot
         raise "message not yet"

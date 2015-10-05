@@ -5,7 +5,7 @@ module Bosl
       #puts expression.inspect
       type , name , value = *expression
 
-      index = method.ensure_local( name , type )
+      index = @method.ensure_local( name , type )
 
       if value
         value = process( value  )
