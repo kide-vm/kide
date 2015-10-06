@@ -9,18 +9,17 @@ module Bosl
         name = expression.to_a.first
         return Virtual::Self.new( Virtual::Reference.new(@clazz)) if name == :self
         # either an argument, so it's stored in message
-        ret =  Virtual::Return.new :int
         if( index = @method.has_arg(name))
-          @method.source.add_code Virtual::Set.new( Virtual::ArgSlot.new(index,:int ) , ret)
+          type = @method.arguments[index].type
+          return Virtual::ArgSlot.new(index , type )
         else # or a local so it is in the frame
           index = @method.has_local( name )
           if(index)
-            @method.source.add_code Virtual::Set.new(Virtual::FrameSlot.new(index,:int ) , ret )
-          else
-            raise "must define variable #{name} before using it"
+            type = @method.locals[index].type
+            return Virtual::FrameSlot.new(index, type )
           end
         end
-        return ret
+        raise "must define variable #{name} before using it"
       end
 
   end #module

@@ -45,6 +45,9 @@ module Virtual
       super( type , value )
     end
     attr_reader :index
+    def to_s
+      "#{self.class.name}.new(#{index} , #{type}, #{value})"
+    end
   end
 
 

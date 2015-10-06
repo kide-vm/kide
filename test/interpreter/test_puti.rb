@@ -42,13 +42,16 @@ HERE
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init
 #    done = ticks(34)
-  ["Branch" , "LoadConstant" , "GetSlot" , "SetSlot" , "RegisterTransfer" ,
-   "GetSlot" , "FunctionCall" , "SaveReturn" , "RegisterTransfer"  , "GetSlot" ,
-   "GetSlot" ,  "GetSlot" , "SetSlot" , "LoadConstant" , "SetSlot" ,
-   "LoadConstant" ,  "SetSlot" ,  "RegisterTransfer" , "GetSlot" , "FunctionCall" ,
-   "SaveReturn" ,  "GetSlot", "OperatorInstruction" , "RegisterTransfer" , "GetSlot" , "GetSlot" ,
-   "GetSlot" , "FunctionReturn" ,"RegisterTransfer" , "Syscall", "NilClass"].each_with_index do |name , index|
-     return if index == 11
+  ["Branch" ,     "LoadConstant" ,    "GetSlot" ,     "SetSlot" ,      "RegisterTransfer" ,
+   "GetSlot" ,    "FunctionCall" ,    "SaveReturn",   "LoadConstant" , "SetSlot" ,
+   "GetSlot" ,    "GetSlot" ,         "SetSlot" ,     "LoadConstant" , "SetSlot" ,
+   "RegisterTransfer" ,"GetSlot" ,    "FunctionCall" ,"SaveReturn" ,   "GetSlot" ,
+   "LoadConstant", "SetSlot",         "GetSlot" ,     "GetSlot" ,      "SetSlot" ,
+   "LoadConstant", "SetSlot" ,        "GetSlot" ,     "SetSlot" ,      "RegisterTransfer",
+   "GetSlot",     "FunctionCall",     "SaveReturn",   "GetSlot",       "GetSlot",
+    "SetSlot",    "GetSlot",          "SetSlot",      "FunctionCall", "FunctionCall",
+     "FunctionCall", "FunctionCall", "FunctionCall", "FunctionCall", "FunctionCall",
+   "NilClass"].each_with_index do |name , index|
     got = ticks(1)
     puts got
     assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"

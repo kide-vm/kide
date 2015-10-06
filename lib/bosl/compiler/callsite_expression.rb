@@ -53,8 +53,15 @@ module Bosl
           raise "unimplemented: \n#{code} \nfor #{ref.inspect}"
         end
       else
-        method = @method
-        @method.source.add_code Virtual::MethodCall.new( @method )
+        if( me.type == :int)
+          name = :plus if name == :+
+          method = Virtual.machine.space.get_class_by_name(:Integer).get_instance_method(name)
+          puts Virtual.machine.space.get_class_by_name(:Integer).method_names.to_a
+          raise "Method not implemented Integer.#{name}" unless method
+          @method.source.add_code Virtual::MethodCall.new( method )
+        else
+          raise "me #{me}"
+        end
       end
       raise "Method not implemented #{me.value}.#{name}" unless method
       # the effect of the method is that the NewMessage Return slot will be filled, return it

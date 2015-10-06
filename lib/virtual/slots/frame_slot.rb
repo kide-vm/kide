@@ -8,6 +8,11 @@ module Virtual
       super(type, value)
       @index = index
     end
+    attr_reader :index
+
+    def to_s
+      "#{self.class.name}.new(#{index} , #{type}, #{value})"
+    end
 
     def object_name
       return :frame

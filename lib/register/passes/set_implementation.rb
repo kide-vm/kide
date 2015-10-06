@@ -12,7 +12,7 @@ module Register
         if( code.from.is_a?(Parfait::Value) or code.from.is_a?(Symbol) or code.from.is_a?(Fixnum) )
           move1 = LoadConstant.new(code, code.from , tmp )
         else # while otherwise we "load"
-          #puts "from #{code.from}"
+          puts "from #{code.from}"
           move1 = Register.get_slot(code, code.from.object_name , get_index(code.from) , tmp )
         end
         #puts "to #{code.to}"
@@ -29,9 +29,12 @@ module Register
         return Register.resolve_index( :message , :name)
       when Virtual::Return
         return Register.resolve_index( :message , :return_value)
-      when Virtual::NewArgSlot
+      when Virtual::ArgSlot , Virtual::NewArgSlot
         #puts "from: #{from.index}"
         return Register.resolve_index( :message , :name) + from.index
+      when Virtual::FrameSlot
+        #puts "from: #{from.index}"
+        return Register.resolve_index( :frame , :next_frame) + from.index
       else
         raise "not implemented for #{from.class}"
       end
