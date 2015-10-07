@@ -1,7 +1,7 @@
 ### Parfait: a thin layer
 
 Parfait is the run-time of the **vm**.
-To be more precise, it is that part of the run-time that can be expressed in ruby.
+To be more precise, it is that part of the run-time needed to boot ruby.
 
 The run-time needs to contain quite a lot of functionality for a dynamic system.
 And a large part of that functionality must actually be used at compile time too.
@@ -53,7 +53,7 @@ Parfait is not the language (ie ruby) core library. Core library functionality d
 languages and so the language core lib must be on top of the vm parfait.
 
 To make this point clear, i have started using different names for the core classes. Hopefully
-more sensible ones, ie List instead of Array, Dictionary instead of Hash. 
+more sensible ones, ie List instead of Array, Dictionary instead of Hash.
 
 Also Parfait is meant to be as thin as humanly possibly, so extra (nice to have) functionality
 will be in future modules.

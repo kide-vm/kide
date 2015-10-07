@@ -67,12 +67,12 @@ Messages contain return addresses (yes, plural) and arguments.
 
 The important thing here is that Messages and Frames are normal objects.
 
-### Distinclty future proof
+### Distinctly future proof
 
 Bosl is designed to be used as an implementation language for a higher oo language. Some, or
 even many, features may not make sense on their own. But these features, like several return
-addresses are important to implement the higher language.
+addresses, are important to implement the higher language.
 
-In fact, Bosl main purpose is not even to be written. The main purpose is to have a language to
+In fact, Bosl's main purpose is not even to be written. The main purpose is to have a language to
 compile ruby to. In the same way that the assembler layer in salama is not designed to be written,
 we just need it to create our layers.

@@ -6,6 +6,7 @@ standard blah applies (ie RoboCop stuff).
 ## Formatting
 
 ### Line Length
+
 While the days of 80 are over, too big steps seems difficult. I've settled on 100 (ish)
 
 ### Hash
@@ -17,7 +18,7 @@ I still prefer 1.9 => style , it makes the association more obvious.
 ### Module functions are global
 
 Often one thinks so much in classes that classes get what are basically global functions.
-Global functions are usually meant for a module, so mmodule scope is fitting.
+Global functions are usually meant for a module, so module scope is fitting.
 
 A perfect example are singleton accessors. These are often found clumsily on the classes but
 the code reads much nicer when they are on the module.
@@ -33,4 +34,4 @@ out of the Instructions classes. In such cases Module functions are again quite 
 Instead of GetSlot.new( register, index , register) we use Register.get_slot( name , name , name).
 All names are resolved to registers, or index via Layout. More readable code less repetition.
 
-As the exmple shows, in this case the module function name should be the instruction class name.
+As the example shows, in this case the module function name should be the instruction class name.

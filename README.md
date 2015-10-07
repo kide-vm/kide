@@ -9,13 +9,25 @@ Salama is about native code generation in and of ruby.
 
 It is probably best to read the [The Book](http://dancinglightning.gitbooks.io/the-object-machine/content/) first.
 
-Currently the work is to get the system to bootstrap, ie produce and executable that does what the ruby code says.
+The current third rewrite adds a system language, with the idea of compiling ruby to that language, bosl.
+The original ruby parser has been remodelled to parse bosl and later we will use whitequarks
+parser to parse ruby.  Then it will be ruby --> bosl --> assembler --> binary .
 
-Later that executable needs to extend itself, but to do so it will be able to use the same code.
 
 ## Done
 
- Some things that are finished (for *a* definition of finished, ie started)
+Some things that are finished (for *a* definition of finished, ie started)
+
+### Interpreter
+
+After doing some debugging on the generated binaries i opted to write an interpreter for the
+register layer. That way test runs on the interpreter reveal most issues.
+
+### Debugger
+
+And after the interpreter was done, i wrote a [visual debugger](https://github.com/salama/salama-debugger).
+It is a simple opal application that nevertheless has proven great help both in figuring out
+what is going on, and in finding bugs.
 
 ### Assembly
 
@@ -57,15 +69,16 @@ As said, "Hello world" comes out and does use syscall 4.
 Also the program stops by syscall exit.
 The full list is on the net and involves mostly just work.
 
-### Parse ruby
+### Parse Bosl
 
-Parse simple code, using Parslet. This has been separated out as it's own gem, [salama-reader](https://github.com/salama/salama-reader).
+Parse bosl, using Parslet. This has been separated out as it's own gem, [salama-reader](https://github.com/salama/salama-reader).
 
-Parsing is a surprisingly fiddly process, very space and order sensitive. But Parslet is great and
-simple expressions (including function definitions and calls) are starting to work.
+Bosl is now fully typed (all variables, arguments and return). Also it has statements, unlike ruby
+where everything is an expressions. Statements have no value. Otherwise it is quite basic, and
+it's main purpose is to have an oo system language to compile to.
 
 I spent some time on the parse testing framework, so it is safe to fiddle and add.
-In fact it is very modular and  so ot is easy to add.
+In fact it is very modular and easy to add to.
 
 ### Virtual: Compile the Ast
 
@@ -74,11 +87,6 @@ For the parsed subset that's almost done.
 
 It took me a while to come up with a decent but simple machine model. I had tried to map straight to hardware
 but failed. The current Virtual directory represent a machine with basic oo features.
-
-Instead of having more Layers to go from virtual to arm, i opted to have passes that go over the data structure
-and modify it.
-
-This allows optimization after every pass as we have a data structure at every point in time.
 
 ### Parfait - the runtime
 
@@ -92,30 +100,19 @@ inlining, but i have at least an idea.
 
 ### Sof
 
-**S**alama **O**bject **F**ile format is a yaml like format to look at code dumps and help testing.
+Salama Object File format is a yaml like format to look at code dumps and help testing.
 The dumper is ok and does produce (as intended) considerably denser dumps than yaml
 
 When a reader is done (not started) the idea is to use sof as pre-compiled, language independent
 exchange format, have the core read that, and use the mechanism to achieve language independence.
 
-## Status - Dynmaic function lookup
+## Status
 
-It proved to be quite a big step to go from static function calling to oo method lookup.
-Also ruby is very introspective and that means much of the compiled code needs to be accessible
-in the runtime (not just present, accessible).
+Currently all the work is on the bosl front. Also documenting the *small* change of a new language.
 
-This has taken me the better part of a year, but is starting to come around.
+I'll do some simple string and fibo examples in bosl next.
 
-So the current status is that i can
-
-- parse a usable subset of ruby
-- compile that to my vm model
-- generate assembler for all higher level constructs in the vm model
-- assemble and link the code and objects (strings/arrays/hashes) into an executable
-- run the executable and debug :-(
-
-PS: the current current status (05/15) is that even that is broken as i am reworking the run-time.
-But i am hopefull.
+Next will be the multiple return feature and then to try to compile ruby to bosl.
 
 ## Future
 

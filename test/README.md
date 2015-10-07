@@ -15,9 +15,20 @@ time comes to move to salama, less work.
   ruby test/test_all.rb
 ''''
 
+### Parfait
+
+Well, test Parfait. Not perfect, but growing as bugs appear. Basics are ok though.
+
+### Compiler
+
+Different kinds of quite minimal tests that ensure we can go from parsed to code.
+
+### Fragments
+
+Much more elaborate tests of the compling functionality. All code constructs and their output
+in terms of instructions are tested.
+
 ### vm
 
-As this is all quite new, i tend to test only when i know that the functionality will stay that way.
-Otherwise it's just too much effort to rewrite and rewrite the tests.
-
-There used to be better tests, but rewrites bring fluctuation, so poke around and make suggestion :-)
+Mostly tests about the Parfait compatibility layer and padding (for assmenbly).
+Slightly bad name ... wip
