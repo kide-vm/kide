@@ -1,4 +1,4 @@
-module Bosl
+module Phisol
   # collection of the simple ones, int and strings and such
 
   Compiler.class_eval do

@@ -1,4 +1,4 @@
-module Bosl
+module Phisol
   Compiler.class_eval do
 #    if - attr_reader  :cond, :if_true, :if_false
 

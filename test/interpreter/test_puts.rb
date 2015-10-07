@@ -18,7 +18,7 @@ class TestPuts < MiniTest::Test
                                   s(:receiver,
                                     s(:string,  "Hello again")))))))
 
-    Bosl::Compiler.compile( code )
+    Phisol::Compiler.compile( code )
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init

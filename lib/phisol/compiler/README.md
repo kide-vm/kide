@@ -23,7 +23,7 @@ The compiler has a method for each type for ast, named along on_xxx with xxx as 
 
 #### Compiler holds scope
 
-The Compiler instance can hold arbitrary scope needed during the compilation. Since we compile bosl
+The Compiler instance can hold arbitrary scope needed during the compilation. Since we compile Phisol
 (a static language) things have become more simple.
 
 A class statement sets the current @clazz scope , a method definition the @method.
@@ -69,10 +69,10 @@ The important thing here is that Messages and Frames are normal objects.
 
 ### Distinctly future proof
 
-Bosl is designed to be used as an implementation language for a higher oo language. Some, or
+Phisol is designed to be used as an implementation language for a higher oo language. Some, or
 even many, features may not make sense on their own. But these features, like several return
 addresses, are important to implement the higher language.
 
-In fact, Bosl's main purpose is not even to be written. The main purpose is to have a language to
+In fact, Phisol's main purpose is not even to be written. The main purpose is to have a language to
 compile ruby to. In the same way that the assembler layer in salama is not designed to be written,
 we just need it to create our layers.

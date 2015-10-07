@@ -1,4 +1,4 @@
-module Bosl
+module Phisol
   Compiler.class_eval do
 #    list - attr_reader  :expressions
     def on_expressions expession

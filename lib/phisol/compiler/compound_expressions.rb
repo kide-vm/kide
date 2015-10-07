@@ -1,4 +1,4 @@
-module Bosl
+module Phisol
   Compiler.class_eval do
 
 #    attr_reader :values

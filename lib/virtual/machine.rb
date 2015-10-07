@@ -136,7 +136,7 @@ module Virtual
       syntax  = @parser.parse_with_debug(bytes)
       parts = Parser::Transform.new.apply(syntax)
       #puts parts.inspect
-      Bosl::Compiler.compile( parts )
+      Phisol::Compiler.compile( parts )
     end
 
     private

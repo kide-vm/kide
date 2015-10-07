@@ -9,9 +9,9 @@ Salama is about native code generation in and of ruby.
 
 It is probably best to read the [The Book](http://dancinglightning.gitbooks.io/the-object-machine/content/) first.
 
-The current third rewrite adds a system language, with the idea of compiling ruby to that language, bosl.
-The original ruby parser has been remodelled to parse bosl and later we will use whitequarks
-parser to parse ruby.  Then it will be ruby --> bosl --> assembler --> binary .
+The current third rewrite adds a system language, with the idea of compiling ruby to that language, Phisol.
+The original ruby parser has been remodeled to parse Phisol and later we will use whitequarks
+parser to parse ruby.  Then it will be ruby --> Phisol --> assembler --> binary .
 
 
 ## Done
@@ -69,11 +69,11 @@ As said, "Hello world" comes out and does use syscall 4.
 Also the program stops by syscall exit.
 The full list is on the net and involves mostly just work.
 
-### Parse Bosl
+### Parse Phisol
 
-Parse bosl, using Parslet. This has been separated out as it's own gem, [salama-reader](https://github.com/salama/salama-reader).
+Parse Phisol, using Parslet. This has been separated out as it's own gem, [salama-reader](https://github.com/salama/salama-reader).
 
-Bosl is now fully typed (all variables, arguments and return). Also it has statements, unlike ruby
+Phisol is now fully typed (all variables, arguments and return). Also it has statements, unlike ruby
 where everything is an expressions. Statements have no value. Otherwise it is quite basic, and
 it's main purpose is to have an oo system language to compile to.
 
@@ -108,11 +108,11 @@ exchange format, have the core read that, and use the mechanism to achieve langu
 
 ## Status
 
-Currently all the work is on the bosl front. Also documenting the *small* change of a new language.
+Currently all the work is on the Phisol front. Also documenting the *small* change of a new language.
 
-I'll do some simple string and fibo examples in bosl next.
+I'll do some simple string and fibo examples in Phisol next.
 
-Next will be the multiple return feature and then to try to compile ruby to bosl.
+Next will be the multiple return feature and then to try to compile ruby to Phisol.
 
 ## Future
 

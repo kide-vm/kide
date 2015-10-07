@@ -5,7 +5,7 @@ require "virtual/positioned"
 require "virtual/padding"
 require "virtual/parfait_adapter"
 
-require "bosl/compiler"
+require "Phisol/compiler"
 require "virtual/instruction"
 require "virtual/method_source"
 require "virtual/slots/slot"

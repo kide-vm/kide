@@ -17,7 +17,7 @@ class AddTest < MiniTest::Test
                           s(:name,  :plus),
                           s(:arguments , s(:int , 5)),
                           s(:receiver, s(:int,  2)))))))
-    Bosl::Compiler.compile( code  )
+    Phisol::Compiler.compile( code  )
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init

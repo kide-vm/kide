@@ -51,10 +51,10 @@ HERE
     syntax  = Parser::Salama.new.parse_with_debug(@string_input)
     parts = Parser::Transform.new.apply(syntax)
     puts parts.inspect
-    Bosl::Compiler.compile( parts )
+    Phisol::Compiler.compile( parts )
 
 #    expressions = Virtual.machine.boot.parse_and_compile @string_input
-#    Bosl::Compiler.compile( expressions , Virtual.machine.space.get_main )
+#    Phisol::Compiler.compile( expressions , Virtual.machine.space.get_main )
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init

@@ -17,8 +17,8 @@ Slightly more here : http://salama.github.io/2014/06/10/more-clarity.html (then 
 
 The Builtin module is scattered into several files, but that is just so the file doesn't get too long.
 
-Note: This is about to change slightly with the arrival of Bosl.  Bosl is a lower level function,
+Note: This is about to change slightly with the arrival of Phisol.  Phisol is a lower level function,
 and as such there is not much that we need that can not be expressed in it. My current thinking
-is that i can code anything in bosl and will only need the bosl instruction set.
+is that i can code anything in Phisol and will only need the Phisol instruction set.
 So this whole Builtin approach may blow over in the next months. It had already become clear that
-mostly this was going to be about memory access, which in bosl is part of the language.
+mostly this was going to be about memory access, which in Phisol is part of the language.
