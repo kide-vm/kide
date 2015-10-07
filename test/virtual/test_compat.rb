@@ -3,10 +3,9 @@ require_relative "../helper"
 
 class TestCompat < MiniTest::Test
 
-  def ttest_list_create_from_array
+  def test_list_create_from_array
     array = [1,2,3]
     list = Virtual.new_list(array)
-    assert_equal list , Virtual.new_list(array)
     assert_equal array , list.to_a
   end
 

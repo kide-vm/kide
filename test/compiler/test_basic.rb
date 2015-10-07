@@ -54,12 +54,6 @@ HERE
     check
   end
 
-  def pest_module_name
-    @string_input    = 'FooBar '
-    @output = ""
-    check
-  end
-
   def test_string
     @string_input    = "\"hello\""
     @output = "- Virtual::Return(:type => Virtual::Reference, :value => :hello)"
