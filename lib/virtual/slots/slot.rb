@@ -8,7 +8,7 @@ module Virtual
   # Four known objects exist and those correspond to subclasses:
   # - the message that has been received: MessageSlot
   # - the frame of the method that is executing (local variables): FrameSlot
-  # - self as an object: SelfSlot
+  # - self as an object: SelfsSlot
   # - a message that will be sent, NewMessageSlot
 
   # additionally frame, self and return are slots in Message and NewMessage
@@ -41,6 +41,6 @@ module Virtual
 end
 
 require_relative "message_slot"
-require_relative "self_slot"
+require_relative "selfs_slot"
 require_relative "frame_slot"
 require_relative "new_message_slot"

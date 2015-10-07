@@ -8,12 +8,12 @@ module Virtual
   # (and slots in the next_message by instances of NewSelf)
   #
   # Additionally the current Self is represented as it's own top-level object.
-  # If self is an Object one can refer to it's instance variables as Slots in SelfSlot
+  # If self is an Object one can refer to it's instance variables as Slots in SelfsSlot
   #
-  # In Summary: class Self represents the self object and SelfSlot instances variables of
+  # In Summary: class Self represents the self object and SelfsSlot instances variables of
   #  that object
   #
-  class SelfSlot < Slot
+  class SelfsSlot < Slot
     def initialize index , type , value = nil
       @index = index
       super( type , value )
