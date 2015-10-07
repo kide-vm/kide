@@ -44,6 +44,9 @@ HERE
   def test_puts_string
     @string_input    = <<HERE
 class Object
+  int puts(ref str)
+    return str
+  end
   int main()
     puts("Hello")
   end

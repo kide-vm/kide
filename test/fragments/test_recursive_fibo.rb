@@ -5,11 +5,7 @@ class TestRecursinveFibo < MiniTest::Test
 
   def test_recursive_fibo
     @string_input = <<HERE
-class Integer
-  int fib_print(int n)
-    int fib = fibonaccir( n )
-    fib.putint()
-  end
+class Object
   int fibonaccir( int n )
     if( n <= 1 )
       return n
@@ -22,8 +18,10 @@ class Integer
       return a + b
     end
   end
-end
-class Object
+  int fib_print(int n)
+    int fib = fibonaccir( n )
+    fib.putint()
+  end
   int main()
     fib_print(10)
   end

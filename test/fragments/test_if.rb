@@ -7,6 +7,7 @@ class TestIf < MiniTest::Test
     @string_input = <<HERE
 class Object
   int main()
+    int n = 10
     if( n < 12)
       3
     else
