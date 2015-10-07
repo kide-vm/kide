@@ -70,48 +70,32 @@ HERE
     assert cla.get_instance_method( :times )
   end
 
-  def ttest_function_ops
+  def test_function_ops
     @string_input    = <<HERE
-def foo(x)
- abba = 5
- 2 + 5
-end
-HERE
-    @output = nil
-    check
-  end
-
-  def ttest_function_ops_simple
-    @string_input    = <<HERE
-def foo()
-  2 + 5
-end
-HERE
-    @output = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
-    check
-  end
-
-  def ttest_ops_simple
-    #TODO ops still botched
-    @string_input    = <<HERE
-2 + 5
-HERE
-    @output = [[Virtual::MethodEnter , Virtual::Set,Virtual::NewMessage,Virtual::Set,
-        Virtual::Set ,Virtual::Set,Virtual::Set,Virtual::MessageSend] , [Virtual::MethodReturn]]
-    check
-  end
-
-  def ttest_function_if
-    @string_input    = <<HERE
-def ofthen(n)
-  if(0)
-    isit = 42
-  else
-    maybenot = 667
+class Object
+  int foo(int abba)
+   abba = 5
+   2 + 5
   end
 end
 HERE
-    @output = nil
+    @output = [[Virtual::MethodEnter] , [Virtual::MethodReturn]]
+    check
+  end
+
+  def test_function_if
+    @string_input    = <<HERE
+class Object
+  int ofthen(int n)
+    if(0)
+      int isit = 42
+    else
+      int maybenot = 667
+    end
+  end
+end
+HERE
+    @output = [[Virtual::MethodEnter] , [Virtual::MethodReturn]]
     check
   end
 
@@ -129,73 +113,83 @@ HERE
     check
   end
 
-  def ttest_function_while
+  def test_function_while
     @string_input    = <<HERE
-def fibonaccit(n)
-  a = 0
-  while (n) do
-    some = 43
-    other = some * 4
+class Object
+  int fibonaccit(int n)
+    int a = 0
+    while(n)
+      int some = 43
+      int other = some * 4
+    end
   end
 end
 HERE
-    @output = nil
+    @output = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
     check
   end
 
-  def pest_function_return
+  def test_function_return
     @string_input    = <<HERE
-def retvar(n)
-  i = 5
-  return i
+class Object
+  int retvar(int n)
+    int i = 5
+    return i
+  end
 end
 HERE
-    @output = ""
+    @output = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
     check
   end
 
-  def pest_function_return_if
+  def test_function_return_if
     @string_input    = <<HERE
-def retvar(n)
-  if( n > 5)
-    return 10
-  else
-    return 20
+class Object
+  int retvar(int n)
+    if( n > 5)
+      return 10
+    else
+      return 20
+    end
   end
 end
 HERE
-    @output = ""
+    @output = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
     check
   end
 
-  def est_function_return_while
+  def test_function_return_while
     @string_input    = <<HERE
-def retvar(n)
-  while( n > 5) do
-    n = n + 1
-    return n
+class Object
+  int retvar(int n)
+    while( n > 5) do
+      n = n + 1
+      return n
+    end
   end
 end
 HERE
-    @output = ""
+    @output = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
     check
   end
 
-  def pest_function_big_while
+  def test_function_big_while
     @string_input    = <<HERE
-def fibonaccit(n)
-  a = 0
-  b = 1
-  while( n > 1 ) do
-    tmp = a
-    a = b
-    b = tmp + b
-    puts(b)
-    n = n - 1
+class Object
+  int fibonaccit(int n)
+    int a = 0
+    int b = 1
+    while( n > 1 ) do
+      int tmp = a
+      a = b
+      b = tmp + b
+      puts(b)
+      n = n - 1
+    end
   end
 end
 HERE
-    @output = ""
+    @output = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
     check
   end
 end
