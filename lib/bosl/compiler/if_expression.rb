@@ -12,11 +12,10 @@ module Bosl
       true_block =  @method.source.new_block "if_true"     # second, linked in after current, before merge
       false_block = @method.source.new_block "if_false"    # directly next in order, ie if we don't jump we land here
 
-
-      is = process(condition )
+      is = process(condition)
       # TODO should/will use different branches for different conditions.
       # just a scetch : cond_val = cond_val.is_true?(method) unless cond_val.is_a? BranchCondition
-      @method.source.add_code Virtual::IsTrueBranch.new( true_block )
+      @method.source.add_code Register::IsZeroBranch.new( condition , true_block )
 
       # compile the true block (as we think of it first, even it is second in sequential order)
       @method.source.current true_block
@@ -26,7 +25,7 @@ module Bosl
       # compile the false block
       @method.source.current false_block
       last = process_all(if_false).last if if_false
-      @method.source.add_code Virtual::UnconditionalBranch.new( merge_block )
+      @method.source.add_code Register::AlwaysBranch.new(expression, merge_block )
 
       #puts "compiled if: end"
       @method.source.current merge_block

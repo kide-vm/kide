@@ -13,7 +13,19 @@ module Register
     def to_s
       "Branch: #{block.name}"
     end
+    alias :inspect :to_s 
+  end
 
+  class IsZeroBranch < Branch
+  end
+
+  class IsNegativeBranch < Branch
+  end
+
+  class IsPositiveBranch < Branch
+  end
+
+  class AlwaysBranch < Branch
   end
 
 end

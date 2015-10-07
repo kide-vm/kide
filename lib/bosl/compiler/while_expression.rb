@@ -14,12 +14,12 @@ module Bosl
 
       cond = process(condition)
 
-      @method.source.add_code Virtual::IsTrueBranch.new(merge)
+      @method.source.add_code Register::IsZeroBranch.new(condition,merge)
 
       last = process_all(expressions).last
 
       # unconditionally branch to the start
-      @method.source.add_code Virtual::UnconditionalBranch.new(start)
+      @method.source.add_code Register::AlwaysBranch.new(expression,start)
 
       # continue execution / compiling at the merge block
       @method.source.current merge
