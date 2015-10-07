@@ -8,7 +8,11 @@ module Bosl
       if receiver
         me = process( receiver.to_a.first  )
       else
-        me = Virtual::Self.new :int
+        if @method.class.name == :Integer
+          me = Virtual::Self.new :int
+        else
+          me = Virtual::Self.new :ref
+        end
       end
       ## need two step process, compile and save to frame
       # then move from frame to new message
@@ -39,17 +43,11 @@ module Bosl
           raise "Method not implemented #{me.class}.#{code.name}" unless method
           @method.source.add_code Virtual::MethodCall.new( method )
         elsif( me.is_a? Fixnum )
-          name = :plus if name == :+
           method = Virtual.machine.space.get_class_by_name(:Integer).get_instance_method(name)
-          puts Virtual.machine.space.get_class_by_name(:Integer).method_names.to_a
+          #puts Virtual.machine.space.get_class_by_name(:Integer).method_names.to_a
           raise "Method not implemented Integer.#{name}" unless method
           @method.source.add_code Virtual::MethodCall.new( method )
         else
-          # note: this is the current view: call internal send, even the method name says else
-          # but send is "special" and accesses the internal method name and resolves.
-          kernel = Virtual.machine.space.get_class_by_name(:Kernel)
-          method = kernel.get_instance_method(:__send)
-          @method.source.add_code Virtual::MethodCall.new( method )
           raise "unimplemented: \n#{code} \nfor #{ref.inspect}"
         end
       else
@@ -60,7 +58,9 @@ module Bosl
           raise "Method not implemented Integer.#{name}" unless method
           @method.source.add_code Virtual::MethodCall.new( method )
         else
-          raise "me #{me}"
+          method = @clazz.get_instance_method(name)
+          raise "Method not implemented Integer.#{name}" unless method
+          @method.source.add_code Virtual::MethodCall.new( method )
         end
       end
       raise "Method not implemented #{me.value}.#{name}" unless method

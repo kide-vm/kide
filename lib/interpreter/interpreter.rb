@@ -101,6 +101,13 @@ module Interpreter
       false
     end
 
+    def execute_IsZeroBranch
+      puts @instruction.inspect
+      target = @instruction.block
+      set_block target
+      false
+    end
+
     def execute_LoadConstant
       to = @instruction.register
       value = @instruction.constant
@@ -173,18 +180,25 @@ module Interpreter
     end
 
     def execute_OperatorInstruction
+      left = get_register(@instruction.left)
+      rr = @instruction.right
+      right = get_register(rr)
       case @instruction.operator
       when :add
-        left = get_register(@instruction.left)
-        rr = @instruction.right
-        right = get_register(rr)
         result = left + right
-        puts "#{@instruction} == #{result}"
-        right = set_register(rr , result)
+      when "/"
+        result = left / right
+      when "-"
+        result = left - right
+      when "<"
+        result = left < right
+      when "=="
+        result = left == right
       else
-        raise "unimplemented operator #{@instruction}"
+        raise "unimplemented  #{@instruction.operator} #{@instruction}"
       end
-
+      puts "#{@instruction} == #{result}"
+      right = set_register(rr , result)
       true
     end
   end

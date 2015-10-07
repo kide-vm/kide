@@ -7,6 +7,23 @@ class AddTest < MiniTest::Test
   def test_puti
     @string_input = <<HERE
 class Integer < Object
+  ref digit( int rest )
+    if( rest == 5 )
+      return "5"
+    end
+    if( rest == 1 )
+      return "1"
+    end
+    if( rest == 2 )
+      return "2"
+    end
+    if( rest == 3 )
+      return "3"
+    end
+    if( rest == 4 )
+      return "4"
+    end
+  end
   ref add_string(ref str)
     int div
     div = self / 10
@@ -48,10 +65,15 @@ HERE
    "RegisterTransfer" ,"GetSlot" ,    "FunctionCall" ,"SaveReturn" ,   "GetSlot" ,
    "LoadConstant", "SetSlot",         "GetSlot" ,     "GetSlot" ,      "SetSlot" ,
    "LoadConstant", "SetSlot" ,        "GetSlot" ,     "SetSlot" ,      "RegisterTransfer",
-   "GetSlot",     "FunctionCall",     "SaveReturn",   "GetSlot",       "GetSlot",
-    "SetSlot",    "GetSlot",          "SetSlot",      "FunctionCall", "FunctionCall",
-     "FunctionCall", "FunctionCall", "FunctionCall", "FunctionCall", "FunctionCall",
-   "NilClass"].each_with_index do |name , index|
+   "GetSlot",     "FunctionCall",     "SaveReturn",   "GetSlot",       "LoadConstant",
+   "SetSlot",     "GetSlot",          "GetSlot",      "OperatorInstruction", "GetSlot",
+   "SetSlot",     "GetSlot",          "GetSlot",      "OperatorInstruction", "GetSlot",
+   "SetSlot",     "LoadConstant",     "SetSlot",      "GetSlot",        "GetSlot",
+   "OperatorInstruction",     "Branch",     "GetSlot",      "GetSlot",        "SetSlot",
+   "LoadConstant",     "SetSlot",     "GetSlot",      "SetSlot",        "RegisterTransfer",
+   "GetSlot",     "FunctionCall",     "SaveReturn",      "LoadConstant",        "SetSlot",
+   "GetSlot",     "GetSlot",     "OperatorInstruction",      "Branch",        "LoadConstant",
+   "SetSlot"].each_with_index do |name , index|
     got = ticks(1)
     puts got
     assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
