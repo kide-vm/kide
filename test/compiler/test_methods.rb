@@ -176,10 +176,13 @@ HERE
   def test_function_big_while
     @string_input    = <<HERE
 class Object
+  int puts(int i)
+    return 0
+  end
   int fibonaccit(int n)
     int a = 0
     int b = 1
-    while( n > 1 ) do
+    while( n > 1 )
       int tmp = a
       a = b
       b = tmp + b

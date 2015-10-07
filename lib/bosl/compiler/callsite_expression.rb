@@ -59,7 +59,7 @@ module Bosl
           @method.source.add_code Virtual::MethodCall.new( method )
         else
           method = @clazz.get_instance_method(name)
-          raise "Method not implemented Integer.#{name}" unless method
+          raise "Method not implemented #{@clazz.name}.#{name}" unless method
           @method.source.add_code Virtual::MethodCall.new( method )
         end
       end
