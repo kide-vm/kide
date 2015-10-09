@@ -16,7 +16,9 @@ class Object
   end
 end
 HERE
-  @expect =  [Virtual::Return ]
+  @expect =  [[Virtual::MethodEnter,Virtual::Set,Virtual::Set,Register::GetSlot,
+                Register::GetSlot,Register::OperatorInstruction,Register::IsZeroBranch] ,
+                [Virtual::Set,Register::AlwaysBranch] ,[Virtual::Set] ,[] ,[Virtual::MethodReturn] ]
   check
   end
 
@@ -28,7 +30,7 @@ class Object
   end
 end
 HERE
-  @expect =  [Virtual::Return ]
+  @expect =  [[Virtual::MethodEnter,Virtual::Set] , [Virtual::MethodReturn]]
   check
   end
 
@@ -49,7 +51,8 @@ class Object
   end
 end
 HERE
-  @expect =  [Virtual::Return ]
+    @expect =  [ [Virtual::MethodEnter,Virtual::NewMessage,Virtual::Set,Virtual::Set,
+                  Virtual::Set,Virtual::Set,Virtual::MethodCall] ,[Virtual::MethodReturn] ]
   check
   end
 end

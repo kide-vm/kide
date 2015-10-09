@@ -11,7 +11,7 @@ class Bar
   end
 end
 HERE
-    @expect =  [ Virtual::Return ]
+    @expect =  [ [Virtual::MethodEnter] ,[Virtual::MethodReturn]]
     check
   end
 

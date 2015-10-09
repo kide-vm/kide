@@ -24,7 +24,8 @@ class Object
   end
 end
 HERE
-    @expect =  [Virtual::Return ]
+  @expect =  [ [Virtual::MethodEnter,Virtual::NewMessage,Virtual::Set,Virtual::Set,
+                Virtual::Set,Virtual::Set,Virtual::MethodCall] ,[Virtual::MethodReturn] ]
     check
   end
 
