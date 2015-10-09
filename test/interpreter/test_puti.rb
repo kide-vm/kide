@@ -30,7 +30,8 @@ class Integer < Object
     int rest
     rest = self - div
     if( rest < 0)
-      str = str + digit( rest )
+      rest = self.digit( rest )
+      str = str + rest
     else
       str = div.add_string(str)
     end

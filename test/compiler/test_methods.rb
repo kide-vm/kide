@@ -49,9 +49,9 @@ HERE
     def test_int_function
       @string_input    = <<HERE
 class Integer < Object
-int times(int x)
-  self * x
-end
+  int times(int x)
+    return x
+  end
 end
 HERE
       @output = [[Virtual::MethodEnter] , [Virtual::MethodReturn]]

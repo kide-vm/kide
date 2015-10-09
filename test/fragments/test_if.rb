@@ -9,9 +9,9 @@ class Object
   int main()
     int n = 10
     if( n < 12)
-      3
+      return 3
     else
-      4
+      return 4
     end
   end
 end

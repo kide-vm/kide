@@ -1,7 +1,7 @@
 module Phisol
   Compiler.class_eval do
 
-    def on_operator statement
+    def on_operator_value statement
       puts "operator #{statement.inspect}"
       operator , left_e , right_e = *statement
       left_slot = process(left_e)
@@ -22,7 +22,7 @@ module Phisol
       Virtual::Return.new(:int )
     end
 
-    def on_assign statement
+    def on_assignment statement
       puts statement.inspect
       name , value = *statement
       name = name.to_a.first

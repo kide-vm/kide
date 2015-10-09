@@ -1,7 +1,7 @@
 module Phisol
   Compiler.class_eval do
 
-    def on_while statement
+    def on_while_statement statement
       #puts statement.inspect
       condition , statements = *statement
       condition = condition.first

@@ -2,7 +2,7 @@ module Phisol
   Compiler.class_eval do
 #    if - attr_reader  :cond, :if_true, :if_false
 
-    def on_if statement
+    def on_if_statement statement
       condition , if_true , if_false = *statement
       condition = condition.first
       # to execute the logic as the if states it, the blocks are the other way around

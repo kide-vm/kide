@@ -5,11 +5,9 @@ class TestBasicClass < MiniTest::Test
 
   def test_class_basic
     @string_input = <<HERE
-module Foo
-  class Bar
-    int buh()
-      return 1
-    end
+class Bar
+  int buh()
+    return 1
   end
 end
 HERE

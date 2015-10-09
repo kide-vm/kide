@@ -183,8 +183,8 @@ module Interpreter
       left = get_register(@instruction.left)
       rr = @instruction.right
       right = get_register(rr)
-      case @instruction.operator
-      when :add
+      case @instruction.operator.to_s
+      when "add"
         result = left + right
       when "/"
         result = left / right
@@ -195,7 +195,7 @@ module Interpreter
       when "=="
         result = left == right
       else
-        raise "unimplemented  #{@instruction.operator} #{@instruction}"
+        raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
       end
       puts "#{@instruction} == #{result}"
       right = set_register(rr , result)
