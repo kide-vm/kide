@@ -2,8 +2,8 @@ module Phisol
   Compiler.class_eval do
 #    if - attr_reader  :cond, :if_true, :if_false
 
-    def on_if expression
-      condition , if_true , if_false = *expression
+    def on_if statement
+      condition , if_true , if_false = *statement
       condition = condition.first
       # to execute the logic as the if states it, the blocks are the other way around
       # so we can the jump over the else if true ,
@@ -25,7 +25,7 @@ module Phisol
       # compile the false block
       @method.source.current false_block
       last = process_all(if_false).last if if_false
-      @method.source.add_code Register::AlwaysBranch.new(expression, merge_block )
+      @method.source.add_code Register::AlwaysBranch.new(statement, merge_block )
 
       #puts "compiled if: end"
       @method.source.current merge_block

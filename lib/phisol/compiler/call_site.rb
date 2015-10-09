@@ -1,8 +1,8 @@
 module Phisol
   Compiler.class_eval do
 
-    def on_call expression
-      name , arguments , receiver = *expression
+    def on_call statement
+      name , arguments , receiver = *statement
       name = name.to_a.first
       raise "not inside method " unless @method
       if receiver
@@ -65,7 +65,7 @@ module Phisol
       end
       raise "Method not implemented #{me.value}.#{name}" unless method
       # the effect of the method is that the NewMessage Return slot will be filled, return it
-      # (this is what is moved _inside_ above loop for such expressions that are calls (or constants))
+      # (this is what is moved _inside_ above loop for such statements that are calls (or constants))
       Virtual::Return.new( method.source.return_type )
     end
   end

@@ -10,7 +10,7 @@ Some things that would be nice . . (if you did them :-) )
 - utf8 support (string improvements generally)
 - SOF parser
 - more ruby grammar niceties. At the moment i am keeping it simple, so if there is a way around it
-    i won't implement it. Multi-assignments, all that chique where newline is used as expression demarcation
+    i won't implement it. Multi-assignments, all that chique where newline is used as statement demarcation
 
 Or the list of things i am not even planning of tackling at the moment
 

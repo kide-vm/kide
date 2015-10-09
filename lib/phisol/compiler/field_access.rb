@@ -1,9 +1,9 @@
 module Phisol
   Compiler.class_eval do
 
-    def on_field_access expression
-      #puts expression.inspect
-      receiver_ast , field_ast = *expression
+    def on_field_access statement
+      #puts statement.inspect
+      receiver_ast , field_ast = *statement
       receiver = receiver_ast.first_from(:name)
       field_name = field_ast.first_from(:name)
 

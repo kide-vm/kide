@@ -1,9 +1,9 @@
 module Phisol
   Compiler.class_eval do
 
-    def on_while expression
-      #puts expression.inspect
-      condition , expressions = *expression
+    def on_while statement
+      #puts statement.inspect
+      condition , statements = *statement
       condition = condition.first
 
       # this is where the while ends and both branches meet
@@ -16,10 +16,10 @@ module Phisol
 
       @method.source.add_code Register::IsZeroBranch.new(condition,merge)
 
-      last = process_all(expressions).last
+      last = process_all(statements).last
 
       # unconditionally branch to the start
-      @method.source.add_code Register::AlwaysBranch.new(expression,start)
+      @method.source.add_code Register::AlwaysBranch.new(statement,start)
 
       # continue execution / compiling at the merge block
       @method.source.current merge

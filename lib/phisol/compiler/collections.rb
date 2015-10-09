@@ -2,7 +2,7 @@ module Phisol
   Compiler.class_eval do
 
 #    attr_reader :values
-    def on_array expession, context
+    def on_array statement, context
     end
 #    attr_reader :key , :value
     def on_association context

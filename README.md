@@ -74,7 +74,7 @@ The full list is on the net and involves mostly just work.
 Parse Phisol, using Parslet. This has been separated out as it's own gem, [salama-reader](https://github.com/salama/salama-reader).
 
 Phisol is now fully typed (all variables, arguments and return). Also it has statements, unlike ruby
-where everything is an expressions. Statements have no value. Otherwise it is quite basic, and
+where everything is an statements. Statements have no value. Otherwise it is quite basic, and
 it's main purpose is to have an oo system language to compile to.
 
 I spent some time on the parse testing framework, so it is safe to fiddle and add.

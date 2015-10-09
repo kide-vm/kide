@@ -1,9 +1,9 @@
 module Phisol
   Compiler.class_eval do
 
-    def on_function  expression
-      #puts expression.inspect
-      return_type , name , parameters, kids , receiver = *expression
+    def on_function  statement
+      #puts statement.inspect
+      return_type , name , parameters, kids , receiver = *statement
       name =  name.to_a.first
       args = parameters.to_a.collect do |p|
         raise "error, argument must be a identifier, not #{p}" unless p.type == :parameter

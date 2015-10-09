@@ -53,8 +53,8 @@ HERE
     puts parts.inspect
     Phisol::Compiler.compile( parts )
 
-#    expressions = Virtual.machine.boot.parse_and_compile @string_input
-#    Phisol::Compiler.compile( expressions , Virtual.machine.space.get_main )
+#    statements = Virtual.machine.boot.parse_and_compile @string_input
+#    Phisol::Compiler.compile( statements , Virtual.machine.space.get_main )
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init

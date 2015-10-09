@@ -11,11 +11,11 @@ class Object
 end
 HERE
 
-    expressions = Virtual.machine.boot.parse_and_compile input
-    if( expressions.first.is_a? Virtual::Self )
-      expressions.first.type.instance_variable_set :@of_class , nil
+    statements = Virtual.machine.boot.parse_and_compile input
+    if( statements.first.is_a? Virtual::Self )
+      statements.first.type.instance_variable_set :@of_class , nil
     end
-    is = Sof.write(expressions)
+    is = Sof.write(statements)
     #puts is
     assert_equal @output , is
   end

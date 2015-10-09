@@ -7,16 +7,16 @@ class CompilerTest < MiniTest::Test
     Virtual.machine.boot
   end
   def check
-    res = Phisol::Compiler.compile( @expression )
+    res = Phisol::Compiler.compile( @statement )
     assert res.is_a?(Virtual::Slot) , "compiler must compile to slot, not #{res.inspect}"
   end
-  def test_function_expression
-    @expression =    s(:class, :Foo,
+  def test_function_statement
+    @statement =    s(:class, :Foo,
                         s(:derives, :Object),
-                          s(:expressions,
+                          s(:statements,
                             s(:function, :int, s(:name, :foo),
                               s(:parameters, s(:parameter, :ref, :x)),
-                                s(:expressions, s(:int, 5)))))
+                                s(:statements, s(:int, 5)))))
     check
   end
 end

@@ -6,7 +6,7 @@ class HelloTest < MiniTest::Test
     machine = Virtual.machine.boot
     Parfait::Space.object_space.get_class_by_name(:Integer).remove_instance_method :plus
     #TODO remove this hack: write proper aliases
-    expressions = machine.parse_and_compile @string_input
+    statements = machine.parse_and_compile @string_input
     output_at = "Register::CallImplementation"
     #{}"Register::CallImplementation"
     machine.run_before output_at

@@ -108,7 +108,7 @@ module Virtual
     #  happened
 
     # But subsequent statements are still using the original block (self) to add code to
-    # So the while expression creates the extra blocks, adds them and the code and then "moves"
+    # So the while statement creates the extra blocks, adds them and the code and then "moves"
     # the insertion point along
     def current block
       @current = block

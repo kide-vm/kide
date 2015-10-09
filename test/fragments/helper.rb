@@ -2,14 +2,14 @@ require_relative '../helper'
 
 # simple tests to check parsing pworks and the first classes come out right.
 #
-# build up from small to check larger expressions are correct
+# build up from small to check larger statements are correct
 
 module Fragments
 
   def check
-    expressions = Virtual.machine.boot.parse_and_compile @string_input
+    statements = Virtual.machine.boot.parse_and_compile @string_input
     @expect.each_with_index do | should , i |
-      exp_i = expressions[i]
+      exp_i = statements[i]
       assert exp_i.is_a?(Virtual::Slot) , "compiles should return #{should}, not #{exp_i}"
       assert_equal should , exp_i.class
     end

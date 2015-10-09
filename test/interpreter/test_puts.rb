@@ -7,11 +7,11 @@ class TestPuts < MiniTest::Test
     Virtual.machine.boot
     code =   s(:class, :Object,
                         s(:derives, nil),
-                          s(:expressions,
+                          s(:statements,
                             s(:function, :int,
                               s(:name, :main),
                               s(:parameters),
-                              s(:expressions,
+                              s(:statements,
                                 s(:call,
                                   s(:name,  :putstring),
                                   s(:arguments),

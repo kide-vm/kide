@@ -1,9 +1,9 @@
 module Phisol
   Compiler.class_eval do
 
-    def on_field_def expression
-      #puts expression.inspect
-      type , name , value = *expression
+    def on_field_def statement
+      #puts statement.inspect
+      type , name , value = *statement
 
       index = @method.ensure_local( name , type )
 

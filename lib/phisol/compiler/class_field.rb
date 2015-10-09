@@ -1,9 +1,9 @@
 module Phisol
   Compiler.class_eval do
 
-    def on_class_field expression
-      #puts expression.inspect
-      type , name , value = *expression
+    def on_class_field statement
+      #puts statement.inspect
+      type , name , value = *statement
 
       for_class = @clazz
       raise "no class" unless for_class

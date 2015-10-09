@@ -24,7 +24,7 @@ class TestRunner < MiniTest::Test
     syntax  = parser.parse_with_debug(string)
     assert syntax
     parts   = Parser::Transform.new.apply(syntax)
-    # file is a list of expressions, all but the last must be a function
+    # file is a list of statements, all but the last must be a function
     # and the last is wrapped as a main
     parts.each_with_index do |part,index|
       if index == (parts.length - 1)
