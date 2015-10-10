@@ -36,7 +36,7 @@ module Virtual
 
   class Machine
 
-    FIRST_PASS = "Virtual::GetImplementation"
+    FIRST_PASS = "Virtual::EnterImplementation"
     LAST_PASS = "Virtual::SetOptimisation"
 
     def initialize

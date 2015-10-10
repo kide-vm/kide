@@ -14,7 +14,6 @@ module Virtual
 end
 
 require_relative "instructions/halt"
-require_relative "instructions/instance_get"
 require_relative "instructions/method_call"
 require_relative "instructions/method_enter"
 require_relative "instructions/method_return"
