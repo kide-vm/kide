@@ -119,15 +119,10 @@ module Virtual
     end
 
     def boot
-#      if @booted
-#        boot_functions!
-#        @init = Block.new("init", :__init__ )
-#        @init.add_code Virtual::VirtualMain.new( self.space.get_init )
-#        return self
-#      end
       boot_parfait!
       @init = Block.new("init", :__init__ )
-      @init.add_code Virtual::VirtualMain.new( self.space.get_init )
+      branch = Register::Branch.new( "__init__" , self.space.get_init.source.blocks.first )
+      @init.add_code branch
       @booted = true
       self
     end
