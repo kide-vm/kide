@@ -1,7 +1,8 @@
-require 'elf/object_file'
-require 'elf/symbol_table_section'
-require 'elf/text_section'
-require 'elf/string_table_section'
+require_relative "stream_writer"
+require_relative 'object_file'
+require_relative 'symbol_table_section'
+require_relative 'text_section'
+require_relative 'string_table_section'
 
 module Elf
 
