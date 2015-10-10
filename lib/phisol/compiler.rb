@@ -2,6 +2,7 @@ module Phisol
   class Compiler < AST::Processor
 
     def initialize()
+      @regs = []
     end
     def handler_missing node
       raise "No handler  on_#{node.type}(node)"
@@ -27,6 +28,21 @@ module Phisol
       compiler.process statement
     end
 
+    # require a (temporary) register. code must give this back with release_reg
+    def use_reg
+      if @regs.empty?
+        reg = Register.tmp_reg
+      else
+        reg = @regs.last.next_reg_use
+      end
+      @regs << reg
+      return reg
+    end
+
+    def release_reg reg
+      last = @regs.pop
+      raise "released register in wrong order, expect #{last} but was #{reg}" if reg != last
+    end
   end
 end
 

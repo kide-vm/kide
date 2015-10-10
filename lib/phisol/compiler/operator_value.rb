@@ -8,8 +8,8 @@ module Phisol
       right_slot = process(right_e)
       puts "left #{left_slot}"
       puts "right #{right_slot}"
-      tmp1 = Register.tmp_reg
-      tmp2 = tmp1.next_reg_use
+      tmp1 = use_reg
+      tmp2 = use_reg
       get = Register.get_slot_to(statement , left_slot , tmp1 )
       get2 = Register.get_slot_to(statement , right_slot , tmp2 )
       puts "GET #{get}"
@@ -18,7 +18,8 @@ module Phisol
       @method.source.add_code get2
 
       @method.source.add_code Register::OperatorInstruction.new(statement,operator, tmp1,tmp2)
-
+      release_reg tmp2
+      release_reg tmp1
       Virtual::Return.new(:int )
     end
 
