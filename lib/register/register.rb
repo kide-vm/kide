@@ -1,5 +1,5 @@
 require_relative "instruction"
-require_relative "register_reference"
+require_relative "register_value"
 require_relative "assembler"
 require_relative "passes/frame_implementation"
 require_relative "passes/set_implementation"

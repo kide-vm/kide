@@ -14,7 +14,7 @@ module Register
     end
     attr_reader :source
 
-    # returns an array of registers (RegisterReferences) that this instruction uses.
+    # returns an array of registers (RegisterValues) that this instruction uses.
     # ie for r1 = r2 + r3
     # which in assembler is add r1 , r2 , r3
     # it would return [r2,r3]
@@ -22,7 +22,7 @@ module Register
     def uses
       raise "abstract called for #{self.class}"
     end
-    # returns an array of registers (RegisterReferences) that this instruction assigns to.
+    # returns an array of registers (RegisterValues) that this instruction assigns to.
     # ie for r1 = r2 + r3
     # which in assembler is add r1 , r2 , r3
     # it would return [r1]
@@ -33,8 +33,8 @@ module Register
 
     # wrap symbols into regsiter reference if needed
     def wrap_register reg , type
-      return reg if reg.is_a? RegisterReference
-      RegisterReference.new(reg , type)
+      return reg if reg.is_a? RegisterValue
+      RegisterValue.new(reg , type)
     end
   end
 

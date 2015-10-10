@@ -58,15 +58,15 @@ module Interpreter
     end
 
     def get_register( reg )
-      reg = reg.symbol if reg.is_a? Register::RegisterReference
-      raise "Not a register #{reg}" unless Register::RegisterReference.look_like_reg(reg)
+      reg = reg.symbol if reg.is_a? Register::RegisterValue
+      raise "Not a register #{reg}" unless Register::RegisterValue.look_like_reg(reg)
       @registers[reg]
     end
 
     def set_register reg , val
       old = get_register( reg ) # also ensures format
       return if old === val
-      reg = reg.symbol if reg.is_a? Register::RegisterReference
+      reg = reg.symbol if reg.is_a? Register::RegisterValue
       @registers[reg] = val
       trigger(:register_changed, reg ,  old , val)
     end

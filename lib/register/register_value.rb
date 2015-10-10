@@ -1,12 +1,8 @@
 module Register
 
-  # RegisterReference is not the name for a register, "only" for a certain use of it.
-  # In a way it is like a variable name, a storage location. The location is a register off course,
-  # but which register can be changed, and _all_ instructions sharing the RegisterReference then
-  # use that register
-  # In other words a simple level of indirection, or change from value to reference sematics.
+  # RegisterValue is like a variable name, a storage location. The location is a register off course.
 
-  class RegisterReference
+  class RegisterValue
 
     attr_accessor :symbol , :type
 
@@ -29,7 +25,7 @@ module Register
     end
 
     def self.look_like_reg is_it
-      return true if is_it.is_a? RegisterReference
+      return true if is_it.is_a? RegisterValue
       return false unless is_it.is_a? Symbol
       if( [:lr , :pc].include? is_it )
         return true
@@ -43,7 +39,7 @@ module Register
 
     def == other
       return false if other.nil?
-      return false if other.class != RegisterReference
+      return false if other.class != RegisterValue
       symbol == other.symbol
     end
 
@@ -51,7 +47,7 @@ module Register
     def next_reg_use type
       int = @symbol[1,3].to_i
       sym = "r#{int + 1}".to_sym
-      RegisterReference.new( sym , type)
+      RegisterValue.new( sym , type)
     end
 
     def sof_reference_name
@@ -65,30 +61,30 @@ module Register
 
   # The register we use to store the current message object is :r0
   def self.message_reg
-    RegisterReference.new :r0 , :ref
+    RegisterValue.new :r0 , :ref
   end
 
   # A register to hold the receiver of the current message, in oo terms the self. :r1
   def self.self_reg type = :ref
-    RegisterReference.new :r1 , type
+    RegisterValue.new :r1 , type
   end
 
   # The register to hold a possible frame of the currently executing method. :r2
   # May be nil if the method has no local variables
   def self.frame_reg
-    RegisterReference.new :r2 , :ref
+    RegisterValue.new :r2 , :ref
   end
 
   # The register we use to store the new message object is :r3
   # The new message is the one being built, to be sent
   def self.new_message_reg
-    RegisterReference.new :r3 , :ref
+    RegisterValue.new :r3 , :ref
   end
 
   # The first scratch register. There is a next_reg_use to get a next and next.
   # Current thinking is that scratch is schatch between instructions
   def self.tmp_reg type
-    RegisterReference.new :r4 , type
+    RegisterValue.new :r4 , type
   end
 
   # The first arg is a class name (possibly lowercase) and the second an instance variable name.
