@@ -1,40 +1,30 @@
 require_relative '../helper'
 require 'parslet/convenience'
 
+module CompilerHelper
 
-Phisol::Compiler.class_eval do
-
-  def check
-    Virtual.machine.boot.parse_and_compile @string_input
-    produced = Virtual.machine.space.get_main.source
-    assert_equal @output , produced
-    Virtual.machine.run_passes
-  end
-
-end
-
-class UnusedSofEquality
-  # simple thought: don't recurse for Blocks, just check their names
-  def == other
-    return false unless other.class == self.class
-    Sof::Util.attributes(self).each do |a|
-      begin
-        left = send(a)
-      rescue NoMethodError
-        next  # not using instance variables that are not defined as attr_readers for equality
-      end
-      begin
-        right = other.send(a)
-      rescue NoMethodError
-        return false
-      end
-      return false unless left.class == right.class
-      if( left.is_a? Block)
-        return false unless left.name == right.name
-      else
-        return false unless left == right
-      end
+  Phisol::Compiler.class_eval do
+    def set_main
+      @method = Virtual.machine.space.get_main
     end
-    return true
   end
+  def check
+    machine = Virtual.machine.boot
+    parser = Parser::Salama.new
+    parser = parser.send @root
+    syntax  = parser.parse_with_debug(@string_input)
+    parts = Parser::Transform.new.apply(syntax)
+    #puts parts.inspect
+    compiler = Phisol::Compiler.new
+    compiler.set_main
+    produced = compiler.process( parts )
+    produced = [produced] unless produced.is_a? Array
+    assert @output , "No output given"
+    assert_equal  produced.length, @output.length , "Block length"
+    produced.each_with_index do |b,i|
+      codes = @output[i]
+      assert_equal codes ,  b.class ,  "Class #{i} "
+    end
+  end
+
 end

@@ -1,9 +1,8 @@
-require_relative "compiler_helper"
-require_relative "code_checker"
+require_relative 'helper'
 
 module Virtual
   class TestMethods < MiniTest::Test
-    include CodeChecker
+    include Fragments
 
     def test_simplest_function
       @string_input    = <<HERE
@@ -13,7 +12,7 @@ class Object
   end
 end
 HERE
-      @output = [[MethodEnter,Set] ,[MethodReturn]]
+      @expect = [[MethodEnter,Set] ,[MethodReturn]]
       check
     end
 
@@ -27,7 +26,7 @@ class Object
   end
 end
 HERE
-      @output = [[Virtual::MethodEnter,Set],[Virtual::MethodReturn]]
+      @expect = [[Virtual::MethodEnter,Set],[Virtual::MethodReturn]]
       check
     end
 
@@ -42,7 +41,7 @@ class Object
   end
 end
 HERE
-      @output = [[MethodEnter ,  NewMessage, Set, Set , Set, Set, MethodCall],[MethodReturn]]
+      @expect = [[MethodEnter ,  NewMessage, Set, Set , Set, Set, MethodCall],[MethodReturn]]
       check
     end
 
@@ -54,7 +53,7 @@ class Integer < Object
   end
 end
 HERE
-      @output = [[Virtual::MethodEnter] , [Virtual::MethodReturn]]
+      @expect = [[Virtual::MethodEnter] , [Virtual::MethodReturn]]
       check
       cla = Virtual.machine.space.get_class_by_name :Integer
       assert cla.get_instance_method( :times )
@@ -69,7 +68,7 @@ class Object
   end
 end
 HERE
-      @output = [[Virtual::MethodEnter] , [Virtual::MethodReturn]]
+      @expect = [[Virtual::MethodEnter] , [Virtual::MethodReturn]]
       check
     end
 
@@ -85,7 +84,7 @@ class Object
   end
 end
 HERE
-      @output = [[MethodEnter,Set,Register::IsZeroBranch] , [Set,Register::AlwaysBranch],
+      @expect = [[MethodEnter,Set,Register::IsZeroBranch] , [Set,Register::AlwaysBranch],
                   [Set],[],[MethodReturn]]
       check
     end
@@ -100,7 +99,7 @@ class Object
   end
 end
 HERE
-      @output = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
+      @expect = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
       check
     end
 
@@ -116,7 +115,7 @@ class Object
   end
 end
 HERE
-      @output = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
+      @expect = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
       check
     end
 
@@ -129,7 +128,7 @@ class Object
   end
 end
 HERE
-      @output = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
+      @expect = [[Virtual::MethodEnter],[Virtual::MethodReturn]]
       check
     end
 
@@ -146,7 +145,7 @@ class Object
   end
 end
 HERE
-      @output = [[MethodEnter,Set,Set,Register::GetSlot,Register::GetSlot,
+      @expect = [[MethodEnter,Set,Set,Register::GetSlot,Register::GetSlot,
                   Register::OperatorInstruction,Register::IsZeroBranch],
                   [Set,Register::AlwaysBranch],[Set],[],[MethodReturn]]
       check
@@ -164,7 +163,7 @@ class Object
   end
 end
 HERE
-      @output = [[MethodEnter,Set],
+      @expect = [[MethodEnter,Set],
                  [Set,Register::GetSlot,Register::GetSlot,Register::OperatorInstruction,
                    Register::IsZeroBranch,Set,Register::GetSlot,Register::GetSlot,
                    Register::OperatorInstruction,Set,Register::AlwaysBranch] ,
