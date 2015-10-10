@@ -41,7 +41,7 @@ class Object
   end
 end
 HERE
-      @expect = [[MethodEnter ,  NewMessage, Set, Set , Set, Set, MethodCall],[MethodReturn]]
+      @expect = [[MethodEnter ,  Register::GetSlot, Set, Set , Set, Set, MethodCall],[MethodReturn]]
       check
     end
 

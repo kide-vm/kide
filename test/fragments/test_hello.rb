@@ -11,7 +11,7 @@ class Object
   end
 end
 HERE
-    @expect = [[Virtual::MethodEnter,Virtual::Set,Virtual::NewMessage,Virtual::Set,
+    @expect = [[Virtual::MethodEnter,Virtual::Set,Register::GetSlot,Virtual::Set,
                 Virtual::Set,Virtual::MethodCall] ,[Virtual::MethodReturn]]
     check
   end

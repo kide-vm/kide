@@ -16,7 +16,9 @@ module Phisol
       end
       ## need two step process, compile and save to frame
       # then move from frame to new message
-      @method.source.add_code Virtual::NewMessage.new
+      # load the new_message from message by index, simple get_slot
+      new_message = Register.get_slot(@method, :message , :next_message , Register.resolve_to_register(:new_message))
+      @method.source.add_code new_message
       @method.source.add_code Virtual::Set.new( me , Virtual::NewSelf.new(me.type))
       @method.source.add_code Virtual::Set.new( name.to_sym , Virtual::NewMessageName.new(:int))
       compiled_args = []
