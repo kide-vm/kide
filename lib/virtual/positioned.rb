@@ -1,4 +1,4 @@
-require_relative "type"
+#require_relative "type"
 
 module Positioned
   def position
