@@ -14,7 +14,6 @@ require "virtual/type"
 require "virtual/passes/minimizer"
 require "virtual/passes/collector"
 require "virtual/passes/enter_implementation"
-require "virtual/passes/set_optimisation"
 
 
 class Fixnum

@@ -48,7 +48,7 @@ class AddTest < MiniTest::Test
     assert @interpreter.link
   end
   def test_adding
-    done = ticks(23)
+    done = ticks(25)
     assert_equal Register::OperatorInstruction ,  done.class
     left = @interpreter.get_register(done.left)
     rr = done.right
@@ -67,7 +67,7 @@ class AddTest < MiniTest::Test
     ["Branch" , "LoadConstant" , "GetSlot" , "SetSlot" , "RegisterTransfer" ,
      "GetSlot" , "FunctionCall" , "SaveReturn" , "LoadConstant"  , "SetSlot" ,
      "GetSlot" ,  "GetSlot" , "SetSlot" , "LoadConstant" , "SetSlot" ,
-     "LoadConstant" ,  "SetSlot" ,  "RegisterTransfer" , "GetSlot" , "FunctionCall" ,
+     "LoadConstant" ,  "SetSlot" ,   "GetSlot" , "SetSlot", "RegisterTransfer" , "GetSlot" , "FunctionCall" ,
      "SaveReturn" ,  "GetSlot", "OperatorInstruction" , "RegisterTransfer" , "GetSlot" , "GetSlot" ,
      "GetSlot" , "FunctionReturn" ,"RegisterTransfer" , "Syscall", "NilClass"].each_with_index do |name , index|
       got = ticks(1)
