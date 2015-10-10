@@ -13,7 +13,7 @@ module Virtual
   # derived classes are Boot/Meta Class and StringConstant
   class ObjectConstant < Constant
 #    def type
-#      Virtual::Reference
+#      Phisol::Reference
 #    end
     def clazz
       raise "abstract #{self}"
@@ -26,7 +26,7 @@ module Virtual
     end
     attr_reader :integer
     def type
-      Virtual::Integer
+      Phisol::Integer
     end
     def fits_u8?
       integer >= 0 and integer <= 255

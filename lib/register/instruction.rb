@@ -32,9 +32,9 @@ module Register
     end
 
     # wrap symbols into regsiter reference if needed
-    def wrap_register reg
+    def wrap_register reg , type
       return reg if reg.is_a? RegisterReference
-      RegisterReference.new(reg)
+      RegisterReference.new(reg , type)
     end
   end
 

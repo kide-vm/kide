@@ -17,7 +17,7 @@ module Register
         #  end
         # The at_index is just "below" the api, something we need but don't want to expose,
         # so we can't code the above in ruby
-        def _get_instance_variable context , name = Virtual::Integer
+        def _get_instance_variable context , name = :int
           get_function = Virtual::MethodSource.create_method(:Object,:int, :_get_instance_variable , [  ] )
           return get_function
   #         me = get_function.receiver
@@ -38,7 +38,7 @@ module Register
   #         return get_function
         end
 
-        def _set_instance_variable(context , name = Virtual::Integer , value = Virtual::Integer )
+        def _set_instance_variable(context , name = :int , value = :int )
           set_function = Virtual::MethodSource.create_method(:Object,:int,:_set_instance_variable ,[] )
           return set_function
           # receiver set_function

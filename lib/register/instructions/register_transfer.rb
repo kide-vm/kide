@@ -18,8 +18,8 @@ module Register
     # Note: this may be reversed from some assembler notations (also arm)
     def initialize source , from , to
       super(source)
-      @from = wrap_register(from)
-      @to = wrap_register(to)
+      @from = wrap_register(from,:int)
+      @to = wrap_register(to,:int)
     end
     attr_reader :from, :to
 

@@ -7,7 +7,7 @@ module Register
       block.codes.dup.each do |code|
         next unless code.is_a? Virtual::Set
         # need a temporay place because of indexed load/store
-        tmp = Register.tmp_reg
+        tmp = Register.tmp_reg :int
         # for constants we have to "move" the constants value
         if( code.from.is_a?(Parfait::Value) or code.from.is_a?(Symbol) or code.from.is_a?(Fixnum) )
           move1 = LoadConstant.new(code, code.from , tmp )

@@ -8,8 +8,8 @@ module Phisol
       right_slot = process(right_e)
       puts "left #{left_slot}"
       puts "right #{right_slot}"
-      tmp1 = use_reg
-      tmp2 = use_reg
+      tmp1 = use_reg :int
+      tmp2 = use_reg :int
       get = Register.get_slot_to(statement , left_slot , tmp1 )
       get2 = Register.get_slot_to(statement , right_slot , tmp2 )
       puts "GET #{get}"

@@ -13,25 +13,26 @@ module Phisol
 
     def on_int statement
       int = statement.first
-      to =  Virtual::Return.new(Virtual::Integer , int)
+#      reg =
+      to =  Virtual::Return.new(Phisol::Integer , int)
       @method.source.add_code Virtual::Set.new( int , to )
       to
     end
 
     def on_true statement
-      to = Virtual::Return.new(Virtual::Reference , true )
+      to = Virtual::Return.new(Phisol::Reference , true )
       @method.source.add_code Virtual::Set.new( true , to )
       to
     end
 
     def on_false statement
-      to = Virtual::Return.new(Virtual::Reference , false)
+      to = Virtual::Return.new(Phisol::Reference , false)
       @method.source.add_code Virtual::Set.new( false , to )
       to
     end
 
     def on_nil statement
-      to = Virtual::Return.new(Virtual::Reference , nil)
+      to = Virtual::Return.new(Phisol::Reference , nil)
       @method.source.add_code Virtual::Set.new( nil , to )
       to
     end
@@ -39,7 +40,7 @@ module Phisol
     def on_string statement
       # Clearly a TODO here to implement strings rather than reusing symbols
       value = statement.first.to_sym
-      to = Virtual::Return.new(Virtual::Reference , value)
+      to = Virtual::Return.new(Phisol::Reference , value)
       @method.source.constants << value
       @method.source.add_code Virtual::Set.new( value , to )
       to

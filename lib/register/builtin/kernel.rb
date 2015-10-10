@@ -7,7 +7,7 @@ module Register
         # so it is responsible for initial setup
         def __init__ context
           function = Virtual::MethodSource.create_method(:Kernel,:int,:__init__ , [])
-          function.source.return_type = Virtual::Integer
+          function.source.return_type = Phisol::Type.int
           # no method enter or return (automatically added), remove
           function.source.blocks.first.codes.pop # no Method enter
           function.source.blocks.last.codes.pop # no Method return
@@ -26,7 +26,7 @@ module Register
         end
         def exit context
           function = Virtual::MethodSource.create_method(:Kernel,:int,:exit , [])
-          function.source.return_type = Virtual::Integer
+          function.source.return_type = Phisol::Type.int
           return function
           ret = Virtual::RegisterMachine.instance.exit(function)
           function.set_return ret
@@ -34,7 +34,7 @@ module Register
         end
         def __send context
           function = Virtual::MethodSource.create_method(:Kernel,:int ,:__send , [] )
-          function.source.return_type = Virtual::Integer
+          function.source.return_type = Phisol::Type.int
           return function
         end
 
@@ -53,7 +53,7 @@ module Register
         end
 
         def restore_message(function)
-          return_tmp = Register.tmp_reg
+          return_tmp = Register.tmp_reg function.source.return_type
           # get the sys return out of the way
           function.source.add_code RegisterTransfer.new(function, Register.message_reg , return_tmp )
           # load the stored message into the base RegisterMachine

@@ -37,7 +37,7 @@ module Virtual
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
       clazz = Virtual.machine.space.get_class_by_name class_name
       raise "No such class #{class_name}" unless clazz
-      return_type = Virtual::Type.from_sym return_type
+      return_type = Phisol::Type.from_sym return_type
       arguments = []
       args.each_with_index do | arg , index |
         unless arg.is_a? Parfait::Variable

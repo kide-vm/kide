@@ -8,22 +8,24 @@ module Register
 
   class RegisterReference
 
-    attr_accessor :symbol
+    attr_accessor :symbol , :type
 
-    def initialize r
+    def initialize r , type
       raise "wrong type for register init #{r}" unless r.is_a? Symbol
       raise "double r #{r}" if r.to_s[0,1] == "rr"
       raise "not reg #{r}" unless self.class.look_like_reg r
+      @type = Phisol::Type.from_sym type
       @symbol = r
     end
 
     def to_s
       symbol.to_s
     end
+
     def self.convert something
       return something unless something.is_a? Symbol
       return something unless look_like_reg(something)
-      return new(something)
+      return new(something , :int)
     end
 
     def self.look_like_reg is_it
@@ -46,10 +48,10 @@ module Register
     end
 
     #helper method to calculate with register symbols
-    def next_reg_use by = 1
+    def next_reg_use type
       int = @symbol[1,3].to_i
-      sym = "r#{int + by}".to_sym
-      RegisterReference.new( sym )
+      sym = "r#{int + 1}".to_sym
+      RegisterReference.new( sym , type)
     end
 
     def sof_reference_name
@@ -63,30 +65,30 @@ module Register
 
   # The register we use to store the current message object is :r0
   def self.message_reg
-    RegisterReference.new :r0
+    RegisterReference.new :r0 , :ref
   end
 
   # A register to hold the receiver of the current message, in oo terms the self. :r1
-  def self.self_reg
-    RegisterReference.new :r1
+  def self.self_reg type = :ref
+    RegisterReference.new :r1 , type
   end
 
   # The register to hold a possible frame of the currently executing method. :r2
   # May be nil if the method has no local variables
   def self.frame_reg
-    RegisterReference.new :r2
+    RegisterReference.new :r2 , :ref
   end
 
   # The register we use to store the new message object is :r3
   # The new message is the one being built, to be sent
   def self.new_message_reg
-    RegisterReference.new :r3
+    RegisterReference.new :r3 , :ref
   end
 
   # The first scratch register. There is a next_reg_use to get a next and next.
   # Current thinking is that scratch is schatch between instructions
-  def self.tmp_reg
-    RegisterReference.new :r4
+  def self.tmp_reg type
+    RegisterReference.new :r4 , type
   end
 
   # The first arg is a class name (possibly lowercase) and the second an instance variable name.

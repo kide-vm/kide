@@ -1,7 +1,7 @@
 
-module Virtual
+module Phisol
   # Integer and (Object) References are the main derived classes, but float will come.
-  
+
   class Type
     def == other
       return false unless other.class == self.class
@@ -11,14 +11,22 @@ module Virtual
     # map from a type sym (currently :int/:ref) to a class of subtype of Type
     # TODO needs to be made extensible in a defined way.
     def self.from_sym type
+      return type if type.is_a? Type
       case type
       when :int
-        Virtual::Integer
+        self.int
       when :ref
-        Virtual::Reference
+        self.ref
       else
-        raise "No type maps to:#{type}"
+        raise "No type maps to:#{type} (#{type.class})"
       end
+    end
+
+    def self.int
+      return Integer.new
+    end
+    def self.ref
+      return Reference.new
     end
   end
 
