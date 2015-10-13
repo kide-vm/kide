@@ -10,8 +10,8 @@ module Phisol
       if value
         value = process( value  )
       end
-
-      Virtual::Return.new( type , value )
+      # field_def is a statement, no return 
+      return nil
     end
   end
 end

@@ -8,6 +8,7 @@ module Phisol
       if receiver
         me = process( receiver.to_a.first  )
       else
+        raise "revisit"
         if @method.class.name == :Integer
           me = Virtual::Self.new :int
         else

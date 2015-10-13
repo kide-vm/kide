@@ -16,7 +16,7 @@ module Register
 
     # If you had a c array and index offset
     # the instruction would do register = array[index]
-    # The arguments are in the order that makes sense for the Instruciton name
+    # The arguments are in the order that makes sense for the Instruction name
     # So GetSlot means the slot (array and index) moves to the register (last argument)
     def initialize source , array , index , register
       super(source)

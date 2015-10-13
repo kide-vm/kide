@@ -96,6 +96,7 @@ module Parfait
     def internal_object_set(index , value)
       raise "failed init for #{self.class}" unless @memory
       @memory[index] = value
+      value
     end
     def internal_object_grow(length)
       old_length = internal_object_length()
