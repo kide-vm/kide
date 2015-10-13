@@ -13,37 +13,35 @@ module Phisol
 
     def on_int statement
       int = statement.first
-#      reg =
-      to =  Virtual::Return.new(Phisol::Integer , int)
-      @method.source.add_code Virtual::Set.new( int , to )
-      to
+      reg = use_reg :int
+      @method.source.add_code Register::LoadConstant.new( statement, int , reg )
+      return reg
     end
 
     def on_true statement
-      to = Virtual::Return.new(Phisol::Reference , true )
-      @method.source.add_code Virtual::Set.new( true , to )
-      to
+      reg = use_reg :ref
+      @method.source.add_code Register::LoadConstant.new( statement, true , reg )
+      return reg
     end
 
     def on_false statement
-      to = Virtual::Return.new(Phisol::Reference , false)
-      @method.source.add_code Virtual::Set.new( false , to )
-      to
+      reg = use_reg :ref
+      @method.source.add_code Register::LoadConstant.new( statement, false , reg )
+      return reg
     end
 
     def on_nil statement
-      to = Virtual::Return.new(Phisol::Reference , nil)
-      @method.source.add_code Virtual::Set.new( nil , to )
-      to
+      reg = use_reg :ref
+      @method.source.add_code Register::LoadConstant.new( statement, nil , reg )
+      return reg
     end
 
     def on_string statement
-      # Clearly a TODO here to implement strings rather than reusing symbols
       value = statement.first.to_sym
-      to = Virtual::Return.new(Phisol::Reference , value)
+      reg = use_reg :ref
       @method.source.constants << value
-      @method.source.add_code Virtual::Set.new( value , to )
-      to
+      @method.source.add_code Register::LoadConstant.new( statement, value , reg )
+      return reg
     end
   end
 end

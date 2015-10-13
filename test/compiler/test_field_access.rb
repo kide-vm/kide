@@ -1,24 +1,30 @@
 require_relative "compiler_helper"
-require_relative "code_checker"
 
 module Virtual
-  class TestFoo < MiniTest::Test
-    include CodeChecker
+  class TestFields < MiniTest::Test
+    include CompilerHelper
 
-    def test_foo3
-      @string_input = <<HERE
-class Object
-  field int a
-  int foo(int x)
-    int b = self.a
-    return b +x
-  end
-end
-HERE
-      @output =  [ [Virtual::MethodEnter] , [Virtual::MethodReturn] ]
-      check
+    def setup
+      Virtual.machine.boot
     end
 
+    def test_field_not_defined
+      @root = :field_access
+      @string_input = <<HERE
+self.a
+HERE
+      assert_raises(RuntimeError) { check }
+    end
+
+    def test_field
+      Virtual.machine.space.get_class_by_name(:Object).object_layout.add_instance_variable(:bro)
+      @root = :field_access
+      @string_input = <<HERE
+self.bro
+HERE
+      @output = Register::RegisterValue
+    check
+    end
 
   end
 end

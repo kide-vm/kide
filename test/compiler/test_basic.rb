@@ -6,7 +6,7 @@ class TestBasic < MiniTest::Test
 
   def setup
     @root = :basic_type
-    @output = [Virtual::Return]
+    @output = Register::RegisterValue
   end
 
   def test_number
@@ -15,7 +15,7 @@ class TestBasic < MiniTest::Test
   end
 
   def test_true
-    @string_input    = 'true '
+    @string_input    = 'true'
     check
   end
   def test_false
@@ -30,12 +30,13 @@ class TestBasic < MiniTest::Test
   def test_var
     @string_input    = 'int foo '
     @root = :field_def
+    @output = AST::Node
     check
   end
 
   def test_self
     @string_input    = 'self '
-    @output = [Virtual::Self]
+    @output = Virtual::Self
     check
   end
 
