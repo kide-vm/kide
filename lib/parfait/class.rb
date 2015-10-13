@@ -34,7 +34,12 @@ module Parfait
     def sof_reference_name
       name
     end
+
+    def inspect
+      "Class(#{name})"
+    end
     # ruby 2.1 list (just for reference, keep at bottom)
     #:allocate, :new, :superclass
+
   end
 end

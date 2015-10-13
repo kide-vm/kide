@@ -69,6 +69,11 @@ module Parfait
       get(1)
     end
 
+    def last
+      return nil if empty?
+      get(get_length())
+    end
+    
     # set the value at index.
     # Lists start from index 1
     def set( index , value)

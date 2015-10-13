@@ -3,7 +3,7 @@
 module Parfait
   class Dictionary < Object
     attribute :keys
-    attribute  :values
+    attribute :values
     # only empty initialization for now
     #
     # internally we store keys and values in lists, which means this does **not** scale well

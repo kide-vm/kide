@@ -6,7 +6,7 @@ class TestSpace < MiniTest::Test
     @machine = Virtual.machine.boot
   end
   def classes
-    [:Kernel,:Word,:List,:Message,:Frame,:Layout,:Class,:Dictionary,:Method , :Integer]
+    [:Kernel,:Word,:List,:Message,:Frame,:Layout,:Object,:Class,:Dictionary,:Method , :Integer]
   end
   def test_booted
     assert_equal true , @machine.booted
@@ -17,40 +17,35 @@ class TestSpace < MiniTest::Test
   def test_global_space
     assert_equal Parfait::Space , Parfait::Space.object_space.class
   end
-  def test_intger
+  def test_integer
     int = Parfait::Space.object_space.get_class_by_name :Integer
     assert_equal 3, int.method_names.get_length
     assert int.get_instance_method( :plus )
   end
-  def test_classes_class
-    classes.each do |name|
-      assert_equal :Class , @machine.space.classes[name].get_class.name
-      assert_equal Parfait::Class , @machine.space.classes[name].class
-      assert_equal Parfait::Layout , @machine.space.classes[name].get_layout.class
-      assert_equal name , @machine.space.classes[name].get_class.name
-    end
-  end
+
   def test_classes_class
     classes.each do |name|
       assert_equal :Class , @machine.space.classes[name].get_class.name
       assert_equal Parfait::Class , @machine.space.classes[name].class
     end
   end
+
   def test_classes_layout
     classes.each do |name|
       assert_equal Parfait::Layout , @machine.space.classes[name].get_layout.class
     end
   end
+
   def test_classes_name
     classes.each do |name|
       assert_equal name , @machine.space.classes[name].name
     end
   end
+
   def test_method_name
     classes.each do |name|
       cl = @machine.space.classes[name]
       cl.method_names.each do |mname|
-        #puts "Mehtod #{mname}"
         method = cl.get_instance_method(mname)
         assert_equal mname , method.name
         assert_equal name , method.for_class.name
