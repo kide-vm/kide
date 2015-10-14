@@ -1,4 +1,4 @@
-require_relative '../helper'
+require_relative '../../helper'
 require 'parslet/convenience'
 
 Phisol::Compiler.class_eval do

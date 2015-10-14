@@ -1,4 +1,4 @@
-require_relative '../helper'
+require_relative '../../helper'
 
 # simple tests to check parsing pworks and the first classes come out right.
 #
