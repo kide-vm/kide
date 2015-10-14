@@ -26,7 +26,7 @@ module Virtual
     end
     attr_reader :integer
     def type
-      Phisol::Integer
+      :Integer
     end
     def fits_u8?
       integer >= 0 and integer <= 255

@@ -6,14 +6,14 @@ module Register
         # it isn't really a function, ie it is jumped to (not called), exits and may not return
         # so it is responsible for initial setup
         def __init__ context
-          function = Virtual::MethodSource.create_method(:Kernel,:int,:__init__ , [])
-          function.source.set_return_type Phisol::Type.int
+          function = Virtual::MethodSource.create_method(:Kernel,:Integer,:__init__ , [])
+          function.source.set_return_type :Integer
           # no method enter or return (automatically added), remove
           function.source.blocks.first.codes.pop # no Method enter
           function.source.blocks.last.codes.pop # no Method return
           #Set up the Space as self upon init
           space = Parfait::Space.object_space
-          function.source.add_code LoadConstant.new(function, space , Register.self_reg)
+          function.source.add_code LoadConstant.new(function, space , Register.self_reg(:Space))
           message_ind = Register.resolve_index( :space , :first_message )
           # Load the message to new message register (r3)
           function.source.add_code Register.get_slot( function , :self , message_ind , :new_message)
@@ -25,16 +25,16 @@ module Register
           return function
         end
         def exit context
-          function = Virtual::MethodSource.create_method(:Kernel,:int,:exit , [])
-          function.source.set_return_type  Phisol::Type.int
+          function = Virtual::MethodSource.create_method(:Kernel,:Integer,:exit , [])
+          function.source.set_return_type  :Integer
           return function
           ret = Virtual::RegisterMachine.instance.exit(function)
           function.set_return ret
           function
         end
         def __send context
-          function = Virtual::MethodSource.create_method(:Kernel,:int ,:__send , [] )
-          function.source.set_return_type Phisol::Type.int
+          function = Virtual::MethodSource.create_method(:Kernel,:Integer ,:__send , [] )
+          function.source.set_return_type :Integer
           return function
         end
 

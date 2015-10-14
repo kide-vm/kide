@@ -9,12 +9,7 @@ module Phisol
       if receiver
         me = process( receiver.to_a.first  )
       else
-        if @method.for_class.name == :Integer
-          type =  :int
-        else
-          type = :ref
-        end
-        me = Register.self_reg type
+        me = Register.self_reg @method.for_class.name
       end
       #move the new message (that we need to populate to make a call) to std register
       new_message = Register.resolve_to_register(:new_message)
@@ -22,7 +17,7 @@ module Phisol
       # move our receiver there
       @method.source.add_code Register.set_slot( statement , me , :new_message , :receiver)
       # load method name and set to new message (for exceptions/debug)
-      name_tmp = use_reg(:ref)
+      name_tmp = use_reg(:Word)
       @method.source.add_code Register::LoadConstant.new(statement, name , name_tmp)
       @method.source.add_code Register.set_slot( statement , name_tmp , :new_message , :name)
       # next arguments. reset tmp regs for each and load result into new_message
@@ -56,17 +51,12 @@ module Phisol
           raise "unimplemented: \n#{code} \nfor #{ref.inspect}"
         end
       else
-        if( me.type.is_a? Phisol::Integer)
-          name = :plus if name == :+
-          method = Virtual.machine.space.get_class_by_name(:Integer).get_instance_method(name)
-          puts Virtual.machine.space.get_class_by_name(:Integer).method_names.to_a
-          raise "Method not implemented Integer.#{name}" unless method
-          @method.source.add_code Virtual::MethodCall.new( method )
-        else
-          method = @clazz.get_instance_method(name)
-          raise "Method not implemented #{@clazz.name}.#{name}" unless method
-          @method.source.add_code Virtual::MethodCall.new( method )
-        end
+        clazz =  Virtual.machine.space.get_class_by_name(me.type)
+        raise "No such class #{me.type}" unless clazz
+        method = clazz.get_instance_method(name)
+        puts Virtual.machine.space.get_class_by_name(:Integer).method_names.to_a
+        raise "Method not implemented Integer.#{name}" unless method
+        @method.source.add_code Virtual::MethodCall.new( method )
       end
       raise "Method not implemented #{me.value}.#{name}" unless method
       ret = use_reg( method.source.return_type )

@@ -7,7 +7,7 @@ module Phisol
       # whichever way this goes the result is stored in the return slot (as all compiles)
       def on_name statement
         name = statement.to_a.first
-        return Virtual::Self.new( Phisol::Reference.new(@clazz)) if name == :self
+        return Virtual::Self.new( @clazz) if name == :self
         # either an argument, so it's stored in message
         if( index = @method.has_arg(name))
           type = @method.arguments[index].type

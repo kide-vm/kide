@@ -19,26 +19,26 @@ module Phisol
     end
 
     def on_true statement
-      reg = use_reg :ref
+      reg = use_reg :Boolean
       @method.source.add_code Register::LoadConstant.new( statement, true , reg )
       return reg
     end
 
     def on_false statement
-      reg = use_reg :ref
+      reg = use_reg :Boolean
       @method.source.add_code Register::LoadConstant.new( statement, false , reg )
       return reg
     end
 
     def on_nil statement
-      reg = use_reg :ref
+      reg = use_reg :NilClass
       @method.source.add_code Register::LoadConstant.new( statement, nil , reg )
       return reg
     end
 
     def on_string statement
       value = statement.first.to_sym
-      reg = use_reg :ref
+      reg = use_reg :Word
       @method.source.constants << value
       @method.source.add_code Register::LoadConstant.new( statement, value , reg )
       return reg

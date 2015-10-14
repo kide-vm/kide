@@ -16,7 +16,7 @@ module Virtual
     def test_puts
       @root = :function_definition
       @string_input    = <<HERE
-int puts(ref str)
+int puts(Word str)
   main()
 end
 HERE

@@ -10,7 +10,7 @@ module Register
       raise "wrong type for register init #{r}" unless r.is_a? Symbol
       raise "double r #{r}" if r.to_s[0,1] == "rr"
       raise "not reg #{r}" unless self.class.look_like_reg r
-      @type = Phisol::Type.from_sym type
+      @type = type
       @symbol = r
       @value = value
     end
@@ -62,24 +62,24 @@ module Register
 
   # The register we use to store the current message object is :r0
   def self.message_reg
-    RegisterValue.new :r0 , :ref
+    RegisterValue.new :r0 , :Message
   end
 
   # A register to hold the receiver of the current message, in oo terms the self. :r1
-  def self.self_reg type = :ref
+  def self.self_reg type
     RegisterValue.new :r1 , type
   end
 
   # The register to hold a possible frame of the currently executing method. :r2
   # May be nil if the method has no local variables
   def self.frame_reg
-    RegisterValue.new :r2 , :ref
+    RegisterValue.new :r2 , :Frame
   end
 
   # The register we use to store the new message object is :r3
   # The new message is the one being built, to be sent
   def self.new_message_reg
-    RegisterValue.new :r3 , :ref
+    RegisterValue.new :r3 , :Message
   end
 
   # The first scratch register. There is a next_reg_use to get a next and next.
@@ -116,7 +116,7 @@ module Register
       when :new_message
         register = new_message_reg
       when :self
-        register = self_reg
+        register = self_reg(:Object) #TODO , prpbably have to get rid of this resolve method
       when :frame
         register = frame_reg
       else

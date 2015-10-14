@@ -4,14 +4,14 @@ module Register
     module Integer
       module ClassMethods
         def plus c
-          plus_function = Virtual::MethodSource.create_method(:Integer,:int,:plus , [:int] )
-          plus_function.source.set_return_type Phisol::Type.int
-          plus_function.source.receiver = Phisol::Integer
+          plus_function = Virtual::MethodSource.create_method(:Integer,:Integer,:plus , [:Integer] )
+          plus_function.source.set_return_type :Integer
+          plus_function.source.receiver = :Integer
 
-          tmp = Register.tmp_reg :int
+          tmp = Register.tmp_reg :Integer
           index = Register.arg_index 1
           plus_function.source.add_code Register.get_slot( plus_function , :message , index , tmp )
-          add = Register::OperatorInstruction.new( plus_function, :add ,  Register.self_reg , tmp )
+          add = Register::OperatorInstruction.new( plus_function, :add ,  Register.self_reg(:Integer) , tmp )
           plus_function.source.add_code add
           return plus_function
         end
@@ -23,9 +23,9 @@ module Register
         # As we write before we recurse (save a push) we write the number backwards
         # arguments: string address , integer
         # def utoa context
-        #   utoa_function = Virtual::MethodSource.create_method(:Integer ,:utoa ,  [ Phisol::Integer ] )
-        #   function.source.return_type = Phisol::Type.int
-        #   function.source.receiver = Phisol::Integer
+        #   utoa_function = Virtual::MethodSource.create_method(:Integer ,:utoa ,  [ :Integer ] )
+        #   function.source.return_type = :Integer
+        #   function.source.receiver = :Integer
         #   return utoa_function
         #   # str_addr = utoa_function.receiver
         #   # number = utoa_function.args.first
@@ -43,9 +43,9 @@ module Register
         # end
 
         def putint context
-          putint_function = Virtual::MethodSource.create_method(:Integer,:int,:putint , [] )
-          putint_function.source.set_return_type Phisol::Type.int
-          putint_function.source.receiver = Phisol::Integer
+          putint_function = Virtual::MethodSource.create_method(:Integer,:Integer,:putint , [] )
+          putint_function.source.set_return_type :Integer
+          putint_function.source.receiver = :Integer
           return putint_function
           # buffer = Parfait::Word.new("           ") # create a buffer
           # context.object_space.add_object buffer              # and save it (function local variable: a no no)
@@ -72,9 +72,9 @@ module Register
         # a hand coded version of the fibonachi numbers
         # not my hand off course, found in the net http://www.peter-cockerell.net/aalp/html/ch-5.html
         def fibo context
-          fibo_function = Virtual::MethodSource.create_method(:Integer,:int,:fibo ,  [] )
-          fibo_function.source.set_return_type Phisol::Type.int
-          fibo_function.source.receiver = Phisol::Integer
+          fibo_function = Virtual::MethodSource.create_method(:Integer,:Integer,:fibo ,  [] )
+          fibo_function.source.set_return_type :Integer
+          fibo_function.source.receiver = :Integer
           return fibo_function
           # result = fibo_function.return_type
           # int = fibo_function.receiver

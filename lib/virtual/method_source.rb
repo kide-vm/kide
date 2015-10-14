@@ -37,11 +37,10 @@ module Virtual
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
       clazz = Virtual.machine.space.get_class_by_name class_name
       raise "No such class #{class_name}" unless clazz
-      return_type = Phisol::Type.from_sym return_type
       arguments = []
       args.each_with_index do | arg , index |
         unless arg.is_a? Parfait::Variable
-          raise "not type #{arg}:#{arg.class}" unless arg == :int || arg == :ref
+          raise "not type #{arg}:#{arg.class}" unless Virtual.machine.space.get_class_by_name arg
           arg = Parfait::Variable.new arg , "arg#{index}".to_sym
         end
         arguments << arg
@@ -69,7 +68,7 @@ module Virtual
 
     def set_return_type type
       return if type.nil?
-      raise "not type #{type}" unless type.is_a? Phisol::Type
+      raise "not type #{type}" unless Virtual.machine.space.get_class_by_name type
       @return_type = type
     end
     # add an instruction after the current (insertion point)
