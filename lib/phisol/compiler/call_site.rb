@@ -5,38 +5,40 @@ module Phisol
       name , arguments , receiver = *statement
       name = name.to_a.first
       raise "not inside method " unless @method
+      reset_regs
       if receiver
         me = process( receiver.to_a.first  )
       else
-        raise "revisit"
-        if @method.class.name == :Integer
-          me = Virtual::Self.new :int
+        if @method.for_class.name == :Integer
+          type =  :int
         else
-          me = Virtual::Self.new :ref
+          type = :ref
         end
+        me = Register.self_reg type
       end
-      ## need two step process, compile and save to frame
-      # then move from frame to new message
-      # load the new_message from message by index, simple get_slot
-      new_message = Register.get_slot(@method, :message , :next_message , Register.resolve_to_register(:new_message))
-      @method.source.add_code new_message
-      @method.source.add_code Virtual::Set.new( me , Virtual::NewSelf.new(me.type))
-      @method.source.add_code Virtual::Set.new( name.to_sym , Virtual::NewMessageName.new(:int))
-      compiled_args = []
+      #move the new message (that we need to populate to make a call) to std register
+      new_message = Register.resolve_to_register(:new_message)
+      @method.source.add_code Register.get_slot(@method, :message , :next_message , new_message )
+      # move our receiver there
+      @method.source.add_code Register.set_slot( statement , me , :new_message , :receiver)
+      # load method name and set to new message (for exceptions/debug)
+      name_tmp = use_reg(:ref)
+      @method.source.add_code Register::LoadConstant.new(statement, name , name_tmp)
+      @method.source.add_code Register.set_slot( statement , name_tmp , :new_message , :name)
+      # next arguments. reset tmp regs for each and load result into new_message
       arguments.to_a.each_with_index do |arg , i|
-        #compile in the running method, ie before passing control
+        reset_regs
+        # processing should return the register with the value
         val = process( arg)
-        # move the compiled value to it's slot in the new message
-        # + 1 as this is a ruby 0-start , but 0 is the last message ivar.
-        # so the next free is +1
-        to = Virtual::NewArgSlot.new(i + 1 ,val.type , val)
-        # (doing this immediately, not after the loop, so if it's a return it won't get overwritten)
-        @method.source.add_code Virtual::Set.new( val , to )
-        compiled_args << to
+        raise "Not register #{val}" unless val.is_a?(Register::RegisterValue)
+        # which we load int the new_message at the argument's index
+        @method.source.add_code Register.set_slot( statement , val , :new_message , i + 1)
       end
-      #method.source.add_code Virtual::MessageSend.new(name , me , compiled_args) #and pass control
+
+      # now we have to resolve the method name (+ receiver) into a callable method
       method = nil
       if(me.value)
+        raise "branch should only be optiisation, revit"
         me = me.value
         if( me.is_a? Parfait::Class )
           raise "unimplemented #{code}  me is #{me}"
@@ -67,9 +69,11 @@ module Phisol
         end
       end
       raise "Method not implemented #{me.value}.#{name}" unless method
+      ret = use_reg( method.source.return_type )
       # the effect of the method is that the NewMessage Return slot will be filled, return it
-      # (this is what is moved _inside_ above loop for such statements that are calls (or constants))
-      Virtual::Return.new( method.source.return_type )
+      # but move it into a register too
+      @method.source.add_code Register.get_slot(@method, :message , :return_value , ret )
+      ret
     end
   end
 end

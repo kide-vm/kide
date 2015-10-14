@@ -39,9 +39,18 @@ module Phisol
       return reg
     end
 
+    # releasing a register (accuired by use_reg) makes it available for use again
+    # thus avoiding possibly using too many registers
     def release_reg reg
       last = @regs.pop
       raise "released register in wrong order, expect #{last} but was #{reg}" if reg != last
+    end
+
+    # reset the registers to be used. Start at r4 for next usage.
+    # Every statement starts with this, meaning each statement may use all registers, but none
+    # get saved. Statements have affect on objects.
+    def reset_regs
+      @regs.clear
     end
   end
 end
