@@ -40,13 +40,10 @@ module Phisol
       @method.source.receiver = r
       puts "compile method #{@method.name}"
 
-
-      #frame = frame.new_frame
       kids.to_a.each do |ex|
-        return_type = process(ex)
-        raise return_type.inspect if return_type.is_a? Virtual::Instruction
+        ret = process(ex)
+        raise ret.inspect if ret.is_a? Virtual::Instruction
       end
-      @method.source.return_type = return_type
       @method = nil
       Virtual::Return.new(return_type)
     end

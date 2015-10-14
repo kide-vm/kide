@@ -5,7 +5,7 @@ module Register
       module ClassMethods
         def plus c
           plus_function = Virtual::MethodSource.create_method(:Integer,:int,:plus , [:int] )
-          plus_function.source.return_type = Phisol::Type.int
+          plus_function.source.set_return_type Phisol::Type.int
           plus_function.source.receiver = Phisol::Integer
 
           tmp = Register.tmp_reg :int
@@ -44,7 +44,7 @@ module Register
 
         def putint context
           putint_function = Virtual::MethodSource.create_method(:Integer,:int,:putint , [] )
-          putint_function.source.return_type = Phisol::Type.int
+          putint_function.source.set_return_type Phisol::Type.int
           putint_function.source.receiver = Phisol::Integer
           return putint_function
           # buffer = Parfait::Word.new("           ") # create a buffer
@@ -73,7 +73,7 @@ module Register
         # not my hand off course, found in the net http://www.peter-cockerell.net/aalp/html/ch-5.html
         def fibo context
           fibo_function = Virtual::MethodSource.create_method(:Integer,:int,:fibo ,  [] )
-          fibo_function.source.return_type = Phisol::Type.int
+          fibo_function.source.set_return_type Phisol::Type.int
           fibo_function.source.receiver = Phisol::Integer
           return fibo_function
           # result = fibo_function.return_type

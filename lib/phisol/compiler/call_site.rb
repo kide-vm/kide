@@ -56,7 +56,7 @@ module Phisol
           raise "unimplemented: \n#{code} \nfor #{ref.inspect}"
         end
       else
-        if( me.type == :int)
+        if( me.type.is_a? Phisol::Integer)
           name = :plus if name == :+
           method = Virtual.machine.space.get_class_by_name(:Integer).get_instance_method(name)
           puts Virtual.machine.space.get_class_by_name(:Integer).method_names.to_a

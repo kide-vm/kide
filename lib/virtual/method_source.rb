@@ -58,15 +58,20 @@ module Virtual
     def init method , return_type = nil
       # first block we have to create with .new , as new_block assumes a current
       enter = Block.new( "enter"  , method ).add_code(MethodEnter.new( method ))
-      @return_type = return_type if return_type
+      set_return_type( return_type )
       @blocks = [enter]
       @current = enter
       new_block("return").add_code(MethodReturn.new(method))
       @constants = []
     end
-    attr_reader   :blocks , :constants
-    attr_accessor :return_type , :current , :receiver
+    attr_reader   :blocks , :constants , :return_type
+    attr_accessor  :current , :receiver
 
+    def set_return_type type
+      return if type.nil?
+      raise "not type #{type}" unless type.is_a? Phisol::Type
+      @return_type = type
+    end
     # add an instruction after the current (insertion point)
     # the added instruction will become the new insertion point
     def add_code instruction
