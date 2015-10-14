@@ -1,7 +1,7 @@
 require_relative "compiler_helper"
 
 module Virtual
-  class TestFields < MiniTest::Test
+  class TestCall < MiniTest::Test
     include CompilerHelper
 
     def setup

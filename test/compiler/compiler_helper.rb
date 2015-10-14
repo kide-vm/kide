@@ -1,14 +1,15 @@
 require_relative '../helper'
 require 'parslet/convenience'
 
+Phisol::Compiler.class_eval do
+  def set_main main
+    @clazz = Virtual.machine.space.get_class_by_name :Object
+    @method = main
+  end
+end
+
 module CompilerHelper
 
-  Phisol::Compiler.class_eval do
-    def set_main main
-      @clazz = Virtual.machine.space.get_class_by_name :Object
-      @method = main
-    end
-  end
   def set_main compiler
     compiler.set_main Virtual.machine.space.get_main
   end

@@ -45,7 +45,8 @@ module Phisol
         raise ret.inspect if ret.is_a? Virtual::Instruction
       end
       @method = nil
-      Virtual::Return.new(return_type)
+      # function definition is a statement, does not return any value
+      return nil
     end
   end
 end
