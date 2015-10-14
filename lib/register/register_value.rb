@@ -4,14 +4,15 @@ module Register
 
   class RegisterValue
 
-    attr_accessor :symbol , :type
+    attr_accessor :symbol , :type , :value
 
-    def initialize r , type
+    def initialize r , type , value = nil
       raise "wrong type for register init #{r}" unless r.is_a? Symbol
       raise "double r #{r}" if r.to_s[0,1] == "rr"
       raise "not reg #{r}" unless self.class.look_like_reg r
       @type = Phisol::Type.from_sym type
       @symbol = r
+      @value = value
     end
 
     def to_s
