@@ -4,7 +4,7 @@ class TestMethod < MiniTest::Test
 
   def setup
     obj = Virtual.machine.boot.space.get_class_by_name(:Object)
-    args = Virtual.new_list [ Parfait::Variable.new(:int , :bar )]
+    args = Virtual.new_list [ Parfait::Variable.new(:Integer , :bar )]
     @method = ::Parfait::Method.new obj , :foo , args
   end
 
@@ -18,6 +18,6 @@ class TestMethod < MiniTest::Test
     assert_equal :bar , @method.arguments.first.name
   end
   def test_has_arg
-    assert_equal 1 , @method.has_arg(:bar) 
+    assert_equal 1 , @method.has_arg(:bar)
   end
 end
