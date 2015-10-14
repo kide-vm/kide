@@ -13,7 +13,7 @@ module Register
   class RegisterTransfer < Instruction
     # initialize with from and to registers.
     # First argument from
-    # second arguemnt to
+    # second argument to
     #
     # Note: this may be reversed from some assembler notations (also arm)
     def initialize source , from , to

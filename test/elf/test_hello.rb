@@ -1,4 +1,4 @@
-require_relative "compiler_helper"
+require_relative "../helper"
 
 class HelloTest < MiniTest::Test
 
