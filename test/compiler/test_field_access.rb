@@ -23,7 +23,23 @@ HERE
 self.bro
 HERE
       @output = Register::RegisterValue
-    check
+      check
+    end
+
+    def test_local
+      Virtual.machine.space.get_main.ensure_local(:bar , :Integer)
+      @root = :name
+      @string_input    = 'bar '
+      @output = Register::RegisterValue
+      check
+    end
+
+    def test_args
+      Virtual.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :bar)
+      @root = :name
+      @string_input    = 'bar '
+      @output = Register::RegisterValue
+      check
     end
 
   end

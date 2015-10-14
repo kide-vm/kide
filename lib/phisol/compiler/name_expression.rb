@@ -7,16 +7,18 @@ module Phisol
       # whichever way this goes the result is stored in the return slot (as all compiles)
       def on_name statement
         name = statement.to_a.first
-        return Virtual::Self.new( @clazz) if name == :self
+        return Register.self_reg(@clazz.name ) if(name == :self)
         # either an argument, so it's stored in message
         if( index = @method.has_arg(name))
-          type = @method.arguments[index].type
-          return Virtual::ArgSlot.new(index , type )
+          ret = use_reg @method.arguments[index].type
+          @method.source.add_code Register.get_slot(statement , :message , index , ret )
+          return ret
         else # or a local so it is in the frame
           index = @method.has_local( name )
           if(index)
-            type = @method.locals[index].type
-            return Virtual::FrameSlot.new(index, type )
+            ret = use_reg @method.locals[index].type
+            @method.source.add_code Register.get_slot(statement , :frame , index , ret )
+            return ret
           end
         end
         raise "must define variable #{name} before using it"

@@ -36,7 +36,7 @@ module Virtual
       check
     end
 
-    def ttest_call_main_op
+    def test_call_main_op
       Virtual.machine.space.get_main.ensure_local(:bar , :Integer)
       @root = :call_site
       @string_input    = 'main( bar )'

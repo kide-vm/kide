@@ -36,7 +36,6 @@ class TestBasic < MiniTest::Test
 
   def test_self
     @string_input    = 'self '
-    @output = Virtual::Self
     check
   end
 

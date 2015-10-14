@@ -116,7 +116,7 @@ module Register
       when :new_message
         register = new_message_reg
       when :self
-        register = self_reg(:Object) #TODO , prpbably have to get rid of this resolve method
+        register = self_reg(:Object) #TODO , probably have to get rid of this resolve method
       when :frame
         register = frame_reg
       else
