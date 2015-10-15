@@ -41,19 +41,6 @@ HERE
   end
 
 
-  def ttest_return
-    @string_input = <<HERE
-class Object
-  int main()
-    return 5
-  end
-end
-HERE
-  @expect =  [[Virtual::MethodEnter,Register::LoadConstant] , [Virtual::MethodReturn]]
-  check
-  end
-
-
   def ttest_call_function
     @string_input = <<HERE
 class Object
