@@ -11,7 +11,7 @@ class TestBasic < MiniTest::Test
 
   def test_number
     @string_input    = '42 '
-    check
+    assert_equal 42 , check.value 
   end
 
   def test_true

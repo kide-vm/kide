@@ -29,11 +29,11 @@ module Phisol
     end
 
     # require a (temporary) register. code must give this back with release_reg
-    def use_reg type
+    def use_reg type , value = nil
       if @regs.empty?
-        reg = Register.tmp_reg type
+        reg = Register.tmp_reg(type , value)
       else
-        reg = @regs.last.next_reg_use type
+        reg = @regs.last.next_reg_use(type , value)
       end
       @regs << reg
       return reg

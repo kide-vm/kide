@@ -16,13 +16,7 @@ module Register
     end
 
     def to_s
-      symbol.to_s
-    end
-
-    def self.convert something
-      return something unless something.is_a? Symbol
-      return something unless look_like_reg(something)
-      return new(something , :int)
+      "#{symbol}:#{type}:#{value}"
     end
 
     def self.look_like_reg is_it
@@ -84,8 +78,8 @@ module Register
 
   # The first scratch register. There is a next_reg_use to get a next and next.
   # Current thinking is that scratch is schatch between instructions
-  def self.tmp_reg type
-    RegisterValue.new :r4 , type
+  def self.tmp_reg type , value = nil
+    RegisterValue.new :r4 , type , value
   end
 
   # The first arg is a class name (possibly lowercase) and the second an instance variable name.

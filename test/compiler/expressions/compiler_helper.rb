@@ -26,6 +26,7 @@ module CompilerHelper
     produced = compiler.process( parts )
     assert @output , "No output given"
     assert_equal  produced.class, @output , "Wrong class"
+    produced
   end
 
 end

@@ -13,7 +13,7 @@ module Phisol
 
     def on_int statement
       int = statement.first
-      reg = use_reg :int
+      reg = use_reg :Integer , int
       @method.source.add_code Register::LoadConstant.new( statement, int , reg )
       return reg
     end
