@@ -4,23 +4,15 @@ module Phisol
     def on_operator_value statement
       puts "operator #{statement.inspect}"
       operator , left_e , right_e = *statement
-      left_slot = process(left_e)
-      right_slot = process(right_e)
-      puts "left #{left_slot}"
-      puts "right #{right_slot}"
-      tmp1 = use_reg :int
-      tmp2 = use_reg :int
-      get = Register.get_slot_to(statement , left_slot , tmp1 )
-      get2 = Register.get_slot_to(statement , right_slot , tmp2 )
-      puts "GET #{get}"
-      puts "GET2 #{get2}"
-      @method.source.add_code get
-      @method.source.add_code get2
-
-      @method.source.add_code Register::OperatorInstruction.new(statement,operator, tmp1,tmp2)
-      release_reg tmp2
-      release_reg tmp1
-      Virtual::Return.new(:int )
+      # left and right must be expressions. Expressions return a register when compiled
+      left_reg = process(left_e)
+      right_reg = process(right_e)
+      raise "Not register #{left_reg}" unless left_reg.is_a?(Register::RegisterValue)
+      raise "Not register #{right_reg}" unless right_reg.is_a?(Register::RegisterValue)
+      puts "left #{left_reg}"
+      puts "right #{right_reg}"
+      @method.source.add_code Register::OperatorInstruction.new(statement,operator,left_reg,right_reg)
+      return left_reg # though this has wrong value attached
     end
 
     def on_assignment statement

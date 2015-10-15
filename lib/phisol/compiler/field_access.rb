@@ -11,7 +11,7 @@ module Phisol
       when :self
         index = @clazz.object_layout.variable_index(field_name)
         raise "field access, but no such field:#{field_name} for class #{@clazz.name}" unless index
-        value = use_reg(:int) #TODO, need types in layout
+        value = use_reg(:Integer) #TODO, need types in layout
         move = Register.get_slot(statement, :self , index , value )
         @method.source.add_code move
         return value

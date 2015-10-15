@@ -30,12 +30,6 @@ module Register
     def assigns
       raise "abstract called for #{self.class}"
     end
-
-    # wrap symbols into regsiter reference if needed
-    def wrap_register reg , type
-      return reg if reg.is_a? RegisterValue
-      RegisterValue.new(reg , type)
-    end
   end
 
 end

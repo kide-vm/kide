@@ -18,8 +18,10 @@ module Register
     # Note: this may be reversed from some assembler notations (also arm)
     def initialize source , from , to
       super(source)
-      @from = wrap_register(from,:int)
-      @to = wrap_register(to,:int)
+      @from = from
+      @to = to
+      raise "Fix me #{from}" unless from.is_a? RegisterValue
+      raise "Fix me #{to}" unless to.is_a? RegisterValue
     end
     attr_reader :from, :to
 

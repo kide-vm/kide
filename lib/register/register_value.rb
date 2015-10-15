@@ -10,6 +10,7 @@ module Register
       raise "wrong type for register init #{r}" unless r.is_a? Symbol
       raise "double r #{r}" if r.to_s[0,1] == "rr"
       raise "not reg #{r}" unless self.class.look_like_reg r
+      raise "Legacy type error, should be class" if (type == :int) or (type == :ref)
       @type = type
       @symbol = r
       @value = value
@@ -39,10 +40,10 @@ module Register
     end
 
     #helper method to calculate with register symbols
-    def next_reg_use type
+    def next_reg_use type , value = nil
       int = @symbol[1,3].to_i
       sym = "r#{int + 1}".to_sym
-      RegisterValue.new( sym , type)
+      RegisterValue.new( sym , type, value)
     end
 
     def sof_reference_name

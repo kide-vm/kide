@@ -184,7 +184,7 @@ module Interpreter
       rr = @instruction.right
       right = get_register(rr)
       case @instruction.operator.to_s
-      when "add"
+      when "+"
         result = left + right
       when "/"
         result = left / right
@@ -198,7 +198,7 @@ module Interpreter
         raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
       end
       puts "#{@instruction} == #{result}"
-      right = set_register(rr , result)
+      right = set_register(@instruction.left , result)
       true
     end
   end

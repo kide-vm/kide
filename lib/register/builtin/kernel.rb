@@ -49,15 +49,17 @@ module Register
         # This relies on linux to save and restore all registers
         #
         def save_message(function)
-          function.source.add_code RegisterTransfer.new(function, Register.message_reg , :r8 )
+          r8 = RegisterValue.new( :r8 , :Message)
+          function.source.add_code RegisterTransfer.new(function, Register.message_reg , r8 )
         end
 
         def restore_message(function)
+          r8 = RegisterValue.new( :r8 , :Message)
           return_tmp = Register.tmp_reg function.source.return_type
           # get the sys return out of the way
           function.source.add_code RegisterTransfer.new(function, Register.message_reg , return_tmp )
           # load the stored message into the base RegisterMachine
-          function.source.add_code RegisterTransfer.new(function, :r8 , Register.message_reg )
+          function.source.add_code RegisterTransfer.new(function, r8 , Register.message_reg )
           # save the return value into the message
           function.source.add_code Register.set_slot( function, return_tmp , :message , :return_value )
           # and "unroll" self and frame

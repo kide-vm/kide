@@ -4,7 +4,7 @@ module Parfait
     def initialize type , name , value = nil
       raise "not type #{type}" unless Virtual.machine.space.get_class_by_name(type)
       self.type , self.name , self.value = type , name , value
-      self.value = 0 if self.type == :int and value == nil
+      self.value = 0 if self.type == :Integer and value == nil
       raise "must give name for variable" unless name
     end
     attributes [:type , :name, :value]
