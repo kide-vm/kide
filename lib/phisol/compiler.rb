@@ -56,6 +56,7 @@ module Phisol
 end
 
 require_relative "ast_helper"
+require_relative "compiler/assignment"
 require_relative "compiler/basic_values"
 require_relative "compiler/call_site"
 require_relative "compiler/class_field"

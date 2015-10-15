@@ -14,24 +14,5 @@ module Phisol
       @method.source.add_code Register::OperatorInstruction.new(statement,operator,left_reg,right_reg)
       return left_reg # though this has wrong value attached
     end
-
-    def on_assignment statement
-      puts statement.inspect
-      name , value = *statement
-      name = name.to_a.first
-      v = process(value)
-      index = @method.has_local( name )
-      if(index)
-        @method.source.add_code Virtual::Set.new(Virtual::FrameSlot.new(index, :int ) , v )
-      else
-        index = @method.has_arg( name )
-        if(index)
-          @method.source.add_code Virtual::Set.new(Virtual::ArgSlot.new(index , :int ) , v )
-        else
-          raise "must define variable #{name} before using it in #{@method.inspect}"
-        end
-      end
-    end
-
   end
 end

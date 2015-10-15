@@ -4,7 +4,8 @@ require_relative '../../helper'
 module Statements
 
   def check
-    machine = Virtual.machine.boot
+    machine = Virtual.machine
+    machine.boot unless machine.booted
     machine.parse_and_compile @string_input
     produced = Virtual.machine.space.get_main.source
     assert @expect , "No output given"
