@@ -9,7 +9,7 @@ module Phisol
       raise "no class" unless for_class
       index = for_class.object_layout.variable_index(name)
       #raise "class field already defined:#{name} for class #{for_class.name}" if index
-      puts "Define field #{name} on class #{for_class.name}"
+      #puts "Define field #{name} on class #{for_class.name}"
       index = for_class.object_layout.add_instance_variable( name ) #TODO need typing
 
       if value

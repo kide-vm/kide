@@ -38,7 +38,7 @@ module Phisol
         @method.for_class.add_instance_method @method
       end
       @method.source.receiver = r
-      puts "compile method #{@method.name}"
+      #puts "compile method #{@method.name}"
 
       kids.to_a.each do |ex|
         ret = process(ex)
