@@ -1,5 +1,6 @@
 require_relative 'helper'
 
+module Register
 class TestReturnStatement < MiniTest::Test
   include Statements
 
@@ -12,7 +13,7 @@ class Object
   end
 end
 HERE
-  @expect =  [[Virtual::MethodEnter,Register::LoadConstant] , [Virtual::MethodReturn]]
+  @expect =  [[Virtual::MethodEnter,LoadConstant] , [Virtual::MethodReturn]]
   check
   end
 
@@ -25,7 +26,7 @@ class Object
   end
 end
 HERE
-  @expect =  [[Virtual::MethodEnter,Register::GetSlot] , [Virtual::MethodReturn]]
+  @expect =  [[Virtual::MethodEnter,GetSlot] , [Virtual::MethodReturn]]
   check
   end
 
@@ -38,7 +39,7 @@ class Object
   end
 end
 HERE
-  @expect =  [[Virtual::MethodEnter,Register::LoadConstant, Register::GetSlot] , [Virtual::MethodReturn]]
+    @expect =  [[Virtual::MethodEnter,LoadConstant, GetSlot] , [Virtual::MethodReturn]]
   check
   end
 
@@ -51,7 +52,7 @@ class Object
   end
 end
 HERE
-  @expect =  [[Virtual::MethodEnter,Register::GetSlot] , [Virtual::MethodReturn]]
+  @expect =  [[Virtual::MethodEnter,GetSlot] , [Virtual::MethodReturn]]
   check
   end
 
@@ -63,8 +64,9 @@ class Object
   end
 end
 HERE
-  @expect =  [[Virtual::MethodEnter,Register::GetSlot,Register::SetSlot, Register::LoadConstant,
-                Register::SetSlot,Virtual::MethodCall,Register::GetSlot] , [Virtual::MethodReturn]]
+  @expect =  [[Virtual::MethodEnter,GetSlot,SetSlot, LoadConstant,
+                SetSlot,Virtual::MethodCall,GetSlot] , [Virtual::MethodReturn]]
   check
   end
+end
 end

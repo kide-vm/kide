@@ -1,5 +1,6 @@
 require_relative 'helper'
 
+module Register
 class TestIfStatement < MiniTest::Test
   include Statements
 
@@ -15,9 +16,9 @@ class Object
   end
 end
 HERE
-  @expect =  [[Virtual::MethodEnter,Register::LoadConstant,Register::LoadConstant,
-                Register::OperatorInstruction,Register::IsZeroBranch] ,
-                [Register::LoadConstant,Register::AlwaysBranch] ,[Register::LoadConstant]  ,[] ,
+  @expect =  [[Virtual::MethodEnter,LoadConstant,LoadConstant,
+                OperatorInstruction,IsZeroBranch] ,
+                [LoadConstant,AlwaysBranch] ,[LoadConstant]  ,[] ,
                 [Virtual::MethodReturn]]
   check
   end
@@ -33,9 +34,9 @@ class Object
   end
 end
 HERE
-  @expect =  [[Virtual::MethodEnter,Register::LoadConstant,Register::LoadConstant,
-                Register::OperatorInstruction,Register::IsZeroBranch] ,
-                [Register::AlwaysBranch] ,[Register::LoadConstant]  ,[] ,
+  @expect =  [[Virtual::MethodEnter,LoadConstant,LoadConstant,
+                OperatorInstruction,IsZeroBranch] ,
+                [AlwaysBranch] ,[LoadConstant]  ,[] ,
                 [Virtual::MethodReturn]]
   check
   end
@@ -53,9 +54,10 @@ class Object
   end
 end
 HERE
-    @expect =  [ [Virtual::MethodEnter,Register::GetSlot,Register::SetSlot,Register::LoadConstant,
-                  Register::SetSlot,Register::LoadConstant,Register::SetSlot,Virtual::MethodCall,
-                  Register::GetSlot] ,[Virtual::MethodReturn] ]
+    @expect =  [ [Virtual::MethodEnter,GetSlot,SetSlot,LoadConstant,
+                  SetSlot,LoadConstant,SetSlot,Virtual::MethodCall,
+                  GetSlot] ,[Virtual::MethodReturn] ]
   check
   end
+end
 end
