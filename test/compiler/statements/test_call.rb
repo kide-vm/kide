@@ -6,6 +6,11 @@ class TestCallStatement < MiniTest::Test
 
   def test_call_constant_int
     @string_input = <<HERE
+class Integer
+  int putint()
+    return 1
+  end
+end
 class Object
   int main()
     42.putint()
@@ -36,7 +41,7 @@ HERE
   def test_call_local_int
     @string_input = <<HERE
 class Integer
-  int putstring()
+  int putint()
     return 1
   end
 end
