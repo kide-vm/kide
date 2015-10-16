@@ -20,7 +20,7 @@ module Phisol
         end
       end
       if( code )
-        puts "addin code #{code}"
+        #puts "addin code #{code}"
         @method.source.add_code code
       else
         raise "must define variable #{name} before using it in #{@method.inspect}"
