@@ -9,7 +9,7 @@ module Virtual
         new_codes << Register.save_return(code, :message , :return_address)
         # and create a new frame if needed
         unless code.method.locals.empty?
-          new_codes << Virtual::NewFrame.new
+          new_codes <<  Register.get_slot( code, :message , :frame , Register.resolve_to_register(:frame))
         end
         block.replace(code , new_codes )
       end
