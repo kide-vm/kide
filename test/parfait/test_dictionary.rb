@@ -36,8 +36,8 @@ class TestDictionary < MiniTest::Test
     shouldda.each do |k,v|
       @lookup.set(k,v)
     end
-    shouldda.each do |k,v|
-      assert_equal v , @lookup.get(k)
+    @lookup.each do |k,v|
+      assert_equal v , shouldda[k]
     end
   end
 end

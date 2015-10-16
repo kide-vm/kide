@@ -45,11 +45,6 @@ module Parfait
       self.get_length
     end
 
-    # beat the recursion! fixed known offset for class object in the layout
-    def get_object_class()
-      return self.object_class
-    end
-
     def object_instance_names
       names = List.new
       index = 3

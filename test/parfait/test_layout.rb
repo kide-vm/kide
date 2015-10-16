@@ -24,6 +24,13 @@ class TestLayout < MiniTest::Test
     assert_equal @mess.get_layout , @mess.internal_object_get(1) , "mess"
   end
 
+  def test_forbidden_index_of
+    assert_raises(RuntimeError) { @mess.get_layout.index_of(:name)}
+  end
+
+  def test_inspect
+    assert @mess.get_layout.inspect.start_with?("Layout")
+  end
   def test_layout_is_first
     layout = @mess.get_layout
     assert_equal nil , layout.variable_index(:layout)

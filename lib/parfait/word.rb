@@ -123,11 +123,6 @@ module Parfait
       "'" + to_s + "'"
     end
 
-    #below here is OLD, DUBIOUS and needs to be checked TODO
-    def result= value
-      raise "called"
-      class_for(MoveInstruction).new(value , self , :opcode => :mov)
-    end
     def word_length
       padded self.length
     end
