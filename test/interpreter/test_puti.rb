@@ -59,24 +59,23 @@ HERE
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init
-#    done = ticks(34)
-  ["Branch" ,     "LoadConstant" ,    "GetSlot" ,     "SetSlot" ,        "RegisterTransfer" ,
-   "GetSlot" ,    "FunctionCall" ,    "SaveReturn",   "LoadConstant" ,   "GetSlot" ,
-   "SetSlot" ,    "LoadConstant" ,    "SetSlot" ,     "RegisterTransfer" , "GetSlot" ,
-   "FunctionCall" ,"SaveReturn" ,     "GetSlot" ,     "LoadConstant" ,   "SetSlot" ,
-   "GetSlot",     "SetSlot",          "LoadConstant" ,"SetSlot" ,        "GetSlot" ,
-   "SetSlot",     "RegisterTransfer", "GetSlot" ,     "FunctionCall" ,   "SaveReturn",
-   "GetSlot",     "LoadConstant",     "OperatorInstruction",   "SetSlot", "GetSlot",
-   "OperatorInstruction","SetSlot",   "GetSlot",      "LoadConstant",    "OperatorInstruction",
-   "Branch",     "GetSlot",           "SetSlot",      "LoadConstant",    "SetSlot",
-   "GetSlot",     "SetSlot",          "RegisterTransfer", "GetSlot",     "FunctionCall",
-   "SaveReturn",  "GetSlot",          "LoadConstant",  "OperatorInstruction","Branch",
-   "LoadConstant", "GetSlot",         "LoadConstant",  "OperatorInstruction","Branch",
-   "LoadConstant", "GetSlot",         "LoadConstant",  "OperatorInstruction","Branch",
-   "LoadConstant",  "GetSlot",        "LoadConstant",  "OperatorInstruction","Branch",
-   "LoadConstant"].each_with_index do |name , index|
+    ["Branch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
+     "GetSlot","FunctionCall","SaveReturn","LoadConstant","GetSlot",
+     "SetSlot","LoadConstant","SetSlot","RegisterTransfer","GetSlot",
+     "FunctionCall","SaveReturn","GetSlot","LoadConstant","SetSlot",
+     "GetSlot","SetSlot","LoadConstant","SetSlot","GetSlot",
+     "SetSlot","RegisterTransfer","GetSlot","FunctionCall","SaveReturn",
+     "GetSlot","LoadConstant","OperatorInstruction","SetSlot","GetSlot",
+     "OperatorInstruction","SetSlot","GetSlot","LoadConstant","OperatorInstruction",
+     "IsZeroBranch","GetSlot","SetSlot","LoadConstant","SetSlot",
+     "GetSlot","SetSlot","RegisterTransfer","GetSlot","FunctionCall",
+     "SaveReturn","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
+     "LoadConstant","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
+     "LoadConstant","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
+     "LoadConstant","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
+     "LoadConstant","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
+     "LoadConstant","NilClass"].each_with_index do |name , index|
     got = ticks(1)
-    puts got
     assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
 end
 

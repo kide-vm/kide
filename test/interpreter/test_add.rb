@@ -65,14 +65,10 @@ class AddTest < MiniTest::Test
   end
 
   def test_chain
-    ["Branch" , "LoadConstant" , "GetSlot" , "SetSlot" , "RegisterTransfer" ,
-#     "GetSlot" , "FunctionCall" , "SaveReturn" , "LoadConstant"  , "LoadConstant" ,
-#     "OperatorInstruction" ,  "RegisterTransfer" , "GetSlot" , "LoadConstant" , "SetSlot" ,
-#     "LoadConstant" ,  "SetSlot" ,   "GetSlot" , "SetSlot", "RegisterTransfer" , "GetSlot" , "FunctionCall" ,
-#     "SaveReturn" ,  "GetSlot", "OperatorInstruction" , "RegisterTransfer" , "GetSlot" , "GetSlot" ,
-     "GetSlot" , "FunctionCall" ,"SaveReturn" , "LoadConstant", "LoadConstant"].each_with_index do |name , index|
+    ["Branch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
+     "GetSlot","FunctionCall","SaveReturn","LoadConstant","LoadConstant",
+     "OperatorInstruction","RegisterTransfer","GetSlot"].each_with_index do |name , index|
       got = ticks(1)
-      puts got
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
     end
   end

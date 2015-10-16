@@ -55,13 +55,14 @@ class TestPuts < MiniTest::Test
   end
 
   def test_chain
-    ["Branch" , "LoadConstant" , "GetSlot" , "SetSlot" , "RegisterTransfer" ,
-     "GetSlot" , "FunctionCall" , "SaveReturn" , "LoadConstant"  , "GetSlot" ,
-     "SetSlot" ,  "LoadConstant" , "SetSlot" , "RegisterTransfer" , "GetSlot" ,
-     "FunctionCall" ,  "SaveReturn" ,  "RegisterTransfer" , "Syscall" , "RegisterTransfer" ,
-     "RegisterTransfer" , "SetSlot" , "GetSlot" , "GetSlot" , "RegisterTransfer" ,
-     "GetSlot" , "GetSlot" ,"GetSlot" , "FunctionReturn","RegisterTransfer",
-     "Syscall" , "NilClass"].each_with_index do |name , index|
+    show_ticks
+    ["Branch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
+   "GetSlot","FunctionCall","SaveReturn","LoadConstant","GetSlot",
+   "SetSlot","LoadConstant","SetSlot","RegisterTransfer","GetSlot",
+   "FunctionCall","SaveReturn","RegisterTransfer","Syscall","RegisterTransfer",
+   "RegisterTransfer","SetSlot","GetSlot","GetSlot","RegisterTransfer",
+   "GetSlot","GetSlot","GetSlot","FunctionReturn","RegisterTransfer",
+   "Syscall","NilClass"].each_with_index do |name , index|
       got = ticks(1)
       #puts "TICK #{index}"
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
