@@ -1,2 +1,5 @@
 require_relative "test_if"
 require_relative "test_return"
+require_relative "test_assign"
+require_relative "test_call"
+require_relative "test_while"
