@@ -3,7 +3,7 @@ module Phisol
 
     def on_assignment statement
       reset_regs # statements reset registers, ie have all at their disposal
-      puts statement.inspect
+      #puts statement.inspect
       name , value = *statement
       name = name.to_a.first
       v = process(value)

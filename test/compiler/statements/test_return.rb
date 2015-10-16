@@ -39,7 +39,7 @@ class Object
   end
 end
 HERE
-    @expect =  [[Virtual::MethodEnter,LoadConstant, GetSlot] , [Virtual::MethodReturn]]
+    @expect =  [[Virtual::MethodEnter,LoadConstant, SetSlot,GetSlot] , [Virtual::MethodReturn]]
   check
   end
 
