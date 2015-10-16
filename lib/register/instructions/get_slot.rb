@@ -44,26 +44,4 @@ module Register
     to = resolve_to_register to
     GetSlot.new( source , array , index , to)
   end
-
-  def self.get_slot_to source , slot , to
-    array = nil
-    index = nil
-    case slot
-    when Virtual::Self
-      array = :message
-      index = :receiver
-    when Virtual::Return
-      array = :message
-      index = :return_value
-    when Virtual::FrameSlot
-      array = :frame
-      index = slot.index
-    when Virtual::ArgSlot
-      array = :message
-      index = slot.index
-    else
-      raise "not done #{slot}"
-    end
-    get_slot( source , array , index , to)
-  end
 end
