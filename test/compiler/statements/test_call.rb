@@ -35,6 +35,11 @@ HERE
 
   def test_call_local_int
     @string_input = <<HERE
+class Integer
+  int putstring()
+    return 1
+  end
+end
 class Object
   int main()
     int testi = 20

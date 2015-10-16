@@ -50,6 +50,9 @@ module Register
       @symbol
     end
 
+    def self.convert(unused)
+      unused
+    end
   end
 
   # Here we define the mapping from virtual machine objects, to register machine registers

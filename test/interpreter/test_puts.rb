@@ -56,12 +56,12 @@ class TestPuts < MiniTest::Test
 
   def test_chain
     ["Branch" , "LoadConstant" , "GetSlot" , "SetSlot" , "RegisterTransfer" ,
-     "GetSlot" , "FunctionCall" , "SaveReturn" , "LoadConstant"  , "SetSlot" ,
-     "GetSlot" ,  "GetSlot" , "SetSlot" , "LoadConstant" , "SetSlot" ,
-     "RegisterTransfer" ,  "GetSlot" ,  "FunctionCall" , "SaveReturn" , "RegisterTransfer" ,
-     "Syscall" , "RegisterTransfer" , "RegisterTransfer" , "SetSlot" , "GetSlot" ,
-     "GetSlot" , "RegisterTransfer" ,"GetSlot" , "GetSlot","GetSlot",
-     "FunctionReturn" , "RegisterTransfer" , "Syscall" , "NilClass"].each_with_index do |name , index|
+     "GetSlot" , "FunctionCall" , "SaveReturn" , "LoadConstant"  , "GetSlot" ,
+     "SetSlot" ,  "LoadConstant" , "SetSlot" , "RegisterTransfer" , "GetSlot" ,
+     "FunctionCall" ,  "SaveReturn" ,  "RegisterTransfer" , "Syscall" , "RegisterTransfer" ,
+     "RegisterTransfer" , "SetSlot" , "GetSlot" , "GetSlot" , "RegisterTransfer" ,
+     "GetSlot" , "GetSlot" ,"GetSlot" , "FunctionReturn","RegisterTransfer",
+     "Syscall" , "NilClass"].each_with_index do |name , index|
       got = ticks(1)
       #puts "TICK #{index}"
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
@@ -69,20 +69,20 @@ class TestPuts < MiniTest::Test
   end
 
   def test_putstring
-    done = ticks(21)
+    done = ticks(19)
     assert_equal Register::Syscall ,  done.class
     assert_equal "Hello again" , @interpreter.stdout
   end
 
   def test_return
-    done = ticks(31)
+    done = ticks(29)
     assert_equal Register::FunctionReturn ,  done.class
     assert @interpreter.block.is_a?(Virtual::Block)
     assert @interpreter.instruction.is_a?(Register::Instruction) , "not instruction #{@interpreter.instruction}"
   end
 
   def test_exit
-    done = ticks(34)
+    done = ticks(32)
     assert_equal NilClass ,  done.class
     assert_equal "Hello again" , @interpreter.stdout
   end

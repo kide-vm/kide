@@ -3,6 +3,10 @@ require_relative "../helper"
 
 class TestCompat < MiniTest::Test
 
+  def setup
+    Virtual.machine.boot unless Virtual.machine.booted
+  end
+
   def test_list_create_from_array
     array = [1,2,3]
     list = Virtual.new_list(array)

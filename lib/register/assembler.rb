@@ -210,8 +210,11 @@ module Register
     # write means we write the resulting address straight into the assembler stream
     # object means the object of which we write the address
     def write_ref_for object
-      if object.nil?
+      case object
+      when nil
         pos = 0 - @load_at
+      when Fixnum
+        pos = object - @load_at
       else
         pos =  object.position
       end

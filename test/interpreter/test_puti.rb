@@ -7,7 +7,7 @@ class AddTest < MiniTest::Test
   def test_puti
     @string_input = <<HERE
 class Integer < Object
-  ref digit( int rest )
+  Word digit( int rest )
     if( rest == 5 )
       return "5"
     end
@@ -24,7 +24,7 @@ class Integer < Object
       return "4"
     end
   end
-  ref add_string(ref str)
+  Word add_string(Word str)
     int div
     div = self / 10
     int rest
@@ -37,8 +37,8 @@ class Integer < Object
     end
     return str
   end
-  ref to_string()
-    ref start = " "
+  Word to_string()
+    Word start = " "
     return add_string( start )
   end
 end
@@ -60,21 +60,21 @@ HERE
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init
 #    done = ticks(34)
-  ["Branch" ,     "LoadConstant" ,    "GetSlot" ,     "SetSlot" ,      "RegisterTransfer" ,
-   "GetSlot" ,    "FunctionCall" ,    "SaveReturn",   "LoadConstant" , "SetSlot" ,
-   "GetSlot" ,    "GetSlot" ,         "SetSlot" ,     "LoadConstant" , "SetSlot" ,
-   "RegisterTransfer" ,"GetSlot" ,    "FunctionCall" ,"SaveReturn" ,   "GetSlot" ,
-   "LoadConstant", "SetSlot",         "GetSlot" ,     "GetSlot" ,      "SetSlot" ,
-   "LoadConstant", "SetSlot" ,        "GetSlot" ,     "SetSlot" ,      "RegisterTransfer",
-   "GetSlot",     "FunctionCall",     "SaveReturn",   "GetSlot",       "LoadConstant",
-   "SetSlot",     "GetSlot",          "GetSlot",      "OperatorInstruction", "GetSlot",
-   "SetSlot",     "GetSlot",          "GetSlot",      "OperatorInstruction", "GetSlot",
-   "SetSlot",     "LoadConstant",     "SetSlot",      "GetSlot",        "GetSlot",
-   "OperatorInstruction",     "Branch",     "GetSlot",      "GetSlot",        "SetSlot",
-   "LoadConstant",     "SetSlot",     "GetSlot",      "SetSlot",        "RegisterTransfer",
-   "GetSlot",     "FunctionCall",     "SaveReturn",      "LoadConstant",        "SetSlot",
-   "GetSlot",     "GetSlot",     "OperatorInstruction",      "Branch",        "LoadConstant",
-   "SetSlot"].each_with_index do |name , index|
+  ["Branch" ,     "LoadConstant" ,    "GetSlot" ,     "SetSlot" ,        "RegisterTransfer" ,
+   "GetSlot" ,    "FunctionCall" ,    "SaveReturn",   "LoadConstant" ,   "GetSlot" ,
+   "SetSlot" ,    "LoadConstant" ,    "SetSlot" ,     "RegisterTransfer" , "GetSlot" ,
+   "FunctionCall" ,"SaveReturn" ,     "GetSlot" ,     "LoadConstant" ,   "SetSlot" ,
+   "GetSlot",     "SetSlot",          "LoadConstant" ,"SetSlot" ,        "GetSlot" ,
+   "SetSlot",     "RegisterTransfer", "GetSlot" ,     "FunctionCall" ,   "SaveReturn",
+   "GetSlot",     "LoadConstant",     "OperatorInstruction",   "SetSlot", "GetSlot",
+   "OperatorInstruction","SetSlot",   "GetSlot",      "LoadConstant",    "OperatorInstruction",
+   "Branch",     "GetSlot",           "SetSlot",      "LoadConstant",    "SetSlot",
+   "GetSlot",     "SetSlot",          "RegisterTransfer", "GetSlot",     "FunctionCall",
+   "SaveReturn",  "GetSlot",          "LoadConstant",  "OperatorInstruction","Branch",
+   "LoadConstant", "GetSlot",         "LoadConstant",  "OperatorInstruction","Branch",
+   "LoadConstant", "GetSlot",         "LoadConstant",  "OperatorInstruction","Branch",
+   "LoadConstant",  "GetSlot",        "LoadConstant",  "OperatorInstruction","Branch",
+   "LoadConstant"].each_with_index do |name , index|
     got = ticks(1)
     puts got
     assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
