@@ -8,7 +8,6 @@ require "virtual/parfait_adapter"
 require "phisol/compiler"
 require "virtual/instruction"
 require "virtual/method_source"
-require "virtual/slots/slot"
 # the passes _are_ order dependant
 require "virtual/passes/minimizer"
 require "virtual/passes/collector"

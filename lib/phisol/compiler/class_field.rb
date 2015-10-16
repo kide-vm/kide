@@ -17,7 +17,7 @@ module Phisol
         raise "value #{value}" #tbc
       end
 
-      Virtual::Return.new( index )
+      return nil # statements don't reurn values, only expressions
     end
   end
 end

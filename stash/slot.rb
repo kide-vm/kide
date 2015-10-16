@@ -16,31 +16,5 @@ module Virtual
   # Slot has a lot of small subclasses
   # Names for the slots avoid indexes
 
-  class Slot < Object
-
-    # the name of the object of a slot is a symbol that represents what the class name describes
-    # ie it is one of :message , :self , :frame , :new_message
-    # one of the objects the machine works on.
-    def object_name
-      raise "abstract called #{self}"
-    end
-
-    attr_accessor :type , :value
-
-    def to_s
-      "#{self.class.name}.new(#{type}, #{value})"
-    end
-    private #abstract base class
-
-    def initialize type , value
-      @type = type
-      @value = value
-    end
-  end
 
 end
-
-require_relative "message_slot"
-require_relative "selfs_slot"
-require_relative "frame_slot"
-require_relative "new_message_slot"
