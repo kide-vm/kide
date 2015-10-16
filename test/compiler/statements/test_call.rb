@@ -26,6 +26,11 @@ HERE
 
   def test_call_constant_string
     @string_input = <<HERE
+class Word
+  int putstring()
+    return 1
+  end
+end
 class Object
   int main()
     "Hello".putstring()
