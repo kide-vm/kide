@@ -48,20 +48,20 @@ class AddTest < MiniTest::Test
     assert_equal Register::FunctionCall ,  ticks(7).class
     assert @interpreter.link
   end
-  def dtest_adding
-    done = ticks(25)
-    assert_equal Register::OperatorInstruction ,  done.class
-    left = @interpreter.get_register(done.left)
-    rr = done.right
+  def test_adding
+    done_op = ticks(11)
+    assert_equal Register::OperatorInstruction ,  done_op.class
+    left = @interpreter.get_register(done_op.left)
+    rr = done_op.right
     right = @interpreter.get_register(rr)
     assert_equal Fixnum , left.class
     assert_equal Fixnum , right.class
-    assert_equal 16 , right
-    assert_equal 8 , left
-    done = ticks(1)
-    assert_equal Register::RegisterTransfer ,  done.class
-    result = @interpreter.get_register(rr)
-    assert_equal result , 16
+    assert_equal 7 , right
+    assert_equal 12 , left
+    done_tr = ticks(1)
+    assert_equal Register::RegisterTransfer ,  done_tr.class
+    result = @interpreter.get_register(done_op.left)
+    assert_equal result , 12
   end
 
   def test_chain
