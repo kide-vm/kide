@@ -71,16 +71,7 @@ module Parfait
     end
 
     def inspect
-      ret = "Layout["
-      index = 3
-      while index <= self.get_length
-        item = get(index)
-        ret += item.inspect
-        ret += "," unless index == self.get_length
-        index = index + 1
-      end
-      ret += "]"
-      ret
+      "Layout[#{inspect_from(3)}]"
     end
 
     def sof_reference_name

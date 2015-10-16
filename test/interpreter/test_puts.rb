@@ -55,7 +55,6 @@ class TestPuts < MiniTest::Test
   end
 
   def test_chain
-    show_ticks
     ["Branch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
    "GetSlot","FunctionCall","SaveReturn","LoadConstant","GetSlot",
    "SetSlot","LoadConstant","SetSlot","RegisterTransfer","GetSlot",

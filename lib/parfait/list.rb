@@ -73,7 +73,7 @@ module Parfait
       return nil if empty?
       get(get_length())
     end
-    
+
     # set the value at index.
     # Lists start from index 1
     def set( index , value)
@@ -164,8 +164,11 @@ module Parfait
     end
 
     def inspect
+      inspect_from 1
+    end
+
+    def inspect_from index
       ret = ""
-      index = 1
       while index <= self.get_length
         item = get(index)
         ret += item.inspect
