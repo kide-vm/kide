@@ -62,12 +62,13 @@ module Parfait
       raise "should not rely on layout internal structure, use variable_index"
     end
 
-    # index of a variable name into the layout.
-    # layout is a list, so lowest index is 1
-    # :layout is a variable for every object, so 1 is taken for :layout
-    # still, the index is the same.
+    # index of the variable when using internal_object_get
+    # (internal_object_get is 1 based and 1 is always the layout)
     def variable_index name
-      list_index(name)
+      has = list_index(name)
+      return nil unless has
+      raise "internal error #{name}:#{has}" if has < 2
+      has - 1
     end
 
     def inspect
