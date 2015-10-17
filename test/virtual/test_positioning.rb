@@ -13,7 +13,7 @@ class TestPositioning < MiniTest::Test
     list = Virtual.new_list([1,2,3,4,5])
     list.set_layout( Parfait::Layout.new Object)
     # TODO check why this is 64 and not 32
-    assert_equal 64 , list.word_length
+    assert_equal 32 , list.word_length
   end
   def test_layout
     layout = Parfait::Layout.new Object

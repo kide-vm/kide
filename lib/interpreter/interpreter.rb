@@ -140,6 +140,7 @@ module Interpreter
 
     def execute_FunctionCall
       @link = [@block , @instruction]
+      #puts "Call link #{@link}"
       next_block = @instruction.method.source.blocks.first
       set_block next_block
       false
@@ -148,34 +149,38 @@ module Interpreter
     def execute_SaveReturn
       object = object_for @instruction.register
       raise "save return has nothing to save" unless @link
-      trigger(:object_changed, @instruction.register , @instruction.index )
+      #puts "Save Return link #{@link}"
       object.internal_object_set @instruction.index , @link
+      trigger(:object_changed, @instruction.register , @instruction.index )
       @link = nil
+      true
+    end
+
+    def execute_FunctionReturn
+      object = object_for( @instruction.register )
+      link = object.internal_object_get( @instruction.index )
+      #puts "FunctionReturn link #{@link}"
+      @block , @instruction = link
+      # we jump back to the call instruction. so it is as if the call never happened and we continue
       true
     end
 
     def execute_Syscall
       name = @instruction.name
+      ret_value = 0
       case name
       when :putstring
         str = object_for( :r1 ) # should test length, ie r2
         raise "NO string for putstring #{str.class}:#{str.object_id}" unless str.is_a? Symbol
         @stdout += str.to_s
+        ret_value = str.to_s.length
       when :exit
         set_instruction(nil)
         return false
       else
         raise "un-implemented syscall #{name}"
       end
-      true
-    end
-
-    def execute_FunctionReturn
-      object = object_for( @instruction.register )
-      #wouldn't need to assign to link, but makes testing easier
-      link = object.internal_object_get( @instruction.index )
-      @block , @instruction = link
-      # we jump back to the call instruction. so it is as if the call never happened and we continue
+      set_register( :r0 , ret_value ) # syscalls return into r0 , usually some int
       true
     end
 
