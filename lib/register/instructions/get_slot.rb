@@ -30,7 +30,7 @@ module Register
     attr_accessor :array , :index , :register
 
     def to_s
-      "GetSlot: #{array} [#{index}] -> #{register}"
+      "GetSlot: #{array}[#{index}] -> #{register}"
     end
 
   end

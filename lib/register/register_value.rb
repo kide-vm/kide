@@ -17,7 +17,9 @@ module Register
     end
 
     def to_s
-      "#{symbol}:#{type}:#{value}"
+      s = "#{symbol}:#{type}"
+      s += ":#{value}" if value
+      s
     end
 
     def self.look_like_reg is_it
