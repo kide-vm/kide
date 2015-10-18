@@ -11,7 +11,7 @@ class Bar
   end
 end
 HERE
-    @expect =  [ [Virtual::MethodEnter] ,[Virtual::MethodReturn]]
+    @expect =  [ [Virtual::MethodEnter] ,[RegisterTransfer,GetSlot,FunctionReturn]]
     check
   end
 

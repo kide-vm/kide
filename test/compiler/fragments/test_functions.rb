@@ -36,7 +36,7 @@ class Object
 end
 HERE
   @expect =  [[Virtual::MethodEnter,Register::GetSlot,Virtual::Set,Virtual::Set,Virtual::MethodCall] ,
-          [Virtual::MethodReturn]]
+          [RegisterTransfer,GetSlot,FunctionReturn]]
   check
 
   end

@@ -19,7 +19,7 @@ end
 HERE
     @expect =  [[Virtual::MethodEnter,GetSlot,LoadConstant,
                   SetSlot,LoadConstant,SetSlot,Virtual::MethodCall,GetSlot] ,
-                  [Virtual::MethodReturn]]
+                  [RegisterTransfer,GetSlot,FunctionReturn]]
     check
   end
 
@@ -39,7 +39,7 @@ end
 HERE
     @expect =  [[Virtual::MethodEnter,GetSlot,LoadConstant,
                   SetSlot,LoadConstant,SetSlot,Virtual::MethodCall,GetSlot] ,
-                  [Virtual::MethodReturn]]
+                  [RegisterTransfer,GetSlot,FunctionReturn]]
     check
   end
 
@@ -59,7 +59,7 @@ end
 HERE
     @expect =  [ [Virtual::MethodEnter,LoadConstant,GetSlot,SetSlot,GetSlot,
                   GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,Virtual::MethodCall,
-                  GetSlot] ,[Virtual::MethodReturn] ]
+                  GetSlot] ,[RegisterTransfer,GetSlot,FunctionReturn] ]
   check
   end
 
@@ -79,7 +79,7 @@ end
 HERE
     @expect =  [ [Virtual::MethodEnter,GetSlot,GetSlot,GetSlot,SetSlot,
                   LoadConstant,SetSlot,Virtual::MethodCall,
-                  GetSlot] ,[Virtual::MethodReturn] ]
+                  GetSlot] ,[RegisterTransfer,GetSlot,FunctionReturn] ]
   check
   end
 
@@ -96,7 +96,7 @@ end
 HERE
     @expect = [ [Virtual::MethodEnter , GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,LoadConstant,
                  SetSlot,Virtual::MethodCall,GetSlot],
-                [Virtual::MethodReturn]]
+                [RegisterTransfer,GetSlot,FunctionReturn]]
     check
   end
 

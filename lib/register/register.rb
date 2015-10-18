@@ -1,7 +1,6 @@
 require_relative "instruction"
 require_relative "register_value"
 require_relative "assembler"
-require_relative "passes/return_implementation"
 require_relative "passes/call_implementation"
 
 # So the memory model of the machine allows for indexed access into an "object" .

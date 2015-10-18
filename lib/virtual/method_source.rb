@@ -60,7 +60,13 @@ module Virtual
       set_return_type( return_type )
       @blocks = [enter]
       @current = enter
-      new_block("return").add_code(MethodReturn.new(method))
+      ret = new_block("return")
+      # move the current message to new_message
+      ret.add_code Register::RegisterTransfer.new(self, Register.message_reg , Register.new_message_reg )
+      # and restore the message from saved value in new_message
+      ret.add_code Register.get_slot(self,:new_message , :caller , :message )
+      #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
+      ret.add_code Register::FunctionReturn.new( self , Register.new_message_reg , Register.resolve_index(:message , :return_address) )
       @constants = []
     end
     attr_reader   :blocks , :constants , :return_type
