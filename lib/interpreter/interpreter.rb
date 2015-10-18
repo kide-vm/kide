@@ -202,7 +202,7 @@ module Interpreter
       else
         raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
       end
-      puts "#{@instruction} == #{result}"
+      #puts "#{@instruction} == #{result}"
       right = set_register(@instruction.left , result)
       true
     end

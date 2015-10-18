@@ -30,7 +30,7 @@ module Phisol
       raise "Already in method #{@method}" if @method
       @method = @clazz.get_instance_method( name )
       if(@method)
-        puts "Warning, redefining method #{name}" unless name == :main
+        #puts "Warning, redefining method #{name}" unless name == :main
         #TODO check args / type compatibility
         @method.source.init @method
       else
