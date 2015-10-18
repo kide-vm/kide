@@ -31,13 +31,13 @@ class AddTest < MiniTest::Test
   end
   def test_load
     assert_equal Register::LoadConstant ,  ticks(2).class
-    assert_equal Parfait::Space ,  Virtual.machine.objects[ @interpreter.get_register(:r1)].class
-    assert_equal :r1,  @interpreter.instruction.array.symbol
+    assert_equal Parfait::Space ,  Virtual.machine.objects[ @interpreter.get_register(:r2)].class
+    assert_equal :r2,  @interpreter.instruction.array.symbol
   end
   def test_get
     assert_equal Register::GetSlot , ticks(3).class
-    assert @interpreter.get_register( :r3 )
-    assert @interpreter.get_register( :r3 ).is_a? Integer
+    assert @interpreter.get_register( :r2 )
+    assert @interpreter.get_register( :r2 ).is_a? Integer
   end
   def test_transfer
     transfer = ticks 5
@@ -45,11 +45,11 @@ class AddTest < MiniTest::Test
     assert_equal @interpreter.get_register(transfer.to) , @interpreter.get_register(transfer.from)
   end
   def test_call
-    assert_equal Register::FunctionCall ,  ticks(7).class
+    assert_equal Register::FunctionCall ,  ticks(6).class
     assert @interpreter.link
   end
   def test_adding
-    done_op = ticks(11)
+    done_op = ticks(10)
     assert_equal Register::OperatorInstruction ,  done_op.class
     left = @interpreter.get_register(done_op.left)
     rr = done_op.right
@@ -65,9 +65,11 @@ class AddTest < MiniTest::Test
   end
 
   def test_chain
+    #show_ticks # get output of what is
     ["Branch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
-     "GetSlot","FunctionCall","SaveReturn","LoadConstant","LoadConstant",
-     "OperatorInstruction","RegisterTransfer","GetSlot"].each_with_index do |name , index|
+     "FunctionCall","SaveReturn","LoadConstant","LoadConstant","OperatorInstruction",
+     "RegisterTransfer","GetSlot","FunctionReturn","RegisterTransfer","Syscall",
+     "NilClass"].each_with_index do |name , index|
       got = ticks(1)
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
     end

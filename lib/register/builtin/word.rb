@@ -4,6 +4,7 @@ module Register
       module ClassMethods
         def putstring context
           function = Virtual::MethodSource.create_method(:Word,:Integer , :putstring , [] )
+          function.source.add_code Register.get_slot( function , :message , :receiver , :new_message )
           Kernel.emit_syscall( function , :putstring )
           function
         end

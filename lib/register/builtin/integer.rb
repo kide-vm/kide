@@ -3,6 +3,7 @@ module Register
   module Builtin
     module Integer
       module ClassMethods
+        include AST::Sexp
         def plus c
           plus_function = Virtual::MethodSource.create_method(:Integer,:Integer,:plus , [:Integer] )
           plus_function.source.set_return_type :Integer
@@ -11,8 +12,12 @@ module Register
           tmp = Register.tmp_reg :Integer
           index = Register.arg_index 1
           plus_function.source.add_code Register.get_slot( plus_function , :message , index , tmp )
-          add = Register::OperatorInstruction.new( plus_function, :add ,  Register.self_reg(:Integer) , tmp )
+
+          me = Register.tmp_reg :Integer
+          plus_function.source.add_code Register.get_slot(plus_function , :message , :receiver , me )
+          add = Register::OperatorInstruction.new( plus_function, :add ,  me , tmp )
           plus_function.source.add_code add
+          plus_function.source.add_code Register.set_slot(plus_function ,  me , :message , :return_value )
           return plus_function
         end
 

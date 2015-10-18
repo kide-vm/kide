@@ -13,12 +13,13 @@ module Register
           function.source.blocks.last.codes.pop # no Method return
           #Set up the Space as self upon init
           space = Parfait::Space.object_space
-          function.source.add_code LoadConstant.new(function, space , Register.self_reg(:Space))
+          space_reg = Register.tmp_reg(:Space)
+          function.source.add_code LoadConstant.new(function, space , space_reg)
           message_ind = Register.resolve_index( :space , :first_message )
-          # Load the message to new message register (r3)
-          function.source.add_code Register.get_slot( function , :self , message_ind , :new_message)
+          # Load the message to new message register (r1)
+          function.source.add_code Register.get_slot( function , space_reg , message_ind , :new_message)
           # And store the space as the new self (so the call can move it back as self)
-          function.source.add_code Register.set_slot( function, :self , :new_message , :receiver)
+          function.source.add_code Register.set_slot( function, space_reg , :new_message , :receiver)
           # now we are set up to issue a call to the main
           function.source.add_code Virtual::MethodCall.new(Virtual.machine.space.get_main)
           emit_syscall( function , :exit )
@@ -63,8 +64,6 @@ module Register
           # save the return value into the message
           function.source.add_code Register.set_slot( function, return_tmp , :message , :return_value )
           # and "unroll" self and frame
-          function.source.add_code Register.get_slot(function, :message , :receiver, :self )
-          function.source.add_code Register.get_slot(function, :message , :frame , :frame)
         end
       end
       extend ClassMethods

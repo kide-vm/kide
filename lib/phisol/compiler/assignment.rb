@@ -16,7 +16,9 @@ module Phisol
         index = @method.has_local( name )
         if(index)
           # TODO, check type  @method.locals[index].type
-          code = Register.set_slot(statement , v , :frame , index )
+          frame = use_reg(:Frame)
+          @method.source.add_code Register.get_slot(statement , :message , :frame , frame )
+          code = Register.set_slot(statement , v , frame , index )
         end
       end
       if( code )

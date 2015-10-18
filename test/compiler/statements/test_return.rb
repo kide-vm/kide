@@ -26,7 +26,7 @@ class Object
   end
 end
 HERE
-  @expect =  [[Virtual::MethodEnter,GetSlot] , [Virtual::MethodReturn]]
+  @expect =  [[Virtual::MethodEnter,GetSlot,GetSlot] , [Virtual::MethodReturn]]
   check
   end
 
@@ -39,7 +39,7 @@ class Object
   end
 end
 HERE
-    @expect =  [[Virtual::MethodEnter,LoadConstant, SetSlot,GetSlot] , [Virtual::MethodReturn]]
+    @expect =  [[Virtual::MethodEnter,LoadConstant,GetSlot,SetSlot,GetSlot,GetSlot] , [Virtual::MethodReturn]]
   check
   end
 
@@ -52,7 +52,7 @@ class Object
   end
 end
 HERE
-  @expect =  [[Virtual::MethodEnter,GetSlot] , [Virtual::MethodReturn]]
+  @expect =  [[Virtual::MethodEnter,GetSlot,GetSlot] , [Virtual::MethodReturn]]
   check
   end
 
@@ -64,7 +64,7 @@ class Object
   end
 end
 HERE
-  @expect =  [[Virtual::MethodEnter,GetSlot,SetSlot, LoadConstant,
+  @expect =  [[Virtual::MethodEnter,GetSlot,GetSlot,SetSlot, LoadConstant,
                 SetSlot,Virtual::MethodCall,GetSlot] , [Virtual::MethodReturn]]
   check
   end

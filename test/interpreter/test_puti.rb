@@ -51,7 +51,7 @@ HERE
     Virtual.machine.boot
     syntax  = Parser::Salama.new.parse_with_debug(@string_input)
     parts = Parser::Transform.new.apply(syntax)
-    puts parts.inspect
+    #puts parts.inspect
     Phisol::Compiler.compile( parts )
 
 #    statements = Virtual.machine.boot.parse_and_compile @string_input
@@ -59,16 +59,18 @@ HERE
     Virtual.machine.run_before "Register::CallImplementation"
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init
+    #show_ticks # get output of what is
     ["Branch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
-     "GetSlot","FunctionCall","SaveReturn","LoadConstant","GetSlot",
-     "SetSlot","LoadConstant","SetSlot","RegisterTransfer","GetSlot",
      "FunctionCall","SaveReturn","GetSlot","LoadConstant","SetSlot",
-     "GetSlot","SetSlot","LoadConstant","SetSlot","GetSlot",
-     "SetSlot","RegisterTransfer","GetSlot","FunctionCall","SaveReturn",
-     "GetSlot","LoadConstant","OperatorInstruction","SetSlot","GetSlot",
-     "OperatorInstruction","SetSlot","GetSlot","LoadConstant","OperatorInstruction",
-     "IsZeroBranch","GetSlot","SetSlot","LoadConstant","SetSlot",
-     "GetSlot","SetSlot","RegisterTransfer","GetSlot","FunctionCall",
+     "LoadConstant","SetSlot","RegisterTransfer","FunctionCall","SaveReturn",
+     "LoadConstant","GetSlot","SetSlot","GetSlot","GetSlot",
+     "SetSlot","LoadConstant","SetSlot","GetSlot","GetSlot",
+     "SetSlot","RegisterTransfer","FunctionCall","SaveReturn","GetSlot",
+     "LoadConstant","OperatorInstruction","GetSlot","SetSlot","GetSlot",
+     "GetSlot","GetSlot","OperatorInstruction","GetSlot","SetSlot",
+     "GetSlot","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
+     "GetSlot","GetSlot","SetSlot","LoadConstant","SetSlot",
+     "GetSlot","GetSlot","SetSlot","RegisterTransfer","FunctionCall",
      "SaveReturn","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
      "LoadConstant","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
      "LoadConstant","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",

@@ -27,6 +27,7 @@ module Ticker
       puts e
     end
     classes = classes.collect {|c| '"' + c.name.sub("Register::","")  + '",' }
+    classes << "length = #{classes.length}"
     classes.each_slice(5).each do |line|
       puts "     " + line.join
     end

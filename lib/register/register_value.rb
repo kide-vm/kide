@@ -65,27 +65,16 @@ module Register
     RegisterValue.new :r0 , :Message
   end
 
-  # A register to hold the receiver of the current message, in oo terms the self. :r1
-  def self.self_reg type
-    RegisterValue.new :r1 , type
-  end
-
-  # The register to hold a possible frame of the currently executing method. :r2
-  # May be nil if the method has no local variables
-  def self.frame_reg
-    RegisterValue.new :r2 , :Frame
-  end
-
   # The register we use to store the new message object is :r3
   # The new message is the one being built, to be sent
   def self.new_message_reg
-    RegisterValue.new :r3 , :Message
+    RegisterValue.new :r1 , :Message
   end
 
   # The first scratch register. There is a next_reg_use to get a next and next.
   # Current thinking is that scratch is schatch between instructions
   def self.tmp_reg type , value = nil
-    RegisterValue.new :r4 , type , value
+    RegisterValue.new :r2 , type , value
   end
 
   # The first arg is a class name (possibly lowercase) and the second an instance variable name.
@@ -116,8 +105,10 @@ module Register
       when :new_message
         register = new_message_reg
       when :self
+        raise "self good?"
         register = self_reg(:Object) #TODO , probably have to get rid of this resolve method
       when :frame
+        raise "frame good?"
         register = frame_reg
       else
         raise "not recognized register reference #{reference}"

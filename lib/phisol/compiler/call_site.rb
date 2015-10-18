@@ -7,14 +7,15 @@ module Phisol
       name = name.to_a.first
       raise "not inside method " unless @method
       reset_regs
-      if receiver
-        me = process( receiver.to_a.first  )
-      else
-        me = Register.self_reg @method.for_class.name
-      end
       #move the new message (that we need to populate to make a call) to std register
       new_message = Register.resolve_to_register(:new_message)
       @method.source.add_code Register.get_slot(@method, :message , :next_message , new_message )
+      if receiver
+        me = process( receiver.to_a.first  )
+      else
+        me = use_reg @method.for_class.name
+        @method.source.add_code Register.get_slot(@method, :message , :receiver , me )
+      end
       # move our receiver there
       @method.source.add_code Register.set_slot( statement , me , :new_message , :receiver)
       # load method name and set to new message (for exceptions/debug)

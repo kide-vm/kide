@@ -8,11 +8,8 @@ module Register
         new_codes << RegisterTransfer.new(code, Register.message_reg , Register.new_message_reg )
         # and restore the message from saved value in new_message
         new_codes << Register.get_slot(code,:new_message , :caller , :message )
-        # "roll out" self and frame into their registers
-        new_codes << Register.get_slot(code, :message , :receiver , :self )
-        new_codes << Register.get_slot(code, :message , :frame , :frame )
         #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
-        new_codes << FunctionReturn.new( code , Register.message_reg , Register.resolve_index(:message , :return_address) )
+        new_codes << FunctionReturn.new( code , Register.new_message_reg , Register.resolve_index(:message , :return_address) )
         block.replace(code , new_codes )
       end
     end

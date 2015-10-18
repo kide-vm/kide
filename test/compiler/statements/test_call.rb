@@ -17,7 +17,7 @@ class Object
   end
 end
 HERE
-    @expect =  [[Virtual::MethodEnter,LoadConstant,GetSlot,
+    @expect =  [[Virtual::MethodEnter,GetSlot,LoadConstant,
                   SetSlot,LoadConstant,SetSlot,Virtual::MethodCall,GetSlot] ,
                   [Virtual::MethodReturn]]
     check
@@ -37,7 +37,7 @@ class Object
   end
 end
 HERE
-    @expect =  [[Virtual::MethodEnter,LoadConstant,GetSlot,
+    @expect =  [[Virtual::MethodEnter,GetSlot,LoadConstant,
                   SetSlot,LoadConstant,SetSlot,Virtual::MethodCall,GetSlot] ,
                   [Virtual::MethodReturn]]
     check
@@ -57,8 +57,8 @@ class Object
   end
 end
 HERE
-    @expect =  [ [Virtual::MethodEnter,LoadConstant,SetSlot,GetSlot,
-                  GetSlot,SetSlot,LoadConstant,SetSlot,Virtual::MethodCall,
+    @expect =  [ [Virtual::MethodEnter,LoadConstant,GetSlot,SetSlot,GetSlot,
+                  GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,Virtual::MethodCall,
                   GetSlot] ,[Virtual::MethodReturn] ]
   check
   end
@@ -77,13 +77,13 @@ class Object
   end
 end
 HERE
-    @expect =  [ [Virtual::MethodEnter,GetSlot,GetSlot,SetSlot,
+    @expect =  [ [Virtual::MethodEnter,GetSlot,GetSlot,GetSlot,SetSlot,
                   LoadConstant,SetSlot,Virtual::MethodCall,
                   GetSlot] ,[Virtual::MethodReturn] ]
   check
   end
 
-  def test_puts_string
+  def test_call_puts
     @string_input    = <<HERE
 class Object
 int puts(Word str)
@@ -94,7 +94,7 @@ int main()
 end
 end
 HERE
-    @expect = [ [Virtual::MethodEnter , GetSlot,SetSlot,LoadConstant,SetSlot,LoadConstant,
+    @expect = [ [Virtual::MethodEnter , GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,LoadConstant,
                  SetSlot,Virtual::MethodCall,GetSlot],
                 [Virtual::MethodReturn]]
     check

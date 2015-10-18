@@ -7,7 +7,11 @@ module Phisol
       # whichever way this goes the result is stored in the return slot (as all compiles)
       def on_name statement
         name = statement.to_a.first
-        return Register.self_reg(@clazz.name ) if(name == :self)
+        if( name == :self)
+          ret = use_reg @clazz.name
+          @method.source.add_code Register.get_slot(statement , :message , :receiver , ret )
+          return ret
+        end
         # either an argument, so it's stored in message
         if( index = @method.has_arg(name))
           ret = use_reg @method.arguments[index].type
@@ -16,8 +20,10 @@ module Phisol
         else # or a local so it is in the frame
           index = @method.has_local( name )
           if(index)
+            frame = use_reg :Frame
+            @method.source.add_code Register.get_slot(statement , :message , :frame , frame )
             ret = use_reg @method.locals[index].type
-            @method.source.add_code Register.get_slot(statement , :frame , index , ret )
+            @method.source.add_code Register.get_slot(statement , frame , index , ret )
             return ret
           end
         end
