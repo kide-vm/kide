@@ -36,8 +36,7 @@ module Virtual
 
   class Machine
 
-    FIRST_PASS = "Virtual::EnterImplementation"
-    LAST_PASS = "Virtual::SetOptimisation"
+    FIRST_PASS = "Register::CallImplementation"
 
     def initialize
       @parser  = Parser::Salama.new

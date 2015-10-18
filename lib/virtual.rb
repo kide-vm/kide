@@ -11,7 +11,6 @@ require "virtual/method_source"
 # the passes _are_ order dependant
 require "virtual/passes/minimizer"
 require "virtual/passes/collector"
-require "virtual/passes/enter_implementation"
 
 
 class Fixnum

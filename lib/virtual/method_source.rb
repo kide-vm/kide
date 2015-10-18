@@ -56,7 +56,8 @@ module Virtual
 
     def init method , return_type = nil
       # first block we have to create with .new , as new_block assumes a current
-      enter = Block.new( "enter"  , method ).add_code(MethodEnter.new( method ))
+      enter = Block.new( "enter"  , method )
+      enter.add_code Register.save_return(self, :message , :return_address)
       set_return_type( return_type )
       @blocks = [enter]
       @current = enter

@@ -17,7 +17,7 @@ class Object
   end
 end
 HERE
-    @expect =  [[Virtual::MethodEnter,GetSlot,LoadConstant,
+    @expect =  [[SaveReturn,GetSlot,LoadConstant,
                   SetSlot,LoadConstant,SetSlot,Virtual::MethodCall,GetSlot] ,
                   [RegisterTransfer,GetSlot,FunctionReturn]]
     check
@@ -37,7 +37,7 @@ class Object
   end
 end
 HERE
-    @expect =  [[Virtual::MethodEnter,GetSlot,LoadConstant,
+    @expect =  [[SaveReturn,GetSlot,LoadConstant,
                   SetSlot,LoadConstant,SetSlot,Virtual::MethodCall,GetSlot] ,
                   [RegisterTransfer,GetSlot,FunctionReturn]]
     check
@@ -57,7 +57,7 @@ class Object
   end
 end
 HERE
-    @expect =  [ [Virtual::MethodEnter,LoadConstant,GetSlot,SetSlot,GetSlot,
+    @expect =  [ [SaveReturn,LoadConstant,GetSlot,SetSlot,GetSlot,
                   GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,Virtual::MethodCall,
                   GetSlot] ,[RegisterTransfer,GetSlot,FunctionReturn] ]
   check
@@ -77,7 +77,7 @@ class Object
   end
 end
 HERE
-    @expect =  [ [Virtual::MethodEnter,GetSlot,GetSlot,GetSlot,SetSlot,
+    @expect =  [ [SaveReturn,GetSlot,GetSlot,GetSlot,SetSlot,
                   LoadConstant,SetSlot,Virtual::MethodCall,
                   GetSlot] ,[RegisterTransfer,GetSlot,FunctionReturn] ]
   check
@@ -94,7 +94,7 @@ int main()
 end
 end
 HERE
-    @expect = [ [Virtual::MethodEnter , GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,LoadConstant,
+    @expect = [ [SaveReturn , GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,LoadConstant,
                  SetSlot,Virtual::MethodCall,GetSlot],
                 [RegisterTransfer,GetSlot,FunctionReturn]]
     check

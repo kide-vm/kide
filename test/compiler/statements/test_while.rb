@@ -15,7 +15,7 @@ class Object
   end
 end
 HERE
-      @expect = [[Virtual::MethodEnter],[LoadConstant,IsZeroBranch,LoadConstant,AlwaysBranch],
+      @expect = [[SaveReturn],[LoadConstant,IsZeroBranch,LoadConstant,AlwaysBranch],
                   [],[RegisterTransfer,GetSlot,FunctionReturn]]
       check
     end
@@ -31,7 +31,7 @@ class Object
   end
 end
 HERE
-      @expect = [[Virtual::MethodEnter,LoadConstant,GetSlot,SetSlot],[GetSlot,GetSlot,LoadConstant,OperatorInstruction,
+      @expect = [[SaveReturn,LoadConstant,GetSlot,SetSlot],[GetSlot,GetSlot,LoadConstant,OperatorInstruction,
                   IsZeroBranch,GetSlot,GetSlot,LoadConstant,OperatorInstruction,GetSlot,SetSlot,AlwaysBranch],
                   [],[RegisterTransfer,GetSlot,FunctionReturn]]
       check
@@ -50,7 +50,7 @@ class Object
   end
 end
 HERE
-      @expect = [[Virtual::MethodEnter,LoadConstant,GetSlot,SetSlot],
+      @expect = [[SaveReturn,LoadConstant,GetSlot,SetSlot],
                  [GetSlot,GetSlot,LoadConstant,OperatorInstruction,IsZeroBranch,GetSlot,
                    GetSlot,LoadConstant,OperatorInstruction,GetSlot,SetSlot,GetSlot,
                    GetSlot,AlwaysBranch] ,
