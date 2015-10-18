@@ -1,10 +1,10 @@
 module Virtual
 
   #  collect anything that is in the space but and reachable from init
-  class Collector
-    def run
+  module Collector
+    def collect
       # init= Parfait::Space.object_space.get_class_by_name("Kernel").get_instance_method "__init__"
-      Virtual.machine.objects.clear
+      self.objects.clear
       keep Parfait::Space.object_space , 0
     end
 
@@ -12,7 +12,7 @@ module Virtual
       return if object.nil?
       #puts "adding #{' ' * depth}:#{object.class}"
       #puts "ADD #{object.first.class}, #{object.last.class}" if object.is_a? Array
-      return unless Virtual.machine.add_object object
+      return unless self.add_object object
       return unless object.respond_to? :has_layout?
       if( object.is_a? Parfait::Method)
         object.source.constants.each{|c|

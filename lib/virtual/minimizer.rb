@@ -25,7 +25,7 @@ module Virtual
       @gonners.delete function
       function.source.blocks.each do |block|
         block.codes.each do |code|
-          keep code.method if code.is_a? Virtual::MethodCall
+          keep code.method if code.is_a? Register::FunctionCall
         end
       end
     end

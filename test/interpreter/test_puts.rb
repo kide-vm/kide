@@ -4,7 +4,7 @@ class TestPuts < MiniTest::Test
   include AST::Sexp
   include Ticker
   def setup
-    Virtual.machine.boot
+    machine = Virtual.machine.boot
     code =   s(:class, :Object,
                         s(:derives, nil),
                           s(:statements,
@@ -19,7 +19,7 @@ class TestPuts < MiniTest::Test
                                     s(:string,  "Hello again")))))))
 
     Phisol::Compiler.compile( code )
-    Virtual.machine.run_before "Register::CallImplementation"
+    machine.collect
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init
   end

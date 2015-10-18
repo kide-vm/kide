@@ -1,5 +1,5 @@
 require 'parslet/convenience'
-
+require_relative "collector"
 module Virtual
   # The Virtual Machine is a object based virtual machine in which ruby is implemented.
   #
@@ -35,12 +35,11 @@ module Virtual
   # The "machine" is not part of the run-time (Parfait)
 
   class Machine
-
-    FIRST_PASS = "Register::CallImplementation"
+    include Collector
 
     def initialize
       @parser  = Parser::Salama.new
-      @passes = [  FIRST_PASS ]
+      @passes = [   ]
       @objects = {}
       @booted = false
     end
@@ -51,8 +50,6 @@ module Virtual
     # runs housekeeping Minimizer and Collector
     # Has to be called before run_after
     def run_before stop_at
-      Minimizer.new.run
-      Collector.new.run
       @blocks = [@init]
       @space.classes.values.each do |c|
         c.instance_methods.each do |f|
@@ -85,8 +82,9 @@ module Virtual
     # as before, run all passes that are registered
     # (but now finer control with before/after versions)
     def run_passes
-      run_before FIRST_PASS
-      run_after FIRST_PASS
+      return if @passes.empty?
+      run_before @passes.first
+      run_after @passes.first
     end
 
     # Objects are data and get assembled after functions

@@ -9,6 +9,7 @@ class HelloTest < MiniTest::Test
     statements = machine.parse_and_compile @string_input
     output_at = "Register::CallImplementation"
     #{}"Register::CallImplementation"
+    machine.collect
     machine.run_before output_at
     #puts Sof.write(machine.space)
     machine.run_after output_at

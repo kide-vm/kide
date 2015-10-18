@@ -74,6 +74,7 @@ module Interpreter
     def tick
       return unless @instruction
       @clock += 1
+      #puts @instruction
       name = @instruction.class.name.split("::").last
       fetch = send "execute_#{name}"
       return unless fetch

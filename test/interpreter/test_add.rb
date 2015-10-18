@@ -5,7 +5,7 @@ class AddTest < MiniTest::Test
   include Ticker
 
   def setup
-    Virtual.machine.boot
+    machine = Virtual.machine.boot
     code  =   s(:class, :Object,
                 s(:derives, nil),
                   s(:statements,
@@ -19,7 +19,7 @@ class AddTest < MiniTest::Test
                             s(:int, 7)))))))
 
     Phisol::Compiler.compile( code  )
-    Virtual.machine.run_before "Register::CallImplementation"
+    machine.collect
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init
   end
