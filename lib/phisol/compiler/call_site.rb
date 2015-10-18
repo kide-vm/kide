@@ -38,7 +38,7 @@ module Phisol
       method = clazz.get_instance_method(name)
       #puts Virtual.machine.space.get_class_by_name(:Integer).method_names.to_a
       raise "Method not implemented #{me.type}.#{name}" unless method
-      @method.source.add_code Virtual::MethodCall.new( method )
+      Register.issue_call( @method , method )
       ret = use_reg( method.source.return_type )
       # the effect of the method is that the NewMessage Return slot will be filled, return it
       # but move it into a register too

@@ -21,7 +21,7 @@ module Register
           # And store the space as the new self (so the call can move it back as self)
           function.source.add_code Register.set_slot( function, space_reg , :new_message , :receiver)
           # now we are set up to issue a call to the main
-          function.source.add_code Virtual::MethodCall.new(Virtual.machine.space.get_main)
+          Register.issue_call( function , Virtual.machine.space.get_main)
           emit_syscall( function , :exit )
           return function
         end

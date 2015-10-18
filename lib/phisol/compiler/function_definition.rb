@@ -42,7 +42,6 @@ module Phisol
 
       kids.to_a.each do |ex|
         ret = process(ex)
-        raise ret.inspect if ret.is_a? Virtual::Instruction
       end
       @method = nil
       # function definition is a statement, does not return any value

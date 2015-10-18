@@ -66,7 +66,7 @@ class Object
 end
 HERE
   @expect =  [[SaveReturn,GetSlot,GetSlot,SetSlot, LoadConstant,
-                SetSlot,Virtual::MethodCall,GetSlot] , [RegisterTransfer,GetSlot,FunctionReturn]]
+                SetSlot,RegisterTransfer,FunctionCall,GetSlot] , [RegisterTransfer,GetSlot,FunctionReturn]]
   check
   end
 end
