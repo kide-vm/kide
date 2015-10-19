@@ -6,30 +6,23 @@ module Interpreter
     # fire events for changed pc and register contents
     include Eventable
 
-    # current instruction or pc
-    attr_reader :instruction
-
-    # current instruction or pc
-    attr_reader :clock
-
+    attr_reader :instruction     # current instruction or pc
+    attr_reader :clock    # current instruction or pc
     # an (arm style) link register. store the return address to return to
     attr_reader :link
-
     # current executing block. since this is not a hardware simulator this is luxury
     attr_reader :block
-
-    # the registers, 16
-    attr_reader :registers
-
-    # collect the output
-    attr_reader :stdout
-
-    attr_reader :state
+    attr_reader :registers     # the registers, 16 (a hash, sym -> contents)
+    attr_reader :stdout     # collect the output
+    attr_reader :state # running etc
+    attr_reader :flags  # somewhat like the lags on a cpu, hash  sym => bool (zero .. . )
 
     def initialize
       @state = "runnnig"
       @stdout = ""
       @registers = {}
+      @flags = {  :zero => false , :positive => false ,
+                  :negative=> false , :overflow => false }
       @clock = 0
       (0...12).each do |r|
         set_register "r#{r}".to_sym , "r#{r}:unknown"
@@ -65,6 +58,13 @@ module Interpreter
 
     def set_register reg , val
       old = get_register( reg ) # also ensures format
+      unless val.is_a? String
+        @flags[:zero] = (val == 0)
+        @flags[:positive] = (val > 0)
+        @flags[:negative] = (val < 0)
+        #puts "Set_flags #{val}  :zero=#{@flags[:zero]}"
+
+      end
       return if old === val
       reg = reg.symbol if reg.is_a? Register::RegisterValue
       @registers[reg] = val
@@ -96,17 +96,21 @@ module Interpreter
     end
 
     # Instruction interpretation starts here
-    def execute_Branch
+    def execute_AlwaysBranch
       target = @instruction.block
       set_block target
       false
     end
 
     def execute_IsZeroBranch
-      puts @instruction.inspect
-      target = @instruction.block
-      set_block target
-      false
+      #puts @instruction.inspect
+      if( @flags[:zero] )
+        target = @instruction.block
+        set_block target
+        return false
+      else
+        return true
+      end
     end
 
     def execute_LoadConstant
@@ -192,18 +196,19 @@ module Interpreter
       case @instruction.operator.to_s
       when "+"
         result = left + right
-      when "/"
-        result = left / right
       when "-"
         result = left - right
-      when "<"
-        result = left < right
+      when "/"
+        result = left / right
+      when "*"
+        #TODO set overflow, reduce result to int
+        result = left * right
       when "=="
-        result = left == right
+        result = (left == right) ? 1 : 0
       else
         raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
       end
-      #puts "#{@instruction} == #{result}"
+      #puts "#{@instruction} == #{result}   (#{left}|#{right})"
       right = set_register(@instruction.left , result)
       true
     end

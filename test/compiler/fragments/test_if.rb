@@ -8,7 +8,7 @@ class TestIf < MiniTest::Test
 class Object
   int main()
     int n = 10
-    if( n < 12)
+    if( n - 12)
       return 3
     else
       return 4
@@ -16,30 +16,32 @@ class Object
   end
 end
 HERE
-  @expect =  [[SaveReturn,Virtual::Set,Virtual::Set,Register::GetSlot,
-                Register::GetSlot,Register::OperatorInstruction,Register::IsZeroBranch] ,
-                [Virtual::Set,Register::AlwaysBranch] ,[Virtual::Set] ,[] ,[RegisterTransfer,GetSlot,FunctionReturn] ]
+  @length = 17
   check
   end
 
-  def test_return
+  def test_if_small
     @string_input = <<HERE
 class Object
   int main()
-    return 5
+    int n = 10
+    if(8 - n )
+      "10".putstring()
+    end
   end
 end
 HERE
-  @expect =  [[SaveReturn,Virtual::Set] , [RegisterTransfer,GetSlot,FunctionReturn]]
+  @length = 33
+  @stdout = "10"
   check
   end
 
 
-  def test_if_function
+  def test_if_puts
     @string_input = <<HERE
 class Object
   int itest(int n)
-    if( n < 12)
+    if( n - 12)
       "then".putstring()
     else
       "else".putstring()
@@ -51,8 +53,8 @@ class Object
   end
 end
 HERE
-    @expect =  [ [SaveReturn,Register::GetSlot,Virtual::Set,Virtual::Set,
-                  Virtual::Set,Virtual::Set,RegisterTransfer,FunctionCall] ,[RegisterTransfer,GetSlot,FunctionReturn] ]
+  @length = 40
+  @stdout = "else"
   check
   end
 end

@@ -16,7 +16,7 @@ module Ticker
     error = nil
     tick = 1
     begin
-      while true and (classes.length < 100)
+      while true and (classes.length < 200)
         cl = ticks(1).class
         tick += 1
         classes << cl

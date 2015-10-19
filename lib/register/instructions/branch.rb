@@ -11,9 +11,9 @@ module Register
     attr_reader :block
 
     def to_s
-      "Branch: #{block.name}"
+      "#{self.class.name}: #{block.name}"
     end
-    alias :inspect :to_s 
+    alias :inspect :to_s
   end
 
   class IsZeroBranch < Branch

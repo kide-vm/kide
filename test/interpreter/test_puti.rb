@@ -29,7 +29,7 @@ class Integer < Object
     div = self / 10
     int rest
     rest = self - div
-    if( rest < 0)
+    if( rest - 0)
       rest = self.digit( rest )
       str = str + rest
     else
@@ -58,8 +58,8 @@ HERE
 #    Phisol::Compiler.compile( statements , Virtual.machine.space.get_main )
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init
-    #show_ticks # get output of what is
-    ["Branch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
+    # show_ticks # get output of what is
+    ["AlwaysBranch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
      "FunctionCall","SaveReturn","GetSlot","LoadConstant","SetSlot",
      "LoadConstant","SetSlot","RegisterTransfer","FunctionCall","SaveReturn",
      "LoadConstant","GetSlot","SetSlot","GetSlot","GetSlot",
@@ -68,14 +68,23 @@ HERE
      "LoadConstant","OperatorInstruction","GetSlot","SetSlot","GetSlot",
      "GetSlot","GetSlot","OperatorInstruction","GetSlot","SetSlot",
      "GetSlot","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
+     "GetSlot","GetSlot","GetSlot","SetSlot","LoadConstant",
+     "SetSlot","GetSlot","SetSlot","RegisterTransfer","FunctionCall",
+     "SaveReturn","GetSlot","LoadConstant","OperatorInstruction","GetSlot",
+     "SetSlot","GetSlot","GetSlot","GetSlot","OperatorInstruction",
+     "GetSlot","SetSlot","GetSlot","GetSlot","LoadConstant",
+     "OperatorInstruction","IsZeroBranch","GetSlot","GetSlot","GetSlot",
+     "SetSlot","LoadConstant","SetSlot","GetSlot","SetSlot",
+     "RegisterTransfer","FunctionCall","SaveReturn","GetSlot","LoadConstant",
+     "OperatorInstruction","GetSlot","SetSlot","GetSlot","GetSlot",
+     "GetSlot","OperatorInstruction","GetSlot","SetSlot","GetSlot",
+     "GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch","GetSlot",
      "GetSlot","GetSlot","SetSlot","LoadConstant","SetSlot",
-     "GetSlot","GetSlot","SetSlot","RegisterTransfer","FunctionCall",
-     "SaveReturn","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
-     "LoadConstant","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
-     "LoadConstant","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
-     "LoadConstant","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
-     "LoadConstant","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
-     "LoadConstant","NilClass"].each_with_index do |name , index|
+     "GetSlot","SetSlot","RegisterTransfer","FunctionCall","SaveReturn",
+     "GetSlot","LoadConstant","OperatorInstruction","GetSlot","SetSlot",
+     "GetSlot","GetSlot","GetSlot","OperatorInstruction","GetSlot",
+     "SetSlot","GetSlot","GetSlot","LoadConstant","OperatorInstruction",
+     "IsZeroBranch","GetSlot","GetSlot","GetSlot"].each_with_index do |name , index|
     got = ticks(1)
     assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
 end
