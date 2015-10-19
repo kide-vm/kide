@@ -8,7 +8,7 @@ class TestIf < MiniTest::Test
 class Object
   int main()
     int n = 10
-    if( n - 12)
+    if_plus( n - 12)
       return 3
     else
       return 4
@@ -25,7 +25,7 @@ HERE
 class Object
   int main()
     int n = 10
-    if(8 - n )
+    if_minus(8 - n )
       "10".putstring()
     end
   end
@@ -41,7 +41,7 @@ HERE
     @string_input = <<HERE
 class Object
   int itest(int n)
-    if( n - 12)
+    if_zero( n - 12)
       "then".putstring()
     else
       "else".putstring()

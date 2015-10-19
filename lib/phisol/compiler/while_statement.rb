@@ -3,7 +3,7 @@ module Phisol
 
     def on_while_statement statement
       #puts statement.inspect
-      condition , statements = *statement
+      branch_type , condition , statements = *statement
       condition = condition.first
 
       # this is where the while ends and both branches meet

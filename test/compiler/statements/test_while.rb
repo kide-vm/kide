@@ -9,7 +9,7 @@ module Register
       @string_input    = <<HERE
 class Object
   int main()
-    while(1)
+    while_plus(1)
       return 3
     end
   end
@@ -25,7 +25,7 @@ HERE
 class Object
   int main()
     int n = 5
-    while(n > 0)
+    while_minus(n > 0)
       n = n - 1
     end
   end
@@ -43,7 +43,7 @@ HERE
 class Object
   int main()
     int n = 10
-    while( n > 5)
+    while_notzero( n > 5)
       n = n + 1
       return n
     end

@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: git://github.com/salama/salama-reader.git
-  revision: ab0a94bd51c996637453331adeb28bf1731f9b65
+  revision: 6710567af979b0b367245c16a0c6af260675bc71
   specs:
     salama-reader (0.4.0)
       ast (~> 2.1.0)
@@ -20,7 +20,7 @@ GIT
 
 GIT
   remote: git://github.com/whitequark/ast.git
-  revision: 82e280fe0f9d528a581721d02d22d1fbf3755142
+  revision: 3814fb102af82a30bf334005ebe17332744f9dad
   specs:
     ast (2.1.0)
 

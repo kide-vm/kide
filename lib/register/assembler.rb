@@ -98,7 +98,7 @@ module Register
         next if objekt.is_a? Parfait::BinaryCode
         write_any( objekt )
       end
-      puts "Assembled #{stream_position} bytes"
+      #puts "Assembled #{stream_position} bytes"
       return @stream.string
     end
 

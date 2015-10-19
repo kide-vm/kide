@@ -8,19 +8,19 @@ class AddTest < MiniTest::Test
     @string_input = <<HERE
 class Integer < Object
   Word digit( int rest )
-    if( rest == 5 )
+    if_zero( rest == 5 )
       return "5"
     end
-    if( rest == 1 )
+    if_zero( rest == 1 )
       return "1"
     end
-    if( rest == 2 )
+    if_zero( rest == 2 )
       return "2"
     end
-    if( rest == 3 )
+    if_zero( rest == 3 )
       return "3"
     end
-    if( rest == 4 )
+    if_zero( rest == 4 )
       return "4"
     end
   end
@@ -29,7 +29,7 @@ class Integer < Object
     div = self / 10
     int rest
     rest = self - div
-    if( rest - 0)
+    if_nonzero( rest )
       rest = self.digit( rest )
       str = str + rest
     else
@@ -58,7 +58,7 @@ HERE
 #    Phisol::Compiler.compile( statements , Virtual.machine.space.get_main )
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init
-    # show_ticks # get output of what is
+     #show_ticks # get output of what is
     ["AlwaysBranch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
      "FunctionCall","SaveReturn","GetSlot","LoadConstant","SetSlot",
      "LoadConstant","SetSlot","RegisterTransfer","FunctionCall","SaveReturn",
@@ -67,24 +67,23 @@ HERE
      "SetSlot","RegisterTransfer","FunctionCall","SaveReturn","GetSlot",
      "LoadConstant","OperatorInstruction","GetSlot","SetSlot","GetSlot",
      "GetSlot","GetSlot","OperatorInstruction","GetSlot","SetSlot",
-     "GetSlot","GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch",
-     "GetSlot","GetSlot","GetSlot","SetSlot","LoadConstant",
-     "SetSlot","GetSlot","SetSlot","RegisterTransfer","FunctionCall",
-     "SaveReturn","GetSlot","LoadConstant","OperatorInstruction","GetSlot",
-     "SetSlot","GetSlot","GetSlot","GetSlot","OperatorInstruction",
-     "GetSlot","SetSlot","GetSlot","GetSlot","LoadConstant",
-     "OperatorInstruction","IsZeroBranch","GetSlot","GetSlot","GetSlot",
-     "SetSlot","LoadConstant","SetSlot","GetSlot","SetSlot",
-     "RegisterTransfer","FunctionCall","SaveReturn","GetSlot","LoadConstant",
-     "OperatorInstruction","GetSlot","SetSlot","GetSlot","GetSlot",
-     "GetSlot","OperatorInstruction","GetSlot","SetSlot","GetSlot",
-     "GetSlot","LoadConstant","OperatorInstruction","IsZeroBranch","GetSlot",
-     "GetSlot","GetSlot","SetSlot","LoadConstant","SetSlot",
-     "GetSlot","SetSlot","RegisterTransfer","FunctionCall","SaveReturn",
-     "GetSlot","LoadConstant","OperatorInstruction","GetSlot","SetSlot",
-     "GetSlot","GetSlot","GetSlot","OperatorInstruction","GetSlot",
-     "SetSlot","GetSlot","GetSlot","LoadConstant","OperatorInstruction",
-     "IsZeroBranch","GetSlot","GetSlot","GetSlot"].each_with_index do |name , index|
+     "GetSlot","GetSlot","IsZeroBranch","GetSlot","GetSlot",
+     "GetSlot","SetSlot","LoadConstant","SetSlot","GetSlot",
+     "SetSlot","RegisterTransfer","FunctionCall","SaveReturn","GetSlot",
+     "LoadConstant","OperatorInstruction","GetSlot","SetSlot","GetSlot",
+     "GetSlot","GetSlot","OperatorInstruction","GetSlot","SetSlot",
+     "GetSlot","GetSlot","IsZeroBranch","GetSlot","GetSlot",
+     "GetSlot","SetSlot","LoadConstant","SetSlot","GetSlot",
+     "SetSlot","RegisterTransfer","FunctionCall","SaveReturn","GetSlot",
+     "LoadConstant","OperatorInstruction","GetSlot","SetSlot","GetSlot",
+     "GetSlot","GetSlot","OperatorInstruction","GetSlot","SetSlot",
+     "GetSlot","GetSlot","IsZeroBranch","GetSlot","GetSlot",
+     "GetSlot","SetSlot","LoadConstant","SetSlot","GetSlot",
+     "SetSlot","RegisterTransfer","FunctionCall","SaveReturn","GetSlot",
+     "LoadConstant","OperatorInstruction","GetSlot","SetSlot","GetSlot",
+     "GetSlot","GetSlot","OperatorInstruction","GetSlot","SetSlot",
+     "GetSlot","GetSlot","IsZeroBranch","GetSlot","GetSlot",
+     "GetSlot"].each_with_index do |name , index|
     got = ticks(1)
     assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
 end

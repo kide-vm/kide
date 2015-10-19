@@ -8,7 +8,7 @@ class TestIfStatement < MiniTest::Test
     @string_input = <<HERE
 class Object
   int main()
-    if( 10 < 12)
+    if_plus( 10 < 12)
       return 3
     else
       return 4
@@ -28,7 +28,7 @@ HERE
     @string_input = <<HERE
 class Object
   int main()
-    if( 10 < 12)
+    if_minus( 10 < 12)
       return 3
     end
   end
