@@ -103,14 +103,16 @@ module Interpreter
     end
 
     def execute_IsZero
-      #puts @instruction.inspect
-      if( @flags[:zero] )
-        target = @instruction.block
-        set_block target
-        return false
-      else
-        return true
-      end
+       @flags[:zero] ?  execute_Branch : true
+    end
+    def execute_IsNotzero
+       @flags[:zero] ? true : execute_Branch
+    end
+    def execute_IsPlus
+       @flags[:plus] ?  execute_Branch : true
+    end
+    def execute_IsMinus
+       @flags[:minus] ?  execute_Branch : true
     end
 
     def execute_LoadConstant

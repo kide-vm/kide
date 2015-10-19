@@ -13,9 +13,8 @@ module Phisol
       false_block = @method.source.new_block "if_false"    # directly next in order, ie if we don't jump we land here
 
       is = process(condition)
-      # TODO should/will use different branches for different conditions.
-      # just a scetch : cond_val = cond_val.is_true?(method) unless cond_val.is_a? BranchCondition
-      @method.source.add_code Register::IsZero.new( condition , true_block )
+      branch_class = Object.const_get "Register::Is#{branch_type.capitalize}"
+      @method.source.add_code branch_class.new( condition , true_block )
 
       # compile the true block (as we think of it first, even it is second in sequential order)
       @method.source.current true_block

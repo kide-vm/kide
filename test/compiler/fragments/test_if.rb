@@ -25,7 +25,7 @@ HERE
 class Object
   int main()
     int n = 10
-    if_minus(8 - n )
+    if_zero(8 - n )
       "10".putstring()
     end
   end
