@@ -14,7 +14,8 @@ module Phisol
 
       cond = process(condition)
 
-      @method.source.add_code Register::IsZero.new(condition,merge)
+      branch_class = Object.const_get "Register::Is#{branch_type.capitalize}"
+      @method.source.add_code branch_class.new( condition , merge )
 
       last = process_all(statements).last
 
