@@ -118,7 +118,7 @@ module Virtual
     def boot
       boot_parfait!
       @init = Block.new("init", :__init__ )
-      branch = Register::AlwaysBranch.new( "__init__" , self.space.get_init.source.blocks.first )
+      branch = Register::Branch.new( "__init__" , self.space.get_init.source.blocks.first )
       @init.add_code branch
       @booted = true
       self

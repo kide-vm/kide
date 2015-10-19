@@ -26,7 +26,7 @@ class AddTest < MiniTest::Test
 
   def test_branch
     was = @interpreter.block
-    assert_equal Register::AlwaysBranch , ticks(1).class
+    assert_equal Register::Branch , ticks(1).class
     assert was != @interpreter.block
   end
   def test_load
@@ -66,7 +66,7 @@ class AddTest < MiniTest::Test
 
   def test_chain
     #show_ticks # get output of what is
-    ["AlwaysBranch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
+    ["Branch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
      "FunctionCall","SaveReturn","LoadConstant","LoadConstant","OperatorInstruction",
      "RegisterTransfer","GetSlot","FunctionReturn","RegisterTransfer","Syscall",
      "NilClass"].each_with_index do |name , index|

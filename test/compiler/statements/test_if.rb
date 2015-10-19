@@ -17,8 +17,8 @@ class Object
 end
 HERE
   @expect =  [[SaveReturn,LoadConstant,LoadConstant,
-                OperatorInstruction,IsZeroBranch] ,
-                [LoadConstant,AlwaysBranch] ,[LoadConstant]  ,[] ,
+                OperatorInstruction,IsZero] ,
+                [LoadConstant,Branch] ,[LoadConstant]  ,[] ,
                 [RegisterTransfer,GetSlot,FunctionReturn]]
   check
   end
@@ -35,8 +35,8 @@ class Object
 end
 HERE
   @expect =  [[SaveReturn,LoadConstant,LoadConstant,
-                OperatorInstruction,IsZeroBranch] ,
-                [AlwaysBranch] ,[LoadConstant]  ,[] ,
+                OperatorInstruction,IsZero] ,
+                [Branch] ,[LoadConstant]  ,[] ,
                 [RegisterTransfer,GetSlot,FunctionReturn]]
   check
   end

@@ -14,12 +14,12 @@ module Phisol
 
       cond = process(condition)
 
-      @method.source.add_code Register::IsZeroBranch.new(condition,merge)
+      @method.source.add_code Register::IsZero.new(condition,merge)
 
       last = process_all(statements).last
 
       # unconditionally branch to the start
-      @method.source.add_code Register::AlwaysBranch.new(statement,start)
+      @method.source.add_code Register::Branch.new(statement,start)
 
       # continue execution / compiling at the merge block
       @method.source.current merge

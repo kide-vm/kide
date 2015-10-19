@@ -15,7 +15,7 @@ module Phisol
       is = process(condition)
       # TODO should/will use different branches for different conditions.
       # just a scetch : cond_val = cond_val.is_true?(method) unless cond_val.is_a? BranchCondition
-      @method.source.add_code Register::IsZeroBranch.new( condition , true_block )
+      @method.source.add_code Register::IsZero.new( condition , true_block )
 
       # compile the true block (as we think of it first, even it is second in sequential order)
       @method.source.current true_block
@@ -25,7 +25,7 @@ module Phisol
       # compile the false block
       @method.source.current false_block
       last = process_all(if_false).last if if_false
-      @method.source.add_code Register::AlwaysBranch.new(statement, merge_block )
+      @method.source.add_code Register::Branch.new(statement, merge_block )
 
       #puts "compiled if: end"
       @method.source.current merge_block

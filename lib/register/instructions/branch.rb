@@ -16,16 +16,16 @@ module Register
     alias :inspect :to_s
   end
 
-  class IsZeroBranch < Branch
+  class IsZero < Branch
   end
 
-  class IsNegativeBranch < Branch
+  class IsNotzero < Branch
   end
 
-  class IsPositiveBranch < Branch
+  class IsMinus < Branch
   end
 
-  class AlwaysBranch < Branch
+  class IsPlus < Branch
   end
 
 end

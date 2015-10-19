@@ -15,7 +15,7 @@ class Object
   end
 end
 HERE
-      @expect = [[SaveReturn],[LoadConstant,IsZeroBranch,LoadConstant,AlwaysBranch],
+      @expect = [[SaveReturn],[LoadConstant,IsZero,LoadConstant,Branch],
                   [],[RegisterTransfer,GetSlot,FunctionReturn]]
       check
     end
@@ -32,7 +32,7 @@ class Object
 end
 HERE
       @expect = [[SaveReturn,LoadConstant,GetSlot,SetSlot],[GetSlot,GetSlot,LoadConstant,OperatorInstruction,
-                  IsZeroBranch,GetSlot,GetSlot,LoadConstant,OperatorInstruction,GetSlot,SetSlot,AlwaysBranch],
+                  IsZero,GetSlot,GetSlot,LoadConstant,OperatorInstruction,GetSlot,SetSlot,Branch],
                   [],[RegisterTransfer,GetSlot,FunctionReturn]]
       check
     end
@@ -51,9 +51,9 @@ class Object
 end
 HERE
       @expect = [[SaveReturn,LoadConstant,GetSlot,SetSlot],
-                 [GetSlot,GetSlot,LoadConstant,OperatorInstruction,IsZeroBranch,GetSlot,
+                 [GetSlot,GetSlot,LoadConstant,OperatorInstruction,IsZero,GetSlot,
                    GetSlot,LoadConstant,OperatorInstruction,GetSlot,SetSlot,GetSlot,
-                   GetSlot,AlwaysBranch] ,
+                   GetSlot,Branch] ,
                    [],[RegisterTransfer,GetSlot,FunctionReturn]]
       check
     end

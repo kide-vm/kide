@@ -96,13 +96,13 @@ module Interpreter
     end
 
     # Instruction interpretation starts here
-    def execute_AlwaysBranch
+    def execute_Branch
       target = @instruction.block
       set_block target
       false
     end
 
-    def execute_IsZeroBranch
+    def execute_IsZero
       #puts @instruction.inspect
       if( @flags[:zero] )
         target = @instruction.block
