@@ -18,7 +18,7 @@ module Interpreter
     attr_reader :flags  # somewhat like the lags on a cpu, hash  sym => bool (zero .. . )
 
     def initialize
-      @state = "runnnig"
+      @state = :stopped
       @stdout = ""
       @registers = {}
       @flags = {  :zero => false , :positive => false ,
@@ -27,10 +27,19 @@ module Interpreter
       (0...12).each do |r|
         set_register "r#{r}".to_sym , "r#{r}:unknown"
       end
+      @block = nil
     end
 
     def start bl
+      set_state(:running)
       set_block  bl
+    end
+
+    def set_state state
+      old = @state
+      return if state == old
+      @state = state
+      trigger(:state_changed , old , state )
     end
 
     def set_block bl
@@ -43,11 +52,11 @@ module Interpreter
     end
 
     def set_instruction i
-      @state = "exited" unless i
       return if @instruction == i
       old = @instruction
       @instruction = i
       trigger(:instruction_changed, old , i)
+      set_state( :exited) unless i
     end
 
     def get_register( reg )
@@ -62,8 +71,7 @@ module Interpreter
         @flags[:zero] = (val == 0)
         @flags[:positive] = (val > 0)
         @flags[:negative] = (val < 0)
-        #puts "Set_flags #{val}  :zero=#{@flags[:zero]}"
-
+        #puts "Set_flags #{val}  :#{@flags.inspect}"
       end
       return if old === val
       reg = reg.symbol if reg.is_a? Register::RegisterValue
@@ -210,7 +218,7 @@ module Interpreter
       else
         raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
       end
-      #puts "#{@instruction} == #{result}   (#{left}|#{right})"
+      puts "#{@instruction} == #{result}   (#{left}|#{right})"
       right = set_register(@instruction.left , result)
       true
     end
