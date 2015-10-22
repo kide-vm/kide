@@ -73,7 +73,7 @@ HERE
     was = check
     get = was[0].codes[5]
     assert_equal GetSlot , get.class
-    assert_equal 2, get.index , "Get to frame index must be offset, not #{get.index}"
+    assert_equal 3, get.index , "Get to frame index must be offset, not #{get.index}"
   end
 
   def test_assign_arg
@@ -89,7 +89,7 @@ HERE
     was = check
     set = was[0].codes[2]
     assert_equal SetSlot , set.class
-    assert_equal 8, set.index , "Set to args index must be offset, not #{set.index}"
+    assert_equal 9, set.index , "Set to args index must be offset, not #{set.index}"
   end
 
   def test_assign_int
@@ -104,7 +104,7 @@ HERE
     was = check
     set = was[0].codes[3]
     assert_equal SetSlot , set.class
-    assert_equal 2, set.index , "Set to frame index must be offset, not #{set.index}"
+    assert_equal 3, set.index , "Set to frame index must be offset, not #{set.index}"
   end
 
   def test_arg_get
@@ -122,7 +122,7 @@ HERE
     was = check
     get = was[0].codes[1]
     assert_equal GetSlot , get.class
-    assert_equal 8, get.index , "Get to frame index must be offset, not #{get.index}"
+    assert_equal 9, get.index , "Get to frame index must be offset, not #{get.index}"
   end
 end
 end

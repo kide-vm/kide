@@ -30,7 +30,7 @@ module Parfait
     end
 
     def self.offset
-      Space.object_space.get_class_by_name(:Message).object_layout.object_instance_length
+      1 + Space.object_space.get_class_by_name(:Message).object_layout.object_instance_length
     end
   end
 end
