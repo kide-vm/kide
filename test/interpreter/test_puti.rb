@@ -58,7 +58,7 @@ HERE
 #    Phisol::Compiler.compile( statements , Virtual.machine.space.get_main )
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Virtual.machine.init
-    # show_ticks # get output of what is
+    #show_ticks # get output of what is
     ["Branch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
      "FunctionCall","SaveReturn","GetSlot","LoadConstant","SetSlot",
      "LoadConstant","SetSlot","RegisterTransfer","FunctionCall","SaveReturn",
@@ -74,7 +74,12 @@ HERE
      "LoadConstant","OperatorInstruction","IsZero","LoadConstant","GetSlot",
      "LoadConstant","OperatorInstruction","IsZero","LoadConstant","GetSlot",
      "LoadConstant","OperatorInstruction","IsZero","LoadConstant","GetSlot",
-     "LoadConstant","OperatorInstruction","IsZero","LoadConstant","NilClass"].each_with_index do |name , index|
+     "LoadConstant","OperatorInstruction","IsZero","LoadConstant","RegisterTransfer",
+     "GetSlot","FunctionReturn","GetSlot","GetSlot","SetSlot",
+     "GetSlot","GetSlot","GetSlot","OperatorInstruction","SetSlot",
+     "GetSlot","RegisterTransfer","GetSlot","FunctionReturn","GetSlot",
+     "RegisterTransfer","GetSlot","FunctionReturn","GetSlot","RegisterTransfer",
+     "GetSlot","FunctionReturn","RegisterTransfer","Syscall","NilClass"].each_with_index do |name , index|
     got = ticks(1)
     assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
 end
