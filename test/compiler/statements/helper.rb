@@ -18,6 +18,7 @@ module Statements
         assert_equal codes[ii] ,  c.class ,  "Block #{i+1} , code #{ii+1}"
       end
     end
+    produced.blocks
   end
 
 
