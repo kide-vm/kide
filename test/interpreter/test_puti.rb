@@ -70,7 +70,7 @@ HERE
      "GetSlot","GetSlot","IsNotzero","GetSlot","GetSlot",
      "SetSlot","LoadConstant","SetSlot","GetSlot","GetSlot",
      "SetSlot","RegisterTransfer","FunctionCall","SaveReturn","GetSlot",
-     "LoadConstant","OperatorInstruction","IsZero","LoadConstant","GetSlot",
+     "LoadConstant","OperatorInstruction","IsZero","Branch","GetSlot",
      "LoadConstant","OperatorInstruction","IsZero","LoadConstant","GetSlot",
      "LoadConstant","OperatorInstruction","IsZero","LoadConstant","GetSlot",
      "LoadConstant","OperatorInstruction","IsZero","LoadConstant","GetSlot",
