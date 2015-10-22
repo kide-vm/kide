@@ -31,6 +31,7 @@ module Interpreter
     end
 
     def start bl
+      @clock = 0
       set_state(:running)
       set_block  bl
     end
@@ -100,7 +101,8 @@ module Interpreter
 
     def object_for reg
       id = get_register(reg)
-      Virtual.machine.objects[id]
+      object = Virtual.machine.objects[id]
+      object.nil? ? id : object
     end
 
     # Instruction interpretation starts here
