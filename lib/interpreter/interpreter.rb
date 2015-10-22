@@ -47,6 +47,11 @@ module Interpreter
       return if @block == bl
       raise "Error, nil block" unless bl
       old = @block
+      if bl.codes.empty?
+        next_b = @block.method.source.blocks.index(bl) + 1
+        bl = @block.method.source.blocks[next_b]
+      end
+      raise "Block #{bl.codes.empty?}" if bl.codes.empty? #just fixed, leave for next time
       @block = bl
       trigger(:block_changed , old , bl)
       set_instruction bl.codes.first
