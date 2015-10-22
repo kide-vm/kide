@@ -56,6 +56,10 @@ module Parfait
       names
     end
 
+    def object_instance_length
+      self.get_length - 2
+    end
+
     alias :list_index :index_of
     # private inheritance is something to think off, we don't really want the list api exported
     def index_of name

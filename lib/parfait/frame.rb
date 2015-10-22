@@ -28,5 +28,9 @@ module Parfait
   class Frame < Object
     attribute :next_frame
 
+    def self.offset
+      Space.object_space.get_class_by_name(:Frame).object_layout.object_instance_length
+    end
+
   end
 end
