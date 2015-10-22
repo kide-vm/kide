@@ -12,6 +12,7 @@ module Phisol
       true_block =  @method.source.new_block "if_true"     # second, linked in after current, before merge
       false_block = @method.source.new_block "if_false"    # directly next in order, ie if we don't jump we land here
 
+      reset_regs
       is = process(condition)
       branch_class = Object.const_get "Register::Is#{branch_type.capitalize}"
       @method.source.add_code branch_class.new( condition , true_block )
@@ -19,10 +20,12 @@ module Phisol
       # compile the true block (as we think of it first, even it is second in sequential order)
       @method.source.current true_block
 
+      reset_regs
       last = process_all(if_true).last
 
       # compile the false block
       @method.source.current false_block
+      reset_regs
       last = process_all(if_false).last if if_false
       @method.source.add_code Register::Branch.new(statement, merge_block )
 
