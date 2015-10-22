@@ -97,8 +97,10 @@ HERE
     @expect = [ [SaveReturn , GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,LoadConstant,
                  SetSlot,RegisterTransfer,FunctionCall,GetSlot],
                 [RegisterTransfer,GetSlot,FunctionReturn]]
-    check
+    was = check
+    set = was[0].codes[7]
+    assert_equal SetSlot , set.class
+    assert_equal 8, set.index , "Set to message must be offset, not #{set.index}"
   end
-
 end
 end

@@ -28,8 +28,9 @@ module Phisol
         # processing should return the register with the value
         val = process( arg)
         raise "Not register #{val}" unless val.is_a?(Register::RegisterValue)
-        # which we load int the new_message at the argument's index
-        @method.source.add_code Register.set_slot( statement , val , :new_message , i + 1)
+        # which we load int the new_message at the argument's index (the one comes from c index)
+        set = Register.set_slot( statement , val , :new_message , i + 1 + Parfait::Message.offset)
+        @method.source.add_code set
       end
 
       # now we have to resolve the method name (+ receiver) into a callable method
