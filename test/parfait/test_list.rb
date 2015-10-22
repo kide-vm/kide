@@ -3,14 +3,14 @@ require_relative "../helper"
 class TestList < MiniTest::Test
 
   def setup
-    Virtual.machine.boot unless Virtual.machine.booted
+    Register.machine.boot unless Register.machine.booted
     @list = ::Parfait::List.new
   end
   def test_old_layout
-    assert_equal Parfait::Layout , Virtual.machine.space.classes.keys.get_layout.class
+    assert_equal Parfait::Layout , Register.machine.space.classes.keys.get_layout.class
   end
   def test_old_layout_push
-    list = Virtual.machine.space.classes.keys
+    list = Register.machine.space.classes.keys
     list.push(1)
     assert_equal Parfait::Layout , list.get_layout.class
   end
@@ -26,7 +26,7 @@ class TestList < MiniTest::Test
     assert_equal 1 , layout.variable_index(:layout)
   end
   def notest_layout_is_first_old
-    layout =  Virtual.machine.space.classes.keys.get_layout
+    layout =  Register.machine.space.classes.keys.get_layout
     assert_equal 1 , layout.variable_index(:layout)
   end
 

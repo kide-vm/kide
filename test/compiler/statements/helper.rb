@@ -4,10 +4,10 @@ require_relative '../../helper'
 module Statements
 
   def check
-    machine = Virtual.machine
+    machine = Register.machine
     machine.boot unless machine.booted
     machine.parse_and_compile @string_input
-    produced = Virtual.machine.space.get_main.source
+    produced = Register.machine.space.get_main.source
     assert @expect , "No output given"
     assert_equal @expect.length ,  produced.blocks.length , "Block length"
     produced.blocks.each_with_index do |b,i|

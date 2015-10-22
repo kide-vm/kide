@@ -13,7 +13,7 @@ module Parfait
   # known local variable names
   # executable code
 
-  # ps, the compiler injects its own info, see Virtual::MethodSource
+  # ps, the compiler injects its own info, see Register::MethodSource
 
 
   class Method < Object

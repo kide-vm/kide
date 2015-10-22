@@ -6,7 +6,7 @@ module Register
         # it isn't really a function, ie it is jumped to (not called), exits and may not return
         # so it is responsible for initial setup
         def __init__ context
-          function = Virtual::MethodSource.create_method(:Kernel,:Integer,:__init__ , [])
+          function = MethodSource.create_method(:Kernel,:Integer,:__init__ , [])
           function.source.set_return_type :Integer
           # no method enter or return (automatically added), remove
           function.source.blocks.first.codes.pop # no Method enter
@@ -21,20 +21,20 @@ module Register
           # And store the space as the new self (so the call can move it back as self)
           function.source.add_code Register.set_slot( function, space_reg , :new_message , :receiver)
           # now we are set up to issue a call to the main
-          Register.issue_call( function , Virtual.machine.space.get_main)
+          Register.issue_call( function , Register.machine.space.get_main)
           emit_syscall( function , :exit )
           return function
         end
         def exit context
-          function = Virtual::MethodSource.create_method(:Kernel,:Integer,:exit , [])
+          function = MethodSource.create_method(:Kernel,:Integer,:exit , [])
           function.source.set_return_type  :Integer
           return function
-          ret = Virtual::RegisterMachine.instance.exit(function)
+          ret = RegisterMachine.instance.exit(function)
           function.set_return ret
           function
         end
         def __send context
-          function = Virtual::MethodSource.create_method(:Kernel,:Integer ,:__send , [] )
+          function = MethodSource.create_method(:Kernel,:Integer ,:__send , [] )
           function.source.set_return_type :Integer
           return function
         end

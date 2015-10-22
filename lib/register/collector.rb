@@ -1,4 +1,4 @@
-module Virtual
+module Register
 
   #  collect anything that is in the space but and reachable from init
   module Collector

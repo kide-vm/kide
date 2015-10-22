@@ -48,16 +48,16 @@ class Object
   end
 end
 HERE
-    machine = Virtual.machine.boot
+    machine = Register.machine.boot
     syntax  = Parser::Salama.new.parse_with_debug(@string_input)
     parts = Parser::Transform.new.apply(syntax)
     #puts parts.inspect
     Phisol::Compiler.compile( parts )
     machine.collect
-#    statements = Virtual.machine.boot.parse_and_compile @string_input
-#    Phisol::Compiler.compile( statements , Virtual.machine.space.get_main )
+#    statements = Register.machine.boot.parse_and_compile @string_input
+#    Phisol::Compiler.compile( statements , Register.machine.space.get_main )
     @interpreter = Interpreter::Interpreter.new
-    @interpreter.start Virtual.machine.init
+    @interpreter.start Register.machine.init
     #show_ticks # get output of what is
     ["Branch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
      "FunctionCall","SaveReturn","GetSlot","LoadConstant","SetSlot",

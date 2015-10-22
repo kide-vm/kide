@@ -1,4 +1,4 @@
-module Virtual
+module Register
 
   # Remove all functions that are not called
   # Not called is approximated by the fact that the method name doesn't show up
@@ -11,7 +11,7 @@ module Virtual
           @gonners << f
         end
       end
-      keep Virtual.machine.space.get_init
+      keep Register.machine.space.get_init
       remove_remaining
     end
 
@@ -25,7 +25,7 @@ module Virtual
       @gonners.delete function
       function.source.blocks.each do |block|
         block.codes.each do |code|
-          keep code.method if code.is_a? Register::FunctionCall
+          keep code.method if code.is_a? FunctionCall
         end
       end
     end

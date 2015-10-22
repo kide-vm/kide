@@ -3,7 +3,7 @@ require_relative "../helper"
 class TestLayout < MiniTest::Test
 
   def setup
-    @mess = Virtual.machine.boot.space.first_message
+    @mess = Register.machine.boot.space.first_message
   end
 
   def test_message_layout
@@ -46,7 +46,7 @@ class TestLayout < MiniTest::Test
   end
 
   def test_class_layout
-    oc = Virtual.machine.boot.space.get_class_by_name( :Object )
+    oc = Register.machine.boot.space.get_class_by_name( :Object )
     assert_equal Parfait::Class , oc.class
     layout = oc.object_layout
     assert_equal Parfait::Layout , layout.class

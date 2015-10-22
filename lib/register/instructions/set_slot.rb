@@ -23,8 +23,8 @@ module Register
       @array = array
       @index = index
       raise "not integer #{index}" unless index.is_a? Numeric
-      raise "Not register #{register}" unless Register::RegisterValue.look_like_reg(register)
-      raise "Not register #{array}" unless Register::RegisterValue.look_like_reg(array)
+      raise "Not register #{register}" unless RegisterValue.look_like_reg(register)
+      raise "Not register #{array}" unless RegisterValue.look_like_reg(array)
     end
     attr_accessor :register , :array , :index
     def to_s

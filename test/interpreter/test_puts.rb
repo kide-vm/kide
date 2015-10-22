@@ -4,7 +4,7 @@ class TestPuts < MiniTest::Test
   include AST::Sexp
   include Ticker
   def setup
-    machine = Virtual.machine.boot
+    machine = Register.machine.boot
     code =   s(:class, :Object,
                         s(:derives, nil),
                           s(:statements,
@@ -21,7 +21,7 @@ class TestPuts < MiniTest::Test
     Phisol::Compiler.compile( code )
     machine.collect
     @interpreter = Interpreter::Interpreter.new
-    @interpreter.start Virtual.machine.init
+    @interpreter.start Register.machine.init
   end
 
   def test_branch
@@ -31,7 +31,7 @@ class TestPuts < MiniTest::Test
   end
   def test_load
     assert_equal Register::LoadConstant ,  ticks(2).class
-    assert_equal Parfait::Space ,  Virtual.machine.objects[ @interpreter.get_register(:r2)].class
+    assert_equal Parfait::Space ,  Register.machine.objects[ @interpreter.get_register(:r2)].class
     assert_equal :r2,  @interpreter.instruction.array.symbol
   end
   def test_get
@@ -78,7 +78,7 @@ class TestPuts < MiniTest::Test
   def test_return
     done = ticks(24)
     assert_equal Register::FunctionReturn ,  done.class
-    assert @interpreter.block.is_a?(Virtual::Block)
+    assert @interpreter.block.is_a?(Register::Block)
     assert @interpreter.instruction.is_a?(Register::Instruction) , "not instruction #{@interpreter.instruction}"
   end
 

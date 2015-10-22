@@ -106,7 +106,7 @@ module Interpreter
 
     def object_for reg
       id = get_register(reg)
-      object = Virtual.machine.objects[id]
+      object = Register.machine.objects[id]
       object.nil? ? id : object
     end
 

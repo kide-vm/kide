@@ -35,7 +35,7 @@ class Object
   end
 end
 HERE
-  @expect =  [[SaveReturn,Register::GetSlot,Virtual::Set,Virtual::Set,RegisterTransfer,FunctionCall] ,
+  @expect =  [[SaveReturn,Register::GetSlot,Register::Set,Register::Set,RegisterTransfer,FunctionCall] ,
           [RegisterTransfer,GetSlot,FunctionReturn]]
   check
 

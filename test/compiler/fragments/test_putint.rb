@@ -16,8 +16,8 @@ class Object
   end
 end
 HERE
-    @expect =  [ [SaveReturn,Virtual::Set,Register::GetSlot,Virtual::Set,
-                  Virtual::Set,RegisterTransfer,FunctionCall] ,[RegisterTransfer,GetSlot,FunctionReturn] ]
+    @expect =  [ [SaveReturn,Register::Set,Register::GetSlot,Register::Set,
+                  Register::Set,RegisterTransfer,FunctionCall] ,[RegisterTransfer,GetSlot,FunctionReturn] ]
     check
   end
 end

@@ -19,7 +19,7 @@ module Phisol
           if( r != :self)
             raise "unimplemented case in function #{r}"
           else
-            r = Virtual::Self.new()
+            r = Register::Self.new()
             class_name = method.for_class.name
           end
         end
@@ -34,7 +34,7 @@ module Phisol
         #TODO check args / type compatibility
         @method.source.init @method
       else
-        @method = Virtual::MethodSource.create_method(class_name, return_type, name , args )
+        @method = Register::MethodSource.create_method(class_name, return_type, name , args )
         @method.for_class.add_instance_method @method
       end
       @method.source.receiver = r

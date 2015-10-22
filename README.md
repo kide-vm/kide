@@ -80,13 +80,13 @@ it's main purpose is to have an oo system language to compile to.
 I spent some time on the parse testing framework, so it is safe to fiddle and add.
 In fact it is very modular and easy to add to.
 
-### Virtual: Compile the Ast
+### Register: Compile the Ast
 
 Since we now have an Abstact syntax tree, it needs to be compiled to a virtual machine Instruction format.
 For the parsed subset that's almost done.
 
 It took me a while to come up with a decent but simple machine model. I had tried to map straight to hardware
-but failed. The current Virtual directory represent a machine with basic oo features.
+but failed. The current Register directory represent a machine with basic oo features.
 
 ### Parfait - the runtime
 

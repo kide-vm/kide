@@ -238,5 +238,5 @@ module Register
     end
   end
 
-  Sof::Volotile.add(Register::Assembler , [:objects])
+  Sof::Volotile.add(Assembler , [:objects])
 end

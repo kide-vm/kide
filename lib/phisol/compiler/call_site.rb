@@ -34,10 +34,10 @@ module Phisol
       end
 
       # now we have to resolve the method name (+ receiver) into a callable method
-      clazz =  Virtual.machine.space.get_class_by_name(me.type)
+      clazz =  Register.machine.space.get_class_by_name(me.type)
       raise "No such class #{me.type}" unless clazz
       method = clazz.get_instance_method(name)
-      #puts Virtual.machine.space.get_class_by_name(:Integer).method_names.to_a
+      #puts Register.machine.space.get_class_by_name(:Integer).method_names.to_a
       raise "Method not implemented #{me.type}.#{name}" unless method
       Register.issue_call( @method , method )
       ret = use_reg( method.source.return_type )

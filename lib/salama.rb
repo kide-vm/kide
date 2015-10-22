@@ -10,7 +10,6 @@ end
 
 require 'parser/transform'
 require "salama-object-file"
-require "virtual"
-require "register/register"
+require "register"
 require "register/builtin/object"
 require "arm/arm_machine"

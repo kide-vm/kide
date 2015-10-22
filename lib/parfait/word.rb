@@ -16,7 +16,7 @@ module Parfait
   class Word < Object
     # initialize with length. For now we try to keep all non-parfait (including String) out
     # String will contain spaces for non-zero length
-    # Virtual provides methods to create Parfait objects from ruby
+    # Register provides methods to create Parfait objects from ruby
     def initialize len
       super()
       raise "Must init with int, not #{len.class}" unless len.kind_of? Fixnum

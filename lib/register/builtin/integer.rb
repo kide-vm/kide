@@ -5,7 +5,7 @@ module Register
       module ClassMethods
         include AST::Sexp
         def plus c
-          plus_function = Virtual::MethodSource.create_method(:Integer,:Integer,:plus , [:Integer] )
+          plus_function = MethodSource.create_method(:Integer,:Integer,:plus , [:Integer] )
           plus_function.source.set_return_type :Integer
           plus_function.source.receiver = :Integer
 
@@ -15,7 +15,7 @@ module Register
 
           me = Register.tmp_reg :Integer
           plus_function.source.add_code Register.get_slot(plus_function , :message , :receiver , me )
-          add = Register::OperatorInstruction.new( plus_function, :add ,  me , tmp )
+          add = OperatorInstruction.new( plus_function, :add ,  me , tmp )
           plus_function.source.add_code add
           plus_function.source.add_code Register.set_slot(plus_function ,  me , :message , :return_value )
           return plus_function
@@ -28,14 +28,14 @@ module Register
         # As we write before we recurse (save a push) we write the number backwards
         # arguments: string address , integer
         # def utoa context
-        #   utoa_function = Virtual::MethodSource.create_method(:Integer ,:utoa ,  [ :Integer ] )
+        #   utoa_function = MethodSource.create_method(:Integer ,:utoa ,  [ :Integer ] )
         #   function.source.return_type = :Integer
         #   function.source.receiver = :Integer
         #   return utoa_function
         #   # str_addr = utoa_function.receiver
         #   # number = utoa_function.args.first
         #   # remainder = utoa_function.new_local
-        #   # Virtual::RegisterMachine.instance.div10( utoa_function , number  , remainder )
+        #   # RegisterMachine.instance.div10( utoa_function , number  , remainder )
         #   # # make char out of digit (by using ascii encoding) 48 == "0"
         #   # utoa_function.instance_eval do
         #   #   add(  remainder , remainder , 48)
@@ -48,7 +48,7 @@ module Register
         # end
 
         def putint context
-          putint_function = Virtual::MethodSource.create_method(:Integer,:Integer,:putint , [] )
+          putint_function = MethodSource.create_method(:Integer,:Integer,:putint , [] )
           putint_function.source.set_return_type :Integer
           putint_function.source.receiver = :Integer
           return putint_function
@@ -68,7 +68,7 @@ module Register
           #   add( int ,  buffer , nil )   # string to write to
           #   mov( moved_int ,  buffer.length )
           # end
-          # Virtual::RegisterMachine.instance.write_stdout(putint_function)
+          # RegisterMachine.instance.write_stdout(putint_function)
           # putint_function
         end
 
@@ -77,7 +77,7 @@ module Register
         # a hand coded version of the fibonachi numbers
         # not my hand off course, found in the net http://www.peter-cockerell.net/aalp/html/ch-5.html
         def fibo context
-          fibo_function = Virtual::MethodSource.create_method(:Integer,:Integer,:fibo ,  [] )
+          fibo_function = MethodSource.create_method(:Integer,:Integer,:fibo ,  [] )
           fibo_function.source.set_return_type :Integer
           fibo_function.source.receiver = :Integer
           return fibo_function

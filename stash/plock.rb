@@ -1,4 +1,4 @@
-module Virtual
+module Register
   # Plock (Proc-Block) is mostly a Block but also somewhat Proc-ish: A Block that carries data.
   #
   # Data in a Block is usefull in the same way data in objects is. Plocks being otherwise just code.

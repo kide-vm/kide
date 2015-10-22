@@ -1,6 +1,6 @@
-module Virtual
+module Register
 
-  class Constant < ::Virtual::Object
+  class Constant < ::Register::Object
   end
   class TrueConstant < Constant
   end

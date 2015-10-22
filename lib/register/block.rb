@@ -1,4 +1,4 @@
-module Virtual
+module Register
 
   # Think flowcharts: blocks are the boxes. The smallest unit of linear code
 

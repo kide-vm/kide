@@ -13,7 +13,7 @@ module Fragments
     @stdout =  ""
   end
   def check
-    machine = Virtual.machine.boot
+    machine = Register.machine.boot
     machine.parse_and_compile @string_input
     machine.collect
     interpreter = Interpreter::Interpreter.new

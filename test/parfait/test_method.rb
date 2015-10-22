@@ -3,8 +3,8 @@ require_relative "../helper"
 class TestMethod < MiniTest::Test
 
   def setup
-    obj = Virtual.machine.boot.space.get_class_by_name(:Object)
-    args = Virtual.new_list [ Parfait::Variable.new(:Integer , :bar )]
+    obj = Register.machine.boot.space.get_class_by_name(:Object)
+    args = Register.new_list [ Parfait::Variable.new(:Integer , :bar )]
     @method = ::Parfait::Method.new obj , :foo , args
   end
 

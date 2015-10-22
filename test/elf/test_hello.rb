@@ -3,7 +3,7 @@ require_relative "../helper"
 class HelloTest < MiniTest::Test
 
   def check
-    machine = Virtual.machine.boot
+    machine = Register.machine.boot
     Parfait::Space.object_space.get_class_by_name(:Integer).remove_instance_method :plus
     #TODO remove this hack: write proper aliases
     statements = machine.parse_and_compile @string_input

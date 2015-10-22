@@ -3,7 +3,7 @@ require_relative "../helper"
 class TestAttributes < MiniTest::Test
 
   def setup
-    @mess = Virtual.machine.boot.space.first_message
+    @mess = Register.machine.boot.space.first_message
     @layout = @mess.get_layout
   end
 

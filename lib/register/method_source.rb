@@ -1,6 +1,6 @@
 require_relative "block"
 
-module Virtual
+module Register
   # the static info of a method (with its compiled code, argument names etc ) is part of the
   # runtime, ie found in Parfait::Method
 
@@ -35,17 +35,17 @@ module Virtual
     def self.create_method( class_name , return_type , method_name , args)
       raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
-      clazz = Virtual.machine.space.get_class_by_name class_name
+      clazz = Register.machine.space.get_class_by_name class_name
       raise "No such class #{class_name}" unless clazz
       arguments = []
       args.each_with_index do | arg , index |
         unless arg.is_a? Parfait::Variable
-          raise "not type #{arg}:#{arg.class}" unless Virtual.machine.space.get_class_by_name arg
+          raise "not type #{arg}:#{arg.class}" unless Register.machine.space.get_class_by_name arg
           arg = Parfait::Variable.new arg , "arg#{index}".to_sym
         end
         arguments << arg
       end
-      method = clazz.create_instance_method( method_name , Virtual.new_list(arguments))
+      method = clazz.create_instance_method( method_name , Register.new_list(arguments))
       method.source = MethodSource.new(method , return_type)
       method
     end
@@ -63,11 +63,11 @@ module Virtual
       @current = enter
       ret = new_block("return")
       # move the current message to new_message
-      ret.add_code Register::RegisterTransfer.new(self, Register.message_reg , Register.new_message_reg )
+      ret.add_code RegisterTransfer.new(self, Register.message_reg , Register.new_message_reg )
       # and restore the message from saved value in new_message
       ret.add_code Register.get_slot(self,:new_message , :caller , :message )
       #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
-      ret.add_code Register::FunctionReturn.new( self , Register.new_message_reg , Register.resolve_index(:message , :return_address) )
+      ret.add_code FunctionReturn.new( self , Register.new_message_reg , Register.resolve_index(:message , :return_address) )
       @constants = []
     end
     attr_reader   :blocks , :constants , :return_type
@@ -75,13 +75,13 @@ module Virtual
 
     def set_return_type type
       return if type.nil?
-      raise "not type #{type}" unless Virtual.machine.space.get_class_by_name type
+      raise "not type #{type}" unless Register.machine.space.get_class_by_name type
       @return_type = type
     end
     # add an instruction after the current (insertion point)
     # the added instruction will become the new insertion point
     def add_code instruction
-      unless  instruction.is_a?(Register::Instruction)
+      unless  instruction.is_a?(Instruction)
         raise instruction.to_s
       end
       @current.add_code(instruction) #insert after current
@@ -93,7 +93,7 @@ module Virtual
     def locals_at l_block
       used =[]
       # call assigns the return register, but as it is in l_block, it is not asked.
-      assigned = [ Register::RegisterValue.new(Virtual::RegisterMachine.instance.return_register) ]
+      assigned = [ RegisterValue.new(RegisterMachine.instance.return_register) ]
       l_block.reachable.each do |b|
         b.uses.each {|u|
           (used << u) unless assigned.include?(u)

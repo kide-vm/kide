@@ -4,7 +4,7 @@
 # To stay sane, we use the same classes that we use later, but "adapt" them to work in ruby
 # This affects mainly memory layout
 
-module Virtual
+module Register
   def self.new_list array
     list = Parfait::List.new
     list.set_length array.length
@@ -24,7 +24,7 @@ class Symbol
     true
   end
   def get_layout
-    l = Virtual.machine.space.classes[:Word].object_layout
+    l = Register.machine.space.classes[:Word].object_layout
     #puts "LL #{l.class}"
     l
   end
@@ -42,7 +42,7 @@ class Symbol
     pos = cache_positions[self]
     if pos == nil
       str = "position accessed but not set, "
-      str += "Machine has object=#{Virtual.machine.objects.has_key?(self.object_id)} "
+      str += "Machine has object=#{Register.machine.objects.has_key?(self.object_id)} "
       raise str + " for Symbol:#{self}"
     end
     pos

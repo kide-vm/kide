@@ -1,4 +1,4 @@
-module Virtual
+module Register
 
   # Booting is a complicated, so it is extracted into this file, even it has only one entry point
 
@@ -147,19 +147,19 @@ module Virtual
       # TODO go through the virtual parfait layer and adjust function names to what they really are
       obj = @space.get_class_by_name(:Object)
       [:main , :_get_instance_variable , :_set_instance_variable].each do |f|
-        obj.add_instance_method Register::Builtin::Object.send(f , nil)
+        obj.add_instance_method Builtin::Object.send(f , nil)
       end
       obj = @space.get_class_by_name(:Kernel)
       # create __init__ main first, __init__ calls it
       [:exit,:__send , :__init__ ].each do |f|
-        obj.add_instance_method Register::Builtin::Kernel.send(f , nil)
+        obj.add_instance_method Builtin::Kernel.send(f , nil)
       end
 
-      @space.get_class_by_name(:Word).add_instance_method Register::Builtin::Word.send(:putstring , nil)
+      @space.get_class_by_name(:Word).add_instance_method Builtin::Word.send(:putstring , nil)
 
       obj = @space.get_class_by_name(:Integer)
       [:putint,:fibo , :plus].each do |f|
-        obj.add_instance_method Register::Builtin::Integer.send(f , nil)
+        obj.add_instance_method Builtin::Integer.send(f , nil)
       end
     end
   end

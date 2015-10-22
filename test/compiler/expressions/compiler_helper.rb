@@ -3,7 +3,7 @@ require 'parslet/convenience'
 
 Phisol::Compiler.class_eval do
   def set_main main
-    @clazz = Virtual.machine.space.get_class_by_name :Object
+    @clazz = Register.machine.space.get_class_by_name :Object
     @method = main
   end
 end
@@ -11,10 +11,10 @@ end
 module CompilerHelper
 
   def set_main compiler
-    compiler.set_main Virtual.machine.space.get_main
+    compiler.set_main Register.machine.space.get_main
   end
   def check
-    machine = Virtual.machine
+    machine = Register.machine
     machine.boot unless machine.booted
     parser = Parser::Salama.new
     parser = parser.send @root

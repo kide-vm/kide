@@ -19,7 +19,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'test'))
 
 require 'salama'
 
-module Virtual
+module Register
   # Functions to generate parfait objects
   def self.new_word( string )
     string = string.to_s if string.is_a? Symbol

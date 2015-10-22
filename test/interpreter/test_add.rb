@@ -5,7 +5,7 @@ class AddTest < MiniTest::Test
   include Ticker
 
   def setup
-    machine = Virtual.machine.boot
+    machine = Register.machine.boot
     code  =   s(:class, :Object,
                 s(:derives, nil),
                   s(:statements,
@@ -21,7 +21,7 @@ class AddTest < MiniTest::Test
     Phisol::Compiler.compile( code  )
     machine.collect
     @interpreter = Interpreter::Interpreter.new
-    @interpreter.start Virtual.machine.init
+    @interpreter.start Register.machine.init
   end
 
   def test_branch
@@ -31,7 +31,7 @@ class AddTest < MiniTest::Test
   end
   def test_load
     assert_equal Register::LoadConstant ,  ticks(2).class
-    assert_equal Parfait::Space ,  Virtual.machine.objects[ @interpreter.get_register(:r2)].class
+    assert_equal Parfait::Space ,  Register.machine.objects[ @interpreter.get_register(:r2)].class
     assert_equal :r2,  @interpreter.instruction.array.symbol
   end
   def test_get

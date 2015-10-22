@@ -5,7 +5,7 @@ class TestAssignStatement < MiniTest::Test
   include Statements
 
   def setup
-    Virtual.machine.boot
+    Register.machine.boot
   end
 
   def test_assign_op
@@ -77,7 +77,7 @@ HERE
   end
 
   def test_assign_arg
-    Virtual.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :bar)
+    Register.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :bar)
     @string_input = <<HERE
 class Object
   int main(int bar)
@@ -109,7 +109,7 @@ HERE
 
   def test_arg_get
     # have to define bar externally, just because redefining main. Otherwise that would be automatic
-    Virtual.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :bar)
+    Register.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :bar)
     @string_input = <<HERE
 class Object
   int main(int bar)

@@ -1,11 +1,11 @@
 require_relative "compiler_helper"
 
-module Virtual
+module Register
   class TestFields < MiniTest::Test
     include CompilerHelper
 
     def setup
-      Virtual.machine.boot
+      Register.machine.boot
     end
 
     def test_field_not_defined
@@ -17,7 +17,7 @@ HERE
     end
 
     def test_field
-      Virtual.machine.space.get_class_by_name(:Object).object_layout.add_instance_variable(:bro)
+      Register.machine.space.get_class_by_name(:Object).object_layout.add_instance_variable(:bro)
       @root = :field_access
       @string_input = <<HERE
 self.bro
@@ -27,7 +27,7 @@ HERE
     end
 
     def test_local
-      Virtual.machine.space.get_main.ensure_local(:bar , :Integer)
+      Register.machine.space.get_main.ensure_local(:bar , :Integer)
       @root = :name
       @string_input    = 'bar '
       @output = Register::RegisterValue
@@ -35,7 +35,7 @@ HERE
     end
 
     def test_args
-      Virtual.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :bar)
+      Register.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :bar)
       @root = :name
       @string_input    = 'bar '
       @output = Register::RegisterValue

@@ -1,4 +1,4 @@
-module Virtual
+module Register
   # A slot is a slot in an object. It is the storage location for a value.
   #             (Remember, values are typed)
   # From a memory perspective a slot is an index into an array (the object)

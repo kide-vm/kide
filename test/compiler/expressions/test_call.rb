@@ -1,11 +1,11 @@
 require_relative "compiler_helper"
 
-module Virtual
+module Register
   class TestCall < MiniTest::Test
     include CompilerHelper
 
     def setup
-      Virtual.machine.boot
+      Register.machine.boot
       @root = :call_site
       @output = Register::RegisterValue
     end
@@ -31,7 +31,7 @@ module Virtual
     end
 
     def test_call_main_op
-      Virtual.machine.space.get_main.ensure_local(:bar , :Integer)
+      Register.machine.space.get_main.ensure_local(:bar , :Integer)
       @string_input    = 'main( bar )'
       check
     end

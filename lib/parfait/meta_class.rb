@@ -24,7 +24,7 @@ module Parfait
 
     # in a non-booting version this should map to _add_singleton_method
     # def add_function function
-    #   raise "not a function #{function}" unless function.is_a? Virtual::Function
+    #   raise "not a function #{function}" unless function.is_a? Register::Function
     #   raise "syserr " unless function.name.is_a? Symbol
     #   self.functions << function
     # end

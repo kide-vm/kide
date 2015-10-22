@@ -1,7 +1,7 @@
 require 'parslet/convenience'
 require_relative "collector"
-module Virtual
-  # The Virtual Machine is a object based virtual machine in which ruby is implemented.
+module Register
+  # The Register Machine is a object based virtual machine in which ruby is implemented.
   #
   # It is minimal and realistic and low level
   # - minimal means that if one thing can be implemented by another, it is left out. This is quite
@@ -118,7 +118,7 @@ module Virtual
     def boot
       boot_parfait!
       @init = Block.new("init", :__init__ )
-      branch = Register::Branch.new( "__init__" , self.space.get_init.source.blocks.first )
+      branch = Branch.new( "__init__" , self.space.get_init.source.blocks.first )
       @init.add_code branch
       @booted = true
       self
