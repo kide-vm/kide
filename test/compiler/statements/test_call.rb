@@ -17,9 +17,9 @@ class Object
   end
 end
 HERE
-    @expect =  [[SaveReturn,GetSlot,LoadConstant,
-                  SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,GetSlot] ,
-                  [RegisterTransfer,GetSlot,FunctionReturn]]
+    @expect =  [Label, SaveReturn,GetSlot,LoadConstant,
+                  SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,GetSlot ,
+                  Label,RegisterTransfer,GetSlot,FunctionReturn]
     check
   end
 
@@ -37,9 +37,9 @@ class Object
   end
 end
 HERE
-    @expect =  [[SaveReturn,GetSlot,LoadConstant,
-                  SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,GetSlot] ,
-                  [RegisterTransfer,GetSlot,FunctionReturn]]
+    @expect =  [Label, SaveReturn,GetSlot,LoadConstant,
+                  SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,GetSlot ,
+                  Label,RegisterTransfer,GetSlot,FunctionReturn]
     check
   end
 
@@ -57,9 +57,9 @@ class Object
   end
 end
 HERE
-    @expect =  [ [SaveReturn,LoadConstant,GetSlot,SetSlot,GetSlot,
+    @expect =  [ Label, SaveReturn,LoadConstant,GetSlot,SetSlot,GetSlot,
                   GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,
-                  GetSlot] ,[RegisterTransfer,GetSlot,FunctionReturn] ]
+                  GetSlot ,Label,RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
 
@@ -77,9 +77,9 @@ class Object
   end
 end
 HERE
-    @expect =  [ [SaveReturn,GetSlot,GetSlot,GetSlot,SetSlot,
+    @expect =  [ Label, SaveReturn,GetSlot,GetSlot,GetSlot,SetSlot,
                   LoadConstant,SetSlot,RegisterTransfer,FunctionCall,
-                  GetSlot] ,[RegisterTransfer,GetSlot,FunctionReturn] ]
+                  GetSlot ,Label,RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
 
@@ -94,11 +94,11 @@ int main()
 end
 end
 HERE
-    @expect = [ [SaveReturn , GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,LoadConstant,
-                 SetSlot,RegisterTransfer,FunctionCall,GetSlot],
-                [RegisterTransfer,GetSlot,FunctionReturn]]
+    @expect = [ Label, SaveReturn , GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,LoadConstant,
+                SetSlot,RegisterTransfer,FunctionCall,GetSlot,
+                Label,RegisterTransfer,GetSlot,FunctionReturn]
     was = check
-    set = was[0].codes[7]
+    set = was.next(8)
     assert_equal SetSlot , set.class
     assert_equal 9, set.index , "Set to message must be offset, not #{set.index}"
   end

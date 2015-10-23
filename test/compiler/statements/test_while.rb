@@ -15,8 +15,8 @@ class Object
   end
 end
 HERE
-      @expect = [[SaveReturn],[LoadConstant,IsPlus,LoadConstant,Branch],
-                  [],[RegisterTransfer,GetSlot,FunctionReturn]]
+      @expect = [Label, SaveReturn,Label,LoadConstant,IsPlus,LoadConstant,Branch,
+                  Label,Label,RegisterTransfer,GetSlot,FunctionReturn]
       check
     end
 
@@ -28,12 +28,13 @@ class Object
     while_plus(n)
       n = n - 1
     end
+    return n
   end
 end
 HERE
-      @expect = [[SaveReturn,LoadConstant,GetSlot,SetSlot],[GetSlot,GetSlot, IsPlus,GetSlot,
-                GetSlot,LoadConstant,OperatorInstruction,GetSlot,SetSlot,Branch],
-                  [],[RegisterTransfer,GetSlot,FunctionReturn]]
+      @expect = [Label, SaveReturn,LoadConstant,GetSlot,SetSlot,Label,GetSlot,GetSlot, IsPlus,GetSlot,
+                GetSlot,LoadConstant,OperatorInstruction,GetSlot,SetSlot,Branch,
+                  Label,GetSlot,GetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
       check
     end
 
@@ -50,11 +51,11 @@ class Object
   end
 end
 HERE
-      @expect = [[SaveReturn,LoadConstant,GetSlot,SetSlot],
-                 [GetSlot,GetSlot,LoadConstant,OperatorInstruction,IsPlus,GetSlot,
-                   GetSlot,LoadConstant,OperatorInstruction,GetSlot,SetSlot,GetSlot,
-                   GetSlot,Branch] ,
-                   [],[RegisterTransfer,GetSlot,FunctionReturn]]
+      @expect = [Label, SaveReturn,LoadConstant,GetSlot,SetSlot,Label,
+                 GetSlot,GetSlot,LoadConstant,OperatorInstruction,IsPlus,
+                 GetSlot, GetSlot,LoadConstant,OperatorInstruction, GetSlot,
+                 SetSlot,GetSlot, GetSlot,Branch , Label ,
+                   Label , RegisterTransfer,GetSlot,FunctionReturn]
       check
     end
   end

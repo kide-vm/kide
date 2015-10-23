@@ -9,8 +9,10 @@ module Register
           function = MethodSource.create_method(:Kernel,:Integer,:__init__ , [])
           function.source.set_return_type :Integer
           # no method enter or return (automatically added), remove
-          function.source.blocks.first.codes.pop # no Method enter
-          function.source.blocks.last.codes.pop # no Method return
+          new_start = Label.new(function , "__init__" )
+          function.source.instructions = new_start
+          function.source.current = new_start
+          
           #Set up the Space as self upon init
           space = Parfait::Space.object_space
           space_reg = Register.tmp_reg(:Space)

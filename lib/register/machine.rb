@@ -117,9 +117,7 @@ module Register
 
     def boot
       boot_parfait!
-      @init = Block.new("init", :__init__ )
-      branch = Branch.new( "__init__" , self.space.get_init.source.blocks.first )
-      @init.add_code branch
+      @init =  Branch.new( "__init__" , self.space.get_init.source.instructions )
       @booted = true
       self
     end

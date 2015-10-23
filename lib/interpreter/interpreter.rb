@@ -10,8 +10,6 @@ module Interpreter
     attr_reader :clock    # current instruction or pc
     # an (arm style) link register. store the return address to return to
     attr_reader :link
-    # current executing block. since this is not a hardware simulator this is luxury
-    attr_reader :block
     attr_reader :registers     # the registers, 16 (a hash, sym -> contents)
     attr_reader :stdout     # collect the output
     attr_reader :state # running etc
@@ -27,13 +25,12 @@ module Interpreter
       (0...12).each do |r|
         set_register "r#{r}".to_sym , "r#{r}:unknown"
       end
-      @block = nil
     end
 
-    def start bl
+    def start instruction
       @clock = 0
       set_state(:running)
-      set_block  bl
+      set_instruction instruction
     end
 
     def set_state state
@@ -41,20 +38,6 @@ module Interpreter
       return if state == old
       @state = state
       trigger(:state_changed , old , state )
-    end
-
-    def set_block bl
-      return if @block == bl
-      raise "Error, nil block" unless bl
-      old = @block
-      if bl.codes.empty?
-        next_b = @block.method.source.blocks.index(bl) + 1
-        bl = @block.method.source.blocks[next_b]
-      end
-      raise "Block #{bl.codes.empty?}" if bl.codes.empty? #just fixed, leave for next time
-      @block = bl
-      trigger(:block_changed , old , bl)
-      set_instruction bl.codes.first
     end
 
     def set_instruction i
@@ -88,7 +71,6 @@ module Interpreter
     def tick
       return unless @instruction
       @clock += 1
-      #puts @instruction
       name = @instruction.class.name.split("::").last
       fetch = send "execute_#{name}"
       return unless fetch
@@ -96,12 +78,7 @@ module Interpreter
     end
 
     def fetch_next_intruction
-      if(@instruction != @block.codes.last)
-        set_instruction @block.codes[  @block.codes.index(@instruction)  + 1]
-      else
-        next_b = @block.method.source.blocks.index(@block) + 1
-        set_block @block.method.source.blocks[next_b]
-      end
+      set_instruction @instruction.next
     end
 
     def object_for reg
@@ -110,10 +87,14 @@ module Interpreter
       object.nil? ? id : object
     end
 
+    # Label is a noop.
+    def execute_Label
+      true
+    end
     # Instruction interpretation starts here
     def execute_Branch
-      target = @instruction.block
-      set_block target
+      label = @instruction.label
+      set_instruction label
       false
     end
 
@@ -161,10 +142,9 @@ module Interpreter
     end
 
     def execute_FunctionCall
-      @link = [@block , @instruction]
+      @link =  @instruction
       #puts "Call link #{@link}"
-      next_block = @instruction.method.source.blocks.first
-      set_block next_block
+      set_instruction @instruction.method.source.instructions
       false
     end
 
@@ -182,7 +162,7 @@ module Interpreter
       object = object_for( @instruction.register )
       link = object.internal_object_get( @instruction.index )
       #puts "FunctionReturn link #{@link}"
-      @block , @instruction = link
+      @instruction = link
       # we jump back to the call instruction. so it is as if the call never happened and we continue
       true
     end

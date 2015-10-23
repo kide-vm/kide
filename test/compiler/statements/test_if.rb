@@ -16,10 +16,9 @@ class Object
   end
 end
 HERE
-  @expect =  [[SaveReturn,LoadConstant,LoadConstant,
-                OperatorInstruction,IsPlus] ,
-                [LoadConstant,Branch] ,[LoadConstant]  ,[] ,
-                [RegisterTransfer,GetSlot,FunctionReturn]]
+  @expect =  [Label, SaveReturn,LoadConstant,LoadConstant, OperatorInstruction,IsPlus ,
+                LoadConstant,Branch , Label , LoadConstant ,
+                Label,Label,RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
 
@@ -34,10 +33,9 @@ class Object
   end
 end
 HERE
-  @expect =  [[SaveReturn,LoadConstant,LoadConstant,
-                OperatorInstruction,IsMinus] ,
-                [Branch] ,[LoadConstant]  ,[] ,
-                [RegisterTransfer,GetSlot,FunctionReturn]]
+  @expect =  [Label, SaveReturn,LoadConstant,LoadConstant, OperatorInstruction,IsMinus ,
+                Branch ,Label , LoadConstant ,
+                Label,Label , RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
 
@@ -52,10 +50,9 @@ class Object
   end
 end
 HERE
-  @expect =  [[SaveReturn,LoadConstant,LoadConstant,
-                OperatorInstruction,IsZero] ,
-                [Branch] ,[LoadConstant]  ,[] ,
-                [RegisterTransfer,GetSlot,FunctionReturn]]
+  @expect =  [Label, SaveReturn,LoadConstant,LoadConstant,OperatorInstruction,IsZero ,
+                Branch , Label , LoadConstant ,
+                Label,Label, RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
 end

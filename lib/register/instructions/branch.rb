@@ -6,14 +6,22 @@ module Register
     def initialize source , to
       super(source)
       raise "No block" unless to
-      @block = to
+      @label = to
     end
-    attr_reader :block
+    attr_reader :label
 
     def to_s
-      "#{self.class.name}: #{block.name}"
+      "#{self.class.name}: #{label.name}"
     end
     alias :inspect :to_s
+
+    def length labels = []
+      super(labels) + self.label.length(labels)
+    end
+
+    def to_ac labels = []
+      super(labels) + self.label.to_ac(labels)
+    end
   end
 
   class IsZero < Branch

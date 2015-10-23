@@ -1,17 +1,7 @@
-require_relative "block"
 
 module Register
   # the static info of a method (with its compiled code, argument names etc ) is part of the
   # runtime, ie found in Parfait::Method
-
-  # the source we create here is injected into the method and used only at compile-time
-
-  #
-  # Methods are one step up from to VM::Blocks. Where Blocks can be jumped to, Methods can be called.
-
-  # Methods also have arguments and a return. These are typed by subclass instances of Value
-
-  # They also have local variables.
 
   # Code-wise Methods are made up from a list of Blocks, in a similar way blocks are made up of
   # Instructions. The function starts with one block, and that has a start and end (return)
@@ -55,23 +45,21 @@ module Register
     end
 
     def init method , return_type = nil
-      # first block we have to create with .new , as new_block assumes a current
-      enter = Block.new( "enter"  , method )
-      enter.add_code Register.save_return(self, :message , :return_address)
       set_return_type( return_type )
-      @blocks = [enter]
-      @current = enter
-      ret = new_block("return")
+      @instructions = @current = Label.new(self, "Method_#{method.name}")
+      add_code  enter = Register.save_return(self, :message , :return_address)
+      add_code Label.new( method, "return")
       # move the current message to new_message
-      ret.add_code RegisterTransfer.new(self, Register.message_reg , Register.new_message_reg )
+      add_code  RegisterTransfer.new(self, Register.message_reg , Register.new_message_reg )
       # and restore the message from saved value in new_message
-      ret.add_code Register.get_slot(self,:new_message , :caller , :message )
+      add_code Register.get_slot(self,:new_message , :caller , :message )
       #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
-      ret.add_code FunctionReturn.new( self , Register.new_message_reg , Register.resolve_index(:message , :return_address) )
+      add_code FunctionReturn.new( self , Register.new_message_reg , Register.resolve_index(:message , :return_address) )
+      @current = enter
       @constants = []
     end
-    attr_reader   :blocks , :constants , :return_type
-    attr_accessor  :current , :receiver
+    attr_reader    :constants , :return_type
+    attr_accessor  :current , :receiver , :instructions
 
     def set_return_type type
       return if type.nil?
@@ -84,85 +72,25 @@ module Register
       unless  instruction.is_a?(Instruction)
         raise instruction.to_s
       end
-      @current.add_code(instruction) #insert after current
+      @current.insert(instruction) #insert after current
+      @current = instruction
       self
     end
 
-    # return a list of registers that are still in use after the given block
-    # a call_site uses pushes and pops these to make them available for code after a call
-    # def locals_at l_block
-    #   used =[]
-    #   # call assigns the return register, but as it is in l_block, it is not asked.
-    #   assigned = [ RegisterValue.new(RegisterMachine.instance.return_register) ]
-    #   l_block.reachable.each do |b|
-    #     b.uses.each {|u|
-    #       (used << u) unless assigned.include?(u)
-    #     }
-    #     assigned += b.assigns
-    #   end
-    #   used.uniq
-    # end
-
-    # control structures need to see blocks as a graph, but they are stored as a list with implict
-    # branches
-    # So when creating a new block (with new_block), it is only added to the list, but instructions
-    #   still go to the current one
-    # With this function one can change the current block, to actually code it.
-    # This juggling is (unfortunately) neccessary, as all compile functions just keep puring their
-    # code into the method and don't care what other compiles (like if's) do.
-
-    # Example: while, needs  2 extra blocks
-    #          1 condition code, must be its own blockas we jump back to it
-    #           -       the body, can actually be after the condition as we don't need to jump there
-    #          2 after while block. Condition jumps here
-    # After block 2, the function is linear again and the calling code does not need to know what
-    #  happened
-
-    # But subsequent statements are still using the original block (self) to add code to
-    # So the while statement creates the extra blocks, adds them and the code and then "moves"
-    # the insertion point along
-    def current block
-      @current = block
+    # set the insertion point (where code is added with add_code)
+    def current ins
+      @current = ins
       self
     end
-
-    # create a new linear block after the current insertion block.
-    # Linear means there is no brach needed from that one to the new one.
-    # Usually the new one just serves as jump address for a control statement
-    # In code generation , the new_block is written after this one, ie zero runtime cost
-    # This does _not_ change the insertion point, that has do be done with insert_at(block)
-    def new_block new_name
-      new_b = Block.new( new_name , @blocks.first.method )
-      index = @blocks.index( @current )
-      @blocks.insert( index + 1 , new_b ) # + one because we want the ne after the insert_at
-      return new_b
-    end
-
-    # sugar to create instructions easily.
-    # any method will be passed on to the RegisterMachine and the result added to the insertion block
-    #  With this trick we can write what looks like assembler,
-    #  Example   func.instance_eval
-    #                mov( r1 , r2 )
-    #                add( r1 , r2 , 4)
-    # end
-    #           mov and add will be called on Machine and generate Instructions that are then added
-    #             to the current block
-    # also symbols are supported and wrapped as register usages (for bare metal programming)
-#    def method_missing(meth, *arguments, &block)
-#      add_code ::Arm::ArmMachine.send(meth , *arguments)
-#    end
 
     def byte_length
-      @blocks.inject(0) { |c , block| c += block.byte_length }
+      @instructions.byte_length
     end
 
     # position of the function is the position of the entry block, is where we call
     def set_position at
       at += 8 #for the 2 header words
-      @blocks.each do |block|
-        block.set_position at
-        at = at + block.byte_length
-      end
+      @instructions.set_position at
     end
 
   end

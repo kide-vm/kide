@@ -9,16 +9,20 @@ module Statements
     machine.parse_and_compile @string_input
     produced = Register.machine.space.get_main.source
     assert @expect , "No output given"
-    assert_equal @expect.length ,  produced.blocks.length , "Block length"
-    produced.blocks.each_with_index do |b,i|
-      codes = @expect[i]
-      assert codes , "No codes for block #{i}"
-      assert_equal b.codes.length , codes.length , "Code length for block #{i+1}"
-      b.codes.each_with_index do |c , ii |
-        assert_equal codes[ii] ,  c.class ,  "Block #{i+1} , code #{ii+1}"
-      end
-    end
-    produced.blocks
+    #assert_equal @expect.length ,  produced.instructions.length , "instructions length #{produced.instructions.to_ac}"
+    compare_instructions produced.instructions , @expect
+    produced.instructions
+  end
+
+  def compare_instructions instruction , expect
+    index = 0
+    begin
+      should = expect[index]
+      assert should , "No instruction at #{index}"
+      assert_equal instruction.class , should , "Expected at #{index+1}"
+      index += 1
+      instruction = instruction.next
+    end while( instruction )
   end
 
 

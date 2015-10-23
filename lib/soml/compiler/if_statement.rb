@@ -1,39 +1,35 @@
 module Soml
   Compiler.class_eval do
-#    if - attr_reader  :cond, :if_true, :if_false
 
+    # an if evaluates the condition and jumps to the true block if true
+    # so the else block is automatically after that.
+    # But then the else needs to jump over the true block unconditionally.
     def on_if_statement statement
       branch_type , condition , if_true , if_false = *statement
       condition = condition.first
-      # to execute the logic as the if states it, the blocks are the other way around
-      # so we can the jump over the else if true ,
-      # and the else joins unconditionally after the true_block
-      merge_block = @method.source.new_block "if_merge"    # last one, created first
-      true_block =  @method.source.new_block "if_true"     # second, linked in after current, before merge
-      false_block = @method.source.new_block "if_false"    # directly next in order, ie if we don't jump we land here
 
       reset_regs
-      is = process(condition)
+      process(condition)
+
       branch_class = Object.const_get "Register::Is#{branch_type.capitalize}"
+      true_block = Register::Label.new(statement, "if_true")
       add_code branch_class.new( condition , true_block )
 
-      # compile the true block (as we think of it first, even it is second in sequential order)
-      @method.source.current true_block
-
-      reset_regs
-      last = process_all(if_true).last
-
       # compile the false block
-      @method.source.current false_block
       reset_regs
-      last = process_all(if_false).last if if_false
-      add_code Register::Branch.new(statement, merge_block )
+      process_all(if_false) if if_false
+      merge = Register::Label.new(statement , "if_merge")
+      add_code Register::Branch.new(statement, merge )
+
+      # compile the true block
+      add_code true_block
+      reset_regs
+      process_all(if_true)
 
       #puts "compiled if: end"
-      @method.source.current merge_block
+      add_code merge
 
-      #TODO should return the union of the true and false types
-      last
+      nil # statements don't return anything
     end
   end
 end

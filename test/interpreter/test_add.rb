@@ -24,32 +24,22 @@ class AddTest < MiniTest::Test
     @interpreter.start Register.machine.init
   end
 
-  def test_branch
-    was = @interpreter.block
-    assert_equal Register::Branch , ticks(1).class
-    assert was != @interpreter.block
-  end
-  def test_load
-    assert_equal Register::LoadConstant ,  ticks(2).class
-    assert_equal Parfait::Space ,  Register.machine.objects[ @interpreter.get_register(:r2)].class
-    assert_equal :r2,  @interpreter.instruction.array.symbol
-  end
   def test_get
-    assert_equal Register::GetSlot , ticks(3).class
+    assert_equal Register::GetSlot , ticks(4).class
     assert @interpreter.get_register( :r2 )
     assert @interpreter.get_register( :r2 ).is_a? Integer
   end
   def test_transfer
-    transfer = ticks 5
+    transfer = ticks 6
     assert_equal Register::RegisterTransfer ,  transfer.class
     assert_equal @interpreter.get_register(transfer.to) , @interpreter.get_register(transfer.from)
   end
   def test_call
-    assert_equal Register::FunctionCall ,  ticks(6).class
+    assert_equal Register::FunctionCall ,  ticks(7).class
     assert @interpreter.link
   end
   def test_adding
-    done_op = ticks(10)
+    done_op = ticks(12)
     assert_equal Register::OperatorInstruction ,  done_op.class
     left = @interpreter.get_register(done_op.left)
     rr = done_op.right
@@ -58,7 +48,7 @@ class AddTest < MiniTest::Test
     assert_equal Fixnum , right.class
     assert_equal 7 , right
     assert_equal 12 , left
-    done_tr = ticks(1)
+    done_tr = ticks(2)
     assert_equal Register::RegisterTransfer ,  done_tr.class
     result = @interpreter.get_register(done_op.left)
     assert_equal result , 12
@@ -66,10 +56,10 @@ class AddTest < MiniTest::Test
 
   def test_chain
     #show_ticks # get output of what is
-    ["Branch","LoadConstant","GetSlot","SetSlot","RegisterTransfer",
-     "FunctionCall","SaveReturn","LoadConstant","LoadConstant","OperatorInstruction",
-     "RegisterTransfer","GetSlot","FunctionReturn","RegisterTransfer","Syscall",
-     "NilClass"].each_with_index do |name , index|
+    ["Branch","Label","LoadConstant","GetSlot","SetSlot",
+     "RegisterTransfer","FunctionCall","Label","SaveReturn","LoadConstant",
+     "LoadConstant","OperatorInstruction","Label","RegisterTransfer","GetSlot",
+     "FunctionReturn","RegisterTransfer","Syscall","NilClass"].each_with_index do |name , index|
       got = ticks(1)
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
     end

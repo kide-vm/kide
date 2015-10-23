@@ -7,29 +7,54 @@ module Register
   #             but we keep the names for better understanding, r4/5 are temporary/scratch
   # there is no direct memory access, only through registers
   # constants can/must be loaded into registers before use
+
+  # Instructions form a graph.
+  # Linear instructions form a linked list
+  # Branches fan out, Labels collect
+  # Labels are the only valid branch targets
   class Instruction
 
-    def initialize source
+    def initialize source , nekst = nil
         @source = source
+        @next = nekst
     end
     attr_reader :source
 
-    # returns an array of registers (RegisterValues) that this instruction uses.
-    # ie for r1 = r2 + r3
-    # which in assembler is add r1 , r2 , r3
-    # it would return [r2,r3]
-    # for pushes the list may be longer, whereas for a jump empty
-    def uses
-      raise "abstract called for #{self.class}"
+    # set the next instruction (also aliased as <<)
+    # throw an error if that is set, use insert for that use case
+    # return the instruction, so chaining works as one wants (not backwards)
+    def set_next nekst
+      raise "Next already set #{@next}" if @next
+      @next = nekst
+      nekst
     end
-    # returns an array of registers (RegisterValues) that this instruction assigns to.
-    # ie for r1 = r2 + r3
-    # which in assembler is add r1 , r2 , r3
-    # it would return [r1]
-    # for most instruction this is one, but comparisons and jumps 0 , and pop's as long as 16
-    def assigns
-      raise "abstract called for #{self.class}"
+    alias :<< :set_next
+
+    # get the next instruction (without arg given )
+    # when given an interger, advance along the line that many time and return.
+    def next( amount = 1)
+      (amount == 1) ? @next : @next.next(amount-1) 
     end
+    # set the give instruction as the next, while moving any existing
+    # instruction along to the given ones's next.
+    # ie insert into the linked list that the instructions form
+    def insert instruction
+      instruction.set_next @next
+      @next = instruction
+    end
+
+    def length labels = []
+      ret = 1
+      ret += self.next.length( labels ) if self.next
+      ret
+    end
+
+    def to_ac labels = []
+      ret  = [self.class]
+      ret += self.next.to_ac(labels) if self.next
+      ret
+    end
+
   end
 
 end
@@ -42,5 +67,6 @@ require_relative "instructions/function_call"
 require_relative "instructions/function_return"
 require_relative "instructions/save_return"
 require_relative "instructions/register_transfer"
+require_relative "instructions/label"
 require_relative "instructions/branch"
 require_relative "instructions/operator_instruction"

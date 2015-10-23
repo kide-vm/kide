@@ -16,8 +16,8 @@ int main()
 end
 end
 HERE
-    @expect = [[SaveReturn,LoadConstant,LoadConstant,
-                OperatorInstruction,GetSlot,SetSlot],[RegisterTransfer,GetSlot,FunctionReturn]]
+    @expect = [Label, SaveReturn,LoadConstant,LoadConstant,OperatorInstruction,GetSlot,SetSlot,
+                Label,RegisterTransfer,GetSlot,FunctionReturn]
     check
   end
 
@@ -30,7 +30,7 @@ class Object
   end
 end
 HERE
-  @expect =  [[SaveReturn,LoadConstant,GetSlot,SetSlot] , [RegisterTransfer,GetSlot,FunctionReturn]]
+  @expect =  [Label, SaveReturn,LoadConstant,GetSlot,SetSlot ,Label,RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
 
@@ -42,7 +42,7 @@ class Object
   end
 end
 HERE
-    @expect =  [[SaveReturn,LoadConstant, GetSlot,SetSlot] , [RegisterTransfer,GetSlot,FunctionReturn]]
+    @expect =  [Label, SaveReturn,LoadConstant, GetSlot,SetSlot ,Label,RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
 
@@ -54,8 +54,9 @@ class Object
   end
 end
 HERE
-  @expect =  [[SaveReturn,GetSlot,GetSlot,SetSlot, LoadConstant,SetSlot,
-                  RegisterTransfer,FunctionCall,GetSlot,GetSlot,SetSlot] , [RegisterTransfer,GetSlot,FunctionReturn]]
+  @expect =  [Label, SaveReturn,GetSlot,GetSlot,SetSlot, LoadConstant,SetSlot,
+                  RegisterTransfer,FunctionCall,GetSlot,GetSlot,SetSlot ,
+                  Label,RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
 
@@ -68,10 +69,10 @@ class Object
   end
 end
 HERE
-    @expect =  [[SaveReturn,LoadConstant,GetSlot,SetSlot,GetSlot,GetSlot] ,
-                [RegisterTransfer,GetSlot,FunctionReturn]]
+    @expect =  [Label, SaveReturn,LoadConstant,GetSlot,SetSlot,GetSlot,GetSlot ,
+                Label,RegisterTransfer,GetSlot,FunctionReturn]
     was = check
-    get = was[0].codes[5]
+    get = was.next(6)
     assert_equal GetSlot , get.class
     assert_equal 3, get.index , "Get to frame index must be offset, not #{get.index}"
   end
@@ -85,9 +86,9 @@ class Object
   end
 end
 HERE
-    @expect =  [[SaveReturn,LoadConstant,SetSlot] , [RegisterTransfer,GetSlot,FunctionReturn]]
+    @expect =  [Label, SaveReturn,LoadConstant,SetSlot ,Label,RegisterTransfer,GetSlot,FunctionReturn]
     was = check
-    set = was[0].codes[2]
+    set = was.next(3)
     assert_equal SetSlot , set.class
     assert_equal 9, set.index , "Set to args index must be offset, not #{set.index}"
   end
@@ -100,9 +101,9 @@ class Object
   end
 end
 HERE
-    @expect =  [[SaveReturn,LoadConstant,GetSlot,SetSlot] , [RegisterTransfer,GetSlot,FunctionReturn]]
+    @expect =  [Label, SaveReturn,LoadConstant,GetSlot,SetSlot ,Label,RegisterTransfer,GetSlot,FunctionReturn]
     was = check
-    set = was[0].codes[3]
+    set = was.next(4)
     assert_equal SetSlot , set.class
     assert_equal 3, set.index , "Set to frame index must be offset, not #{set.index}"
   end
@@ -117,10 +118,9 @@ class Object
   end
 end
 HERE
-    @expect =  [[SaveReturn,GetSlot] ,
-                [RegisterTransfer,GetSlot,FunctionReturn]]
+    @expect =  [Label, SaveReturn,GetSlot , Label , RegisterTransfer,GetSlot,FunctionReturn]
     was = check
-    get = was[0].codes[1]
+    get = was.next(2)
     assert_equal GetSlot , get.class
     assert_equal 9, get.index , "Get to frame index must be offset, not #{get.index}"
   end

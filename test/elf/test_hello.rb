@@ -16,7 +16,7 @@ class HelloTest < MiniTest::Test
     writer.save "hello.o"
   end
 
-  def test_string_put
+  def pest_string_put
     @string_input    = <<HERE
 class Object
   int main()
