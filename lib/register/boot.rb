@@ -130,7 +130,7 @@ module Register
           # instances are copied (shame on you)
           :Class => [:object_layout , :name , :instance_methods , :super_class , :meta_class],
           :Dictionary => [:keys , :values ] ,
-          :Method => [:name , :code ,:arguments , :for_class, :locals  ] ,
+          :Method => [:name , :source , :instructions , :binary ,:arguments , :for_class, :locals  ] ,
           :Variable => [:type , :name , :value ] ,
           :Module => [:name , :instance_methods , :super_class , :meta_class ]
         }

@@ -23,7 +23,7 @@ module Parfait
       raise "No class #{name}" unless clazz
       self.for_class = clazz
       self.name = name
-      self.code = BinaryCode.new name
+      self.binary = BinaryCode.new name
       raise "Wrong type, expect List not #{arguments.class}" unless arguments.is_a? List
       arguments.each do |var|
         raise "Must be variable argument, not #{var}" unless var.is_a? Variable
@@ -31,7 +31,7 @@ module Parfait
       self.arguments = arguments
       self.locals = List.new
     end
-    attributes [:name , :arguments , :for_class , :code , :locals ]
+    attributes [:name , :source , :instructions , :binary ,:arguments , :for_class, :locals ]
 
 
     # determine whether this method has an argument by the name
