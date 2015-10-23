@@ -52,10 +52,10 @@ HERE
     syntax  = Parser::Salama.new.parse_with_debug(@string_input)
     parts = Parser::Transform.new.apply(syntax)
     #puts parts.inspect
-    Phisol::Compiler.compile( parts )
+    Soml::Compiler.compile( parts )
     machine.collect
 #    statements = Register.machine.boot.parse_and_compile @string_input
-#    Phisol::Compiler.compile( statements , Register.machine.space.get_main )
+#    Soml::Compiler.compile( statements , Register.machine.space.get_main )
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Register.machine.init
     #show_ticks # get output of what is

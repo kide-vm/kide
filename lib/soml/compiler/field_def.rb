@@ -1,4 +1,4 @@
-module Phisol
+module Soml
   Compiler.class_eval do
     include AST::Sexp
 

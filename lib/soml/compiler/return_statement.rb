@@ -1,4 +1,4 @@
-module Phisol
+module Soml
   Compiler.class_eval do
 
 #    return attr_reader  :statement

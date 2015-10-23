@@ -5,7 +5,7 @@ require "register/positioned"
 require "register/padding"
 require "register/parfait_adapter"
 
-require "phisol/compiler"
+require "soml/compiler"
 require "register/method_source"
 
 

@@ -128,7 +128,7 @@ module Register
       syntax  = @parser.parse_with_debug(bytes)
       parts = Parser::Transform.new.apply(syntax)
       #puts parts.inspect
-      Phisol::Compiler.compile( parts )
+      Soml::Compiler.compile( parts )
     end
 
     private

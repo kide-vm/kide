@@ -18,7 +18,7 @@ class TestPuts < MiniTest::Test
                                   s(:receiver,
                                     s(:string,  "Hello again")))))))
 
-    Phisol::Compiler.compile( code )
+    Soml::Compiler.compile( code )
     machine.collect
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Register.machine.init

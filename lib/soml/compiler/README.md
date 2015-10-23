@@ -23,7 +23,7 @@ The compiler has a method for each type for ast, named along on_xxx with xxx as 
 
 #### Compiler holds scope
 
-The Compiler instance can hold arbitrary scope needed during the compilation. Since we compile Phisol
+The Compiler instance can hold arbitrary scope needed during the compilation. Since we compile Soml
 (a static language) things have become more simple.
 
 A class statement sets the current @clazz scope , a method definition the @method.
@@ -45,22 +45,13 @@ The general structure of the instructions is a graph
 Since the machine is virtual, we have to define it, and since it is oo we define it in objects.
 
 Also it is important to define how instructions operate, which is is in a physical machine would
-be by changing the contents of registers or  some stack.
+be by changing the contents of registers or some stack.
 
 Our machine is not a register machine, but an object machine: it operates directly on objects and
-also has no separate stack, only objects. There are a number of objects which are accessible,
-and one can think of these (their addresses) as register contents.
-(And one wouldn't be far off as that is the implementation.)
+also has no separate stack, only objects. There is only one object which is accessible,
+basically meaning pinned to a register, the Message.
 
-The objects the machine works on are:
-
-- Message
-- Frame
-- Self
-- NewMessage
-
-and working on means, these are the only objects which the machine accesses.
-Ie all others would have to be moved first.
+One can think of the Message as an oo replacement of the stack.
 
 When a Method needs to make a call, it creates a NewMessage object.
 Messages contain return addresses (yes, plural) and arguments.
@@ -69,10 +60,10 @@ The important thing here is that Messages and Frames are normal objects.
 
 ### Distinctly future proof
 
-Phisol is designed to be used as an implementation language for a higher oo language. Some, or
+Soml is designed to be used as an implementation language for a higher oo language. Some, or
 even many, features may not make sense on their own. But these features, like several return
 addresses, are important to implement the higher language.
 
-In fact, Phisol's main purpose is not even to be written. The main purpose is to have a language to
+In fact, Soml's main purpose is not even to be written. The main purpose is to have a language to
 compile ruby to. In the same way that the assembler layer in salama is not designed to be written,
 we just need it to create our layers.

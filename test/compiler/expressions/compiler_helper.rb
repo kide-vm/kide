@@ -1,7 +1,7 @@
 require_relative '../../helper'
 require 'parslet/convenience'
 
-Phisol::Compiler.class_eval do
+Soml::Compiler.class_eval do
   def set_main main
     @clazz = Register.machine.space.get_class_by_name :Object
     @method = main
@@ -21,7 +21,7 @@ module CompilerHelper
     syntax  = parser.parse_with_debug(@string_input)
     parts = Parser::Transform.new.apply(syntax)
     #puts parts.inspect
-    compiler = Phisol::Compiler.new
+    compiler = Soml::Compiler.new
     set_main(compiler)
     produced = compiler.process( parts )
     assert @output , "No output given"

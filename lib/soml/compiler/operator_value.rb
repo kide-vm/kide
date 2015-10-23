@@ -1,4 +1,4 @@
-module Phisol
+module Soml
   Compiler.class_eval do
 
     def on_operator_value statement

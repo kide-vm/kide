@@ -13,7 +13,7 @@ module Register
   # derived classes are Boot/Meta Class and StringConstant
   class ObjectConstant < Constant
 #    def type
-#      Phisol::Reference
+#      Soml::Reference
 #    end
     def clazz
       raise "abstract #{self}"

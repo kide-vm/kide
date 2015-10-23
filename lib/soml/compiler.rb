@@ -1,4 +1,4 @@
-module Phisol
+module Soml
   class Compiler < AST::Processor
 
     def initialize()
