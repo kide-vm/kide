@@ -33,11 +33,6 @@ module Register
           function.set_return ret
           function
         end
-        def __send context
-          function = MethodSource.create_method(:Kernel,:Integer ,:__send , [] )
-          function.source.set_return_type :Integer
-          return function
-        end
 
         def emit_syscall function , name
           save_message( function )

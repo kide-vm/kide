@@ -4,22 +4,6 @@ module Register
     module Integer
       module ClassMethods
         include AST::Sexp
-        def plus c
-          plus_function = MethodSource.create_method(:Integer,:Integer,:plus , [:Integer] )
-          plus_function.source.set_return_type :Integer
-          plus_function.source.receiver = :Integer
-
-          tmp = Register.tmp_reg :Integer
-          index = Register.arg_index 1
-          plus_function.source.add_code Register.get_slot( plus_function , :message , index , tmp )
-
-          me = Register.tmp_reg :Integer
-          plus_function.source.add_code Register.get_slot(plus_function , :message , :receiver , me )
-          add = OperatorInstruction.new( plus_function, :add ,  me , tmp )
-          plus_function.source.add_code add
-          plus_function.source.add_code Register.set_slot(plus_function ,  me , :message , :return_value )
-          return plus_function
-        end
 
         # The conversion to base10 is quite a bit more complicated than i thought.
         # The bulk of it is in div10

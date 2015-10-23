@@ -146,19 +146,19 @@ module Register
       # have to define some dummies, just for the other to compile
       # TODO go through the virtual parfait layer and adjust function names to what they really are
       obj = @space.get_class_by_name(:Object)
-      [:main , :_get_instance_variable , :_set_instance_variable].each do |f|
+      [:main ].each do |f|
         obj.add_instance_method Builtin::Object.send(f , nil)
       end
       obj = @space.get_class_by_name(:Kernel)
       # create __init__ main first, __init__ calls it
-      [:exit,:__send , :__init__ ].each do |f|
+      [:exit , :__init__ ].each do |f|
         obj.add_instance_method Builtin::Kernel.send(f , nil)
       end
 
       @space.get_class_by_name(:Word).add_instance_method Builtin::Word.send(:putstring , nil)
 
       obj = @space.get_class_by_name(:Integer)
-      [:putint,:fibo , :plus].each do |f|
+      [:putint,:fibo ].each do |f|
         obj.add_instance_method Builtin::Integer.send(f , nil)
       end
     end
