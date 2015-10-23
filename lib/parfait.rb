@@ -1,7 +1,6 @@
 require "parfait/value"
 require "parfait/integer"
 require "parfait/object"
-require "parfait/module"
 require "parfait/meta_class"
 require "parfait/class"
 require "parfait/list"
