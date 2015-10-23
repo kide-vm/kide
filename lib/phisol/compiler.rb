@@ -28,6 +28,10 @@ module Phisol
       compiler.process statement
     end
 
+    # simple helper to add the given code to the current method (instance variable)
+    def add_code code
+      @method.source.add_code code
+    end
     # require a (temporary) register. code must give this back with release_reg
     def use_reg type , value = nil
       if @regs.empty?

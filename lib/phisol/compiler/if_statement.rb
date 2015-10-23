@@ -15,7 +15,7 @@ module Phisol
       reset_regs
       is = process(condition)
       branch_class = Object.const_get "Register::Is#{branch_type.capitalize}"
-      @method.source.add_code branch_class.new( condition , true_block )
+      add_code branch_class.new( condition , true_block )
 
       # compile the true block (as we think of it first, even it is second in sequential order)
       @method.source.current true_block
@@ -27,7 +27,7 @@ module Phisol
       @method.source.current false_block
       reset_regs
       last = process_all(if_false).last if if_false
-      @method.source.add_code Register::Branch.new(statement, merge_block )
+      add_code Register::Branch.new(statement, merge_block )
 
       #puts "compiled if: end"
       @method.source.current merge_block

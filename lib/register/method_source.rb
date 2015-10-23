@@ -90,18 +90,18 @@ module Register
 
     # return a list of registers that are still in use after the given block
     # a call_site uses pushes and pops these to make them available for code after a call
-    def locals_at l_block
-      used =[]
-      # call assigns the return register, but as it is in l_block, it is not asked.
-      assigned = [ RegisterValue.new(RegisterMachine.instance.return_register) ]
-      l_block.reachable.each do |b|
-        b.uses.each {|u|
-          (used << u) unless assigned.include?(u)
-        }
-        assigned += b.assigns
-      end
-      used.uniq
-    end
+    # def locals_at l_block
+    #   used =[]
+    #   # call assigns the return register, but as it is in l_block, it is not asked.
+    #   assigned = [ RegisterValue.new(RegisterMachine.instance.return_register) ]
+    #   l_block.reachable.each do |b|
+    #     b.uses.each {|u|
+    #       (used << u) unless assigned.include?(u)
+    #     }
+    #     assigned += b.assigns
+    #   end
+    #   used.uniq
+    # end
 
     # control structures need to see blocks as a graph, but they are stored as a list with implict
     # branches

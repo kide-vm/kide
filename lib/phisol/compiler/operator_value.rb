@@ -11,7 +11,7 @@ module Phisol
       raise "Not register #{right_reg}" unless right_reg.is_a?(Register::RegisterValue)
       #puts "left #{left_reg}"
       #puts "right #{right_reg}"
-      @method.source.add_code Register::OperatorInstruction.new(statement,operator,left_reg,right_reg)
+      add_code Register::OperatorInstruction.new(statement,operator,left_reg,right_reg)
       return left_reg # though this has wrong value attached
     end
   end

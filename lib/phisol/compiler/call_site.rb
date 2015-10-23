@@ -9,19 +9,19 @@ module Phisol
       reset_regs
       #move the new message (that we need to populate to make a call) to std register
       new_message = Register.resolve_to_register(:new_message)
-      @method.source.add_code Register.get_slot(@method, :message , :next_message , new_message )
+      add_code Register.get_slot(@method, :message , :next_message , new_message )
       if receiver
         me = process( receiver.to_a.first  )
       else
         me = use_reg @method.for_class.name
-        @method.source.add_code Register.get_slot(@method, :message , :receiver , me )
+        add_code Register.get_slot(@method, :message , :receiver , me )
       end
       # move our receiver there
-      @method.source.add_code Register.set_slot( statement , me , :new_message , :receiver)
+      add_code Register.set_slot( statement , me , :new_message , :receiver)
       # load method name and set to new message (for exceptions/debug)
       name_tmp = use_reg(:Word)
-      @method.source.add_code Register::LoadConstant.new(statement, name , name_tmp)
-      @method.source.add_code Register.set_slot( statement , name_tmp , :new_message , :name)
+      add_code Register::LoadConstant.new(statement, name , name_tmp)
+      add_code Register.set_slot( statement , name_tmp , :new_message , :name)
       # next arguments. reset tmp regs for each and load result into new_message
       arguments.to_a.each_with_index do |arg , i|
         reset_regs
@@ -30,7 +30,7 @@ module Phisol
         raise "Not register #{val}" unless val.is_a?(Register::RegisterValue)
         # which we load int the new_message at the argument's index (the one comes from c index)
         set = Register.set_slot( statement , val , :new_message , i + 1 + Parfait::Message.offset)
-        @method.source.add_code set
+        add_code set
       end
 
       # now we have to resolve the method name (+ receiver) into a callable method
@@ -43,7 +43,7 @@ module Phisol
       ret = use_reg( method.source.return_type )
       # the effect of the method is that the NewMessage Return slot will be filled, return it
       # but move it into a register too
-      @method.source.add_code Register.get_slot(@method, :message , :return_value , ret )
+      add_code Register.get_slot(@method, :message , :return_value , ret )
       ret
     end
   end

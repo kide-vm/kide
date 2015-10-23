@@ -9,21 +9,21 @@ module Phisol
         name = statement.to_a.first
         if( name == :self)
           ret = use_reg @clazz.name
-          @method.source.add_code Register.get_slot(statement , :message , :receiver , ret )
+          add_code Register.get_slot(statement , :message , :receiver , ret )
           return ret
         end
         # either an argument, so it's stored in message
         if( index = @method.has_arg(name))
           ret = use_reg @method.arguments[index].type
-          @method.source.add_code Register.get_slot(statement , :message , index + Parfait::Message.offset , ret )
+          add_code Register.get_slot(statement , :message , index + Parfait::Message.offset , ret )
           return ret
         else # or a local so it is in the frame
           index = @method.has_local( name )
           if(index)
             frame = use_reg :Frame
-            @method.source.add_code Register.get_slot(statement , :message , :frame , frame )
+            add_code Register.get_slot(statement , :message , :frame , frame )
             ret = use_reg @method.locals[index].type
-            @method.source.add_code Register.get_slot(statement , frame , index + Parfait::Frame.offset , ret )
+            add_code Register.get_slot(statement , frame , index + Parfait::Frame.offset , ret )
             return ret
           end
         end

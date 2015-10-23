@@ -15,12 +15,12 @@ module Phisol
       cond = process(condition)
 
       branch_class = Object.const_get "Register::Is#{branch_type.capitalize}"
-      @method.source.add_code branch_class.new( condition , merge )
+      add_code branch_class.new( condition , merge )
 
       last = process_all(statements).last
 
       # unconditionally branch to the start
-      @method.source.add_code Register::Branch.new(statement,start)
+      add_code Register::Branch.new(statement,start)
 
       # continue execution / compiling at the merge block
       @method.source.current merge

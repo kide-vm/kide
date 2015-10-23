@@ -14,25 +14,25 @@ module Phisol
     def on_int statement
       int = statement.first
       reg = use_reg :Integer , int
-      @method.source.add_code Register::LoadConstant.new( statement, int , reg )
+      add_code Register::LoadConstant.new( statement, int , reg )
       return reg
     end
 
     def on_true statement
       reg = use_reg :Boolean
-      @method.source.add_code Register::LoadConstant.new( statement, true , reg )
+      add_code Register::LoadConstant.new( statement, true , reg )
       return reg
     end
 
     def on_false statement
       reg = use_reg :Boolean
-      @method.source.add_code Register::LoadConstant.new( statement, false , reg )
+      add_code Register::LoadConstant.new( statement, false , reg )
       return reg
     end
 
     def on_nil statement
       reg = use_reg :NilClass
-      @method.source.add_code Register::LoadConstant.new( statement, nil , reg )
+      add_code Register::LoadConstant.new( statement, nil , reg )
       return reg
     end
 
@@ -40,7 +40,7 @@ module Phisol
       value = statement.first.to_sym
       reg = use_reg :Word
       @method.source.constants << value
-      @method.source.add_code Register::LoadConstant.new( statement, value , reg )
+      add_code Register::LoadConstant.new( statement, value , reg )
       return reg
     end
   end

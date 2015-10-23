@@ -17,13 +17,13 @@ module Phisol
         if(index)
           # TODO, check type  @method.locals[index].type
           frame = use_reg(:Frame)
-          @method.source.add_code Register.get_slot(statement , :message , :frame , frame )
+          add_code Register.get_slot(statement , :message , :frame , frame )
           code = Register.set_slot(statement , v , frame , index + Parfait::Frame.offset )
         end
       end
       if( code )
         #puts "addin code #{code}"
-        @method.source.add_code code
+        add_code code
       else
         raise "must define variable #{name} before using it in #{@method.inspect}"
       end
