@@ -1,6 +1,15 @@
 module Arm
   class Translator
 
+    # translator should translate from register instructio set to it's own (arm eg)
+    # for each instruction we call the translator with translate_XXX
+    #  with XXX being the class name.
+    # the result is replaced in the stream
+    def translate  instruction
+      class_name = instruction.class.name.split("::").last
+      self.send( "translate_#{class_name}".to_sym , instruction)
+    end
+
     # don't replace labels
     def translate_Label code
       nil
@@ -52,8 +61,9 @@ module Arm
     # The only target for a call is a Block, so we just need to get the address for the code
     # and branch to it.
     def translate_Branch code
-      ArmMachine.b( code.block )
+      ArmMachine.b( code.label )
     end
+
     def translate_Syscall code
       call_codes = { :putstring => 4 , :exit => 1    }
       int_code = call_codes[code.name]

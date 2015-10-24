@@ -33,22 +33,22 @@ module Register
       end
       methods.each do |method|
         instruction = method.instructions
-        begin
+        puts "instruction #{instruction.to_ac}" #if instruction.is_a?(Label) and instruction.name == "Method_main"
+        while instruction.next
           nekst = instruction.next
-          t = translate(translator , nekst) # returning nil means no replace
-          instruction.replace_next(t) if t
+          puts "translate #{nekst}"
+          t = translator.translate(nekst) # returning nil means no replace
+          if t
+            nekst = t.last
+            instruction.replace_next(t)
+          end
           instruction = nekst
-        end while instruction.next
+        end
+        puts "instruction #{method.instructions.to_ac}" #if method.instructions.is_a?(Label) and method.instructions.name == "Method_main"
       end
-    end
-
-    # translator should translate from register instructio set to it's own (arm eg)
-    # for each instruction we call the translator with translate_XXX
-    #  with XXX being the class name.
-    # the result is replaced in the stream
-    def translate translator , instruction
-      class_name = instruction.class.name.split("::").last
-      translator.send( "translate_#{class_name}".to_sym , instruction)
+      label = @init.next
+      @init = translator.translate( @init)
+      @init.append label
     end
 
 
@@ -73,17 +73,6 @@ module Register
       parts = Parser::Transform.new.apply(syntax)
       #puts parts.inspect
       Soml::Compiler.compile( parts )
-    end
-
-    private
-    def run_blocks_for pass_class
-      parts = pass_class.split("::")
-      pass = Object.const_get(parts[0]).const_get parts[1]
-      raise "no such pass-class as #{pass_class}" unless pass
-      @blocks.each do |block|
-        raise "nil block " unless block
-        pass.new.run(block)
-      end
     end
 
   end
