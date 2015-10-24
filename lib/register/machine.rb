@@ -1,91 +1,56 @@
 require 'parslet/convenience'
 require_relative "collector"
 module Register
-  # The Register Machine is a object based virtual machine in which ruby is implemented.
+  # The Register Machine is a object based virtual machine on which ruby will be implemented.
   #
-  # It is minimal and realistic and low level
-  # - minimal means that if one thing can be implemented by another, it is left out. This is quite
-  #    the opposite from ruby, which has several loops, many redundant if forms and the like.
-  # - realistic means it is easy to implement on a 32 bit machine (arm) and possibly 64 bit.
-  #     Memory access,some registers of same size are the underlying hardware. (not ie byte machine)
-  # - low level means it's basic instructions are realively easily implemented in a register machine.
-  #      Low level means low level in oo terms though, so basic instruction to implement oo
-  #  #
+
   # The ast is transformed to virtual-machine objects, some of which represent code, some data.
   #
   # The next step transforms to the register machine layer, which is quite close to what actually
   #  executes. The step after transforms to Arm, which creates executables.
   #
-  # More concretely, a virtual machine is a sort of oo turing machine, it has a current instruction,
-  # executes the instructions, fetches the next one and so on.
-  # Off course the instructions are not soo simple, but in oo terms quite so.
-  #
-  # The machine is virtual in the sense that it is completely modeled in software,
-  # it's complete state explicitly available (not implicitly by walking stacks or something)
-
-  # The machine has a no register, but objects that represent it's state. There are four
-  # - message : the currently executing message (See Parfait::Message)
-  # - receiver : or self.  This is actually an instance of Message, but "hoisted" out
-  # -  frame : A pssible frame for temporary data. Also part of the message and "hoisted" out
-  # - next_message: A message object that the current activation wants to send.
-  #
-  # Messages form a linked list (not a stack) and the Space is responsible for storing
-  # and handing out empty messages
-  #
-  # The "machine" is not part of the run-time (Parfait)
 
   class Machine
     include Collector
 
     def initialize
       @parser  = Parser::Salama.new
-      @passes = [   ]
       @objects = {}
       @booted = false
     end
-    attr_reader  :passes , :space , :class_mappings , :init , :objects , :booted
+    attr_reader :space , :class_mappings , :init , :objects , :booted
 
-    # run all passes before the pass given
-    # also collect the  block to run the passes on and
-    # runs housekeeping Minimizer and Collector
-    # Has to be called before run_after
-    def run_before stop_at
-      @blocks = [@init]
+
+    # idea being that later method missing could catch translate_xxx and translate to target xxx
+    # now we just instantiate ArmTranslater and pass instructions
+    def translate_arm
+      translator = Arm::Translator.new
+      methods = []
       @space.classes.values.each do |c|
         c.instance_methods.each do |f|
-          nb = f.source.blocks
-          @blocks += nb
+          methods << f.source
         end
       end
-      @passes.each do |pass_class|
-        #puts "running #{pass_class}"
-        run_blocks_for pass_class
-        return if stop_at == pass_class
+      methods.each do |method|
+        instruction = method.instructions
+        begin
+          nekst = instruction.next
+          t = translate(translator , nekst) # returning nil means no replace
+          instruction.replace_next(t) if t
+          instruction = nekst
+        end while instruction.next
       end
     end
 
-    # run all passes after the pass given
-    # run_before MUST be called first.
-    # the two are meant as a poor mans breakoint
-    def run_after start_at
-      run = false
-      @passes.each do |pass_class|
-        if run
-          #puts "running #{pass_class}"
-          run_blocks_for pass_class
-        else
-          run = true if start_at == pass_class
-        end
-      end
+    # translator should translate from register instructio set to it's own (arm eg)
+    # for each instruction we call the translator with translate_XXX
+    #  with XXX being the class name.
+    # the result is replaced in the stream
+    def translate translator , instruction
+      class_name = instruction.class.name.split("::").last
+      translator.send( "translate_#{class_name}".to_sym , instruction)
     end
 
-    # as before, run all passes that are registered
-    # (but now finer control with before/after versions)
-    def run_passes
-      return if @passes.empty?
-      run_before @passes.first
-      run_after @passes.first
-    end
 
     # Objects are data and get assembled after functions
     def add_object o
@@ -94,25 +59,6 @@ module Register
       raise "adding non parfait #{o.class}" unless o.is_a? Parfait::Object or o.is_a? Symbol
       @objects[o.object_id] = o
       true
-    end
-
-    # Passes may be added to by anyone who wants
-    # This is intentionally quite flexible, though one sometimes has to watch the order of them
-    # most ordering is achieved by ordering the requires and using add_pass
-    # but more precise control is possible with the _after and _before versions
-
-    def add_pass pass
-      @passes << pass
-    end
-    def add_pass_after( pass , after)
-      index = @passes.index(after)
-      raise "No such pass (#{pass}) to add after: #{after}" unless index
-      @passes.insert(index+1 , pass)
-    end
-    def add_pass_before( pass , after)
-      index = @passes.index(after)
-      raise "No such pass to add after: #{after}" unless index
-      @passes.insert(index , pass)
     end
 
     def boot

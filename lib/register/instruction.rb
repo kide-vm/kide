@@ -30,10 +30,17 @@ module Register
     end
     alias :<< :set_next
 
+    # during translation we replace one by one
+    def replace_next nekst
+      old = @next
+      @next = nekst
+      @next.append old.next
+    end
+
     # get the next instruction (without arg given )
     # when given an interger, advance along the line that many time and return.
     def next( amount = 1)
-      (amount == 1) ? @next : @next.next(amount-1) 
+      (amount == 1) ? @next : @next.next(amount-1)
     end
     # set the give instruction as the next, while moving any existing
     # instruction along to the given ones's next.
@@ -41,6 +48,19 @@ module Register
     def insert instruction
       instruction.set_next @next
       @next = instruction
+    end
+
+    # return last set instruction. ie follow the linked list until it stops
+    def last
+      code = self
+      code = code.next while( code.next )
+      return code
+    end
+
+    # set next for the last (see last)
+    # so append the given code to the linked list at the end
+    def append code
+      last.set_next code
     end
 
     def length labels = []
