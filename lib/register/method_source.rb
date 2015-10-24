@@ -84,7 +84,7 @@ module Register
     end
 
     def byte_length
-      @instructions.byte_length
+      @instructions.total_byte_length
     end
 
     # position of the function is the position of the entry block, is where we call

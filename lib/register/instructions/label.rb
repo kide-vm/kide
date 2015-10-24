@@ -21,14 +21,33 @@ module Register
     def to_ac labels = []
       return [] if labels.include?(self)
       labels << self
-      self.next.to_ac(labels)
+      super
     end
 
     def length labels = []
       return 0 if labels.include?(self)
       labels << self
-      1 + self.next.length(labels)
+      ret = 1
+      ret += self.next.length(labels) if self.next
+      ret
     end
 
+    def byte_length
+      0
+    end
+
+    def total_byte_length labels = []
+      return 0 if labels.include?(self)
+      labels << self
+      self.next.length(labels)
+    end
+
+    # labels have the same position as their next
+    def set_position position , labels = []
+      return position if labels.include?(self)
+      labels << self
+      self.position = position
+      self.next.set_position(position,labels)
+    end
   end
 end

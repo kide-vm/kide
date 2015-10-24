@@ -47,7 +47,7 @@ class Symbol
     end
     pos
   end
-  def set_position pos
+  def position= pos
     # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
     # in measures (of 32)
     old = cache_positions[self]

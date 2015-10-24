@@ -5,7 +5,6 @@ module Register
   class Branch < Instruction
     def initialize source , to
       super(source)
-      raise "No block" unless to
       @label = to
     end
     attr_reader :label
@@ -16,12 +15,29 @@ module Register
     alias :inspect :to_s
 
     def length labels = []
-      super(labels) + self.label.length(labels)
+      ret = super(labels)
+      ret += self.label.length(labels) if self.label
+      ret
     end
 
     def to_ac labels = []
-      super(labels) + self.label.to_ac(labels)
+      ret = super(labels)
+      ret += self.label.to_ac(labels) if self.label
+      ret
     end
+
+    def total_byte_length labels = []
+      ret = super
+      ret += label.total_byte_length(labels) if self.label
+      ret
+    end
+
+    # labels have the same position as their next
+    def set_position position , labels = []
+      position = self.label.set_position( position , labels ) if self.label
+      super(position,labels)
+    end
+
   end
 
   class IsZero < Branch

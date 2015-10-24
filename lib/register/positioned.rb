@@ -8,7 +8,7 @@ module Positioned
     end
     @position
   end
-  def set_position pos
+  def position= pos
     raise "Setting of nil not allowed" if pos.nil?
     # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
     # in measures (of 32)

@@ -13,6 +13,7 @@ module Register
   # Branches fan out, Labels collect
   # Labels are the only valid branch targets
   class Instruction
+    include Positioned
 
     def initialize source , nekst = nil
         @source = source
@@ -34,7 +35,7 @@ module Register
     def replace_next nekst
       old = @next
       @next = nekst
-      @next.append old.next
+      @next.append old.next if old
     end
 
     # get the next instruction (without arg given )
@@ -75,6 +76,26 @@ module Register
       ret
     end
 
+    # derived classes must provide a byte_length
+    def byte_length
+      raise "Abstract called on #{self}"
+    end
+
+    def total_byte_length labels = []
+      ret = self.byte_length
+      ret += self.next.total_byte_length(labels) if self.next
+      ret
+    end
+
+    def set_position position , labels = []
+      self.position = position
+      position += byte_length
+      if self.next
+        self.next.set_position(position , labels)
+      else
+        position
+      end
+    end
   end
 
 end
