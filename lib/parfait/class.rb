@@ -22,7 +22,7 @@ module Parfait
   class Class < Object
     attributes [:object_layout , :name , :instance_methods , :super_class , :meta_class]
 
-    def initialize name , super_class
+    def initialize name , superclass
       super()
       self.name = name
       self.instance_methods = List.new
