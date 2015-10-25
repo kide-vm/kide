@@ -27,8 +27,9 @@ module Register
     end
 
     def total_byte_length labels = []
-      ret = super
-      ret += label.total_byte_length(labels) if self.label
+      ret = super(labels)
+      ret += self.label.total_byte_length(labels) if self.label
+      #puts "#{self.class.name} return #{ret}"
       ret
     end
 
@@ -36,6 +37,12 @@ module Register
     def set_position position , labels = []
       position = self.label.set_position( position , labels ) if self.label
       super(position,labels)
+    end
+
+    def assemble_all io , labels = []
+      self.assemble(io)
+      self.label.assemble_all(io,labels) if self.label
+      self.next.assemble_all(io, labels) if self.next
     end
 
   end

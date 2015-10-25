@@ -83,7 +83,7 @@ module Register
       self
     end
 
-    def byte_length
+    def total_byte_length
       @instructions.total_byte_length
     end
 

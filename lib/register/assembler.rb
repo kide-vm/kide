@@ -28,17 +28,17 @@ module Register
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::Method
         # should be fill_to_length (with zeros)
-        objekt.binary.set_length(objekt.source.byte_length , 0)
+        objekt.binary.set_length(objekt.source.total_byte_length , 0)
       end
       #need the initial jump at 0 and then functions
       @machine.init.set_position(at)
-      at += @machine.init.byte_length
+      at += @machine.init.total_byte_length
       at +=  8 # thats the padding
 
       # then we make sure we really get the binary codes first
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::BinaryCode
-        objekt.set_position at
+        objekt.position = at
         #puts "CODE #{objekt.name} at #{objekt.position}"
         at += objekt.word_length
       end
@@ -50,7 +50,7 @@ module Register
           objekt.source.set_position( objekt.binary.position )
         end
         next if objekt.is_a? Parfait::BinaryCode
-        objekt.set_position at
+        objekt.position = at
         at += objekt.word_length
       end
     end
@@ -61,6 +61,7 @@ module Register
         return try_write
       rescue LinkException
         # knowing that we fix the problem, we hope to get away with retry.
+        puts "retry"
         retry
       end
     end
@@ -106,23 +107,20 @@ module Register
     # and then plonk that binary data into the method.code array
     def assemble_binary_method method
       stream = StringIO.new
-      method.source.blocks.each do |block|
-        block.codes.each do |code|
-          begin
-            code.assemble( stream )
-          rescue => e
-            puts "Assembly error #{method.name}\n#{Sof.write(method.source.blocks).to_s[0...2000]}"
-            puts Sof.write(code)
-            raise e
-          end
-        end
+      puts "Method #{method.source.instructions.to_ac}"
+      begin
+        puts "assemble #{method.source.instructions}"
+        method.source.instructions.assemble_all( stream )
+      rescue => e
+        puts "Assembly error #{method.name}\n#{Sof.write(method.source.instructions).to_s[0...2000]}"
+        raise e
       end
       method.binary.fill_with 0
       index = 1
       stream.rewind
       #puts "Assembled #{method.name} with length #{stream.length}"
-      raise "length error #{method.binary.length} != #{method.source.byte_length}" if method.binary.length != method.source.byte_length
-      raise "length error #{stream.length} != #{method.source.byte_length}" if method.source.byte_length != stream.length
+      raise "length error #{method.binary.length} != #{method.source.total_byte_length}" if method.binary.length != method.source.total_byte_length
+      raise "length error #{stream.length} != #{method.source.total_byte_length}" if method.source.total_byte_length != stream.length
       stream.each_byte do |b|
         method.binary.set_char(index , b )
         index = index + 1
@@ -229,6 +227,7 @@ module Register
         @stream.write_uint8(0)
       end
       after = stream_position
+      before - after # shut up the linter
       #puts "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
     end
 

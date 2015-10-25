@@ -33,10 +33,8 @@ module Register
       end
       methods.each do |method|
         instruction = method.instructions
-        puts "instruction #{instruction.to_ac}" #if instruction.is_a?(Label) and instruction.name == "Method_main"
         while instruction.next
           nekst = instruction.next
-          puts "translate #{nekst}"
           t = translator.translate(nekst) # returning nil means no replace
           if t
             nekst = t.last
@@ -44,7 +42,6 @@ module Register
           end
           instruction = nekst
         end
-        puts "instruction #{method.instructions.to_ac}" #if method.instructions.is_a?(Label) and method.instructions.name == "Method_main"
       end
       label = @init.next
       @init = translator.translate( @init)

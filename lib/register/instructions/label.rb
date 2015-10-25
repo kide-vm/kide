@@ -32,14 +32,21 @@ module Register
       ret
     end
 
-    def byte_length
-      0
+    def assemble io
+    end
+
+    def assemble_all io , labels = []
+      return if labels.include?(self)
+      labels << self
+      self.next.assemble_all(io,labels)
     end
 
     def total_byte_length labels = []
       return 0 if labels.include?(self)
       labels << self
-      self.next.length(labels)
+      ret = self.next.total_byte_length(labels)
+      #puts "#{self.class.name} return #{ret}"
+      ret
     end
 
     # labels have the same position as their next
