@@ -20,14 +20,14 @@ require_relative "meta_class"
 
 module Parfait
   class Class < Object
-    attributes [:object_layout , :name , :instance_methods , :super_class , :meta_class]
+    attributes [:object_layout , :name , :instance_methods , :super_class_name , :meta_class]
 
     def initialize name , superclass
       super()
       self.name = name
       self.instance_methods = List.new
-      self.super_class = superclass
-      self.meta_class = nil#MetaClass.new(self)
+      self.super_class_name = superclass
+      self.meta_class = MetaClass.new(self)
       # the layout for this class (class = object of type Class) carries the class
       # as an instance. The relation is from an object through the Layout to it's class
       self.object_layout = Layout.new(self)
@@ -37,6 +37,11 @@ module Parfait
       #space, and ruby allocate
     end
 
+    def meta
+      m = self.meta_class
+      return m if m
+      self.meta_class = MetaClass.new(self)
+    end
     def add_instance_name name
       self.object_layout.push name
     end
@@ -92,10 +97,14 @@ module Parfait
     # this needs to be done during booting as we can't have all the classes and superclassses
     # instantiated. By that logic it should maybe be part of vm rather.
     # On the other hand vague plans to load the hierachy from sof exist, so for now...
-    def set_super_class sup
-      self.super_class = sup
+    def set_super_class_name sup
+      self.super_class_name = sup
     end
 
+    def super_class
+      Parfait::Space.object_space.get_class_by_name(self.super_class_name)
+    end
+    
     def get_instance_method fname
       raise "get_instance_method #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
       #if we had a hash this would be easier.  Detect or find would help too
@@ -110,8 +119,8 @@ module Parfait
       raise "resolve_method #{m_name}.#{m_name.class}" unless m_name.is_a?(Symbol)
       method = get_instance_method(m_name)
       return method if method
-      if( self.super_class )
-        method = Parfait::Space.object_space.get_class_by_name(self.super_class).resolve_method(m_name)
+      if( self.super_class_name )
+        method = self.super_class.resolve_method(m_name)
         raise "Method not found #{m_name}, for \n#{self}" unless method
       end
       method

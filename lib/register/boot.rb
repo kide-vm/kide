@@ -84,9 +84,9 @@ module Register
         clazz = classes[classname]
         super_name = supers[classname]
         if super_name
-          clazz.set_super_class classes[super_name]
+          clazz.set_super_class_name classes[super_name]
         else
-          clazz.set_super_class object_class
+          clazz.set_super_class_name object_class
         end
       end
     end
@@ -118,7 +118,7 @@ module Register
           # Assumtion is that name is the last of message
           :Message => [:next_message , :receiver , :frame , :return_address , :return_value,
                         :caller , :name ],
-          :MetaClass => [],
+          :MetaClass => [:me],
           :Integer => [],
           :Object => [],
           :Kernel => [], #fix, kernel is a class, but should be a module
@@ -128,7 +128,7 @@ module Register
           :Layout => [:object_class] ,
           # TODO fix layouts for inherited classes. Currently only :Class and the
           # instances are copied (shame on you)
-          :Class => [:object_layout , :name , :instance_methods , :super_class , :meta_class],
+          :Class => [:object_layout , :name , :instance_methods , :super_class_name , :meta_class],
           :Dictionary => [:keys , :values ] ,
           :Method => [:name , :source , :instructions , :binary ,:arguments , :for_class, :locals  ] ,
           :Variable => [:type , :name , :value ]

@@ -16,8 +16,11 @@ class TestClass < MiniTest::Test
     assert_equal "Class(Space)" ,  @space.get_layout.object_class.inspect
     assert_equal :Space ,          @space.get_layout.object_class.name
   end
+  def test_new_superclass_name
+    assert_equal :Object , @try.super_class_name
+  end
   def test_new_superclass
-    assert_equal :Object , @try.super_class
+    assert_equal "Class(Object)" , @try.super_class.inspect
   end
   def test_new_methods
     assert_equal @try.method_names.class, @try.instance_methods.class
