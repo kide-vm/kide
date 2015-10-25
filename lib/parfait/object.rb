@@ -13,9 +13,8 @@
 module Parfait
   class Object < Value
 
-    TYPE_WORD     = 0
-    LAYOUT_INDEX  = 1
-    CLASS_INDEX   = 2  #only used in class, but keep constants together
+    LAYOUT_INDEX  = 0
+    CLASS_INDEX   = 1  #only used in class, but keep constants together
 
     def self.new *args
       object = self.allocate
@@ -41,13 +40,6 @@ module Parfait
 
     def == other
       self.object_id == other.object_id
-    end
-
-    def get_type_of( index )
-      type_word = internal_object_get( TYPE_WORD )
-      res = type_word >> (index*4)
-      # least significant nibble, this is still adhoc, not tested. but the idea is there
-      res & 0xF
     end
 
     # This is the crux of the object system. The class of an object is stored in the objects
