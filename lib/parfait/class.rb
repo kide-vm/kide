@@ -60,6 +60,7 @@ module Parfait
     def add_instance_method method
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Method
       raise "syserr #{method.name.class}" unless method.name.is_a? Symbol
+      raise "Adding to wrong class, should be #{method.for_class}" if method.for_class != self
       found = get_instance_method( method.name )
       if found
         self.instance_methods.delete(found)
@@ -77,7 +78,7 @@ module Parfait
       else
         raise "No such method #{method_name} in #{self.name}"
       end
-      self.instance_methods.delete found
+      return true
     end
 
     def create_instance_method  method_name , arguments
@@ -85,7 +86,7 @@ module Parfait
       clazz = object_layout().object_class()
       raise "??? #{method_name}" unless clazz
       #puts "Self: #{self.class} clazz: #{clazz.name}"
-      Method.new( clazz , method_name , arguments )
+      add_instance_method Method.new( clazz , method_name , arguments )
     end
 
     # this needs to be done during booting as we can't have all the classes and superclassses
@@ -110,7 +111,7 @@ module Parfait
       method = get_instance_method(m_name)
       return method if method
       if( self.super_class )
-        method = self.super_class.resolve_method(m_name)
+        method = Parfait::Space.object_space.get_class_by_name(self.super_class).resolve_method(m_name)
         raise "Method not found #{m_name}, for \n#{self}" unless method
       end
       method
