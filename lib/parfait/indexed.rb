@@ -14,6 +14,7 @@ module Parfait
   module Indexed # marker module
     def self.included(base)
       base.extend(Methods)
+      base.attribute :indexed_length
     end
 
     # include? means non nil index
@@ -143,10 +144,10 @@ module Parfait
           offset
         end
 
-        define_method  :get_length do
-          internal_object_length - 1 - offset
+        define_method :get_length do
+          r = internal_object_get( offset + 1) #one for layout
+          r.nil? ? 0 : r
         end
-
 
         # set the value at index.
         # Lists start from index 1
@@ -174,14 +175,16 @@ module Parfait
           raise "Only positive lenths, #{len}" if len < 0
           old_length = self.get_length
           return if old_length >= len
-          internal_object_grow(len + 1 + offset)
+          raise "bounds error at #{len}" if( len + offset > 16 )
+          # be nice to use the indexed_length , but that relies on booted space
+          internal_object_set( offset + 1 , len) #one for layout
         end
 
         define_method  :shrink_to do | len|
           raise "Only positive lenths, #{len}" if len < 0
           old_length = self.get_length
           return if old_length <= len
-          internal_object_shrink(len + 1 + offset)
+          internal_object_set( offset + 1 , len) #one for layout
         end
 
       end

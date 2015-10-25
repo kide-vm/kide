@@ -114,7 +114,7 @@ module Register
     # and all instance variable names. Really have to find a better way
     def layout_names
        {  :Word => [] ,
-          :List => [] ,
+          :List => [:indexed_length] ,
           # Assumtion is that name is the last of message
           :Message => [:next_message , :receiver , :frame , :return_address , :return_value,
                         :caller , :name ],
@@ -125,7 +125,7 @@ module Register
           :BinaryCode => [],
           :Space => [:classes , :first_message ],
           :Frame => [:next_frame ],
-          :Layout => [:object_class] ,
+          :Layout => [:object_class,:indexed_length] ,
           # TODO fix layouts for inherited classes. Currently only :Class and the
           # instances are copied (shame on you)
           :Class => [:object_layout , :name , :instance_methods , :super_class_name , :meta_class],

@@ -15,7 +15,6 @@ class TestList < MiniTest::Test
   end
   def test_old_layout_push
     list = Register.machine.space.classes.keys
-    list.push(1)
     assert_equal Parfait::Layout , list.get_layout.class
   end
   def test_new_layout
@@ -54,7 +53,8 @@ class TestList < MiniTest::Test
     assert_equal nil , @list.get(3)
   end
   def test_one_set1
-    assert_equal 1 , @list.set(1,1)
+    assert_equal 2 , @list.set(1,2)
+    assert_equal 1 , @list.internal_object_get(1)
   end
   def test_set1_len
     @list.set(1,1)
@@ -73,7 +73,7 @@ class TestList < MiniTest::Test
   end
   def test_one_get1
     test_one_set1
-    assert_equal 1 , @list.get(1)
+    assert_equal 2 , @list.get(1)
   end
   def test_one_get2
     test_one_set2
