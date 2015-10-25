@@ -32,7 +32,7 @@ module Register
       end
       #need the initial jump at 0 and then functions
       @machine.init.set_position(at)
-      at += @machine.init.total_byte_length
+      at += @machine.init.byte_length
       at +=  8 # thats the padding
 
       # then we make sure we really get the binary codes first
@@ -61,7 +61,6 @@ module Register
         return try_write
       rescue LinkException
         # knowing that we fix the problem, we hope to get away with retry.
-        puts "retry"
         retry
       end
     end
@@ -82,9 +81,7 @@ module Register
         assemble_binary_method(objekt)
       end
       @stream = StringIO.new
-      @machine.init.codes.each do |code|
-        code.assemble( @stream )
-      end
+      @machine.init.assemble( @stream )
       8.times do
         @stream.write_uint8(0)
       end
@@ -107,9 +104,9 @@ module Register
     # and then plonk that binary data into the method.code array
     def assemble_binary_method method
       stream = StringIO.new
-      puts "Method #{method.source.instructions.to_ac}"
+      #puts "Method #{method.source.instructions.to_ac}"
       begin
-        puts "assemble #{method.source.instructions}"
+        #puts "assemble #{method.source.instructions}"
         method.source.instructions.assemble_all( stream )
       rescue => e
         puts "Assembly error #{method.name}\n#{Sof.write(method.source.instructions).to_s[0...2000]}"
@@ -227,7 +224,6 @@ module Register
         @stream.write_uint8(0)
       end
       after = stream_position
-      before - after # shut up the linter
       #puts "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
     end
 

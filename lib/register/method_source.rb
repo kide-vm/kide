@@ -46,7 +46,7 @@ module Register
 
     def init method , return_type = nil
       set_return_type( return_type )
-      @instructions = @current = Label.new(self, "Method_#{method.name}")
+      @instructions = @current = Label.new(self, "#{method.for_class.name}_#{method.name}")
       add_code  enter = Register.save_return(self, :message , :return_address)
       add_code Label.new( method, "return")
       # move the current message to new_message

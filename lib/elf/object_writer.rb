@@ -24,15 +24,12 @@ module Elf
       # for debug add labels to the block positions
       @object_machine.space.classes.values.each do |clazz|
         clazz.instance_methods.each do |f|
-          f.source.blocks.each do |b|
-              add_symbol "#{clazz.name}::#{f.name}:#{b.name}" , b.position
+          f.source.instructions.each_label do |label|
+              add_symbol "#{clazz.name}::#{f.name}:#{label.name}" , label.position
             end
         end
       end
-#      @object_machine.space.main.blocks.each do |b|
-#        add_symbol "main@#{b.name}" , b.position
-#      end
-#      add_symbol "#register@#{@object_machine.space.init.name}" , @object_machine.space.init.position
+
       @object_machine.objects.each do |id,slot|
         if( slot.respond_to? :sof_reference_name )
           label = "#{slot.sof_reference_name}"

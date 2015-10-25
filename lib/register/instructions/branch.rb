@@ -45,6 +45,11 @@ module Register
       self.next.assemble_all(io, labels) if self.next
     end
 
+    def each_label labels =[] , &block
+      super
+      self.label.each_label(labels , &block) if self.label
+    end
+
   end
 
   class IsZero < Branch

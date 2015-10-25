@@ -106,6 +106,11 @@ module Register
         position
       end
     end
+
+    def each_label labels =[] , &block
+      self.next.each_label(labels , &block) if self.next
+    end
+
   end
 
 end

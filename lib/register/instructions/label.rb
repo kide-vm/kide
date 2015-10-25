@@ -56,5 +56,12 @@ module Register
       self.position = position
       self.next.set_position(position,labels)
     end
+
+    def each_label labels =[] , &block
+      return if labels.include?(self)
+      labels << self
+      block.yield(self)
+      super
+    end
   end
 end
