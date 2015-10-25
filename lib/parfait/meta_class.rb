@@ -1,7 +1,5 @@
 module Parfait
 
-  # TODO : rethink - possibly needs to be a module to be mixed into Object
-  #
   # class that acts like a class, but is really the object
 
   # described in the ruby language book as the eigenclass, what you get with
@@ -9,19 +7,23 @@ module Parfait
   #     class << self        <--- this is called the eigenclass, or metaclass, and really is just
   #     ....                              the class object but gives us the ability to use the
   #                                       syntax as if it were a class
-  #                     PS: can't say i fancy the << self syntax and am considerernig adding a
-  #                         keyword for it, like meta
-  #                      In effect it is a very similar construct to   def self.function(...)
-  #                      So one could write def meta.function(...) and thus define on the meta-class
+  #
+
   class MetaClass < Object
-    # no name, nor nothing. as this is just the object really
+    attribute :me
 
-    # def initialize(object)
-    #   super()
-    #   self.functions = []
-    #   self.me_self = object
-    # end
+    def initialize(object)
+      super()
+      self.me = object
+    end
 
+    def super_class
+      Space.object_space.get_class_by_name(self.me.super_class_name).meta
+    end
+
+    def name
+      "Meta#{me.name}".to_sym
+    end
     # in a non-booting version this should map to _add_singleton_method
     # def add_function function
     #   raise "not a function #{function}" unless function.is_a? Register::Function

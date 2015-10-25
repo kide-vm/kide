@@ -7,7 +7,7 @@ class TestBasicClass < MiniTest::Test
   def test_class_def
     @string_input = <<HERE
 class Bar
-  int buh()
+  int self.buh()
     return 1
   end
 end
