@@ -23,19 +23,6 @@ module Parfait
 
     alias :[] :get
 
-
-    def each
-      # not sure how to do this with define_method, because of the double block issue.
-      # probably some clever way around that, but not important
-      index = 1
-      while index <= self.get_length
-        item = get(index)
-        yield item
-        index = index + 1
-      end
-      self
-    end
-
     #ruby 2.1 list (just for reference, keep at bottom)
     # :at, :fetch, :first, :last, :concat, :<<, :push, :pop, :shift, :unshift, :insert, :each, :each_index, :reverse_each,
     # :length, :size, :empty?, :find_index, :index, :rindex, :join, :reverse, :reverse!, :rotate, :rotate!,

@@ -25,18 +25,6 @@ module Parfait
     include Indexed
     self.offset(0)
 
-    def each
-      # not sure how to do this with define_method, because of the double block issue.
-      # probably some clever way around that, but not important
-      index = 1
-      while index <= self.get_length
-        item = get(index)
-        yield item
-        index = index + 1
-      end
-      self
-    end
-
     attribute :object_class
 
     def initialize( object_class )
