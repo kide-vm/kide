@@ -6,6 +6,10 @@ class TestList < MiniTest::Test
     Register.machine.boot unless Register.machine.booted
     @list = ::Parfait::List.new
   end
+  def test_isa
+    assert @list.is_a? Parfait::List
+    assert @list.is_a? Parfait::Indexed
+  end
   def test_old_layout
     assert_equal Parfait::Layout , Register.machine.space.classes.keys.get_layout.class
   end

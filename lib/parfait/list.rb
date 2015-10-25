@@ -14,7 +14,8 @@ require_relative "indexed"
 
 module Parfait
   class List < Object
-    Indexed.at(0 , self)
+    include Indexed
+    self.offset(0)
 
     def initialize(  )
       super()

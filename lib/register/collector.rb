@@ -27,7 +27,7 @@ module Register
         inst = object.get_instance_variable name
         keep(inst , depth + 1)
       end
-      if object.is_a? Parfait::List
+      if object.is_a? Parfait::Indexed
         object.each do |item|
           #puts "Keep item "
           keep(item , depth + 1)

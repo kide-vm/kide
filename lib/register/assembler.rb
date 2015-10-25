@@ -168,7 +168,7 @@ module Register
       end
       #puts "layout length=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
       l = layout.get_length
-      if( object.is_a? Parfait::List)
+      if( object.is_a? Parfait::Indexed)
         object.each do |inst|
           write_ref_for(inst)
         end
