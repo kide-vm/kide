@@ -10,11 +10,6 @@ class TestObject < MiniTest::Test
     assert_equal 1 ,  @object.internal_object_length
   end
 
-  def test_object_grow
-    @object.internal_object_grow( 2 )
-    assert_equal 2 ,  @object.internal_object_length
-  end
-
   def test_empty_object_doesnt_return
     assert_equal nil ,  @object.internal_object_get(3)
   end

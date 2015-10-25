@@ -68,26 +68,11 @@ module Parfait
     include Positioned
 
     def fake_init
-      @memory = [0,nil]
+      @memory = Array.new(16)
       @position = nil
       self # for chaining
     end
 
-    # these internal functions are _really_ internal
-    # they respresent the smallest code needed to build larger functionality
-    # but should _never_ be used outside parfait. in fact that should be impossible
-    def internal_object_get_typeword
-      raise "failed init for #{self.class}" unless @memory
-      @memory[0]
-    end
-    def internal_object_set_typeword w
-      raise "failed init for #{self.class}" unless @memory
-      @memory[0] = w
-    end
-    def internal_object_length
-      raise "failed init for #{self.class}" unless @memory
-      @memory.length - 1  # take of type-word
-    end
     # 1 -based index
     def internal_object_get(index)
       @memory[index]
@@ -97,20 +82,6 @@ module Parfait
       raise "failed init for #{self.class}" unless @memory
       @memory[index] = value
       value
-    end
-    def internal_object_grow(length)
-      old_length = internal_object_length()
-      while( old_length < length )
-        internal_object_set( old_length + 1, nil)
-        old_length = old_length + 1
-      end
-    end
-    def internal_object_shrink(length)
-      old_length = internal_object_length()
-      while( length < old_length  )
-        @memory.delete_at(old_length)
-        old_length = old_length - 1
-      end
     end
   end
   class List
