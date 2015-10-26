@@ -80,6 +80,17 @@ module Parfait
     def sof_reference_name
       "#{self.object_class.name}_Layout"
     end
+    alias :name :sof_reference_name
+
+    def super_class_name
+      nil  # stop resolve recursing up metaclasses
+    end
+
+    def create_instance_method  method_name , arguments
+      raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
+      #puts "Self: #{self.class} clazz: #{clazz.name}"
+      add_instance_method Method.new( self , method_name , arguments )
+    end
 
   end
 end
