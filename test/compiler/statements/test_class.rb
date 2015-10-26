@@ -4,7 +4,7 @@ module Register
 class TestBasicClass < MiniTest::Test
   include Statements
 
-  def test_class_def
+  def pest_class_def
     @string_input = <<HERE
 class Bar
   int self.buh()

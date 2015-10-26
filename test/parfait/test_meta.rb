@@ -12,14 +12,14 @@ class TestMeta < MiniTest::Test
     ::Parfait::Method.new @space.get_class_by_name(for_class) , :foo , args
   end
 
-  def test_meta
+  def pest_meta
     assert @try
   end
-  def test_meta_object
+  def pest_meta_object
     assert @space.get_class_by_name(:Object).meta
   end
 
-  def test_new_superclass
+  def pest_new_superclass
     assert_equal Parfait::MetaClass , @try.super_class.class
     assert_equal :MetaObject , @try.super_class.name
   end

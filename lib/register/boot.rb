@@ -126,9 +126,7 @@ module Register
           :Space => [:classes , :first_message ],
           :Frame => [:next_frame ],
           :Layout => [:object_class,:indexed_length] ,
-          # TODO fix layouts for inherited classes. Currently only :Class and the
-          # instances are copied (shame on you)
-          :Class => [:object_layout , :name , :instance_methods , :super_class_name , :meta_class],
+          :Class => [:object_layout , :name , :instance_methods , :super_class_name ],
           :Dictionary => [:keys , :values ] ,
           :Method => [:name , :source , :instructions , :binary ,:arguments , :for_class, :locals  ] ,
           :Variable => [:type , :name , :value ]
