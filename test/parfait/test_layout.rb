@@ -36,6 +36,23 @@ class TestLayout < MiniTest::Test
     assert_equal 8 , @mess.get_layout.instance_length , @mess.get_layout.inspect
   end
 
+  def test_layout_length
+    assert_equal 8 , @mess.get_layout.indexed_length , @mess.get_layout.inspect
+    assert_equal 8 , @mess.get_layout.internal_object_get(4)
+  end
+
+  def test_layout_length_index
+    assert_equal 4 , @mess.get_layout.get_layout.variable_index(:indexed_length)
+    assert_equal 4 , @mess.get_layout.get_layout.get_offset
+    assert_equal 4 , @mess.get_layout.get_offset
+    assert_equal 4 , @mess.get_layout.get_layout.indexed_length
+    assert_equal 4 , @mess.get_layout.get_layout.internal_object_get(4)
+  end
+
+  def test_layout_methods
+    assert_equal 3 , @mess.get_layout.get_layout.variable_index(:instance_methods)
+  end
+
   def test_no_index_below_1
     layout = @mess.get_layout
     names = layout.instance_names
@@ -57,6 +74,31 @@ class TestLayout < MiniTest::Test
   def test_attribute_set
     @mess.receiver = 55
     assert_equal 55 , @mess.receiver
+  end
+
+  def test_add_name
+    layout = Parfait::Layout.new Register.machine.space.get_class_by_name(:Layout)
+    layout.add_instance_variable :boo
+    assert_equal 2 , layout.variable_index(:boo)
+    assert_equal 2 , layout.get_length
+    assert_equal :layout , layout.get(1)
+    assert_equal :boo , layout.get(2)
+    layout
+  end
+
+  def test_inspect
+    layout = test_add_name
+    assert layout.inspect.include?("boo") , layout.inspect
+  end
+
+  def test_each
+    layout = test_add_name
+    assert_equal 2 , layout.get_length
+    counter = [:boo , :layout]
+    layout.each do |item|
+      assert_equal item , counter.delete(item)
+    end
+    assert counter.empty?
   end
 
   # not really parfait test, but related and no other place currently

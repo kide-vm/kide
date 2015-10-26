@@ -34,6 +34,7 @@ module Parfait
     def initialize( object_class )
       super()
       self.object_class = object_class
+      add_instance_variable :layout
     end
 
     def == other
@@ -73,7 +74,7 @@ module Parfait
     end
 
     def inspect
-      "Layout[#{inspect_from(3)}]"
+      "Layout[#{super}]"
     end
 
     def sof_reference_name

@@ -124,6 +124,11 @@ class TestList < MiniTest::Test
     assert_equal 3 , @list.index_of( :three )
     assert_equal nil , @list.index_of( :four )
   end
+  def test_inspect
+    test_many_get
+    assert @list.inspect.include?("one") , @list.inspect
+    assert @list.inspect.include?("three") , @list.inspect
+  end
   def test_inlcude
     test_many_get
     assert_equal true , @list.include?( :two )

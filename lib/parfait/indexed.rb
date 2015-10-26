@@ -124,10 +124,7 @@ module Parfait
     end
 
     def inspect
-      inspect_from 1
-    end
-
-    def inspect_from  index
+      index = 1
       ret = ""
       while index <= self.get_length
         item = get(index)
