@@ -3,7 +3,7 @@
 module Parfait
   # A word is a a short sequence of characters
   # Characters are not modeled as objects but as (small) integers
-  # The small means two of them have to fit into a machine word, iw utf16 or similar
+  # The small means two of them have to fit into a machine word, utf16 or similar
   #
   # Words are constant, maybe like js strings, ruby symbols
   # Words are short, but may have spaces
@@ -14,14 +14,17 @@ module Parfait
 
   # big TODO , this has NO encoding, a char takes a machine word. Go fix.
   class Word < Object
+    attribute :char_length
+
     # initialize with length. For now we try to keep all non-parfait (including String) out
     # String will contain spaces for non-zero length
     # Register provides methods to create Parfait objects from ruby
     def initialize len
       super()
+      self.char_length = 0
       raise "Must init with int, not #{len.class}" unless len.kind_of? Fixnum
       raise "Must init with positive, not #{len}" if len < 0
-      set_length( len , 32 ) unless len == 0
+      set_length( len , 32 ) unless len == 0 #32 beeing ascii space
     end
 
     # return a copy of self
@@ -37,7 +40,7 @@ module Parfait
 
     # return the number of characters
     def length()
-      obj_len = internal_object_length - 1
+      obj_len = self.char_length
       return obj_len
     end
 
@@ -65,10 +68,11 @@ module Parfait
     #
     def set_length(len , fill_char)
       return if len <= 0
-      counter = self.length()
-      return if counter >= len
-      internal_object_grow( len + 1)
-      fill_from_with( counter + 1 , fill_char )
+      old = self.char_length
+      return if old >= len
+      self.char_length = len
+      check_length
+      fill_from_with( old + 1 , fill_char )
     end
 
     # set the character at the given index to the given character
@@ -76,9 +80,9 @@ module Parfait
     # the index starts at one, but may be negative to count from the end
     # indexes out of range will raise an error
     def set_char at , char
-      raise "char not fixnum #{char}" unless char.kind_of? Fixnum
+      raise "char not fixnum #{char.class}" unless char.kind_of? Fixnum
       index = range_correct_index(at)
-      internal_object_set( index + 1  , char )
+      internal_object_set( index + 2, char )
     end
 
     # get the character at the given index
@@ -87,7 +91,7 @@ module Parfait
     #the return "character" is an integer
     def get_char at
       index = range_correct_index(at)
-      return internal_object_get(index + 1)
+      return internal_object_get(index + 2 )
     end
 
     # private method to calculate negative indexes into positives
@@ -113,11 +117,6 @@ module Parfait
       return true
     end
 
-    # this is a sof check if there are instance variables or "structure"
-    def is_value?
-      true
-    end
-
     # as we answered is_value? with true, sof will create a basic node with this string
     def to_sof
       "'" + to_s + "'"
@@ -125,6 +124,11 @@ module Parfait
 
     def word_length
       padded self.length
+    end
+
+    private
+    def check_length
+      raise "Length out of bounds #{self.char_length}" if self.char_length > 32
     end
   end
 end

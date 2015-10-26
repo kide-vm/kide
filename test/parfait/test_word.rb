@@ -12,6 +12,9 @@ class TestEmptyWord < MiniTest::Test
   def test_empty_is_zero
     assert_equal 0 , @word.length
   end
+  def test_empty_is_zero_internal
+    assert_equal 0 , @word.char_length
+  end
   def test_index_check_get
     assert_raises RuntimeError do
       @word.get_char(0)
@@ -26,10 +29,14 @@ end
 class TestWord < MiniTest::Test
 
   def setup
+    Register.machine.boot unless Register.machine.booted
     @word = ::Parfait::Word.new(5)
   end
   def test_len
     assert_equal 5 , @word.length
+  end
+  def test_len_internal
+    assert_equal 5 , @word.char_length
   end
   def test_first_char
     assert_equal 32 , @word.get_char(1)

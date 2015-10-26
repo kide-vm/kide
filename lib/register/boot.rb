@@ -113,7 +113,7 @@ module Register
     # unfortuantely that constant condenses every detail about the system, class names
     # and all instance variable names. Really have to find a better way
     def layout_names
-       {  :Word => [] ,
+       {  :Word => [:char_length] ,
           :List => [:indexed_length] ,
           # Assumtion is that name is the last of message
           :Message => [:next_message , :receiver , :frame , :return_address , :return_value,
