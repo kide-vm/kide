@@ -12,10 +12,8 @@ module Soml
       #puts "Define field #{name} on class #{for_class.name}"
       index = for_class.object_layout.add_instance_variable( name ) #TODO need typing
 
-      if value
-        value = process( value  )
-        raise "value #{value}" #tbc
-      end
+      # not sure how to run class code yet. later
+      raise "value #{value}" if value
 
       return nil # statements don't reurn values, only expressions
     end
