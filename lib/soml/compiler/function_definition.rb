@@ -16,7 +16,7 @@ module Soml
       if(receiver )
         if( receiver.first == :self)  #class method
           class_method = @clazz
-          @clazz = @clazz.meta_class
+          @clazz = @clazz.meta
         else
           raise "Not covered #{receiver}"
         end
