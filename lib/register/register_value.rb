@@ -104,12 +104,6 @@ module Register
         register = message_reg
       when :new_message
         register = new_message_reg
-      when :self
-        raise "self good?"
-        register = self_reg(:Object) #TODO , probably have to get rid of this resolve method
-      when :frame
-        raise "frame good?"
-        register = frame_reg
       else
         raise "not recognized register reference #{reference}"
       end
