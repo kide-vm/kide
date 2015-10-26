@@ -21,6 +21,25 @@ HERE
     check
   end
 
+  def test_class_call
+    @string_input = <<HERE
+class Bar
+  int self.buh()
+    return 1
+  end
+end
+class Object
+  int main()
+    return Bar.buh()
+  end
+end
+HERE
+    @length = 30
+    @expect =  [Label, SaveReturn,GetSlot,LoadConstant,SetSlot,LoadConstant,SetSlot,
+                RegisterTransfer,FunctionCall,GetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
+    check
+  end
+
   def test_class_field_value
     @string_input = <<HERE
 class Object
@@ -43,6 +62,7 @@ class Object
   end
 end
 HERE
+    @length = 17
     @expect =  [Label, SaveReturn,GetSlot,GetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
     check
   end

@@ -11,10 +11,16 @@ module Soml
       new_message = Register.resolve_to_register(:new_message)
       add_code Register.get_slot(@method, :message , :next_message , new_message )
       if receiver
-        me = process( receiver.to_a.first  )
+        me = process( receiver.first  )
       else
         me = use_reg @method.for_class.name
         add_code Register.get_slot(@method, :message , :receiver , me )
+      end
+      if(me.type == :Class)
+        clazz = me.value.meta
+      else
+        # now we have to resolve the method name (+ receiver) into a callable method
+        clazz =  Register.machine.space.get_class_by_name(me.type)
       end
       # move our receiver there
       add_code Register.set_slot( statement , me , :new_message , :receiver)
@@ -33,8 +39,7 @@ module Soml
         add_code set
       end
 
-      # now we have to resolve the method name (+ receiver) into a callable method
-      clazz =  Register.machine.space.get_class_by_name(me.type)
+      #puts "clazz #{clazz.name}"
       raise "No such class #{me.type}" unless clazz
       method = clazz.get_instance_method(name)
       #puts Register.machine.space.get_class_by_name(:Integer).method_names.to_a
