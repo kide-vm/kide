@@ -11,10 +11,9 @@
 # The Layout is **always** the first entry (index 1) in an object, but the type word is index 0
 
 module Parfait
-  class Object < Value
+  LAYOUT_INDEX  = 1
 
-    LAYOUT_INDEX  = 0
-    CLASS_INDEX   = 1  #only used in class, but keep constants together
+  class Object < Value
 
     def self.new *args
       object = self.allocate

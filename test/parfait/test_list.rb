@@ -37,10 +37,18 @@ class TestList < MiniTest::Test
     assert_equal 0 , @list.get_length
     assert_equal nil , @list.indexed_length
   end
+  def test_offset
+    assert_equal 2 , @list.get_offset
+  end
+  def test_indexed_index
+    # 1 layout , 2 indexed_length
+    assert_equal 2 , @list.get_layout.variable_index(:indexed_length)
+  end
   def test_length1
     @list.push :one
     assert_equal 1 , @list.get_length
     assert_equal 1 , @list.indexed_length
+    assert_equal 1 , @list.internal_object_get(Parfait::LAYOUT_INDEX + 1)
   end
   def test_list_inspect
     @list.set(1,1)

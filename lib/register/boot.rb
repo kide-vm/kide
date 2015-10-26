@@ -125,7 +125,7 @@ module Register
           :BinaryCode => [],
           :Space => [:classes , :first_message ],
           :Frame => [:next_frame ],
-          :Layout => [:object_class,:indexed_length] ,
+          :Layout => [:object_class,:instance_methods,:indexed_length] ,
           :Class => [:object_layout , :name , :instance_methods , :super_class_name ],
           :Dictionary => [:keys , :values ] ,
           :Method => [:name , :source , :instructions , :binary ,:arguments , :for_class, :locals  ] ,

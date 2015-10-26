@@ -12,6 +12,11 @@ module Parfait
       base.attribute :instance_methods
     end
 
+    def initialize
+      super()
+      self.instance_methods = List.new
+    end
+
     def method_names
       names = List.new
       self.instance_methods.each do |method|

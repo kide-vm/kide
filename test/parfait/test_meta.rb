@@ -5,6 +5,7 @@ class TestMeta < MiniTest::Test
   def setup
     @space = Register.machine.boot.space
     @try = @space.create_class(:Try , :Object).meta
+    puts @try.class
   end
 
   def foo_method for_class = :Try
@@ -12,17 +13,13 @@ class TestMeta < MiniTest::Test
     ::Parfait::Method.new @space.get_class_by_name(for_class) , :foo , args
   end
 
-  def pest_meta
+  def test_meta
     assert @try
   end
-  def pest_meta_object
+  def test_meta_object
     assert @space.get_class_by_name(:Object).meta
   end
 
-  def pest_new_superclass
-    assert_equal Parfait::MetaClass , @try.super_class.class
-    assert_equal :MetaObject , @try.super_class.name
-  end
   def pest_new_methods
     assert_equal @try.method_names.class, @try.instance_methods.class
     assert_equal @try.method_names.get_length , @try.instance_methods.get_length

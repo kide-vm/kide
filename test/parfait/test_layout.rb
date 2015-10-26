@@ -21,7 +21,7 @@ class TestLayout < MiniTest::Test
   end
 
   def test_layout_index
-    assert_equal @mess.get_layout , @mess.internal_object_get(0) , "mess"
+    assert_equal @mess.get_layout , @mess.internal_object_get(Parfait::LAYOUT_INDEX) , "mess"
   end
 
   def test_inspect
@@ -73,6 +73,6 @@ class TestLayout < MiniTest::Test
 
   def test_remove_me
     layout = @mess.get_layout
-    assert_equal layout , @mess.internal_object_get(0)
+    assert_equal layout , @mess.internal_object_get(1)
   end
 end

@@ -22,10 +22,10 @@ module Parfait
     def initialize name , superclass
       super()
       self.name = name
-      self.instance_methods = List.new
       self.super_class_name = superclass
       # the layout for this class (class = object of type Class) carries the class
       # as an instance. The relation is from an object through the Layout to it's class
+      # TODO the object layout should copy the stuff from superclass
       self.object_layout = Layout.new(self)
     end
 
@@ -34,10 +34,9 @@ module Parfait
     end
 
     def meta
-      m = self.meta_class
-      return m if m
-      self.meta_class = MetaClass.new(self)
+      get_layout
     end
+
     def add_instance_name name
       self.object_layout.push name
     end

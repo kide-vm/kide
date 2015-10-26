@@ -14,18 +14,22 @@
 # But as we want every Object to have a class, the Layout carries that class.
 # So the layout of layout has an entry "object_class"
 
+# But Objects must also be able to carry methods themselves (ruby calls singleton_methods)
+# and those too are stored in the Layout (both layout and class include behaviour)
+
 # In other words, the Layout is a list of names that describe
 # the values stored in an actual object.
 # The object is an List of values of length n and
-# the Layout is an List of names of length n
+# the Layout is an List of names of length n , plus class reference and methods reference
 # Together they turn the object into a hash like structure
 
 module Parfait
   class Layout < Object
     attribute :object_class
+    include Behaviour
 
     include Indexed
-    self.offset(1)
+    self.offset(3)
 
     def initialize( object_class )
       super()
