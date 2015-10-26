@@ -28,7 +28,7 @@ module Register
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::Method
         # should be fill_to_length (with zeros)
-        objekt.binary.set_length(objekt.source.total_byte_length , 0)
+        objekt.binary.set_length(objekt.source.total_byte_length )
       end
       #need the initial jump at 0 and then functions
       @machine.init.set_position(at)
@@ -112,14 +112,13 @@ module Register
         puts "Assembly error #{method.name}\n#{Sof.write(method.source.instructions).to_s[0...2000]}"
         raise e
       end
-      method.binary.fill_with 0
       index = 1
       stream.rewind
       #puts "Assembled #{method.name} with length #{stream.length}"
-      raise "length error #{method.binary.length} != #{method.source.total_byte_length}" if method.binary.length != method.source.total_byte_length
+      raise "length error #{method.binary.length} != #{method.source.total_byte_length}" if method.binary.get_length != method.source.total_byte_length
       raise "length error #{stream.length} != #{method.source.total_byte_length}" if method.source.total_byte_length != stream.length
       stream.each_byte do |b|
-        method.binary.set_char(index , b )
+        method.binary.set(index , b )
         index = index + 1
       end
     end
