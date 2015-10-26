@@ -25,7 +25,7 @@ module Parfait
     attribute :object_class
 
     include Indexed
-    self.offset(2)
+    self.offset(1)
 
     def initialize( object_class )
       super()
@@ -47,7 +47,7 @@ module Parfait
       self.get_length
     end
 
-    def object_instance_names
+    def instance_names
       names = List.new
       each do |item|
         names.push item
@@ -55,20 +55,14 @@ module Parfait
       names
     end
 
-    def object_instance_length
+    def instance_length
       self.get_length
-    end
-
-    alias :list_index :index_of
-    # private inheritance is something to think off, we don't really want the list api exported
-    def index_of name
-      raise "should not rely on layout internal structure, use variable_index"
     end
 
     # index of the variable when using internal_object_get
     # (internal_object_get is 1 based and 1 is always the layout)
     def variable_index name
-      has = list_index(name)
+      has = index_of(name)
       return nil unless has
       raise "internal error #{name}:#{has}" if has < 1
       has

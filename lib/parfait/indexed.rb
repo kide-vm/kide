@@ -140,6 +140,7 @@ module Parfait
 
     module Methods
       def offset( offset  )
+        offset += 1 # for the attribute we add (indexed_length)
 
         define_method  :get_offset do
           offset
