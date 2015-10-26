@@ -23,7 +23,7 @@ module Register
       layout = object.get_layout
       keep(layout  , depth + 1)
       return if object.is_a? Symbol
-      layout.object_instance_names.each do |name|
+      layout.instance_names.each do |name|
         #puts "Keep #{name} for #{object.class}"
         inst = object.get_instance_variable name
         keep(inst , depth + 1)

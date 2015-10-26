@@ -7,7 +7,7 @@ class TestObject < MiniTest::Test
   end
 
   def test_object_create
-    assert_equal 1 ,  @object.get_layout.object_instance_length
+    assert_equal 1 ,  @object.get_layout.instance_length
   end
 
   def test_empty_object_doesnt_return

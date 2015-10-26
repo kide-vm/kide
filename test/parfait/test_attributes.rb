@@ -12,11 +12,11 @@ class TestAttributes < MiniTest::Test
   end
   def test_message_layout_first
     @layout.object_class = :next_message
-    assert_equal :layout , @layout.object_instance_names.first
+    assert_equal :layout , @layout.instance_names.first
     assert_equal :next_message , @layout.object_class
   end
   def test_message_name_nil
-    last = @layout.object_instance_names.last
+    last = @layout.instance_names.last
     assert_equal :name , last
     assert_equal nil , @mess.name
   end

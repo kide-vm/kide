@@ -205,7 +205,7 @@ module Interpreter
       else
         raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
       end
-      puts "#{@instruction} == #{result}   (#{left}|#{right})"
+      #puts "#{@instruction} == #{result}   (#{left}|#{right})"
       right = set_register(@instruction.left , result)
       true
     end

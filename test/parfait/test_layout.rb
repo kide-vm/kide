@@ -24,10 +24,6 @@ class TestLayout < MiniTest::Test
     assert_equal @mess.get_layout , @mess.internal_object_get(0) , "mess"
   end
 
-  def test_forbidden_index_of
-    assert_raises(RuntimeError) { @mess.get_layout.index_of(:name)}
-  end
-
   def test_inspect
     assert @mess.get_layout.inspect.start_with?("Layout")
   end
@@ -37,12 +33,12 @@ class TestLayout < MiniTest::Test
   end
 
   def test_length
-    assert_equal 8 , @mess.get_layout.object_instance_length , @mess.get_layout.inspect
+    assert_equal 8 , @mess.get_layout.instance_length , @mess.get_layout.inspect
   end
 
   def test_no_index_below_1
     layout = @mess.get_layout
-    names = layout.object_instance_names
+    names = layout.instance_names
     assert_equal 8 , names.get_length , names.inspect
     names.each do |n|
       assert layout.variable_index(n) >= 1
@@ -54,7 +50,7 @@ class TestLayout < MiniTest::Test
     assert_equal Parfait::Class , oc.class
     layout = oc.object_layout
     assert_equal Parfait::Layout , layout.class
-    assert_equal 1 , layout.object_instance_names.get_length
+    assert_equal 1 , layout.instance_names.get_length
     assert_equal layout.first , :layout
   end
 

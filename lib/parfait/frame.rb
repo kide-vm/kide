@@ -20,7 +20,7 @@ module Parfait
     attribute :next_frame
 
     def self.offset
-      1 + Space.object_space.get_class_by_name(:Frame).object_layout.object_instance_length
+      1 + Space.object_space.get_class_by_name(:Frame).object_layout.instance_length
     end
 
   end
