@@ -69,7 +69,6 @@ module Parfait
       found = get_instance_method( method.name )
       if found
         self.instance_methods.delete(found)
-        #raise "existed in #{self.name} #{Sof.write found.source.blocks}"
       end
       self.instance_methods.push method
       #puts "#{self.name} add #{method.name}"
@@ -104,7 +103,7 @@ module Parfait
     def super_class
       Parfait::Space.object_space.get_class_by_name(self.super_class_name)
     end
-    
+
     def get_instance_method fname
       raise "get_instance_method #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
       #if we had a hash this would be easier.  Detect or find would help too

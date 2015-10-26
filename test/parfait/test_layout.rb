@@ -21,7 +21,7 @@ class TestLayout < MiniTest::Test
   end
 
   def test_layout_index
-    assert_equal @mess.get_layout , @mess.internal_object_get(1) , "mess"
+    assert_equal @mess.get_layout , @mess.internal_object_get(0) , "mess"
   end
 
   def test_forbidden_index_of
@@ -36,10 +36,14 @@ class TestLayout < MiniTest::Test
     assert_equal 1 , layout.variable_index(:layout)
   end
 
+  def test_length
+    assert_equal 8 , @mess.get_layout.object_instance_length , @mess.get_layout.inspect
+  end
+
   def test_no_index_below_1
     layout = @mess.get_layout
     names = layout.object_instance_names
-    assert_equal 7 , names.get_length , names.inspect
+    assert_equal 8 , names.get_length , names.inspect
     names.each do |n|
       assert layout.variable_index(n) >= 1
     end
@@ -50,8 +54,8 @@ class TestLayout < MiniTest::Test
     assert_equal Parfait::Class , oc.class
     layout = oc.object_layout
     assert_equal Parfait::Layout , layout.class
-    assert_equal layout.object_instance_names.get_length , 0
-    #assert_equal layout.first , :layout
+    assert_equal 1 , layout.object_instance_names.get_length
+    assert_equal layout.first , :layout
   end
 
   def test_attribute_set
@@ -73,6 +77,6 @@ class TestLayout < MiniTest::Test
 
   def test_remove_me
     layout = @mess.get_layout
-    assert_equal layout , @mess.internal_object_get(1)
+    assert_equal layout , @mess.internal_object_get(0)
   end
 end

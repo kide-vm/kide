@@ -7,7 +7,7 @@ class TestObject < MiniTest::Test
   end
 
   def test_object_create
-    assert_equal 1 ,  @object.internal_object_length
+    assert_equal 1 ,  @object.get_layout.object_instance_length
   end
 
   def test_empty_object_doesnt_return
@@ -18,18 +18,10 @@ class TestObject < MiniTest::Test
     assert_equal 1 ,  @object.internal_object_set(1,1)
   end
 
-  def test_set1_len
-     @object.internal_object_set(1,1)
-    assert_equal 1 ,  @object.internal_object_length
-  end
-
   def test_one_set2
     assert_equal :some ,  @object.internal_object_set(2,:some)
   end
-  def test_set2_len
-     @object.internal_object_set(2,:some)
-    assert_equal 2 ,  @object.internal_object_length
-  end
+
   def test_two_sets
     assert_equal 1 ,  @object.internal_object_set(1,1)
     assert_equal :some ,  @object.internal_object_set(1,:some)

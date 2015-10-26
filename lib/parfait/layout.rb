@@ -22,10 +22,10 @@
 
 module Parfait
   class Layout < Object
-    include Indexed
-    self.offset(0)
-
     attribute :object_class
+
+    include Indexed
+    self.offset(2)
 
     def initialize( object_class )
       super()
@@ -43,24 +43,20 @@ module Parfait
     # TODO , later we would need to COPY the layout to keep the old constant
     #        but now we are concerned with booting, ie getting a working structure
     def add_instance_variable name
-      self.push(1) if self.get_length == 0
       self.push(name)
       self.get_length
     end
 
     def object_instance_names
       names = List.new
-      index = 3
-      while index <= self.get_length
-        item = get(index)
+      each do |item|
         names.push item
-        index = index + 1
       end
       names
     end
 
     def object_instance_length
-      self.get_length - 2
+      self.get_length
     end
 
     alias :list_index :index_of
@@ -74,8 +70,8 @@ module Parfait
     def variable_index name
       has = list_index(name)
       return nil unless has
-      raise "internal error #{name}:#{has}" if has < 2
-      has - 1
+      raise "internal error #{name}:#{has}" if has < 1
+      has
     end
 
     def inspect

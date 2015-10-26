@@ -100,7 +100,7 @@ HERE
     was = check
     set = was.next(8)
     assert_equal SetSlot , set.class
-    assert_equal 9, set.index , "Set to message must be offset, not #{set.index}"
+    assert_equal 10, set.index , "Set to message must be offset, not #{set.index}"
   end
 end
 end

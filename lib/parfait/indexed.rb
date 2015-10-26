@@ -26,6 +26,7 @@ module Parfait
     # return  nil if no such item
     def index_of item
       max = self.get_length
+      #puts "length #{max} #{max.class}"
       counter = 1
       while( counter <= max )
         if( get(counter) == item)
@@ -103,7 +104,7 @@ module Parfait
     def each
       # not sure how to do this with define_method, because of the double block issue.
       # probably some clever way around that, but not important
-      index = 1 + get_offset
+      index = 1
       while index <= self.get_length
         item = get(index)
         yield item
@@ -175,7 +176,7 @@ module Parfait
           raise "Only positive lenths, #{len}" if len < 0
           old_length = self.get_length
           return if old_length >= len
-          raise "bounds error at #{len}" if( len + offset > 16 )
+#          raise "bounds error at #{len}" if( len + offset > 16 )
           # be nice to use the indexed_length , but that relies on booted space
           internal_object_set( offset + 1 , len) #one for layout
         end
