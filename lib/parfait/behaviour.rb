@@ -17,9 +17,14 @@ module Parfait
       self.instance_methods = List.new
     end
 
+    def methods
+      m = self.instance_methods
+      return m if m
+      self.instance_methods = List.new
+    end
     def method_names
       names = List.new
-      self.instance_methods.each do |method|
+      self.methods.each do |method|
         names.push method.name
       end
       names
@@ -28,12 +33,14 @@ module Parfait
     def add_instance_method method
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Method
       raise "syserr #{method.name.class}" unless method.name.is_a? Symbol
-      raise "Adding to wrong class, should be #{method.for_class}" if method.for_class != self
+      if self.is_a?(Class) and (method.for_class != self)
+        raise "Adding to wrong class, should be #{method.for_class}"
+      end
       found = get_instance_method( method.name )
       if found
-        self.instance_methods.delete(found)
+        self.methods.delete(found)
       end
-      self.instance_methods.push method
+      self.methods.push method
       #puts "#{self.name} add #{method.name}"
       method
     end
@@ -41,7 +48,7 @@ module Parfait
     def remove_instance_method method_name
       found = get_instance_method( method_name )
       if found
-        self.instance_methods.delete(found)
+        self.methods.delete(found)
       else
         raise "No such method #{method_name} in #{self.name}"
       end
@@ -51,7 +58,7 @@ module Parfait
     def get_instance_method fname
       raise "get_instance_method #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
       #if we had a hash this would be easier.  Detect or find would help too
-      self.instance_methods.each do |m|
+      self.methods.each do |m|
         return m if(m.name == fname )
       end
       nil
