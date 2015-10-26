@@ -33,8 +33,8 @@ module Parfait
 
     def initialize( object_class )
       super()
-      self.object_class = object_class
       add_instance_variable :layout
+      self.object_class = object_class
     end
 
     def == other

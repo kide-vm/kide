@@ -77,8 +77,7 @@ module Register
       end
       object_class = classes[:Object]
       # superclasses other than default object
-      supers = { :BinaryCode => :Word , :Layout => :List ,
-                 :Object => :Kernel , :Kernel => :Value, :Integer => :Value }
+      supers = {  :Object => :Kernel , :Kernel => :Value, :Integer => :Value }
       layout_names.each do |classname , ivar|
         next if classname == :Value  # has no superclass
         clazz = classes[classname]
