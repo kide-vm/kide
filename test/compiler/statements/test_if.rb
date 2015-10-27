@@ -4,7 +4,7 @@ module Register
 class TestIfStatement < MiniTest::Test
   include Statements
 
-  def test_if_basic
+  def test_if_basicr
     @string_input = <<HERE
 class Object
   int main()
@@ -17,7 +17,7 @@ class Object
 end
 HERE
   @expect =  [Label, SaveReturn,LoadConstant,LoadConstant, OperatorInstruction,IsPlus ,
-                LoadConstant,Branch , Label , LoadConstant ,
+                LoadConstant,SetSlot,Branch , Label , LoadConstant ,SetSlot,
                 Label,Label,RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
@@ -34,7 +34,7 @@ class Object
 end
 HERE
   @expect =  [Label, SaveReturn,LoadConstant,LoadConstant, OperatorInstruction,IsMinus ,
-                Branch ,Label , LoadConstant ,
+                Branch ,Label , LoadConstant ,SetSlot,
                 Label,Label , RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
@@ -51,7 +51,7 @@ class Object
 end
 HERE
   @expect =  [Label, SaveReturn,LoadConstant,LoadConstant,OperatorInstruction,IsZero ,
-                Branch , Label , LoadConstant ,
+                Branch , Label , LoadConstant ,SetSlot,
                 Label,Label, RegisterTransfer,GetSlot,FunctionReturn]
   check
   end

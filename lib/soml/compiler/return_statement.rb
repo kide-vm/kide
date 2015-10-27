@@ -1,9 +1,10 @@
 module Soml
   Compiler.class_eval do
 
-#    return attr_reader  :statement
     def on_return statement
-      return process(statement.to_a.first )
+      reg =  process(statement.first )
+      add_code Register.set_slot( statement, reg , :message , :return_value)
+      nil # statements don't return
     end
   end
 end

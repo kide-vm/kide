@@ -74,18 +74,19 @@ HERE
      "GetSlot","SetSlot","RegisterTransfer","FunctionCall","Label",
      "SaveReturn","GetSlot","LoadConstant","OperatorInstruction","IsZero",
      "Branch","Label","GetSlot","LoadConstant","OperatorInstruction",
-     "IsZero","Label","LoadConstant","Label","GetSlot",
-     "LoadConstant","OperatorInstruction","IsZero","Label","LoadConstant",
+     "IsZero","Label","LoadConstant","SetSlot","Label",
+     "GetSlot","LoadConstant","OperatorInstruction","IsZero","Label",
+     "LoadConstant","SetSlot","Label","GetSlot","LoadConstant",
+     "OperatorInstruction","IsZero","Label","LoadConstant","SetSlot",
      "Label","GetSlot","LoadConstant","OperatorInstruction","IsZero",
-     "Label","LoadConstant","Label","GetSlot","LoadConstant",
-     "OperatorInstruction","IsZero","Label","LoadConstant","Label",
+     "Label","LoadConstant","SetSlot","Label","Label",
+     "RegisterTransfer","GetSlot","FunctionReturn","GetSlot","GetSlot",
+     "SetSlot","GetSlot","GetSlot","GetSlot","OperatorInstruction",
+     "SetSlot","Label","GetSlot","SetSlot","Label",
+     "RegisterTransfer","GetSlot","FunctionReturn","GetSlot","SetSlot",
      "Label","RegisterTransfer","GetSlot","FunctionReturn","GetSlot",
-     "GetSlot","SetSlot","GetSlot","GetSlot","GetSlot",
-     "OperatorInstruction","SetSlot","Label","GetSlot","Label",
-     "RegisterTransfer","GetSlot","FunctionReturn","GetSlot","Label",
-     "RegisterTransfer","GetSlot","FunctionReturn","GetSlot","Label",
-     "RegisterTransfer","GetSlot","FunctionReturn","RegisterTransfer","Syscall",
-     "NilClass"].each_with_index do |name , index|
+     "Label","RegisterTransfer","GetSlot","FunctionReturn","RegisterTransfer",
+     "Syscall","NilClass"].each_with_index do |name , index|
     got = ticks(1)
     assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
 end

@@ -13,8 +13,12 @@ class Object
   end
 end
 HERE
-  @expect =  [Label, SaveReturn,LoadConstant ,Label,RegisterTransfer,GetSlot,FunctionReturn]
-  check
+    @expect =  [Label, SaveReturn,LoadConstant ,SetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
+    was = check
+    set = was.next(3)
+    assert_equal SetSlot , set.class
+    should = Register.machine.space.first_message.get_layout.variable_index(:return_value)
+    assert_equal should, set.index , "Set to message must got to return_value(#{should}), not #{set.index}"
   end
 
   def test_return_local
@@ -26,7 +30,7 @@ class Object
   end
 end
 HERE
-  @expect =  [Label, SaveReturn,GetSlot,GetSlot ,Label,RegisterTransfer,GetSlot,FunctionReturn]
+  @expect =  [Label, SaveReturn,GetSlot,GetSlot ,SetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
 
@@ -39,7 +43,7 @@ class Object
   end
 end
 HERE
-    @expect =  [Label, SaveReturn,LoadConstant,GetSlot,SetSlot,GetSlot,GetSlot ,
+    @expect =  [Label, SaveReturn,LoadConstant,GetSlot,SetSlot,GetSlot,GetSlot ,SetSlot,
                 Label,RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
@@ -53,7 +57,7 @@ class Object
   end
 end
 HERE
-  @expect =  [Label, SaveReturn,GetSlot,GetSlot ,Label,RegisterTransfer,GetSlot,FunctionReturn]
+  @expect =  [Label, SaveReturn,GetSlot,GetSlot ,SetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
 
@@ -66,7 +70,7 @@ class Object
 end
 HERE
   @expect =  [Label, SaveReturn,GetSlot,GetSlot,SetSlot, LoadConstant,
-                SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,GetSlot ,Label,
+                SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,GetSlot ,SetSlot,Label,
                 RegisterTransfer,GetSlot,FunctionReturn]
   check
   end

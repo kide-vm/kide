@@ -69,7 +69,7 @@ class Object
   end
 end
 HERE
-    @expect =  [Label, SaveReturn,LoadConstant,GetSlot,SetSlot,GetSlot,GetSlot ,
+    @expect =  [Label, SaveReturn,LoadConstant,GetSlot,SetSlot,GetSlot,GetSlot ,SetSlot,
                 Label,RegisterTransfer,GetSlot,FunctionReturn]
     was = check
     get = was.next(6)
@@ -118,7 +118,7 @@ class Object
   end
 end
 HERE
-    @expect =  [Label, SaveReturn,GetSlot , Label , RegisterTransfer,GetSlot,FunctionReturn]
+    @expect =  [Label, SaveReturn,GetSlot , SetSlot,Label , RegisterTransfer,GetSlot,FunctionReturn]
     was = check
     get = was.next(2)
     assert_equal GetSlot , get.class

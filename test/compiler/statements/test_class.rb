@@ -4,7 +4,7 @@ module Register
 class TestClassStatements < MiniTest::Test
   include Statements
 
-  def test_class_def
+  def test_class_defs
     @string_input = <<HERE
 class Bar
   int self.buh()
@@ -17,7 +17,7 @@ class Object
   end
 end
 HERE
-    @expect =  [Label, SaveReturn,LoadConstant,Label,RegisterTransfer,GetSlot,FunctionReturn]
+    @expect =  [Label, SaveReturn,LoadConstant,SetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
     check
   end
 
@@ -35,7 +35,7 @@ class Object
 end
 HERE
     @expect =  [Label, SaveReturn,GetSlot,LoadConstant,SetSlot,LoadConstant,SetSlot,LoadConstant,SetSlot,
-                RegisterTransfer,FunctionCall,GetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
+                RegisterTransfer,FunctionCall,GetSlot,SetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
     check
   end
 
@@ -48,7 +48,7 @@ class Object
   end
 end
 HERE
-    @expect =  [Label, SaveReturn,LoadConstant,Label,RegisterTransfer,GetSlot,FunctionReturn]
+    @expect =  [Label, SaveReturn,LoadConstant,SetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
     assert_raises{check}
   end
 
@@ -61,7 +61,7 @@ class Object
   end
 end
 HERE
-    @expect =  [Label, SaveReturn,GetSlot,GetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
+    @expect =  [Label, SaveReturn,GetSlot,GetSlot,SetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
     check
   end
 end

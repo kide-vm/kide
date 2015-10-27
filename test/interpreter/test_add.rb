@@ -48,7 +48,7 @@ class AddTest < MiniTest::Test
     assert_equal Fixnum , right.class
     assert_equal 7 , right
     assert_equal 12 , left
-    done_tr = ticks(2)
+    done_tr = ticks(3)
     assert_equal Register::RegisterTransfer ,  done_tr.class
     result = @interpreter.get_register(done_op.left)
     assert_equal result , 12
@@ -58,16 +58,10 @@ class AddTest < MiniTest::Test
     #show_ticks # get output of what is
     ["Branch","Label","LoadConstant","GetSlot","SetSlot",
      "RegisterTransfer","FunctionCall","Label","SaveReturn","LoadConstant",
-     "LoadConstant","OperatorInstruction","Label","RegisterTransfer","GetSlot",
-     "FunctionReturn","RegisterTransfer","Syscall","NilClass"].each_with_index do |name , index|
+     "LoadConstant","OperatorInstruction","SetSlot","Label","RegisterTransfer",
+     "GetSlot","FunctionReturn","RegisterTransfer","Syscall","NilClass"].each_with_index do |name , index|
       got = ticks(1)
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
     end
   end
-
-
-#  def test_exit
-#    done = ticks(34)
-#    assert_equal NilClass ,  done.class
-#  end
 end
