@@ -16,7 +16,7 @@ class Object
   end
 end
 HERE
-    @length = 36
+    @length = 38
     check
   end
 

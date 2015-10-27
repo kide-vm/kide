@@ -18,7 +18,7 @@ class Object
 end
 HERE
     @expect =  [Label, SaveReturn,GetSlot,LoadConstant,
-                  SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,GetSlot ,
+                  SetSlot,LoadConstant,SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,GetSlot ,
                   Label,RegisterTransfer,GetSlot,FunctionReturn]
     check
   end
@@ -38,7 +38,7 @@ class Object
 end
 HERE
     @expect =  [Label, SaveReturn,GetSlot,LoadConstant,
-                  SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,GetSlot ,
+                  SetSlot,LoadConstant,SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,GetSlot ,
                   Label,RegisterTransfer,GetSlot,FunctionReturn]
     check
   end
@@ -58,7 +58,7 @@ class Object
 end
 HERE
     @expect =  [ Label, SaveReturn,LoadConstant,GetSlot,SetSlot,GetSlot,
-                  GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,
+                  GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,
                   GetSlot ,Label,RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
@@ -78,7 +78,7 @@ class Object
 end
 HERE
     @expect =  [ Label, SaveReturn,GetSlot,GetSlot,GetSlot,SetSlot,
-                  LoadConstant,SetSlot,RegisterTransfer,FunctionCall,
+                  LoadConstant,SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,
                   GetSlot ,Label,RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
@@ -95,12 +95,12 @@ end
 end
 HERE
     @expect = [ Label, SaveReturn , GetSlot,GetSlot,SetSlot,LoadConstant,SetSlot,LoadConstant,
-                SetSlot,RegisterTransfer,FunctionCall,GetSlot,
+                SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,GetSlot,
                 Label,RegisterTransfer,GetSlot,FunctionReturn]
     was = check
     set = was.next(8)
     assert_equal SetSlot , set.class
-    assert_equal 10, set.index , "Set to message must be offset, not #{set.index}"
+    assert_equal 9, set.index , "Set to message must be offset, not #{set.index}"
   end
 end
 end

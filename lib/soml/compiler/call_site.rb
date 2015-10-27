@@ -28,7 +28,12 @@ module Soml
       name_tmp = use_reg(:Word)
       add_code Register::LoadConstant.new(statement, name , name_tmp)
       add_code Register.set_slot( statement , name_tmp , :new_message , :name)
-      # next arguments. reset tmp regs for each and load result into new_message
+      # next arguments. first length then args
+      len_tmp = use_reg(:Integer , arguments.to_a.length )
+      add_code Register::LoadConstant.new(statement, arguments.to_a.length , len_tmp)
+      add_code Register.set_slot( statement , len_tmp , :new_message , :indexed_length)
+
+      # reset tmp regs for each and load result into new_message
       arguments.to_a.each_with_index do |arg , i|
         reset_regs
         # processing should return the register with the value

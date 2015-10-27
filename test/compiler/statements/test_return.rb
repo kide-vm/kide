@@ -66,7 +66,8 @@ class Object
 end
 HERE
   @expect =  [Label, SaveReturn,GetSlot,GetSlot,SetSlot, LoadConstant,
-                SetSlot,RegisterTransfer,FunctionCall,GetSlot ,Label,RegisterTransfer,GetSlot,FunctionReturn]
+                SetSlot,LoadConstant,SetSlot,RegisterTransfer,FunctionCall,GetSlot ,Label,
+                RegisterTransfer,GetSlot,FunctionReturn]
   check
   end
 end

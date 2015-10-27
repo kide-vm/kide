@@ -28,7 +28,7 @@ class Object
   end
 end
 HERE
-  @length = 179
+  @length = 191
   check
 
   end
