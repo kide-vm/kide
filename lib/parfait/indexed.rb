@@ -163,12 +163,12 @@ module Parfait
         # Lists start from index 1
         define_method  :get do | index|
           raise "Only positive indexes, #{index}" if index <= 0
-          if index > self.get_length
-            return nil
-          else
+          ret = nil
+          if(index <= self.get_length)
             # start one higher than offset, which is where the length is
-            return internal_object_get(index + offset + 1)
+            ret = internal_object_get(index + offset + 1)
           end
+          ret
         end
 
         define_method  :grow_to do | len|
