@@ -9,8 +9,11 @@
 
 module Parfait
   class Message < Object
-    attributes [:next_message , :frame, :caller]
-    attributes [:receiver ,  :return_address , :return_value , :name]
+    attributes [:next_message , :receiver , :frame , :return_address ]
+    attributes [:return_value, :caller , :name ]
+
+    include Indexed
+    self.offset(8)  # 8 == the seven attributes above + layout. (indexed_length gets added)
 
     def initialize next_m
       self.next_message = next_m
@@ -27,10 +30,6 @@ module Parfait
     def get_type_for(name)
       index = @layout.get_index(name)
       get_at(index)
-    end
-
-    def self.offset
-      1 + Space.object_space.get_class_by_name(:Message).object_layout.instance_length
     end
   end
 end

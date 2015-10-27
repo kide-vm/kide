@@ -115,15 +115,15 @@ module Register
        {  :Word => [:char_length] ,
           :List => [:indexed_length] ,
           # Assumtion is that name is the last of message
-          :Message => [:next_message , :receiver , :frame , :return_address , :return_value,
-                        :caller , :name ],
+          :Message => [ :next_message , :receiver , :frame , :return_address ,
+                        :return_value, :caller , :name , :indexed_length ],
           :MetaClass => [:me],
           :Integer => [],
           :Object => [],
           :Kernel => [], #fix, kernel is a class, but should be a module
           :BinaryCode => [],
           :Space => [:classes , :first_message ],
-          :Frame => [:next_frame ],
+          :Frame => [:next_frame , :indexed_length],
           :Layout => [:object_class,:instance_methods,:indexed_length] ,
           :Class => [:object_layout , :name , :instance_methods , :super_class_name ],
           :Dictionary => [:keys , :values ] ,

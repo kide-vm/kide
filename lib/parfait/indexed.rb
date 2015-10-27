@@ -139,6 +139,14 @@ module Parfait
       def offset( offset  )
         offset += 1 # for the attribute we add (indexed_length)
 
+        # define methods on the class that includes.
+        # weird syntax, but at least it's possible
+        (class << self;self;end).send :define_method , :get_length_index do
+          offset
+        end
+        (class << self;self;end).send :define_method , :get_indexed do |index|
+          offset + index
+        end
         define_method  :get_offset do
           offset
         end
