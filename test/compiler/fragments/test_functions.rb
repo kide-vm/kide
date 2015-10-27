@@ -7,36 +7,28 @@ class TestFunctions < MiniTest::Test
     @string_input = <<HERE
 class Object
 
-  int minus(int a,int b)
-      return a - b
-  end
-
-  int plus(int a, int b)
-    return a + b
-  end
-
   int times(int a, int b)
-    if( b == 0 )
+    if_zero( b )
       a = 0
     else
-      int m = minus(b, 1)
+      int m = b - 1
       int t = times(a, m)
-      a = plus(a,t)
+      a = a + t
     end
+    return a
   end
 
   int t_seven()
-    int tim = times(7,6)
+    int tim = times(5,3)
     tim.putint()
   end
 
   int main()
-    t_seven()
+    return t_seven()
   end
 end
 HERE
-  @expect =  [[SaveReturn,Register::GetSlot,Register::Set,Register::Set,RegisterTransfer,FunctionCall] ,
-          [RegisterTransfer,GetSlot,FunctionReturn]]
+  @length = 179
   check
 
   end

@@ -16,8 +16,7 @@ class Object
   end
 end
 HERE
-    @expect =  [ [SaveReturn,Register::Set,Register::GetSlot,Register::Set,
-                  Register::Set,RegisterTransfer,FunctionCall] ,[RegisterTransfer,GetSlot,FunctionReturn] ]
+    @length = 30
     check
   end
 end

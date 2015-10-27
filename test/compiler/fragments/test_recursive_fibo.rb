@@ -7,15 +7,15 @@ class TestRecursinveFibo < MiniTest::Test
     @string_input = <<HERE
 class Object
   int fibonaccir( int n )
-    if( n <= 1 )
-      return n
-    else
+    if_plus( n - 1 )
       int tmp
       tmp = n - 1
       int a = fibonaccir( tmp )
       tmp = n - 2
       int b = fibonaccir( tmp )
       return a + b
+    else
+      return n
     end
   end
   int fib_print(int n)
@@ -27,8 +27,7 @@ class Object
   end
 end
 HERE
-  @expect =  [[SaveReturn,Register::GetSlot,Register::Set,Register::Set,
-            Register::Set,Register::Set,RegisterTransfer,FunctionCall] , [RegisterTransfer,GetSlot,FunctionReturn]]
+  @length = 71
   check
   end
 end

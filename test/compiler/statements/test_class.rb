@@ -1,7 +1,7 @@
 require_relative 'helper'
 
 module Register
-class TestBasicClass < MiniTest::Test
+class TestClassStatements < MiniTest::Test
   include Statements
 
   def test_class_def
@@ -34,7 +34,6 @@ class Object
   end
 end
 HERE
-    @length = 30
     @expect =  [Label, SaveReturn,GetSlot,LoadConstant,SetSlot,LoadConstant,SetSlot,
                 RegisterTransfer,FunctionCall,GetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
     check
@@ -62,7 +61,6 @@ class Object
   end
 end
 HERE
-    @length = 17
     @expect =  [Label, SaveReturn,GetSlot,GetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
     check
   end

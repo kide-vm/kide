@@ -11,8 +11,8 @@ class Object
   end
 end
 HERE
-    @expect = [[SaveReturn,Register::Set,Register::GetSlot,Register::Set,
-                Register::Set,RegisterTransfer,FunctionCall] ,[RegisterTransfer,GetSlot,FunctionReturn]]
+    @length = 35
+    @stdout = "Hello Raisa, I am salama"
     check
   end
 end
