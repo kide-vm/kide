@@ -11,14 +11,14 @@ module Soml
       code = nil
       if( index = @method.has_arg(name))
          # TODO, check type @method.arguments[index].type
-        code = Register.set_slot(statement , v , :message , index + Parfait::Message.offset )
+        code = Register.set_slot(statement , v , :message , Parfait::Message.get_indexed(index) )
       else # or a local so it is in the frame
         index = @method.has_local( name )
         if(index)
           # TODO, check type  @method.locals[index].type
           frame = use_reg(:Frame)
           add_code Register.get_slot(statement , :message , :frame , frame )
-          code = Register.set_slot(statement , v , frame , index + Parfait::Frame.offset )
+          code = Register.set_slot(statement , v , frame , Parfait::Frame.get_indexed(index) )
         end
       end
       if( code )

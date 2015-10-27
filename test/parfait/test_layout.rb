@@ -33,12 +33,12 @@ class TestLayout < MiniTest::Test
   end
 
   def test_length
-    assert_equal 8 , @mess.get_layout.instance_length , @mess.get_layout.inspect
+    assert_equal 9 , @mess.get_layout.instance_length , @mess.get_layout.inspect
   end
 
   def test_layout_length
-    assert_equal 8 , @mess.get_layout.indexed_length , @mess.get_layout.inspect
-    assert_equal 8 , @mess.get_layout.internal_object_get(4)
+    assert_equal 9 , @mess.get_layout.indexed_length , @mess.get_layout.inspect
+    assert_equal 9 , @mess.get_layout.internal_object_get(4)
   end
 
   def test_layout_length_index
@@ -56,7 +56,7 @@ class TestLayout < MiniTest::Test
   def test_no_index_below_1
     layout = @mess.get_layout
     names = layout.instance_names
-    assert_equal 8 , names.get_length , names.inspect
+    assert_equal 9 , names.get_length , names.inspect
     names.each do |n|
       assert layout.variable_index(n) >= 1
     end

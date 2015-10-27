@@ -15,7 +15,7 @@ module Soml
         # either an argument, so it's stored in message
         if( index = @method.has_arg(name))
           ret = use_reg @method.arguments[index].type
-          add_code Register.get_slot(statement , :message , index + Parfait::Message.offset , ret )
+          add_code Register.get_slot(statement , :message , Parfait::Message.get_indexed(index), ret )
           return ret
         else # or a local so it is in the frame
           index = @method.has_local( name )
@@ -23,7 +23,7 @@ module Soml
             frame = use_reg :Frame
             add_code Register.get_slot(statement , :message , :frame , frame )
             ret = use_reg @method.locals[index].type
-            add_code Register.get_slot(statement , frame , index + Parfait::Frame.offset , ret )
+            add_code Register.get_slot(statement , frame , Parfait::Frame.get_indexed(index), ret )
             return ret
           end
         end

@@ -35,7 +35,7 @@ module Soml
         val = process( arg)
         raise "Not register #{val}" unless val.is_a?(Register::RegisterValue)
         # which we load int the new_message at the argument's index (the one comes from c index)
-        set = Register.set_slot( statement , val , :new_message , i + 1 + Parfait::Message.offset)
+        set = Register.set_slot( statement , val , :new_message , Parfait::Message.get_indexed(i+1))
         add_code set
       end
 

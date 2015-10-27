@@ -17,7 +17,7 @@ class TestAttributes < MiniTest::Test
   end
   def test_message_name_nil
     last = @layout.instance_names.last
-    assert_equal :name , last
+    assert_equal :indexed_length , last
     assert_equal nil , @mess.name
   end
   def test_message_next_set

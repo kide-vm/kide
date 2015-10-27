@@ -78,11 +78,11 @@ HERE
   end
 
   def test_assign_arg
-    Register.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :bar)
+    Register.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :blar)
     @string_input = <<HERE
 class Object
-  int main(int bar)
-    bar = 5
+  int main(int blar)
+    blar = 5
   end
 end
 HERE
@@ -110,11 +110,11 @@ HERE
 
   def test_arg_get
     # have to define bar externally, just because redefining main. Otherwise that would be automatic
-    Register.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :bar)
+    Register.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :balr)
     @string_input = <<HERE
 class Object
-  int main(int bar)
-    return bar
+  int main(int balr)
+    return balr
   end
 end
 HERE
