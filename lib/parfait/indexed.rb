@@ -40,7 +40,9 @@ module Parfait
     # push means add to the end
     # this automatically grows the List
     def push value
-      set( self.get_length + 1 , value)
+      to = self.get_length + 1
+      set( to , value)
+      to
     end
 
     def delete value
