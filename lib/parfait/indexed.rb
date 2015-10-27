@@ -166,7 +166,7 @@ module Parfait
             grow_to(index)
           end
           # start one higher than offset, which is where the length is
-          internal_object_set( index + 1 + offset, value)
+          internal_object_set( index + offset, value)
         end
 
         # set the value at index.
@@ -176,7 +176,7 @@ module Parfait
           ret = nil
           if(index <= self.get_length)
             # start one higher than offset, which is where the length is
-            ret = internal_object_get(index + offset + 1)
+            ret = internal_object_get(index + offset )
           end
           ret
         end

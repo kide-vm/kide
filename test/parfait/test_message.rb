@@ -31,6 +31,10 @@ class TestMessage < MiniTest::Test
     @mess.push :name
     assert_equal 1 , @mess.internal_object_get(9)
   end
+  def test_get_internal
+    @mess.push :name
+    assert_equal :name , @mess.internal_object_get(10)
+  end
 
   def test_get
     index = @mess.push :name

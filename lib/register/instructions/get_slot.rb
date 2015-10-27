@@ -23,6 +23,7 @@ module Register
       @array = array
       @index = index
       @register = register
+      raise "index 0 " if index == 0 
       raise "not integer #{index}" unless index.is_a? Numeric
       raise "Not register #{register}" unless RegisterValue.look_like_reg(register)
       raise "Not register #{array}" unless RegisterValue.look_like_reg(array)
