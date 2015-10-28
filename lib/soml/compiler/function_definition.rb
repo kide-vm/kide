@@ -30,7 +30,7 @@ module Soml
         #TODO check args / type compatibility
         @method.source.init @method
       else
-        @method = Register::MethodSource.create_method_for(@clazz, return_type, name , args )
+        @method = Register::MethodSource.create_method_for(@clazz, name , args )
         @clazz.add_instance_method @method
       end
       @method.source.receiver = r

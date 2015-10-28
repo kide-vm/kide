@@ -50,7 +50,7 @@ module Soml
       #puts Register.machine.space.get_class_by_name(:Integer).method_names.to_a
       raise "Method not implemented #{me.type}.#{name}" unless method
       Register.issue_call( @method , method )
-      ret = use_reg( method.source.return_type )
+      ret = use_reg( :Integer )
       # the effect of the method is that the NewMessage Return slot will be filled, return it
       # but move it into a register too
       add_code Register.get_slot(@method, :message , :return_value , ret )

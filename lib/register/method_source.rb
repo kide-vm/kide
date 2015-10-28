@@ -3,17 +3,15 @@ module Register
   # the static info of a method (with its compiled code, argument names etc ) is part of the
   # runtime, ie found in Parfait::Method
 
-  # Code-wise Methods are made up from a list of Blocks, in a similar way blocks are made up of
-  # Instructions. The function starts with one block, and that has a start and end (return)
+  # Code-wise Methods are made up from a list of Instructions.
 
-  # Blocks can be linked in two ways:
+  # Instructions can be of three tyes:
   # -linear:  flow continues from one to the next as they are sequential both logically and
-  #           "physically" use the block set_next for this.
+  #           "physically" use the set_next for this (or add_code).
   #           This "straight line", there must be a continuous sequence from body to return
-  #           Linear blocks may be created from an existing block with new_block
-  # - branched: You create new blocks using function.new_block which gets added "after" return
-  #            These (eg if/while) blocks may themselves have linear blocks ,but the last of these
-  #            MUST have an uncoditional branch. And remember, all roads lead to return.
+  # - branched: Any of the Branch instructions creates a fork. The else branch is the "next"
+  #             of a branch. The only valid branch targets are Labels.
+  #
 
   class MethodSource
 
@@ -22,13 +20,13 @@ module Register
     # second, it creates MethodSource and attaches it to the method
     #
     # compile code then works with the method, but adds code tot the info
-    def self.create_method( class_name , return_type , method_name , args)
+    def self.create_method( class_name , method_name , args)
       raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
       clazz = Register.machine.space.get_class_by_name class_name
       raise "No such class #{class_name}" unless clazz
-      create_method_for( clazz , return_type , method_name , args)
+      create_method_for( clazz , method_name , args)
     end
-    def self.create_method_for clazz , return_type , method_name , args
+    def self.create_method_for clazz , method_name , args
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
       arguments = []
       args.each_with_index do | arg , index |
@@ -38,16 +36,15 @@ module Register
         arguments << arg
       end
       method = clazz.create_instance_method( method_name , Register.new_list(arguments))
-      method.source = MethodSource.new(method , return_type)
+      method.source = MethodSource.new(method)
       method
     end
     # just passing the method object in for Instructions to make decisions (later)
-    def initialize method , return_type
-      init( method , return_type)
+    def initialize method
+      init( method )
     end
 
-    def init method , return_type = nil
-      set_return_type( return_type )
+    def init method
       @instructions = @current = Label.new(self, "#{method.for_class.name}_#{method.name}")
       add_code  enter = Register.save_return(self, :message , :return_address)
       add_code Label.new( method, "return")
@@ -60,14 +57,9 @@ module Register
       @current = enter
       @constants = []
     end
-    attr_reader    :constants , :return_type
+    attr_reader    :constants
     attr_accessor  :current , :receiver , :instructions
 
-    def set_return_type type
-      return if type.nil?
-      raise "not type #{type}" unless Register.machine.space.get_class_by_name type
-      @return_type = type
-    end
     # add an instruction after the current (insertion point)
     # the added instruction will become the new insertion point
     def add_code instruction

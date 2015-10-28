@@ -6,7 +6,7 @@ module Register
         # main entry point, ie __init__ calls this
         # defined here as empty, to be redefined
         def main context
-          function = MethodSource.create_method(:Object, :Integer , :main , [])
+          function = MethodSource.create_method(:Object , :main , [])
           return function
         end
 

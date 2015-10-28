@@ -6,13 +6,12 @@ module Register
         # it isn't really a function, ie it is jumped to (not called), exits and may not return
         # so it is responsible for initial setup
         def __init__ context
-          function = MethodSource.create_method(:Kernel,:Integer,:__init__ , [])
-          function.source.set_return_type :Integer
+          function = MethodSource.create_method(:Kernel,:__init__ , [])
           # no method enter or return (automatically added), remove
           new_start = Label.new(function , "__init__" )
           function.source.instructions = new_start
           function.source.current = new_start
-          
+
           #Set up the Space as self upon init
           space = Parfait::Space.object_space
           space_reg = Register.tmp_reg(:Space)
@@ -28,8 +27,7 @@ module Register
           return function
         end
         def exit context
-          function = MethodSource.create_method(:Kernel,:Integer,:exit , [])
-          function.source.set_return_type  :Integer
+          function = MethodSource.create_method(:Kernel,:exit , [])
           return function
           ret = RegisterMachine.instance.exit(function)
           function.set_return ret
@@ -53,7 +51,7 @@ module Register
 
         def restore_message(function)
           r8 = RegisterValue.new( :r8 , :Message)
-          return_tmp = Register.tmp_reg function.source.return_type
+          return_tmp = Register.tmp_reg :Integer
           # get the sys return out of the way
           function.source.add_code RegisterTransfer.new(function, Register.message_reg , return_tmp )
           # load the stored message into the base RegisterMachine

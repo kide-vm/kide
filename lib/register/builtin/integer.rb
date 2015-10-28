@@ -13,7 +13,6 @@ module Register
         # arguments: string address , integer
         # def utoa context
         #   utoa_function = MethodSource.create_method(:Integer ,:utoa ,  [ :Integer ] )
-        #   function.source.return_type = :Integer
         #   function.source.receiver = :Integer
         #   return utoa_function
         #   # str_addr = utoa_function.receiver
@@ -32,8 +31,7 @@ module Register
         # end
 
         def putint context
-          putint_function = MethodSource.create_method(:Integer,:Integer,:putint , [] )
-          putint_function.source.set_return_type :Integer
+          putint_function = MethodSource.create_method(:Integer,:putint , [] )
           putint_function.source.receiver = :Integer
           return putint_function
           # buffer = Parfait::Word.new("           ") # create a buffer
@@ -61,11 +59,9 @@ module Register
         # a hand coded version of the fibonachi numbers
         # not my hand off course, found in the net http://www.peter-cockerell.net/aalp/html/ch-5.html
         def fibo context
-          fibo_function = MethodSource.create_method(:Integer,:Integer,:fibo ,  [] )
-          fibo_function.source.set_return_type :Integer
+          fibo_function = MethodSource.create_method(:Integer,:fibo ,  [] )
           fibo_function.source.receiver = :Integer
           return fibo_function
-          # result = fibo_function.return_type
           # int = fibo_function.receiver
           #
           # last = fibo_function.new_block("return")
