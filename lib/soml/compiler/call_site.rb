@@ -9,12 +9,12 @@ module Soml
       reset_regs
       #move the new message (that we need to populate to make a call) to std register
       new_message = Register.resolve_to_register(:new_message)
-      add_code Register.get_slot(@method, :message , :next_message , new_message )
+      add_code Register.get_slot(statement, :message , :next_message , new_message )
       if receiver
         me = process( receiver.first  )
       else
         me = use_reg @method.for_class.name
-        add_code Register.get_slot(@method, :message , :receiver , me )
+        add_code Register.get_slot(statement, :message , :receiver , me )
       end
       if(me.type == :Class)
         clazz = me.value.meta
@@ -40,7 +40,7 @@ module Soml
         val = process( arg)
         raise "Not register #{val}" unless val.is_a?(Register::RegisterValue)
         # which we load int the new_message at the argument's index (the one comes from c index)
-        set = Register.set_slot( statement , val , :new_message , Parfait::Message.get_indexed(i+1))
+        set = Register.set_slot( arg , val , :new_message , Parfait::Message.get_indexed(i+1))
         add_code set
       end
 
@@ -49,11 +49,11 @@ module Soml
       method = clazz.get_instance_method(name)
       #puts Register.machine.space.get_class_by_name(:Integer).method_names.to_a
       raise "Method not implemented #{me.type}.#{name}" unless method
-      Register.issue_call( @method , method )
+      Register.issue_call( self , method )
       ret = use_reg( :Integer )
       # the effect of the method is that the NewMessage Return slot will be filled, return it
       # but move it into a register too
-      add_code Register.get_slot(@method, :message , :return_value , ret )
+      add_code Register.get_slot(statement, :message , :return_value , ret )
       ret
     end
   end

@@ -15,10 +15,10 @@ module Register
     end
   end
 
-  def self.issue_call caller , callee
+  def self.issue_call compiler , callee
     # move the current new_message to message
-    caller.source.add_code RegisterTransfer.new(caller, Register.new_message_reg , Register.message_reg )
+    compiler.add_code RegisterTransfer.new("__call__", Register.new_message_reg , Register.message_reg )
     # do the register call
-    caller.source.add_code FunctionCall.new( caller , callee )
+    compiler.add_code FunctionCall.new( "__call__" , callee )
   end
 end

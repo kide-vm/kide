@@ -30,11 +30,11 @@ module Register
       methods = []
       @space.classes.values.each do |c|
         c.instance_methods.each do |f|
-          methods << f.source
+          methods << f
         end
       end
       methods.each do |method|
-        instruction = method.method.instructions
+        instruction = method.instructions
         while instruction.next
           nekst = instruction.next
           t = translator.translate(nekst) # returning nil means no replace
@@ -72,7 +72,7 @@ module Register
       syntax  = @parser.parse_with_debug(bytes)
       parts = Parser::Transform.new.apply(syntax)
       #puts parts.inspect
-      Soml::Compiler.compile( parts )
+      Soml.compile( parts )
     end
 
   end
