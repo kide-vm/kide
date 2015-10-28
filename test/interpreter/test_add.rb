@@ -18,7 +18,7 @@ class AddTest < MiniTest::Test
                             s(:int, 5),
                             s(:int, 7)))))))
 
-    Soml::Compiler.compile( code  )
+    Soml.compile( code  )
     machine.collect
     @interpreter = Interpreter::Interpreter.new
     @interpreter.start Register.machine.init

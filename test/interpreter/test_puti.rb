@@ -52,7 +52,7 @@ HERE
     syntax  = Parser::Salama.new.parse_with_debug(@string_input)
     parts = Parser::Transform.new.apply(syntax)
     #puts parts.inspect
-    Soml::Compiler.compile( parts )
+    Soml.compile( parts )
     machine.collect
 #    statements = Register.machine.boot.parse_and_compile @string_input
 #    Soml::Compiler.compile( statements , Register.machine.space.get_main )
