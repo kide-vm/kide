@@ -144,7 +144,7 @@ module Interpreter
     def execute_FunctionCall
       @link =  @instruction
       #puts "Call link #{@link}"
-      set_instruction @instruction.method.source.instructions
+      set_instruction @instruction.method.instructions
       false
     end
 

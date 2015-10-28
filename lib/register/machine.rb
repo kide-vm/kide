@@ -34,7 +34,7 @@ module Register
         end
       end
       methods.each do |method|
-        instruction = method.instructions
+        instruction = method.method.instructions
         while instruction.next
           nekst = instruction.next
           t = translator.translate(nekst) # returning nil means no replace
@@ -54,7 +54,8 @@ module Register
     # Objects are data and get assembled after functions
     def add_object o
       return false if @objects[o.object_id]
-      return if o.is_a? Fixnum
+      return true if o.is_a? Fixnum
+      return true if o.is_a? Register::Label
       raise "adding non parfait #{o.class}" unless o.is_a? Parfait::Object or o.is_a? Symbol
       @objects[o.object_id] = o
       true
@@ -62,7 +63,7 @@ module Register
 
     def boot
       boot_parfait!
-      @init =  Branch.new( "__init__" , self.space.get_init.source.instructions )
+      @init =  Branch.new( "__init__" , self.space.get_init.instructions )
       @booted = true
       self
     end

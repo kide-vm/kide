@@ -10,8 +10,8 @@ module Statements
     produced = Register.machine.space.get_main.source
     assert @expect , "No output given"
     #assert_equal @expect.length ,  produced.instructions.length , "instructions length #{produced.instructions.to_ac}"
-    compare_instructions produced.instructions , @expect
-    produced.instructions
+    compare_instructions produced.method.instructions , @expect
+    produced.method.instructions
   end
 
   def compare_instructions instruction , expect

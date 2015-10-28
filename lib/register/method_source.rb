@@ -45,7 +45,9 @@ module Register
     end
 
     def init method
-      @instructions = @current = Label.new(self, "#{method.for_class.name}_#{method.name}")
+      @method = method
+      method.instructions = Label.new(self, "#{method.for_class.name}_#{method.name}")
+      @current = method.instructions
       add_code  enter = Register.save_return(self, :message , :return_address)
       add_code Label.new( method, "return")
       # move the current message to new_message
@@ -56,7 +58,7 @@ module Register
       add_code FunctionReturn.new( self , Register.new_message_reg , Register.resolve_index(:message , :return_address) )
       @current = enter
     end
-    attr_accessor  :current  , :instructions
+    attr_accessor  :current , :method
 
     # add an instruction after the current (insertion point)
     # the added instruction will become the new insertion point
@@ -76,13 +78,13 @@ module Register
     end
 
     def total_byte_length
-      @instructions.total_byte_length
+      @method.instructions.total_byte_length
     end
 
     # position of the function is the position of the entry block, is where we call
     def set_position at
       at += 8 #for the 2 header words
-      @instructions.set_position at
+      @method.instructions.set_position at
     end
 
   end

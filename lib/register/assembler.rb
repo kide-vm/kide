@@ -107,9 +107,9 @@ module Register
       #puts "Method #{method.source.instructions.to_ac}"
       begin
         #puts "assemble #{method.source.instructions}"
-        method.source.instructions.assemble_all( stream )
+        method.instructions.assemble_all( stream )
       rescue => e
-        puts "Assembly error #{method.name}\n#{Sof.write(method.source.instructions).to_s[0...2000]}"
+        puts "Assembly error #{method.name}\n#{Sof.write(method.instructions).to_s[0...2000]}"
         raise e
       end
       index = 1

@@ -9,7 +9,7 @@ module Register
           function = MethodSource.create_method(:Kernel,:__init__ , [])
           # no method enter or return (automatically added), remove
           new_start = Label.new(function , "__init__" )
-          function.source.instructions = new_start
+          function.instructions = new_start
           function.source.current = new_start
 
           #Set up the Space as self upon init
