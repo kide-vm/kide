@@ -58,8 +58,11 @@ module Register
       add_code FunctionReturn.new( self , Register.new_message_reg , Register.resolve_index(:message , :return_address) )
       @current = enter
     end
-    attr_accessor  :current , :method
+    attr_accessor   :method
 
+    def set_current c
+      @current = c
+    end
     # add an instruction after the current (insertion point)
     # the added instruction will become the new insertion point
     def add_code instruction

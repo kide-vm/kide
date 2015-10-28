@@ -10,7 +10,7 @@ module Register
           # no method enter or return (automatically added), remove
           new_start = Label.new(function , "__init__" )
           function.instructions = new_start
-          function.source.current = new_start
+          function.source.set_current new_start
 
           #Set up the Space as self upon init
           space = Parfait::Space.object_space
