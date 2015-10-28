@@ -77,5 +77,16 @@ module Parfait
     def inspect
       "#{self.for_class.name}:#{name}(#{arguments.inspect})"
     end
+
+    def total_byte_length
+      self.instructions.total_byte_length
+    end
+
+    # position of the function is the position of the entry block, is where we call
+    def set_position at
+      at += 8 #for the 2 header words
+      self.instructions.set_position at
+    end
+
   end
 end
