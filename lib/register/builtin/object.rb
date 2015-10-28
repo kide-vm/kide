@@ -6,8 +6,8 @@ module Register
         # main entry point, ie __init__ calls this
         # defined here as empty, to be redefined
         def main context
-          function = MethodSource.create_method(:Object , :main , [])
-          return function
+          compiler = Soml::Compiler.new.create_method(:Object , :main , []).init_method
+          return compiler.method
         end
 
       end

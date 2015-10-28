@@ -12,7 +12,7 @@ module Register
         # As we write before we recurse (save a push) we write the number backwards
         # arguments: string address , integer
         # def utoa context
-        #   utoa_function = MethodSource.create_method(:Integer ,:utoa ,  [ :Integer ] )
+        #   compiler = Soml::Compiler.new.create_method(:Integer ,:utoa ,  [ :Integer ] ).init_method
         #   function.source.receiver = :Integer
         #   return utoa_function
         #   # str_addr = utoa_function.receiver
@@ -31,8 +31,8 @@ module Register
         # end
 
         def putint context
-          putint_function = MethodSource.create_method(:Integer,:putint , [] )
-          return putint_function
+          compiler = Soml::Compiler.new.create_method(:Integer,:putint , [] ).init_method
+          return compiler.method
           # buffer = Parfait::Word.new("           ") # create a buffer
           # context.object_space.add_object buffer              # and save it (function local variable: a no no)
           # int = putint_function.receiver
@@ -58,8 +58,8 @@ module Register
         # a hand coded version of the fibonachi numbers
         # not my hand off course, found in the net http://www.peter-cockerell.net/aalp/html/ch-5.html
         def fibo context
-          fibo_function = MethodSource.create_method(:Integer,:fibo ,  [] )
-          return fibo_function
+          compiler = Soml::Compiler.new.create_method(:Integer,:fibo ,  [] ).init_method
+          return compiler.method
           # int = fibo_function.receiver
           #
           # last = fibo_function.new_block("return")
