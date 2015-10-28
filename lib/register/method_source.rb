@@ -55,9 +55,7 @@ module Register
       #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
       add_code FunctionReturn.new( self , Register.new_message_reg , Register.resolve_index(:message , :return_address) )
       @current = enter
-      @constants = []
     end
-    attr_reader    :constants
     attr_accessor  :current , :receiver , :instructions
 
     # add an instruction after the current (insertion point)

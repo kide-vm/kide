@@ -17,7 +17,9 @@ module Register
       @parser  = Parser::Salama.new
       @objects = {}
       @booted = false
+      @constants = []
     end
+    attr_reader    :constants
     attr_reader :space , :class_mappings , :init , :objects , :booted
 
 
