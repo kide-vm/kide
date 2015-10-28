@@ -28,7 +28,7 @@ module Register
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::Method
         # should be fill_to_length (with zeros)
-        objekt.binary.set_length(objekt.source.total_byte_length )
+        objekt.binary.set_length(objekt.total_byte_length )
       end
       #need the initial jump at 0 and then functions
       @machine.init.set_position(at)
@@ -47,7 +47,7 @@ module Register
         # have to tell the code that will be assembled where it is to
         # get the jumps/calls right
         if objekt.is_a? Parfait::Method
-          objekt.source.set_position( objekt.binary.position )
+          objekt.set_position( objekt.binary.position )
         end
         next if objekt.is_a? Parfait::BinaryCode
         objekt.position = at
@@ -115,8 +115,8 @@ module Register
       index = 1
       stream.rewind
       #puts "Assembled #{method.name} with length #{stream.length}"
-      raise "length error #{method.binary.length} != #{method.source.total_byte_length}" if method.binary.get_length != method.source.total_byte_length
-      raise "length error #{stream.length} != #{method.source.total_byte_length}" if method.source.total_byte_length != stream.length
+      raise "length error #{method.binary.length} != #{method.total_byte_length}" if method.binary.get_length != method.total_byte_length
+      raise "length error #{stream.length} != #{method.total_byte_length}" if method.total_byte_length != stream.length
       stream.each_byte do |b|
         method.binary.set(index , b )
         index = index + 1

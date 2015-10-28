@@ -5,6 +5,7 @@ Soml::Compiler.class_eval do
   def set_main main
     @clazz = Register.machine.space.get_class_by_name :Object
     @method = main
+    @current = main.instructions.next
   end
 end
 

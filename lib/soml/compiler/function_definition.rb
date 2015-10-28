@@ -28,9 +28,9 @@ module Soml
       if(@method)
         #puts "Warning, redefining method #{name}" unless name == :main
         #TODO check args / type compatibility
-        @method.source.init @method
+        init_method
       else
-        @method = Register::MethodSource.create_method_for(@clazz, name , args )
+        create_method_for(@clazz, name , args ).init_method
         @clazz.add_instance_method @method
       end
       #puts "compile method #{@method.name}"

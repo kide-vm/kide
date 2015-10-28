@@ -7,11 +7,11 @@ module Statements
     machine = Register.machine
     machine.boot unless machine.booted
     machine.parse_and_compile @string_input
-    produced = Register.machine.space.get_main.source
+    produced = Register.machine.space.get_main.instructions
     assert @expect , "No output given"
     #assert_equal @expect.length ,  produced.instructions.length , "instructions length #{produced.instructions.to_ac}"
-    compare_instructions produced.method.instructions , @expect
-    produced.method.instructions
+    compare_instructions produced , @expect
+    produced
   end
 
   def compare_instructions instruction , expect
