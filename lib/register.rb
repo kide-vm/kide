@@ -6,7 +6,6 @@ require "register/padding"
 require "register/parfait_adapter"
 
 require "soml/compiler"
-require "register/method_source"
 
 
 class Fixnum

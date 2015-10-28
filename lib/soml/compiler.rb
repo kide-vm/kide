@@ -1,37 +1,117 @@
 module Soml
+  # Compiling is the conversion of the AST into 2 things:
+  # - code (ie sequences of Instructions inside Methods)
+  # - an object graph containing all the Methods, their classes and Constants
+  #
+  # Some compile methods just add code, some may add Instructions while
+  # others instantiate Class and Method objects
+  #
+  # Everything in ruby is an statement, ie returns a value. So the effect of every compile
+  # is that a value is put into the ReturnSlot of the current Message.
+  # The compile method (so every compile method) returns the value that it deposits.
+  #
+  # The process uses a visitor pattern (from AST::Processor) to dispatch according to the
+  # type the statement. So a s(:if xx) will become an on_if(node) call.
+  # This makes the dispatch extensible, ie Expressions may be added by external code,
+  # as long as matching compile methods are supplied too.
+  #
+  # A compiler can also be used to generate code for a method without AST nodes. In the same way
+  # compile methods do, ie adding Instructions etc. In this way code may be generated that
+  # has no code equivalent.
+  #
+  # The Compiler also keeps a list of used registers, from which one may take to use and return to
+  # when done. The list may be reset.
+  #
+  # The Compiler also carries method and class instance variables. The method is where code is
+  # added to (with add_code). To be more precise, the @current instruction is where code is added
+  # to, and that may be changed with set_current
+
+  # All Statements reset the registers and return nil.
+  # Expressions use registers and return the register where their value is stored.
+
+  # Helper function to create a new compiler and compie the statement(s)
+  def self.compile statement
+    compiler = Compiler.new
+    compiler.process statement
+  end
+
   class Compiler < AST::Processor
 
-    def initialize()
+    def initialize( method = nil )
       @regs = []
+      return unless method
+      @method = method
+      @clazz = method.for_class
+      @current = method.instructions
     end
+    attr_reader :clazz , :method
+
     def handler_missing node
       raise "No handler  on_#{node.type}(node)"
     end
-    # Compiling is the conversion of the AST into 2 things:
-    # - code (ie sequences of Instructions inside Blocks) carried by MethodSource
-    # - an object graph containing all the Methods, their classes and Constants
-    #
-    # Some compile methods just add code, some may add structure (ie Blocks) while
-    # others instantiate Class and Method objects
-    #
-    # Everything in ruby is an statement, ie returns a value. So the effect of every compile
-    # is that a value is put into the ReturnSlot of the current Message.
-    # The compile method (so every compile method) returns the value that it deposits.
-    #
-    # The process uses a visitor pattern (from AST::Processor) to dispatch according to the
-    # type the statement. So a s(:if xx) will become an on_if(node) call.
-    # This makes the dispatch extensible, ie Expressions may be added by external code,
-    # as long as matching compile methods are supplied too.
-    #
-    def self.compile statement
-      compiler = Compiler.new
-      compiler.process statement
+
+    # create the method, do some checks and set it as the current method to be added to
+    # class_name and method_name are pretty clear, args are given as a ruby array
+    def create_method( class_name , method_name , args)
+      raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
+      clazz = Register.machine.space.get_class_by_name class_name
+      raise "No such class #{class_name}" unless clazz
+      create_method_for( clazz , method_name , args)
     end
 
-    # simple helper to add the given code to the current method (instance variable)
-    def add_code code
-      @method.source.add_code code
+    # create a method for the given class ( Parfait class object)
+    # method_name is a Symbol
+    # args a ruby array
+    # the created method is set as the current and the given class too
+    # return the compiler (for chaining)
+    def create_method_for clazz , method_name , args
+      @clazz = clazz
+      raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
+      arguments = []
+      args.each_with_index do | arg , index |
+        unless arg.is_a? Parfait::Variable
+          arg = Parfait::Variable.new arg , "arg#{index}".to_sym
+        end
+        arguments << arg
+      end
+      @method = clazz.create_instance_method( method_name , Register.new_list(arguments))
+      self
     end
+
+    # add method entry and exit code. Mainly save_return for the enter and
+    # message shuffle and FunctionReturn for the return
+    # return self for chaining
+    def init_method
+      @method.instructions = Register::Label.new("_init_method_", "#{method.for_class.name}_#{method.name}")
+      @current = method.instructions
+      add_code  enter = Register.save_return("_init_method_", :message , :return_address)
+      add_code Register::Label.new( "_init_method_", "return")
+      # move the current message to new_message
+      add_code  Register::RegisterTransfer.new("_init_method_", Register.message_reg , Register.new_message_reg )
+      # and restore the message from saved value in new_message
+      add_code Register.get_slot("_init_method_",:new_message , :caller , :message )
+      #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
+      add_code Register::FunctionReturn.new( "_init_method_" , Register.new_message_reg , Register.resolve_index(:message , :return_address) )
+      @current = enter
+      self
+    end
+
+    # set the insertion point (where code is added with add_code)
+    def set_current c
+      @current = c
+    end
+
+    # add an instruction after the current (insertion point)
+    # the added instruction will become the new insertion point
+    def add_code instruction
+      unless  instruction.is_a?(Register::Instruction)
+        raise instruction.to_s
+      end
+      @current.insert(instruction) #insert after current
+      @current = instruction
+      self
+    end
+
     # require a (temporary) register. code must give this back with release_reg
     def use_reg type , value = nil
       if @regs.empty?
