@@ -16,8 +16,10 @@ module Register
     include Positioned
 
     def initialize source , nekst = nil
-        @source = source
-        @next = nekst
+      @source = source
+      @next = nekst
+      return unless source
+      raise "Source must be string or ast node, not #{source.class}" unless source.is_a?(String) or source.is_a?(AST::Node)
     end
     attr_reader :source
 

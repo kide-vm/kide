@@ -3,9 +3,9 @@ require_relative "../helper"
 module Register
   class TestInstructions < MiniTest::Test
     def setup
-      @label = Label.new(nil , "test")
-      @branch = Branch.new(nil , @label)
-      @instruction = Instruction.new(nil)
+      @label = Label.new("test" , "test")
+      @branch = Branch.new("test" , @label)
+      @instruction = Instruction.new("test")
     end
     def test_branch_tos1
       assert @branch.to_s.include?("Branch")
