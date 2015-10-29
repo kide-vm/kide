@@ -12,14 +12,14 @@ module Soml
       process(condition)
 
       branch_class = Object.const_get "Register::Is#{branch_type.capitalize}"
-      true_block = Register::Label.new(statement, "if_true")
+      true_block = Register::Label.new(if_true, "if_true")
       add_code branch_class.new( condition , true_block )
 
       # compile the false block
       reset_regs
       process_all(if_false) if if_false
       merge = Register::Label.new(statement , "if_merge")
-      add_code Register::Branch.new(statement, merge )
+      add_code Register::Branch.new(if_false, merge )
 
       # compile the true block
       add_code true_block

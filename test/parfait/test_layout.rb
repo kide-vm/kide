@@ -37,16 +37,16 @@ class TestLayout < MiniTest::Test
   end
 
   def test_layout_length
-    assert_equal 9 , @mess.get_layout.indexed_length , @mess.get_layout.inspect
-    assert_equal 9 , @mess.get_layout.internal_object_get(4)
+    assert_equal 9 , @mess.get_layout.instance_length , @mess.get_layout.inspect
+    assert_equal 18 , @mess.get_layout.internal_object_get(4)
   end
 
   def test_layout_length_index
     assert_equal 4 , @mess.get_layout.get_layout.variable_index(:indexed_length)
     assert_equal 4 , @mess.get_layout.get_layout.get_offset
     assert_equal 4 , @mess.get_layout.get_offset
-    assert_equal 4 , @mess.get_layout.get_layout.indexed_length
-    assert_equal 4 , @mess.get_layout.get_layout.internal_object_get(4)
+    assert_equal 8 , @mess.get_layout.get_layout.indexed_length
+    assert_equal 8 , @mess.get_layout.get_layout.internal_object_get(4)
   end
 
   def test_layout_methods
@@ -78,11 +78,11 @@ class TestLayout < MiniTest::Test
 
   def test_add_name
     layout = Parfait::Layout.new Register.machine.space.get_class_by_name(:Layout)
-    layout.add_instance_variable :boo
+    layout.add_instance_variable :boo , :Object
     assert_equal 2 , layout.variable_index(:boo)
-    assert_equal 2 , layout.get_length
+    assert_equal 4 , layout.get_length
     assert_equal :layout , layout.get(1)
-    assert_equal :boo , layout.get(2)
+    assert_equal :boo , layout.get(3)
     layout
   end
 
@@ -93,8 +93,8 @@ class TestLayout < MiniTest::Test
 
   def test_each
     layout = test_add_name
-    assert_equal 2 , layout.get_length
-    counter = [:boo , :layout]
+    assert_equal 4 , layout.get_length
+    counter = [:boo , :Object, :layout , :Layout]
     layout.each do |item|
       assert_equal item , counter.delete(item)
     end

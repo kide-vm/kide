@@ -93,8 +93,8 @@ module Register
     # helper to create a Layout, name is the parfait name, ie :Layout
     def layout_for( name , ivars )
       l = Parfait::Layout.allocate.fake_init
-      l.add_instance_variable :layout
-      ivars.each {|n| l.add_instance_variable n }
+      l.add_instance_variable :layout , :Layout
+      ivars.each {|n,t| l.add_instance_variable( n , t) }
       l
     end
 
@@ -112,23 +112,26 @@ module Register
     # unfortuantely that constant condenses every detail about the system, class names
     # and all instance variable names. Really have to find a better way
     def layout_names
-       {  :Word => [:char_length] ,
-          :List => [:indexed_length] ,
+       {  :Word => {:char_length => :Integer} ,
+          :List => {:indexed_length => :Integer} ,
           # Assumtion is that name is the last of message
-          :Message => [ :next_message , :receiver , :frame , :return_address ,
-                        :return_value, :caller , :name , :indexed_length ],
-          :MetaClass => [:me],
-          :Integer => [],
-          :Object => [],
-          :Kernel => [], #fix, kernel is a class, but should be a module
-          :BinaryCode => [],
-          :Space => [:classes , :first_message ],
-          :Frame => [:next_frame , :indexed_length],
-          :Layout => [:object_class,:instance_methods,:indexed_length] ,
-          :Class => [:object_layout , :name , :instance_methods , :super_class_name ],
-          :Dictionary => [:keys , :values ] ,
-          :Method => [:name , :source , :instructions , :binary ,:arguments , :for_class, :locals  ] ,
-          :Variable => [:type , :name , :value ]
+          :Message => { :next_message => :Message, :receiver => :Object, :frame => :Frame ,
+                        :return_address => :Integer, :return_value => :Integer,
+                        :caller => :Message , :name => :Word , :indexed_length => :Integer },
+          :MetaClass => {:me => :Class},
+          :Integer => {},
+          :Object => {},
+          :Kernel => {}, #fix, kernel is a class, but should be a module
+          :BinaryCode => {},
+          :Space => {:classes => :Dictionary , :first_message => :Message},
+          :Frame => {:next_frame => :Frame, :indexed_length => :Integer},
+          :Layout => {:object_class => :Class, :instance_methods => :List , :indexed_length => :Integer} ,
+          :Class => {:object_layout => :Layout, :name => :Word, :instance_methods => :List,
+                      :super_class_name => :Word},
+          :Dictionary => {:keys => :List , :values => :List  } ,
+          :Method => {:name => :Word, :source => :Object, :instructions => :Object, :binary => :Object,
+                      :arguments => :List , :for_class => :Class, :locals => :List  } ,
+          :Variable => {:type => :Class, :name => :Word , :value => :Object}
         }
     end
 

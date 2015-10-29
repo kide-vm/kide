@@ -33,7 +33,7 @@ module Parfait
 
     def initialize( object_class )
       super()
-      add_instance_variable :layout
+      add_instance_variable :layout ,:Layout
       self.object_class = object_class
     end
 
@@ -47,30 +47,40 @@ module Parfait
     #
     # TODO , later we would need to COPY the layout to keep the old constant
     #        but now we are concerned with booting, ie getting a working structure
-    def add_instance_variable name
+    def add_instance_variable name , type
+      raise "Name shouldn't be nil" unless name
+      raise "Type shouldn't be nil" unless type
       self.push(name)
+      self.push(type)
       self.get_length
     end
 
     def instance_names
       names = List.new
+      name = true
       each do |item|
-        names.push item
+        names.push(item) if name
+        name = ! name
       end
       names
     end
 
     def instance_length
-      self.get_length
+      self.get_length / 2
+    end
+
+    alias :super_index :index_of
+    def index_of(name)
+      raise "Use variable_index instead"
     end
 
     # index of the variable when using internal_object_get
     # (internal_object_get is 1 based and 1 is always the layout)
     def variable_index name
-      has = index_of(name)
+      has = super_index(name)
       return nil unless has
       raise "internal error #{name}:#{has}" if has < 1
-      has
+      1 + has / 2
     end
 
     def inspect

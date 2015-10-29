@@ -17,7 +17,7 @@ HERE
     end
 
     def test_field
-      Register.machine.space.get_class_by_name(:Object).object_layout.add_instance_variable(:bro)
+      Register.machine.space.get_class_by_name(:Object).object_layout.add_instance_variable(:bro,:Object)
       @root = :field_access
       @string_input = <<HERE
 self.bro
