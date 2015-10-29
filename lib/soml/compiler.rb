@@ -83,7 +83,7 @@ module Soml
     # return self for chaining
     def init_method
       source = "Complier.init_method"
-      @method.instructions = Register::Label.new(source, "#{method.for_class.name}_#{method.name}")
+      @method.instructions = Register::Label.new(source, "#{method.for_class.name}.#{method.name}")
       @current = method.instructions
       add_code  enter = Register.save_return(source, :message , :return_address)
       add_code Register::Label.new( source, "return")
