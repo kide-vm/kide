@@ -3,7 +3,6 @@ module Register
   #  collect anything that is in the space but and reachable from init
   module Collector
     def collect
-      # init= Parfait::Space.object_space.get_class_by_name("Kernel").get_instance_method "__init__"
       self.objects.clear
       keep Parfait::Space.object_space , 0
       constants.each {|o| keep(o,0)}

@@ -6,21 +6,22 @@ module Register
         # it isn't really a function, ie it is jumped to (not called), exits and may not return
         # so it is responsible for initial setup
         def __init__ context
+          source = "Kernel.__init__"
           compiler = Soml::Compiler.new.create_method(:Kernel,:__init__ , [])
           # no method enter or return (automatically added), remove
-          new_start = Label.new("__init__" , "__init__" )
+          new_start = Label.new(source , source )
           compiler.method.instructions = new_start
           compiler.set_current new_start
 
           #Set up the Space as self upon init
           space = Parfait::Space.object_space
           space_reg = Register.tmp_reg(:Space)
-          compiler.add_code LoadConstant.new("__init__", space , space_reg)
+          compiler.add_code LoadConstant.new(source, space , space_reg)
           message_ind = Register.resolve_index( :space , :first_message )
           # Load the message to new message register (r1)
-          compiler.add_code Register.get_slot( "__init__" , space_reg , message_ind , :new_message)
+          compiler.add_code Register.get_slot( source , space_reg , message_ind , :new_message)
           # And store the space as the new self (so the call can move it back as self)
-          compiler.add_code Register.set_slot( "__init__", space_reg , :new_message , :receiver)
+          compiler.add_code Register.set_slot( source, space_reg , :new_message , :receiver)
           # now we are set up to issue a call to the main
           Register.issue_call( compiler , Register.machine.space.get_main)
           emit_syscall( compiler , :exit )
@@ -36,7 +37,7 @@ module Register
 
         def emit_syscall compiler , name
           save_message( compiler )
-          compiler.add_code Syscall.new("emit_syscall", name )
+          compiler.add_code Syscall.new("emit_syscall(#{name})", name )
           restore_message(compiler)
         end
 

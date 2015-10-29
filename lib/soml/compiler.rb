@@ -82,16 +82,17 @@ module Soml
     # message shuffle and FunctionReturn for the return
     # return self for chaining
     def init_method
-      @method.instructions = Register::Label.new("_init_method_", "#{method.for_class.name}_#{method.name}")
+      source = "Complier.init_method"
+      @method.instructions = Register::Label.new(source, "#{method.for_class.name}_#{method.name}")
       @current = method.instructions
-      add_code  enter = Register.save_return("_init_method_", :message , :return_address)
-      add_code Register::Label.new( "_init_method_", "return")
+      add_code  enter = Register.save_return(source, :message , :return_address)
+      add_code Register::Label.new( source, "return")
       # move the current message to new_message
-      add_code  Register::RegisterTransfer.new("_init_method_", Register.message_reg , Register.new_message_reg )
+      add_code  Register::RegisterTransfer.new(source, Register.message_reg , Register.new_message_reg )
       # and restore the message from saved value in new_message
       add_code Register.get_slot("_init_method_",:new_message , :caller , :message )
       #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
-      add_code Register::FunctionReturn.new( "_init_method_" , Register.new_message_reg , Register.resolve_index(:message , :return_address) )
+      add_code Register::FunctionReturn.new( source , Register.new_message_reg , Register.resolve_index(:message , :return_address) )
       @current = enter
       self
     end
