@@ -6,7 +6,7 @@ module Register
         # it isn't really a function, ie it is jumped to (not called), exits and may not return
         # so it is responsible for initial setup
         def __init__ context
-          source = "Kernel.__init__"
+          source = "__init__"
           compiler = Soml::Compiler.new.create_method(:Kernel,:__init__ , [])
           # no method enter or return (automatically added), remove
           new_start = Label.new(source , source )
@@ -27,18 +27,19 @@ module Register
           emit_syscall( compiler , :exit )
           return compiler.method
         end
+
         def exit context
           compiler = Soml::Compiler.new.create_method(:Kernel,:exit , []).init_method
+          emit_syscall( compiler , :exit )
           return compiler.method
-          ret = RegisterMachine.instance.exit(function)
-          function.set_return ret
-          function
         end
 
         def emit_syscall compiler , name
           save_message( compiler )
           compiler.add_code Syscall.new("emit_syscall(#{name})", name )
           restore_message(compiler)
+          return unless (@clazz and @method)
+          compiler.add_code Label.new( "#{@clazz.name}.#{@message.name}" , "return_syscall" )
         end
 
         # save the current message, as the syscall destroys all context
@@ -53,12 +54,13 @@ module Register
         def restore_message(compiler)
           r8 = RegisterValue.new( :r8 , :Message)
           return_tmp = Register.tmp_reg :Integer
+          source = "_restore_message"
           # get the sys return out of the way
-          compiler.add_code RegisterTransfer.new("restore_message", Register.message_reg , return_tmp )
+          compiler.add_code RegisterTransfer.new(source, Register.message_reg , return_tmp )
           # load the stored message into the base RegisterMachine
-          compiler.add_code RegisterTransfer.new("restore_message", r8 , Register.message_reg )
+          compiler.add_code RegisterTransfer.new(source, r8 , Register.message_reg )
           # save the return value into the message
-          compiler.add_code Register.set_slot( "restore_message" , return_tmp , :message , :return_value )
+          compiler.add_code Register.set_slot( source , return_tmp , :message , :return_value )
           # and "unroll" self and frame
         end
       end

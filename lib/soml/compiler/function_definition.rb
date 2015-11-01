@@ -33,6 +33,7 @@ module Soml
         create_method_for(@clazz, name , args ).init_method
         @clazz.add_instance_method @method
       end
+      @method.source = statement
       #puts "compile method #{@method.name}"
 
       kids.to_a.each do |ex|
