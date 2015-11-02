@@ -84,8 +84,7 @@ module Soml
     def init_method
       source = "_init_method"
       @method.instructions = Register::Label.new(source, "#{method.for_class.name}.#{method.name}")
-      @current = method.instructions
-      add_code  enter = Register.save_return(source, :message , :return_address)
+      @current = enter = method.instructions
       add_code Register::Label.new( source, "return")
       # move the current message to new_message
       add_code  Register::RegisterTransfer.new(source, Register.message_reg , Register.new_message_reg )
