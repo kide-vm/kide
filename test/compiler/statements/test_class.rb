@@ -42,7 +42,7 @@ HERE
   def test_class_field_value
     @string_input = <<HERE
 class Object
-  field int boo = 1
+  field int boo1 = 1
   int main()
     return 1
   end
@@ -55,9 +55,9 @@ HERE
   def test_class_field
     @string_input = <<HERE
 class Object
-  field int boo
+  field int boo2
   int main()
-    return self.boo
+    return self.boo2
   end
 end
 HERE
