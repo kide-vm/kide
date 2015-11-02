@@ -16,7 +16,7 @@ class Object
   end
 end
 HERE
-  @expect =  [Label, SaveReturn,LoadConstant,LoadConstant, OperatorInstruction,IsPlus ,
+  @expect =  [Label, LoadConstant,LoadConstant, OperatorInstruction,IsPlus ,
                 LoadConstant,SetSlot,Branch , Label , LoadConstant ,SetSlot,
                 Label,Label,RegisterTransfer,GetSlot,FunctionReturn]
   check
@@ -33,7 +33,7 @@ class Object
   end
 end
 HERE
-  @expect =  [Label, SaveReturn,LoadConstant,LoadConstant, OperatorInstruction,IsMinus ,
+  @expect =  [Label,LoadConstant,LoadConstant, OperatorInstruction,IsMinus ,
                 Branch ,Label , LoadConstant ,SetSlot,
                 Label,Label , RegisterTransfer,GetSlot,FunctionReturn]
   check
@@ -50,7 +50,7 @@ class Object
   end
 end
 HERE
-  @expect =  [Label, SaveReturn,LoadConstant,LoadConstant,OperatorInstruction,IsZero ,
+  @expect =  [Label, LoadConstant,LoadConstant,OperatorInstruction,IsZero ,
                 Branch , Label , LoadConstant ,SetSlot,
                 Label,Label, RegisterTransfer,GetSlot,FunctionReturn]
   check
