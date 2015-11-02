@@ -8,8 +8,7 @@ module Interpreter
 
     attr_reader :instruction     # current instruction or pc
     attr_reader :clock    # current instruction or pc
-    # an (arm style) link register. store the return address to return to
-    attr_reader :link
+
     attr_reader :registers     # the registers, 16 (a hash, sym -> contents)
     attr_reader :stdout     # collect the output
     attr_reader :state # running etc
@@ -72,6 +71,7 @@ module Interpreter
       return unless @instruction
       @clock += 1
       name = @instruction.class.name.split("::").last
+      puts name
       fetch = send "execute_#{name}"
       return unless fetch
       fetch_next_intruction
@@ -142,26 +142,14 @@ module Interpreter
     end
 
     def execute_FunctionCall
-      @link =  @instruction
-      #puts "Call link #{@link}"
       set_instruction @instruction.method.instructions
       false
-    end
-
-    def execute_SaveReturn
-      object = object_for @instruction.register
-      raise "save return has nothing to save" unless @link
-      #puts "Save Return link #{@link}"
-      object.internal_object_set @instruction.index , @link
-      trigger(:object_changed, @instruction.register , @instruction.index )
-      @link = nil
-      true
     end
 
     def execute_FunctionReturn
       object = object_for( @instruction.register )
       link = object.internal_object_get( @instruction.index )
-      #puts "FunctionReturn link #{@link}"
+      puts "#{@instruction} #{object} link #{link}"
       @instruction = link
       # we jump back to the call instruction. so it is as if the call never happened and we continue
       true
