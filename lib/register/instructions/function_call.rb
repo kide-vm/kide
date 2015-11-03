@@ -17,9 +17,14 @@ module Register
 
   def self.issue_call compiler , callee
     source = "_issue_call(#{callee.name})"
+    return_label = Label.new("_return_label" , "_return_label" )
+    ret_tmp = compiler.use_reg(:Label)
+    compiler.add_code Register::LoadConstant.new(source, return_label , ret_tmp)
+    compiler.add_code Register.set_slot(source, ret_tmp , :new_message , :return_address)
     # move the current new_message to message
     compiler.add_code RegisterTransfer.new(source, Register.new_message_reg , Register.message_reg )
     # do the register call
     compiler.add_code FunctionCall.new( source , callee )
+    compiler.add_code return_label
   end
 end
