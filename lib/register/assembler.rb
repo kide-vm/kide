@@ -22,33 +22,23 @@ module Register
 
     def assemble
       at = 0
-      # want to have the methods first in the executable
-      # so first we determine the code length for the methods and set the
-      # binary code (array) to right length
-      @machine.objects.each do |id , objekt|
-        next unless objekt.is_a? Parfait::Method
-        # should be fill_to_length (with zeros)
-        objekt.binary.set_length(objekt.total_byte_length )
-      end
       #need the initial jump at 0 and then functions
       @machine.init.set_position(at)
       at += @machine.init.byte_length
       at +=  8 # thats the padding
-
-      # then we make sure we really get the binary codes first
+      # want to have the methods first in the executable (ie the BinaryCode objects)
       @machine.objects.each do |id , objekt|
-        next unless objekt.is_a? Parfait::BinaryCode
-        objekt.position = at
+        next unless objekt.is_a? Parfait::Method
+        objekt.binary.position = at
+        objekt.instructions.set_position at
         #puts "CODE #{objekt.name} at #{objekt.position}"
-        at += objekt.word_length
+        len = objekt.instructions.total_byte_length
+        objekt.binary.set_length(len/4)
+        at += len
       end
       # and then everything else
       @machine.objects.each do | id , objekt|
-        # have to tell the code that will be assembled where it is to
-        # get the jumps/calls right
-        if objekt.is_a? Parfait::Method
-          objekt.set_position( objekt.binary.position )
-        end
+        next if objekt.is_a? Register::Label # will get assembled as method.instructions
         next if objekt.is_a? Parfait::BinaryCode
         objekt.position = at
         at += objekt.word_length
@@ -94,6 +84,7 @@ module Register
       # and then the rest of the object machine
       @machine.objects.each do | id, objekt|
         next if objekt.is_a? Parfait::BinaryCode
+        next if object.is_a? Register::Label # ignore
         write_any( objekt )
       end
       #puts "Assembled #{stream_position} bytes"
@@ -115,8 +106,8 @@ module Register
       index = 1
       stream.rewind
       #puts "Assembled #{method.name} with length #{stream.length}"
-      raise "length error #{method.binary.length} != #{method.total_byte_length}" if method.binary.get_length != method.total_byte_length
-      raise "length error #{stream.length} != #{method.total_byte_length}" if method.total_byte_length != stream.length
+      raise "length error #{method.binary.get_length} != #{method.instructions.total_byte_length}" if method.binary.get_length*4 != method.instructions.total_byte_length
+      raise "length error #{stream.length} != #{method.instructions.total_byte_length}" if method.instructions.total_byte_length != stream.length
       stream.each_byte do |b|
         method.binary.set(index , b )
         index = index + 1
@@ -133,47 +124,36 @@ module Register
       else
         write_object obj
       end
-      obj.position
-    end
-
-    def type_word array
-      word = 0
-      index = 0
-      array.each do |var |
-        #type = (var.class == Integer) ? TYPE_INT : TYPE_REF
-        #TODO
-        type = TYPE_REF
-        word += type << (index * TYPE_BITS)
-        index = index + 1
+      #puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{stream_position} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
+      if @stream.length != obj.position
+        raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{stream_position} not #{obj.position.to_s(16)}"
       end
-      word += ( (array.get_length + 1 ) / 8 ) << TYPE_LENGTH * TYPE_BITS
-      word
+      obj.position
     end
 
     # write type and layout of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def write_object( object )
+      puts "Write #{object.class}"
       unless @machine.objects.has_key? object.object_id
         raise "Object(#{object.object_id}) not linked #{object.inspect}"
       end
       layout = object.get_layout
-      type = type_word(layout)
-      @stream.write_uint32( type )
       write_ref_for(layout )
       layout.each do |var|
         inst = object.instance_variable_get "@#{var}".to_sym
         #puts "Nil for #{object.class}.#{var}" unless inst
         write_ref_for(inst)
       end
-      #puts "layout length=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
+      puts "layout length=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
       l = layout.get_length
       if( object.is_a? Parfait::Indexed)
         object.each do |inst|
           write_ref_for(inst)
+          l += 4
         end
-        l += object.get_length
       end
-      pad_after( l * 4)
+      pad_after( l / 4 )
       object.position
     end
 
@@ -206,13 +186,12 @@ module Register
     def write_ref_for object
       case object
       when nil
-        pos = 0 - @load_at
+        @stream.write_sint32(0)
       when Fixnum
-        pos = object - @load_at
+        @stream.write_sint32(object)
       else
-        pos =  object.position
+        @stream.write_sint32(object.position + @load_at)
       end
-      @stream.write_sint32(pos + @load_at)
     end
 
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
@@ -223,7 +202,7 @@ module Register
         @stream.write_uint8(0)
       end
       after = stream_position
-      #puts "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
+      puts      "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
     end
 
     # return the stream length as hex

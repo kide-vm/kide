@@ -4,7 +4,7 @@ module Positioned
   def position
     if @position.nil?
       str = "IN machine #{Register.machine.objects.has_key?(self.object_id)}, at #{self.object_id.to_s(16)}\n"
-      raise str + "position not set for #{self.class} len #{word_length} for #{self.inspect[0...100]}"
+      raise str + "position not set for #{self.class} byte_length #{byte_length} for #{self.inspect[0...100]}"
     end
     @position
   end
