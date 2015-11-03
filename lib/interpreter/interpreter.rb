@@ -71,13 +71,9 @@ module Interpreter
       return unless @instruction
       @clock += 1
       name = @instruction.class.name.split("::").last
-      puts name
+      #puts @instruction
       fetch = send "execute_#{name}"
       return unless fetch
-      fetch_next_intruction
-    end
-
-    def fetch_next_intruction
       set_instruction @instruction.next
     end
 
@@ -149,7 +145,6 @@ module Interpreter
     def execute_FunctionReturn
       object = object_for( @instruction.register )
       link = object.internal_object_get( @instruction.index )
-      puts "#{@instruction} #{object} link #{link}"
       @instruction = link
       # we jump back to the call instruction. so it is as if the call never happened and we continue
       true

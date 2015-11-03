@@ -56,5 +56,19 @@ module Register
       assert_equal @label, @instruction.next
       assert_equal 2 , @instruction.length , @instruction.to_ac
     end
+    def test_each_label1
+      @instruction.set_next @label
+      start = Label.new("test" , "test" , @instruction)
+      count = 0
+      start.each_label { |l| count += 1 }
+      assert_equal 2 , count
+    end
+    def test_each_label2
+      @instruction.set_next @branch
+      start = Label.new("test" , "test" , @instruction)
+      count = 0
+      start.each_label { |l| count += 1 }
+      assert_equal 2 , count
+    end
   end
 end
