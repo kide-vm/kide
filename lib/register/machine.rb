@@ -55,8 +55,9 @@ module Register
     def add_object o
       return false if @objects[o.object_id]
       return true if o.is_a? Fixnum
-      return true if o.is_a? Register::Label
-      raise "adding non parfait #{o.class}" unless o.is_a? Parfait::Object or o.is_a? Symbol
+      unless o.is_a? Parfait::Object or o.is_a? Symbol or o.is_a? Register::Label
+        raise "adding non parfait #{o.class}"
+      end
       @objects[o.object_id] = o
       true
     end
