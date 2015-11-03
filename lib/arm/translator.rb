@@ -49,10 +49,10 @@ module Arm
 
     def translate_LoadConstant code
       constant = code.constant
-      if constant.is_a?(Parfait::Object) or constant.is_a? Symbol
+      if constant.is_a?(Parfait::Object) or constant.is_a?(Symbol) or constant.is_a?(Register::Label)
         return ArmMachine.add( code.register , constant )
       else
-        return ArmMachine.mov( code.register ,  code.constant )
+        return ArmMachine.mov( code.register ,  constant )
       end
     end
 
