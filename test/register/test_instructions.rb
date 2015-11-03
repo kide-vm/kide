@@ -70,5 +70,12 @@ module Register
       start.each_label { |l| count += 1 }
       assert_equal 2 , count
     end
+    def test_label_is_method
+      label = Label.new("test" , "Object.test")
+      assert label.is_method
+    end
+    def test_label_is_not_method
+      assert ! @label.is_method
+    end
   end
 end

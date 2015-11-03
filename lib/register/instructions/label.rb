@@ -18,6 +18,11 @@ module Register
       "Label: #{@name} (#{self.next.class})"
     end
 
+    # a method start has a label of the form Class.method , test for that
+    def is_method
+      @name.split(".").length == 2
+    end
+
     def to_ac labels = []
       return [] if labels.include?(self)
       labels << self
@@ -55,6 +60,11 @@ module Register
       labels << self
       self.position = position
       self.next.set_position(position,labels)
+    end
+
+    # shame we need this, just for logging
+    def byte_length
+      0
     end
 
     def each_label labels =[] , &block
