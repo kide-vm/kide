@@ -26,24 +26,22 @@ HERE
       #puts parts.inspect
       Soml.compile( parts )
       machine.collect
-  #    statements = Register.machine.boot.parse_and_compile @string_input
-  #    Soml::Compiler.compile( statements , Register.machine.space.get_main )
       @interpreter = Interpreter::Interpreter.new
       @interpreter.start Register.machine.init
       #show_ticks # get output of what is
       ["Branch","Label","LoadConstant","GetSlot","SetSlot",
-     "RegisterTransfer","FunctionCall","Label","SaveReturn","GetSlot",
-     "GetSlot","SetSlot","LoadConstant","SetSlot","LoadConstant",
-     "SetSlot","LoadConstant","SetSlot","RegisterTransfer","FunctionCall",
-     "Label","SaveReturn","GetSlot","LoadConstant","OperatorInstruction",
-     "IsZero","GetSlot","LoadConstant","SetSlot","LoadConstant",
-     "SetSlot","LoadConstant","SetSlot","RegisterTransfer","FunctionCall",
-     "Label","SaveReturn","GetSlot","RegisterTransfer","Syscall",
-     "RegisterTransfer","RegisterTransfer","SetSlot","Label","RegisterTransfer",
-     "GetSlot","FunctionReturn","GetSlot","Branch","Label",
-     "Label","RegisterTransfer","GetSlot","FunctionReturn","GetSlot",
-     "Label","RegisterTransfer","GetSlot","FunctionReturn","RegisterTransfer",
-     "Syscall","NilClass"].each_with_index do |name , index|
+     "LoadConstant","SetSlot","RegisterTransfer","FunctionCall","Label",
+     "GetSlot","GetSlot","SetSlot","LoadConstant","SetSlot",
+     "LoadConstant","SetSlot","LoadConstant","SetSlot","LoadConstant",
+     "SetSlot","RegisterTransfer","FunctionCall","Label","GetSlot",
+     "LoadConstant","OperatorInstruction","IsZero","GetSlot","LoadConstant",
+     "SetSlot","LoadConstant","SetSlot","LoadConstant","SetSlot",
+     "LoadConstant","SetSlot","RegisterTransfer","FunctionCall","Label",
+     "GetSlot","RegisterTransfer","Syscall","RegisterTransfer","RegisterTransfer",
+     "SetSlot","Label","RegisterTransfer","GetSlot","FunctionReturn",
+     "GetSlot","Branch","Label","Label","RegisterTransfer",
+     "GetSlot","FunctionReturn","GetSlot","Label","RegisterTransfer",
+     "GetSlot","FunctionReturn","RegisterTransfer","Syscall","NilClass"].each_with_index do |name , index|
       got = ticks(1)
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
     end

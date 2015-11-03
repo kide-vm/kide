@@ -17,9 +17,9 @@ class Object
   end
 end
 HERE
-    @expect =  [Label, GetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant  ,
-               SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, GetSlot, Label  ,
-               RegisterTransfer, GetSlot, FunctionReturn]
+    @expect =  [Label, GetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant ,
+               SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, GetSlot ,
+               Label, RegisterTransfer, GetSlot, FunctionReturn]
     check
   end
 
@@ -37,9 +37,9 @@ class Object
   end
 end
 HERE
-    @expect =  [Label, GetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant  ,
-               SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, GetSlot, Label  ,
-               RegisterTransfer, GetSlot, FunctionReturn]
+    @expect =  [Label, GetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant ,
+               SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, GetSlot ,
+               Label, RegisterTransfer, GetSlot, FunctionReturn]
     check
   end
 
@@ -57,9 +57,10 @@ class Object
   end
 end
 HERE
-    @expect =  [Label, LoadConstant, GetSlot, SetSlot, GetSlot, GetSlot, GetSlot  ,
-               SetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot  ,
-               RegisterTransfer, FunctionCall, GetSlot, Label, RegisterTransfer, GetSlot, FunctionReturn]
+    @expect = [Label, LoadConstant, GetSlot, SetSlot, GetSlot, GetSlot, GetSlot ,
+               SetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot ,
+               RegisterTransfer, FunctionCall, Label, GetSlot, Label, RegisterTransfer, GetSlot ,
+               FunctionReturn]
   check
   end
 
@@ -77,9 +78,9 @@ class Object
   end
 end
 HERE
-    @expect = [Label, GetSlot, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot  ,
-               LoadConstant, SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, GetSlot  ,
-               Label, RegisterTransfer, GetSlot, FunctionReturn]
+    @expect = [Label, GetSlot, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot ,
+               LoadConstant, SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label ,
+               GetSlot, Label, RegisterTransfer, GetSlot, FunctionReturn]
   check
   end
 
@@ -94,9 +95,9 @@ int main()
 end
 end
 HERE
-    @expect = [Label, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot, LoadConstant  ,
-               SetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall  ,
-               GetSlot, Label, RegisterTransfer, GetSlot, FunctionReturn]
+    @expect = [Label, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot, LoadConstant ,
+               SetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall ,
+               Label, GetSlot, Label, RegisterTransfer, GetSlot, FunctionReturn]
     was = check
     set = was.next(7)
     assert_equal SetSlot , set.class

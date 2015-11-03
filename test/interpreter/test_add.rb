@@ -30,16 +30,21 @@ class AddTest < MiniTest::Test
     assert @interpreter.get_register( :r2 ).is_a? Integer
   end
   def test_transfer
-    transfer = ticks 6
+    transfer = ticks 8
     assert_equal Register::RegisterTransfer ,  transfer.class
     assert_equal @interpreter.get_register(transfer.to) , @interpreter.get_register(transfer.from)
   end
   def test_call
-    assert_equal Register::FunctionCall ,  ticks(7).class
-    assert @interpreter.link
+    ret = ticks(18)
+    assert_equal Register::FunctionReturn ,  ret.class
+
+    object = @interpreter.object_for( ret.register )
+    link = object.internal_object_get( ret.index )
+
+    assert_equal Register::Label , link.class
   end
   def test_adding
-    done_op = ticks(12)
+    done_op = ticks(13)
     assert_equal Register::OperatorInstruction ,  done_op.class
     left = @interpreter.get_register(done_op.left)
     rr = done_op.right
@@ -57,9 +62,10 @@ class AddTest < MiniTest::Test
   def test_chain
     #show_ticks # get output of what is
     ["Branch","Label","LoadConstant","GetSlot","SetSlot",
-     "RegisterTransfer","FunctionCall","Label","SaveReturn","LoadConstant",
-     "LoadConstant","OperatorInstruction","SetSlot","Label","RegisterTransfer",
-     "GetSlot","FunctionReturn","RegisterTransfer","Syscall","NilClass"].each_with_index do |name , index|
+     "LoadConstant","SetSlot","RegisterTransfer","FunctionCall","Label",
+     "LoadConstant","LoadConstant","OperatorInstruction","SetSlot","Label",
+     "RegisterTransfer","GetSlot","FunctionReturn","RegisterTransfer","Syscall",
+     "NilClass"].each_with_index do |name , index|
       got = ticks(1)
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
     end

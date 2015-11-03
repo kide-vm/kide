@@ -41,30 +41,24 @@ class TestPuts < MiniTest::Test
     assert @interpreter.get_register( :r1 ).is_a? Integer
   end
   def test_transfer
-    transfer = ticks 6
+    transfer = ticks 8
     assert_equal Register::RegisterTransfer ,  transfer.class
     assert_equal @interpreter.get_register(transfer.to) , @interpreter.get_register(transfer.from)
   end
   def test_call
-    assert_equal Register::FunctionCall ,  ticks(7).class
-    assert @interpreter.link
-  end
-  def test_save
-    done = ticks(9)
-    assert_equal Register::SaveReturn ,  done.class
-    assert @interpreter.get_register done.register.symbol
+    assert_equal Register::FunctionCall ,  ticks(9).class
   end
 
   def test_chain
     #show_ticks # get output of what is
-    [ "Branch","Label","LoadConstant","GetSlot","SetSlot",
-     "RegisterTransfer","FunctionCall","Label","SaveReturn","GetSlot",
-     "LoadConstant","SetSlot","LoadConstant","SetSlot","LoadConstant",
-     "SetSlot","RegisterTransfer","FunctionCall","Label","SaveReturn",
-     "GetSlot","RegisterTransfer","Syscall","RegisterTransfer","RegisterTransfer",
-     "SetSlot","Label","RegisterTransfer","GetSlot","FunctionReturn",
-     "GetSlot","Label","RegisterTransfer","GetSlot","FunctionReturn",
-     "RegisterTransfer","Syscall","NilClass"].each_with_index do |name , index|
+    ["Branch","Label","LoadConstant","GetSlot","SetSlot",
+     "LoadConstant","SetSlot","RegisterTransfer","FunctionCall","Label",
+     "GetSlot","LoadConstant","SetSlot","LoadConstant","SetSlot",
+     "LoadConstant","SetSlot","LoadConstant","SetSlot","RegisterTransfer",
+     "FunctionCall","Label","GetSlot","RegisterTransfer","Syscall",
+     "RegisterTransfer","RegisterTransfer","SetSlot","Label","RegisterTransfer",
+     "GetSlot","FunctionReturn","GetSlot","Label","RegisterTransfer",
+     "GetSlot","FunctionReturn","RegisterTransfer","Syscall","NilClass"].each_with_index do |name , index|
       got = ticks(1)
       #puts "TICK #{index}"
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
@@ -72,20 +66,20 @@ class TestPuts < MiniTest::Test
   end
 
   def test_putstring
-    done = ticks(23)
+    done = ticks(25)
     assert_equal Register::Syscall ,  done.class
     assert_equal "Hello again" , @interpreter.stdout
   end
 
   def test_return
-    done = ticks(30)
+    done = ticks(32)
     assert_equal Register::FunctionReturn ,  done.class
     assert Register::Label , @interpreter.instruction.class
     assert @interpreter.instruction.is_a?(Register::Instruction) , "not instruction #{@interpreter.instruction}"
   end
 
   def test_exit
-    done = ticks(38)
+    done = ticks(40)
     assert_equal NilClass ,  done.class
     assert_equal "Hello again" , @interpreter.stdout
   end

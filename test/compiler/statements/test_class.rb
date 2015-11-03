@@ -34,9 +34,9 @@ class Object
   end
 end
 HERE
-    @expect = [Label, GetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant  ,
-               SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, GetSlot, SetSlot  ,
-               Label, RegisterTransfer, GetSlot, FunctionReturn]
+    @expect =  [Label, GetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant ,
+               SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, GetSlot ,
+               SetSlot, Label, RegisterTransfer, GetSlot, FunctionReturn]
     check
   end
 
