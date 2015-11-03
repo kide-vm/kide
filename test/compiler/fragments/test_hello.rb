@@ -11,7 +11,7 @@ class Object
   end
 end
 HERE
-    @length = 37
+    @length = 39
     @stdout = "Hello Raisa, I am salama"
     check
   end

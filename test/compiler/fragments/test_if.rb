@@ -16,7 +16,7 @@ class Object
   end
 end
 HERE
-  @length = 27
+  @length = 28
   check
   end
 
@@ -31,7 +31,7 @@ class Object
   end
 end
 HERE
-  @length = 47
+  @length = 49
   @stdout = "10"
   check
   end
@@ -53,7 +53,7 @@ class Object
   end
 end
 HERE
-  @length = 61
+  @length = 64
   @stdout = "else"
   check
   end
