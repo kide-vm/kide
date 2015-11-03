@@ -42,9 +42,6 @@ module Soml
       method = clazz.get_instance_method(name)
       #puts Register.machine.space.get_class_by_name(:Integer).method_names.to_a
       raise "Method not implemented #{me.type}.#{name}" unless method
-      ret_tmp = use_reg(:Label)
-      add_code Register::LoadConstant.new(statement.first, method.instructions , ret_tmp)
-      add_code Register.set_slot(statement, ret_tmp , :message , :return_address)
       Register.issue_call( self , method )
     end
     def set_message_details name_s , arguments
