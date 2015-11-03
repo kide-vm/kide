@@ -122,10 +122,6 @@ module Parfait
       "'" + to_s + "'"
     end
 
-    def word_length
-      padded self.length
-    end
-
     private
     def check_length
       raise "Length out of bounds #{self.char_length}" if self.char_length > 32
