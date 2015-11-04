@@ -1,5 +1,6 @@
 require 'parslet'
 
+require "logging"
 require "elf/object_writer"
 require 'salama-reader'
 AST::Node.class_eval do

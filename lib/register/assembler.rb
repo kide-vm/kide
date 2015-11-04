@@ -10,6 +10,8 @@ module Register
 
   class Assembler
     include Padding
+    include Logging
+    #log_level :debug
 
     def initialize machine
       @machine = machine
@@ -28,7 +30,7 @@ module Register
         objekt.binary.position = at
         objekt.instructions.set_position at
         len = objekt.instructions.total_byte_length
-        puts "CODE #{objekt.name} at #{objekt.binary.position} len: #{len}"
+        log.debug "CODE #{objekt.name} at #{objekt.binary.position} len: #{len}"
         objekt.binary.set_length(len/4)
         at += objekt.binary.padded_length
       end
@@ -59,7 +61,7 @@ module Register
       # debugging loop accesses all positions to force an error if it's not set
       all.each do |objekt|
         next if objekt.is_a?(Register::Label)
-        puts "Linked #{objekt.class}(#{objekt.object_id}) at #{objekt.position} / #{objekt.padded_length}"
+        log.debug "Linked #{objekt.class}(#{objekt.object_id}) at #{objekt.position} / #{objekt.padded_length}"
         objekt.position
       end
       # first we need to create the binary code for the methods
@@ -84,7 +86,7 @@ module Register
         next if objekt.is_a? Register::Label # ignore
         write_any( objekt )
       end
-      puts "Assembled #{stream_position} bytes"
+      log.debug "Assembled #{stream_position} bytes"
       return @stream.string
     end
 
@@ -97,12 +99,12 @@ module Register
         #puts "assemble #{method.source.instructions}"
         method.instructions.assemble_all( stream )
       rescue => e
-        puts "Assembly error #{method.name}\n#{Sof.write(method.instructions).to_s[0...2000]}"
+        log.debug "Assembly error #{method.name}\n#{Sof.write(method.instructions).to_s[0...2000]}"
         raise e
       end
       index = 1
       stream.rewind
-      puts "Assembled #{method.name} with length #{stream.length}"
+      log.debug "Assembled #{method.name} with length #{stream.length}"
       raise "length error #{method.binary.get_length} != #{method.instructions.total_byte_length}" if method.binary.get_length*4 != method.instructions.total_byte_length
       raise "length error #{stream.length} != #{method.instructions.total_byte_length}" if method.instructions.total_byte_length != stream.length
       stream.each_byte do |b|
@@ -112,7 +114,7 @@ module Register
     end
 
     def write_any obj
-      puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
+      log.debug "Assemble #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
       if @stream.length != obj.position
         raise "Assemble #{obj.class} #{obj.object_id} at #{stream_position} not #{obj.position}"
       end
@@ -121,14 +123,14 @@ module Register
       else
         write_object obj
       end
-      puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
+      log.debug "Assemble #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
       obj.position
     end
 
     # write type and layout of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def write_object( object )
-      puts "Write #{object.class} #{object.inspect}"
+      log.debug "Write #{object.class} #{object.inspect}"
       unless @machine.objects.has_key? object.object_id
         raise "Object(#{object.object_id}) not linked #{object.inspect}"
       end
@@ -140,15 +142,15 @@ module Register
         written += 4
       end
       lay_len = written
-      puts "instances=#{object.get_instance_variables.inspect} mem_len=#{object.padded_length}"
+      log.debug "instances=#{object.get_instance_variables.inspect} mem_len=#{object.padded_length}"
       if( object.is_a? Parfait::Indexed)
         object.each do |inst|
           write_ref_for(inst)
           written += 4
         end
       end
-      puts "layout #{lay_len} , total #{written} (array #{written - lay_len})"
-      puts "Len = #{object.get_length} , inst = #{object.get_layout.instance_length}" if object.is_a? Parfait::Layout
+      log.debug "layout #{lay_len} , total #{written} (array #{written - lay_len})"
+      log.debug "Len = #{object.get_length} , inst = #{object.get_layout.instance_length}" if object.is_a? Parfait::Layout
       pad_after( written )
       object.position
     end
@@ -160,11 +162,11 @@ module Register
     def write_String( string )
       str = string.to_string if string.is_a? Parfait::Word
       str = string.to_s if string.is_a? Symbol
-      puts "String is #{string} at #{string.position} length #{string.length}"
+      log.debug "String is #{string} at #{string.position} length #{string.length}"
       write_ref_for( string.get_layout ) #ref
       @stream.write str
       pad_after(str.length + 4)
-      puts "String (#{string.length}) stream #{@stream.length}"
+      log.debug "String (#{string.length}) stream #{@stream.length}"
     end
 
     def write_Symbol(sym)
@@ -194,7 +196,7 @@ module Register
         @stream.write_uint8(0)
       end
       after = stream_position
-      puts "padded #{length} with #{pad} stream #{before}/#{after}"
+      log.debug "padded #{length} with #{pad} stream #{before}/#{after}"
     end
 
     # return the stream length as hex
