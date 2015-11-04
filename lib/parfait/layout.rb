@@ -66,7 +66,7 @@ module Parfait
     end
 
     def instance_length
-      self.get_length / 2
+      (self.get_length / 2).to_i # to_i for opal
     end
 
     alias :super_index :index_of
@@ -80,7 +80,7 @@ module Parfait
       has = super_index(name)
       return nil unless has
       raise "internal error #{name}:#{has}" if has < 1
-      1 + has / 2
+      (1 + has / 2).to_i # to_i for opal 
     end
 
     def inspect
