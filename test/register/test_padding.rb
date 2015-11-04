@@ -10,17 +10,17 @@ class TestPadding < MiniTest::Test
     @pad = Padded.new
   end
   def test_small
-    [6,20,27,28].each do |p|
+    [6,27,28,32].each do |p|
       assert_equal 32 , @pad.padded(p) , "Expecting 32 for #{p}"
     end
   end
   def test_medium
-    [29,40,57,60].each do |p|
+    [33,40,57,60,64].each do |p|
       assert_equal 64 , @pad.padded(p) , "Expecting 64 for #{p}"
     end
   end
   def test_large
-    [61,88].each do |p|
+    [65,88].each do |p|
       assert_equal 96 , @pad.padded(p) , "Expecting 96 for #{p}"
     end
   end
