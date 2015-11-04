@@ -92,8 +92,8 @@ module Parfait
       get_layout().variable_index(name)
     end
 
-    def word_length
-      padded_words( get_layout().get_length() )
+    def padded_length
+      padded_words( get_layout().instance_length )
     end
 
     # Object

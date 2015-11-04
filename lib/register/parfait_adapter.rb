@@ -28,8 +28,8 @@ class Symbol
     #puts "LL #{l.class}"
     l
   end
-  def word_length
-    padded to_s.length
+  def padded_length
+    padded to_s.length + 4
   end
   # not the prettiest addition to the game, but it wasn't me who decided symbols are frozen in 2.x
   def cache_positions

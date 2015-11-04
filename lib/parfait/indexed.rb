@@ -99,8 +99,8 @@ module Parfait
     # This is off course 0 for a list, unless someone squeezed an instance variable in
     # but additionally, the amount of data comes on top.
     # unfortuntely we can't just use super because of the Padding
-    def word_length
-      padded_words( get_layout().get_length() +  get_length() )
+    def padded_length
+      padded_words( get_layout().instance_length +  get_length() )
     end
 
     def each
