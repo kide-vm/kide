@@ -17,7 +17,7 @@ module Register
 
   def self.issue_call compiler , callee
     source = "_issue_call(#{callee.name})"
-    return_label = Label.new("_return_label" , "_return_label" )
+    return_label = Label.new("_return_label" , "#{compiler.clazz.name}.#{compiler.method.name}" )
     ret_tmp = compiler.use_reg(:Label)
     compiler.add_code Register::LoadConstant.new(source, return_label , ret_tmp)
     compiler.add_code Register.set_slot(source, ret_tmp , :new_message , :return_address)
