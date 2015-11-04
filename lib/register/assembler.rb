@@ -10,10 +10,6 @@ module Register
 
   class Assembler
     include Padding
-    TYPE_REF =  0
-    TYPE_INT =  1
-    TYPE_BITS = 4
-    TYPE_LENGTH = 6
 
     def initialize machine
       @machine = machine
@@ -31,17 +27,17 @@ module Register
         next unless objekt.is_a? Parfait::Method
         objekt.binary.position = at
         objekt.instructions.set_position at
-        #puts "CODE #{objekt.name} at #{objekt.position}"
         len = objekt.instructions.total_byte_length
+        puts "CODE #{objekt.name} at #{objekt.binary.position} len: #{len}"
         objekt.binary.set_length(len/4)
-        at += len
+        at += objekt.binary.padded_length
       end
       # and then everything else
       @machine.objects.each do | id , objekt|
         next if objekt.is_a? Register::Label # will get assembled as method.instructions
         next if objekt.is_a? Parfait::BinaryCode
         objekt.position = at
-        at += objekt.word_length
+        at += objekt.padded_length
       end
     end
 
@@ -62,7 +58,8 @@ module Register
       all = @machine.objects.values.sort{|a,b| a.position <=> b.position}
       # debugging loop accesses all positions to force an error if it's not set
       all.each do |objekt|
-        #puts "Linked #{objekt.class}(#{objekt.object_id.to_s(16)}) at #{objekt.position.to_s(16)} / #{objekt.word_length.to_s(16)}"
+        next if objekt.is_a?(Register::Label)
+        puts "Linked #{objekt.class}(#{objekt.object_id}) at #{objekt.position} / #{objekt.padded_length}"
         objekt.position
       end
       # first we need to create the binary code for the methods
@@ -84,10 +81,10 @@ module Register
       # and then the rest of the object machine
       @machine.objects.each do | id, objekt|
         next if objekt.is_a? Parfait::BinaryCode
-        next if object.is_a? Register::Label # ignore
+        next if objekt.is_a? Register::Label # ignore
         write_any( objekt )
       end
-      #puts "Assembled #{stream_position} bytes"
+      puts "Assembled #{stream_position} bytes"
       return @stream.string
     end
 
@@ -105,55 +102,54 @@ module Register
       end
       index = 1
       stream.rewind
-      #puts "Assembled #{method.name} with length #{stream.length}"
+      puts "Assembled #{method.name} with length #{stream.length}"
       raise "length error #{method.binary.get_length} != #{method.instructions.total_byte_length}" if method.binary.get_length*4 != method.instructions.total_byte_length
       raise "length error #{stream.length} != #{method.instructions.total_byte_length}" if method.instructions.total_byte_length != stream.length
       stream.each_byte do |b|
-        method.binary.set(index , b )
+        method.binary.set((index - 1) / 4 + 1 , b )
         index = index + 1
       end
     end
 
     def write_any obj
-      #puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{stream_position} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
+      puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
       if @stream.length != obj.position
-        raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{stream_position} not #{obj.position.to_s(16)}"
+        raise "Assemble #{obj.class} #{obj.object_id} at #{stream_position} not #{obj.position}"
       end
       if obj.is_a?(Parfait::Word) or obj.is_a?(Symbol)
         write_String obj
       else
         write_object obj
       end
-      #puts "Assemble #{obj.class}(#{obj.object_id.to_s(16)}) at stream #{stream_position} pos:#{obj.position.to_s(16)} , len:#{obj.word_length.to_s(16)}"
-      if @stream.length != obj.position
-        raise "Assemble #{obj.class} #{obj.object_id.to_s(16)} at #{stream_position} not #{obj.position.to_s(16)}"
-      end
+      puts "Assemble #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
       obj.position
     end
 
     # write type and layout of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def write_object( object )
-      puts "Write #{object.class}"
+      puts "Write #{object.class} #{object.inspect}"
       unless @machine.objects.has_key? object.object_id
         raise "Object(#{object.object_id}) not linked #{object.inspect}"
       end
-      layout = object.get_layout
-      write_ref_for(layout )
-      layout.each do |var|
-        inst = object.instance_variable_get "@#{var}".to_sym
+      written = 0
+      object.get_instance_variables.each do |var|
+        inst = object.get_instance_variable(var)
         #puts "Nil for #{object.class}.#{var}" unless inst
         write_ref_for(inst)
+        written += 4
       end
-      puts "layout length=#{layout.get_length.to_s(16)} mem_len=#{layout.word_length.to_s(16)}"
-      l = layout.get_length
+      lay_len = written
+      puts "instances=#{object.get_instance_variables.inspect} mem_len=#{object.padded_length}"
       if( object.is_a? Parfait::Indexed)
         object.each do |inst|
           write_ref_for(inst)
-          l += 4
+          written += 4
         end
       end
-      pad_after( l / 4 )
+      puts "layout #{lay_len} , total #{written} (array #{written - lay_len})"
+      puts "Len = #{object.get_length} , inst = #{object.get_layout.instance_length}" if object.is_a? Parfait::Layout
+      pad_after( written )
       object.position
     end
 
@@ -164,15 +160,11 @@ module Register
     def write_String( string )
       str = string.to_string if string.is_a? Parfait::Word
       str = string.to_s if string.is_a? Symbol
-      word = (str.length + 7) / 32  # all object are multiple of 8 words (7 for header)
-      # first line is integers, convention is that following lines are the same
-      TYPE_LENGTH.times { word = ((word << TYPE_BITS) + TYPE_INT) }
-      @stream.write_uint32( word )
-      #puts "String is #{string} at #{string.position.to_s(16)} length #{string.length}"
+      puts "String is #{string} at #{string.position} length #{string.length}"
       write_ref_for( string.get_layout ) #ref
       @stream.write str
-      pad_after(str.length)
-      #puts "String (#{string.length.to_s(16)}) stream #{@stream.length.to_s(16)}"
+      pad_after(str.length + 4)
+      puts "String (#{string.length}) stream #{@stream.length}"
     end
 
     def write_Symbol(sym)
@@ -202,12 +194,12 @@ module Register
         @stream.write_uint8(0)
       end
       after = stream_position
-      puts      "padded #{length.to_s(16)} with #{pad.to_s(16)} stream #{before}/#{after}"
+      puts "padded #{length} with #{pad} stream #{before}/#{after}"
     end
 
     # return the stream length as hex
     def stream_position
-      @stream.length.to_s(16)
+      @stream.length
     end
   end
 
