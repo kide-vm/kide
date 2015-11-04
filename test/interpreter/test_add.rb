@@ -27,7 +27,7 @@ class AddTest < MiniTest::Test
   def test_get
     assert_equal Register::GetSlot , ticks(4).class
     assert @interpreter.get_register( :r2 )
-    assert @interpreter.get_register( :r2 ).is_a? Integer
+    assert  Integer , @interpreter.get_register( :r2 ).class
   end
   def test_transfer
     transfer = ticks 8

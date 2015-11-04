@@ -32,13 +32,13 @@ class TestPuts < MiniTest::Test
   end
   def test_load
     assert_equal Register::LoadConstant ,  ticks(3).class
-    assert_equal Parfait::Space ,  Register.machine.objects[ @interpreter.get_register(:r2)].class
+    assert_equal Parfait::Space , @interpreter.get_register(:r2).class
     assert_equal :r2,  @interpreter.instruction.array.symbol
   end
   def test_get
     assert_equal Register::GetSlot , ticks(4).class
     assert @interpreter.get_register( :r1 )
-    assert @interpreter.get_register( :r1 ).is_a? Integer
+    assert Integer , @interpreter.get_register( :r1 ).class 
   end
   def test_transfer
     transfer = ticks 8

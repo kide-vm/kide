@@ -31,7 +31,6 @@ class Integer < Object
     rest = self - div
     if_notzero( rest )
       rest = self.digit( rest )
-      str = str + rest
     else
       str = div.add_string(str)
     end
@@ -80,7 +79,6 @@ HERE
      "GetSlot","LoadConstant","OperatorInstruction","IsZero","Label",
      "LoadConstant","SetSlot","Label","Label","RegisterTransfer",
      "GetSlot","FunctionReturn","GetSlot","GetSlot","SetSlot",
-     "GetSlot","GetSlot","GetSlot","OperatorInstruction","SetSlot",
      "Label","GetSlot","SetSlot","Label","RegisterTransfer",
      "GetSlot","FunctionReturn","GetSlot","SetSlot","Label",
      "RegisterTransfer","GetSlot","FunctionReturn","GetSlot","Label",
