@@ -18,8 +18,8 @@ module Interpreter
       @state = :stopped
       @stdout = ""
       @registers = {}
-      @flags = {  :zero => false , :positive => false ,
-                  :negative=> false , :overflow => false }
+      @flags = {  :zero => false , :plus => false ,
+                  :minus => false , :overflow => false }
       @clock = 0
       (0...12).each do |r|
         set_register "r#{r}".to_sym , "r#{r}:unknown"
@@ -55,11 +55,14 @@ module Interpreter
 
     def set_register reg , val
       old = get_register( reg ) # also ensures format
-      unless val.is_a? String
+      if val.is_a? Fixnum
         @flags[:zero] = (val == 0)
-        @flags[:positive] = (val > 0)
-        @flags[:negative] = (val < 0)
+        @flags[:plus] = (val > 0)
+        @flags[:minus] = (val < 0)
         #puts "Set_flags #{val}  :#{@flags.inspect}"
+      else
+        @flags[:zero] =  @flags[:plus] = true
+        @flags[:minus] = false
       end
       return if old === val
       reg = reg.symbol if reg.is_a? Register::RegisterValue
@@ -78,9 +81,7 @@ module Interpreter
     end
 
     def object_for reg
-      id = get_register(reg)
-      object = Register.machine.objects[id]
-      object.nil? ? id : object
+      get_register(reg)
     end
 
     # Label is a noop.
@@ -110,7 +111,7 @@ module Interpreter
     def execute_LoadConstant
       to = @instruction.register
       value = @instruction.constant
-      value = value.object_id unless value.is_a?(Fixnum)
+      #value = value.object_id unless value.is_a?(Fixnum)
       set_register( to , value )
       true
     end
@@ -118,7 +119,7 @@ module Interpreter
     def execute_GetSlot
       object = object_for( @instruction.array )
       value = object.internal_object_get( @instruction.index )
-      value = value.object_id unless value.is_a? Fixnum
+      #value = value.object_id unless value.is_a? Fixnum
       set_register( @instruction.register , value )
       true
     end
