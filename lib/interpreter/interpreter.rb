@@ -171,6 +171,7 @@ module Interpreter
     end
 
     def execute_OperatorInstruction
+      #puts @instruction
       left = get_register(@instruction.left)
       rr = @instruction.right
       right = get_register(rr)

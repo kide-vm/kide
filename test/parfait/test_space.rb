@@ -61,7 +61,7 @@ class TestSpace < MiniTest::Test
     end
     assert_equal all.length , all.uniq.length
     # there is a 5.times in space, but one Message gets created before
-    assert_equal  5 + 1 , all.length
+    assert_equal  50 + 1 , all.length
   end
   def test_message_vars
     mess = @machine.space.first_message

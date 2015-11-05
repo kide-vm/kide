@@ -27,7 +27,9 @@ class Object
   end
 end
 HERE
-  @length = 82
+  @length = 6594
   check
+  assert_equal Parfait::Message , @interpreter.get_register(:r1).class
+#TODO, works in the gui??  assert_equal 55 , @interpreter.get_register(:r1).return_value
   end
 end
