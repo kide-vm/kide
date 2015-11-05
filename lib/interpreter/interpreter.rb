@@ -5,6 +5,8 @@ module Interpreter
   class Interpreter
     # fire events for changed pc and register contents
     include Eventable
+    include Logging
+    log_level :info
 
     attr_reader :instruction     # current instruction or pc
     attr_reader :clock    # current instruction or pc
@@ -59,7 +61,7 @@ module Interpreter
         @flags[:zero] = (val == 0)
         @flags[:plus] = (val > 0)
         @flags[:minus] = (val < 0)
-        #puts "Set_flags #{val}  :#{@flags.inspect}"
+        log.debug "Set_flags #{val}  :#{@flags.inspect}"
       else
         @flags[:zero] =  @flags[:plus] = true
         @flags[:minus] = false
@@ -74,7 +76,7 @@ module Interpreter
       return unless @instruction
       @clock += 1
       name = @instruction.class.name.split("::").last
-      #puts @instruction
+      log.debug @instruction
       fetch = send "execute_#{name}"
       return unless fetch
       set_instruction @instruction.next
@@ -171,7 +173,7 @@ module Interpreter
     end
 
     def execute_OperatorInstruction
-      #puts @instruction
+      log.debug @instruction
       left = get_register(@instruction.left)
       rr = @instruction.right
       right = get_register(rr)
@@ -190,7 +192,7 @@ module Interpreter
       else
         raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
       end
-      #puts "#{@instruction} == #{result}   (#{left}|#{right})"
+      log.debug "#{@instruction} == #{result}   (#{left}|#{right})"
       right = set_register(@instruction.left , result)
       true
     end
