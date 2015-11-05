@@ -30,7 +30,7 @@ module Soml
       ret = use_reg( :Integer )
       # the effect of the method is that the NewMessage Return slot will be filled, return it
       # but move it into a register too
-      add_code Register.get_slot(statement, :message , :return_value , ret )
+      add_code Register.get_slot(statement, :new_message , :return_value , ret )
       ret
     end
 
