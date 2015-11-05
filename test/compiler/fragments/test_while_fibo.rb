@@ -26,9 +26,7 @@ class Object
 end
 HERE
     @length = 278
-    check
-    assert_equal Parfait::Message , @interpreter.get_register(:r1).class
-    assert_equal 55 , @interpreter.get_register(:r1).return_value
+    check_return 55
   end
 
 end

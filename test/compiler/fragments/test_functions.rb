@@ -19,8 +19,9 @@ class Object
   end
 
   int t_seven()
-    int tim = times(5,3)
+    int tim = times(8,10)
     tim.putint()
+    return tim
   end
 
   int main()
@@ -28,8 +29,7 @@ class Object
   end
 end
 HERE
-  @length = 203
-  check
-
+  @length = 486
+  check_return 80
   end
 end

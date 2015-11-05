@@ -3,7 +3,7 @@ require_relative 'helper'
 class TestIf < MiniTest::Test
   include Fragments
 
-  def test_if_basic
+  def test_if_plus
     @string_input = <<HERE
 class Object
   int main()
@@ -16,11 +16,11 @@ class Object
   end
 end
 HERE
-  @length = 28
-  check
+    @length = 28
+    check_return 4
   end
 
-  def test_if_small
+  def test_if_zero
     @string_input = <<HERE
 class Object
   int main()
@@ -37,11 +37,11 @@ HERE
   end
 
 
-  def test_if_puts
+  def test_if_minus
     @string_input = <<HERE
 class Object
   int itest(int n)
-    if_zero( n - 12)
+    if_minus( n - 12)
       "then".putstring()
     else
       "else".putstring()

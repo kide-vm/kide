@@ -28,4 +28,9 @@ module Fragments
     assert_equal @stdout , @interpreter.stdout
   end
 
+  def check_return val
+    check
+    assert_equal Parfait::Message , @interpreter.get_register(:r1).class
+    assert_equal val , @interpreter.get_register(:r1).return_value
+  end
 end

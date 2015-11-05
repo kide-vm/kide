@@ -3,11 +3,6 @@ require_relative 'helper'
 class TestReturn < MiniTest::Test
   include Fragments
 
-  def check_return val
-    check
-    assert_equal Parfait::Message , @interpreter.get_register(:r1).class
-    assert_equal val , @interpreter.get_register(:r1).return_value
-  end
   def test_return1
     @string_input = <<HERE
 class Object
