@@ -11,7 +11,7 @@ module Register
   class Assembler
     include Padding
     include Logging
-    #log_level :debug
+    log_level :info
 
     def initialize machine
       @machine = machine
