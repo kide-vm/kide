@@ -30,7 +30,7 @@ module Parfait
     # is an interconnected graph, so not everthing is ready
     def late_init
       message = Message.new(nil)
-      5.times do
+      50.times do
         self.first_message = Message.new message
         #puts "INIT caller #{message.object_id} to #{self.first_message.object_id}"
         message.set_caller self.first_message
