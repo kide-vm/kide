@@ -21,8 +21,6 @@ module Soml
           raise "Not covered #{receiver}"
         end
       end
-      r = @clazz
-      class_name = @clazz.name
 
       @method = @clazz.get_instance_method( name )
       if(@method)
@@ -31,7 +29,6 @@ module Soml
         init_method
       else
         create_method_for(@clazz, name , args ).init_method
-        @clazz.add_instance_method @method
       end
       @method.source = statement
       #puts "compile method #{@method.name}"

@@ -38,10 +38,10 @@ module Soml
     def do_call clazz , statement
       name = statement.first.first
       #puts "clazz #{clazz.name}"
-      raise "No such class #{me.type}" unless clazz
+      raise "No such class" unless clazz
       method = clazz.get_instance_method(name)
       #puts Register.machine.space.get_class_by_name(:Integer).method_names.to_a
-      raise "Method not implemented #{me.type}.#{name}" unless method
+      raise "Method not implemented #{clazz.name}.#{name}" unless method
       Register.issue_call( self , method )
     end
     def set_message_details name_s , arguments
