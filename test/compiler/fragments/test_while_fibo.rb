@@ -3,7 +3,7 @@ require_relative 'helper'
 class TestWhileFragment < MiniTest::Test
   include Fragments
 
-  def test_while_fibo
+  def fibo num
     @string_input = <<HERE
 class Object
   int fibonaccit(int n)
@@ -21,12 +21,24 @@ class Object
   end
 
   int main()
-    return fibonaccit( 10 )
+    return fibonaccit( 100 )
   end
 end
 HERE
-    @length = 278
-    check_return 55
+    @string_input.sub!( "100" , num.to_s )
+  end
+
+  def test_while_fibo
+    fibo 100
+    @length = 2348
+    #TODO bug, int max is 92 ruby converts to biginteger. 
+    check_return  354224848179261915075
+  end
+
+  def test_while_fibo
+    fibo 92
+    @length = 2164
+    check_return  7540113804746346429
   end
 
 end
