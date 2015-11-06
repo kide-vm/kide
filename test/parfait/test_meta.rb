@@ -20,17 +20,9 @@ class TestMeta < MiniTest::Test
   end
 
   def test_new_methods
-    assert_equal @try.method_names.class, @try.instance_methods.class
-    assert_equal @try.method_names.get_length , @try.instance_methods.get_length
     assert_equal 0 , @try.method_names.get_length
   end
 
-  def test_init_methods
-    assert_equal 3 , @try.get_layout.variable_index(:instance_methods)
-    @try.instance_methods = Parfait::List.new
-    assert_equal @try.instance_methods , @try.internal_object_get(3)
-    assert @try.instance_methods
-  end
   def test_create_method
       @try.create_instance_method :bar, Register.new_list( [ Parfait::Variable.new(:Integer , :bar )])
       assert_equal ":bar" , @try.method_names.inspect
@@ -38,7 +30,7 @@ class TestMeta < MiniTest::Test
   def test_add_method
     foo = foo_method
     assert_equal foo , @try.add_instance_method(foo)
-    assert_equal 1 , @try.instance_methods.get_length
+    assert_equal 1 , @try.method_names.get_length
     assert_equal ":foo" , @try.method_names.inspect
   end
   def test_remove_method

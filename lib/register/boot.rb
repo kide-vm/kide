@@ -114,15 +114,14 @@ module Register
     def layout_names
        {  :Word => {:char_length => :Integer} ,
           :List => {:indexed_length => :Integer} ,
-          # Assumtion is that name is the last of message
           :Message => { :next_message => :Message, :receiver => :Object, :frame => :Frame ,
                         :return_address => :Integer, :return_value => :Integer,
                         :caller => :Message , :name => :Word , :indexed_length => :Integer },
-          :MetaClass => {:me => :Class},
+          :MetaClass => {:object => :Object},
           :Integer => {},
           :Object => {},
           :Kernel => {}, #fix, kernel is a class, but should be a module
-          :BinaryCode => {},
+          :BinaryCode => {:name => :Word},
           :Space => {:classes => :Dictionary , :first_message => :Message},
           :Frame => {:next_frame => :Frame, :indexed_length => :Integer},
           :Layout => {:object_class => :Class, :instance_methods => :List , :indexed_length => :Integer} ,
