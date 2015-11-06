@@ -29,7 +29,37 @@ class Object
   end
 end
 HERE
-  @length = 486
-  check_return 80
+    @length = 486
+    check_return 80
   end
+
+  def test_class_method
+    @string_input = <<HERE
+class Object
+
+  int self.some()
+    return 5
+  end
+
+  int main()
+    return Object.some()
+  end
+end
+HERE
+  @length = 36
+  check_return 5
+  end
+
+  def test_class_method_fails
+    @string_input = <<HERE
+class Object
+  int main()
+    return Object.som()
+  end
+end
+HERE
+    assert_raises {check}
+  end
+
+
 end
