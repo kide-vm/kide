@@ -33,10 +33,6 @@ module Parfait
       #space, and ruby allocate
     end
 
-    def meta
-      get_layout
-    end
-
     def add_instance_name name
       self.object_layout.push name
     end

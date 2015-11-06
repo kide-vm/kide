@@ -71,6 +71,11 @@ module Parfait
       return l
     end
 
+    # return the metaclass
+    def meta
+      MetaClass.new self
+    end
+
     def get_instance_variables
       get_layout().instance_names
     end
