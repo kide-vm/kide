@@ -12,6 +12,12 @@ module Soml
           add_code Register.get_slot(statement , :message , :receiver , ret )
           return ret
         end
+        if(name == :space)
+          space = Parfait::Space.object_space
+          reg = use_reg :Space , space
+          add_code Register::LoadConstant.new( statement, space , reg )
+          return reg
+        end
         # either an argument, so it's stored in message
         if( index = @method.has_arg(name))
           ret = use_reg @method.arguments[index].type

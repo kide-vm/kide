@@ -5,7 +5,7 @@ module Soml
       reset_regs # statements reset registers, ie have all at their disposal
       #puts statement.inspect
       name , value = *statement
-      name = name.to_a.first
+      name = no_space name.to_a.first
       v = process(value)
       raise "Not register #{v}" unless v.is_a?(Register::RegisterValue)
       code = nil

@@ -136,6 +136,13 @@ module Soml
     def reset_regs
       @regs.clear
     end
+
+    # ensure the name given is not space and raise exception otherwise
+    # return the name for chaining
+    def no_space name
+      raise "space is a reserved name" if name == :space
+      name
+    end
   end
 end
 
