@@ -16,9 +16,18 @@ class TestLayoutRT < MiniTest::Test
 
   def test_get_class
     @string_input =  "return get_class()"
-    check_return_class Parfait::Layout
+    check_return_class Parfait::Class
   end
 
+  def test_puts_class
+    @string_input = <<HERE
+Class c = get_class()
+Word w = c.get_name()
+w.putstring()
+HERE
+    @stdout = "Space"
+    check
+  end
 
 
 end
