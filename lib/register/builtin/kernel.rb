@@ -15,15 +15,20 @@ module Register
 
           #Set up the Space as self upon init
           space = Parfait::Space.object_space
-          space_reg = Register.tmp_reg(:Space)
+          space_reg = compiler.use_reg(:Space)
           compiler.add_code LoadConstant.new(source, space , space_reg)
           message_ind = Register.resolve_index( :space , :first_message )
           # Load the message to new message register (r1)
-          compiler.add_code Register.get_slot( source , space_reg , message_ind , :new_message)
+          compiler.add_code Register.get_slot( source , space_reg , message_ind , :message)
           # And store the space as the new self (so the call can move it back as self)
-          compiler.add_code Register.set_slot( source, space_reg , :new_message , :receiver)
-          # now we are set up to issue a call to the main
-          Register.issue_call( compiler , Register.machine.space.get_main)
+          compiler.add_code Register.set_slot( source, space_reg , :message , :receiver)
+          exit_label = Label.new("_exit_label" , "#{compiler.clazz.name}.#{compiler.method.name}" )
+          ret_tmp = compiler.use_reg(:Label)
+          compiler.add_code Register::LoadConstant.new(source, exit_label , ret_tmp)
+          compiler.add_code Register.set_slot(source, ret_tmp , :message , :return_address)
+          # do the register call
+          compiler.add_code FunctionCall.new( source ,  Register.machine.space.get_main )
+          compiler.add_code exit_label
           emit_syscall( compiler , :exit )
           return compiler.method
         end
