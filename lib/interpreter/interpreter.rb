@@ -120,7 +120,12 @@ module Interpreter
 
     def execute_GetSlot
       object = object_for( @instruction.array )
-      value = object.internal_object_get( @instruction.index )
+      if( @instruction.index.is_a?(Numeric) )
+        index = @instruction.index
+      else
+        index = get_register(@instruction.index)
+      end
+      value = object.internal_object_get( index )
       #value = value.object_id unless value.is_a? Fixnum
       set_register( @instruction.register , value )
       true
@@ -192,7 +197,7 @@ module Interpreter
       else
         raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
       end
-      ## result not over 2**62  => overflow 
+      ## result not over 2**62  => overflow
       log.debug "#{@instruction} == #{result}   (#{left}|#{right})"
       right = set_register(@instruction.left , result)
       true
