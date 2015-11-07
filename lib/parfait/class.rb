@@ -63,7 +63,10 @@ module Parfait
     end
 
     def super_class
-      Parfait::Space.object_space.get_class_by_name(self.super_class_name)
+      raise "No super_class for class #{self.name}" unless self.super_class_name
+      s = Parfait::Space.object_space.get_class_by_name(self.super_class_name)
+      raise "superclass not found for class #{self.name} (#{self.super_class_name})" unless s
+      s
     end
 
 

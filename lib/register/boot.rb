@@ -120,11 +120,12 @@ module Register
           :Space => {:classes => :Dictionary , :first_message => :Message},
           :Frame => {:next_frame => :Frame, :indexed_length => :Integer},
           :Layout => {:object_class => :Class, :instance_methods => :List , :indexed_length => :Integer} ,
-          :Class => {:object_layout => :Layout, :name => :Word, :instance_methods => :List,
+          :Class => {:instance_methods => :List, :object_layout => :Layout, :name => :Word,
                       :super_class_name => :Word},
           :Dictionary => {:keys => :List , :values => :List  } ,
           :Method => {:name => :Word, :source => :Object, :instructions => :Object, :binary => :Object,
                       :arguments => :List , :for_class => :Class, :locals => :List  } ,
+          :Value => {},
           :Variable => {:type => :Class, :name => :Word , :value => :Object}
         }
     end

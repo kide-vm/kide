@@ -71,7 +71,6 @@ module Parfait
       return method if method
       if( self.super_class_name )
         method = self.super_class.resolve_method(m_name)
-        raise "Method not found #{m_name}, for \n#{self}" unless method
       end
       method
     end
