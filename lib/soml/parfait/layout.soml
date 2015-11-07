@@ -1,7 +1,10 @@
 class Layout < Object
+  field Class object_class
+  field List instance_methods
+  field Integer indexed_length
 
   Class object_class()
-    return get_internal(2)
+    return self.object_class
   end
 
 end

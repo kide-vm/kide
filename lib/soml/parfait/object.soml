@@ -1,11 +1,12 @@
 class Object
+  field Layout layout
 
   Layout get_layout()
-    return get_internal(1)
+    return self.layout
   end
 
   Class get_class()
-    Layout l = get_layout()
+    Layout l = self.layout
     return l.object_class()
   end
 

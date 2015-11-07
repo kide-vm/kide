@@ -1,5 +1,11 @@
 class Class < Object
+  field List instance_methods
+  field Layout object_layout
+  field Word name
+  field Word super_class_name
+
+
   Word get_name()
-    return get_internal(4)
+    return self.name
   end
 end
