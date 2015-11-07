@@ -115,7 +115,6 @@ module Interpreter
     end
 
     def execute_GetSlot
-      puts @instruction
       object = get_register( @instruction.array )
       if( @instruction.index.is_a?(Numeric) )
         index = @instruction.index

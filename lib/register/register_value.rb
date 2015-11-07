@@ -44,6 +44,7 @@ module Register
     #helper method to calculate with register symbols
     def next_reg_use type , value = nil
       int = @symbol[1,3].to_i
+      raise "No more registers #{self}" if int > 12
       sym = "r#{int + 1}".to_sym
       RegisterValue.new( sym , type, value)
     end
@@ -111,10 +112,4 @@ module Register
     return register
   end
 
-  # when knowing the index of the argument, return the index into the message
-  # index passed is parfait, ie stats at 1
-  def self.arg_index i
-    last = resolve_index :message , :name
-    return last + i
-  end
 end
