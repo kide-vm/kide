@@ -47,7 +47,7 @@ module Soml
       name = expression.first
       clazz = Parfait::Space.object_space.get_class_by_name! name
       raise "No such class #{name}" unless clazz
-      reg = use_reg :Class , clazz
+      reg = use_reg :MetaClass , clazz
       add_code Register::LoadConstant.new( expression, clazz , reg )
       return reg
     end

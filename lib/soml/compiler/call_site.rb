@@ -15,7 +15,7 @@ module Soml
         me = use_reg @method.for_class.name
         add_code Register.get_slot(statement, :message , :receiver , me )
       end
-      if(me.type == :Class)
+      if(me.type == :MetaClass)
         clazz = me.value.meta
       else
         # now we have to resolve the method name (+ receiver) into a callable method
