@@ -58,10 +58,12 @@ module Parfait
     # instantiated. By that logic it should maybe be part of vm rather.
     # On the other hand vague plans to load the hierachy from sof exist, so for now...
     def set_super_class_name sup
+      raise "super_class_name must be a name, not #{sup}" unless sup.is_a?(Symbol)
       self.super_class_name = sup
     end
 
     def super_class
+      puts "Superclass #{super_class_name}"
       Parfait::Space.object_space.get_class_by_name(self.super_class_name)
     end
 

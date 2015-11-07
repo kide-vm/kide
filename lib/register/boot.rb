@@ -75,18 +75,13 @@ module Register
         cl.name = name
         classes[name] = cl
       end
-      object_class = classes[:Object]
       # superclasses other than default object
       supers = {  :Object => :Kernel , :Kernel => :Value, :Integer => :Value }
       layout_names.each do |classname , ivar|
         next if classname == :Value  # has no superclass
         clazz = classes[classname]
-        super_name = supers[classname]
-        if super_name
-          clazz.set_super_class_name classes[super_name]
-        else
-          clazz.set_super_class_name object_class
-        end
+        super_name = supers[classname] || :Object
+        clazz.set_super_class_name super_name
       end
     end
 
