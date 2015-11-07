@@ -56,16 +56,16 @@ module Parfait
     def set_layout(layout)
       # puts "Layout was set for #{self.class}"
       raise "Nil layout" unless layout
-      internal_object_set(LAYOUT_INDEX , layout)
+      set_internal(LAYOUT_INDEX , layout)
     end
 
     # so we can keep the raise in get_layout
     def has_layout?
-      ! internal_object_get(LAYOUT_INDEX).nil?
+      ! get_internal(LAYOUT_INDEX).nil?
     end
 
     def get_layout()
-      l = internal_object_get(LAYOUT_INDEX)
+      l = get_internal(LAYOUT_INDEX)
       #puts "get layout for #{self.class} returns #{l.class}"
       raise "No layout #{self.object_id}:#{self.class} " unless l
       return l
@@ -84,13 +84,13 @@ module Parfait
       index = instance_variable_defined(name)
       #puts "getting #{name} at #{index}"
       return nil if index == nil
-      return internal_object_get(index)
+      return get_internal(index)
     end
 
     def set_instance_variable name , value
       index = instance_variable_defined(name)
       return nil if index == nil
-      return internal_object_set(index , value)
+      return set_internal(index , value)
     end
 
     def instance_variable_defined name

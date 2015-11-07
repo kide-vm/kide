@@ -154,7 +154,7 @@ module Parfait
         end
 
         define_method :get_length do
-          r = internal_object_get( offset ) #one for layout
+          r = get_internal( offset ) #one for layout
           r.nil? ? 0 : r
         end
 
@@ -166,7 +166,7 @@ module Parfait
             grow_to(index)
           end
           # start one higher than offset, which is where the length is
-          internal_object_set( index + offset, value)
+          set_internal( index + offset, value)
         end
 
         # set the value at index.
@@ -176,7 +176,7 @@ module Parfait
           ret = nil
           if(index <= self.get_length)
             # start one higher than offset, which is where the length is
-            ret = internal_object_get(index + offset )
+            ret = get_internal(index + offset )
           end
           ret
         end
@@ -187,14 +187,14 @@ module Parfait
           return if old_length >= len
 #          raise "bounds error at #{len}" if( len + offset > 16 )
           # be nice to use the indexed_length , but that relies on booted space
-          internal_object_set( offset  , len) #one for layout
+          set_internal( offset  , len) #one for layout
         end
 
         define_method  :shrink_to do | len|
           raise "Only positive lenths, #{len}" if len < 0
           old_length = self.get_length
           return if old_length <= len
-          internal_object_set( offset  , len)
+          set_internal( offset  , len)
         end
 
       end

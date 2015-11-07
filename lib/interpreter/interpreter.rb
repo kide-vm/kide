@@ -125,7 +125,7 @@ module Interpreter
       else
         index = get_register(@instruction.index)
       end
-      value = object.internal_object_get( index )
+      value = object.get_internal( index )
       #value = value.object_id unless value.is_a? Fixnum
       set_register( @instruction.register , value )
       true
@@ -134,7 +134,7 @@ module Interpreter
     def execute_SetSlot
       value = object_for( @instruction.register )
       object = object_for( @instruction.array )
-      object.internal_object_set( @instruction.index , value )
+      object.set_internal( @instruction.index , value )
       trigger(:object_changed, @instruction.array , @instruction.index)
       true
     end
@@ -152,7 +152,7 @@ module Interpreter
 
     def execute_FunctionReturn
       object = object_for( @instruction.register )
-      link = object.internal_object_get( @instruction.index )
+      link = object.get_internal( @instruction.index )
       @instruction = link
       # we jump back to the call instruction. so it is as if the call never happened and we continue
       true

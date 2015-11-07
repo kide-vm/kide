@@ -29,11 +29,11 @@ class TestMessage < MiniTest::Test
   end
   def test_push3
     @mess.push :name
-    assert_equal 1 , @mess.internal_object_get(9)
+    assert_equal 1 , @mess.get_internal(9)
   end
   def test_get_internal
     @mess.push :name
-    assert_equal :name , @mess.internal_object_get(10)
+    assert_equal :name , @mess.get_internal(10)
   end
 
   def test_get

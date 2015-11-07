@@ -74,11 +74,11 @@ module Parfait
     end
 
     # 1 -based index
-    def internal_object_get(index)
+    def get_internal(index)
       @memory[index]
     end
     # 1 -based index
-    def internal_object_set(index , value)
+    def set_internal(index , value)
       raise "failed init for #{self.class}" unless @memory
       @memory[index] = value
       value

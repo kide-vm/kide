@@ -39,7 +39,7 @@ class AddTest < MiniTest::Test
     assert_equal Register::FunctionReturn ,  ret.class
 
     object = @interpreter.object_for( ret.register )
-    link = object.internal_object_get( ret.index )
+    link = object.get_internal( ret.index )
 
     assert_equal Register::Label , link.class
   end

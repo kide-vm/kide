@@ -82,7 +82,7 @@ module Parfait
     def set_char at , char
       raise "char not fixnum #{char.class}" unless char.kind_of? Fixnum
       index = range_correct_index(at)
-      internal_object_set( index + 2, char )
+      set_internal( index + 2, char )
     end
 
     # get the character at the given index
@@ -91,7 +91,7 @@ module Parfait
     #the return "character" is an integer
     def get_char at
       index = range_correct_index(at)
-      return internal_object_get(index + 2 )
+      return get_internal(index + 2 )
     end
 
     # private method to calculate negative indexes into positives
