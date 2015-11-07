@@ -143,6 +143,15 @@ module Soml
       raise "space is a reserved name" if name == :space
       name
     end
+
+    def self.load_parfait
+      ["object"].each do |o|
+        str = File.open(File.expand_path("parfait/#{o}.soml", File.dirname(__FILE__))).read
+        syntax  = Parser::Salama.new.parse_with_debug(str)
+        parts = Parser::Transform.new.apply(syntax)
+        self.new.process( parts )
+      end
+    end
   end
 end
 
