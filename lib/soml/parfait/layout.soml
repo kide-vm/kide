@@ -1,7 +1,7 @@
 class Layout < Object
 
   Class object_class()
-    get_internal(1)
+    get_internal(2)
   end
 
 end

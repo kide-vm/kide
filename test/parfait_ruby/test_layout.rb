@@ -71,6 +71,16 @@ class TestLayout < MiniTest::Test
     assert_equal layout.first , :layout
   end
 
+
+  def test_class_space
+    space = Register.machine.space
+    assert_equal Parfait::Space , space.class
+    layout = space.get_layout
+    assert_equal Parfait::Layout , layout.class
+    assert_equal 3 , layout.instance_names.get_length
+    assert_equal layout.object_class.class , Parfait::Class
+    assert_equal layout.object_class.name , :Space
+  end
   def test_attribute_set
     @mess.receiver = 55
     assert_equal 55 , @mess.receiver

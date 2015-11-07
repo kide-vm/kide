@@ -1,7 +1,7 @@
 class Object
 
   Layout get_layout()
-    return get_internal(0)
+    return get_internal(1)
   end
 
   Class get_class()

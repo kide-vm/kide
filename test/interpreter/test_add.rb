@@ -38,7 +38,7 @@ class AddTest < MiniTest::Test
     ret = ticks(18)
     assert_equal Register::FunctionReturn ,  ret.class
 
-    object = @interpreter.object_for( ret.register )
+    object = @interpreter.get_register( ret.register )
     link = object.get_internal( ret.index )
 
     assert_equal Register::Label , link.class
