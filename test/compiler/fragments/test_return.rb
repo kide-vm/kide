@@ -11,7 +11,7 @@ class Object
   end
 end
 HERE
-    @length = 18
+    @length = 15
     check_return 5
   end
 
@@ -27,7 +27,7 @@ class Object
   end
 end
 HERE
-    @length = 38
+    @length = 35
     check_return 5
   end
 
@@ -44,7 +44,7 @@ class Object
   end
 end
 HERE
-    @length = 42
+    @length = 39
     check_return 5
   end
 

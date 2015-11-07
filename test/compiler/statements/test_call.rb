@@ -18,8 +18,8 @@ class Object
 end
 HERE
     @expect =  [Label, GetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant ,
-               SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, GetSlot ,
-               Label, RegisterTransfer, GetSlot, FunctionReturn]
+               SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,
+               GetSlot, GetSlot, Label, FunctionReturn]
     check
   end
 
@@ -38,8 +38,8 @@ class Object
 end
 HERE
     @expect =  [Label, GetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant ,
-               SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, GetSlot ,
-               Label, RegisterTransfer, GetSlot, FunctionReturn]
+               SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,
+               GetSlot, GetSlot, Label, FunctionReturn]
     check
   end
 
@@ -59,7 +59,7 @@ end
 HERE
     @expect = [Label, LoadConstant, GetSlot, SetSlot, GetSlot, GetSlot, GetSlot ,
                SetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot ,
-               RegisterTransfer, FunctionCall, Label, GetSlot, Label, RegisterTransfer, GetSlot ,
+               RegisterTransfer, FunctionCall, Label, RegisterTransfer, GetSlot, GetSlot, Label ,
                FunctionReturn]
   check
   end
@@ -80,7 +80,7 @@ end
 HERE
     @expect = [Label, GetSlot, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot ,
                LoadConstant, SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label ,
-               GetSlot, Label, RegisterTransfer, GetSlot, FunctionReturn]
+               RegisterTransfer, GetSlot, GetSlot, Label, FunctionReturn]
   check
   end
 
@@ -97,7 +97,7 @@ end
 HERE
     @expect = [Label, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot, LoadConstant ,
                SetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall ,
-               Label, GetSlot, Label, RegisterTransfer, GetSlot, FunctionReturn]
+               Label, RegisterTransfer, GetSlot, GetSlot, Label, FunctionReturn]
     was = check
     set = was.next(7)
     assert_equal SetSlot , set.class

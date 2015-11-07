@@ -28,16 +28,16 @@ HERE
     @string_input.sub!( "100" , num.to_s )
   end
 
-  def test_while_fibo
+  def test_while_fibo100
     fibo 100
-    @length = 2348
-    #TODO bug, int max is 92 ruby converts to biginteger. 
+    @length = 2345
+    #TODO bug, int max is 92 ruby converts to biginteger.
     check_return  354224848179261915075
   end
 
-  def test_while_fibo
+  def test_while_fibo92
     fibo 92
-    @length = 2164
+    @length = 2161
     check_return  7540113804746346429
   end
 

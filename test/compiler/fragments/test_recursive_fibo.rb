@@ -28,7 +28,7 @@ class Object
   end
 end
 HERE
-  @length = 6598
+  @length = 6595
   check_return 55
   end
 end

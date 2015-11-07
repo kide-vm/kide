@@ -29,7 +29,7 @@ class Object
   end
 end
 HERE
-    @length = 486
+    @length = 483
     check_return 80
   end
 
@@ -46,7 +46,7 @@ class Object
   end
 end
 HERE
-  @length = 36
+  @length = 33
   check_return 5
   end
 

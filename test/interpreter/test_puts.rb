@@ -38,27 +38,22 @@ class TestPuts < MiniTest::Test
   def test_get
     assert_equal Register::GetSlot , ticks(4).class
     assert @interpreter.get_register( :r1 )
-    assert Integer , @interpreter.get_register( :r1 ).class 
-  end
-  def test_transfer
-    transfer = ticks 8
-    assert_equal Register::RegisterTransfer ,  transfer.class
-    assert_equal @interpreter.get_register(transfer.to) , @interpreter.get_register(transfer.from)
+    assert Integer , @interpreter.get_register( :r1 ).class
   end
   def test_call
-    assert_equal Register::FunctionCall ,  ticks(9).class
+    assert_equal Register::FunctionCall ,  ticks(8).class
   end
 
   def test_chain
     #show_ticks # get output of what is
     ["Branch","Label","LoadConstant","GetSlot","SetSlot",
-     "LoadConstant","SetSlot","RegisterTransfer","FunctionCall","Label",
-     "GetSlot","LoadConstant","SetSlot","LoadConstant","SetSlot",
-     "LoadConstant","SetSlot","LoadConstant","SetSlot","RegisterTransfer",
-     "FunctionCall","Label","GetSlot","RegisterTransfer","Syscall",
-     "RegisterTransfer","RegisterTransfer","SetSlot","Label","RegisterTransfer",
-     "GetSlot","FunctionReturn","GetSlot","Label","RegisterTransfer",
-     "GetSlot","FunctionReturn","RegisterTransfer","Syscall","NilClass"].each_with_index do |name , index|
+     "LoadConstant","SetSlot","FunctionCall","Label","GetSlot",
+     "LoadConstant","SetSlot","LoadConstant","SetSlot","LoadConstant",
+     "SetSlot","LoadConstant","SetSlot","RegisterTransfer","FunctionCall",
+     "Label","GetSlot","RegisterTransfer","Syscall","RegisterTransfer",
+     "RegisterTransfer","SetSlot","Label","FunctionReturn","RegisterTransfer",
+     "GetSlot","GetSlot","Label","FunctionReturn","RegisterTransfer",
+     "Syscall","NilClass"].each_with_index do |name , index|
       got = ticks(1)
       #puts "TICK #{index}"
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
@@ -66,20 +61,20 @@ class TestPuts < MiniTest::Test
   end
 
   def test_putstring
-    done = ticks(25)
+    done = ticks(24)
     assert_equal Register::Syscall ,  done.class
     assert_equal "Hello again" , @interpreter.stdout
   end
 
   def test_return
-    done = ticks(32)
+    done = ticks(29)
     assert_equal Register::FunctionReturn ,  done.class
     assert Register::Label , @interpreter.instruction.class
     assert @interpreter.instruction.is_a?(Register::Instruction) , "not instruction #{@interpreter.instruction}"
   end
 
   def test_exit
-    done = ticks(40)
+    done = ticks(42)
     assert_equal NilClass ,  done.class
     assert_equal "Hello again" , @interpreter.stdout
   end

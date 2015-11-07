@@ -13,7 +13,7 @@ class Object
   end
 end
 HERE
-    @expect =  [Label, LoadConstant ,SetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
+    @expect =  [Label, LoadConstant ,SetSlot,Label,FunctionReturn]
     was = check
     set = was.next(2)
     assert_equal SetSlot , set.class
@@ -30,7 +30,7 @@ class Object
   end
 end
 HERE
-  @expect =  [Label, GetSlot,GetSlot ,SetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
+  @expect =  [Label, GetSlot,GetSlot ,SetSlot,Label,FunctionReturn]
   check
   end
 
@@ -44,7 +44,7 @@ class Object
 end
 HERE
     @expect =  [Label, LoadConstant,GetSlot,SetSlot,GetSlot,GetSlot ,SetSlot,
-                Label,RegisterTransfer,GetSlot,FunctionReturn]
+                Label,FunctionReturn]
     check
   end
 
@@ -57,7 +57,7 @@ class Object
   end
 end
 HERE
-    @expect =  [Label, GetSlot,GetSlot ,SetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
+    @expect =  [Label, GetSlot,GetSlot ,SetSlot,Label,FunctionReturn]
     check
   end
 
@@ -71,7 +71,7 @@ class Object
   end
 end
 HERE
-  @expect =  [Label, GetSlot,GetSlot ,SetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
+  @expect =  [Label, GetSlot,GetSlot ,SetSlot,Label,FunctionReturn]
   check
   end
 
@@ -83,9 +83,9 @@ class Object
   end
 end
 HERE
-    @expect = [Label, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot, LoadConstant ,
-               SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, GetSlot ,
-               SetSlot, Label, RegisterTransfer, GetSlot, FunctionReturn]
+    @expect =  [Label, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot, LoadConstant ,
+               SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,
+               GetSlot, GetSlot, SetSlot, Label, FunctionReturn]
     check
   end
 end

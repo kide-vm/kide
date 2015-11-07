@@ -16,7 +16,7 @@ class Object
   end
 end
 HERE
-    @length = 37
+    @length = 34
     @stdout = ""
     check
   end

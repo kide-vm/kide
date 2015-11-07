@@ -30,18 +30,18 @@ HERE
       @interpreter.start Register.machine.init
       #show_ticks # get output of what is
       ["Branch","Label","LoadConstant","GetSlot","SetSlot",
-     "LoadConstant","SetSlot","RegisterTransfer","FunctionCall","Label",
-     "GetSlot","GetSlot","SetSlot","LoadConstant","SetSlot",
+     "LoadConstant","SetSlot","FunctionCall","Label","GetSlot",
+     "GetSlot","SetSlot","LoadConstant","SetSlot","LoadConstant",
+     "SetSlot","LoadConstant","SetSlot","LoadConstant","SetSlot",
+     "RegisterTransfer","FunctionCall","Label","GetSlot","LoadConstant",
+     "OperatorInstruction","IsZero","GetSlot","LoadConstant","SetSlot",
      "LoadConstant","SetSlot","LoadConstant","SetSlot","LoadConstant",
      "SetSlot","RegisterTransfer","FunctionCall","Label","GetSlot",
-     "LoadConstant","OperatorInstruction","IsZero","GetSlot","LoadConstant",
-     "SetSlot","LoadConstant","SetSlot","LoadConstant","SetSlot",
-     "LoadConstant","SetSlot","RegisterTransfer","FunctionCall","Label",
-     "GetSlot","RegisterTransfer","Syscall","RegisterTransfer","RegisterTransfer",
-     "SetSlot","Label","RegisterTransfer","GetSlot","FunctionReturn",
-     "GetSlot","Branch","Label","Label","RegisterTransfer",
-     "GetSlot","FunctionReturn","GetSlot","Label","RegisterTransfer",
-     "GetSlot","FunctionReturn","RegisterTransfer","Syscall","NilClass"].each_with_index do |name , index|
+     "RegisterTransfer","Syscall","RegisterTransfer","RegisterTransfer","SetSlot",
+     "Label","FunctionReturn","RegisterTransfer","GetSlot","GetSlot",
+     "Branch","Label","Label","FunctionReturn","RegisterTransfer",
+     "GetSlot","GetSlot","Label","FunctionReturn","RegisterTransfer",
+     "Syscall","NilClass"].each_with_index do |name , index|
       got = ticks(1)
       assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
     end

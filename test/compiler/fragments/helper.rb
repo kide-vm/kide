@@ -30,7 +30,7 @@ module Fragments
 
   def check_return val
     check
-    assert_equal Parfait::Message , @interpreter.get_register(:r1).class
-    assert_equal val , @interpreter.get_register(:r1).return_value
+    assert_equal Parfait::Message , @interpreter.get_register(:r0).class
+    assert_equal val , @interpreter.get_register(:r0).return_value
   end
 end

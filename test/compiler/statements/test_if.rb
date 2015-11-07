@@ -18,7 +18,7 @@ end
 HERE
   @expect =  [Label, LoadConstant,LoadConstant, OperatorInstruction,IsPlus ,
                 LoadConstant,SetSlot,Branch , Label , LoadConstant ,SetSlot,
-                Label,Label,RegisterTransfer,GetSlot,FunctionReturn]
+                Label,Label,FunctionReturn]
   check
   end
 
@@ -33,9 +33,8 @@ class Object
   end
 end
 HERE
-  @expect =  [Label,LoadConstant,LoadConstant, OperatorInstruction,IsMinus ,
-                Branch ,Label , LoadConstant ,SetSlot,
-                Label,Label , RegisterTransfer,GetSlot,FunctionReturn]
+  @expect =  [Label, LoadConstant, LoadConstant, OperatorInstruction, IsMinus, Branch, Label ,
+               LoadConstant, SetSlot, Label, Label, FunctionReturn]
   check
   end
 
@@ -52,7 +51,7 @@ end
 HERE
   @expect =  [Label, LoadConstant,LoadConstant,OperatorInstruction,IsZero ,
                 Branch , Label , LoadConstant ,SetSlot,
-                Label,Label, RegisterTransfer,GetSlot,FunctionReturn]
+                Label,Label, FunctionReturn]
   check
   end
 end
