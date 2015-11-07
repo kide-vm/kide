@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-class TestObject < MiniTest::Test
+class TestLayoutRT < MiniTest::Test
   include RuntimeTests
 
   def test_main
@@ -10,6 +10,11 @@ class TestObject < MiniTest::Test
 
   def test_get_layout
     @string_input =  "return get_layout()"
+    check
+  end
+
+  def test_get_class
+    @string_input =  "return get_class()"
     check
   end
 

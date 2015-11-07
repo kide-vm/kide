@@ -1,7 +1,12 @@
 class Object
 
   Layout get_layout()
-    return get_internal(1)
+    return get_internal(0)
+  end
+
+  Class get_class()
+    Layout l = get_layout()
+    return l.object_class()
   end
 
 end
