@@ -5,17 +5,18 @@ class TestLayoutRT < MiniTest::Test
 
   def test_main
     @string_input =  "return 1"
-    check
+    check_return 1
   end
 
   def test_get_layout
     @string_input =  "return get_layout()"
-    check
+    check_return_class Parfait::Layout
+
   end
 
   def test_get_class
     @string_input =  "return get_class()"
-    check
+    check_return_class Parfait::Layout
   end
 
 
