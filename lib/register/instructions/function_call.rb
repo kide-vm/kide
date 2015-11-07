@@ -26,5 +26,9 @@ module Register
     # do the register call
     compiler.add_code FunctionCall.new( source , callee )
     compiler.add_code return_label
+    # move the current message to new_message
+    compiler.add_code  Register::RegisterTransfer.new(source, Register.message_reg , Register.new_message_reg )
+    # and restore the message from saved value in new_message
+    compiler.add_code Register.get_slot(source , :new_message , :caller , :message )
   end
 end

@@ -86,12 +86,8 @@ module Soml
       @method.instructions = Register::Label.new(source, "#{method.for_class.name}.#{method.name}")
       @current = enter = method.instructions
       add_code Register::Label.new( source, "return")
-      # move the current message to new_message
-      add_code  Register::RegisterTransfer.new(source, Register.message_reg , Register.new_message_reg )
-      # and restore the message from saved value in new_message
-      add_code Register.get_slot("_init_method_",:new_message , :caller , :message )
       #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
-      add_code Register::FunctionReturn.new( source , Register.new_message_reg , Register.resolve_index(:message , :return_address) )
+      add_code Register::FunctionReturn.new( source , Register.message_reg , Register.resolve_index(:message , :return_address) )
       @current = enter
       self
     end
