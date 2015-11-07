@@ -1,0 +1,5 @@
+class Class < Object
+  Word get_name()
+    return get_internal(4)
+  end
+end
