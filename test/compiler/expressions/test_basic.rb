@@ -1,8 +1,8 @@
-require_relative "compiler_helper"
+require_relative "helper"
 
 
 class TestBasic < MiniTest::Test
-  include CompilerHelper
+  include ExpressionHelper
 
   def setup
     @root = :basic_type
@@ -11,7 +11,7 @@ class TestBasic < MiniTest::Test
 
   def test_number
     @string_input    = '42 '
-    assert_equal 42 , check.value 
+    assert_equal 42 , check.value
   end
 
   def test_true
@@ -35,6 +35,11 @@ class TestBasic < MiniTest::Test
   end
 
   def test_self
+    @string_input    = 'self '
+    check
+  end
+
+  def test_space
     @string_input    = 'self '
     check
   end

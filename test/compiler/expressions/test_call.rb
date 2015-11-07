@@ -1,8 +1,8 @@
-require_relative "compiler_helper"
+require_relative "helper"
 
 module Register
   class TestCall < MiniTest::Test
-    include CompilerHelper
+    include ExpressionHelper
 
     def setup
       Register.machine.boot

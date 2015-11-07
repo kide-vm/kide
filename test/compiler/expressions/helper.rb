@@ -9,7 +9,7 @@ Soml::Compiler.class_eval do
   end
 end
 
-module CompilerHelper
+module ExpressionHelper
 
   def set_main compiler
     compiler.set_main Register.machine.space.get_main

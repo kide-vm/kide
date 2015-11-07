@@ -1,8 +1,8 @@
-require_relative "compiler_helper"
+require_relative "helper"
 
 module Register
   class TestFields < MiniTest::Test
-    include CompilerHelper
+    include ExpressionHelper
 
     def setup
       Register.machine.boot
@@ -12,6 +12,14 @@ module Register
       @root = :field_access
       @string_input = <<HERE
 self.a
+HERE
+      assert_raises(RuntimeError) { check }
+    end
+
+    def test_field_not_space
+      @root = :field_access
+      @string_input = <<HERE
+self.space
 HERE
       assert_raises(RuntimeError) { check }
     end
@@ -30,6 +38,13 @@ HERE
       Register.machine.space.get_main.ensure_local(:bar , :Integer)
       @root = :name
       @string_input    = 'bar '
+      @output = Register::RegisterValue
+      check
+    end
+
+    def test_space
+      @root = :name
+      @string_input    = 'space '
       @output = Register::RegisterValue
       check
     end

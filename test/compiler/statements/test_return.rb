@@ -45,7 +45,7 @@ end
 HERE
     @expect =  [Label, LoadConstant,GetSlot,SetSlot,GetSlot,GetSlot ,SetSlot,
                 Label,RegisterTransfer,GetSlot,FunctionReturn]
-  check
+    check
   end
 
   def test_return_field
@@ -53,6 +53,20 @@ HERE
 class Object
   field int runner
   int main()
+    return self.runner
+  end
+end
+HERE
+    @expect =  [Label, GetSlot,GetSlot ,SetSlot,Label,RegisterTransfer,GetSlot,FunctionReturn]
+    check
+  end
+
+  def pest_return_space_length # need to add runtime first
+    @string_input = <<HERE
+class Object
+
+  int main()
+    Layout l = space.get_layout()
     return self.runner
   end
 end
