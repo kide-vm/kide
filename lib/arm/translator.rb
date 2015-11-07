@@ -25,7 +25,11 @@ module Arm
 
     def translate_GetSlot code
       # times 4 because arm works in bytes, but vm in words
-      ArmMachine.ldr( code.register ,  code.array , 4 * code.index )
+      if(code.index.is_a? Numeric)
+        ArmMachine.ldr( code.register ,  code.array , 4 * code.index )
+      else
+        ArmMachine.ldr( code.register ,  code.array , code.index )
+      end
     end
 
     def translate_RegisterTransfer code

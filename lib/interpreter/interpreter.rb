@@ -82,10 +82,6 @@ module Interpreter
       set_instruction @instruction.next
     end
 
-    def object_for reg
-      get_register(reg)
-    end
-
     # Label is a noop.
     def execute_Label
       true
@@ -119,7 +115,8 @@ module Interpreter
     end
 
     def execute_GetSlot
-      object = object_for( @instruction.array )
+      puts @instruction
+      object = get_register( @instruction.array )
       if( @instruction.index.is_a?(Numeric) )
         index = @instruction.index
       else
@@ -132,8 +129,8 @@ module Interpreter
     end
 
     def execute_SetSlot
-      value = object_for( @instruction.register )
-      object = object_for( @instruction.array )
+      value = get_register( @instruction.register )
+      object = get_register( @instruction.array )
       object.set_internal( @instruction.index , value )
       trigger(:object_changed, @instruction.array , @instruction.index)
       true
@@ -151,7 +148,7 @@ module Interpreter
     end
 
     def execute_FunctionReturn
-      object = object_for( @instruction.register )
+      object = get_register( @instruction.register )
       link = object.get_internal( @instruction.index )
       @instruction = link
       # we jump back to the call instruction. so it is as if the call never happened and we continue
@@ -163,7 +160,7 @@ module Interpreter
       ret_value = 0
       case name
       when :putstring
-        str = object_for( :r1 ) # should test length, ie r2
+        str = get_register( :r1 ) # should test length, ie r2
         raise "NO string for putstring #{str.class}:#{str.object_id}" unless str.is_a? Symbol
         @stdout += str.to_s
         ret_value = str.to_s.length
