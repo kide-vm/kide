@@ -141,7 +141,7 @@ module Soml
     end
 
     def self.load_parfait
-      ["word","class","layout","message" , "object"].each do |o|
+      ["word","class","layout","message" ,"integer", "object"].each do |o|
         str = File.open(File.expand_path("parfait/#{o}.soml", File.dirname(__FILE__))).read
         syntax  = Parser::Salama.new.parse_with_debug(str)
         parts = Parser::Transform.new.apply(syntax)

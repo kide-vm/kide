@@ -1,35 +1,26 @@
 class Integer < Value
-  Word digit( int rest )
-    if_zero( rest == 5 )
-      return "5"
-    end
-    if_zero( rest == 1 )
-      return "1"
-    end
-    if_zero( rest == 2 )
-      return "2"
-    end
-    if_zero( rest == 3 )
-      return "3"
-    end
-    if_zero( rest == 4 )
-      return "4"
+  int digit()
+    if_plus( self - 10)
+      return 32
+    else
+      Word numbers = "0123456789"
+      return numbers.at(self)
     end
   end
-  Word add_string(Word str)
-    int div
-    div = self / 10
-    int rest
-    rest = self - div
-    if_notzero( rest )
-      rest = self.digit( rest )
-    else
-      str = div.add_string(str)
+
+  Word as_string(Word str)
+    if_plus( self - 10 )
+      int num = digit()
+      str = str.add_digit( num )
+      return str
     end
+    int rest = self / 10
+    str = rest.as_string( str )
     return str
   end
-  Word to_string()
+
+  Word to_s()
     Word start = " "
-    return add_string( start )
+    return as_string( start )
   end
 end

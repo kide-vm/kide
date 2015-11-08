@@ -9,7 +9,7 @@ class TestObject < MiniTest::Test
   def test_object_create
     # another test sometime adds a field variable. Maybe should reboot ?
     res = 1
-    [:boo1 , :boo2 , :runner].each { |v| res += 1 if @object.get_layout.variable_index(v) }
+    [:boo1 , :boo2 , :bro , :runner].each { |v| res += 1 if @object.get_layout.variable_index(v) }
     assert_equal res ,  @object.get_layout.instance_length , @object.get_layout.inspect
   end
 

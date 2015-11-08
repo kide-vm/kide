@@ -5,7 +5,8 @@ class TestPutiRT < MiniTest::Test
 
   def test_puti
     @string_input = <<HERE
-5.puts()
+Word five = 5.to_s()
+five.putstring()
 HERE
     @stdout = "5"
     check
