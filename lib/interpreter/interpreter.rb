@@ -130,7 +130,11 @@ module Interpreter
     def execute_SetSlot
       value = get_register( @instruction.register )
       object = get_register( @instruction.array )
-      object.set_internal( @instruction.index , value )
+      if( @instruction.index.is_a?(Numeric) )
+        object.set_internal( @instruction.index , value )
+      else
+        object.set_internal( get_register(@instruction.index) , value )
+      end
       trigger(:object_changed, @instruction.array , @instruction.index)
       true
     end

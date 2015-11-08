@@ -40,7 +40,11 @@ module Arm
 
     def translate_SetSlot code
       # times 4 because arm works in bytes, but vm in words
-      ArmMachine.str( code.register ,  code.array , 4 * code.index )
+      if(code.index.is_a? Numeric)
+        ArmMachine.str( code.register ,  code.array , 4 * code.index )
+      else
+        ArmMachine.str( code.register ,  code.array , code.index )
+      end
     end
 
     def translate_FunctionCall code

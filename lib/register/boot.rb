@@ -140,7 +140,7 @@ module Register
       # have to define some dummies, just for the other to compile
       # TODO go through the virtual parfait layer and adjust function names to what they really are
       obj = @space.get_class_by_name(:Object)
-      [:main , :get_internal ].each do |f|
+      [:main , :get_internal , :set_internal ].each do |f|
         obj.add_instance_method Builtin::Object.send(f , nil)
       end
       obj = @space.get_class_by_name(:Kernel)

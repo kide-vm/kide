@@ -15,7 +15,7 @@ module Register
 
         # self[index] basically. Index is the first arg
         # return is stored in return_value
-        # (this method returns a new method off course, like all builting)
+        # (this method returns a new method off course, like all builtin)
         def get_internal context
           compiler = Soml::Compiler.new.create_method(:Object , :get_internal , []).init_method
           source = "get_internal"
@@ -28,6 +28,24 @@ module Register
           compiler.add_code  GetSlot.new( source , me , index , me)
           # and put it back into the return value
           compiler.add_code Register.set_slot( source , me , :message , :return_value)
+          return compiler.method
+        end
+
+        # self[index] = val basically. Index is the first arg , vlaue the second
+        # no return
+        def set_internal context
+          compiler = Soml::Compiler.new.create_method(:Object , :set_internal , []).init_method
+          source = "set_internal"
+          #Load self by "calling" on_name
+          me = compiler.process( s(:name , :self) )
+          # Load the index
+          index = compiler.use_reg :Integer
+          compiler.add_code Register.get_slot(source , :message , Parfait::Message.get_indexed(1), index )
+          # Load the value
+          value = compiler.use_reg :Integer
+          compiler.add_code Register.get_slot(source , :message , Parfait::Message.get_indexed(2), value )
+          # do the set
+          compiler.add_code SetSlot.new( source , value , me , index)
           return compiler.method
         end
 
