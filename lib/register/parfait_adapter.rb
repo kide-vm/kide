@@ -15,6 +15,15 @@ module Register
     end
     list
   end
+  # Functions to generate parfait objects
+  def self.new_word( string )
+    string = string.to_s if string.is_a? Symbol
+    word = Parfait::Word.new( string.length )
+    string.codepoints.each_with_index do |code , index |
+      word.set_char(index + 1 , code)
+    end
+    word
+  end
 end
 class Symbol
   include Positioned
@@ -61,8 +70,8 @@ end
 
 module Parfait
   # Objects memory functions. Object memory is 1 based
-  # but we implement it with ruby array (0 based) and use 0 as type-word
-  # These are the same functions that Builtin implements at run-time
+  # but we implement it with ruby array (0 based) and don't use 0
+  # These are the same functions that Builtin implements for run-time
   class Object
     include Padding
     include Positioned
@@ -80,6 +89,7 @@ module Parfait
     # 1 -based index
     def set_internal(index , value)
       raise "failed init for #{self.class}" unless @memory
+      raise "Word[#{index}] = " if((self.class == Parfait::Word) and value.nil? )
       @memory[index] = value
       value
     end
@@ -122,7 +132,7 @@ module Parfait
     def to_string
       string = ""
       index = 1
-      while( index <= self.length)
+      while( index <= self.char_length)
         string[index - 1] = get_char(index).chr
         index = index + 1
       end

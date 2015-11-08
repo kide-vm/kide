@@ -36,7 +36,7 @@ module Soml
     end
 
     def on_string expression
-      value = expression.first.to_sym
+      value = Register.new_word expression.first.to_sym
       reg = use_reg :Word
       Register.machine.constants << value
       add_code Register::LoadConstant.new( expression, value , reg )
