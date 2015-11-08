@@ -25,6 +25,7 @@ module Parfait
       raise "Must init with int, not #{len.class}" unless len.kind_of? Fixnum
       raise "Must init with positive, not #{len}" if len < 0
       set_length( len , 32 ) unless len == 0 #32 beeing ascii space
+      #puts "layout #{self.get_layout} #{self.object_id.to_s(16)}"
     end
 
     # return a copy of self
@@ -99,7 +100,7 @@ module Parfait
       index = at
       index = self.length + at if at < 0
       raise "index must be positive , not #{at}" if (index <= 0)
-      raise "index too large #{at} > #{self.length}" if (index > self.length)
+      raise "index too large #{at} > #{self.length}" if (index > self.length )
       return index
     end
 

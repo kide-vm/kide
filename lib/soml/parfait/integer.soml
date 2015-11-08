@@ -9,13 +9,13 @@ class Integer < Value
   end
 
   Word as_string(Word str)
-    if_plus( self - 10 )
+    if_minus( self - 10 )
       int num = digit()
       str = str.add_digit( num )
-      return str
+    else
+      int rest = self / 10
+      str = rest.as_string( str )
     end
-    int rest = self / 10
-    str = rest.as_string( str )
     return str
   end
 

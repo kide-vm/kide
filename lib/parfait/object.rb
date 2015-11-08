@@ -67,7 +67,7 @@ module Parfait
     def get_layout()
       l = get_internal(LAYOUT_INDEX)
       #puts "get layout for #{self.class} returns #{l.class}"
-      raise "No layout #{self.object_id}:#{self.class} " unless l
+      raise "No layout #{self.object_id.to_s(16)}:#{self.class} " unless l
       return l
     end
 
