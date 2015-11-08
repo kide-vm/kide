@@ -76,7 +76,7 @@ module Interpreter
       return unless @instruction
       @clock += 1
       name = @instruction.class.name.split("::").last
-      log.debug @instruction
+      log.debug "#{@clock}: #{@instruction}"
       fetch = send "execute_#{name}"
       return unless fetch
       set_instruction @instruction.next
@@ -164,9 +164,16 @@ module Interpreter
       case name
       when :putstring
         str = get_register( :r1 ) # should test length, ie r2
-        raise "NO string for putstring #{str.class}:#{str.object_id}" unless str.is_a? Symbol
-        @stdout += str.to_s
-        ret_value = str.to_s.length
+        case str
+        when Symbol
+          @stdout += str.to_s
+          ret_value = str.to_s.length
+        when Parfait::Word
+          @stdout += str.to_string
+          ret_value = str.char_length
+        else
+          raise "NO string for putstring #{str.class}:#{str.object_id}" unless str.is_a?(Symbol)
+        end
       when :exit
         set_instruction(nil)
         return false
