@@ -18,7 +18,7 @@ module Soml
         add_code move
       when :message
         #message Slot
-        raise "message not yet"
+        value = Register.message_reg
       else
         if( index = @method.has_arg(receiver)) #argument
           value = use_reg @method.arguments[index].type
@@ -31,7 +31,7 @@ module Soml
             add_code Register.get_slot(statement , :message , :frame , frame )
             code = Register.get_slot(statement ,frame , Parfait::Frame.get_indexed(index) , value )
           else
-            raise "Variable not defined #{name}"
+            raise "Variable not defined #{receiver}"
           end
         end
       end

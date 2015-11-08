@@ -7,13 +7,10 @@ module Register
 
     def test_field_frame
       @string_input = <<HERE
-class Fielded
-  field int one
-end
 class Object
   int main()
-    Fielded f
-    return f.one
+    Message m
+    return m.name
   end
 end
 HERE
@@ -23,16 +20,13 @@ HERE
 
     def test_field_arg
       @string_input = <<HERE
-class Fielded
-  field int one
-end
 class Object
-  int the_one(Fielded f)
-    return f.one
+  int get_name(Message main)
+    return main.name
   end
   int main()
-    Fielded f
-    return the_one(f)
+    Message m
+    return get_name(m)
   end
 end
 HERE
@@ -40,6 +34,34 @@ HERE
                  SetSlot, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot, RegisterTransfer ,
                  FunctionCall, Label, RegisterTransfer, GetSlot, GetSlot, SetSlot, Label ,
                  FunctionReturn]
+      check
+    end
+
+    def test_self_field
+      @string_input = <<HERE
+class Object
+  int main()
+    Layout l = self.layout
+    return 1
+  end
+end
+HERE
+      @expect =  [Label, GetSlot, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot ,
+                  Label, FunctionReturn]
+      check
+    end
+
+    def test_message_field
+      @string_input = <<HERE
+class Object
+  int main()
+    Word name = message.name
+    return name
+  end
+end
+HERE
+      @expect =  [Label, GetSlot, SetSlot, GetSlot, GetSlot, SetSlot, Label ,
+                  FunctionReturn]
       check
     end
   end
