@@ -1,5 +1,4 @@
 class Object
-  field Layout layout
 
   Layout get_layout()
     return self.layout
