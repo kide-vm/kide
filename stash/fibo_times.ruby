@@ -10,4 +10,5 @@ def fibonaccit(n)
 end
 
 #1000000.times {fibonaccit( 30 )}
-puts fibonaccit 100
+#10.times {|i| puts fibonaccit(i+90).class}
+puts fibonaccit 90

@@ -1,5 +1,6 @@
 
 require_relative "eventable"
+require 'bigdecimal'
 
 module Interpreter
   class Interpreter
@@ -174,10 +175,10 @@ module Interpreter
     end
 
     def execute_OperatorInstruction
-      log.debug @instruction
       left = get_register(@instruction.left)
       rr = @instruction.right
       right = get_register(rr)
+      @flags[:overflow] = false
       case @instruction.operator.to_s
       when "+"
         result = left + right
@@ -193,8 +194,11 @@ module Interpreter
       else
         raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
       end
-      ## result not over 2**62  => overflow
-      log.debug "#{@instruction} == #{result}   (#{left}|#{right})"
+      if( result.is_a? Bignum)
+        @flags[:overflow] = true
+        result = result % 2**62
+      end
+      log.debug "#{@instruction} == #{result}(#{result.class})   (#{left}|#{right})"
       right = set_register(@instruction.left , result)
       true
     end

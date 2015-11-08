@@ -1,6 +1,6 @@
 require_relative "helper"
 
-class AddTest < MiniTest::Test
+class IfTest < MiniTest::Test
   include Ticker
 
   def setup
