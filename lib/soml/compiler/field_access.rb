@@ -11,18 +11,29 @@ module Soml
       when :self
         index = @clazz.object_layout.variable_index(field_name)
         raise "field access, but no such field:#{field_name} for class #{@clazz.name}" unless index
-        value = use_reg(@clazz.name) #TODO incorrect, this is the self, but should be the type of variable at index 
+        value = use_reg(@clazz.name) #TODO incorrect, this is the self, but should be the type of variable at index
         add_code Register.get_slot(statement , :message , :receiver , value )
         # reuse the register for next move
         move = Register.get_slot(statement, value , index , value )
         add_code move
-        return value
       when :message
         #message Slot
         raise "message not yet"
       else
-        #arg / frame Slot
-        raise "frame not implemented"
+        if( index = @method.has_arg(receiver)) #argument
+          value = use_reg @method.arguments[index].type
+          code = Register.get_slot(statement , :message , Parfait::Message.get_indexed(index), value)
+        else # or a local so it is in the frame
+          index = @method.has_local( receiver )
+          if(index)
+            value = use_reg @method.locals[index].type
+            frame = use_reg :Frame
+            add_code Register.get_slot(statement , :message , :frame , frame )
+            code = Register.get_slot(statement ,frame , Parfait::Frame.get_indexed(index) , value )
+          else
+            raise "Variable not defined #{name}"
+          end
+        end
       end
 
       value
