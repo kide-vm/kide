@@ -1,27 +1,25 @@
 require_relative "helper"
 
 class AddTest < MiniTest::Test
-  include AST::Sexp
   include Ticker
 
   def setup
-    machine = Register.machine.boot
-    code  =   s(:class, :Object,
-                s(:derives, nil),
-                  s(:statements,
-                    s(:function, :int,
-                      s(:name, :main),
-                      s(:parameters),
-                      s(:statements,
-                        s(:return,
-                          s(:operator_value, :+,
-                            s(:int, 5),
-                            s(:int, 7)))))))
+    @string_input = <<HERE
+class Object
+  int main()
+    return 5 + 7
+  end
+end
+HERE
+    super
+  end
 
-    Soml.compile( code  )
-    machine.collect
-    @interpreter = Interpreter::Interpreter.new
-    @interpreter.start Register.machine.init
+  def test_chain
+    #show_ticks # get output of what is
+    check_chain ["Branch","Label","LoadConstant","GetSlot","SetSlot",
+     "LoadConstant","SetSlot","FunctionCall","Label","LoadConstant",
+     "LoadConstant","OperatorInstruction","SetSlot","Label","FunctionReturn",
+     "RegisterTransfer","Syscall","NilClass"]
   end
 
   def test_get
@@ -57,16 +55,5 @@ class AddTest < MiniTest::Test
     assert_equal Register::RegisterTransfer ,  done_tr.class
     result = @interpreter.get_register(done_op.left)
     assert_equal result , 12
-  end
-
-  def test_chain
-    #show_ticks # get output of what is
-    ["Branch","Label","LoadConstant","GetSlot","SetSlot",
-     "LoadConstant","SetSlot","FunctionCall","Label","LoadConstant",
-     "LoadConstant","OperatorInstruction","SetSlot","Label","FunctionReturn",
-     "RegisterTransfer","Syscall","NilClass"].each_with_index do |name , index|
-      got = ticks(1)
-      assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
-    end
   end
 end

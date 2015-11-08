@@ -2,9 +2,8 @@ require_relative "helper"
 
 class AddTest < MiniTest::Test
   include Ticker
-  include AST::Sexp
 
-  def test_if
+  def setup
     @string_input = <<HERE
 class Object
   int itest(int n)
@@ -20,16 +19,12 @@ class Object
   end
 end
 HERE
-      machine = Register.machine.boot
-      syntax  = Parser::Salama.new.parse_with_debug(@string_input)
-      parts = Parser::Transform.new.apply(syntax)
-      #puts parts.inspect
-      Soml.compile( parts )
-      machine.collect
-      @interpreter = Interpreter::Interpreter.new
-      @interpreter.start Register.machine.init
+    super
+  end
+
+  def test_if
       #show_ticks # get output of what is
-      ["Branch","Label","LoadConstant","GetSlot","SetSlot",
+      check_chain ["Branch","Label","LoadConstant","GetSlot","SetSlot",
      "LoadConstant","SetSlot","FunctionCall","Label","GetSlot",
      "GetSlot","SetSlot","LoadConstant","SetSlot","LoadConstant",
      "SetSlot","LoadConstant","SetSlot","LoadConstant","SetSlot",
@@ -41,11 +36,6 @@ HERE
      "Label","FunctionReturn","RegisterTransfer","GetSlot","GetSlot",
      "Branch","Label","Label","FunctionReturn","RegisterTransfer",
      "GetSlot","GetSlot","Label","FunctionReturn","RegisterTransfer",
-     "Syscall","NilClass"].each_with_index do |name , index|
-      got = ticks(1)
-      assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
-    end
-    #puts @interpreter.block.inspect
-
+     "Syscall","NilClass"]
   end
 end

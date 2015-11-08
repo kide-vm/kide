@@ -1,27 +1,29 @@
 require_relative "helper"
 
 class TestPuts < MiniTest::Test
-  include AST::Sexp
   include Ticker
-  def setup
-    machine = Register.machine.boot
-    code =   s(:class, :Object,
-                        s(:derives, nil),
-                          s(:statements,
-                            s(:function, :int,
-                              s(:name, :main),
-                              s(:parameters),
-                              s(:statements,
-                                s(:call,
-                                  s(:name,  :putstring),
-                                  s(:arguments),
-                                  s(:receiver,
-                                    s(:string,  "Hello again")))))))
 
-    Soml.compile( code )
-    machine.collect
-    @interpreter = Interpreter::Interpreter.new
-    @interpreter.start Register.machine.init
+  def setup
+      @string_input = <<HERE
+class Object
+  int main()
+    "Hello again".putstring()
+  end
+end
+HERE
+    super
+  end
+
+  def test_chain
+    #show_ticks # get output of what is
+    check_chain ["Branch","Label","LoadConstant","GetSlot","SetSlot",
+     "LoadConstant","SetSlot","FunctionCall","Label","GetSlot",
+     "LoadConstant","SetSlot","LoadConstant","SetSlot","LoadConstant",
+     "SetSlot","LoadConstant","SetSlot","RegisterTransfer","FunctionCall",
+     "Label","GetSlot","RegisterTransfer","Syscall","RegisterTransfer",
+     "RegisterTransfer","SetSlot","Label","FunctionReturn","RegisterTransfer",
+     "GetSlot","GetSlot","Label","FunctionReturn","RegisterTransfer",
+     "Syscall","NilClass"]
   end
 
   def test_branch
@@ -42,22 +44,6 @@ class TestPuts < MiniTest::Test
   end
   def test_call
     assert_equal Register::FunctionCall ,  ticks(8).class
-  end
-
-  def test_chain
-    #show_ticks # get output of what is
-    ["Branch","Label","LoadConstant","GetSlot","SetSlot",
-     "LoadConstant","SetSlot","FunctionCall","Label","GetSlot",
-     "LoadConstant","SetSlot","LoadConstant","SetSlot","LoadConstant",
-     "SetSlot","LoadConstant","SetSlot","RegisterTransfer","FunctionCall",
-     "Label","GetSlot","RegisterTransfer","Syscall","RegisterTransfer",
-     "RegisterTransfer","SetSlot","Label","FunctionReturn","RegisterTransfer",
-     "GetSlot","GetSlot","Label","FunctionReturn","RegisterTransfer",
-     "Syscall","NilClass"].each_with_index do |name , index|
-      got = ticks(1)
-      #puts "TICK #{index}"
-      assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
-    end
   end
 
   def test_putstring

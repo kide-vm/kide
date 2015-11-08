@@ -2,6 +2,25 @@ require_relative "../helper"
 require "interpreter/interpreter"
 
 module Ticker
+
+  def setup
+    machine = Register.machine.boot
+    syntax  = Parser::Salama.new.parse_with_debug(@string_input)
+    parts = Parser::Transform.new.apply(syntax)
+    #puts parts.inspect
+    Soml.compile( parts )
+    machine.collect
+    @interpreter = Interpreter::Interpreter.new
+    @interpreter.start Register.machine.init
+  end
+
+  def check_chain should
+    should.each_with_index do |name , index|
+      got = ticks(1)
+      assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
+    end
+  end
+
   def ticks num
     last = nil
     num.times do
@@ -13,7 +32,6 @@ module Ticker
 
   def show_ticks
     classes = []
-    error = nil
     tick = 1
     begin
       while true and (classes.length < 200)
