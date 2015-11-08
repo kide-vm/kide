@@ -1,6 +1,5 @@
 
 require_relative "eventable"
-require 'bigdecimal'
 
 module Interpreter
   class Interpreter
