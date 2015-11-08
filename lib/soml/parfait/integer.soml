@@ -1,0 +1,35 @@
+class Integer < Value
+  Word digit( int rest )
+    if_zero( rest == 5 )
+      return "5"
+    end
+    if_zero( rest == 1 )
+      return "1"
+    end
+    if_zero( rest == 2 )
+      return "2"
+    end
+    if_zero( rest == 3 )
+      return "3"
+    end
+    if_zero( rest == 4 )
+      return "4"
+    end
+  end
+  Word add_string(Word str)
+    int div
+    div = self / 10
+    int rest
+    rest = self - div
+    if_notzero( rest )
+      rest = self.digit( rest )
+    else
+      str = div.add_string(str)
+    end
+    return str
+  end
+  Word to_string()
+    Word start = " "
+    return add_string( start )
+  end
+end
