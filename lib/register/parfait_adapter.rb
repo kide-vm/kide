@@ -133,7 +133,7 @@ module Parfait
       string = ""
       index = 1
       while( index <= self.char_length)
-        string[index - 1] = get_char(index).chr
+        string += get_char(index).chr
         index = index + 1
       end
       string

@@ -14,7 +14,7 @@ class Object
   end
 end
 HERE
-      @expect =  [Label, GetSlot, SetSlot, Label, FunctionReturn]
+      @expect =  [Label, GetSlot, GetSlot, GetSlot, SetSlot, Label, FunctionReturn]
       check
     end
 
@@ -60,8 +60,8 @@ class Object
   end
 end
 HERE
-      @expect =  [Label, GetSlot, SetSlot, GetSlot, GetSlot, SetSlot, Label ,
-                  FunctionReturn]
+      @expect =   [Label, RegisterTransfer, GetSlot, GetSlot, SetSlot, GetSlot, GetSlot ,
+               SetSlot, Label, FunctionReturn]
       check
     end
   end

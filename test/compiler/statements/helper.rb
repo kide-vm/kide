@@ -30,7 +30,7 @@ module Statements
     str.gsub!("Register::","")
     ret = ""
     str.split(",").each_slice(7).each do |line|
-      ret += "              " + line.join(",") + " ,\n"
+      ret += "                " + line.join(",") + " ,\n"
     end
     ret
   end
