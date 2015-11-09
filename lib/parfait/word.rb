@@ -16,6 +16,13 @@ module Parfait
   class Word < Object
     attribute :char_length
 
+    #semi "indexed" methods for interpreter
+    def self.get_length_index
+      2
+    end
+    def self.get_indexed i
+      i + get_length_index
+    end
     # initialize with length. For now we try to keep all non-parfait (including String) out
     # String will contain spaces for non-zero length
     # Register provides methods to create Parfait objects from ruby
