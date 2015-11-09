@@ -76,7 +76,7 @@ module Interpreter
       return unless @instruction
       @clock += 1
       name = @instruction.class.name.split("::").last
-      log.debug "#{@clock}: #{@instruction}"
+      log.debug "#{@clock.to_s}: #{@instruction.to_s}"
       fetch = send "execute_#{name}"
       return unless fetch
       set_instruction @instruction.next
@@ -131,11 +131,12 @@ module Interpreter
       value = get_register( @instruction.register )
       object = get_register( @instruction.array )
       if( @instruction.index.is_a?(Numeric) )
-        object.set_internal( @instruction.index , value )
+        index = @instruction.index
       else
-        object.set_internal( get_register(@instruction.index) , value )
+        index = get_register(@instruction.index)
       end
-      trigger(:object_changed, @instruction.array , @instruction.index)
+      object.set_internal( index , value )
+      trigger(:object_changed, @instruction.array , index)
       true
     end
 
