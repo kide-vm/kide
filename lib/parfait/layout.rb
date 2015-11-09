@@ -83,6 +83,11 @@ module Parfait
       (1 + has / 2).to_i # to_i for opal
     end
 
+    def type_at index
+      type_index = index * 2 
+      get(type_index)
+    end
+
     def inspect
       "Layout[#{super}]"
     end
