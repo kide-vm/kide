@@ -62,6 +62,7 @@ module Register
     end
 
     def boot
+      initialize
       boot_parfait!
       @init =  Branch.new( "__initial_branch__" , self.space.get_init.instructions )
       @booted = true
