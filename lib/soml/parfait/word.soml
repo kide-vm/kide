@@ -1,6 +1,6 @@
 class Word < Object
   int at(int index)
-    get_internal(index)
+    return get_internal(index)
   end
   Word add_digit( int i)
     int l = self.char_length + 2
