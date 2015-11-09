@@ -18,6 +18,11 @@ module Soml
           add_code Register::LoadConstant.new( statement, space , reg )
           return reg
         end
+        if(name == :message)
+          reg = use_reg :Message
+          add_code Register::RegisterTransfer.new( statement, Register.message_reg , reg )
+          return reg
+        end
         # either an argument, so it's stored in message
         if( index = @method.has_arg(name))
           ret = use_reg @method.arguments[index].type
