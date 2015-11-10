@@ -1,20 +1,25 @@
 class Integer < Value
-  int digit()
-    if_plus( self - 10)
+
+  int as_char()
+    if_plus( self - 9)
       return 32
     else
       Word numbers = "0123456789"
-      return numbers.at(self)
+      int index = self + 1
+      return numbers.char_at(index)
     end
   end
 
   Word as_string(Word str)
     if_minus( self - 10 )
-      int num = digit()
-      str = str.add_digit( num )
+      int num = as_char()
+      str = str.push_char( num )
     else
       int rest = self / 10
       str = rest.as_string( str )
+      rest = rest * 10
+      rest = self - rest
+      str = rest.as_string(str)
     end
     return str
   end
@@ -22,5 +27,11 @@ class Integer < Value
   Word to_s()
     Word start = " "
     return as_string( start )
+  end
+
+  int puti()
+    Word str = self.to_s()
+    str.putstring()
+    return self
   end
 end
