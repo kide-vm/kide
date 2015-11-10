@@ -24,11 +24,11 @@ class Object
     return fib
   end
   int main()
-    return fib_print(10)
+    return fib_print(8)
   end
 end
 HERE
-  @length = 6595
-  check_return 55
+  @length = 2525
+  check_return 21
   end
 end
