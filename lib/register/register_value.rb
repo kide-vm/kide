@@ -10,7 +10,8 @@ module Register
       raise "wrong type for register init #{r}" unless r.is_a? Symbol
       raise "double r #{r}" if r.to_s[0,1] == "rr"
       raise "not reg #{r}" unless self.class.look_like_reg r
-      raise "Legacy type error, should be class" if (type == :int) or (type == :ref)
+      type = :Integer if type == :int
+      raise "Legacy type error, should be class name not ref" if (type == :ref)
       @type = type
       @symbol = r
       @value = value
