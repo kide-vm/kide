@@ -208,6 +208,8 @@ module Interpreter
       if( result.is_a? Bignum)
         @flags[:overflow] = true
         result = result % 2**62
+      else
+        result = result.to_i
       end
       log.debug "#{@instruction} == #{result}(#{result.class})   (#{left}|#{right})"
       right = set_register(@instruction.left , result)
