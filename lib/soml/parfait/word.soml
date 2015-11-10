@@ -1,9 +1,19 @@
 class Word < Object
-  int at(int index)
+
+  int char_at(int index)
+    index = index + 2
     return get_internal(index)
   end
-  Word add_digit( int i)
-    int l = self.char_length + 2
+
+  int set_length(int i)
+    set_internal( 2 , i)
+    return i
+  end
+
+  Word push_char(int i)
+    int l = self.char_length + 1
+    self.set_length(l)
+    l = l + 2
     set_internal( l , i)
     return self
   end
