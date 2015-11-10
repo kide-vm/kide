@@ -133,7 +133,8 @@ module Parfait
       string = ""
       index = 1
       while( index <= self.char_length)
-        string += get_char(index).chr
+        char = get_char(index)
+        string += char ? char.chr : "*"
         index = index + 1
       end
       string
