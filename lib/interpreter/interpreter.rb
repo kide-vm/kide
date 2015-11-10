@@ -29,7 +29,7 @@ module Interpreter
     end
 
     def start instruction
-      @clock = 0
+      initialize
       set_state(:running)
       set_instruction instruction
     end
