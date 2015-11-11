@@ -34,4 +34,15 @@ class Integer < Value
     str.putstring()
     return self
   end
+
+  int div( Integer by)
+    int ret = self / by
+    return ret
+  end
+
+  int mod(Integer by)
+    int base = self / by
+    base = base * by
+    return self - base
+  end
 end

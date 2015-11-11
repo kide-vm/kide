@@ -3,52 +3,56 @@ require_relative 'helper'
 class TestPutiRT < MiniTest::Test
   include RuntimeTests
 
+  def test_mod
+    @string_input = "return 5.mod(3)"
+    check_return 2
+  end
+  def test_mod2
+    @string_input = "return 2.mod(4)"
+    check_return 2
+  end
+  def test_mod3
+    @string_input = "return 2.mod(4)"
+    check_return 2
+  end
+  def test_div
+    @string_input = "return 5.div(4)"
+    check_return 1
+  end
   def test_as_char1
-    @string_input = <<HERE
-return 5.as_char()
-HERE
+    @string_input = "return 5.as_char()"
     check_return 53
   end
 
   def test_as_char2
-    @string_input = <<HERE
-return 10.as_char()
-HERE
+    @string_input = "return 10.as_char()"
     check_return 32
   end
 
   def test_tos_one_digit
-    @string_input = <<HERE
-Word five = 5.to_s()
-five.putstring()
-HERE
+    @string_input = "Word five = 5.to_s()
+five.putstring()"
     @stdout = " 5"
     check
   end
 
   def test_tos_zero
-    @string_input = <<HERE
-Word five = 0.to_s()
-five.putstring()
-HERE
+    @string_input = "Word five = 0.to_s()
+five.putstring()"
     @stdout = " 0"
     check
   end
 
   def test_tos_two_digit
-    @string_input = <<HERE
-Word five = 15.to_s()
-five.putstring()
-HERE
+    @string_input = "Word five = 15.to_s()
+five.putstring()"
     @stdout = " 15"
     check
   end
 
   def test_tos_three_digit
-    @string_input = <<HERE
-Word five = 150.to_s()
-five.putstring()
-HERE
+    @string_input = "Word five = 150.to_s()
+five.putstring()"
     @stdout = " 150"
     check
   end
