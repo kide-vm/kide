@@ -186,9 +186,9 @@ module Interpreter
     end
 
     def execute_OperatorInstruction
-      left = get_register(@instruction.left)
+      left = get_register(@instruction.left) || 0
       rr = @instruction.right
-      right = get_register(rr)
+      right = get_register(rr) || 0
       @flags[:overflow] = false
       case @instruction.operator.to_s
       when "+"
@@ -197,9 +197,16 @@ module Interpreter
         result = left - right
       when "/"
         result = left / right
+      when ">>"
+        result = left >> right
+      when "<<"
+        result = left << right
       when "*"
-        #TODO set overflow, reduce result to int
         result = left * right
+      when "&"
+        result = left & right
+      when "|"
+        result = left | right
       when "=="
         result = (left == right) ? 1 : 0
       else
