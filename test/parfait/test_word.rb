@@ -23,19 +23,20 @@ HERE
   def test_add_doesnt_change1
     @string_input = <<HERE
 Word w = " "
-w.push_char(32)
+w.push_char(48)
 return w.char_at(1)
 HERE
-    check_return 32
+      check_return 32
   end
   def test_after_add_get_works
     @string_input = <<HERE
 Word w = " "
-w.push_char(32)
+w.push_char(48)
 return w.char_at(2)
 HERE
-    check_return 32
+    check_return 48
   end
+
   def test_after_add_length_works
     @string_input = <<HERE
 Word w = " "
@@ -43,5 +44,21 @@ w.push_char(32)
 return w.char_length
 HERE
     check_return 2
+  end
+
+  def test_get1
+    @string_input = <<HERE
+Word w = "12345"
+return w.char_at(1)
+HERE
+    check_return 49
+  end
+
+  def test_get2
+    @string_input = <<HERE
+Word w = "12345"
+return w.char_at(2)
+HERE
+    check_return 50
   end
 end

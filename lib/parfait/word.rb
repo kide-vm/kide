@@ -94,7 +94,9 @@ module Parfait
       shifted =  char << (rest * 8)
       was = get_internal( word_index )
       was = 0 unless was.is_a?(Numeric)
-      masked = was & [ 0xFFFFFF00 , 0xFFFF00FF , 0xFF00FFFF , 0x00FFFFFF  ][rest]
+      mask = 0xFF << (rest * 8)
+      mask = 0xFFFFFFFF - mask
+      masked = was & mask
       put = masked + shifted
       set_internal( word_index , put )
       msg = "set index=#{index} word_index=#{word_index} rest=#{rest}= "
