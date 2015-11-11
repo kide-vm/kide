@@ -52,7 +52,7 @@ module Soml
 
     # create the method, do some checks and set it as the current method to be added to
     # class_name and method_name are pretty clear, args are given as a ruby array
-    def create_method( class_name , method_name , args)
+    def create_method( class_name , method_name , args = {})
       raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
       clazz = Register.machine.space.get_class_by_name class_name
       raise "No such class #{class_name}" unless clazz
@@ -68,9 +68,9 @@ module Soml
       @clazz = clazz
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
       arguments = []
-      args.each_with_index do | arg , index |
+      args.each do | arg , name |
         unless arg.is_a? Parfait::Variable
-          arg = Parfait::Variable.new arg , "arg#{index}".to_sym
+          arg = Parfait::Variable.new arg , name.to_sym
         end
         arguments << arg
       end
@@ -145,11 +145,11 @@ module Soml
         self.new.process( parts )
       end
     end
-    
+
     def self.each_parfait
       ["word","class","layout","message" ,"integer", "object"].each do |o|
         str = File.open(File.expand_path("parfait/#{o}.soml", File.dirname(__FILE__))).read
-        syntax  = Parser::Salama.new.parse_with_debug(str)
+        syntax  = Parser::Salama.new.parse_with_debug(str, reporter: Parslet::ErrorReporter::Deepest.new)
         parts = Parser::Transform.new.apply(syntax)
         yield parts
       end

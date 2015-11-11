@@ -38,7 +38,7 @@ module Soml
             return ret
           end
         end
-        raise "must define variable #{name} before using it"
+        raise "must define variable '#{name}' before using it"
       end
 
   end #module

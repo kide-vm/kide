@@ -9,7 +9,7 @@ module Register
         # main entry point, ie __init__ calls this
         # defined here as empty, to be redefined
         def main context
-          compiler = Soml::Compiler.new.create_method(:Object , :main , []).init_method
+          compiler = Soml::Compiler.new.create_method(:Object , :main ).init_method
           return compiler.method
         end
 
@@ -17,7 +17,7 @@ module Register
         # return is stored in return_value
         # (this method returns a new method off course, like all builtin)
         def get_internal context
-          compiler = Soml::Compiler.new.create_method(:Object , :get_internal , []).init_method
+          compiler = Soml::Compiler.new.create_method(:Object , :get_internal , {:Integer => :index}).init_method
           source = "get_internal"
           #Load self by "calling" on_name
           me = compiler.process( s(:name , :self) )
@@ -34,7 +34,8 @@ module Register
         # self[index] = val basically. Index is the first arg , vlaue the second
         # no return
         def set_internal context
-          compiler = Soml::Compiler.new.create_method(:Object , :set_internal , []).init_method
+          compiler = Soml::Compiler.new.create_method(:Object , :set_internal ,
+                                                {:Integer => :index, :Object => :value} ).init_method
           source = "set_internal"
           #Load self by "calling" on_name
           me = compiler.process( s(:name , :self) )

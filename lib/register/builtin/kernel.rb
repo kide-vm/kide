@@ -7,7 +7,7 @@ module Register
         # so it is responsible for initial setup
         def __init__ context
           source = "__init__"
-          compiler = Soml::Compiler.new.create_method(:Kernel,:__init__ , [])
+          compiler = Soml::Compiler.new.create_method(:Kernel,:__init__ )
           # no method enter or return (automatically added), remove
           new_start = Label.new(source , source )
           compiler.method.instructions = new_start
@@ -34,7 +34,7 @@ module Register
         end
 
         def exit context
-          compiler = Soml::Compiler.new.create_method(:Kernel,:exit , []).init_method
+          compiler = Soml::Compiler.new.create_method(:Kernel,:exit ).init_method
           emit_syscall( compiler , :exit )
           return compiler.method
         end

@@ -3,7 +3,7 @@ module Register
     module Word
       module ClassMethods
         def putstring context
-          compiler = Soml::Compiler.new.create_method(:Word , :putstring , [] ).init_method
+          compiler = Soml::Compiler.new.create_method(:Word , :putstring ).init_method
           compiler.add_code Register.get_slot( "putstring" , :message , :receiver , :new_message )
           Kernel.emit_syscall( compiler , :putstring )
           compiler.method
