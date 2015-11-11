@@ -12,13 +12,12 @@ module Parfait
   # So all indexes are offset by one in the implementation
   # Object length is measured in non-layout cells though
 
-  # big TODO , this has NO encoding, a char takes a machine word. Go fix.
   class Word < Object
     attribute :char_length
 
     #semi "indexed" methods for interpreter
     def self.get_length_index
-      2
+      2 # 2 is the amount of attributes, layout and char_length. the offset after which chars start
     end
     def self.get_indexed i
       i + get_length_index
@@ -90,16 +89,37 @@ module Parfait
     def set_char at , char
       raise "char not fixnum #{char.class}" unless char.kind_of? Fixnum
       index = range_correct_index(at)
-      set_internal( index + 2, char )
+      word_index = (index - 1) / 4 + 1 + Word.get_length_index
+      rest = ((index - 1) % 4)
+      shifted =  char << (rest * 8)
+      was = get_internal( word_index )
+      was = 0 unless was.is_a?(Numeric)
+      masked = was & [ 0xFFFFFF00 , 0xFFFF00FF , 0xFF00FFFF , 0x00FFFFFF  ][rest]
+      put = masked + shifted
+      set_internal( word_index , put )
+      msg = "set index=#{index} word_index=#{word_index} rest=#{rest}= "
+      msg += "char=#{char.to_s(16)} shifted=#{shifted.to_s(16)} "
+      msg += "was=#{was.to_s(16)} masked=#{masked.to_s(16)} put=#{put.to_s(16)}"
+      #puts msg
+      char
     end
 
-    # get the character at the given index
+    # get the character at the given index (lowest 1)
     # the index starts at one, but may be negative to count from the end
     # indexes out of range will raise an error
     #the return "character" is an integer
     def get_char at
       index = range_correct_index(at)
-      return get_internal(index + 2 )
+      word_index = (index - 1 ) / 4 + 1 + Word.get_length_index
+      rest = ((index - 1) % 4)
+      char = get_internal(word_index)
+      char = 0 unless char.is_a?(Numeric)
+      shifted = char >> (8 * rest)
+      ret = shifted & 0xFF
+      msg = "get index=#{index} word_index=#{word_index} rest=#{rest}= "
+      msg += " char=#{char.to_s(16)} shifted=#{shifted.to_s(16)}  ret=#{ret.to_s(16)}"
+      #puts msg
+      return ret
     end
 
     # private method to calculate negative indexes into positives
