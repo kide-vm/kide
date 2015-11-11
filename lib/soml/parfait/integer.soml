@@ -4,9 +4,7 @@ class Integer < Value
     if_plus( self - 9)
       return 32
     else
-      Word numbers = "0123456789"
-      int index = self + 1
-      return numbers.char_at(index)
+      return 48 + self
     end
   end
 
