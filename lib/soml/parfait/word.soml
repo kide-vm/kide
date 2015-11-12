@@ -2,7 +2,7 @@ class Word < Object
 
   int char_at(int index)
     int word_index = index - 1
-    word_index = word_index / 4
+    word_index = word_index >> 2
     word_index = word_index + 3
     int rest = index - 1
     rest = rest.mod(4)
@@ -23,7 +23,7 @@ class Word < Object
     self.set_length(index)
 
     int word_index = index - 1
-    word_index = word_index / 4
+    word_index = word_index >> 2
     word_index = word_index + 3
 
     int rest = index - 1

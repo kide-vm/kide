@@ -13,7 +13,7 @@ class Integer < Value
       int num = as_char()
       str = str.push_char( num )
     else
-      int rest = self / 10
+      int rest = self.div10()
       str = rest.as_string( str )
       rest = rest * 10
       rest = self - rest
@@ -33,14 +33,7 @@ class Integer < Value
     return self
   end
 
-  int div( Integer by)
-    int ret = self / by
-    return ret
-  end
-
-  int mod(Integer by)
-    int base = self / by
-    base = base * by
-    return self - base
+  int mod4()
+    return self & 3
   end
 end

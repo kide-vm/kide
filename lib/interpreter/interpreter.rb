@@ -195,8 +195,6 @@ module Interpreter
         result = left + right
       when "-"
         result = left - right
-      when "/"
-        result = left / right
       when ">>"
         result = left >> right
       when "<<"

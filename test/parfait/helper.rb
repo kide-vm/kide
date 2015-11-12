@@ -29,6 +29,15 @@ HERE
       @interpreter.tick
     end while( ! @interpreter.instruction.nil?)
     assert_equal @stdout , @interpreter.stdout
+#    write_file if true
+  end
+
+  def write_file
+    file_name = caller(3).first.split("in ").last.chop.reverse.chop.reverse
+    file_name = File.dirname(__FILE__) + "/" + file_name + ".o"
+    Register.machine.translate_arm
+    writer = Elf::ObjectWriter.new
+    writer.save file_name
   end
 
   def check_return val

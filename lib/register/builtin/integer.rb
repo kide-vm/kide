@@ -5,6 +5,22 @@ module Register
       module ClassMethods
         include AST::Sexp
 
+        def div10 context
+          compiler = Soml::Compiler.new.create_method(:Integer,:div10 ).init_method
+          do_div10(compiler)
+          # return div
+          return compiler.method
+        end
+        def mod10 context
+          compiler = Soml::Compiler.new.create_method(:Integer,:mod10 ).init_method
+          do_div10(compiler)
+          #return mod
+          return compiler.method
+        end
+
+        def do_div10 compiler
+          
+        end
         # The conversion to base10 is quite a bit more complicated than i thought.
         # The bulk of it is in div10
         # We set up variables, do the devision and write the result to the string
