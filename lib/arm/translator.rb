@@ -64,6 +64,26 @@ module Arm
       end
     end
 
+    def translate_OperatorInstruction code
+      left = code.left
+      right = code.right
+      case code.operator.to_s
+      when "+"
+        c = ArmMachine.add(left , left , right)
+      when "-"
+        c = ArmMachine.sub(left , left , right)
+      when "&"
+        c = ArmMachine.and(left , left , right)
+      when "|"
+        c = ArmMachine.orr(left , left , right)
+      when "*"
+        c = ArmMachine.mul(left , right , left) #arm rule about left not being result, lukily commutative
+      else
+        raise "unimplemented  '#{code.operator}' #{code}"
+      end
+      c
+    end
+
     # This implements branch logic, which is simply assembler branch
     #
     # The only target for a call is a Block, so we just need to get the address for the code

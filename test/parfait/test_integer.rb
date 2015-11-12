@@ -3,22 +3,26 @@ require_relative 'helper'
 class TestPutiRT < MiniTest::Test
   include RuntimeTests
 
-  def test_mod
-    @string_input = "return 5.mod(3)"
-    check_return 2
+  def test_mod4
+    [2,3,4,5,10,12].each do |m|
+      @string_input = "return #{m}.mod4()"
+      check_return m % 4
+    end
   end
-  def test_mod2
-    @string_input = "return 2.mod(4)"
-    check_return 2
+  def test_mod10
+    [2,3,4,5,10,12,55].each do |m|
+      @string_input = "return #{m}.mod10()"
+      check_return m % 10
+    end
   end
-  def test_mod3
-    @string_input = "return 2.mod(4)"
-    check_return 2
+
+  def test_div10
+    [2,5,10,12 , 55 ].each do |m|
+      @string_input = "return #{m}.div10()"
+      check_return m / 10
+    end
   end
-  def test_div
-    @string_input = "return 5.div(4)"
-    check_return 1
-  end
+  
   def test_as_char1
     @string_input = "return 5.as_char()"
     check_return 53
