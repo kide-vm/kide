@@ -7,7 +7,7 @@ class HelloTest < MiniTest::Test
     machine.parse_and_compile @string_input
     machine.collect
     machine.translate_arm
-    writer = Elf::ObjectWriter.new(machine)
+    writer = Elf::ObjectWriter.new
     writer.save "hello.o"
   end
 

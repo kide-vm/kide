@@ -7,9 +7,8 @@ require_relative 'string_table_section'
 module Elf
 
   class ObjectWriter
-    def initialize(machine , target = Elf::Constants::TARGET_ARM )
+    def initialize(target = Elf::Constants::TARGET_ARM )
       @object = Elf::ObjectFile.new(target)
-      @object_machine = machine
       sym_strtab = Elf::StringTableSection.new(".strtab")
       @object.add_section sym_strtab
       @symbol_table = Elf::SymbolTableSection.new(".symtab", sym_strtab)
@@ -18,11 +17,11 @@ module Elf
       @text = Elf::TextSection.new(".text")
       @object.add_section @text
 
-      assembler = Register::Assembler.new(@object_machine)
+      assembler = Register::Assembler.new(Register.machine)
       set_text assembler.write_as_string
 
       # for debug add labels to the block positions
-      @object_machine.space.classes.values.each do |clazz|
+      Register.machine.space.classes.values.each do |clazz|
         clazz.instance_methods.each do |f|
           f.instructions.each_label do |label|
               add_symbol "#{clazz.name}::#{f.name}:#{label.name}" , label.position
@@ -30,7 +29,7 @@ module Elf
         end
       end
 
-      @object_machine.objects.each do |id,slot|
+      Register.machine.objects.each do |id,slot|
         if( slot.respond_to? :sof_reference_name )
           label = "#{slot.sof_reference_name}"
         else
