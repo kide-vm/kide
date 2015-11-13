@@ -34,8 +34,15 @@ class Word < Object
 
     int was = get_internal( word_index )
     int mask = rest * 8
+    int const = 255 << 8
+    const = const + 255
+    const = const << 8
+    const = const + 255
+    const = const << 8
+    const = const + 255
+
     mask = 255 << mask
-    mask = 4294967295 - mask
+    mask = const - mask
 
     int masked = was & mask
     int put = masked + shifted
