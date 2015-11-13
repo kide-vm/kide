@@ -196,9 +196,9 @@ module Interpreter
       when "-"
         result = left - right
       when ">>"
-        result = left >> right
+        result = left / (2**right)
       when "<<"
-        result = left << right
+        result = left * (2**right)
       when "*"
         result = left * right
       when "&"
@@ -210,9 +210,9 @@ module Interpreter
       else
         raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
       end
-      if( result.is_a? Bignum)
+      if( result > 2**32 )
         @flags[:overflow] = true
-        result = result % 2**62
+        result = result % 2**32
       else
         result = result.to_i
       end
