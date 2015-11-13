@@ -27,14 +27,16 @@ class TestPutiRT < MiniTest::Test
   end
 
   def test_hightimes
-    [2,3,4,5,10,121212 , 12345 , 3456 , 234567].each do |m|
+#    [2,3,4,5,10,121212 , 12345 , 3456 , 234567].each do |m|
+    [2, 3456 , 234567].each do |m|
       @string_input = "return #{m}.high_times(12 , 333)"
       check_return high_times(m,12,333)
     end
   end
   def test_lowtimes
-    [2,3,4,5,10 , 3456 , 12345 , 121212 , 234567].each do |m|
-      @string_input = "return #{m}.low_times(14 , 33)"
+    #[2,3,4,5,10 , 3456 , 12345 , 121212 , 234567].each do |m|
+    [2 , 3456 ,234567].each do |m|
+        @string_input = "return #{m}.low_times(14 , 33)"
       check_return low_times(m,14,33)
     end
   end
@@ -44,8 +46,9 @@ class TestPutiRT < MiniTest::Test
   #        (off course the bug is not included in the test, but easy to achieve with random numbers )
   # for high numbers with ending 0 they are all 1 low. Possibly Interpreter bug ?
   def test_div10
-    [2,3,4,5,10 , 3456 , 12345 , 121212 , 234567].each do |m|
-      @string_input = "return #{m}.div10()"
+    #[2,3,4,5,10 , 3456 , 12345 , 121212 , 234567].each do |m|
+    [2,10  , 12345 ,234567].each do |m|
+        @string_input = "return #{m}.div10()"
       check_return m / 10
     end
   end
