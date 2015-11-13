@@ -13,6 +13,9 @@ module Register
       "OperatorInstruction: #{left} #{operator} #{right}"
     end
 
+    def self.op source , operator , left , right
+      OperatorInstruction.new source , operator , left , right
+    end
   end
 
 end

@@ -29,5 +29,8 @@ module Register
       "RegisterTransfer: #{from} -> #{to}"
     end
 
+    def self.transfer source , from , to
+      RegisterTransfer.new source , from , to
+    end
   end
 end

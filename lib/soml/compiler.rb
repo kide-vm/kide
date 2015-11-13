@@ -119,6 +119,12 @@ module Soml
       return reg
     end
 
+    def copy reg , source
+      copied = use_reg reg.type
+      add_code Reister.transfer source , reg , copied
+      copied
+    end
+
     # releasing a register (accuired by use_reg) makes it available for use again
     # thus avoiding possibly using too many registers
     def release_reg reg

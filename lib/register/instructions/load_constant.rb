@@ -16,6 +16,9 @@ module Register
       "LoadConstant: #{register} <- #{constant_str}"
     end
 
+    def self.load source , constant , register
+      LoadConstant.new source , constant , register
+    end
     private
     def constant_str
         case @constant
