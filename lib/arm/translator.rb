@@ -78,6 +78,10 @@ module Arm
         c = ArmMachine.orr(left , left , right)
       when "*"
         c = ArmMachine.mul(left , right , left) #arm rule about left not being result, lukily commutative
+      when ">>"
+        c = ArmMachine.mov(left , left , :shift_asr => right) #arm rule about left not being result, lukily commutative
+      when "<<"
+        c = ArmMachine.mov(left , left , :shift_lsl => right) #arm rule about left not being result, lukily commutative
       else
         raise "unimplemented  '#{code.operator}' #{code}"
       end
@@ -90,6 +94,22 @@ module Arm
     # and branch to it.
     def translate_Branch code
       ArmMachine.b( code.label )
+    end
+
+    def translate_IsPlus code
+      ArmMachine.bpl( code.label)
+    end
+
+    def translate_IsMinus code
+      ArmMachine.bmi( code.label)
+    end
+
+    def translate_IsZero code
+      ArmMachine.beq( code.label)
+    end
+
+    def translate_IsOverflow code
+      ArmMachine.bvs( code.label)
     end
 
     def translate_Syscall code

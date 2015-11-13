@@ -59,7 +59,7 @@ module Interpreter
       old = get_register( reg ) # also ensures format
       if val.is_a? Fixnum
         @flags[:zero] = (val == 0)
-        @flags[:plus] = (val > 0)
+        @flags[:plus] = (val >= 0)
         @flags[:minus] = (val < 0)
         log.debug "Set_flags #{val}  :#{@flags.inspect}"
       else
