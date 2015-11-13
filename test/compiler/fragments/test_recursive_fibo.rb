@@ -7,7 +7,7 @@ class TestRecursinveFibo < MiniTest::Test
     @string_input = <<HERE
 class Object
   int fibonaccir( int n )
-    if_plus( n - 1 )
+    if_plus( n - 2 )
       int tmp
       tmp = n - 1
       int a = fibonaccir( tmp )
