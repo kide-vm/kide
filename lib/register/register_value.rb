@@ -23,6 +23,10 @@ module Register
       s
     end
 
+    def reg_no
+      @type.to_s[1 .. -1].to_i
+    end
+
     def self.look_like_reg is_it
       return true if is_it.is_a? RegisterValue
       return false unless is_it.is_a? Symbol
