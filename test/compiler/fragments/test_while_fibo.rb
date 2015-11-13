@@ -28,17 +28,18 @@ HERE
     @string_input.sub!( "100" , num.to_s )
   end
 
-  def test_while_fibo94
-    fibo 91
-    @length = 2138
+  def test_while_fibo48
+    fibo 48
+    @length = 1149
     # this is not the correct fibo, just what comes from wrapping (smaller than below)
-    check_return 48360591948142405
+    check_return 512559680
   end
 
-  def test_while_fibo90
-    fibo 90
-    @length = 2115
-    check_return 2880067194370816120
+  # highest 32 bit fibo
+  def test_while_fibo47
+    fibo 47
+    @length = 1126
+    check_return 2971215073
   end
 
 end
