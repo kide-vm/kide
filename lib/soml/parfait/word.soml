@@ -5,7 +5,7 @@ class Word < Object
     word_index = word_index >> 2
     word_index = word_index + 3
     int rest = index - 1
-    rest = rest.mod(4)
+    rest = rest.mod4()
     int char = get_internal(word_index)
     int shifted = 8 * rest
     shifted = char >> shifted
@@ -27,7 +27,7 @@ class Word < Object
     word_index = word_index + 3
 
     int rest = index - 1
-    rest = rest.mod(4)
+    rest = rest.mod4()
 
     int shifted =  rest * 8
     shifted =  char << shifted

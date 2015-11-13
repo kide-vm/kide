@@ -9,20 +9,47 @@ class TestPutiRT < MiniTest::Test
       check_return m % 4
     end
   end
-  def test_mod10
-    [2,3,4,5,10,12,55].each do |m|
-      @string_input = "return #{m}.mod10()"
-      check_return m % 10
+
+  # if you multiply i by "by" the return is the high 32 bits
+  def high_times( i ,  by_high ,  by_low)
+    by = by_high * 65536 + by_low
+    by *= i
+    by /= 65536
+    by /= 65536
+    return  by
+  end
+
+  # if you multiply i by "by" the return is the low 32 bits
+  def low_times( i ,  by_high ,  by_low)
+    by = by_high * 65536 + by_low
+    by *= i
+    return  (by & 0xffffffff)
+  end
+
+  def test_hightimes
+    [2,3,4,5,10,121212 , 12345 , 3456 , 234567].each do |m|
+      @string_input = "return #{m}.high_times(12 , 333)"
+      check_return high_times(m,12,333)
+    end
+  end
+  def test_lowtimes
+    [2,3,4,5,10 , 3456 , 12345 , 121212 , 234567].each do |m|
+      @string_input = "return #{m}.low_times(14 , 33)"
+      check_return low_times(m,14,33)
     end
   end
 
+  # finally settled on the long version in http://www.sciencezero.org/index.php?title=ARM:_Division_by_10
+  # also the last looked good, but some bug is admittedly in all the ones i tried
+  #        (off course the bug is not included in the test, but easy to achieve with random numbers )
+  # for high numbers with ending 0 they are all 1 low. Possibly Interpreter bug ?
   def test_div10
-    [2,5,10,12 , 55 ].each do |m|
+    [2,3,4,5,10 , 3456 , 12345 , 121212 , 234567].each do |m|
       @string_input = "return #{m}.div10()"
       check_return m / 10
     end
   end
-  
+
   def test_as_char1
     @string_input = "return 5.as_char()"
     check_return 53

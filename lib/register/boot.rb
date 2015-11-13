@@ -152,7 +152,7 @@ module Register
       @space.get_class_by_name(:Word).add_instance_method Builtin::Word.send(:putstring , nil)
 
       obj = @space.get_class_by_name(:Integer)
-      [:mod , :putint , :div10 , :mod10].each do |f|
+      [ :putint, :mod4].each do |f|
         obj.add_instance_method Builtin::Integer.send(f , nil)
       end
     end
