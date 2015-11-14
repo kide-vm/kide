@@ -71,7 +71,7 @@ module Parfait
     end
 
     def sof_reference_name
-      self.name
+      "Method: " + self.name.to_s
     end
 
     def inspect

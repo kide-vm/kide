@@ -158,7 +158,7 @@ module Parfait
 
     private
     def check_length
-      raise "Length out of bounds #{self.char_length}" if self.char_length > 108
+      raise "Length out of bounds #{self.char_length}" if self.char_length > 1000
     end
   end
 end
