@@ -98,13 +98,17 @@ five.putstring()"
   end
 
   def test_puti_seven_digit
-    @string_input = "return 1234567.puti()"
+    @string_input = "int i = 301 * 4096
+      i = i + 1671
+      return i.puti()"
     @stdout = " 1234567"
     check_return 1234567
   end
-  def test_puti_eigth_digit
-    @string_input = "return 123445678.puti()"
-    @stdout = " 123445678"
-    check_return 123445678
+  def test_puti_eight_digit
+    @string_input = "int i = 3014 * 4096
+      i = i + 334
+      return i.puti()"
+    @stdout = " 12345678"
+    check_return 12345678
   end
 end

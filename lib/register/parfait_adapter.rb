@@ -60,7 +60,7 @@ class Symbol
     # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
     # in measures (of 32)
     old = cache_positions[self]
-    if old != nil and ((old - pos).abs > 32)
+    if old != nil and ((old - pos).abs > 2000)
       raise "position set again #{pos}!=#{old} for #{self}"
     end
     cache_positions[self] = pos

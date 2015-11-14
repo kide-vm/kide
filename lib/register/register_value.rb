@@ -24,7 +24,7 @@ module Register
     end
 
     def reg_no
-      @type.to_s[1 .. -1].to_i
+      @symbol.to_s[1 .. -1].to_i
     end
 
     def self.look_like_reg is_it
