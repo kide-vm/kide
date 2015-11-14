@@ -152,9 +152,13 @@ module Parfait
       "'" + to_s + "'"
     end
 
+    def padded_length
+      padded( 4 * get_layout().instance_length + self.char_length  )
+    end
+
     private
     def check_length
-      raise "Length out of bounds #{self.char_length}" if self.char_length > 32
+      raise "Length out of bounds #{self.char_length}" if self.char_length > 108
     end
   end
 end

@@ -12,7 +12,7 @@ module Positioned
     raise "Setting of nil not allowed" if pos.nil?
     # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
     # in measures (of 32)
-    if @position != nil and ((@position - pos).abs > 32)
+    if @position != nil and ((@position - pos).abs > 10000)
       raise "position set again #{pos}!=#{@position} for #{self}"
     end
     @position = pos

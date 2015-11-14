@@ -24,14 +24,14 @@ module Register
       @machine.init.set_position(at)
       at += @machine.init.byte_length
       at +=  8 # thats the padding
-      # want to have the methods first in the executable (ie the BinaryCode objects)
+      # want to have the methods first in the executable
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::Method
         objekt.binary.position = at
         objekt.instructions.set_position at
         len = objekt.instructions.total_byte_length
         log.debug "CODE #{objekt.name} at #{objekt.binary.position} len: #{len}"
-        objekt.binary.set_length(len/4)
+        objekt.binary.set_length(len , 0)
         at += objekt.binary.padded_length
       end
       # and then everything else
@@ -104,33 +104,33 @@ module Register
       end
       index = 1
       stream.rewind
-      log.debug "Assembled #{method.name} with length #{stream.length}"
-      raise "length error #{method.binary.get_length} != #{method.instructions.total_byte_length}" if method.binary.get_length*4 != method.instructions.total_byte_length
+      log.debug "Assembled code #{method.name} with length #{stream.length}"
+      raise "length error #{method.binary.char_length} != #{method.instructions.total_byte_length}" if method.binary.char_length != method.instructions.total_byte_length
       raise "length error #{stream.length} != #{method.instructions.total_byte_length}" if method.instructions.total_byte_length != stream.length
       stream.each_byte do |b|
-        method.binary.set((index - 1) / 4 + 1 , b )
+        method.binary.set_char(index , b )
         index = index + 1
       end
     end
 
     def write_any obj
-      log.debug "Assemble #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
+      log.debug "Write #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
       if @stream.length != obj.position
-        raise "Assemble #{obj.class} #{obj.object_id} at #{stream_position} not #{obj.position}"
+        raise "Write #{obj.class} #{obj.object_id} at #{stream_position} not #{obj.position}"
       end
       if obj.is_a?(Parfait::Word) or obj.is_a?(Symbol)
         write_String obj
       else
         write_object obj
       end
-      log.debug "Assemble #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
+      log.debug "Wrote #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
       obj.position
     end
 
     # write type and layout of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def write_object( object )
-      log.debug "Write #{object.class} #{object.inspect}"
+      log.debug "Write object #{object.class} #{object.inspect}"
       unless @machine.objects.has_key? object.object_id
         raise "Object(#{object.object_id}) not linked #{object.inspect}"
       end
@@ -160,12 +160,16 @@ module Register
     end
 
     def write_String( string )
-      str = string.to_string if string.is_a? Parfait::Word
+      if string.is_a? Parfait::Word
+        str = string.to_string
+        raise "length mismatch #{str.length} != #{string.char_length}" if str.length != string.char_length
+      end
       str = string.to_s if string.is_a? Symbol
-      log.debug "String is #{string} at #{string.position} length #{string.length}"
+      log.debug "#{string.class} is #{string} at #{string.position} length #{string.length}"
       write_ref_for( string.get_layout ) #ref
+      @stream.write_sint32( str.length  ) #int
       @stream.write str
-      pad_after(str.length + 4)
+      pad_after(str.length + 8)
       log.debug "String (#{string.length}) stream #{@stream.length}"
     end
 

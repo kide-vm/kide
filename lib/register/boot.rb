@@ -76,7 +76,8 @@ module Register
         classes[name] = cl
       end
       # superclasses other than default object
-      supers = {  :Object => :Kernel , :Kernel => :Value, :Integer => :Value }
+      supers = {  :Object => :Kernel , :Kernel => :Value,
+                  :Integer => :Value , :BinaryCode => :Word }
       layout_names.each do |classname , ivar|
         next if classname == :Value  # has no superclass
         clazz = classes[classname]
@@ -116,7 +117,7 @@ module Register
           :Integer => {},
           :Object => {},
           :Kernel => {}, #fix, kernel is a class, but should be a module
-          :BinaryCode => {:name => :Word},
+          :BinaryCode => {:char_length => :Integer} ,
           :Space => {:classes => :Dictionary , :first_message => :Message},
           :Frame => {:next_frame => :Frame, :indexed_length => :Integer},
           :Layout => {:object_class => :Class, :instance_methods => :List , :indexed_length => :Integer} ,

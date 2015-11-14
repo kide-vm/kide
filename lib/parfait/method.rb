@@ -23,7 +23,7 @@ module Parfait
       raise "No class #{name}" unless clazz
       self.for_class = clazz
       self.name = name
-      self.binary = BinaryCode.new name
+      self.binary = BinaryCode.new 0
       raise "Wrong type, expect List not #{arguments.class}" unless arguments.is_a? List
       arguments.each do |var|
         raise "Must be variable argument, not #{var}" unless var.is_a? Variable

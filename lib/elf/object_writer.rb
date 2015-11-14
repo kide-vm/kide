@@ -30,14 +30,17 @@ module Elf
       end
 
       Register.machine.objects.each do |id,slot|
+        next if slot.is_a?(Parfait::BinaryCode)
         if( slot.respond_to? :sof_reference_name )
           label = "#{slot.sof_reference_name}"
         else
           label = "#{slot.class.name}::#{slot.position.to_s(16)}"
         end
         label += "=#{slot}" if slot.is_a?(Symbol) or slot.is_a?(String)
-        label += "=#{slot.name}" if slot.is_a?(Parfait::BinaryCode)
         add_symbol  label , slot.position
+        if slot.is_a?(Parfait::Method)
+          add_symbol  slot.name.to_s , slot.binary.position
+        end
       end
     end
     attr_reader :text

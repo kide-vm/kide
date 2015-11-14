@@ -29,7 +29,7 @@ HERE
       @interpreter.tick
     end while( ! @interpreter.instruction.nil?)
     assert_equal @stdout , @interpreter.stdout
-#    write_file if true
+    write_file if true
   end
 
   def write_file
