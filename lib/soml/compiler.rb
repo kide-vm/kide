@@ -83,9 +83,10 @@ module Soml
     # return self for chaining
     def init_method
       source = "_init_method"
-      @method.instructions = Register::Label.new(source, "#{method.for_class.name}.#{method.name}")
+      name = "#{method.for_class.name}.#{method.name}"
+      @method.instructions = Register::Label.new(source, name)
       @current = enter = method.instructions
-      add_code Register::Label.new( source, "return")
+      add_code Register::Label.new( source, "return #{name}")
       #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
       add_code Register::FunctionReturn.new( source , Register.message_reg , Register.resolve_index(:message , :return_address) )
       @current = enter

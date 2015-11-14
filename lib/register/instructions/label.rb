@@ -17,6 +17,9 @@ module Register
     def to_s
       "Label: #{@name} (#{self.next.class})"
     end
+    def sof_reference_name
+      "Label: #{@name}"
+    end
 
     # a method start has a label of the form Class.method , test for that
     def is_method

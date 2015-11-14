@@ -49,6 +49,7 @@ module Elf
       add_symbol "_start", 0
     end
     def add_symbol(name, offset, linkage = Elf::Constants::STB_GLOBAL)
+      return add_symbol( name + "_" , offset ) if @symbol_table.has_name(name)
       @symbol_table.add_func_symbol name, offset, @text, linkage
     end
 

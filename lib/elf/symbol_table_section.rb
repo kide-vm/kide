@@ -18,6 +18,10 @@ module Elf
       end
     end
 
+    def has_name(name)
+      @strtab.index_for(name)
+    end
+    
     def index_for_name(name)
       @symbols.each_with_index { |sym, idx|
         if (sym[0] == name)
