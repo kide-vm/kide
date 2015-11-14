@@ -28,7 +28,7 @@ module Register
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::Method
         objekt.binary.position = at
-        objekt.instructions.set_position at
+        objekt.instructions.set_position at + 8 # BinaryCode header
         len = objekt.instructions.total_byte_length
         log.debug "CODE #{objekt.name} at #{objekt.binary.position} len: #{len}"
         objekt.binary.set_length(len , 0)
