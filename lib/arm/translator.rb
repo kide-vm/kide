@@ -15,18 +15,27 @@ module Arm
       nil
     end
 
+    # arm indexes are
+    #  in bytes, so *4
+    #  0 based , so -1
+    # if an instruction is passed in we ge the index with inex function
+    def arm_index index
+      index = index.index if index.is_a?(Register::Instruction)
+      raise "index error 0" if index == 0
+      (index - 1) * 4
+    end
     # Arm stores the return address in a register (not on the stack)
     # The register is called link , or lr for short .
     # Maybe because it provides the "link" back to the caller
     # the vm defines a register for the location, so we store it there.
     def translate_SaveReturn code
-      ArmMachine.str( :lr ,  code.register , 4 * code.index )
+      ArmMachine.str( :lr ,  code.register , arm_index(code) )
     end
 
     def translate_GetSlot code
       # times 4 because arm works in bytes, but vm in words
       if(code.index.is_a? Numeric)
-        ArmMachine.ldr( code.register ,  code.array , 4 * code.index )
+        ArmMachine.ldr( code.register ,  code.array , arm_index(code) )
       else
         ArmMachine.ldr( code.register ,  code.array , code.index )
       end
@@ -41,18 +50,18 @@ module Arm
     def translate_SetSlot code
       # times 4 because arm works in bytes, but vm in words
       if(code.index.is_a? Numeric)
-        ArmMachine.str( code.register ,  code.array , 4 * code.index )
+        ArmMachine.str( code.register ,  code.array , arm_index(code) )
       else
         ArmMachine.str( code.register ,  code.array , code.index )
       end
     end
 
     def translate_FunctionCall code
-      ArmMachine.call( code.method )
+      ArmMachine.b( code.method.instructions )
     end
 
     def translate_FunctionReturn code
-      ArmMachine.ldr( :pc ,  code.register , 4 * code.index )
+      ArmMachine.ldr( :pc ,  code.register , arm_index(code) )
     end
 
     def translate_LoadConstant code
@@ -120,7 +129,7 @@ module Arm
     end
 
     def putstring int_code
-      codes = ArmMachine.ldr( :r1 , Register.message_reg, 4 * Register.resolve_index(:message , :receiver))
+      codes = ArmMachine.ldr( :r1 , Register.message_reg, 4 * Register.resolve_index(:message , :receiver) - 4)
       codes.append ArmMachine.add( :r1 ,  :r1 , 8 )
       codes.append ArmMachine.mov( :r0 ,  1 )
       codes.append ArmMachine.mov( :r2 ,  12 ) # String length, obvious TODO
