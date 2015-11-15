@@ -130,9 +130,9 @@ module Arm
 
     def putstring int_code
       codes = ArmMachine.ldr( :r1 , Register.message_reg, 4 * Register.resolve_index(:message , :receiver) - 4)
-      codes.append ArmMachine.add( :r1 ,  :r1 , 8 )
-      codes.append ArmMachine.mov( :r0 ,  1 )
-      codes.append ArmMachine.mov( :r2 ,  12 ) # String length, obvious TODO
+      codes.append ArmMachine.ldr( :r2 ,  :r1 , 4 ) # String length
+      codes.append ArmMachine.add( :r1 ,  :r1 , 8 ) # adjust for object header
+      codes.append ArmMachine.mov( :r0 ,  1 )  # write to stdout == 1
       syscall(int_code , codes )
     end
 
