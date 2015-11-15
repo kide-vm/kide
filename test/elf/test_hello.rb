@@ -15,7 +15,7 @@ class HelloTest < MiniTest::Test
     @string_input    = <<HERE
 class Object
   int main()
-    "Hello again\n".putstring()
+    return "Hello again\n".putstring()
   end
 end
 HERE

@@ -66,7 +66,6 @@ module Register
           compiler.add_code RegisterTransfer.new(source, r8 , Register.message_reg )
           # save the return value into the message
           compiler.add_code Register.set_slot( source , return_tmp , :message , :return_value )
-          # and "unroll" self and frame
         end
       end
       extend ClassMethods
