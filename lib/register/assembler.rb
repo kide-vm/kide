@@ -24,7 +24,14 @@ module Register
       @machine.init.set_position(at)
       at += @machine.init.byte_length
       at +=  8 # thats the padding
-      # want to have the methods first in the executable
+      # want to have the objects first in the executable
+      @machine.objects.each do | id , objekt|
+        next if objekt.is_a? Register::Label # will get assembled as method.instructions
+        next if objekt.is_a? Parfait::BinaryCode
+        objekt.position = at
+        at += objekt.padded_length
+      end
+      # and then everything code
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::Method
         objekt.binary.position = at
@@ -33,13 +40,6 @@ module Register
         log.debug "CODE #{objekt.name} at #{objekt.binary.position} len: #{len}"
         objekt.binary.set_length(len , 0)
         at += objekt.binary.padded_length
-      end
-      # and then everything else
-      @machine.objects.each do | id , objekt|
-        next if objekt.is_a? Register::Label # will get assembled as method.instructions
-        next if objekt.is_a? Parfait::BinaryCode
-        objekt.position = at
-        at += objekt.padded_length
       end
     end
 
@@ -64,26 +64,29 @@ module Register
         log.debug "Linked #{objekt.class}(#{objekt.object_id}) at #{objekt.position} / #{objekt.padded_length}"
         objekt.position
       end
+
       # first we need to create the binary code for the methods
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::Method
         assemble_binary_method(objekt)
       end
+
       @stream = StringIO.new
       @machine.init.assemble( @stream )
       8.times do
         @stream.write_uint8(0)
       end
 
-      # then write the methods to file
-      @machine.objects.each do |id, objekt|
-        next unless objekt.is_a? Parfait::BinaryCode
-        write_any( objekt )
-      end
-      # and then the rest of the object machine
+      #  then the objects , not code yet
       @machine.objects.each do | id, objekt|
         next if objekt.is_a? Parfait::BinaryCode
         next if objekt.is_a? Register::Label # ignore
+        write_any( objekt )
+      end
+
+      # then write the methods to file
+      @machine.objects.each do |id, objekt|
+        next unless objekt.is_a? Parfait::BinaryCode
         write_any( objekt )
       end
       log.debug "Assembled #{stream_position} bytes"
