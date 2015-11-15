@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/salama/salama-arm.git
-  revision: 00b175d354046a6228f66a980822eae974ca807a
+  revision: 72fcf371bc42279676533142c82e34713e77ea75
   specs:
     salama-arm (0.3.0)
 

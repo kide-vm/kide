@@ -13,6 +13,8 @@ module Register
     include Logging
     log_level :info
 
+    MARKER = 0xA51AF00D
+
     def initialize machine
       @machine = machine
       @load_at = 0x8054 # this is linux/arm
@@ -35,7 +37,7 @@ module Register
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::Method
         objekt.binary.position = at
-        objekt.instructions.set_position at + 8 # BinaryCode header
+        objekt.instructions.set_position at + 12 # BinaryCode header
         len = objekt.instructions.total_byte_length
         log.debug "CODE #{objekt.name} at #{objekt.binary.position} len: #{len}"
         objekt.binary.set_length(len , 0)
@@ -137,7 +139,8 @@ module Register
       unless @machine.objects.has_key? object.object_id
         raise "Object(#{object.object_id}) not linked #{object.inspect}"
       end
-      written = 0
+      @stream.write_sint32( MARKER  )
+      written = 0 # compensate for the "secrect" marker
       object.get_instance_variables.each do |var|
         inst = object.get_instance_variable(var)
         #puts "Nil for #{object.class}.#{var}" unless inst
@@ -154,7 +157,7 @@ module Register
       end
       log.debug "layout #{lay_len} , total #{written} (array #{written - lay_len})"
       log.debug "Len = #{object.get_length} , inst = #{object.get_layout.instance_length}" if object.is_a? Parfait::Layout
-      pad_after( written )
+      pad_after( written  )
       object.position
     end
 
@@ -169,10 +172,11 @@ module Register
       end
       str = string.to_s if string.is_a? Symbol
       log.debug "#{string.class} is #{string} at #{string.position} length #{string.length}"
+      @stream.write_sint32( MARKER  )
       write_ref_for( string.get_layout ) #ref
       @stream.write_sint32( str.length  ) #int
       @stream.write str
-      pad_after(str.length + 8)
+      pad_after(str.length + 8 ) # layout , length   *4 == 12
       log.debug "String (#{string.length}) stream #{@stream.length}"
     end
 
@@ -198,7 +202,7 @@ module Register
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
     def pad_after length
       before = stream_position
-      pad = padding_for(length)
+      pad = padding_for(length) - 4  # four is for the MARKER we write
       pad.times do
         @stream.write_uint8(0)
       end

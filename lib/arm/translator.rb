@@ -17,12 +17,11 @@ module Arm
 
     # arm indexes are
     #  in bytes, so *4
-    #  0 based , so -1
-    # if an instruction is passed in we ge the index with inex function
+    # if an instruction is passed in we get the index with index function
     def arm_index index
       index = index.index if index.is_a?(Register::Instruction)
       raise "index error 0" if index == 0
-      (index - 1) * 4
+      index * 4
     end
     # Arm stores the return address in a register (not on the stack)
     # The register is called link , or lr for short .
