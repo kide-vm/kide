@@ -3,7 +3,7 @@ require_relative 'helper'
 class TestWord < MiniTest::Test
   include Fragments
 
-  def test_hello
+  def test_word_new
     @string_input = <<HERE
 class Object
   Word self.new()

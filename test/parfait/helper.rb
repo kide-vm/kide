@@ -33,8 +33,9 @@ HERE
   end
 
   def write_file
-    file_name = caller(3).first.split("in ").last.chop.reverse.chop.reverse
-    file_name = File.dirname(__FILE__) + "/" + file_name + ".o"
+    file_name = caller(3).first.split("in ").last.chop.sub("`","")
+    return if file_name.include?("run")
+    file_name =  "./tmp/" + file_name + ".o"
     Register.machine.translate_arm
     writer = Elf::ObjectWriter.new
     writer.save file_name

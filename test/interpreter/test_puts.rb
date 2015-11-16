@@ -20,10 +20,10 @@ HERE
      "LoadConstant","SetSlot","FunctionCall","Label","GetSlot",
      "LoadConstant","SetSlot","LoadConstant","SetSlot","LoadConstant",
      "SetSlot","LoadConstant","SetSlot","RegisterTransfer","FunctionCall",
-     "Label","GetSlot","RegisterTransfer","Syscall","RegisterTransfer",
-     "RegisterTransfer","SetSlot","Label","FunctionReturn","RegisterTransfer",
-     "GetSlot","GetSlot","Label","FunctionReturn","RegisterTransfer",
-     "Syscall","NilClass"]
+     "Label","GetSlot","GetSlot","RegisterTransfer","Syscall",
+     "RegisterTransfer","RegisterTransfer","SetSlot","Label","FunctionReturn",
+     "RegisterTransfer","GetSlot","GetSlot","Label","FunctionReturn",
+     "RegisterTransfer","Syscall","NilClass"]
   end
 
   def test_branch
@@ -47,13 +47,13 @@ HERE
   end
 
   def test_putstring
-    done = ticks(24)
+    done = ticks(25)
     assert_equal Register::Syscall ,  done.class
     assert_equal "Hello again" , @interpreter.stdout
   end
 
   def test_return
-    done = ticks(29)
+    done = ticks(30)
     assert_equal Register::FunctionReturn ,  done.class
     assert Register::Label , @interpreter.instruction.class
     assert @interpreter.instruction.is_a?(Register::Instruction) , "not instruction #{@interpreter.instruction}"

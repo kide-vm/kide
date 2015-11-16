@@ -39,3 +39,4 @@ pkg
 # Object files
 *.o
 log
+tmp
