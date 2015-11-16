@@ -4,6 +4,7 @@ gem "salama" , :path => "."
 gem "ast" , :github => "whitequark/ast"
 
 gem "rake"
+gem "rye"
 
 gem "salama-reader" , :github => "salama/salama-reader"
 #gem "salama-reader" , :path => "../salama-reader"
