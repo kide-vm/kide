@@ -32,10 +32,10 @@ HERE
      "OperatorInstruction","IsZero","GetSlot","LoadConstant","SetSlot",
      "LoadConstant","SetSlot","LoadConstant","SetSlot","LoadConstant",
      "SetSlot","RegisterTransfer","FunctionCall","Label","GetSlot",
-     "RegisterTransfer","Syscall","RegisterTransfer","RegisterTransfer","SetSlot",
-     "Label","FunctionReturn","RegisterTransfer","GetSlot","GetSlot",
-     "Branch","Label","Label","FunctionReturn","RegisterTransfer",
-     "GetSlot","GetSlot","Label","FunctionReturn","RegisterTransfer",
-     "Syscall","NilClass"]
+     "GetSlot","RegisterTransfer","Syscall","RegisterTransfer","RegisterTransfer",
+     "SetSlot","Label","FunctionReturn","RegisterTransfer","GetSlot",
+     "GetSlot","Branch","Label","Label","FunctionReturn",
+     "RegisterTransfer","GetSlot","GetSlot","Label","FunctionReturn",
+     "RegisterTransfer","Syscall","NilClass"]
   end
 end
