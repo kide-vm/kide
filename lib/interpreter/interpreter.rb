@@ -121,7 +121,15 @@ module Interpreter
       else
         index = get_register(@instruction.index)
       end
-      value = object.get_internal( index )
+      if object.is_a?(Symbol)
+        if( index == 2 )
+          value = object.to_s.length
+        else
+          raise "Unsupported action, must convert symbol to word:#{object}"
+        end
+      else
+        value = object.get_internal( index )
+      end
       #value = value.object_id unless value.is_a? Fixnum
       set_register( @instruction.register , value )
       true

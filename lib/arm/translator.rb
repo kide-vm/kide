@@ -128,14 +128,13 @@ module Arm
     end
 
     def putstring int_code
-      codes = ArmMachine.ldr( :r2 ,  :r1 , 8 ) # String length
-      codes.append ArmMachine.add( :r1 ,  :r1 , 12 ) # adjust for object header
+      codes = ArmMachine.add( :r1 ,  :r1 , 12 ) # adjust for object header
       codes.append ArmMachine.mov( :r0 ,  1 )  # write to stdout == 1
       syscall(int_code , codes )
     end
 
     def exit int_code
-      codes = Register::Label.new(nil , "exit")
+      codes =  ArmMachine.ldr( :r0 ,  :r0 , arm_index(Register.resolve_index(:Message , :return_value)) )
       syscall int_code , codes
     end
 
