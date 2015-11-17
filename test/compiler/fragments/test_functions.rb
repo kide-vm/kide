@@ -8,7 +8,7 @@ class TestFunctions < MiniTest::Test
 class Object
 
   int times(int a, int b)
-    if_zero( b )
+    if_zero( b + 0)
       a = 0
     else
       int m = b - 1
@@ -29,7 +29,7 @@ class Object
   end
 end
 HERE
-    @length = 483
+    @length = 505
     check_return 80
   end
 

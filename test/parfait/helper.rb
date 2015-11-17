@@ -41,6 +41,7 @@ HERE
 
   def connected
     return @@conn if defined?(@@conn)
+    return @@conn = false
     begin
       box = Rye::Box.new("localhost" , :port => 2222 , :user => "pi")
       box.pwd

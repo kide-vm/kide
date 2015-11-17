@@ -69,9 +69,8 @@ class Integer < Value
     tmp2 = me + tmp2
 
     tmp2 = tmp2 << 1
-    minus_10 =  tmp2 - minus_10
 
-    if_minus(minus_10)
+    if_minus(tmp2 - minus_10)
       me = me + 1
     end
     return me
