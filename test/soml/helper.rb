@@ -10,6 +10,7 @@ Rye::Cmd.add_command :aout, './a.out'
 #
 # The second obviously takes a fair bit of time so it's only done when an REMOTE is set
 #  REMOTE has to be set to user@machine:port  or it will default to an emulator
+#   the minimum is REMOTE=username , and off course ssh keys have to be set up
 
 module RuntimeTests
 
@@ -42,9 +43,9 @@ module RuntimeTests
   def connected
     return false unless ENV["REMOTE"]
     user , rest = ENV["REMOTE"].split("@")
-    machine , port = rest.split(":")
+    machine , port = rest.to_s.split(":")
     return @@conn if defined?(@@conn)
-    @@conn = Rye::Box.new(machine | "localhost" , :port => (port | 2222) , :user => (user | "pi"))
+    @@conn = Rye::Box.new(machine || "localhost" , :port => (port || 2222) , :user => (user || "pi"))
   end
 
   def check_remote ret
