@@ -1,3 +1,4 @@
+require_relative "interpreter/test_all"
 
 require_relative "test_compat"
 require_relative "test_instructions"
