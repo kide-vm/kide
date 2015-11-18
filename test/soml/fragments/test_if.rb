@@ -17,7 +17,7 @@ class Object
 end
 HERE
     @length = 25
-    check_return 4
+    check 4
   end
 
   def test_if_zero

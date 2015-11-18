@@ -31,14 +31,14 @@ HERE
     fibo 48
     @length = 1241
     # this is not the correct fibo, just what comes from wrapping (smaller than below)
-    check_return 512559680
+    check 512559680
   end
 
   # highest 32 bit fibo
   def test_while_fibo47
     fibo 47
     @length = 1216
-    check_return 2971215073
+    check 2971215073
   end
 
 end

@@ -12,7 +12,7 @@ class Object
 end
 HERE
     @length = 15
-    check_return 5
+    check 5
   end
 
   def test_return2
@@ -28,7 +28,7 @@ class Object
 end
 HERE
     @length = 35
-    check_return 5
+    check 5
   end
 
   def test_return3
@@ -45,7 +45,7 @@ class Object
 end
 HERE
     @length = 39
-    check_return 5
+    check 5
   end
 
 end

@@ -30,7 +30,7 @@ class Object
 end
 HERE
     @length = 505
-    check_return 80
+    check 80
   end
 
   def test_class_method
@@ -47,7 +47,7 @@ class Object
 end
 HERE
   @length = 33
-  check_return 5
+  check 5
   end
 
   def test_class_method_fails

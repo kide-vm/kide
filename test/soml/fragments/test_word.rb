@@ -1,5 +1,6 @@
 require_relative 'helper'
 
+module Soml
 class TestWord < MiniTest::Test
   include Fragments
 
@@ -20,4 +21,5 @@ HERE
     @stdout = ""
     check
   end
+end
 end

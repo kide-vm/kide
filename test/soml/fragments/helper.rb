@@ -1,36 +1,20 @@
-require_relative '../../helper'
-require "register/interpreter"
+require_relative '../helper'
 
 # Fragments are small programs that we run through the interpreter and really only check
 # - the no. of instructions processed
 # - the stdout output
 
-
-
 module Fragments
+  include RuntimeTests
 
+  # define setup to NOT load parfait.
   def setup
     @stdout =  ""
-  end
-  def check
-    machine = Register.machine.boot
-    machine.parse_and_compile @string_input
-    machine.collect
-    @interpreter = Register::Interpreter.new
-    @interpreter.start machine.init
-    count = 0
-    begin
-      count += 1
-      #puts interpreter.instruction
-      @interpreter.tick
-    end while( ! @interpreter.instruction.nil?)
-    assert_equal @length , count
-    assert_equal @stdout , @interpreter.stdout
+    @machine = Register.machine.boot
   end
 
-  def check_return val
-    check
-    assert_equal Parfait::Message , @interpreter.get_register(:r0).class
-    assert_equal val , @interpreter.get_register(:r0).return_value
+  def main()
+    @string_input
   end
+
 end

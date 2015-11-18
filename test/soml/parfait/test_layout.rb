@@ -1,26 +1,26 @@
 require_relative 'helper'
 
 class TestLayoutRT < MiniTest::Test
-  include RuntimeTests
+  include ParfaitTests
 
   def test_main
-    @string_input =  "return 1"
+    @main =  "return 1"
     check_return 1
   end
 
   def test_get_layout
-    @string_input =  "return get_layout()"
+    @main =  "return get_layout()"
     check_return_class Parfait::Layout
 
   end
 
   def test_get_class
-    @string_input =  "return get_class()"
+    @main =  "return get_class()"
     check_return_class Parfait::Class
   end
 
   def test_puts_class
-    @string_input = <<HERE
+    @main = <<HERE
 Class c = get_class()
 Word w = c.get_name()
 w.putstring()

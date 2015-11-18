@@ -29,6 +29,6 @@ class Object
 end
 HERE
   @length = 2525
-  check_return 21
+  check 21
   end
 end
