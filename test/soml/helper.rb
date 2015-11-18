@@ -38,15 +38,15 @@ module RuntimeTests
       assert_equal Parfait::Message , @interpreter.get_register(:r0).class
       assert_equal ret , @interpreter.get_register(:r0).return_value , "exit wrong #{@string_input}"
     end
-#    check_remote ret
+    check_remote ret
   end
 
   def connected
     return false if ENV["REMOTE_PI"].nil? or (ENV["REMOTE_PI"] == "")
+    return @@conn if defined?(@@conn)
     puts "remote " + ENV["REMOTE_PI"]
     user , rest = ENV["REMOTE_PI"].split("@")
     machine , port = rest.to_s.split(":")
-    return @@conn if defined?(@@conn)
     @@conn = Rye::Box.new(machine || "localhost" , :port => (port || 2222) , :user => (user || "pi"))
   end
 

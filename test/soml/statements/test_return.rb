@@ -14,18 +14,14 @@ class Object
 end
 HERE
     @expect =  [Label, LoadConstant ,SetSlot,Label,FunctionReturn]
-    was = check
-    set = was.next(2)
-    assert_equal SetSlot , set.class
-    should = Register.machine.space.first_message.get_layout.variable_index(:return_value)
-    assert_equal should, set.index , "Set to message must got to return_value(#{should}), not #{set.index}"
+    check 
   end
 
   def test_return_local
     @string_input = <<HERE
 class Object
   int main()
-    int runner
+    int runner = 5
     return runner
   end
 end
@@ -53,6 +49,7 @@ HERE
 class Object
   field int runner
   int main()
+    runner = 5
     return self.runner
   end
 end
