@@ -3,11 +3,29 @@ require_relative 'helper'
 class TestPutiRT < MiniTest::Test
   include RuntimeTests
 
-  def test_mod4
-    [2,3,4,5,10,12].each do |m|
-      @string_input = "return #{m}.mod4()"
-      check_return m % 4
-    end
+  def test_mod4_2
+    @string_input = "return 2.mod4()"
+    check_return 2 % 4
+  end
+  def test_mod4_3
+    @string_input = "return 3.mod4()"
+    check_return 3 % 4
+  end
+  def test_mod4_4
+    @string_input = "return 4.mod4()"
+    check_return 4 % 4
+  end
+  def test_mod4_5
+    @string_input = "return 5.mod4()"
+    check_return 5 % 4
+  end
+  def test_mod4_12
+    @string_input = "return 12.mod4()"
+    check_return 12 % 4
+  end
+  def test_mod4_10
+    @string_input = "return 10.mod4()"
+    check_return 10 % 4
   end
 
   # if you multiply i by "by" the return is the high 32 bits
@@ -26,31 +44,54 @@ class TestPutiRT < MiniTest::Test
     return  (by & 0xffffffff)
   end
 
-  def test_hightimes
-#    [2,3,4,5,10,121212 , 12345 , 3456 , 234567].each do |m|
-    [2, 3456 , 234567].each do |m|
-      @string_input = "return #{m}.high_times(12 , 333)"
-      check_return high_times(m,12,333)
-    end
+  def test_hightimes2
+    @string_input = "return #{2}.high_times(12 , 333)"
+    check_return high_times(2,12,333)
   end
-  def test_lowtimes
-    #[2,3,4,5,10 , 3456 , 12345 , 121212 , 234567].each do |m|
-    [2 , 3456 ,234567].each do |m|
-        @string_input = "return #{m}.low_times(14 , 33)"
-      check_return low_times(m,14,33)
-    end
+  def test_hightimes3456
+    @string_input = "return #{3456}.high_times(12 , 333)"
+    check_return high_times(3456,12,333)
+  end
+  def test_hightimes234567
+    @string_input = "return #{234567}.high_times(12 , 333)"
+    check_return high_times(2,12,333)
+  end
+  def test_hightimes
+    @string_input = "return #{234567}.high_times(12 , 333)"
+    check_return high_times(234567,12,333)
+  end
+  def test_lowtimes2
+    @string_input = "return #{2}.low_times(14 , 33)"
+    check_return low_times(2,14,33)
+  end
+  def test_lowtimes3456
+    @string_input = "return #{3456}.low_times(14 , 33)"
+    check_return low_times(3456,14,33)
+  end
+  def test_lowtimes234567
+    @string_input = "return #{234567}.low_times(14 , 33)"
+    check_return low_times(234567,14,33)
   end
 
   # finally settled on the long version in http://www.sciencezero.org/index.php?title=ARM:_Division_by_10
   # also the last looked good, but some bug is admittedly in all the ones i tried
   #        (off course the bug is not included in the test, but easy to achieve with random numbers )
   # for high numbers with ending 0 they are all 1 low. Possibly Interpreter bug ?
-  def test_div10
-    #[2,3,4,5,10 , 3456 , 12345 , 121212 , 234567].each do |m|
-    [2,10  , 12345 ,234567].each do |m|
-        @string_input = "return #{m}.div10()"
-      check_return m / 10
-    end
+  def test_div10_2
+    @string_input = "return 2.div10()"
+    check_return 2 / 10
+  end
+  def test_div10_10
+    @string_input = "return 10.div10()"
+    check_return 10 / 10
+  end
+  def test_div10_12345
+    @string_input = "return 12345.div10()"
+    check_return 12345 / 10
+  end
+  def test_div10_234567
+    @string_input = "return 234567.div10()"
+    check_return 234567 / 10
   end
 
   def test_as_char1

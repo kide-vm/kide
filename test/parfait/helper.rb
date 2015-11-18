@@ -37,6 +37,7 @@ HERE
       assert_equal ret , @interpreter.get_register(:r0).return_value , "exit wrong #{@string_input}"
     end
     check_remote ret
+    file = write_object_file
   end
 
   def connected
@@ -54,6 +55,7 @@ HERE
   end
   def check_remote ret
     return unless box = connected
+    return unless ret.is_a?(Numeric)
     file = write_object_file
     r_file = file.sub("./" , "salama/")
     box.file_upload file , r_file
@@ -67,7 +69,7 @@ HERE
     assert_equal "" , ret.stderr.join , "remote had error"
     if ret
       should =  @interpreter.get_register(:r0).return_value
-      assert_equal ret.exit_status.to_i ,should , "remote exit failed for #{@string_input}"
+      assert_equal should , ret.exit_status.to_i  , "remote exit failed for #{@string_input}"
     end
   end
 
