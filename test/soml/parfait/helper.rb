@@ -1,4 +1,4 @@
-require_relative '../helper'
+require_relative '../../helper'
 require "register/interpreter"
 require "rye"
 Rye::Cmd.add_command :ld, '/usr/bin/ld'
