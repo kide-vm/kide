@@ -45,31 +45,31 @@ class TestPutiRT < MiniTest::Test
   end
 
   def test_hightimes2
-    @string_input = "return #{2}.high_times(12 , 333)"
+    @string_input = "return 2.high_times(12 , 333)"
     check_return high_times(2,12,333)
   end
   def test_hightimes3456
-    @string_input = "return #{3456}.high_times(12 , 333)"
+    @string_input = "return 3456.high_times(12 , 333)"
     check_return high_times(3456,12,333)
   end
   def test_hightimes234567
-    @string_input = "return #{234567}.high_times(12 , 333)"
-    check_return high_times(2,12,333)
+    @string_input = "return 234567.high_times(12 , 333)"
+    check_return high_times(234567,12,333)
   end
   def test_hightimes
-    @string_input = "return #{234567}.high_times(12 , 333)"
+    @string_input = "return 234567.high_times(12 , 333)"
     check_return high_times(234567,12,333)
   end
   def test_lowtimes2
-    @string_input = "return #{2}.low_times(14 , 33)"
+    @string_input = "return 2.low_times(14 , 33)"
     check_return low_times(2,14,33)
   end
   def test_lowtimes3456
-    @string_input = "return #{3456}.low_times(14 , 33)"
+    @string_input = "return 3456.low_times(14 , 33)"
     check_return low_times(3456,14,33)
   end
   def test_lowtimes234567
-    @string_input = "return #{234567}.low_times(14 , 33)"
+    @string_input = "return 234567.low_times(14 , 33)"
     check_return low_times(234567,14,33)
   end
 
