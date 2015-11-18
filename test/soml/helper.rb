@@ -12,6 +12,8 @@ Rye::Cmd.add_command :aout, './a.out'
 #  REMOTE has to be set to user@machine:port  or it will default to an emulator
 #   the minimum is REMOTE=username , and off course ssh keys have to be set up
 
+# btw can't test with ruby on a PI as code creation only works on 64bit
+#   that's because ruby nibbles 2 bits from a word, and soml code doesn't work around that
 module RuntimeTests
 
   def setup
@@ -37,7 +39,7 @@ module RuntimeTests
       assert_equal ret , @interpreter.get_register(:r0).return_value , "exit wrong #{@string_input}"
     end
     check_remote ret
-    file = write_object_file
+    write_object_file
   end
 
   def connected
@@ -64,6 +66,7 @@ module RuntimeTests
     assert_equal "" , ret.stderr.join , "remote had error"
     if ret
       should =  @interpreter.get_register(:r0).return_value
+      should &= 0xFF  # don't knwo why exit codes are restricted but there you are
       assert_equal should , ret.exit_status.to_i  , "remote exit failed for #{@string_input}"
     end
   end
@@ -83,7 +86,7 @@ module RuntimeTests
   end
 
   def check_return_class val
-    check
+    check val
     assert_equal val , @interpreter.get_register(:r0).return_value.class
   end
 end
