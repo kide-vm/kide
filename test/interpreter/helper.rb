@@ -1,5 +1,5 @@
 require_relative "../helper"
-require "interpreter/interpreter"
+require "register/interpreter"
 
 module Ticker
 
@@ -10,7 +10,7 @@ module Ticker
     #puts parts.inspect
     Soml.compile( parts )
     machine.collect
-    @interpreter = Interpreter::Interpreter.new
+    @interpreter = Register::Interpreter.new
     @interpreter.start Register.machine.init
   end
 

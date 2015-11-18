@@ -1,7 +1,7 @@
 
 require_relative "eventable"
 
-module Interpreter
+module Register
   class Interpreter
     # fire events for changed pc and register contents
     include Eventable

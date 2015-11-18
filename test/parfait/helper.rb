@@ -1,5 +1,5 @@
 require_relative '../helper'
-require "interpreter/interpreter"
+require "register/interpreter"
 require "rye"
 Rye::Cmd.add_command :ld, '/usr/bin/ld'
 Rye::Cmd.add_command :aout, './a.out'
@@ -23,7 +23,7 @@ HERE
     Soml::Compiler.load_parfait
     machine.parse_and_compile  main.sub("PROGRAM" , @string_input )
     machine.collect
-    @interpreter = Interpreter::Interpreter.new
+    @interpreter = Register::Interpreter.new
     @interpreter.start machine.init
     count = 0
     begin
