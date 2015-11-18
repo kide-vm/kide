@@ -23,18 +23,30 @@ module Parfait
 
     alias :[] :get
 
-    #ruby 2.1 list (just for reference, keep at bottom)
-    # :at, :fetch, :first, :last, :concat, :<<, :push, :pop, :shift, :unshift, :insert, :each, :each_index, :reverse_each,
-    # :length, :size, :empty?, :find_index, :index, :rindex, :join, :reverse, :reverse!, :rotate, :rotate!,
-    # :sort, :sort!, :sort_by!, :collect, :collect!, :map, :map!, :select, :select!, :keep_if,
-    # :values_at, :delete, :delete_at, :delete_if, :reject, :reject!, :zip, :transpose, :replace, :clear,
-    # :fill, :include?, :slice, :slice!, :assoc, :rassoc, :+, :*, :-, :&, :|, :uniq, :uniq!, :compact, :compact!,
-    # :flatten, :flatten!, :count, :shuffle!, :shuffle, :sample, :cycle, :permutation, :combination,
-    # :repeated_permutation, :repeated_combination, :product, :take, :take_while, :drop, :drop_while,
-    # :bsearch, :pack, :entries, :sort_by, :grep, :find, :detect, :find_all, :flat_map, :collect_concat,
-    # :inject, :reduce, :partition, :group_by, :all?, :any?, :one?, :none?,
-    # :min, :max, :minmax, :min_by, :max_by, :minmax_by, :member?, :each_with_index, :each_entry,
-    # :each_slice, :each_cons, :each_with_object, :chunk, :slice_before, :lazy
-
+    def to_sof_node(writer , level , ref )
+      Sof.array_to_sof_node(self , writer , level , ref )
+    end
+    def to_a
+      array = []
+      index = 1
+      while( index <= self.get_length)
+        array[index - 1] = get(index)
+        index = index + 1
+      end
+      array
+    end
   end
+
+  # new list from ruby array to be precise
+  def self.new_list array
+    list = Parfait::List.new
+    list.set_length array.length
+    index = 1
+    while index <= array.length do
+      list.set(index , array[index - 1])
+      index = index + 1
+    end
+    list
+  end
+
 end

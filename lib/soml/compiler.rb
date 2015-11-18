@@ -74,7 +74,7 @@ module Soml
         end
         arguments << arg
       end
-      @method = clazz.create_instance_method( method_name , Register.new_list(arguments))
+      @method = clazz.create_instance_method( method_name , Parfait.new_list(arguments))
       self
     end
 

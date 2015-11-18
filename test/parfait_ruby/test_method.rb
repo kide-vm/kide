@@ -4,7 +4,7 @@ class TestMethod < MiniTest::Test
 
   def setup
     obj = Register.machine.boot.space.get_class_by_name(:Object)
-    args = Register.new_list [ Parfait::Variable.new(:Integer , :bar )]
+    args = Parfait.new_list [ Parfait::Variable.new(:Integer , :bar )]
     @method = ::Parfait::Method.new obj , :foo , args
   end
 

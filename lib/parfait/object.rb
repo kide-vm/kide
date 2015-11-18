@@ -28,6 +28,30 @@ module Parfait
       object
     end
 
+    # Objects memory functions. Object memory is 1 based
+    # but we implement it with ruby array (0 based) and don't use 0
+    # These are the same functions that Builtin implements for run-time
+    include Padding
+    include Positioned
+
+    def fake_init
+      @memory = Array.new(16)
+      @position = nil
+      self # for chaining
+    end
+
+    # 1 -based index
+    def get_internal(index)
+      @memory[index]
+    end
+    # 1 -based index
+    def set_internal(index , value)
+      raise "failed init for #{self.class}" unless @memory
+      raise "Word[#{index}] = " if((self.class == Parfait::Word) and value.nil? )
+      @memory[index] = value
+      value
+    end
+
     def self.attributes names
       names.each{|name| attribute(name) }
     end
@@ -101,15 +125,17 @@ module Parfait
       padded_words( get_layout().instance_length )
     end
 
-    # Object
-    # :nil?, :===, :=~, :!~, :eql?, :hash, :<=>, :class, :singleton_class, :clone, :dup, :taint, :tainted?, :untaint,
-    # :untrust, :untrusted?, :trust, :freeze, :frozen?, :to_s, :inspect, :methods, :singleton_methods, :protected_methods,
-    # :private_methods, :public_methods, :get_instance_variables, :get_instance_variable, :set_instance_variable, :instance_variable_defined?,
-    # :remove_instance_variable, :instance_of?, :kind_of?, :is_a?, :tap, :send, :public_send, :respond_to?,
-    # :extend, :display, :method, :public_method, :singleton_method, :define_singleton_method,
-    # :object_id, :to_enum, :enum_for
-    #
-    # BasicObject
-    # :==, :equal?, :!, :!=, :instance_eval, :instance_exec, :__send__, :__id__
+    # parfait versions are deliberately called different, so we "relay"
+    # have to put the "@" on the names for sof to take them off again
+    def instance_variables
+      get_instance_variables.to_a.collect{ |n| "@#{n}".to_sym }
+    end
+    # name comes in as a ruby @var name
+    def instance_variable_get name
+      var = get_instance_variable name.to_s[1 .. -1].to_sym
+      #puts "getting #{name}  #{var}"
+      var
+    end
+
   end
 end

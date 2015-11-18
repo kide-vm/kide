@@ -8,7 +8,7 @@ class TestClass < MiniTest::Test
   end
 
   def foo_method for_class = :Try
-    args = Register.new_list [ Parfait::Variable.new(:Integer , :bar )]
+    args = Parfait.new_list [ Parfait::Variable.new(:Integer , :bar )]
     ::Parfait::Method.new @space.get_class_by_name(for_class) , :foo , args
   end
 
@@ -42,7 +42,7 @@ class TestClass < MiniTest::Test
     end
   end
   def test_create_method
-    @try.create_instance_method :bar, Register.new_list( [ Parfait::Variable.new(:Integer , :bar )])
+    @try.create_instance_method :bar, Parfait.new_list( [ Parfait::Variable.new(:Integer , :bar )])
     assert_equal ":bar" , @try.method_names.inspect
   end
   def test_method_get

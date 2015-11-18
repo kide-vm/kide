@@ -32,7 +32,8 @@ module Parfait
       self.locals = List.new
     end
     attributes [:name , :source , :instructions , :binary ,:arguments , :for_class, :locals ]
-
+    # not part of the parfait model, hence ruby accessor
+    attr_accessor :source
 
     # determine whether this method has an argument by the name
     def has_arg name

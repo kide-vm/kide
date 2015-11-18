@@ -147,6 +147,26 @@ module Parfait
       return true
     end
 
+    def == other
+      return false unless other.is_a?(String) or other.is_a?(Word)
+      as_string = self.to_string
+      unless other.is_a? String
+        other = other.to_string
+      end
+      as_string == other
+    end
+
+    def to_string
+      string = ""
+      index = 1
+      while( index <= self.char_length)
+        char = get_char(index)
+        string += char ? char.chr : "*"
+        index = index + 1
+      end
+      string
+    end
+
     # as we answered is_value? with true, sof will create a basic node with this string
     def to_sof
       "'" + to_s + "'"
@@ -161,4 +181,15 @@ module Parfait
       raise "Length out of bounds #{self.char_length}" if self.char_length > 1000
     end
   end
+
+  # Word from string 
+  def self.new_word( string )
+    string = string.to_s if string.is_a? Symbol
+    word = Parfait::Word.new( string.length )
+    string.codepoints.each_with_index do |code , index |
+      word.set_char(index + 1 , code)
+    end
+    word
+  end
+
 end

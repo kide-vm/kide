@@ -5,12 +5,12 @@ class TestPositioning < MiniTest::Test
     Register.machine.boot unless Register.machine.booted
   end
   def test_list1
-    list = Register.new_list([1])
+    list = Parfait.new_list([1])
     list.set_layout( Parfait::Layout.new Object)
     assert_equal 32 , list.padded_length
   end
   def test_list5
-    list = Register.new_list([1,2,3,4,5])
+    list = Parfait.new_list([1,2,3,4,5])
     list.set_layout( Parfait::Layout.new Object)
     assert_equal 32 , list.padded_length
   end

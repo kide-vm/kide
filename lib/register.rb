@@ -1,9 +1,7 @@
+require "register/padding"
+require "register/positioned"
 require "parfait"
 require "register/machine"
-#if we are in the ruby run-time / generating an executable
-require "register/positioned"
-require "register/padding"
-require "register/parfait_adapter"
 
 require "soml/compiler"
 
