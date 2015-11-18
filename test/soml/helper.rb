@@ -38,8 +38,7 @@ module RuntimeTests
       assert_equal Parfait::Message , @interpreter.get_register(:r0).class
       assert_equal ret , @interpreter.get_register(:r0).return_value , "exit wrong #{@string_input}"
     end
-    check_remote ret
-    write_object_file
+#    check_remote ret
   end
 
   def connected
