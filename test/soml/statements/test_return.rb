@@ -14,14 +14,14 @@ class Object
 end
 HERE
     @expect =  [Label, LoadConstant ,SetSlot,Label,FunctionReturn]
-    check 
+    check
   end
 
   def test_return_local
     @string_input = <<HERE
 class Object
   int main()
-    int runner = 5
+    int runner
     return runner
   end
 end
@@ -41,20 +41,6 @@ end
 HERE
     @expect =  [Label, LoadConstant,GetSlot,SetSlot,GetSlot,GetSlot ,SetSlot,
                 Label,FunctionReturn]
-    check
-  end
-
-  def test_return_field
-    @string_input = <<HERE
-class Object
-  field int runner
-  int main()
-    runner = 5
-    return self.runner
-  end
-end
-HERE
-    @expect =  [Label, GetSlot,GetSlot ,SetSlot,Label,FunctionReturn]
     check
   end
 
