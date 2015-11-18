@@ -86,7 +86,7 @@ module RuntimeTests
   end
 
   def check_return_class val
-    check val
+    check
     assert_equal val , @interpreter.get_register(:r0).return_value.class
   end
 end
