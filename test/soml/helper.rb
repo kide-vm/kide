@@ -8,9 +8,9 @@ Rye::Cmd.add_command :aout, './a.out'
 # - first by running it through the interpreter
 # - second by assembling to arm , pushing the binary to a remote machine and executing it there
 #
-# The second obviously takes a fair bit of time so it's only done when an REMOTE is set
-#  REMOTE has to be set to user@machine:port  or it will default to an emulator
-#   the minimum is REMOTE=username , and off course ssh keys have to be set up
+# The second obviously takes a fair bit of time so it's only done when an REMOTE_PI is set
+#  REMOTE_PI has to be set to user@machine:port  or it will default to an emulator
+#   the minimum is REMOTE_PI=username , and off course ssh keys have to be set up
 
 # btw can't test with ruby on a PI as code creation only works on 64bit
 #   that's because ruby nibbles 2 bits from a word, and soml code doesn't work around that
@@ -43,8 +43,8 @@ module RuntimeTests
   end
 
   def connected
-    return false unless ENV["REMOTE"]
-    user , rest = ENV["REMOTE"].split("@")
+    return false unless ENV["REMOTE_PI"]
+    user , rest = ENV["REMOTE_PI"].split("@")
     machine , port = rest.to_s.split(":")
     return @@conn if defined?(@@conn)
     @@conn = Rye::Box.new(machine || "localhost" , :port => (port || 2222) , :user => (user || "pi"))
