@@ -43,7 +43,8 @@ module RuntimeTests
   end
 
   def connected
-    return false unless ENV["REMOTE_PI"]
+    return false if ENV["REMOTE_PI"].nil? or (ENV["REMOTE_PI"] == "")
+    puts "remote " + ENV["REMOTE_PI"]
     user , rest = ENV["REMOTE_PI"].split("@")
     machine , port = rest.to_s.split(":")
     return @@conn if defined?(@@conn)
