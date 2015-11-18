@@ -17,11 +17,11 @@ class TestLayout < MiniTest::Test
     assert_equal @mess.next_message , @mess.get_instance_variable(:next_message)
     index = @mess.get_layout.variable_index :next_message
     assert_equal 2 , index
-    assert_equal @mess.next_message , @mess.get_internal(index)
+    assert_equal @mess.next_message , @mess.get_internal_word(index)
   end
 
   def test_layout_index
-    assert_equal @mess.get_layout , @mess.get_internal(Parfait::LAYOUT_INDEX) , "mess"
+    assert_equal @mess.get_layout , @mess.get_internal_word(Parfait::LAYOUT_INDEX) , "mess"
   end
 
   def test_inspect
@@ -38,7 +38,7 @@ class TestLayout < MiniTest::Test
 
   def test_layout_length
     assert_equal 9 , @mess.get_layout.instance_length , @mess.get_layout.inspect
-    assert_equal 18 , @mess.get_layout.get_internal(4)
+    assert_equal 18 , @mess.get_layout.get_internal_word(4)
   end
 
   def test_layout_length_index
@@ -46,7 +46,7 @@ class TestLayout < MiniTest::Test
     assert_equal 4 , @mess.get_layout.get_layout.get_offset
     assert_equal 4 , @mess.get_layout.get_offset
     assert_equal 8 , @mess.get_layout.get_layout.indexed_length
-    assert_equal 8 , @mess.get_layout.get_layout.get_internal(4)
+    assert_equal 8 , @mess.get_layout.get_layout.get_internal_word(4)
   end
 
   def test_layout_methods
@@ -116,7 +116,7 @@ class TestLayout < MiniTest::Test
     message_ind = Register.resolve_index( :message , :receiver )
     assert_equal 3 , message_ind
     @mess.receiver = 55
-    assert_equal 55 , @mess.get_internal(message_ind)
+    assert_equal 55 , @mess.get_internal_word(message_ind)
   end
 
   def test_object_layout
@@ -125,6 +125,6 @@ class TestLayout < MiniTest::Test
 
   def test_remove_me
     layout = @mess.get_layout
-    assert_equal layout , @mess.get_internal(1)
+    assert_equal layout , @mess.get_internal_word(1)
   end
 end

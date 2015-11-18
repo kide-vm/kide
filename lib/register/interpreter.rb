@@ -128,7 +128,7 @@ module Register
           raise "Unsupported action, must convert symbol to word:#{object}"
         end
       else
-        value = object.get_internal( index )
+        value = object.get_internal_word( index )
       end
       #value = value.object_id unless value.is_a? Fixnum
       set_register( @instruction.register , value )
@@ -143,7 +143,7 @@ module Register
       else
         index = get_register(@instruction.index)
       end
-      object.set_internal( index , value )
+      object.set_internal_word( index , value )
       trigger(:object_changed, @instruction.array , index)
       true
     end
@@ -161,7 +161,7 @@ module Register
 
     def execute_FunctionReturn
       object = get_register( @instruction.register )
-      link = object.get_internal( @instruction.index )
+      link = object.get_internal_word( @instruction.index )
       @instruction = link
       # we jump back to the call instruction. so it is as if the call never happened and we continue
       true

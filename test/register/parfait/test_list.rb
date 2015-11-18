@@ -48,7 +48,7 @@ class TestList < MiniTest::Test
     @list.push :one
     assert_equal 1 , @list.get_length
     assert_equal 1 , @list.indexed_length
-    assert_equal 1 , @list.get_internal(Parfait::LAYOUT_INDEX + 1)
+    assert_equal 1 , @list.get_internal_word(Parfait::LAYOUT_INDEX + 1)
   end
   def test_list_inspect
     @list.set(1,1)
@@ -71,7 +71,7 @@ class TestList < MiniTest::Test
   end
   def test_one_set1
     assert_equal 2 , @list.set(1,2)
-    assert_equal 1 , @list.get_internal(2)
+    assert_equal 1 , @list.get_internal_word(2)
   end
   def test_set1_len
     @list.set(1,1)

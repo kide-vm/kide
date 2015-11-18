@@ -74,8 +74,8 @@ module Parfait
       raise "Use variable_index instead"
     end
 
-    # index of the variable when using get_internal
-    # (get_internal is 1 based and 1 is always the layout)
+    # index of the variable when using get_internal_word
+    # (get_internal_word is 1 based and 1 is always the layout)
     def variable_index name
       has = super_index(name)
       return nil unless has

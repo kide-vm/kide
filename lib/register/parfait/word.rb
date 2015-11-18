@@ -92,13 +92,13 @@ module Parfait
       word_index = (index - 1) / 4 + 1 + Word.get_length_index
       rest = ((index - 1) % 4)
       shifted =  char << (rest * 8)
-      was = get_internal( word_index )
+      was = get_internal_word( word_index )
       was = 0 unless was.is_a?(Numeric)
       mask = 0xFF << (rest * 8)
       mask = 0xFFFFFFFF - mask
       masked = was & mask
       put = masked + shifted
-      set_internal( word_index , put )
+      set_internal_word( word_index , put )
       msg = "set index=#{index} word_index=#{word_index} rest=#{rest}= "
       msg += "char=#{char.to_s(16)} shifted=#{shifted.to_s(16)} "
       msg += "was=#{was.to_s(16)} masked=#{masked.to_s(16)} put=#{put.to_s(16)}"
@@ -114,7 +114,7 @@ module Parfait
       index = range_correct_index(at)
       word_index = (index - 1 ) / 4 + 1 + Word.get_length_index
       rest = ((index - 1) % 4)
-      char = get_internal(word_index)
+      char = get_internal_word(word_index)
       char = 0 unless char.is_a?(Numeric)
       shifted = char >> (8 * rest)
       ret = shifted & 0xFF

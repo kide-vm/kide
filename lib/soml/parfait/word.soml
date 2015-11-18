@@ -6,7 +6,7 @@ class Word < Object
     word_index = word_index + 3
     int rest = index - 1
     rest = rest.mod4()
-    int char = get_internal(word_index)
+    int char = get_internal_word(word_index)
     int shifted = 8 * rest
     shifted = char >> shifted
     int ret = shifted & 255
@@ -14,7 +14,7 @@ class Word < Object
   end
 
   int set_length(int i)
-    set_internal( 2 , i)
+    set_internal_word( 2 , i)
     return i
   end
 
@@ -32,7 +32,7 @@ class Word < Object
     int shifted =  rest * 8
     shifted =  char << shifted
 
-    int was = get_internal( word_index )
+    int was = get_internal_word( word_index )
     int mask = rest * 8
     int const = 255 << 8
     const = const + 255
@@ -47,7 +47,7 @@ class Word < Object
     int masked = was & mask
     int put = masked + shifted
 
-    set_internal( word_index , put )
+    set_internal_word( word_index , put )
 
     return self
   end

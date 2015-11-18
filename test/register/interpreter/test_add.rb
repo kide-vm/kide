@@ -37,7 +37,7 @@ HERE
     assert_equal Register::FunctionReturn ,  ret.class
 
     object = @interpreter.get_register( ret.register )
-    link = object.get_internal( ret.index )
+    link = object.get_internal_word( ret.index )
 
     assert_equal Register::Label , link.class
   end

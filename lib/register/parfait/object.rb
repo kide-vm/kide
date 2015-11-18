@@ -41,11 +41,11 @@ module Parfait
     end
 
     # 1 -based index
-    def get_internal(index)
+    def get_internal_word(index)
       @memory[index]
     end
     # 1 -based index
-    def set_internal(index , value)
+    def set_internal_word(index , value)
       raise "failed init for #{self.class}" unless @memory
       raise "Word[#{index}] = " if((self.class == Parfait::Word) and value.nil? )
       @memory[index] = value
@@ -80,16 +80,16 @@ module Parfait
     def set_layout(layout)
       # puts "Layout was set for #{self.class}"
       raise "Nil layout" unless layout
-      set_internal(LAYOUT_INDEX , layout)
+      set_internal_word(LAYOUT_INDEX , layout)
     end
 
     # so we can keep the raise in get_layout
     def has_layout?
-      ! get_internal(LAYOUT_INDEX).nil?
+      ! get_internal_word(LAYOUT_INDEX).nil?
     end
 
     def get_layout()
-      l = get_internal(LAYOUT_INDEX)
+      l = get_internal_word(LAYOUT_INDEX)
       #puts "get layout for #{self.class} returns #{l.class}"
       raise "No layout #{self.object_id.to_s(16)}:#{self.class} " unless l
       return l
@@ -108,13 +108,13 @@ module Parfait
       index = instance_variable_defined(name)
       #puts "getting #{name} at #{index}"
       return nil if index == nil
-      return get_internal(index)
+      return get_internal_word(index)
     end
 
     def set_instance_variable name , value
       index = instance_variable_defined(name)
       return nil if index == nil
-      return set_internal(index , value)
+      return set_internal_word(index , value)
     end
 
     def instance_variable_defined name

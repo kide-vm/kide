@@ -16,9 +16,9 @@ module Register
         # self[index] basically. Index is the first arg
         # return is stored in return_value
         # (this method returns a new method off course, like all builtin)
-        def get_internal context
-          compiler = Soml::Compiler.new.create_method(:Object , :get_internal , {:Integer => :index}).init_method
-          source = "get_internal"
+        def get_internal_word context
+          compiler = Soml::Compiler.new.create_method(:Object , :get_internal_word , {:Integer => :index}).init_method
+          source = "get_internal_word"
           #Load self by "calling" on_name
           me = compiler.process( s(:name , :self) )
           # Load the argument
@@ -33,10 +33,10 @@ module Register
 
         # self[index] = val basically. Index is the first arg , vlaue the second
         # no return
-        def set_internal context
-          compiler = Soml::Compiler.new.create_method(:Object , :set_internal ,
+        def set_internal_word context
+          compiler = Soml::Compiler.new.create_method(:Object , :set_internal_word ,
                                                 {:Integer => :index, :Object => :value} ).init_method
-          source = "set_internal"
+          source = "set_internal_word"
           #Load self by "calling" on_name
           me = compiler.process( s(:name , :self) )
           # Load the index
