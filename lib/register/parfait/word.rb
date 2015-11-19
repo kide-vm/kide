@@ -139,7 +139,7 @@ module Parfait
       index = self.length + at if at < 0
       raise "index must be positive , not #{at}" if (index <= 0)
       raise "index too large #{at} > #{self.length}" if (index > self.length )
-      return index + Word.get_length_index * 4
+      return index + Word.get_length_index * 4 + 4
     end
 
     # compare the word to another

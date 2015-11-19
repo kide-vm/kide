@@ -1,11 +1,11 @@
 class Word < Object
 
-  int correct_index(int index)
-    return index + 8
+  int _internal_index(int index)
+    return index + 12
   end
 
-  int char_at(int index)
-    index = correct_index(index)
+  int get_char_at(int index)
+    index = _internal_index(index)
     return get_internal_byte(index)
   end
 
@@ -15,7 +15,7 @@ class Word < Object
   end
 
   int set_char_at( int index , int val)
-    index = correct_index(index)
+    index = _internal_index(index)
     return set_internal_byte(index , val)
   end
 

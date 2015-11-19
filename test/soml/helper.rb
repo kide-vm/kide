@@ -52,7 +52,6 @@ module RuntimeTests
 
   def check_remote ret
     return unless box = connected
-    return unless ret.is_a?(Numeric)
     file = write_object_file
     r_file = file.sub("./" , "salama/")
     box.file_upload file , r_file
@@ -64,7 +63,7 @@ module RuntimeTests
     end
     assert_equal @stdout , ret.stdout.join , "remote std was #{ret.stdout}" if @stdout
     assert_equal "" , ret.stderr.join , "remote had error"
-    if ret
+    if ret and ret.is_a?(Numeric)
       should =  @interpreter.get_register(:r0).return_value
       should &= 0xFF  # don't knwo why exit codes are restricted but there you are
       assert_equal should , ret.exit_status.to_i  , "remote exit failed for #{@string_input}"
@@ -72,7 +71,7 @@ module RuntimeTests
   end
 
   def write_object_file
-    file_name = caller(3).first.split("in ").last.chop.sub("`","")
+    file_name = caller(4).first.split("in ").last.chop.sub("`","")
     return if file_name.include?("run")
     file_name =  "./tmp/" + file_name + ".o"
     Register.machine.translate_arm

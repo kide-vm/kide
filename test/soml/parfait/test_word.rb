@@ -14,7 +14,7 @@ HERE
   def test_space
     @main = <<HERE
 Word w = " "
-return w.char_at(1)
+return w.get_char_at(1)
 HERE
     assert_equal 32 , " ".codepoints[0] # just checking
     check_return 32
@@ -24,7 +24,7 @@ HERE
     @main = <<HERE
 Word w = " "
 w.push_char(48)
-return w.char_at(1)
+return w.get_char_at(1)
 HERE
       check_return 32
   end
@@ -33,7 +33,7 @@ HERE
     @main = <<HERE
 Word w = " "
 w.push_char(48)
-return w.char_at(2)
+return w.get_char_at(2)
 HERE
     check_return 48
   end
@@ -50,7 +50,7 @@ HERE
   def test_get1
     @main = <<HERE
 Word w = "12345"
-return w.char_at(1)
+return w.get_char_at(1)
 HERE
     check_return 49
   end
@@ -58,7 +58,7 @@ HERE
   def test_get2
     @main = <<HERE
 Word w = "12345"
-return w.char_at(2)
+return w.get_char_at(2)
 HERE
     check_return 50
   end
@@ -67,7 +67,7 @@ HERE
     @main = <<HERE
 Word w = "12345"
 w.set_char_at(2 , 51)
-return w.char_at(2)
+return w.get_char_at(2)
 HERE
     check_return 51
   end
