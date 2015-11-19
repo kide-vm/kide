@@ -150,10 +150,13 @@ module Register
         obj.add_instance_method Builtin::Kernel.send(f , nil)
       end
 
-      @space.get_class_by_name(:Word).add_instance_method Builtin::Word.send(:putstring , nil)
+      obj = @space.get_class_by_name(:Word)
+      [:putstring , :get_internal_byte , :set_internal_byte ].each do |f|
+        obj.add_instance_method Builtin::Word.send(f , nil)
+      end
 
       obj = @space.get_class_by_name(:Integer)
-      [ :putint, :mod4].each do |f|
+      [ :putint, :mod4].each do |f|   #mod4 is just a forward declaration
         obj.add_instance_method Builtin::Integer.send(f , nil)
       end
     end
