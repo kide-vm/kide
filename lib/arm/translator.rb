@@ -31,6 +31,12 @@ module Arm
       ArmMachine.str( :lr ,  code.register , arm_index(code) )
     end
 
+    def translate_RegisterTransfer code
+      # Register machine convention is from => to
+      # But arm has the receiver/result as the first
+      ArmMachine.mov( code.to , code.from)
+    end
+
     def translate_GetSlot code
       # times 4 because arm works in bytes, but vm in words
       if(code.index.is_a? Numeric)
@@ -40,18 +46,28 @@ module Arm
       end
     end
 
-    def translate_RegisterTransfer code
-      # Register machine convention is from => to
-      # But arm has the receiver/result as the first
-      ArmMachine.mov( code.to , code.from)
-    end
-
     def translate_SetSlot code
       # times 4 because arm works in bytes, but vm in words
       if(code.index.is_a? Numeric)
         ArmMachine.str( code.register ,  code.array , arm_index(code) )
       else
         ArmMachine.str( code.register ,  code.array , code.index )
+      end
+    end
+
+    def translate_GetByte code
+      if(code.index.is_a? Numeric)
+        ArmMachine.ldrb( code.register ,  code.array , arm_index(code) )
+      else
+        ArmMachine.ldrb( code.register ,  code.array , code.index )
+      end
+    end
+
+    def translate_SetByte code
+      if(code.index.is_a? Numeric)
+        ArmMachine.strb( code.register ,  code.array , arm_index(code) )
+      else
+        ArmMachine.strb( code.register ,  code.array , code.index )
       end
     end
 

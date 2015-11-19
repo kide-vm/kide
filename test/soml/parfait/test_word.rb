@@ -28,6 +28,7 @@ return w.char_at(1)
 HERE
       check_return 32
   end
+
   def test_after_add_get_works
     @main = <<HERE
 Word w = " "
@@ -61,4 +62,14 @@ return w.char_at(2)
 HERE
     check_return 50
   end
+
+  def test_set2
+    @main = <<HERE
+Word w = "12345"
+w.set_char_at(2 , 51)
+return w.char_at(2)
+HERE
+    check_return 51
+  end
+
 end

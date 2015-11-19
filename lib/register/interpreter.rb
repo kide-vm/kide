@@ -148,6 +148,36 @@ module Register
       true
     end
 
+    def execute_GetByte
+      object = get_register( @instruction.array )
+      if( @instruction.index.is_a?(Numeric) )
+        index = @instruction.index
+      else
+        index = get_register(@instruction.index)
+      end
+      if object.is_a?(Symbol)
+        raise "Unsupported action, must convert symbol to word:#{object}"
+      else
+        value = object.get_internal_byte( index )
+      end
+      #value = value.object_id unless value.is_a? Fixnum
+      set_register( @instruction.register , value )
+      true
+    end
+
+    def execute_SetByte
+      value = get_register( @instruction.register )
+      object = get_register( @instruction.array )
+      if( @instruction.index.is_a?(Numeric) )
+        index = @instruction.index
+      else
+        index = get_register(@instruction.index)
+      end
+      object.set_internal_byte( index , value )
+      trigger(:object_changed, @instruction.array , index / 4 )
+      true
+    end
+
     def execute_RegisterTransfer
       value = get_register @instruction.from
       set_register @instruction.to , value
