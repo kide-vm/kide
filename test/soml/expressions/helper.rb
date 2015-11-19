@@ -19,7 +19,7 @@ module ExpressionHelper
     machine.boot unless machine.booted
     parser = Parser::Salama.new
     parser = parser.send @root
-    syntax  = parser.parse_with_debug(@string_input)
+    syntax  = parser.parse_with_debug(@string_input, reporter: Parslet::ErrorReporter::Deepest.new)
     parts = Parser::Transform.new.apply(syntax)
     #puts parts.inspect
     compiler = Soml::Compiler.new

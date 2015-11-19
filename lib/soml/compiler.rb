@@ -68,11 +68,12 @@ module Soml
       @clazz = clazz
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
       arguments = []
-      args.each do | arg , name |
-        unless arg.is_a? Parfait::Variable
-          arg = Parfait::Variable.new arg , name.to_sym
+      if( args.is_a? Array)
+        arguments = args
+      else
+        args.each do | name , type |
+          arguments << Parfait::Variable.new( type , name.to_sym)
         end
-        arguments << arg
       end
       @method = clazz.create_instance_method( method_name , Parfait.new_list(arguments))
       self

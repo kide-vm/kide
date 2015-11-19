@@ -21,7 +21,7 @@ class TestRunner < MiniTest::Test
     string = File.read(file)
     parser = Parser::Salama.new
     object_space = Register::Program.new "Arm"
-    syntax  = parser.parse_with_debug(string)
+    syntax  = parser.parse_with_debug(string, reporter: Parslet::ErrorReporter::Deepest.new)
     assert syntax
     parts   = Parser::Transform.new.apply(syntax)
     # file is a list of statements, all but the last must be a function
