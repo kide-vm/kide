@@ -119,6 +119,8 @@ end
 
 require_relative "instructions/set_slot"
 require_relative "instructions/get_slot"
+require_relative "instructions/set_byte"
+require_relative "instructions/get_byte"
 require_relative "instructions/load_constant"
 require_relative "instructions/syscall"
 require_relative "instructions/function_call"

@@ -20,7 +20,7 @@ module Parfait
       2 # 2 is the amount of attributes, layout and char_length. the offset after which chars start
     end
     def self.get_indexed i
-      i + get_length_index
+      i + get_length_index * 4
     end
     # initialize with length. For now we try to keep all non-parfait (including String) out
     # String will contain spaces for non-zero length
@@ -89,7 +89,11 @@ module Parfait
     def set_char at , char
       raise "char not fixnum #{char.class}" unless char.kind_of? Fixnum
       index = range_correct_index(at)
-      word_index = (index - 1) / 4 + 1 + Word.get_length_index
+      set_internal_byte( index , char)
+    end
+
+    def set_internal_byte index , char
+      word_index = (index - 1) / 4 + 1
       rest = ((index - 1) % 4)
       shifted =  char << (rest * 8)
       was = get_internal_word( word_index )
@@ -112,7 +116,12 @@ module Parfait
     #the return "character" is an integer
     def get_char at
       index = range_correct_index(at)
-      word_index = (index - 1 ) / 4 + 1 + Word.get_length_index
+      get_internal_byte(index)
+    end
+
+
+    def get_internal_byte( index )
+      word_index = (index - 1 ) / 4 + 1
       rest = ((index - 1) % 4)
       char = get_internal_word(word_index)
       char = 0 unless char.is_a?(Numeric)
@@ -130,7 +139,7 @@ module Parfait
       index = self.length + at if at < 0
       raise "index must be positive , not #{at}" if (index <= 0)
       raise "index too large #{at} > #{self.length}" if (index > self.length )
-      return index
+      return index + Word.get_length_index * 4
     end
 
     # compare the word to another
@@ -182,7 +191,7 @@ module Parfait
     end
   end
 
-  # Word from string 
+  # Word from string
   def self.new_word( string )
     string = string.to_s if string.is_a? Symbol
     word = Parfait::Word.new( string.length )

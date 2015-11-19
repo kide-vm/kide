@@ -1,16 +1,12 @@
 class Word < Object
 
+  int correct_index(int index)
+    return index + 8
+  end
+
   int char_at(int index)
-    int word_index = index - 1
-    word_index = word_index >> 2
-    word_index = word_index + 3
-    int rest = index - 1
-    rest = rest.mod4()
-    int char = get_internal_word(word_index)
-    int shifted = 8 * rest
-    shifted = char >> shifted
-    int ret = shifted & 255
-    return ret
+    index = correct_index(index)
+    return get_internal_byte(index)
   end
 
   int set_length(int i)
@@ -18,37 +14,16 @@ class Word < Object
     return i
   end
 
+  int set_char_at( int index , int val)
+    index = correct_index(index)
+    return set_internal_byte(index , val)
+  end
+
   Word push_char(int char)
     int index = self.char_length + 1
     self.set_length(index)
 
-    int word_index = index - 1
-    word_index = word_index >> 2
-    word_index = word_index + 3
-
-    int rest = index - 1
-    rest = rest.mod4()
-
-    int shifted =  rest * 8
-    shifted =  char << shifted
-
-    int was = get_internal_word( word_index )
-    int mask = rest * 8
-    int const = 255 << 8
-    const = const + 255
-    const = const << 8
-    const = const + 255
-    const = const << 8
-    const = const + 255
-
-    mask = 255 << mask
-    mask = const - mask
-
-    int masked = was & mask
-    int put = masked + shifted
-
-    set_internal_word( word_index , put )
-
+    set_char_at(index , char)
     return self
   end
 end
