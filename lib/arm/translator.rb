@@ -38,20 +38,18 @@ module Arm
     end
 
     def translate_GetSlot code
-      # times 4 because arm works in bytes, but vm in words
       if(code.index.is_a? Numeric)
         ArmMachine.ldr( code.register ,  code.array , arm_index(code) )
       else
-        ArmMachine.ldr( code.register ,  code.array , code.index )
+        ArmMachine.ldr( code.register ,  code.array , code.index , :shift_lsl => 2 )
       end
     end
 
     def translate_SetSlot code
-      # times 4 because arm works in bytes, but vm in words
       if(code.index.is_a? Numeric)
         ArmMachine.str( code.register ,  code.array , arm_index(code) )
       else
-        ArmMachine.str( code.register ,  code.array , code.index )
+        ArmMachine.str( code.register ,  code.array , code.index , :shift_lsl => 2 )
       end
     end
 
