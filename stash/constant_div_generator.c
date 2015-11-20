@@ -16,7 +16,7 @@
 typedef unsigned int uint;
 
 
-uint log2( uint n )
+uint log2uni( uint n )
 {
   uint bit, pow, logn;
 
@@ -92,8 +92,8 @@ void divideby2( uint type, uint n, uint lsb, uint msb )
   uint logmsb;
   uint usinga4;
 
-  loglsb = log2( lsb );
-  logmsb = log2( msb );
+  loglsb = log2uni( lsb );
+  logmsb = log2uni( msb );
 
   printf( "; %s [%s]\n\n", BANNER, DATE );
   printf( "\tAREA |div%d$code|, CODE, READONLY\n\n", n );

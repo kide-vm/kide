@@ -40,3 +40,4 @@ pkg
 *.o
 log
 tmp
+a.out

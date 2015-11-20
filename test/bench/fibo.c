@@ -19,11 +19,11 @@ int main(void)
 {
 	int counter = 1000000;
 	int counter2 = counter;
-	int level = 76;
+	int level = 40;
 	int fib ;
-	while(counter--) { 
+	while(counter--) {
 		fib = fibo(level);
 	}
 	printf("%i times fib %d \n",counter2 , level);
-		
+
 }
