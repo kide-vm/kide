@@ -93,8 +93,8 @@ module Parfait
     end
 
     def set_internal_byte index , char
-      word_index = (index - 1) / 4 + 1
-      rest = ((index - 1) % 4)
+      word_index = (index) / 4
+      rest = ((index) % 4)
       shifted =  char << (rest * 8)
       was = get_internal_word( word_index )
       was = 0 unless was.is_a?(Numeric)
@@ -121,8 +121,8 @@ module Parfait
 
 
     def get_internal_byte( index )
-      word_index = (index - 1 ) / 4 + 1
-      rest = ((index - 1) % 4)
+      word_index = (index ) / 4
+      rest = ((index) % 4)
       char = get_internal_word(word_index)
       char = 0 unless char.is_a?(Numeric)
       shifted = char >> (8 * rest)
@@ -136,10 +136,10 @@ module Parfait
     # private method to calculate negative indexes into positives
     def range_correct_index at
       index = at
-      index = self.length + at if at < 0
+#      index = self.length + at if at < 0
       raise "index must be positive , not #{at}" if (index <= 0)
       raise "index too large #{at} > #{self.length}" if (index > self.length )
-      return index + Word.get_length_index * 4 + 4
+      return index + 11
     end
 
     # compare the word to another

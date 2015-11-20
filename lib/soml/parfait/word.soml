@@ -1,7 +1,7 @@
 class Word < Object
 
   int _internal_index(int index)
-    return index + 12
+    return index + 11
   end
 
   int get_char_at(int index)
