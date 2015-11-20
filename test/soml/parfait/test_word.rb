@@ -8,7 +8,55 @@ class TestwordRT < MiniTest::Test
 Word w = " "
 return w.char_length
 HERE
-    check_return 1
+    check 1
+  end
+
+  def test_set_len
+    @main = <<HERE
+Word w = " "
+w.set_length(2)
+return w.char_length
+HERE
+    check 2
+  end
+
+  def test_set_char_len
+    @main = <<HERE
+Word w = " "
+w.set_char_at(1 , 30)
+return w.char_length
+HERE
+    check 1
+  end
+
+  def test_set_char_len2
+    @main = <<HERE
+Word w = " "
+w.set_length(2)
+w.set_char_at(2 , 30)
+return w.char_length
+HERE
+    check 2
+  end
+
+  def test_set_char_len3
+    @main = <<HERE
+Word w = " "
+w.set_length(2)
+w.set_char_at(2 , 30)
+return w.get_char_at(2)
+HERE
+    check 30
+  end
+
+  def test_set_char_len4
+    @main = <<HERE
+Word w = " "
+w.set_char_at(1 , 20)
+w.set_length(2)
+return w.get_char_at(1)
+HERE
+    check 20
   end
 
   def test_space
@@ -17,7 +65,7 @@ Word w = " "
 return w.get_char_at(1)
 HERE
     assert_equal 32 , " ".codepoints[0] # just checking
-    check_return 32
+    check 32
   end
 
   def test_add_doesnt_change1
@@ -26,7 +74,7 @@ Word w = " "
 w.push_char(48)
 return w.get_char_at(1)
 HERE
-      check_return 32
+      check 32
   end
 
   def test_after_add_get_works
@@ -35,7 +83,7 @@ Word w = " "
 w.push_char(48)
 return w.get_char_at(2)
 HERE
-    check_return 48
+    check 48
   end
 
   def test_after_add_length_works
@@ -44,7 +92,7 @@ Word w = " "
 w.push_char(32)
 return w.char_length
 HERE
-    check_return 2
+    check 2
   end
 
   def test_get1
@@ -52,7 +100,7 @@ HERE
 Word w = "12345"
 return w.get_char_at(1)
 HERE
-    check_return 49
+    check 49
   end
 
   def test_get2
@@ -60,7 +108,7 @@ HERE
 Word w = "12345"
 return w.get_char_at(2)
 HERE
-    check_return 50
+    check 50
   end
 
   def test_set2
@@ -69,7 +117,64 @@ Word w = "12345"
 w.set_char_at(2 , 51)
 return w.get_char_at(2)
 HERE
-    check_return 51
+    check 51
   end
 
+  def test_push
+    @main = <<HERE
+Word w = "1"
+w.push_char(56)
+return w.get_char_at(2)
+HERE
+    check 56
+  end
+  def test_push1
+    @main = <<HERE
+Word w = "1"
+w.push_char(56)
+return w.get_char_at(1)
+HERE
+    check 49
+  end
+  def test_push_inlined
+    @main = <<HERE
+Word w = "1"
+int index = w.char_length + 1
+w.set_length(index)
+
+w.set_char_at(index , 56)
+
+return w.char_length
+HERE
+    check 2
+  end
+  def test_push_inlined2
+    @main = <<HERE
+Word w = "1"
+int index = w.char_length + 1
+w.set_length(index)
+
+return w.char_length
+HERE
+    check 2
+  end
+
+  def test_push_len
+    @main = <<HERE
+Word w = "1"
+w.push_char(56)
+return w.char_length
+HERE
+    check 2
+  end
+  def test_push3_len
+    @main = <<HERE
+Word w = "1"
+w.push_char(56)
+w.push_char(56)
+w.push_char(56)
+return w.char_length
+HERE
+    check 4
+  end
 end
