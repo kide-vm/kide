@@ -193,7 +193,7 @@ five.putstring()"
     check 6765
   end
 
-  def test_fib40_1000000
+  def pest_fib40_1000000
     @main = "int count = 999424
              count = count + 576
              while_plus( count - 1)
