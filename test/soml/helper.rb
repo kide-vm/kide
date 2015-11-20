@@ -43,6 +43,7 @@ module RuntimeTests
       assert_equal ret , interpreter.get_register(:r0).return_value , "exit wrong #{@string_input}"
     end
     check_remote ret
+    interpreter
   end
 
   def connected
