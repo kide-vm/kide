@@ -8,15 +8,19 @@ class TestLayoutRT < MiniTest::Test
     check_return 1
   end
 
+  def check_return_class val
+  end
+
   def test_get_layout
     @main =  "return get_layout()"
-    check_return_class Parfait::Layout
-
+    check
+    assert_equal  Parfait::Layout , @interpreter.get_register(:r0).return_value.class
   end
 
   def test_get_class
     @main =  "return get_class()"
-    check_return_class Parfait::Class
+    check
+    assert_equal  Parfait::Layout , @interpreter.get_register(:r0).return_value.class
   end
 
   def test_puts_class

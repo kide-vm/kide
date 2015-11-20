@@ -5,27 +5,27 @@ class TestPutiRT < MiniTest::Test
 
   def test_mod4_2
     @main = "return 2.mod4()"
-    check_return 2 % 4
+    check 2 % 4
   end
   def test_mod4_3
     @main = "return 3.mod4()"
-    check_return 3 % 4
+    check 3 % 4
   end
   def test_mod4_4
     @main = "return 4.mod4()"
-    check_return 4 % 4
+    check 4 % 4
   end
   def test_mod4_5
     @main = "return 5.mod4()"
-    check_return 5 % 4
+    check 5 % 4
   end
   def test_mod4_12
     @main = "return 12.mod4()"
-    check_return 12 % 4
+    check 12 % 4
   end
   def test_mod4_10
     @main = "return 10.mod4()"
-    check_return 10 % 4
+    check 10 % 4
   end
 
   # if you multiply i by "by" the return is the high 32 bits
@@ -46,31 +46,31 @@ class TestPutiRT < MiniTest::Test
 
   def test_hightimes2
     @main = "return 2.high_times(12 , 333)"
-    check_return high_times(2,12,333)
+    check high_times(2,12,333)
   end
   def test_hightimes3456
     @main = "return 3456.high_times(12 , 333)"
-    check_return high_times(3456,12,333)
+    check high_times(3456,12,333)
   end
   def test_hightimes234567
     @main = "return 234567.high_times(12 , 333)"
-    check_return high_times(234567,12,333)
+    check high_times(234567,12,333)
   end
   def test_hightimes
     @main = "return 234567.high_times(12 , 333)"
-    check_return high_times(234567,12,333)
+    check high_times(234567,12,333)
   end
   def test_lowtimes2
     @main = "return 2.low_times(14 , 33)"
-    check_return low_times(2,14,33)
+    check low_times(2,14,33)
   end
   def test_lowtimes3456
     @main = "return 3456.low_times(14 , 33)"
-    check_return low_times(3456,14,33)
+    check low_times(3456,14,33)
   end
   def test_lowtimes234567
     @main = "return 234567.low_times(14 , 33)"
-    check_return low_times(234567,14,33)
+    check low_times(234567,14,33)
   end
 
   # finally settled on the long version in http://www.sciencezero.org/index.php?title=ARM:_Division_by_10
@@ -79,29 +79,29 @@ class TestPutiRT < MiniTest::Test
   # for high numbers with ending 0 they are all 1 low. Possibly Interpreter bug ?
   def test_div10_2
     @main = "return 2.div10()"
-    check_return 2 / 10
+    check 2 / 10
   end
   def test_div10_10
     @main = "return 10.div10()"
-    check_return 10 / 10
+    check 10 / 10
   end
   def test_div10_12345
     @main = "return 12345.div10()"
-    check_return 12345 / 10
+    check 12345 / 10
   end
   def test_div10_234567
     @main = "return 234567.div10()"
-    check_return 234567 / 10
+    check 234567 / 10
   end
 
   def test_as_char1
     @main = "return 5.as_char()"
-    check_return 53
+    check 53
   end
 
   def test_as_char2
     @main = "return 10.as_char()"
-    check_return 32
+    check 32
   end
 
   def test_tos_one_digit
@@ -111,9 +111,15 @@ five.putstring()"
     check
   end
 
+  def test_tos_one_digit_length
+    @main = "Word five = 5.to_s()
+return five.char_length"
+    check 2
+  end
+
   def test_tos_zero
     @main = "Word five = 0.to_s()
-five.putstring()"
+    five.putstring()"
     @stdout = " 0"
     check
   end
@@ -123,6 +129,12 @@ five.putstring()"
 five.putstring()"
     @stdout = " 15"
     check
+  end
+
+  def test_tos_two_digit_length
+    @main = "Word five = 15.to_s()
+    return five.char_length"
+    check 3
   end
 
   def test_tos_three_digit
@@ -135,7 +147,7 @@ five.putstring()"
   def test_puti_four_digit
     @main = "return 1234.puti()"
     @stdout = " 1234"
-    check_return 1234
+    check 1234
   end
 
   def test_puti_seven_digit
@@ -143,13 +155,21 @@ five.putstring()"
       i = i + 1671
       return i.puti()"
     @stdout = " 1234567"
-    check_return 1234567
+    check 1234567
   end
+  
+  def test_puti_seven_digit_length
+    @main = "int i = 301 * 4096
+      Word str = i.to_s()
+      return str.char_length"
+    check 8
+  end
+
   def test_puti_eight_digit
     @main = "int i = 3014 * 4096
       i = i + 334
       return i.puti()"
     @stdout = " 12345678"
-    check_return 12345678
+    check 12345678
   end
 end
