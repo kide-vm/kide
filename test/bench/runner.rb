@@ -15,19 +15,17 @@ class Stats
     @variance = @variance + delta*(x - @mean)
   end
   def show
-    puts "no    per   var"
+    #puts "no    per   var"
     puts "#{@n}    #{@mean}   #{@variance}"
   end
 end
 class Runner
-  def initialize num = 20
+  def initialize
     @stats = Stats.new
     @cmd = ARGV[0]
-    @interations = num
   end
   def run
-    @interations.times { once }
-    @stats.show
+    { once } while true
   end
 
   def once
@@ -35,6 +33,7 @@ class Runner
     took = Benchmark.measure { %x("#{@cmd}")}.real
     GC.enable
     @stats.add took
+    @stats.show
   end
 end
 
