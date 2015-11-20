@@ -179,6 +179,15 @@ five.putstring()"
     @stdout = " 21"
     check 21
   end
+  def test_fib20_1000
+    @main = "int count = 1000
+             while_plus( count - 1)
+               20.fibr( )
+               count = count - 1
+             end
+             return count"
+    check 0
+  end
 
   def test_fibw8
     @main = "int fib = 8.fibw( )
@@ -193,11 +202,27 @@ five.putstring()"
     check 6765
   end
 
-  def pest_fib40_1000000
-    @main = "int count = 999424
-             count = count + 576
+  def test_fib40_100000
+    @main = "int count = 100352 - 352
              while_plus( count - 1)
                40.fibw( )
+               count = count - 1
+             end
+             return count"
+    check 0
+  end
+  def test_itos_100000
+    @main = "int count = 100352 - 352
+             while_plus( count - 1)
+               count.to_s( )
+               count = count - 1
+             end
+             return count"
+    check 0
+  end
+  def test_loop_100000
+    @main = "int count = 100352 - 352
+             while_plus( count - 1)
                count = count - 1
              end
              return count"

@@ -2,8 +2,10 @@
 
 int main(void)
 {
+	char stringa[20] ;
+
 	int counter = 98304 + 1696;
 	while(counter--) {
-    printf("Hello there\n");
+    sprintf(stringa, "%i\n" , counter);
 	}
 }

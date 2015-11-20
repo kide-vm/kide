@@ -2,5 +2,8 @@
 
 int main(void)
 {
-  return 1;
+int counter = 98304 + 1696;
+  while(counter--) {
+    counter = counter;
+  }
 }

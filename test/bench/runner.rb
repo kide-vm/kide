@@ -16,7 +16,8 @@ class Stats
   end
   def show
     #puts "no    per   var"
-    puts "#{@n}    #{@mean}   #{@variance}"
+
+    puts "#{@n}    #{@mean}   #{@variance / @n}"
   end
 end
 class Runner
@@ -25,12 +26,14 @@ class Runner
     @cmd = ARGV[0]
   end
   def run
-    { once } while true
+    while true
+      once
+    end
   end
 
   def once
     GC.disable
-    took = Benchmark.measure { %x("#{@cmd}")}.real
+    took = Benchmark.measure { %x(#{@cmd} > /dev/null)}.real
     GC.enable
     @stats.add took
     @stats.show

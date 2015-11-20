@@ -29,6 +29,8 @@ module RuntimeTests
 
   def check ret = nil
     load_program
+    check_remote ret
+    exit
     interpreter = Register::Interpreter.new
     interpreter.start @machine.init
     count = 0
@@ -59,9 +61,9 @@ module RuntimeTests
     return unless box = connected
     load_program
     file = write_object_file
-    print "\nfile #{file} "
     r_file = file.sub("./" , "salama/")
     box.file_upload file , r_file
+    print "\nfile #{file} "
     box.ld "-N", r_file
     begin    #need to rescue here as rye throws if no return 0
       ret = box.aout           # and we use return to mean something

@@ -105,6 +105,7 @@ class Integer < Value
 
   Word to_s()
     Word start = " "
+    start.set_length(0)
     return as_string( start )
   end
 

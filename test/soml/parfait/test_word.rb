@@ -177,4 +177,17 @@ return w.char_length
 HERE
     check 4
   end
+
+  def test_puts_100000
+    @main = <<HERE
+    int count = 100352 - 352
+    Word hello = "Hello there"
+    while_plus( count - 1)
+      hello.putstring()
+      count = count - 1
+     end
+     return 1
+HERE
+    check 1
+  end
 end
