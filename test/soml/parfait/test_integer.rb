@@ -157,7 +157,7 @@ five.putstring()"
     @stdout = " 1234567"
     check 1234567
   end
-  
+
   def test_puti_seven_digit_length
     @main = "int i = 301 * 4096
       Word str = i.to_s()
@@ -171,5 +171,36 @@ five.putstring()"
       return i.puti()"
     @stdout = " 12345678"
     check 12345678
+  end
+
+  def test_fibr8
+    @main = "int fib = 8.fibr( )
+             return fib.puti()"
+    @stdout = " 21"
+    check 21
+  end
+
+  def test_fibw8
+    @main = "int fib = 8.fibw( )
+             return fib.puti()"
+    @stdout = " 21"
+    check 21
+  end
+  def test_fibw20
+    @main = "int fib = 20.fibw( )
+             return fib.puti()"
+    @stdout = " 6765"
+    check 6765
+  end
+
+  def test_fib40_1000000
+    @main = "int count = 999424
+             count = count + 576
+             while_plus( count - 1)
+               40.fibw( )
+               count = count - 1
+             end
+             return count"
+    check 0
   end
 end

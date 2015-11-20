@@ -117,4 +117,32 @@ class Integer < Value
   int mod4()
     return self & 3
   end
+
+  int fibr( )
+    if_plus( self - 2 )
+      int tmp
+      tmp = self - 1
+      int a = tmp.fibr( )
+      tmp = self - 2
+      int b = tmp.fibr( )
+      return a + b
+    else
+      return self
+    end
+  end
+
+  int fibw( )
+    int result = 1
+    int a = 0
+    int b = 1
+    int i = 2
+    while_plus( self - i )
+       result = a + b
+       a = b
+       b = result
+       i = i + 1
+    end
+    return result
+  end
+
 end
