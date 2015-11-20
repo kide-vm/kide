@@ -18,25 +18,29 @@ module RuntimeTests
 
   def setup
     @stdout =  ""
+  end
+
+  def load_program
     @machine = Register.machine.boot
     Soml::Compiler.load_parfait
+    @machine.parse_and_compile main()
+    @machine.collect
   end
 
   def check ret = nil
-    @machine.parse_and_compile  main()
-    @machine.collect
-    @interpreter = Register::Interpreter.new
-    @interpreter.start @machine.init
+    load_program
+    interpreter = Register::Interpreter.new
+    interpreter.start @machine.init
     count = 0
     begin
       count += 1
       #puts interpreter.instruction
-      @interpreter.tick
-    end while( ! @interpreter.instruction.nil?)
-    assert_equal @stdout , @interpreter.stdout , "stdout wrong locally"
+      interpreter.tick
+    end while( ! interpreter.instruction.nil?)
+    assert_equal @stdout , interpreter.stdout , "stdout wrong locally"
     if ret
-      assert_equal Parfait::Message , @interpreter.get_register(:r0).class
-      assert_equal ret , @interpreter.get_register(:r0).return_value , "exit wrong #{@string_input}"
+      assert_equal Parfait::Message , interpreter.get_register(:r0).class
+      assert_equal ret , interpreter.get_register(:r0).return_value , "exit wrong #{@string_input}"
     end
     check_remote ret
   end
@@ -50,9 +54,11 @@ module RuntimeTests
     @@conn = Rye::Box.new(machine || "localhost" , :port => (port || 2222) , :user => (user || "pi"))
   end
 
-  def check_remote ret
+  def check_remote ret_val
     return unless box = connected
+    load_program
     file = write_object_file
+    print "\nfile #{file} "
     r_file = file.sub("./" , "salama/")
     box.file_upload file , r_file
     box.ld "-N", r_file
@@ -63,15 +69,14 @@ module RuntimeTests
     end
     assert_equal @stdout , ret.stdout.join , "remote std was #{ret.stdout}" if @stdout
     assert_equal "" , ret.stderr.join , "remote had error"
-    if ret and ret.is_a?(Numeric)
-      should =  @interpreter.get_register(:r0).return_value
-      should &= 0xFF  # don't knwo why exit codes are restricted but there you are
-      assert_equal should , ret.exit_status.to_i  , "remote exit failed for #{@string_input}"
+    if ret_val
+      ret_val &= 0xFF  # don't knwo why exit codes are restricted but there you are
+      assert_equal ret_val , ret.exit_status.to_i  , "remote exit failed for #{@string_input}"
     end
   end
 
   def write_object_file
-    file_name = caller(4).first.split("in ").last.chop.sub("`","")
+    file_name = caller(3).first.split("in ").last.chop.sub("`","")
     return if file_name.include?("run")
     file_name =  "./tmp/" + file_name + ".o"
     Register.machine.translate_arm
@@ -80,12 +85,4 @@ module RuntimeTests
     file_name
   end
 
-  def check_return val
-    check val
-  end
-
-  def check_return_class val
-    check
-    assert_equal val , @interpreter.get_register(:r0).return_value.class
-  end
 end
