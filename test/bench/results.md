@@ -21,6 +21,11 @@ The machine was a virtual arm run on a powerbook, performance roughly equivalent
 But results should be seen as relative, not absolute.
 
 
-language  | loop    | hello   | itos    |  add     | call        
-c         | 0.0500  | 2.1365  | 0.2902  | 0.1245   | 0.8535  
-soml      | 0.0374  | 1.2071  | 0.7263  | 0.2247   | 1.3625
+language  | loop    | hello   | itos    |  add    | call        
+c         | 0,0500  | 2,1365  | 0,2902  | 0,1245  | 0,8535  
+soml      | 0,0374  | 1,2071  | 0,7263  | 0,2247  | 1,3625
+
+ratio     | 1,3368  | 1,7699  | 0,3996  | 0,5541  | 0,6264
+          | 0,7480  | 0,5650  | 2,5028  | 1,8048  | 1,5964
+
+2c        | - 33 %  | - 79 %  | + 150%  | + 80 %  | + 60 %
