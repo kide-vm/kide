@@ -2,7 +2,8 @@
 
 int main(void)
 {
-	int counter = 98304 + 1696;
+	setbuf(stdout, NULL); /* to make it equivalent to the soml, otherwise it caches */
+	int counter = 100352 - 352;
 	while(counter--) {
     printf("Hello there\n");
 	}
