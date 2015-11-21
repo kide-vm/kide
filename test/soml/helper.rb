@@ -29,7 +29,7 @@ module RuntimeTests
 
   def check ret = nil
     i = check_local
-    check_remote ret
+    check_r ret
     i
   end
 
@@ -60,13 +60,14 @@ module RuntimeTests
     @@conn = Rye::Box.new(machine || "localhost" , :port => (port || 2222) , :user => (user || "pi"))
   end
 
-  def check_remote ret_val
+  def check_r ret_val , dont_run = false
     return unless box = connected
     load_program
     file = write_object_file
     r_file = file.sub("./" , "salama/")
     box.file_upload file , r_file
     print "\nfile #{file} "
+    return if dont_run
     box.ld "-N", r_file
     begin    #need to rescue here as rye throws if no return 0
       ret = box.aout           # and we use return to mean something
