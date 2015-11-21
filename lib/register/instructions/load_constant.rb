@@ -16,21 +16,21 @@ module Register
       "LoadConstant: #{register} <- #{constant_str}"
     end
 
-    def self.load source , constant , register
-      LoadConstant.new source , constant , register
-    end
     private
     def constant_str
-        case @constant
-        when String , Symbol , Fixnum , Integer
-          @constant.to_s
+      case @constant
+      when String , Symbol , Fixnum , Integer
+        @constant.to_s
+      else
+        if( @constant.respond_to? :sof_reference_name )
+          constant.sof_reference_name
         else
-          if( @constant.respond_to? :sof_reference_name )
-            constant.sof_reference_name
-          else
-            constant.class.name.to_s
-          end
+          constant.class.name.to_s
         end
+      end
     end
+  end
+  def self.load_constant source , constant , register
+    LoadConstant.new source , constant , register
   end
 end
