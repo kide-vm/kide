@@ -8,85 +8,24 @@ class Integer < Value
     end
   end
 
-  int high_times( int by_high , int by_low)
 
-    int num_high = self >> 16
-    int num_low  = self & 65535
 
-    int res_high = by_high * num_high
-
-    num_low  = by_high *  num_low
-    num_high = num_high * by_low
-
-    num_high = num_low + num_high
-
-    num_high = num_high >> 16
-
-    res_high = res_high + num_high
-
-    return res_high
-
-  end
-
-  int low_times( int by_high , int by_low)
-
-    int num_high = self >> 16
-    int num_low  = self & 65535
-
-    int res_low = by_low * num_low
-
-    num_low  = by_high *  num_low
-    num_high = num_high * by_low
-
-    num_low = num_low + num_high
-
-    num_low = num_low << 16
-
-    res_low = res_low + num_low
-
-    return res_low
-
-  end
-
-  int div10()
-    int minus_10 = self - 10
-    int me = self
-
-    int tmp = me >> 2
-    me = me - tmp
-
-    tmp = me >> 4
-    me = me + tmp
-
-    tmp = me >> 8
-    me = me + tmp
-
-    tmp = me >> 16
-    me = me + tmp
-    me = me >> 3
-
-    int tmp2 = me << 2
-    tmp2 = me + tmp2
-
-    tmp2 = tmp2 << 1
-
-    if_minus(tmp2 - minus_10)
-      me = me + 1
-    end
-    return me
-  end
-
-  int div10_almost()
-    int me = self
-    if_zero( me >> 26 )
-      me = me + 1
-    end
-    int res_high = me.high_times( 26214 , 26215  )
-    int res_low  = self >> 31
-    res_high = res_high >> 2
-
-    return res_high + res_low
-
+  int div10_soml()
+    int tmp = self >> 1
+    int q = self >> 2
+    q = q + tmp
+    tmp = q >> 4
+    q = q + tmp
+    tmp = q >> 8
+    q = q + tmp
+    tmp = q >> 16
+    q = q + tmp
+    q = q >> 3
+    int r = q * 10
+    r = self - r
+    r = r + 6
+    r = r >> 4
+    return q + r
   end
 
   Word as_string(Word str)

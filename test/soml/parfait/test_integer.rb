@@ -28,55 +28,17 @@ class TestPutiRT < MiniTest::Test
     check 10 % 4
   end
 
-  # if you multiply i by "by" the return is the high 32 bits
-  def high_times( i ,  by_high ,  by_low)
-    by = by_high * 65536 + by_low
-    by *= i
-    by /= 65536
-    by /= 65536
-    return  by
+
+  # finally settled on the long hackers delight version http://www.hackersdelight.org/divcMore.pdf
+  def test_div10_random
+    1000.times do
+      i = rand 0xfffff
+      @main = "return #{i}.div10()"
+      check_local i / 10
+      puts "tested #{i}"
+    end
   end
 
-  # if you multiply i by "by" the return is the low 32 bits
-  def low_times( i ,  by_high ,  by_low)
-    by = by_high * 65536 + by_low
-    by *= i
-    return  (by & 0xffffffff)
-  end
-
-  def test_hightimes2
-    @main = "return 2.high_times(12 , 333)"
-    check high_times(2,12,333)
-  end
-  def test_hightimes3456
-    @main = "return 3456.high_times(12 , 333)"
-    check high_times(3456,12,333)
-  end
-  def test_hightimes234567
-    @main = "return 234567.high_times(12 , 333)"
-    check high_times(234567,12,333)
-  end
-  def test_hightimes
-    @main = "return 234567.high_times(12 , 333)"
-    check high_times(234567,12,333)
-  end
-  def test_lowtimes2
-    @main = "return 2.low_times(14 , 33)"
-    check low_times(2,14,33)
-  end
-  def test_lowtimes3456
-    @main = "return 3456.low_times(14 , 33)"
-    check low_times(3456,14,33)
-  end
-  def test_lowtimes234567
-    @main = "return 234567.low_times(14 , 33)"
-    check low_times(234567,14,33)
-  end
-
-  # finally settled on the long version in http://www.sciencezero.org/index.php?title=ARM:_Division_by_10
-  # also the last looked good, but some bug is admittedly in all the ones i tried
-  #        (off course the bug is not included in the test, but easy to achieve with random numbers )
-  # for high numbers with ending 0 they are all 1 low. Possibly Interpreter bug ?
   def test_div10_2
     @main = "return 2.div10()"
     check 2 / 10

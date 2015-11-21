@@ -28,9 +28,13 @@ module RuntimeTests
   end
 
   def check ret = nil
-    load_program
+    i = check_local
     check_remote ret
-    exit
+    i
+  end
+
+  def check_local ret = nil
+    load_program
     interpreter = Register::Interpreter.new
     interpreter.start @machine.init
     count = 0
@@ -44,7 +48,6 @@ module RuntimeTests
       assert_equal Parfait::Message , interpreter.get_register(:r0).class
       assert_equal ret , interpreter.get_register(:r0).return_value , "exit wrong #{@string_input}"
     end
-    check_remote ret
     interpreter
   end
 
