@@ -31,11 +31,10 @@ class TestPutiRT < MiniTest::Test
 
   # finally settled on the long hackers delight version http://www.hackersdelight.org/divcMore.pdf
   def test_div10_random
-    1000.times do
+    20.times do
       i = rand 0xfffff
       @main = "return #{i}.div10()"
       check_local i / 10
-      puts "tested #{i}"
     end
   end
 
@@ -69,7 +68,7 @@ class TestPutiRT < MiniTest::Test
   def test_tos_one_digit
     @main = "Word five = 5.to_s()
 five.putstring()"
-    @stdout = " 5"
+    @stdout = "5"
     check
   end
 
@@ -82,14 +81,14 @@ return five.char_length"
   def test_tos_zero
     @main = "Word five = 0.to_s()
     five.putstring()"
-    @stdout = " 0"
+    @stdout = "0"
     check
   end
 
   def test_tos_two_digit
     @main = "Word five = 15.to_s()
 five.putstring()"
-    @stdout = " 15"
+    @stdout = "15"
     check
   end
 
@@ -102,13 +101,13 @@ five.putstring()"
   def test_tos_three_digit
     @main = "Word five = 150.to_s()
 five.putstring()"
-    @stdout = " 150"
+    @stdout = "150"
     check
   end
 
   def test_puti_four_digit
     @main = "return 1234.puti()"
-    @stdout = " 1234"
+    @stdout = "1234"
     check 1234
   end
 
@@ -116,7 +115,7 @@ five.putstring()"
     @main = "int i = 301 * 4096
       i = i + 1671
       return i.puti()"
-    @stdout = " 1234567"
+    @stdout = "1234567"
     check 1234567
   end
 
@@ -131,63 +130,27 @@ five.putstring()"
     @main = "int i = 3014 * 4096
       i = i + 334
       return i.puti()"
-    @stdout = " 12345678"
+    @stdout = "12345678"
     check 12345678
   end
 
   def test_fibr8
     @main = "int fib = 8.fibr( )
              return fib.puti()"
-    @stdout = " 21"
+    @stdout = "21"
     check 21
-  end
-  def test_fib20_1000
-    @main = "int count = 1000
-             while_plus( count - 1)
-               20.fibr( )
-               count = count - 1
-             end
-             return count"
-    check 0
   end
 
   def test_fibw8
     @main = "int fib = 8.fibw( )
              return fib.puti()"
-    @stdout = " 21"
+    @stdout = "21"
     check 21
   end
   def test_fibw20
     @main = "int fib = 20.fibw( )
              return fib.puti()"
-    @stdout = " 6765"
+    @stdout = "6765"
     check 6765
-  end
-
-  def test_fib40_100000
-    @main = "int count = 100352 - 352
-             while_plus( count - 1)
-               40.fibw( )
-               count = count - 1
-             end
-             return count"
-    check 0
-  end
-  def test_itos_100000
-    @main = "int count = 100352 - 352
-             while_plus( count - 1)
-               count.to_s( )
-               count = count - 1
-             end
-             return count"
-    check 0
-  end
-  def test_loop_100000
-    @main = "int count = 100352 - 352
-             while_plus( count - 1)
-               count = count - 1
-             end
-             return count"
-    check 0
   end
 end
