@@ -23,7 +23,7 @@ end
 class Runner
   def initialize
     @stats = Stats.new
-    @cmd = ARGV[0]
+    @cmd = ARGV.join(" ")
   end
   def run
     while true
