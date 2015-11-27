@@ -23,6 +23,7 @@ But results should be seen as relative, not absolute.
 
 language  | loop    | hello   | itos    |  add    | call        
 c         | 0,0500  | 2,1365  | 0,2902  | 0,1245  | 0,8535  
+go        | 0.0485  | 4.5355  | 0.2143  | 0.0825  | 0.8769  
 soml      | 0,0374  | 1,2071  | 0,7263  | 0,2247  | 1,3625
 
 ruby      | 0,3     | 8.882    | 0,8971 | 3,8452
