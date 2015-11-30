@@ -27,9 +27,9 @@ GIT
 PATH
   remote: .
   specs:
-    salama (0.3.0)
+    salama (0.5.0)
       salama-object-file (~> 0.3)
-      salama-reader (~> 0.3)
+      soml-parser (~> 0.5)
 
 GEM
   remote: http://rubygems.org/
@@ -102,6 +102,9 @@ GEM
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
     slop (3.6.0)
+    soml-parser (0.5.0)
+      ast (~> 2.1.0)
+      parslet (~> 1.7.1)
     storable (0.8.9)
     sysinfo (0.8.1)
       drydock
