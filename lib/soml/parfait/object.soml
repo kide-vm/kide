@@ -6,7 +6,12 @@ class Object
 
   Class get_class()
     Layout l = self.layout
-    return l.object_class()
+    return l.object_class
   end
 
+  Word get_class_name()
+    Layout l = self.layout
+    Class c = l.object_class
+    return c.name
+  end
 end

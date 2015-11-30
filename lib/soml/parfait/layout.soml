@@ -1,7 +1,6 @@
 class Layout < Object
-
-  Class object_class()
-    return self.object_class
-  end
+  field Class   object_class
+  field List    instance_methods
+  field Integer indexed_length
 
 end

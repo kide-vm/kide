@@ -25,11 +25,32 @@ class TestLayoutRT < MiniTest::Test
 
   def test_puts_class
     @main = <<HERE
-Class c = get_class()
-Word w = c.get_name()
+Word w = get_class_name()
 w.putstring()
 HERE
     @stdout = "Space"
+    check
+  end
+
+  def test_puts_layout_space
+    @main = <<HERE
+Layout l = get_layout()
+Word w = l.get_class_name()
+w.putstring()
+HERE
+    @stdout = "Layout"
+    check
+  end
+
+  # copy of register parfait tests, in order
+  def test_message_layout
+    @main = <<HERE
+Message m = self.first_message
+m = m.next_message
+Word w = m.get_class_name()
+w.putstring()
+HERE
+    @stdout = "Message"
     check
   end
 
