@@ -6,13 +6,6 @@ module Register
       module ClassMethods
         include AST::Sexp
 
-        # main entry point, ie __init__ calls this
-        # defined here as empty, to be redefined
-        def main context
-          compiler = Soml::Compiler.new.create_method(:Object , :main ).init_method
-          return compiler.method
-        end
-
         # self[index] basically. Index is the first arg
         # return is stored in return_value
         # (this method returns a new method off course, like all builtin)
@@ -55,7 +48,3 @@ module Register
     end
   end
 end
-
-require_relative "integer"
-require_relative "kernel"
-require_relative "word"

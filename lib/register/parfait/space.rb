@@ -49,7 +49,7 @@ module Parfait
     end
 
     def get_main
-      kernel = get_class_by_name :Object
+      kernel = get_class_by_name :Space
       kernel.get_instance_method :main
     end
 

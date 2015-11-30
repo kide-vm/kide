@@ -17,7 +17,7 @@ module ParfaitTests
 
   def main
 runko = <<HERE
-class Object
+class Space < Object
   int main()
     PROGRAM
   end

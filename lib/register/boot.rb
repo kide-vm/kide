@@ -140,8 +140,10 @@ module Register
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we
       # have to define some dummies, just for the other to compile
       # TODO go through the virtual parfait layer and adjust function names to what they really are
+      @space.get_class_by_name(:Space).add_instance_method Builtin::Space.send(:main, nil)
+
       obj = @space.get_class_by_name(:Object)
-      [:main , :get_internal_word , :set_internal_word ].each do |f|
+      [ :get_internal_word , :set_internal_word ].each do |f|
         obj.add_instance_method Builtin::Object.send(f , nil)
       end
       obj = @space.get_class_by_name(:Kernel)
