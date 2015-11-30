@@ -7,7 +7,7 @@ class TestReturnStatement < MiniTest::Test
 
   def test_return_int
     @string_input = <<HERE
-class Object
+class Space
   int main()
     return 5
   end
@@ -19,7 +19,7 @@ HERE
 
   def test_return_local
     @string_input = <<HERE
-class Object
+class Space
   int main()
     int runner
     return runner
@@ -32,7 +32,7 @@ HERE
 
   def test_return_local_assign
     @string_input = <<HERE
-class Object
+class Space
   int main()
     int runner = 5
     return runner
@@ -46,7 +46,7 @@ HERE
 
   def pest_return_space_length # need to add runtime first
     @string_input = <<HERE
-class Object
+class Space
 
   int main()
     Layout l = space.get_layout()
@@ -60,7 +60,7 @@ HERE
 
   def test_return_call
     @string_input = <<HERE
-class Object
+class Space
   int main()
     return main()
   end

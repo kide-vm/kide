@@ -5,7 +5,7 @@ class TestIf < MiniTest::Test
 
   def test_if_plus
     @string_input = <<HERE
-class Object
+class Space
   int main()
     int n = 10
     if_plus( n - 12)
@@ -22,7 +22,7 @@ HERE
 
   def test_if_zero
     @string_input = <<HERE
-class Object
+class Space
   int main()
     int n = 10
     if_zero(n - 10 )
@@ -39,7 +39,7 @@ HERE
 
   def test_if_minus
     @string_input = <<HERE
-class Object
+class Space
   int itest(int n)
     if_minus( n - 12)
       "then".putstring()

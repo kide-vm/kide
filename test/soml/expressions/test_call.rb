@@ -20,11 +20,6 @@ module Register
       check
     end
 
-    def test_call_self_main
-      @string_input    =  'self.main()'
-      check
-    end
-
     def test_call_main_string
       @string_input    = 'main("1")'
       check

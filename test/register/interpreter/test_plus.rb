@@ -5,7 +5,7 @@ class PlusTest < MiniTest::Test
 
   def setup
     @string_input = <<HERE
-class Object
+class Space
   int main()
     return #{2**62 - 1} + 1
   end

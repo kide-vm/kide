@@ -6,12 +6,12 @@ class TestWord < MiniTest::Test
 
   def test_word_new
     @string_input = <<HERE
-class Object
+class Space
   Word self.new()
     return nil
   end
 end
-class Object
+class Space
   int main()
     Word w = Word.new()
   end

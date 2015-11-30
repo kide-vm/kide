@@ -6,7 +6,7 @@ class TestIfStatement < MiniTest::Test
 
   def test_if_basicr
     @string_input = <<HERE
-class Object
+class Space
   int main()
     if_plus( 10 - 12)
       return 3
@@ -25,7 +25,7 @@ HERE
 
   def test_if_small_minus
     @string_input = <<HERE
-class Object
+class Space
   int main()
     if_minus( 10 - 12)
       return 3
@@ -41,7 +41,7 @@ HERE
 
   def test_if_small_zero
     @string_input = <<HERE
-class Object
+class Space
   int main()
     if_zero( 10 - 12)
       return 3

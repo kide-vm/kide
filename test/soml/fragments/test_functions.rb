@@ -5,7 +5,7 @@ class TestFunctions < MiniTest::Test
 
   def test_functions
     @string_input = <<HERE
-class Object
+class Space
 
   int times(int a, int b)
     if_zero( b + 0)
@@ -35,7 +35,7 @@ HERE
 
   def test_class_method
     @string_input = <<HERE
-class Object
+class Space
 
   int self.some()
     return 5
@@ -52,7 +52,7 @@ HERE
 
   def test_class_method_fails
     @string_input = <<HERE
-class Object
+class Space
   int main()
     return Object.som()
   end

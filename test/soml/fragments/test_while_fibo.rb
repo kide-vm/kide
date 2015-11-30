@@ -5,7 +5,7 @@ class TestWhileFragment < MiniTest::Test
 
   def fibo num
     @string_input = <<HERE
-class Object
+class Space
   int fibonaccit(int n)
       int a = 0
       int b = 1

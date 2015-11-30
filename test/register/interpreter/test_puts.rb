@@ -5,7 +5,7 @@ class TestPuts < MiniTest::Test
 
   def setup
       @string_input = <<HERE
-class Object
+class Space
   int main()
     "Hello again".putstring()
   end

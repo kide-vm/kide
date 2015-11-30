@@ -11,7 +11,7 @@ class Bar
     return 1
   end
 end
-class Object
+class Space
   int main()
     return 1
   end

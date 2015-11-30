@@ -10,7 +10,7 @@ class TestAssignStatement < MiniTest::Test
 
   def test_assign_op
     @string_input    = <<HERE
-class Object
+class Space
 int main()
   int n =  10 + 1
 end
@@ -23,7 +23,7 @@ HERE
 
   def test_assign_local
     @string_input = <<HERE
-class Object
+class Space
   int main()
     int runner
     runner = 5
@@ -36,7 +36,7 @@ HERE
 
   def test_assign_local_assign
     @string_input = <<HERE
-class Object
+class Space
   int main()
     int runner = 5
   end
@@ -48,7 +48,7 @@ HERE
 
   def test_assign_call
     @string_input = <<HERE
-class Object
+class Space
   int main()
     int r = main()
   end
@@ -62,7 +62,7 @@ HERE
 
   def test_frame_get
     @string_input = <<HERE
-class Object
+class Space
   int main()
     int r = 5
     return r
@@ -80,7 +80,7 @@ HERE
   def test_assign_arg
     Register.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :blar)
     @string_input = <<HERE
-class Object
+class Space
   int main(int blar)
     blar = 5
   end
@@ -95,7 +95,7 @@ HERE
 
   def test_assign_int
     @string_input = <<HERE
-class Object
+class Space
   int main()
     int r = 5
   end
@@ -112,7 +112,7 @@ HERE
     # have to define bar externally, just because redefining main. Otherwise that would be automatic
     Register.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :balr)
     @string_input = <<HERE
-class Object
+class Space
   int main(int balr)
     return balr
   end

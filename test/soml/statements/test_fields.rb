@@ -7,7 +7,7 @@ module Register
 
     def test_field_frame
       @string_input = <<HERE
-class Object
+class Space
   int main()
     Message m
     return m.name
@@ -20,7 +20,7 @@ HERE
 
     def test_field_arg
       @string_input = <<HERE
-class Object
+class Space
   int get_name(Message main)
     return main.name
   end
@@ -39,7 +39,7 @@ HERE
 
     def test_self_field
       @string_input = <<HERE
-class Object
+class Space
   int main()
     Layout l = self.layout
     return 1
@@ -53,7 +53,7 @@ HERE
 
     def test_message_field
       @string_input = <<HERE
-class Object
+class Space
   int main()
     Word name = message.name
     return name

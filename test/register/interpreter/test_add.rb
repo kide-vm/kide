@@ -5,7 +5,7 @@ class AddTest < MiniTest::Test
 
   def setup
     @string_input = <<HERE
-class Object
+class Space
   int main()
     return 5 + 7
   end

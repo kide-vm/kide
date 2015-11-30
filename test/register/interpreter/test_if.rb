@@ -5,7 +5,7 @@ class IfTest < MiniTest::Test
 
   def setup
     @string_input = <<HERE
-class Object
+class Space
   int itest(int n)
     if_zero( n - 12)
       "then".putstring()

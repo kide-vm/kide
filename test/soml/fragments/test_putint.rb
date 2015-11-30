@@ -10,7 +10,7 @@ class Integer
     return 1
   end
 end
-class Object
+class Space
   int main()
     42.putint()
   end

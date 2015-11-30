@@ -11,7 +11,7 @@ class Integer
     return 1
   end
 end
-class Object
+class Space
   int main()
     42.putint()
   end
@@ -31,7 +31,7 @@ class Word
     return 1
   end
 end
-class Object
+class Space
   int main()
     "Hello".putstring()
   end
@@ -50,7 +50,7 @@ class Integer
     return 1
   end
 end
-class Object
+class Space
   int main()
     int testi = 20
     testi.putint()
@@ -71,7 +71,7 @@ class List < Object
     return 1
   end
 end
-class Object
+class Space
   int main()
     List test_l
     test_l.add()
@@ -86,7 +86,7 @@ HERE
 
   def test_call_puts
     @string_input    = <<HERE
-class Object
+class Space
 int puts(Word str)
   return str
 end

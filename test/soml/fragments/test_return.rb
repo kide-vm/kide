@@ -5,7 +5,7 @@ class TestReturn < MiniTest::Test
 
   def test_return1
     @string_input = <<HERE
-class Object
+class Space
   int main()
     return 5
   end
@@ -17,7 +17,7 @@ HERE
 
   def test_return2
     @string_input = <<HERE
-class Object
+class Space
   int foo(int x)
     return x
   end
@@ -33,7 +33,7 @@ HERE
 
   def test_return3
     @string_input = <<HERE
-class Object
+class Space
   int foo(int x)
     int a = 5
     return a

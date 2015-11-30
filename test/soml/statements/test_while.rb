@@ -7,7 +7,7 @@ module Register
 
     def test_while_mini
       @string_input    = <<HERE
-class Object
+class Space
   int main()
     while_plus(1)
       return 3
@@ -22,7 +22,7 @@ HERE
 
     def test_while_assign
       @string_input    = <<HERE
-class Object
+class Space
   int main()
     int n = 5
     while_plus(n)
@@ -41,7 +41,7 @@ HERE
 
     def test_while_return
       @string_input    = <<HERE
-class Object
+class Space
   int main()
     int n = 10
     while_plus( n - 5)

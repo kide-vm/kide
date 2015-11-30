@@ -11,7 +11,7 @@ class Bar
     return 1
   end
 end
-class Object
+class Space
   int main()
     return 1
   end
@@ -28,7 +28,7 @@ class Bar
     return 1
   end
 end
-class Object
+class Space
   int main()
     return Bar.buh()
   end
@@ -42,7 +42,7 @@ HERE
 
   def test_class_field_value
     @string_input = <<HERE
-class Object
+class Space
   field int boo1 = 1
   int main()
     return 1
@@ -55,7 +55,7 @@ HERE
 
   def test_class_field
     @string_input = <<HERE
-class Object
+class Space
   field int boo2
   int main()
     return self.boo2

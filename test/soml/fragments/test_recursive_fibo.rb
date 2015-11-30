@@ -5,7 +5,7 @@ class TestRecursinveFibo < MiniTest::Test
 
   def test_recursive_fibo
     @string_input = <<HERE
-class Object
+class Space
   int fibonaccir( int n )
     if_plus( n - 2 )
       int tmp
