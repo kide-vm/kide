@@ -57,6 +57,10 @@ module RuntimeTests
     puts "remote " + ENV["REMOTE_PI"]
     user , rest = ENV["REMOTE_PI"].split("@")
     machine , port = rest.to_s.split(":")
+    make_box machine , port , user
+  end
+  
+  def make_box machine = nil , port = nil , user = nil
     @@conn = Rye::Box.new(machine || "localhost" , :port => (port || 2222) , :user => (user || "pi"))
   end
 

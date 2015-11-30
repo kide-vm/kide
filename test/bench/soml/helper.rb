@@ -5,8 +5,6 @@ require_relative '../../soml/helper'
 module BenchTests
 
   include RuntimeTests
-  
-  ENV["REMOTE_PI"] = "pi" unless ENV.has_key?("REMOTE_PI")
 
   def setup
     @stdout =  ""
@@ -27,5 +25,9 @@ HERE
 
   def check_remote val
     check_r val , true
+  end
+
+  def connected
+    make_box
   end
 end
