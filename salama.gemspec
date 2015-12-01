@@ -14,5 +14,6 @@ Gem::Specification.new do |s|
   s.summary = 'Salama is a native object vm without any c, one day possibly a ruby vm'
 
   s.add_dependency "soml-parser" , "~> 0.5"
+  s.add_dependency "parser" , "~> 2.2.0"
   s.add_dependency "salama-object-file" , "~> 0.3"
 end

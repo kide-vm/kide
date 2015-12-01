@@ -1,0 +1,5 @@
+require_relative "test_loop"
+require_relative "test_itos"
+require_relative "test_calls"
+require_relative "test_adds"
+require_relative "test_hello"
