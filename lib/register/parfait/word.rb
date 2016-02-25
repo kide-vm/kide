@@ -8,7 +8,7 @@ module Parfait
   # Words are constant, maybe like js strings, ruby symbols
   # Words are short, but may have spaces
 
-  # Words are objects, that means they carry Layout as index 0
+  # Words are objects, that means they carry Type as index 0
   # So all indexes are offset by one in the implementation
   # Object length is measured in non-type cells though
 

@@ -132,7 +132,7 @@ module Register
       obj.position
     end
 
-    # write type and type of the instance, and the variables that are passed
+    # write type of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def write_object( object )
       log.debug "Write object #{object.class} #{object.inspect}"

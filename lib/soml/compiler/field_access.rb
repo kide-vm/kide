@@ -4,7 +4,7 @@ module Soml
     def on_field_access statement
       receiver_ast , field_ast = *statement
       receiver = process(receiver_ast)
-      
+
       clazz = Register.machine.space.get_class_by_name receiver.type
 
       field_name = field_ast.first_from(:name)

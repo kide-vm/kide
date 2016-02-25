@@ -1,17 +1,19 @@
-# Class is mainly a list of methods with a name (for now)
-# The memory type of object is seperated into Layout
-
 # A class describes the capabilities of a group of objects, ie what data it has
 # and functions it responds to.
-#
 
-# So it is essential that the class (the object defining the class)
+
+# Class is mainly a list of methods with a name. (Note that methods may have many functions)
+# The memory layout of an object is determined by the Type (see there).
+# The class carries the "current" type, ie the type an object would be if you created an instance
+# of the class. Note that this changes over time and so many types share the same class.
+
+# It is essential that the class (the object defining the class)
 # can carry methods. It does so as instance variables.
-# In fact this property is implemented in the Layout, as methods
+# In fact this property is implemented in the Type, as methods
 # may be added to any object at run-time
 
 # An Object carries the data for the instance variables it has
-# The Layout lists the names of the instance variables
+# The Type lists the names of the instance variables
 # The class keeps a list of instance methods, these have a name and code
 
 module Parfait
@@ -24,7 +26,7 @@ module Parfait
       self.name = name
       self.super_class_name = superclass
       # the type for this class (class = object of type Class) carries the class
-      # as an instance. The relation is from an object through the Layout to it's class
+      # as an instance. The relation is from an object through the Type to it's class
       # TODO the object type should copy the stuff from superclass
       self.object_type = Type.new(self)
     end

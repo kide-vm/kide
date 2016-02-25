@@ -21,7 +21,7 @@ class TestType < MiniTest::Test
   end
 
   def test_type_index
-    assert_equal @mess.get_type , @mess.get_internal_word(Parfait::LAYOUT_INDEX) , "mess"
+    assert_equal @mess.get_type , @mess.get_internal_word(Parfait::TYPE_INDEX) , "mess"
   end
 
   def test_inspect

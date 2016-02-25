@@ -11,8 +11,8 @@ module Register
     # And so we have a chicken and egg problem. At the end of the boot function we want to have a
     # working Space object
     # But that has instance variables (List and Dictionary) and off course a class.
-    # Or more precisely in salama, a Layout, that points to a class.
-    # So we need a Layout, but that has Layout and Class too. hmmm
+    # Or more precisely in salama, a Type, that points to a class.
+    # So we need a Type, but that has Type and Class too. hmmm
     #
     # The way out is to build empty shell objects and stuff the neccessary data into them
     #  (not use the normal initialize way)
@@ -86,7 +86,7 @@ module Register
       end
     end
 
-    # helper to create a Layout, name is the parfait name, ie :Type
+    # helper to create a Type, name is the parfait name, ie :Type
     def type_for( name , ivars )
       l = Parfait::Type.allocate.fake_init
       l.add_instance_variable :type , :Type

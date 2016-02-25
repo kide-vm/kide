@@ -1,17 +1,19 @@
-# to be precise, this should be an ObjectReference, as the Reference is a Value
-# but we don't want to make that distinction all the time , so we don't.
+# From a programmers perspective an object has hash like data (with instance variables as keys)
+# and functions to work on that data.
+# Only the object may access it's data directly.
 
-# that does lead to the fact that we have Reference functions on the Object though
+# From an implementation perspective it is a chunk of memory with an type as the first
+# word.
 
-# Objects are arranged or layed out (in memory) according to their Layout
-# every object has a Layout. Layout objects are immutalbe and may be resued for a group/class
+# Objects are arranged or layed out (in memory) according to their Type
+# every object has a Type. Type objects are immutalbe and may be reused for a group/class
 # off objects.
-# The Layout of an object may change, but then a new Layout is created
-# The Layout also defines the class of the object
-# The Layout is **always** the first entry (index 1) in an object, but the type word is index 0
+# The Type of an object may change, but then a new Type is created
+# The Type also defines the class of the object
+# The Type is **always** the first entry (index 1) in an object
 
 module Parfait
-  LAYOUT_INDEX  = 1
+  TYPE_INDEX  = 1
 
   class Object < Value
 
@@ -68,7 +70,7 @@ module Parfait
     # This is the crux of the object system. The class of an object is stored in the objects
     # memory (as opposed to an integer that has no memory and so always has the same class)
     #
-    # In Salama we store the class in the Layout, and so the Layout is the only fixed
+    # In Salama we store the class in the Type, and so the Type is the only fixed
     # data that every object carries.
     def get_class()
       l = get_type()
@@ -80,16 +82,16 @@ module Parfait
     def set_type(type)
       # puts "Type was set for #{self.class}"
       raise "Nil type" unless type
-      set_internal_word(LAYOUT_INDEX , type)
+      set_internal_word(TYPE_INDEX , type)
     end
 
     # so we can keep the raise in get_type
     def has_type?
-      ! get_internal_word(LAYOUT_INDEX).nil?
+      ! get_internal_word(TYPE_INDEX).nil?
     end
 
     def get_type()
-      l = get_internal_word(LAYOUT_INDEX)
+      l = get_internal_word(TYPE_INDEX)
       #puts "get type for #{self.class} returns #{l.class}"
       raise "No type #{self.object_id.to_s(16)}:#{self.class} " unless l
       return l

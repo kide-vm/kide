@@ -16,9 +16,20 @@ class Walker < AST::Processor
     if method == :require_relative
       @collector.load File.dirname(@collector.current) + "/" + file_node.children[0] + ".rb"
     end
+    if method.to_s.include?("eval")
+      @collector.evals << method
+    end
     handler_missing(node)
   end
 
+  def on_class node
+    @collector.class_defs << node.children[0].children[1]
+    handler_missing(node)
+  end
+  def on_const node
+    @collector.const_uses[node.children[1]] += 1
+    handler_missing(node)
+  end
   def handler_missing node
     type = node.type
     @collector.types[type] += 1
@@ -33,15 +44,16 @@ class Collector
   def initialize
     @parser = Parser::Ruby22
     @paths = Bundler.load.specs.collect { |s| s.gem_dir + "/lib/" }
-    @class_defs = Hash.new([])
-    @class_uses = Hash.new([])
+    @class_defs = []
+    @const_uses = Hash.new(0)
     @types = Hash.new(0)
     @not_found = []
     @walker = Walker.new(self)
     @files = []
+    @evals = []
     @current = nil
   end
-  attr_reader :class_defs , :class_uses , :types , :current
+  attr_reader :class_defs , :const_uses , :types , :current , :evals
 
   def file_content file_name
     return nil if @files.include? file_name
@@ -70,11 +82,12 @@ class Collector
     @current = was
   end
   def print
+    @class_defs.uniq!
+    @files.uniq!
     puts "Class defs #{@class_defs.length}"
-    puts "Class uses #{@class_uses.length}"
-    #puts "Types #{@types.to_yaml}"
-    #puts "files #{@files.to_yaml}"
-    #puts "Not found #{@not_found.length} #{@not_found.join(' ')}"
+    puts "Types #{@types.to_yaml}"
+    puts "evals=#{@evals.length} #{@evals.uniq}"
+    #puts "Not found #{@not_found.length} #{@not_found}"
   end
 end
 

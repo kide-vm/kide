@@ -8,13 +8,16 @@
 # A Message (see details there) is created by the caller and control is transferred
 # A Frame is created by the receiver
 # PS: it turns out that both messages and frames are created at compile, not run-time, and
-#  just constantly reused. Each message has a frame object ready and ist also linked
+#  just constantly reused. Each message has a frame object ready and is also linked
 #  to the next message.
 # The better way to say above is that a message is *used* by the caller, and a frame by the callee.
 
-# Also at runtime Messages and Frames remain completely "normal" objects. Ie have types and so on.
+# Also at runtime Messages and Frames remain completely "normal" objects.
+# Ie they have have type and instances and so on.*
 # Which resolves the dichotomy of objects on the stack or heap. Sama sama.
-
+#
+# *Alas the type for each call instance is unique.
+#
 module Parfait
   class Frame < Object
     attribute :next_frame
