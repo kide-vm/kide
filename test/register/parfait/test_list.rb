@@ -10,27 +10,27 @@ class TestList < MiniTest::Test
     assert @list.is_a? Parfait::List
     assert @list.is_a? Parfait::Indexed
   end
-  def test_old_layout
-    assert_equal Parfait::Layout , Register.machine.space.classes.keys.get_layout.class
+  def test_old_type
+    assert_equal Parfait::Type , Register.machine.space.classes.keys.get_type.class
   end
-  def test_old_layout_push
+  def test_old_type_push
     list = Register.machine.space.classes.keys
-    assert_equal Parfait::Layout , list.get_layout.class
+    assert_equal Parfait::Type , list.get_type.class
   end
-  def test_new_layout
-    assert_equal Parfait::Layout , @list.get_layout.class
+  def test_new_type
+    assert_equal Parfait::Type , @list.get_type.class
   end
-  def test_new_layout_push
+  def test_new_type_push
     @list.push(1)
-    assert_equal Parfait::Layout , @list.get_layout.class
+    assert_equal Parfait::Type , @list.get_type.class
   end
-  def notest_layout_is_first
-    layout = @list.get_layout
-    assert_equal 1 , layout.variable_index(:layout)
+  def notest_type_is_first
+    type = @list.get_type
+    assert_equal 1 , type.variable_index(:type)
   end
-  def notest_layout_is_first_old
-    layout =  Register.machine.space.classes.keys.get_layout
-    assert_equal 1 , layout.variable_index(:layout)
+  def notest_type_is_first_old
+    type =  Register.machine.space.classes.keys.get_type
+    assert_equal 1 , type.variable_index(:type)
   end
 
   def test_length0
@@ -41,8 +41,8 @@ class TestList < MiniTest::Test
     assert_equal 2 , @list.get_offset
   end
   def test_indexed_index
-    # 1 layout , 2 indexed_length
-    assert_equal 2 , @list.get_layout.variable_index(:indexed_length)
+    # 1 type , 2 indexed_length
+    assert_equal 2 , @list.get_type.variable_index(:indexed_length)
   end
   def test_length1
     @list.push :one

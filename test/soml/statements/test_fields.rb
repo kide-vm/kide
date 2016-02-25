@@ -41,7 +41,7 @@ HERE
       @string_input = <<HERE
 class Space
   int main()
-    Layout l = self.layout
+    Type l = self.type
     return 1
   end
 end

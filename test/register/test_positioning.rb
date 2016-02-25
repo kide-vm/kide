@@ -6,19 +6,19 @@ class TestPositioning < MiniTest::Test
   end
   def test_list1
     list = Parfait.new_list([1])
-    list.set_layout( Parfait::Layout.new Object)
+    list.set_type( Parfait::Type.new Object)
     assert_equal 32 , list.padded_length
   end
   def test_list5
     list = Parfait.new_list([1,2,3,4,5])
-    list.set_layout( Parfait::Layout.new Object)
+    list.set_type( Parfait::Type.new Object)
     assert_equal 32 , list.padded_length
   end
-  def test_layout
-    layout = Parfait::Layout.new Object
-    layout.set_layout( Parfait::Layout.new Object)
-    layout.push 5
-    assert_equal 32 , layout.padded_length
+  def test_type
+    type = Parfait::Type.new Object
+    type.set_type( Parfait::Type.new Object)
+    type.push 5
+    assert_equal 32 , type.padded_length
   end
   def test_word
     word = Parfait::Word.new(12)

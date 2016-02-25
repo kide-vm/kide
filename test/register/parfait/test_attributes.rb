@@ -4,19 +4,19 @@ class TestAttributes < MiniTest::Test
 
   def setup
     @mess = Register.machine.boot.space.first_message
-    @layout = @mess.get_layout
+    @type = @mess.get_type
   end
 
-  def test_message_get_layout
-    assert_equal Parfait::Layout , @layout.class
+  def test_message_get_type
+    assert_equal Parfait::Type , @type.class
   end
-  def test_message_layout_first
-    @layout.object_class = :next_message
-    assert_equal :layout , @layout.instance_names.first
-    assert_equal :next_message , @layout.object_class
+  def test_message_type_first
+    @type.object_class = :next_message
+    assert_equal :type , @type.instance_names.first
+    assert_equal :next_message , @type.object_class
   end
   def test_message_name_nil
-    last = @layout.instance_names.last
+    last = @type.instance_names.last
     assert_equal :indexed_length , last
     assert_equal nil , @mess.name
   end
@@ -24,26 +24,26 @@ class TestAttributes < MiniTest::Test
     @mess.next_message = :next_message
     assert_equal :next_message , @mess.next_message
   end
-  def test_message_layout_set
-    @mess.set_layout :layout
-    assert_equal :layout , @mess.get_layout
+  def test_message_type_set
+    @mess.set_type :type
+    assert_equal :type , @mess.get_type
   end
   def test_attribute_index
     @mess.next_message = :message
-    assert_equal Parfait::Layout , @mess.get_layout.class
+    assert_equal Parfait::Type , @mess.get_type.class
   end
-  def test_layout_attribute
-    @layout.object_class = :message
-    assert_equal :message , @layout.object_class
+  def test_type_attribute
+    @type.object_class = :message
+    assert_equal :message , @type.object_class
   end
-  def test_layout_attribute_check
-    @layout.object_class = :message
-    assert_equal Parfait::Layout , @layout.get_layout.class
+  def test_type_attribute_check
+    @type.object_class = :message
+    assert_equal Parfait::Type , @type.get_type.class
   end
-  def test_layout_layout
-    assert_equal Parfait::Layout , @layout.get_layout.get_layout.class
+  def test_type_type
+    assert_equal Parfait::Type , @type.get_type.get_type.class
   end
-  def test_layout_layout_layout
-    assert_equal Parfait::Layout , @layout.get_layout.get_layout.get_layout.class
+  def test_type_type_type
+    assert_equal Parfait::Type , @type.get_type.get_type.get_type.class
   end
 end

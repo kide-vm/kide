@@ -12,7 +12,7 @@
 #  to the next message.
 # The better way to say above is that a message is *used* by the caller, and a frame by the callee.
 
-# Also at runtime Messages and Frames remain completely "normal" objects. Ie have layouts and so on.
+# Also at runtime Messages and Frames remain completely "normal" objects. Ie have types and so on.
 # Which resolves the dichotomy of objects on the stack or heap. Sama sama.
 
 module Parfait
@@ -20,7 +20,7 @@ module Parfait
     attribute :next_frame
 
     include Indexed
-    self.offset(2)  # 1 == the next_frame attributes above + layout. (indexed_length gets added)
+    self.offset(2)  # 1 == the next_frame attributes above + type. (indexed_length gets added)
 
   end
 end

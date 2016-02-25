@@ -12,9 +12,9 @@ class TestClass < MiniTest::Test
     ::Parfait::Method.new @space.get_class_by_name(for_class) , :foo , args
   end
 
-  def test_layout_forclass
-    assert_equal "Class(Space)" ,  @space.get_layout.object_class.inspect
-    assert_equal :Space ,          @space.get_layout.object_class.name
+  def test_type_forclass
+    assert_equal "Class(Space)" ,  @space.get_type.object_class.inspect
+    assert_equal :Space ,          @space.get_type.object_class.name
   end
   def test_new_superclass_name
     assert_equal :Object , @try.super_class_name

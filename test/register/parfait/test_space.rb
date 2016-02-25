@@ -6,7 +6,7 @@ class TestSpace < MiniTest::Test
     @machine = Register.machine.boot
   end
   def classes
-    [:Kernel,:Word,:List,:Message,:Frame,:Layout,:Object,:Class,:Dictionary,:Method , :Integer]
+    [:Kernel,:Word,:List,:Message,:Frame,:Type,:Object,:Class,:Dictionary,:Method , :Integer]
   end
   def test_booted
     assert_equal true , @machine.booted
@@ -29,9 +29,9 @@ class TestSpace < MiniTest::Test
     end
   end
 
-  def test_classes_layout
+  def test_classes_type
     classes.each do |name|
-      assert_equal Parfait::Layout , @machine.space.classes[name].get_layout.class
+      assert_equal Parfait::Type , @machine.space.classes[name].get_type.class
     end
   end
 

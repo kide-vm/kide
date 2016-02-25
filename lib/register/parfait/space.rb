@@ -64,7 +64,7 @@ module Parfait
       raise "get_class_by_name #{name}.#{name.class}" unless name.is_a?(Symbol)
       c = self.classes[name]
       #puts "MISS, no class #{name} #{name.class}" unless c # " #{self.classes}"
-      #puts "CLAZZ, #{name} #{c.get_layout.get_length}" if c
+      #puts "CLAZZ, #{name} #{c.get_type.get_length}" if c
       c
     end
 

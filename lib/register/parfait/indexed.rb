@@ -1,6 +1,6 @@
 # various classes would derive from array in ruby, ie have indexed variables
 #
-# But for our memory layout we need the variable part of an object to be after
+# But for our memory type we need the variable part of an object to be after
 # the fixed, ie the instance variables
 #
 # Just using ruby derivation will not allow us to offset the index, so instead the
@@ -95,12 +95,12 @@ module Parfait
     end
 
     # word length (padded) is the amount of space taken by the object
-    # For your basic object this means the number of instance variables as determined by layout
+    # For your basic object this means the number of instance variables as determined by type
     # This is off course 0 for a list, unless someone squeezed an instance variable in
     # but additionally, the amount of data comes on top.
     # unfortuntely we can't just use super because of the Padding
     def padded_length
-      padded_words( get_layout().instance_length +  get_length() )
+      padded_words( get_type().instance_length +  get_length() )
     end
 
     def each
@@ -154,7 +154,7 @@ module Parfait
         end
 
         define_method :get_length do
-          r = get_internal_word( offset ) #one for layout
+          r = get_internal_word( offset ) #one for type
           r.nil? ? 0 : r
         end
 
@@ -187,7 +187,7 @@ module Parfait
           return if old_length >= len
 #          raise "bounds error at #{len}" if( len + offset > 16 )
           # be nice to use the indexed_length , but that relies on booted space
-          set_internal_word( offset  , len) #one for layout
+          set_internal_word( offset  , len) #one for type
         end
 
         define_method  :shrink_to do | len|

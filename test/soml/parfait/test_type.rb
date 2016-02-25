@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-class TestLayoutRT < MiniTest::Test
+class TestTypeRT < MiniTest::Test
   include ParfaitTests
 
   def test_main
@@ -11,10 +11,10 @@ class TestLayoutRT < MiniTest::Test
   def check_return_class val
   end
 
-  def test_get_layout
-    @main =  "return get_layout()"
+  def test_get_type
+    @main =  "return get_type()"
     interpreter = check
-    assert_equal  Parfait::Layout , interpreter.get_register(:r0).return_value.class
+    assert_equal  Parfait::Type , interpreter.get_register(:r0).return_value.class
   end
 
   def test_get_class
@@ -32,18 +32,18 @@ HERE
     check
   end
 
-  def test_puts_layout_space
+  def test_puts_type_space
     @main = <<HERE
-Layout l = get_layout()
+Type l = get_type()
 Word w = l.get_class_name()
 w.putstring()
 HERE
-    @stdout = "Layout"
+    @stdout = "Type"
     check
   end
 
   # copy of register parfait tests, in order
-  def test_message_layout
+  def test_message_type
     @main = <<HERE
 Message m = self.first_message
 m = m.next_message

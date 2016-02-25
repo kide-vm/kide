@@ -10,14 +10,14 @@ module Parfait
 
   # Words are objects, that means they carry Layout as index 0
   # So all indexes are offset by one in the implementation
-  # Object length is measured in non-layout cells though
+  # Object length is measured in non-type cells though
 
   class Word < Object
     attribute :char_length
 
     #semi "indexed" methods for interpreter
     def self.get_length_index
-      2 # 2 is the amount of attributes, layout and char_length. the offset after which chars start
+      2 # 2 is the amount of attributes, type and char_length. the offset after which chars start
     end
     def self.get_indexed i
       i + get_length_index * 4
@@ -31,7 +31,7 @@ module Parfait
       raise "Must init with int, not #{len.class}" unless len.kind_of? Fixnum
       raise "Must init with positive, not #{len}" if len < 0
       set_length( len , 32 ) unless len == 0 #32 beeing ascii space
-      #puts "layout #{self.get_layout} #{self.object_id.to_s(16)}"
+      #puts "type #{self.get_type} #{self.object_id.to_s(16)}"
     end
 
     # return a copy of self
@@ -182,7 +182,7 @@ module Parfait
     end
 
     def padded_length
-      padded( 4 * get_layout().instance_length + self.char_length  )
+      padded( 4 * get_type().instance_length + self.char_length  )
     end
 
     private

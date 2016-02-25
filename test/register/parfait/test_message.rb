@@ -7,7 +7,7 @@ class TestMessage < MiniTest::Test
   end
 
   def test_length
-    assert_equal 9 , @mess.get_layout.instance_length , @mess.get_layout.inspect
+    assert_equal 9 , @mess.get_type.instance_length , @mess.get_type.inspect
     assert_equal 9 , Parfait::Message.get_length_index
   end
 
@@ -17,7 +17,7 @@ class TestMessage < MiniTest::Test
   end
 
   def test_indexed
-    assert_equal 9 , @mess.get_layout.variable_index(:indexed_length)
+    assert_equal 9 , @mess.get_type.variable_index(:indexed_length)
   end
   def test_push1
     @mess.push :name

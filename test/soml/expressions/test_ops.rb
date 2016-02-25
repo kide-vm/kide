@@ -31,13 +31,13 @@ module Register
     end
 
     def test_field_int
-      Register.machine.space.get_class_by_name(:Object).object_layout.add_instance_variable(:bro,:int)
+      Register.machine.space.get_class_by_name(:Object).object_type.add_instance_variable(:bro,:int)
       @string_input = "self.bro + 3"
       check
     end
 
     def test_int_field
-      Register.machine.space.get_class_by_name(:Object).object_layout.add_instance_variable(:bro,:int)
+      Register.machine.space.get_class_by_name(:Object).object_type.add_instance_variable(:bro,:int)
       @string_input = "3 + self.bro"
       check
     end

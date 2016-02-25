@@ -21,8 +21,8 @@ module Parfait
       object.fake_init if object.respond_to?(:fake_init) # at compile, not run-time
       # have to grab the class, because we are in the ruby class not the parfait one
       cl = Space.object_space.get_class_by_name( self.name.split("::").last.to_sym)
-      # and have to set the layout before we let the object do anything. otherwise boom
-      object.set_layout cl.object_layout
+      # and have to set the type before we let the object do anything. otherwise boom
+      object.set_type cl.object_type
 
       object.send :initialize , *args
       object
@@ -71,27 +71,27 @@ module Parfait
     # In Salama we store the class in the Layout, and so the Layout is the only fixed
     # data that every object carries.
     def get_class()
-      l = get_layout()
-      #puts "Layout #{l.class} in #{self.class} , #{self}"
+      l = get_type()
+      #puts "Type #{l.class} in #{self.class} , #{self}"
       l.object_class()
     end
 
     # private
-    def set_layout(layout)
-      # puts "Layout was set for #{self.class}"
-      raise "Nil layout" unless layout
-      set_internal_word(LAYOUT_INDEX , layout)
+    def set_type(type)
+      # puts "Type was set for #{self.class}"
+      raise "Nil type" unless type
+      set_internal_word(LAYOUT_INDEX , type)
     end
 
-    # so we can keep the raise in get_layout
-    def has_layout?
+    # so we can keep the raise in get_type
+    def has_type?
       ! get_internal_word(LAYOUT_INDEX).nil?
     end
 
-    def get_layout()
+    def get_type()
       l = get_internal_word(LAYOUT_INDEX)
-      #puts "get layout for #{self.class} returns #{l.class}"
-      raise "No layout #{self.object_id.to_s(16)}:#{self.class} " unless l
+      #puts "get type for #{self.class} returns #{l.class}"
+      raise "No type #{self.object_id.to_s(16)}:#{self.class} " unless l
       return l
     end
 
@@ -101,7 +101,7 @@ module Parfait
     end
 
     def get_instance_variables
-      get_layout().instance_names
+      get_type().instance_names
     end
 
     def get_instance_variable name
@@ -118,11 +118,11 @@ module Parfait
     end
 
     def instance_variable_defined name
-      get_layout().variable_index(name)
+      get_type().variable_index(name)
     end
 
     def padded_length
-      padded_words( get_layout().instance_length )
+      padded_words( get_type().instance_length )
     end
 
     # parfait versions are deliberately called different, so we "relay"

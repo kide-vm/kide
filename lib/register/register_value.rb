@@ -84,7 +84,7 @@ module Register
   end
 
   # The first arg is a class name (possibly lowercase) and the second an instance variable name.
-  # By looking up the class and the layout for that class, we can resolve the instance
+  # By looking up the class and the type for that class, we can resolve the instance
   # variable name to an index.
   # The class can be mapped to a register, and so we get a memory address (reg+index)
   def self.resolve_index( clazz_name , instance_name )
@@ -92,9 +92,9 @@ module Register
     real_name = clazz_name.to_s.split('_').last.capitalize.to_sym
     clazz = Parfait::Space.object_space.get_class_by_name(real_name)
     raise "Class name not given #{real_name}" unless clazz
-    index = clazz.object_layout.variable_index( instance_name )
+    index = clazz.object_type.variable_index( instance_name )
     raise "Instance name=#{instance_name} not found on #{real_name}" unless index.is_a?(Numeric)
-    return index #  the type word is at index 0, but layout is a list and starts at 1 == layout
+    return index #  the type word is at index 0, but type is a list and starts at 1 == type
   end
 
   # if a symbol is given, it may be one of the four objects that the vm knows.

@@ -13,7 +13,7 @@ module Parfait
     attributes [:return_value, :caller , :name ]
 
     include Indexed
-    self.offset(8)  # 8 == the seven attributes above + layout. (indexed_length gets added)
+    self.offset(8)  # 8 == the seven attributes above + type. (indexed_length gets added)
 
     def initialize next_m
       self.next_message = next_m
@@ -28,7 +28,7 @@ module Parfait
     end
 
     def get_type_for(name)
-      index = @layout.get_index(name)
+      index = @type.get_index(name)
       get_at(index)
     end
   end

@@ -1,6 +1,6 @@
 class Class < Object
   field List instance_methods
-  field Layout object_layout
+  field Type object_type
   field Word name
   field Word super_class_name
 

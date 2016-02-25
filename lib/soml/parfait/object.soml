@@ -1,16 +1,16 @@
 class Object
 
-  Layout get_layout()
-    return self.layout
+  Type get_type()
+    return self.type
   end
 
   Class get_class()
-    Layout l = self.layout
+    Type l = self.type
     return l.object_class
   end
 
   Word get_class_name()
-    Layout l = self.layout
+    Type l = self.type
     Class c = l.object_class
     return c.name
   end

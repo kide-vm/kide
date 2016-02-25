@@ -49,7 +49,7 @@ HERE
 class Space
 
   int main()
-    Layout l = space.get_layout()
+    Type l = space.get_type()
     return self.runner
   end
 end

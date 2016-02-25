@@ -17,11 +17,11 @@ module Register
       if  object.is_a? Register::Label
         object.each_label { |l| self.add_object(l)}
       end
-      return unless object.respond_to? :has_layout?
-      layout = object.get_layout
-      keep(layout  , depth + 1)
+      return unless object.respond_to? :has_type?
+      type = object.get_type
+      keep(type  , depth + 1)
       return if object.is_a? Symbol
-      layout.instance_names.each do |name|
+      type.instance_names.each do |name|
         #puts "Keep #{name} for #{object.class}"
         inst = object.get_instance_variable name
         keep(inst , depth + 1)

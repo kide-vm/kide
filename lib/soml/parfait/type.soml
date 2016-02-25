@@ -1,4 +1,4 @@
-class Layout < Object
+class Type < Object
   field Class   object_class
   field List    instance_methods
   field Integer indexed_length

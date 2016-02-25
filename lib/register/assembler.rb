@@ -132,7 +132,7 @@ module Register
       obj.position
     end
 
-    # write type and layout of the instance, and the variables that are passed
+    # write type and type of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def write_object( object )
       log.debug "Write object #{object.class} #{object.inspect}"
@@ -155,8 +155,8 @@ module Register
           written += 4
         end
       end
-      log.debug "layout #{lay_len} , total #{written} (array #{written - lay_len})"
-      log.debug "Len = #{object.get_length} , inst = #{object.get_layout.instance_length}" if object.is_a? Parfait::Layout
+      log.debug "type #{lay_len} , total #{written} (array #{written - lay_len})"
+      log.debug "Len = #{object.get_length} , inst = #{object.get_type.instance_length}" if object.is_a? Parfait::Type
       pad_after( written  )
       object.position
     end
@@ -173,10 +173,10 @@ module Register
       str = string.to_s if string.is_a? Symbol
       log.debug "#{string.class} is #{string} at #{string.position} length #{string.length}"
       @stream.write_sint32( MARKER  )
-      write_ref_for( string.get_layout ) #ref
+      write_ref_for( string.get_type ) #ref
       @stream.write_sint32( str.length  ) #int
       @stream.write str
-      pad_after(str.length + 8 ) # layout , length   *4 == 12
+      pad_after(str.length + 8 ) # type , length   *4 == 12
       log.debug "String (#{string.length}) stream #{@stream.length}"
     end
 

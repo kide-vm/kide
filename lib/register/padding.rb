@@ -14,7 +14,7 @@ module Padding
   end
 
   def padding_for length
-    pad = padded(length) - length  # for header, layout
+    pad = padded(length) - length  # for header, type
     pad
   end
 end

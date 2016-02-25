@@ -5,17 +5,17 @@
 # Instead we store only the values, and access them by index.
 # The Layout allows the mapping of names to index.
 
-# The Layout of an object describes the memory layout of the object
+# The Layout of an object describes the memory type of the object
 # The Layout is a simple list of the names of instance variables.
 #
-# As every object has a Layout to describe it, the name "layout" is the
+# As every object has a Layout to describe it, the name "type" is the
 # first name in the list for every Layout.
 
 # But as we want every Object to have a class, the Layout carries that class.
-# So the layout of layout has an entry "object_class"
+# So the type of type has an entry "object_class"
 
 # But Objects must also be able to carry methods themselves (ruby calls singleton_methods)
-# and those too are stored in the Layout (both layout and class include behaviour)
+# and those too are stored in the Layout (both type and class include behaviour)
 
 # In other words, the Layout is a list of names that describe
 # the values stored in an actual object.
@@ -24,7 +24,7 @@
 # Together they turn the object into a hash like structure
 
 module Parfait
-  class Layout < Object
+  class Type < Object
     attribute :object_class
     include Behaviour
 
@@ -33,7 +33,7 @@ module Parfait
 
     def initialize( object_class )
       super()
-      add_instance_variable :layout ,:Layout
+      add_instance_variable :type ,:Type
       self.object_class = object_class
     end
 
@@ -45,7 +45,7 @@ module Parfait
     # The index will be returned and can subsequently be searched with index_of
     # The index of the name is the index of the data in the object
     #
-    # TODO , later we would need to COPY the layout to keep the old constant
+    # TODO , later we would need to COPY the type to keep the old constant
     #        but now we are concerned with booting, ie getting a working structure
     def add_instance_variable name , type
       raise "Name shouldn't be nil" unless name
@@ -75,7 +75,7 @@ module Parfait
     end
 
     # index of the variable when using get_internal_word
-    # (get_internal_word is 1 based and 1 is always the layout)
+    # (get_internal_word is 1 based and 1 is always the type)
     def variable_index name
       has = super_index(name)
       return nil unless has
@@ -89,11 +89,11 @@ module Parfait
     end
 
     def inspect
-      "Layout[#{super}]"
+      "Type[#{super}]"
     end
 
     def sof_reference_name
-      "#{self.object_class.name}_Layout"
+      "#{self.object_class.name}_Type"
     end
     alias :name :sof_reference_name
 
