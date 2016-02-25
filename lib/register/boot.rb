@@ -127,7 +127,7 @@ module Register
           :Method => {:name => :Word, :source => :Object, :instructions => :Object, :binary => :Object,
                       :arguments => :List , :for_class => :Class, :locals => :List  } ,
           :Value => {},
-          :Variable => {:type => :Class, :name => :Word , :value => :Object}
+          :Variable => {:value_type => :Class, :name => :Word , :value => :Object}
         }
     end
 

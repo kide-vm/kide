@@ -49,7 +49,7 @@ module Parfait
     #        but now we are concerned with booting, ie getting a working structure
     def add_instance_variable name , type
       raise "Name shouldn't be nil" unless name
-      raise "Type shouldn't be nil" unless type
+      raise "Value Type shouldn't be nil" unless type
       self.push(name)
       self.push(type)
       self.get_length
@@ -84,7 +84,7 @@ module Parfait
     end
 
     def type_at index
-      type_index = index * 2 
+      type_index = index * 2
       get(type_index)
     end
 
