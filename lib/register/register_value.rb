@@ -92,7 +92,7 @@ module Register
     real_name = clazz_name.to_s.split('_').last.capitalize.to_sym
     clazz = Parfait::Space.object_space.get_class_by_name(real_name)
     raise "Class name not given #{real_name}" unless clazz
-    index = clazz.object_type.variable_index( instance_name )
+    index = clazz.instance_type.variable_index( instance_name )
     raise "Instance name=#{instance_name} not found on #{real_name}" unless index.is_a?(Numeric)
     return index #  the type word is at index 0, but type is a list and starts at 1 == type
   end

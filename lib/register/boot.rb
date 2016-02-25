@@ -68,7 +68,7 @@ module Register
       classes = space.classes
       type_names.each do |name , vars|
         cl = object_with_type Parfait::Class
-        cl.object_type = @types[name]
+        cl.instance_type = @types[name]
         @types[name].object_class = cl
         cl.instance_methods = object_with_type Parfait::List
 #        puts "instance_methods is #{cl.instance_methods.class}"
@@ -121,7 +121,7 @@ module Register
           :Space => {:classes => :Dictionary , :first_message => :Message},
           :Frame => {:next_frame => :Frame, :indexed_length => :Integer},
           :Type => {:object_class => :Class, :instance_methods => :List , :indexed_length => :Integer} ,
-          :Class => {:instance_methods => :List, :object_type => :Type, :name => :Word,
+          :Class => {:instance_methods => :List, :instance_type => :Type, :name => :Word,
                       :super_class_name => :Word},
           :Dictionary => {:keys => :List , :values => :List  } ,
           :Method => {:name => :Word, :source => :Object, :instructions => :Object, :binary => :Object,

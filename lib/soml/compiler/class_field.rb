@@ -7,10 +7,10 @@ module Soml
 
       for_class = @clazz
       raise "no class" unless for_class
-      index = for_class.object_type.variable_index(name)
+      index = for_class.instance_type.variable_index(name)
       #raise "class field already defined:#{name} for class #{for_class.name}" if index
       #puts "Define field #{name} on class #{for_class.name}"
-      index = for_class.object_type.add_instance_variable( name , type )
+      index = for_class.instance_type.add_instance_variable( name , type )
 
       # not sure how to run class code yet. later
       raise "value #{value}" if value

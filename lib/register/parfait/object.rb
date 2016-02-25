@@ -24,7 +24,7 @@ module Parfait
       # have to grab the class, because we are in the ruby class not the parfait one
       cl = Space.object_space.get_class_by_name( self.name.split("::").last.to_sym)
       # and have to set the type before we let the object do anything. otherwise boom
-      object.set_type cl.object_type
+      object.set_type cl.instance_type
 
       object.send :initialize , *args
       object

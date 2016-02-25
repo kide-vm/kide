@@ -19,7 +19,7 @@
 module Parfait
   class Class < Object
     include Behaviour
-    attributes [:object_type , :name , :super_class_name]
+    attributes [:instance_type , :name , :super_class_name]
 
     def initialize name , superclass
       super()
@@ -28,7 +28,7 @@ module Parfait
       # the type for this class (class = object of type Class) carries the class
       # as an instance. The relation is from an object through the Type to it's class
       # TODO the object type should copy the stuff from superclass
-      self.object_type = Type.new(self)
+      self.instance_type = Type.new(self)
     end
 
     def allocate_object
@@ -36,7 +36,7 @@ module Parfait
     end
 
     def add_instance_name name
-      self.object_type.push name
+      self.instance_type.push name
     end
 
     def sof_reference_name
@@ -50,7 +50,7 @@ module Parfait
 
     def create_instance_method  method_name , arguments
       raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
-      clazz = object_type().object_class()
+      clazz = instance_type().object_class()
       raise "??? #{method_name}" unless clazz
       #puts "Self: #{self.class} clazz: #{clazz.name}"
       add_instance_method Method.new( clazz , method_name , arguments )

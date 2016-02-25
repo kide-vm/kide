@@ -7,7 +7,7 @@ class Symbol
     true
   end
   def get_type
-    l = Register.machine.space.classes[:Word].object_type
+    l = Register.machine.space.classes[:Word].instance_type
     #puts "LL #{l.class}"
     l
   end

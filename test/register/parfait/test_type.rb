@@ -65,7 +65,7 @@ class TestType < MiniTest::Test
   def test_class_type
     oc = Register.machine.boot.space.get_class_by_name( :Object )
     assert_equal Parfait::Class , oc.class
-    type = oc.object_type
+    type = oc.instance_type
     assert_equal Parfait::Type , type.class
     assert_equal 1 , type.instance_names.get_length
     assert_equal type.first , :type
@@ -119,7 +119,7 @@ class TestType < MiniTest::Test
     assert_equal 55 , @mess.get_internal_word(message_ind)
   end
 
-  def test_object_type
+  def test_instance_type
     assert_equal 2 , @mess.get_type.variable_index(:next_message)
   end
 

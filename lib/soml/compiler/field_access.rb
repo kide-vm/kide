@@ -10,9 +10,9 @@ module Soml
       field_name = field_ast.first_from(:name)
 
 
-      index = clazz.object_type.variable_index(field_name)
+      index = clazz.instance_type.variable_index(field_name)
       raise "field access, but no such field:#{field_name} for class #{clazz.name}" unless index
-      value = use_reg(clazz.object_type.type_at(index))
+      value = use_reg(clazz.instance_type.type_at(index))
 
       add_code Register.get_slot(statement , receiver , index, value)
 
