@@ -2,7 +2,7 @@ require 'parslet'
 
 require "logging"
 require "elf/object_writer"
-require 'salama-reader'
+require 'soml-parser'
 AST::Node.class_eval do
   def first
     children.first
