@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: git://github.com/salama/soml-parser.git
-  revision: 4a9b492dd9fb1d7cbc6f114aee226ff227753568
+  revision: 5c03db709fa3a326288a57a65643bd9ddf905bec
   specs:
     soml-parser (0.5.0)
       ast (~> 2.1.0)

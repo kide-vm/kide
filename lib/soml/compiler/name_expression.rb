@@ -2,11 +2,11 @@ module Soml
   Compiler.class_eval do
 
       #    attr_reader  :name
-      # compiling name needs to check if it's a variable and if so resolve it
-      # otherwise it's a method without args and a send is issued.
+      # compiling name needs to check if it's a local variable
+      # or an argument
       # whichever way this goes the result is stored in the return slot (as all compiles)
-      def on_name statement
-        name = statement.to_a.first
+      def on_NameExpression statement
+        name = statement.name
         if( name == :self)
           ret = use_reg @clazz.name
           add_code Register.get_slot(statement , :message , :receiver , ret )

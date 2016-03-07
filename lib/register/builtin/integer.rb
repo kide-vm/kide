@@ -18,10 +18,10 @@ module Register
         def div10 context
           s = "div_10"
           compiler = Soml::Compiler.new.create_method(:Integer,:div10 ).init_method
-          me = compiler.process( s(:name , :self) )
-          tmp = compiler.process( s(:name , :self) )
-          q = compiler.process( s(:name , :self) )
-          const = compiler.process( s(:int , 1) )
+          me = compiler.process( Soml::NameExpression.new( :self) )
+          tmp = compiler.process( Soml::NameExpression.new( :self) )
+          q = compiler.process( Soml::NameExpression.new( :self) )
+          const = compiler.process( Soml::IntegerExpression.new(1) )
           # int tmp = self >> 1
           compiler.add_code Register.op( s , ">>" , tmp , const)
           # int q = self >> 2

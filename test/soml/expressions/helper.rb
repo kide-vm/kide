@@ -21,10 +21,11 @@ module ExpressionHelper
     parser = parser.send @root
     syntax  = parser.parse_with_debug(@string_input, reporter: Parslet::ErrorReporter::Deepest.new)
     parts = Parser::Transform.new.apply(syntax)
+    codes = Soml.ast_to_code parts
     #puts parts.inspect
     compiler = Soml::Compiler.new
     set_main(compiler)
-    produced = compiler.process( parts )
+    produced = compiler.process( codes )
     assert @output , "No output given"
     assert_equal  produced.class, @output , "Wrong class"
     produced

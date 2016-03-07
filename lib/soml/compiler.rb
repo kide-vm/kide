@@ -32,10 +32,11 @@ module Soml
   # Helper function to create a new compiler and compie the statement(s)
   def self.compile statement
     compiler = Compiler.new
-    compiler.process statement
+    code = Soml.ast_to_code statement
+    compiler.process code
   end
 
-  class Compiler < AST::Processor
+  class Compiler
 
     def initialize( method = nil )
       @regs = []
@@ -46,8 +47,33 @@ module Soml
     end
     attr_reader :clazz , :method
 
-    def handler_missing node
-      raise "No handler  on_#{node.type}(node)"
+
+    # Dispatches `code` according to it's class name, for class NameExpression
+    # a method named `on_NameExpression` is invoked with one argument, the `code`
+    #
+    # @param  [Soml::Code, nil] code
+    def process(code)
+      name = code.class.name.split("::").last
+      # Invoke a specific handler
+      on_handler = :"on_#{name}"
+      if respond_to? on_handler
+        return send on_handler, code
+      else
+        raise "No handler  on_#{name}(code) #{code.inspect}"
+      end
+    end
+
+    # {#process}es each code from `codes` and returns an array of
+    # results.
+    #
+    def process_all(codes)
+      codes.to_a.map do |code|
+        process code
+      end
+    end
+
+    def on_Statements(codes)
+      process_all codes.statements
     end
 
     # create the method, do some checks and set it as the current method to be added to
@@ -150,7 +176,8 @@ module Soml
 
     def self.load_parfait
       each_parfait do |parts|
-        self.new.process( parts )
+        code = Soml.ast_to_code parts
+        self.new.process( code )
       end
     end
 

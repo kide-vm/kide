@@ -10,41 +10,41 @@ module Soml
 
     # But in the future (in the one that holds great things) we optimize those unneccesay moves away
 
-    def on_int expression
-      int = expression.first
+    def on_IntegerExpression expression
+      int = expression.value
       reg = use_reg :Integer , int
       add_code Register::LoadConstant.new( expression, int , reg )
       return reg
     end
 
-    def on_true expression
+    def on_TrueExpression expression
       reg = use_reg :Boolean
       add_code Register::LoadConstant.new( expression, true , reg )
       return reg
     end
 
-    def on_false expression
+    def on_FalseExpression expression
       reg = use_reg :Boolean
       add_code Register::LoadConstant.new( expression, false , reg )
       return reg
     end
 
-    def on_nil expression
+    def on_NilExpression expression
       reg = use_reg :NilClass
       add_code Register::LoadConstant.new( expression, nil , reg )
       return reg
     end
 
-    def on_string expression
-      value = Parfait.new_word expression.first.to_sym
+    def on_StringExpression expression
+      value = Parfait.new_word expression.value.to_sym
       reg = use_reg :Word
       Register.machine.constants << value
       add_code Register::LoadConstant.new( expression, value , reg )
       return reg
     end
 
-    def on_class_name expression
-      name = expression.first
+    def on_ClassExpression expression
+      name = expression.value
       clazz = Parfait::Space.object_space.get_class_by_name! name
       raise "No such class #{name}" unless clazz
       reg = use_reg :MetaClass , clazz

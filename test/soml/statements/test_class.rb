@@ -40,19 +40,6 @@ HERE
     check
   end
 
-  def test_class_field_value
-    @string_input = <<HERE
-class Space
-  field int boo1 = 1
-  int main()
-    return 1
-  end
-end
-HERE
-    @expect =  [Label, LoadConstant,SetSlot,Label,FunctionReturn]
-    assert_raises{check}
-  end
-
   def test_class_field
     @string_input = <<HERE
 class Space

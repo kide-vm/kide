@@ -1,13 +1,13 @@
 module Soml
   Compiler.class_eval do
 
-    def on_field_access statement
-      receiver_ast , field_ast = *statement
-      receiver = process(receiver_ast)
+    def on_FieldAccess statement
+#      receiver_ast , field_ast = *statement
+      receiver = process(statement.receiver)
 
       clazz = Register.machine.space.get_class_by_name receiver.type
 
-      field_name = field_ast.first_from(:name)
+      field_name = statement.field.name
 
 
       index = clazz.instance_type.variable_index(field_name)

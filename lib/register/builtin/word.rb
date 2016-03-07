@@ -13,14 +13,14 @@ module Register
           Kernel.emit_syscall( compiler , :putstring )
           compiler.method
         end
-
+        
         # self[index] basically. Index is the first arg > 0
         # return (and word sized int) is stored in return_value
         def get_internal_byte context
           compiler = Soml::Compiler.new.create_method(:Word , :get_internal_byte , {:index => :Integer }).init_method
           source = "get_internal_word"
           #Load self by "calling" on_name
-          me = compiler.process( s(:name , :self) )
+          me = compiler.process( Soml::NameExpression.new( :self) )
           # Load the argument
           index = compiler.use_reg :Integer
           compiler.add_code Register.get_slot(source , :message , Parfait::Message.get_indexed(1), index )
@@ -39,7 +39,7 @@ module Register
                                                 {:index => :Integer, :value  => :Integer } ).init_method
           source = "set_internal_word"
           #Load self by "calling" on_name
-          me = compiler.process( s(:name , :self) )
+          me = compiler.process( Soml::NameExpression.new( :self) )
           # Load the index
           index = compiler.use_reg :Integer
           compiler.add_code Register.get_slot(source , :message , Parfait::Message.get_indexed(1), index )

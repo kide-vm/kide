@@ -30,7 +30,7 @@ class TestBasic < MiniTest::Test
   def test_var
     @string_input    = 'int foo '
     @root = :field_def
-    @output = AST::Node
+    @output = NilClass
     check
   end
 

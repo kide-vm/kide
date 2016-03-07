@@ -1,24 +1,23 @@
 module Soml
   Compiler.class_eval do
 
-    def on_function  statement
+    def on_FunctionStatement  statement
       #puts statement.inspect
-      return_type , name , parameters, kids , receiver = *statement
-      name =  name.to_a.first
+#      return_type , name , parameters, kids , receiver = *statement
+      name =  statement.name
       raise "Already in method #{@method}" if @method
 
-      args = parameters.to_a.collect do |p|
-        raise "error, argument must be a identifier, not #{p}" unless p.type == :parameter
-        Parfait::Variable.new( *p)
+      args = statement.parameters.collect do |p|
+        Parfait::Variable.new( *p )
       end
 
       class_method = nil
-      if(receiver )
-        if( receiver.first == :self)  #class method
+      if(statement.receiver )
+        if( statement.receiver.first == :self)  #class method
           class_method = @clazz
           @clazz = @clazz.meta
         else
-          raise "Not covered #{receiver}"
+          raise "Not covered #{statement.receiver}"
         end
       end
 
@@ -33,9 +32,8 @@ module Soml
       @method.source = statement
       #puts "compile method #{@method.name}"
 
-      kids.to_a.each do |ex|
-        process(ex)
-      end
+      process(statement.statements)
+
       @clazz = class_method if class_method
       @method = nil
       # function definition is a statement, does not return any value
