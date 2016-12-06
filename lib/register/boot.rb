@@ -1,6 +1,6 @@
 module Register
 
-  # Booting is a complicated, so it is extracted into this file, even it has only one entry point
+  # Booting is complicated, so it is extracted into this file, even it has only one entry point
 
   class Machine
 
@@ -87,8 +87,8 @@ module Register
 
     # helper to create a Type, name is the parfait name, ie :Type
     def type_for( name , ivars )
-      l = Parfait::Type.allocate.fake_init
-      l.add_instance_variable :type , :Type
+      l = Parfait::Type.allocate.compile_time_init
+      l.add_instance_variable :type , name
       ivars.each {|n,t| l.add_instance_variable( n , t) }
       l
     end
@@ -97,7 +97,7 @@ module Register
     # meaning the lauouts have to be booted, @types filled
     # here we pass the actual (ruby) class
     def object_with_type(cl)
-      o = cl.allocate.fake_init
+      o = cl.allocate.compile_time_init
       name = cl.name.split("::").last.to_sym
       o.set_type @types[name]
       o

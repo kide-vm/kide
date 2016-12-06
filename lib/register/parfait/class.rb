@@ -10,8 +10,8 @@
 # may be added to any object at run-time.
 
 # An Object carries the data for the instance variables it has.
-# The type lists the names of the instance variables
-# The class keeps a list of instance methods, these have a name and code
+# The Type lists the names of the instance variables
+# The Class keeps a list of instance methods, these have a name and code
 
 module Parfait
   class Class < Object

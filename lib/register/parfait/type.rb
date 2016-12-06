@@ -6,7 +6,7 @@
 # The Type allows the mapping of names to index.
 
 # The Type of an object describes the memory layout of the object. In a c analogy, it is the
-#  information defined in a struct.
+# information defined in a struct.
 # The Type is a list of the names of instance variables, and their value types (int etc).
 #
 # Every object has a Type to describe it, so it's *first* instance variable is **always**
@@ -19,12 +19,18 @@
 # But Objects must also be able to carry methods themselves (ruby calls singleton_methods)
 # and those too are stored in the Type (both type and class include behaviour)
 
-# In other words, the Type is a list of names and value types that describe
-# the values stored in an actual object.
-# The object is an List of values of length n and
-# the Type is an List of names and value tpyes of length n ,
-#  plus class reference and methods reference
+# The object is an List of values of length n
+
+# The Type is a list of n names and n types that describe the values stored in an actual object.
+
 # Together they turn the object into a hash like structure
+
+# For types to be a useful concept, they have to be unique and immutable. Any "change", like adding
+# a name/type pair, will result in a new instance.
+
+# The Type class carries a hash of types of the systems, which is used to ensure that
+# there is only one instance of every type. Hash and equality are defined on type
+# for this to work.
 
 module Parfait
   class Type < Object

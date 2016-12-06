@@ -21,10 +21,11 @@ module Parfait
     # At compile time we fake memory by using a global array for pages
     def self.new *args
       object = self.allocate
-      #HACK, but used to do the adapter in the init, bu that is too late now
-      object.fake_init if object.respond_to?(:fake_init) # at compile, not run-time
+      object.compile_time_init if object.respond_to?(:compile_time_init)
+
       # have to grab the class, because we are in the ruby class not the parfait one
       cl = Space.object_space.get_class_by_name( self.name.split("::").last.to_sym)
+
       # and have to set the type before we let the object do anything. otherwise boom
       object.set_type cl.instance_type
 
@@ -35,7 +36,7 @@ module Parfait
     include Padding
     include Positioned
 
-    def fake_init
+    def compile_time_init
       @memory = Array.new(16)
       @position = nil
       self # for chaining

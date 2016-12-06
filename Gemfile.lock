@@ -18,6 +18,13 @@ GIT
       ast (~> 2.1.0)
       parslet (~> 1.7.1)
 
+GIT
+  remote: git://github.com/whitequark/ast.git
+  revision: 3814fb102af82a30bf334005ebe17332744f9dad
+  branch: master
+  specs:
+    ast (2.1.0)
+
 PATH
   remote: .
   specs:
@@ -31,7 +38,6 @@ GEM
   specs:
     annoy (0.5.6)
       highline (>= 1.5.0)
-    ast (2.1.0)
     blankslate (3.1.3)
     codeclimate-test-reporter (1.0.3)
       simplecov
@@ -108,7 +114,7 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
-  ast
+  ast!
   codeclimate-test-reporter
   guard
   guard-minitest
