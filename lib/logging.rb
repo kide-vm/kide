@@ -18,7 +18,7 @@ module Logging
   module Methods
     def log
       return @logger if @logger
-      @logger = Logger.new STDOUT
+      @logger = Logger.new log_stream
       @logger.progname = self.name.split("::").last
       @logger.datetime_format = '%M:%S'
       @logger.level = Logger::INFO
@@ -41,6 +41,11 @@ module Logging
                     else
                       raise "unknown log level #{l}"
                     end
+    end
+
+    private
+    def log_stream
+       STDOUT
     end
   end
 end
