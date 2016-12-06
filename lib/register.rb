@@ -1,6 +1,6 @@
 require "register/padding"
 require "register/positioned"
-require "register/parfait"
+require "typed/parfait"
 require "register/machine"
 
 require "soml/compiler"
