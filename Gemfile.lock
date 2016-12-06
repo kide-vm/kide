@@ -87,7 +87,7 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
       win32console (~> 1.3)
-    rake (10.5.0)
+    rake (11.3.0)
     rb-fsevent (0.9.6)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
@@ -130,4 +130,4 @@ DEPENDENCIES
   soml-parser!
 
 BUNDLED WITH
-   1.11.2
+   1.12.5

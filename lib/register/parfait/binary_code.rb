@@ -6,7 +6,7 @@
 
 module Parfait
   # obviously not a "Word" but a ByteArray , but no such class yet
-  # As on the other hand has no encoding (yet) it is close enough
+  # As String on the other hand has no encoding (yet) it is close enough
   class BinaryCode < Word
 
     def to_s

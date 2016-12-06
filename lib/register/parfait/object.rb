@@ -2,8 +2,8 @@
 # and functions to work on that data.
 # Only the object may access it's data directly.
 
-# From an implementation perspective it is a chunk of memory with an type as the first
-# word.
+# From an implementation perspective it is a chunk of memory with a type as the first
+# word (instance of class Type).
 
 # Objects are arranged or layed out (in memory) according to their Type
 # every object has a Type. Type objects are immutalbe and may be reused for a group/class
@@ -17,6 +17,8 @@ module Parfait
 
   class Object < Value
 
+    # we define new, so we can do memory layout also at compile time.
+    # At compile time we fake memory by using a global array for pages
     def self.new *args
       object = self.allocate
       #HACK, but used to do the adapter in the init, bu that is too late now
@@ -30,9 +32,6 @@ module Parfait
       object
     end
 
-    # Objects memory functions. Object memory is 1 based
-    # but we implement it with ruby array (0 based) and don't use 0
-    # These are the same functions that Builtin implements for run-time
     include Padding
     include Positioned
 

@@ -174,21 +174,18 @@ module Soml
       name
     end
 
+    # load the soml files from parfait directory
+    # Need to remove this and put it back into ruby code
     def self.load_parfait
-      each_parfait do |parts|
+      ["word","class","type","message" ,"integer", "object"].each do |o|
+        str = File.open(File.expand_path("parfait/#{o}.soml", File.dirname(__FILE__))).read
+        syntax  = Parser::Salama.new.parse_with_debug(str, reporter: Parslet::ErrorReporter::Deepest.new)
+        parts = Parser::Transform.new.apply(syntax)
         code = Soml.ast_to_code parts
         self.new.process( code )
       end
     end
 
-    def self.each_parfait
-      ["word","class","type","message" ,"integer", "object"].each do |o|
-        str = File.open(File.expand_path("parfait/#{o}.soml", File.dirname(__FILE__))).read
-        syntax  = Parser::Salama.new.parse_with_debug(str, reporter: Parslet::ErrorReporter::Deepest.new)
-        parts = Parser::Transform.new.apply(syntax)
-        yield parts
-      end
-    end
   end
 end
 

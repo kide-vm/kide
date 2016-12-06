@@ -24,7 +24,7 @@ module Register
           return compiler.method
         end
 
-        # self[index] = val basically. Index is the first arg , vlaue the second
+        # self[index] = val basically. Index is the first arg , value the second
         # no return
         def set_internal_word context
           compiler = Soml::Compiler.new.create_method(:Object , :set_internal_word ,

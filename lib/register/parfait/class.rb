@@ -1,19 +1,16 @@
-# A class describes the capabilities of a group of objects, ie what data it has
-# and functions it responds to.
+# Class is mainly a list of methods with a name. The methods are untyped.
 
-
-# Class is mainly a list of methods with a name. (Note that methods may have many functions)
 # The memory layout of an object is determined by the Type (see there).
 # The class carries the "current" type, ie the type an object would be if you created an instance
 # of the class. Note that this changes over time and so many types share the same class.
 
-# It is essential that the class (the object defining the class)
+# For dynamic OO it is essential that the class (the object defining the class)
 # can carry methods. It does so as instance variables.
 # In fact this property is implemented in the Type, as methods
-# may be added to any object at run-time
+# may be added to any object at run-time.
 
-# An Object carries the data for the instance variables it has
-# The Type lists the names of the instance variables
+# An Object carries the data for the instance variables it has.
+# The type lists the names of the instance variables
 # The class keeps a list of instance methods, these have a name and code
 
 module Parfait
@@ -46,7 +43,6 @@ module Parfait
     def inspect
       "Class(#{name})"
     end
-
 
     def create_instance_method  method_name , arguments
       raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)

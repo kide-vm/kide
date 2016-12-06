@@ -20,9 +20,9 @@ module Register
     #    That graph can be programatically built and written (with this to boot that process :-))
 
     # There are some helpers below, but the roadmap is something like:
-    # - create all the types, with thier types, but no classes
+    # - create all the Type instances, with their basic types, but no classes
     # - create a space by "hand" , using allocate, not new
-    # - create the class objects and assign them to the types
+    # - create the Class objects and assign them to the types
     def boot_parfait!
       boot_types
       boot_space
@@ -138,7 +138,7 @@ module Register
     #                                                     (as that's impossible in ruby)
     def boot_functions!
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we
-      # have to define some dummies, just for the other to compile
+      # have to define some dummies, just for the others to compile
       # TODO go through the virtual parfait layer and adjust function names to what they really are
       @space.get_class_by_name(:Space).add_instance_method Builtin::Space.send(:main, nil)
 

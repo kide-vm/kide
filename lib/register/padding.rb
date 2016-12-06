@@ -1,4 +1,6 @@
-
+# Helper functions to pad memory.
+#
+# Meory is always in lines, chunks of 8 words / 32 bytes
 module Padding
 
   # objects only come in lengths of multiple of 8 words / 32 bytes

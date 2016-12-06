@@ -1,5 +1,4 @@
-#require_relative "type"
-
+# Helper module that extract position attribute.
 module Positioned
   def position
     if @position.nil?

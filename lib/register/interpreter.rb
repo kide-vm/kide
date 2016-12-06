@@ -2,6 +2,17 @@
 require_relative "eventable"
 
 module Register
+
+  # An interpreter for the register level. As the register machine is a simple model,
+  # interpreting it is not so terribly difficult.
+  #
+  # There is a certain amount of basic machinery to fetch and execute the next instruction
+  # (as a cpu would), and then there is a method for each instruction. Eg an instruction GetSlot
+  # will be executed by method execute_GetSlot
+  #
+  # The Interpreter (a bit like a cpu) has a state flag, a current instruction and registers
+  # We collect the stdout (as a hack not to interpret the OS)
+  #
   class Interpreter
     # fire events for changed pc and register contents
     include Eventable
@@ -16,6 +27,7 @@ module Register
     attr_reader :state # running etc
     attr_reader :flags  # somewhat like the lags on a cpu, hash  sym => bool (zero .. . )
 
+    #start in state :stopped and set registers to unknown
     def initialize
       @state = :stopped
       @stdout = ""

@@ -18,6 +18,10 @@ module Parfait
 
   class Method < Object
 
+    attributes [:name , :source , :instructions , :binary ,:arguments , :for_class, :locals ]
+    # not part of the parfait model, hence ruby accessor
+    attr_accessor :source
+
     def initialize clazz , name , arguments
       super()
       raise "No class #{name}" unless clazz
@@ -31,9 +35,6 @@ module Parfait
       self.arguments = arguments
       self.locals = List.new
     end
-    attributes [:name , :source , :instructions , :binary ,:arguments , :for_class, :locals ]
-    # not part of the parfait model, hence ruby accessor
-    attr_accessor :source
 
     # determine whether this method has an argument by the name
     def has_arg name

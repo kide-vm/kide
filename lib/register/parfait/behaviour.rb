@@ -1,13 +1,10 @@
+# Behaviour is something that has methods, basically class and modules superclass
 
-# described in the ruby language book as the eigenclass, what you get with
-# class MyClass
-#     class << self        <--- this is called the eigenclass, or metaclass, and really is just
-#     ....                              the class object but gives us the ability to use the
-#                                       syntax as if it were a class
-#
+# instance_methods is the attribute in the including class that has the methods
 
 module Parfait
   module Behaviour
+    # when included we set up the instance_methods attribute
     def self.included(base)
       base.attribute :instance_methods
     end
@@ -22,6 +19,7 @@ module Parfait
       return m if m
       self.instance_methods = List.new
     end
+
     def method_names
       names = List.new
       self.methods.each do |method|

@@ -1,8 +1,9 @@
 require 'parslet/convenience'
 require_relative "collector"
 module Register
-  # The Register Machine is a object based virtual machine on which ruby will be implemented.
-  #
+  # The Register Machine is an abstraction of the register level. This is seperate from the
+  # actual assembler level to allow for several cpu architectures.
+  # The Instructions (see class Instruction) define what the machine can do (ie load/store/maths)
 
   # The ast is transformed to virtual-machine objects, some of which represent code, some data.
   #
