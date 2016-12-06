@@ -38,7 +38,6 @@ module Parfait
       end
     end
 
-    @@object_space = nil
     # Make the object space globally available
     def self.object_space
       @@object_space

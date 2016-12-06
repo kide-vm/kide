@@ -54,7 +54,6 @@ module Register
       space_dict = object_with_type Parfait::Dictionary
       space_dict.keys = object_with_type Parfait::List
       space_dict.values = object_with_type Parfait::List
-
       @space = object_with_type Parfait::Space
       @space.classes = space_dict
       Parfait::Space.set_object_space @space

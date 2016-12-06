@@ -3,7 +3,7 @@ require_relative "../helper"
 class TestSpace < MiniTest::Test
 
   def setup
-    @machine = Register.machine.boot
+    @machine = Register.machine
   end
   def classes
     [:Kernel,:Word,:List,:Message,:Frame,:Type,:Object,:Class,:Dictionary,:Method , :Integer]

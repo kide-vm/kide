@@ -14,7 +14,7 @@ class TestObject < MiniTest::Test
   end
 
   def test_empty_object_doesnt_return
-    assert_equal nil ,  @object.get_internal_word(3)
+    assert_nil   @object.get_internal_word(3)
   end
 
   def test_one_set1

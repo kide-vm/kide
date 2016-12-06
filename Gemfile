@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
 gem "salama" , :path => "."
-gem "ast" , :github => "whitequark/ast"
+gem "ast" #, :github => "whitequark/ast"
 
 gem "rake"
 gem "rye"

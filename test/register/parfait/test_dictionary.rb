@@ -1,7 +1,6 @@
 require_relative "../helper"
 
 class TestDictionary < MiniTest::Test
-  Register.machine.boot  #have to book, otherwise types etc not set
 
   def setup
     @lookup = ::Parfait::Dictionary.new
@@ -10,8 +9,8 @@ class TestDictionary < MiniTest::Test
     assert @lookup.empty?
   end
   def test_empty_dict_doesnt_return
-    assert_equal nil , @lookup.get(3)
-    assert_equal nil , @lookup.get(:any)
+    assert_nil  @lookup.get(3)
+    assert_nil  @lookup.get(:any)
   end
   def test_one_set1
     assert_equal 1 , @lookup.set(1,1)

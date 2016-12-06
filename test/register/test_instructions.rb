@@ -42,12 +42,12 @@ module Register
       assert_equal @label, @instruction.last
     end
     def test_next1
-      assert_equal nil , @instruction.next
+      assert_nil  @instruction.next
     end
     def test_next2
       @instruction.set_next @label
       assert_equal @label , @instruction.next
-      assert_equal nil , @instruction.next(2)
+      assert_nil  @instruction.next(2)
     end
     def test_replace
       @instruction.append @branch

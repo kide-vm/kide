@@ -3,7 +3,6 @@ require_relative "../helper"
 class TestEmptyWord < MiniTest::Test
 
   def setup
-    Register.machine.boot unless Register.machine.booted
     @word = ::Parfait::Word.new(0)
   end
   def test_word_create

@@ -3,7 +3,6 @@ require_relative "../helper"
 class TestList < MiniTest::Test
 
   def setup
-    Register.machine.boot unless Register.machine.booted
     @list = ::Parfait::List.new
   end
   def test_isa
@@ -35,7 +34,7 @@ class TestList < MiniTest::Test
 
   def test_length0
     assert_equal 0 , @list.get_length
-    assert_equal nil , @list.indexed_length
+    assert_nil  @list.indexed_length
   end
   def test_offset
     assert_equal 2 , @list.get_offset
@@ -67,7 +66,7 @@ class TestList < MiniTest::Test
     assert_equal 0 , @list.get_length
   end
   def test_empty_list_doesnt_return
-    assert_equal nil , @list.get(3)
+    assert_nil  @list.get(3)
   end
   def test_one_set1
     assert_equal 2 , @list.set(1,2)
@@ -122,7 +121,7 @@ class TestList < MiniTest::Test
     test_many_get
     assert_equal 2 , @list.index_of( :two )
     assert_equal 3 , @list.index_of( :three )
-    assert_equal nil , @list.index_of( :four )
+    assert_nil  @list.index_of( :four )
   end
   def test_inspect
     test_many_get
@@ -146,13 +145,13 @@ class TestList < MiniTest::Test
     assert_equal :one , @list.first
   end
   def test_first_empty
-    assert_equal nil , @list.first
+    assert_nil  @list.first
   end
   def test_last
     test_many_get
     assert_equal :three , @list.last
   end
   def test_last_empty
-    assert_equal nil , @list.last
+    assert_nil  @list.last
   end
 end

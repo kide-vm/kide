@@ -47,8 +47,8 @@ class TestMeta < MiniTest::Test
     assert_equal Parfait::Method , @try.get_instance_method(:foo).class
   end
   def test_method_get_nothere
-    assert_equal nil , @try.get_instance_method(:foo)
+    assert_nil  @try.get_instance_method(:foo)
     test_remove_method
-    assert_equal nil , @try.get_instance_method(:foo)
+    assert_nil  @try.get_instance_method(:foo)
   end
 end
