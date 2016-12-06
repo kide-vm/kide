@@ -1,1 +1,1 @@
-require_relative "log_test"
+require_relative "test_log"
