@@ -46,6 +46,7 @@ module Parfait
     def get_internal_word(index)
       @memory[index]
     end
+    
     # 1 -based index
     def set_internal_word(index , value)
       raise "failed init for #{self.class}" unless @memory
@@ -132,6 +133,7 @@ module Parfait
     def instance_variables
       get_instance_variables.to_a.collect{ |n| "@#{n}".to_sym }
     end
+
     # name comes in as a ruby @var name
     def instance_variable_get name
       var = get_instance_variable name.to_s[1 .. -1].to_sym

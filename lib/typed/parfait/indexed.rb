@@ -103,13 +103,22 @@ module Parfait
     end
 
     def each
-      # not sure how to do this with define_method, because of the double block issue.
-      # probably some clever way around that, but not important
       index = 1
       while index <= self.get_length
         item = get(index)
         yield item
         index = index + 1
+      end
+      self
+    end
+
+    def each_pair
+      index = 1
+      while index <= self.get_length
+        key = get( index  )
+        value = get(index + 1)
+        yield key , value
+        index = index + 2
       end
       self
     end

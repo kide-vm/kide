@@ -66,10 +66,8 @@ module Parfait
 
     def instance_names
       names = List.new
-      name = true
-      each do |item|
-        names.push(item) if name
-        name = ! name
+      each_pair do |name , type|
+        names.push(name)
       end
       names
     end
@@ -110,5 +108,8 @@ module Parfait
       nil  # stop resolve recursing up metaclasses
     end
 
+    def hash
+      h = name.hash
+    end
   end
 end

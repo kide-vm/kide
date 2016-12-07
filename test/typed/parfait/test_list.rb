@@ -95,14 +95,41 @@ class TestList < MiniTest::Test
     test_one_set2
     assert_equal :some , @list.get(2)
   end
-  def test_many_get
+  def set_shouldda
     shouldda  = { 1 => :one , 2 => :two , 3 => :three}
     shouldda.each do |k,v|
       @list.set(k,v)
     end
+    shouldda
+  end
+  def test_many_get
+    shouldda = set_shouldda
     shouldda.each do |k,v|
       assert_equal v , @list.get(k)
     end
+  end
+  def test_each
+    shouldda_values = set_shouldda.values
+    @list.each do |val|
+      shouldda_values.delete val
+    end
+    assert_equal 0 , shouldda_values.length
+  end
+  def test_each_pair_length
+    shouldda_values = set_shouldda.values
+    @list.each_pair do |key,val|
+      shouldda_values.delete key
+      shouldda_values.delete val
+    end
+    assert_equal 0 , shouldda_values.length
+  end
+  def test_each_pair_count
+    set_shouldda.values
+    counter = 0
+    @list.each_pair do |key,val|
+      counter += 1
+    end
+    assert_equal 2 , counter
   end
   def test_delete_at
     test_many_get
