@@ -29,6 +29,10 @@ class TestSpace < MiniTest::Test
     end
   end
 
+  def test_types
+    assert  @machine.space.types.is_a? Parfait::Dictionary
+  end
+  
   def test_classes_type
     classes.each do |name|
       assert_equal Parfait::Type , @machine.space.classes[name].get_type.class

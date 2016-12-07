@@ -24,7 +24,7 @@ module Parfait
     def initialize
       raise "Space can not be instantiated by new, you'd need a space to do so. Chicken and egg"
     end
-    attributes [:classes , :first_message]
+    attributes [:classes , :types, :first_message]
 
     # need a two phase init for the object space (and generally parfait) because the space
     # is an interconnected graph, so not everthing is ready
@@ -36,12 +36,16 @@ module Parfait
         message.set_caller self.first_message
         message = self.first_message
       end
+      classes.each do |name , cl|
+        types[cl.instance_type.hash] = cl.instance_type
+      end
     end
 
     # Make the object space globally available
     def self.object_space
       @@object_space
     end
+
     # TODO Must get rid of the setter
     def self.set_object_space space
       @@object_space = space

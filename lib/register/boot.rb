@@ -51,12 +51,17 @@ module Register
     # once we have the types we can create the space by creating the instance variables
     # by hand (can't call new yet as that uses the space)
     def boot_space
-      space_dict = object_with_type Parfait::Dictionary
-      space_dict.keys = object_with_type Parfait::List
-      space_dict.values = object_with_type Parfait::List
       @space = object_with_type Parfait::Space
-      @space.classes = space_dict
+      @space.classes = make_dictionary
+      @space.types = make_dictionary
       Parfait::Space.set_object_space @space
+    end
+
+    def make_dictionary
+      dict = object_with_type Parfait::Dictionary
+      dict.keys = object_with_type Parfait::List
+      dict.values = object_with_type Parfait::List
+      dict
     end
 
     # when running code instantiates a class, a type is created automatically
@@ -117,7 +122,7 @@ module Register
           :Object => {},
           :Kernel => {}, #fix, kernel is a class, but should be a module
           :BinaryCode => {:char_length => :Integer} ,
-          :Space => {:classes => :Dictionary , :first_message => :Message},
+          :Space => {:classes => :Dictionary , :types => :Dictionary , :first_message => :Message},
           :Frame => {:next_frame => :Frame, :indexed_length => :Integer},
           :Type => {:object_class => :Class, :instance_methods => :List , :indexed_length => :Integer} ,
           :Class => {:instance_methods => :List, :instance_type => :Type, :name => :Word,

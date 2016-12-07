@@ -49,7 +49,7 @@ class BasicType < MiniTest::Test
     assert_equal Parfait::Class , oc.class
     type = oc.instance_type
     assert_equal Parfait::Type , type.class
-    assert_equal 1 , type.instance_names.get_length
+    assert_equal 1 , type.instance_names.get_length , type.instance_names.inspect
     assert_equal type.first , :type
   end
 
@@ -59,7 +59,7 @@ class BasicType < MiniTest::Test
     assert_equal Parfait::Space , space.class
     type = space.get_type
     assert_equal Parfait::Type , type.class
-    assert_equal 3 , type.instance_names.get_length
+    assert_equal 4 , type.instance_names.get_length
     assert_equal type.object_class.class , Parfait::Class
     assert_equal type.object_class.name , :Space
   end
