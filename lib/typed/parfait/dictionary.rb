@@ -84,6 +84,14 @@ module Parfait
       self
     end
 
+    def inspect
+      string = "Dictionary{"
+      each do |key , value|
+        string += key.to_s + " => " + value.to_s + " ,"
+      end
+      string + "}"
+    end
+
     def to_sof_node(writer , level , ref)
       Sof.hash_to_sof_node( self , writer , level , ref)
     end

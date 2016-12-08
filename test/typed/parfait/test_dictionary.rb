@@ -30,6 +30,15 @@ class TestDictionary < MiniTest::Test
     test_one_set2
     assert_equal :some , @lookup.get(1)
   end
+  def test_inspect1
+    @lookup[:key] = :value
+    assert_equal "Dictionary{key => value ,}" , @lookup.inspect
+  end
+  def test_inspect2
+    @lookup[:key1] = :value1
+    @lookup[:key2] = :value2
+    assert_equal "Dictionary{key1 => value1 ,key2 => value2 ,}" , @lookup.inspect
+  end
   def test_many_get
     shouldda  = { :one => 1 , :two => 2 , :three => 3}
     shouldda.each do |k,v|
