@@ -1,10 +1,9 @@
 require "register/padding"
 require "register/positioned"
-require "typed/parfait"
-require "register/machine"
-
 require "typed/compiler"
 
+require "typed/parfait"
+require "register/machine"
 
 class Fixnum
   def fits_u8?

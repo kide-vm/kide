@@ -17,8 +17,7 @@ require "minitest/autorun"
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'test'))
 
-was = require 'salama'
-puts "loaded #{was}"
+require 'salama'
 
 class Ignored
   def == other

@@ -32,7 +32,7 @@ module Typed
   # Helper function to create a new compiler and compie the statement(s)
   def self.compile statement
     compiler = Compiler.new
-    code = Soml.ast_to_code statement
+    code = Typed.ast_to_code statement
     compiler.process code
   end
 
@@ -51,7 +51,7 @@ module Typed
     # Dispatches `code` according to it's class name, for class NameExpression
     # a method named `on_NameExpression` is invoked with one argument, the `code`
     #
-    # @param  [Soml::Code, nil] code
+    # @param  [Typed::Code, nil] code
     def process(code)
       name = code.class.name.split("::").last
       # Invoke a specific handler
@@ -173,23 +173,11 @@ module Typed
       raise "space is a reserved name" if name == :space
       name
     end
-
-    # load the soml files from parfait directory
-    # Need to remove this and put it back into ruby code
-    def self.load_parfait
-      ["word","class","type","message" ,"integer", "object"].each do |o|
-        str = File.open(File.expand_path("parfait/#{o}.soml", File.dirname(__FILE__))).read
-        syntax  = Parser::Salama.new.parse_with_debug(str, reporter: Parslet::ErrorReporter::Deepest.new)
-        parts = Parser::Transform.new.apply(syntax)
-        code = Soml.ast_to_code parts
-        self.new.process( code )
-      end
-    end
-
   end
 end
 
 require_relative "ast_helper"
+require_relative "ast/code"
 require_relative "compiler/assignment"
 require_relative "compiler/basic_values"
 require_relative "compiler/call_site"

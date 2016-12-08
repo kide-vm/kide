@@ -9,7 +9,7 @@ module Typed
       name_s = no_space( statement.name.value )
       @method.ensure_local( name_s, statement.type ) unless( @method.has_arg(name_s))
       # if there is a value assigned, process it as am assignemnt statement (kind of call on_assign)
-      process( Soml::Assignment.new(statement.name , statement.value )  ) if statement.value
+      process( Typed::Assignment.new(statement.name , statement.value )  ) if statement.value
       return nil
     end
   end

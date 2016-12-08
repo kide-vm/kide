@@ -2,7 +2,8 @@ require 'parslet'
 
 require "logging"
 require "elf/object_writer"
-require 'soml-parser'
+require "ast"
+
 AST::Node.class_eval do
   def first
     children.first

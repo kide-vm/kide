@@ -22,7 +22,6 @@ module RuntimeTests
 
   def load_program
     @machine = Register.machine.boot
-    Typed::Compiler.load_parfait
     @machine.parse_and_compile main()
     @machine.collect
   end
@@ -59,7 +58,7 @@ module RuntimeTests
     machine , port = rest.to_s.split(":")
     make_box machine , port , user
   end
-  
+
   def make_box machine = nil , port = nil , user = nil
     @@conn = Rye::Box.new(machine || "localhost" , :port => (port || 2222) , :user => (user || "pi"))
   end

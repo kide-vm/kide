@@ -11,14 +11,6 @@ GIT
     salama-object-file (0.3.0)
 
 GIT
-  remote: git://github.com/salama/soml-parser.git
-  revision: 5c03db709fa3a326288a57a65643bd9ddf905bec
-  specs:
-    soml-parser (0.5.0)
-      ast (~> 2.1.0)
-      parslet (~> 1.7.1)
-
-GIT
   remote: git://github.com/whitequark/ast.git
   revision: 3814fb102af82a30bf334005ebe17332744f9dad
   branch: master
@@ -104,6 +96,9 @@ GEM
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
     slop (3.6.0)
+    soml-parser (0.5.0)
+      ast (~> 2.1.0)
+      parslet (~> 1.7.1)
     storable (0.8.9)
     sysinfo (0.8.1)
       drydock
@@ -126,7 +121,6 @@ DEPENDENCIES
   salama!
   salama-arm!
   salama-object-file!
-  soml-parser!
 
 BUNDLED WITH
    1.13.5

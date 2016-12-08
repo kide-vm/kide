@@ -9,7 +9,8 @@ module BenchTests
   def setup
     @stdout =  ""
     @machine = Register.machine.boot
-    Typed::Compiler.load_parfait
+    # Typed::Compiler.load_parfait
+    # most interesting parts saved as interger/word .soml in this dir
   end
 
   def main

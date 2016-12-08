@@ -1,5 +1,6 @@
 require 'parslet/convenience'
 require_relative "collector"
+
 module Register
   # The Register Machine is an abstraction of the register level. This is seperate from the
   # actual assembler level to allow for several cpu architectures.
