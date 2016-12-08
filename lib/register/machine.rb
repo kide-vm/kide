@@ -70,13 +70,6 @@ module Register
       self
     end
 
-    def parse_and_compile bytes
-      syntax  = Parser::Salama.new.parse_with_debug(bytes, reporter: Parslet::ErrorReporter::Deepest.new)
-      parts = Parser::Transform.new.apply(syntax)
-      #puts parts.inspect
-      Typed.compile( parts )
-    end
-
   end
 
   # Module function to retrieve singleton
