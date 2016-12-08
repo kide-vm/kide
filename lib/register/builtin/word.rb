@@ -5,7 +5,7 @@ module Register
         include AST::Sexp
 
         def putstring context
-          compiler = Soml::Compiler.new.create_method(:Word , :putstring ).init_method
+          compiler = Typed::Compiler.new.create_method(:Word , :putstring ).init_method
           compiler.add_code Register.get_slot( "putstring" , :message , :receiver , :new_message )
           index = Parfait::Word.get_length_index
           reg = RegisterValue.new(:r2 , :Integer)
@@ -17,7 +17,7 @@ module Register
         # self[index] basically. Index is the first arg > 0
         # return (and word sized int) is stored in return_value
         def get_internal_byte context
-          compiler = Soml::Compiler.new.create_method(:Word , :get_internal_byte , {:index => :Integer }).init_method
+          compiler = Typed::Compiler.new.create_method(:Word , :get_internal_byte , {:index => :Integer }).init_method
           source = "get_internal_word"
           #Load self by "calling" on_name
           me = compiler.process( Soml::NameExpression.new( :self) )
@@ -35,7 +35,7 @@ module Register
         # value the second
         # no return
         def set_internal_byte context
-          compiler = Soml::Compiler.new.create_method(:Word , :set_internal_byte ,
+          compiler = Typed::Compiler.new.create_method(:Word , :set_internal_byte ,
                                                 {:index => :Integer, :value  => :Integer } ).init_method
           source = "set_internal_word"
           #Load self by "calling" on_name

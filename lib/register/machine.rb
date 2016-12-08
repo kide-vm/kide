@@ -74,7 +74,7 @@ module Register
       syntax  = Parser::Salama.new.parse_with_debug(bytes, reporter: Parslet::ErrorReporter::Deepest.new)
       parts = Parser::Transform.new.apply(syntax)
       #puts parts.inspect
-      Soml.compile( parts )
+      Typed.compile( parts )
     end
 
   end

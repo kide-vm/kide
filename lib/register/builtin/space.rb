@@ -9,7 +9,7 @@ module Register
         # main entry point, ie __init__ calls this
         # defined here as empty, to be redefined
         def main context
-          compiler = Soml::Compiler.new.create_method(:Space , :main ).init_method
+          compiler = Typed::Compiler.new.create_method(:Space , :main ).init_method
           return compiler.method
         end
 

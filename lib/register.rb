@@ -3,7 +3,7 @@ require "register/positioned"
 require "typed/parfait"
 require "register/machine"
 
-require "soml/compiler"
+require "typed/compiler"
 
 
 class Fixnum

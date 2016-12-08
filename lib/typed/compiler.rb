@@ -1,4 +1,4 @@
-module Soml
+module Typed
   # Compiling is the conversion of the AST into 2 things:
   # - code (ie sequences of Instructions inside Methods)
   # - an object graph containing all the Methods, their classes and Constants

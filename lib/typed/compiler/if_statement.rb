@@ -1,4 +1,4 @@
-module Soml
+module Typed
   Compiler.class_eval do
 
     # an if evaluates the condition and jumps to the true block if true

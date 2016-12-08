@@ -22,7 +22,7 @@ module RuntimeTests
 
   def load_program
     @machine = Register.machine.boot
-    Soml::Compiler.load_parfait
+    Typed::Compiler.load_parfait
     @machine.parse_and_compile main()
     @machine.collect
   end

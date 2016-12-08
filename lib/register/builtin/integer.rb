@@ -6,18 +6,18 @@ module Register
         include AST::Sexp
 
         def mod4 context
-          compiler = Soml::Compiler.new.create_method(:Integer,:mod4 ).init_method
+          compiler = Typed::Compiler.new.create_method(:Integer,:mod4 ).init_method
           return compiler.method
         end
         def putint context
-          compiler = Soml::Compiler.new.create_method(:Integer,:putint ).init_method
+          compiler = Typed::Compiler.new.create_method(:Integer,:putint ).init_method
           return compiler.method
         end
 
 
         def div10 context
           s = "div_10"
-          compiler = Soml::Compiler.new.create_method(:Integer,:div10 ).init_method
+          compiler = Typed::Compiler.new.create_method(:Integer,:div10 ).init_method
           me = compiler.process( Soml::NameExpression.new( :self) )
           tmp = compiler.process( Soml::NameExpression.new( :self) )
           q = compiler.process( Soml::NameExpression.new( :self) )

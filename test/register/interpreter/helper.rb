@@ -8,7 +8,7 @@ module Ticker
     syntax  = Parser::Salama.new.parse_with_debug(@string_input, reporter: Parslet::ErrorReporter::Deepest.new)
     parts = Parser::Transform.new.apply(syntax)
     #puts parts.inspect
-    Soml.compile( parts )
+    Typed.compile( parts )
     machine.collect
     @interpreter = Register::Interpreter.new
     @interpreter.start Register.machine.init

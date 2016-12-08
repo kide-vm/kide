@@ -1,4 +1,4 @@
-module Soml
+module Typed
   Compiler.class_eval do
     include AST::Sexp
 

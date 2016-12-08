@@ -12,7 +12,7 @@ module ParfaitTests
   def setup
     @stdout =  ""
     @machine = Register.machine.boot
-    Soml::Compiler.load_parfait
+    Typed::Compiler.load_parfait
   end
 
   def main
