@@ -10,6 +10,6 @@ module MelonTests
 
   def check
     assert true
-    puts @parser.parse @string_input
+    #puts @parser.parse @string_input
   end
 end

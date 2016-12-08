@@ -11,7 +11,8 @@ class Walker < AST::Processor
   def on_send node
     _ , method , file_node = *node
     if method == :require
-      @collector.load file_node.children[0] + ".rb"
+      file = file_node.children[0]
+      @collector.load("#{file}.rb") unless file.include?("parslet")
     end
     if method == :require_relative
       @collector.load File.dirname(@collector.current) + "/" + file_node.children[0] + ".rb"
@@ -68,7 +69,7 @@ class Collector
   def run
     load "salama.rb"
     load "parser/ruby22.rb"
-    load "../../../.rbenv/versions/2.2.3/lib/ruby/2.2.0/racc/parser.rb"
+#    load "../../../.rbenv/versions/2.2.3/lib/ruby/2.2.0/racc/parser.rb"
     print
   end
 
@@ -84,10 +85,11 @@ class Collector
   def print
     @class_defs.uniq!
     @files.uniq!
-    puts "Class defs #{@class_defs.length}"
     puts "Types #{@types.to_yaml}"
+    puts "Class defs #{@class_defs.length}"
+    puts "Class defs #{@class_defs}"
     puts "evals=#{@evals.length} #{@evals.uniq}"
-    #puts "Not found #{@not_found.length} #{@not_found}"
+    puts "Not found #{@not_found.length} #{@not_found}"
   end
 end
 

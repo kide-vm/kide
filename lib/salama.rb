@@ -9,7 +9,6 @@ AST::Node.class_eval do
   end
 end
 
-require 'parser/transform'
 require "salama-object-file"
 require "register"
 require "register/builtin/space"
