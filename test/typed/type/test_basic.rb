@@ -70,7 +70,7 @@ class BasicType < MiniTest::Test
 
   def test_add_name
     type = Parfait::Type.new Register.machine.space.get_class_by_name(:Type)
-    type.add_instance_variable :boo , :Object
+    type.send(:private_add_instance_variable, :boo , :Object)
     assert_equal 2 , type.variable_index(:boo)
     assert_equal 4 , type.get_length
     assert_equal :type , type.get(1)

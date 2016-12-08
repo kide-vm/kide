@@ -93,8 +93,8 @@ module Register
     # helper to create a Type, name is the parfait name, ie :Type
     def type_for( name , ivars )
       l = Parfait::Type.allocate.compile_time_init
-      l.add_instance_variable :type , name
-      ivars.each {|n,t| l.add_instance_variable( n , t) }
+      l.send(:private_add_instance_variable , :type , name)
+      ivars.each {|n,t| l.send(:private_add_instance_variable, n , t) }
       l
     end
 

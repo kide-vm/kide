@@ -40,10 +40,31 @@ module Parfait
     include Indexed
     self.offset(3)
 
-    def initialize( object_class )
+    def self.new_for_hash( object_class , hash)
+      new_type = Type.new( object_class , hash)
+      code = new_type.hash
+      Space.object_space.types[code] = new_type
+      new_type
+    end
+
+    def self.hash_code_for( dict )
+      index = 1
+      hash = 0
+      dict.each do |name , type|
+        item_hash = name.hash + type.hash
+        hash  += item_hash + (item_hash / 256 ) * index
+        index += 1
+      end
+      hash
+    end
+
+    def initialize( object_class , hash = nil)
       super()
-      add_instance_variable :type ,:Type
+      private_add_instance_variable :type ,:Type
       self.object_class = object_class
+      hash.each do |name , type|
+        private_add_instance_variable name , type
+      end if hash
     end
 
     def == other
@@ -51,17 +72,18 @@ module Parfait
     end
 
     # add the name of an instance variable
-    # The index will be returned and can subsequently be searched with index_of
-    # The index of the name is the index of the data in the object
-    #
-    # TODO , later we would need to COPY the type to keep the old constant
-    #        but now we are concerned with booting, ie getting a working structure
-    def add_instance_variable name , type
-      raise "Name shouldn't be nil" unless name
-      raise "Value Type shouldn't be nil" unless type
-      self.push(name)
-      self.push(type)
-      self.get_length
+    # Type objects are immutable, so a new object is returned
+    # As types are also unique, two same adds will result in identical results
+    def add_instance_variable( name , type )
+      hash = to_hash
+      hash[name] = type
+      code = Type.hash_code_for( hash )
+      existing = Space.object_space.types[code]
+      if existing
+        return existing
+      else
+        return Type.new_for_hash( object_class , hash)
+      end
     end
 
     def instance_names
@@ -108,8 +130,26 @@ module Parfait
       nil  # stop resolve recursing up metaclasses
     end
 
-    def hash
-      h = name.hash
+    def to_hash
+      hash = Dictionary.new
+      each_pair do |name, type |
+        hash[name] = type
+      end
+      hash
     end
+
+    def hash
+      Type.hash_code_for( to_hash )
+    end
+
+    private
+
+    def private_add_instance_variable( name , type)
+      raise "Name shouldn't be nil" unless name
+      raise "Value Type shouldn't be nil" unless type
+      self.push(name)
+      self.push(type)
+    end
+
   end
 end
