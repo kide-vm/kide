@@ -2,13 +2,11 @@ require_relative "../../helper"
 require "register/interpreter"
 
 module Ticker
+  include AST::Sexp
 
   def setup
     machine = Register.machine.boot
-    syntax  = Parser::Salama.new.parse_with_debug(@string_input, reporter: Parslet::ErrorReporter::Deepest.new)
-    parts = Parser::Transform.new.apply(syntax)
-    #puts parts.inspect
-    Typed.compile( parts )
+    Typed.compile( @input )
     machine.collect
     @interpreter = Register::Interpreter.new
     @interpreter.start Register.machine.init

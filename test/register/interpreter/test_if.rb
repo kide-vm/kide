@@ -19,6 +19,40 @@ class Space
   end
 end
 HERE
+    @input = s(:statements,
+              s(:class, :Space,
+                s(:derives, nil),
+                s(:statements,
+                  s(:function, :Integer,
+                    s(:name, :itest),
+                    s(:parameters,
+                      s(:parameter, :Integer, :n)),
+                    s(:statements,
+                      s(:if_statement, :zero,
+                        s(:condition,
+                          s(:operator_value, :-,
+                            s(:name, :n),
+                            s(:int, 12))),
+                        s(:true_statements,
+                          s(:call,
+                            s(:name, :putstring),
+                            s(:arguments),
+                            s(:receiver,
+                              s(:string, "then")))),
+                        s(:false_statements,
+                          s(:call,
+                            s(:name, :putstring),
+                            s(:arguments),
+                            s(:receiver,
+                              s(:string, "else"))))))),
+                  s(:function, :Integer,
+                    s(:name, :main),
+                    s(:parameters),
+                    s(:statements,
+                      s(:call,
+                        s(:name, :itest),
+                        s(:arguments,
+                          s(:int, 20))))))))
     super
   end
 

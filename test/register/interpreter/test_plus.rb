@@ -11,6 +11,18 @@ class Space
   end
 end
 HERE
+    @input = s(:statements,
+              s(:class, :Space,
+                s(:derives, nil),
+                s(:statements,
+                  s(:function, :Integer,
+                    s(:name, :main),
+                    s(:parameters),
+                    s(:statements,
+                      s(:return,
+                        s(:operator_value, :+,
+                          s(:int, 4611686018427387903),
+                          s(:int, 1))))))))
     super
   end
 

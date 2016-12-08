@@ -1,10 +1,11 @@
 require_relative "../helper"
 
 class HelloTest < MiniTest::Test
+  include AST::Sexp
 
   def check
     machine = Register.machine.boot
-    machine.parse_and_compile @string_input
+    Typed.compile( @input )
     machine.collect
     machine.translate_arm
     writer = Elf::ObjectWriter.new
@@ -19,6 +20,20 @@ class Object
   end
 end
 HERE
+    @input = s(:statements,
+              s(:class, :Object,
+                s(:derives, nil),
+                s(:statements,
+                  s(:function, :Integer,
+                    s(:name, :main),
+                    s(:parameters),
+                    s(:statements,
+                      s(:return,
+                        s(:call,
+                          s(:name, :putstring),
+                          s(:arguments),
+                          s(:receiver,
+                            s(:string, "Hello again\\n")))))))))
     check
   end
 end

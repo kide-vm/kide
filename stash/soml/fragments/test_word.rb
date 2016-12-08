@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-module Soml
+module Typed
 class TestWord < MiniTest::Test
   include Fragments
 

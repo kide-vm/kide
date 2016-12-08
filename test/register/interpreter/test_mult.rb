@@ -11,7 +11,20 @@ class Space
     return #{2**31} * #{2**31}
   end
 end
+
 HERE
+    @input = s(:statements,
+              s(:class, :Space,
+                s(:derives, nil),
+                s(:statements,
+                  s(:function, :Integer,
+                    s(:name, :main),
+                    s(:parameters),
+                    s(:statements,
+                      s(:return,
+                        s(:operator_value, :*,
+                          s(:int, 2147483648),
+                          s(:int, 2147483648))))))))
     super
   end
 
