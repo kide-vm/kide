@@ -5,5 +5,4 @@ script:
   - CODECLIMATE_REPO_TOKEN=e778c5658e8488a37795ec48f8c6990135f7a2ec35ceadc2e816a4ed1e3f20ab ruby test/test_all.rb
   - CODECLIMATE_REPO_TOKEN=e778c5658e8488a37795ec48f8c6990135f7a2ec35ceadc2e816a4ed1e3f20ab bundle exec codeclimate-test-reporter
 rvm:
-  - 2.2.6
   - 2.3.3
