@@ -6,7 +6,7 @@ Good tests exists in the parts where functionality is clear: Parsing and binary 
 But it is difficult to write tests when you don't know what the functionality is.
 Also TDD does not really help as it assumes you know what you're doing.
 
-I used minitest / test-unit as the framewok, just because it is lighter and thus when the
+I used minitest as the framework, just because it is lighter and thus when the
 time comes to move to salama, less work.
 
 ### All
