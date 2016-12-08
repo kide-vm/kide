@@ -112,6 +112,16 @@ module Parfait
       self
     end
 
+    def each_with_index
+      index = 1
+      while index <= self.get_length
+        item = get(index)
+        yield item , index
+        index = index + 1
+      end
+      self
+    end
+
     def each_pair
       index = 1
       while index <= self.get_length

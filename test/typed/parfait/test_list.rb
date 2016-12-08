@@ -115,6 +115,12 @@ class TestList < MiniTest::Test
     end
     assert_equal 0 , shouldda_values.length
   end
+  def test_each_index
+    set_shouldda
+    @list.each_with_index do |val , index|
+      assert_equal @list[index] , val
+    end
+  end
   def test_each_pair_length
     shouldda_values = set_shouldda.values
     @list.each_pair do |key,val|
