@@ -1,6 +1,7 @@
 module Typed
 
-  CompilerModules = ["assignment" , "call_site", "if_statement" ,"name_expression"]
+  CompilerModules = [ "assignment" , "basic_values" , "call_site", "if_statement" ,
+                      "name_expression"]
   CompilerModules.each do |mod|
     require_relative "compiler/" + mod
   end

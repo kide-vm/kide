@@ -1,7 +1,7 @@
 module Typed
   # collection of the simple ones, int and strings and such
 
-  Compiler.class_eval do
+  module BasicValues
 
     # Constant expressions can by definition be evaluated at compile time.
     # But that does not solve their storage, ie they need to be accessible at runtime from _somewhere_
