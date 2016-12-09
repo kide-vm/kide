@@ -18,10 +18,10 @@ module Register
         def div10 context
           s = "div_10"
           compiler = Typed::Compiler.new.create_method(:Integer,:div10 ).init_method
-          me = compiler.process( Typed::NameExpression.new( :self) )
-          tmp = compiler.process( Typed::NameExpression.new( :self) )
-          q = compiler.process( Typed::NameExpression.new( :self) )
-          const = compiler.process( Typed::IntegerExpression.new(1) )
+          me = compiler.process( Typed::Tree::NameExpression.new( :self) )
+          tmp = compiler.process( Typed::Tree::NameExpression.new( :self) )
+          q = compiler.process( Typed::Tree::NameExpression.new( :self) )
+          const = compiler.process( Typed::Tree::IntegerExpression.new(1) )
           # int tmp = self >> 1
           compiler.add_code Register.op( s , ">>" , tmp , const)
           # int q = self >> 2

@@ -13,7 +13,7 @@ module Register
           compiler = Typed::Compiler.new.create_method(:Object , :get_internal_word , {:index => :Integer}).init_method
           source = "get_internal_word"
           #Load self by "calling" on_name
-          me = compiler.process( Typed::NameExpression.new( :self) )
+          me = compiler.process( Typed::Tree::NameExpression.new( :self) )
           # Load the argument
           index = compiler.use_reg :Integer
           compiler.add_code Register.get_slot(source , :message , Parfait::Message.get_indexed(1), index )
@@ -31,7 +31,7 @@ module Register
                                                 {:index => :Integer, :value => :Object} ).init_method
           source = "set_internal_word"
           #Load self by "calling" on_name
-          me = compiler.process( Typed::NameExpression.new( :self) )
+          me = compiler.process( Typed::Tree::NameExpression.new( :self) )
           # Load the index
           index = compiler.use_reg :Integer
           compiler.add_code Register.get_slot(source , :message , Parfait::Message.get_indexed(1), index )

@@ -1,3 +1,5 @@
+require_relative "compiler/name_expression"
+
 module Typed
   # Compiling is the conversion of the AST into 2 things:
   # - code (ie sequences of Instructions inside Methods)
@@ -37,6 +39,7 @@ module Typed
   end
 
   class Compiler
+    include NameExpression
 
     def initialize( method = nil )
       @regs = []
@@ -188,7 +191,6 @@ require_relative "compiler/field_def"
 require_relative "compiler/field_access"
 require_relative "compiler/function_definition"
 require_relative "compiler/if_statement"
-require_relative "compiler/name_expression"
 require_relative "compiler/operator_value"
 require_relative "compiler/return_statement"
 require_relative "compiler/statement_list"

@@ -125,26 +125,26 @@ module Typed
     end
 
     def on_int expression
-      IntegerExpression.new(expression.children.first)
+      Tree::IntegerExpression.new(expression.children.first)
     end
 
     def on_true expression
-      TrueExpression.new
+      Tree::TrueExpression.new
     end
 
     def on_false expression
-      FalseExpression.new
+      Tree::FalseExpression.new
     end
 
     def on_nil expression
-      NilExpression.new
+      Tree::NilExpression.new
     end
 
     def on_name statement
-      NameExpression.new(statement.children.first)
+      Tree::NameExpression.new(statement.children.first)
     end
     def on_string expression
-      StringExpression.new(expression.children.first)
+      Tree::StringExpression.new(expression.children.first)
     end
 
     def on_class_name expression
