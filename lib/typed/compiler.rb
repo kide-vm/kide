@@ -1,7 +1,8 @@
 module Typed
 
-  CompilerModules = [ "assignment" , "basic_values" , "call_site", "if_statement" ,
-                      "name_expression"]
+  CompilerModules = [ "assignment" , "basic_values" , "call_site", "class_field" ,
+                       "class_statement" , "if_statement" , "name_expression"]
+
   CompilerModules.each do |mod|
     require_relative "compiler/" + mod
   end
@@ -188,9 +189,6 @@ end
 
 require_relative "ast_helper"
 require_relative "ast/code"
-require_relative "compiler/basic_values"
-require_relative "compiler/class_field"
-require_relative "compiler/class_statement"
 require_relative "compiler/collections"
 require_relative "compiler/field_def"
 require_relative "compiler/field_access"

@@ -13,7 +13,7 @@ module Typed
 
     def on_class statement
       name , derives , statements = *statement
-      w = ClassStatement.new()
+      w = Tree::ClassStatement.new()
       w.name = name
       w.derives = derives.children.first
       w.statements = process(statements)
@@ -22,7 +22,7 @@ module Typed
 
     def on_function  statement
       return_type , name , parameters, statements , receiver = *statement
-      w = FunctionStatement.new()
+      w = Tree::FunctionStatement.new()
       w.return_type = return_type
       w.name = name.children.first
       w.parameters = parameters.to_a.collect do |p|
