@@ -1,36 +1,25 @@
 module Typed
-  Compiler.class_eval do
+  module FunctionStatement
 
     def on_FunctionStatement  statement
-      #puts statement.inspect
-#      return_type , name , parameters, kids , receiver = *statement
-      name =  statement.name
+      #      return_type , name , parameters, kids , receiver = *statement
       raise "Already in method #{@method}" if @method
 
       args = statement.parameters.collect do |p|
         Parfait::Variable.new( *p )
       end
 
-      class_method = nil
-      if(statement.receiver )
-        if( statement.receiver.first == :self)  #class method
-          class_method = @clazz
-          @clazz = @clazz.meta
-        else
-          raise "Not covered #{statement.receiver}"
-        end
-      end
+      class_method = handle_receiver( statement ) #nil for instance method
 
-      @method = @clazz.get_instance_method( name )
+      @method = @clazz.get_instance_method( statement.name )
       if(@method)
         #puts "Warning, redefining method #{name}" unless name == :main
         #TODO check args / type compatibility
         init_method
       else
-        create_method_for(@clazz, name , args ).init_method
+        create_method_for(@clazz, statement.name , args ).init_method
       end
       @method.source = statement
-      #puts "compile method #{@method.name}"
 
       process(statement.statements)
 
@@ -38,6 +27,16 @@ module Typed
       @method = nil
       # function definition is a statement, does not return any value
       return nil
+    end
+
+    private
+
+    def handle_receiver( statement )
+      return nil unless statement.receiver
+      raise "Not covered #{statement.receiver}" unless ( statement.receiver.first == :self)
+      class_method = @clazz
+      @clazz = @clazz.meta
+      class_method
     end
   end
 end
