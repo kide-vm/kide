@@ -1,4 +1,6 @@
-require_relative "compiler/name_expression"
+["call_site", "name_expression"].each do |mod|
+  require_relative "compiler/" + mod
+end
 
 module Typed
   # Compiling is the conversion of the AST into 2 things:
@@ -40,6 +42,7 @@ module Typed
 
   class Compiler
     include NameExpression
+    include CallSite
 
     def initialize( method = nil )
       @regs = []
@@ -183,7 +186,6 @@ require_relative "ast_helper"
 require_relative "ast/code"
 require_relative "compiler/assignment"
 require_relative "compiler/basic_values"
-require_relative "compiler/call_site"
 require_relative "compiler/class_field"
 require_relative "compiler/class_statement"
 require_relative "compiler/collections"

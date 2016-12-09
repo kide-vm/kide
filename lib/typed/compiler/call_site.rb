@@ -1,26 +1,15 @@
 module Typed
-  Compiler.class_eval do
+  module CallSite
 
-    def on_CallSite statement
-      #puts statement
+    def on_CallSite( statement )
 #      name_s , arguments , receiver = *statement
       raise "not inside method " unless @method
       reset_regs
       #move the new message (that we need to populate to make a call) to std register
       new_message = Register.resolve_to_register(:new_message)
       add_code Register.get_slot(statement, :message , :next_message , new_message )
-      if statement.receiver
-        me = process( statement.receiver  )
-      else
-        me = use_reg @method.for_class.name
-        add_code Register.get_slot(statement, :message , :receiver , me )
-      end
-      if(me.type == :MetaClass)
-        clazz = me.value.meta
-      else
-        # now we have to resolve the method name (+ receiver) into a callable method
-        clazz =  Register.machine.space.get_class_by_name(me.type)
-      end
+      me = get_me( statement )
+      clazz = get_clazz(me)
       # move our receiver there
       add_code Register.set_slot( statement , me , :new_message , :receiver)
 
@@ -35,6 +24,25 @@ module Typed
     end
 
     private
+
+    def get_me( statement )
+      if statement.receiver
+        me = process( statement.receiver  )
+      else
+        me = use_reg @method.for_class.name
+        add_code Register.get_slot(statement, :message , :receiver , me )
+      end
+      me
+    end
+    def get_clazz( me )
+      if(me.type == :MetaClass)
+        clazz = me.value.meta
+      else
+        # now we have to resolve the method name (+ receiver) into a callable method
+        clazz =  Register.machine.space.get_class_by_name(me.type)
+      end
+      clazz
+    end
     def do_call clazz , statement
       name = statement.name
       #puts "clazz #{clazz.name}"

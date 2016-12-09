@@ -1,5 +1,7 @@
 module Typed
-  class CallSite < Expression
-    attr_accessor :name , :receiver , :arguments
+  module Tree
+    class CallSite < Expression
+      attr_accessor :name , :receiver , :arguments
+    end
   end
 end

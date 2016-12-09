@@ -117,7 +117,7 @@ module Typed
 
     def on_call statement
       name_s , arguments , receiver = *statement
-      w = CallSite.new()
+      w = Tree::CallSite.new()
       w.name = name_s.children.first
       w.arguments = process_all(arguments)
       w.receiver = process(receiver)
