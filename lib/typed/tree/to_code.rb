@@ -96,7 +96,7 @@ module Typed
 
     def on_operator_value statement
       operator , left_e , right_e = *statement
-      w = OperatorExpression.new()
+      w = Tree::OperatorExpression.new()
       w.operator = operator
       w.left_expression = process(left_e)
       w.right_expression = process(right_e)
