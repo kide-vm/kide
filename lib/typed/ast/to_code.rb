@@ -62,7 +62,7 @@ module Typed
 
     def on_if_statement statement
       branch_type , condition , if_true , if_false = *statement
-      w = IfStatement.new()
+      w = Tree::IfStatement.new()
       w.branch_type = branch_type
       w.condition = process(condition)
       w.if_true = process(if_true)

@@ -1,6 +1,6 @@
 module Typed
 
-  CompilerModules = ["assignment" , "call_site", "name_expression"]
+  CompilerModules = ["assignment" , "call_site", "if_statement" ,"name_expression"]
   CompilerModules.each do |mod|
     require_relative "compiler/" + mod
   end
@@ -194,7 +194,6 @@ require_relative "compiler/collections"
 require_relative "compiler/field_def"
 require_relative "compiler/field_access"
 require_relative "compiler/function_definition"
-require_relative "compiler/if_statement"
 require_relative "compiler/operator_value"
 require_relative "compiler/return_statement"
 require_relative "compiler/statement_list"
