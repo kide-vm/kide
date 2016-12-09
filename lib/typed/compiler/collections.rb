@@ -1,6 +1,7 @@
 module Typed
-  Compiler.class_eval do
 
+  module Collections
+    
 #    attr_reader :values
     def on_array statement, context
     end

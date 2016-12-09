@@ -3,7 +3,8 @@ require_relative "tree"
 module Typed
 
   CompilerModules = [ "assignment" , "basic_values" , "call_site", "class_field" ,
-                       "class_statement" , "if_statement" , "name_expression"]
+                       "class_statement" , "collections" , "field_def" , "field_access",
+                       "if_statement" , "name_expression"]
 
   CompilerModules.each do |mod|
     require_relative "compiler/" + mod
@@ -189,9 +190,6 @@ module Typed
   end
 end
 
-require_relative "compiler/collections"
-require_relative "compiler/field_def"
-require_relative "compiler/field_access"
 require_relative "compiler/function_definition"
 require_relative "compiler/operator_value"
 require_relative "compiler/return_statement"
