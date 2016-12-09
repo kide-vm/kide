@@ -1,3 +1,5 @@
+require_relative "tree"
+
 module Typed
 
   CompilerModules = [ "assignment" , "basic_values" , "call_site", "class_field" ,
@@ -187,8 +189,6 @@ module Typed
   end
 end
 
-require_relative "ast_helper"
-require_relative "ast/code"
 require_relative "compiler/collections"
 require_relative "compiler/field_def"
 require_relative "compiler/field_access"
