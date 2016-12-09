@@ -3,9 +3,10 @@ require_relative "tree"
 module Typed
 
   CompilerModules = [ "assignment" , "basic_values" , "call_site", "class_field" ,
-                       "class_statement" , "collections" , "field_def" , "field_access",
-                       "function_statement" , "if_statement" , "name_expression" ,
-                       "operator_expression" , "return_statement", "statement_list"]
+                      "class_statement" , "collections" , "field_def" , "field_access",
+                      "function_statement" , "if_statement" , "name_expression" ,
+                      "operator_expression" , "return_statement", "statement_list",
+                      "while_statement"]
 
   CompilerModules.each do |mod|
     require_relative "compiler/" + mod
@@ -190,5 +191,3 @@ module Typed
     end
   end
 end
-
-require_relative "compiler/while_statement"

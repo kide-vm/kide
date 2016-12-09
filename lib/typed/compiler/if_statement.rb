@@ -7,17 +7,17 @@ module Typed
     def on_IfStatement( statement )
 #      branch_type , condition , if_true , if_false = *statement
 
-      true_block = compile_condition( statement )
-      merge = compile_false( statement )
+      true_block = compile_if_condition( statement )
+      merge = compile_if_false( statement )
       add_code true_block
-      compile_true(statement)
+      compile_if_true(statement)
       add_code merge
       nil # statements don't return anything
     end
 
     private
 
-    def compile_condition( statement )
+    def compile_if_condition( statement )
       reset_regs
       process(statement.condition)
       branch_class = Object.const_get "Register::Is#{statement.branch_type.capitalize}"
@@ -25,12 +25,12 @@ module Typed
       add_code branch_class.new( statement.condition , true_block )
       return true_block
     end
-    def compile_true( statement )
+    def compile_if_true( statement )
       reset_regs
       process(statement.if_true)
     end
 
-    def compile_false( statement )
+    def compile_if_false( statement )
       reset_regs
       process(statement.if_false) if statement.if_false.statements
       merge = Register::Label.new(statement , "if_merge")
