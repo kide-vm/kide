@@ -89,7 +89,7 @@ module Typed
     alias :on_false_statements :on_statements
 
     def on_return statement
-      w = ReturnStatement.new()
+      w = Tree::ReturnStatement.new()
       w.return_value = process(statement.children.first)
       w
     end

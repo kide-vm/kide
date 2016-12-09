@@ -1,5 +1,5 @@
 module Typed
-  Compiler.class_eval do
+  module ReturnStatement
 
     def on_ReturnStatement statement
       reg =  process(statement.return_value)

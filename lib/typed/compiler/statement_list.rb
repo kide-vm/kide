@@ -1,7 +1,5 @@
 module Typed
-  
-  Compiler.class_eval do
-
+  module StatementList
     def on_statements statement
       process_all(  statement.children  )
     end

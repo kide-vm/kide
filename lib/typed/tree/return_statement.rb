@@ -1,5 +1,7 @@
 module Typed
-  class ReturnStatement < Statement
-    attr_accessor :return_value
+  module Tree
+    class ReturnStatement < Statement
+      attr_accessor :return_value
+    end
   end
 end
