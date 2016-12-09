@@ -1,8 +1,10 @@
-["call_site", "name_expression"].each do |mod|
-  require_relative "compiler/" + mod
-end
-
 module Typed
+
+  CompilerModules = ["assignment" , "call_site", "name_expression"]
+  CompilerModules.each do |mod|
+    require_relative "compiler/" + mod
+  end
+
   # Compiling is the conversion of the AST into 2 things:
   # - code (ie sequences of Instructions inside Methods)
   # - an object graph containing all the Methods, their classes and Constants
@@ -41,8 +43,9 @@ module Typed
   end
 
   class Compiler
-    include NameExpression
-    include CallSite
+    CompilerModules.each do |mod|
+      include Typed.const_get( mod.camelize )
+    end
 
     def initialize( method = nil )
       @regs = []
@@ -184,7 +187,6 @@ end
 
 require_relative "ast_helper"
 require_relative "ast/code"
-require_relative "compiler/assignment"
 require_relative "compiler/basic_values"
 require_relative "compiler/class_field"
 require_relative "compiler/class_statement"

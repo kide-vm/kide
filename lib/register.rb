@@ -1,3 +1,10 @@
+class String
+  def camelize
+    self.split("_").collect( &:capitalize ).join
+  end
+end
+
+
 require "register/padding"
 require "register/positioned"
 require "typed/compiler"
@@ -10,6 +17,7 @@ class Fixnum
     self >= 0 and self <= 255
   end
 end
+
 
 require "register/instruction"
 require "register/register_value"
