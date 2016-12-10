@@ -11,28 +11,28 @@ module Register
     end
 
     def test_call_main_plain
-      @input    = s(:call,  s(:name, :main),  s(:arguments))
+      @input    = s(:call,s(:name, :main),s(:arguments))
       check
     end
 
     def test_call_main_int
-      @input    =  s(:call,  s(:name, :main),  s(:arguments , s(:int, 1)))
+      @input    =s(:call,s(:name, :main),s(:arguments , s(:int, 1)))
       check
     end
 
     def test_call_main_string
-      @input    =  s(:call,  s(:name, :main),  s(:arguments , s(:string, "1") ))
+      @input    =s(:call,s(:name, :main),s(:arguments , s(:string, "1") ))
       check
     end
 
     def test_call_main_op
       Register.machine.space.get_main.ensure_local(:bar , :Integer)
-      @input    =  s(:call,  s(:name, :main),  s(:arguments , s(:name, :bar) ))
+      @input    =s(:call,s(:name, :main),s(:arguments , s(:name, :bar) ))
       check
     end
 
     def test_call_string_put
-      @input    = s(:call,  s(:name, :putstring),  s(:arguments),  s(:receiver,    s(:string, "Hello Raisa, I am salama")))
+      @input    = s(:call,s(:name, :putstring),s(:arguments),s(:receiver,s(:string, "Hello Raisa, I am salama")))
       check
     end
 

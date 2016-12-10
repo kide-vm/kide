@@ -17,11 +17,7 @@ module Register
 
     def test_field_not_space
       @root = :field_access
-      @input = s(:field_access,
-  s(:receiver,
-    s(:name, :self)),
-  s(:field,
-    s(:name, :space)))
+      @input = s(:field_access, s(:receiver, s(:name, :self)), s(:field, s(:name, :space)))
 
       assert_raises(RuntimeError) { check }
     end
@@ -29,7 +25,7 @@ module Register
     def test_field
       add_space_field(:bro,:Object)
       @root = :field_access
-      @input = s(:field_access,  s(:receiver, s(:name, :self)),  s(:field,    s(:name, :bro)))
+      @input = s(:field_access,s(:receiver, s(:name, :self)),s(:field,s(:name, :bro)))
       @output = Register::RegisterValue
       check
     end

@@ -33,16 +33,13 @@ module Register
 
     def test_field_int
       add_space_field(:bro,:int)
-      @input = s(:operator_value, :+, s(:field_access,  s(:receiver, s(:name, :self)),
-                                                        s(:field, s(:name, :bro))),
-                                      s(:int, 3))
+      @input = s(:operator_value, :+, s(:field_access,s(:receiver, s(:name, :self)), s(:field, s(:name, :bro))), s(:int, 3))
       check
     end
 
     def test_int_field
       add_space_field(:bro,:int)
-      @input = s(:operator_value, :+, s(:int, 3), s(:field_access, s(:receiver, s(:name, :self)),
-                                                  s(:field,s(:name, :bro))))
+      @input = s(:operator_value, :+, s(:int, 3), s(:field_access, s(:receiver, s(:name, :self)), s(:field,s(:name, :bro))))
       check
     end
   end

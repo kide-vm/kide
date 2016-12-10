@@ -9,8 +9,7 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_assign_op
-    @input    =   s(:statements, s(:field_def, :Integer, s(:name, :n),
-                                  s(:operator_value, :+, s(:int, 10), s(:int, 1))))
+    @input    = s(:statements, s(:field_def, :Integer, s(:name, :n), s(:operator_value, :+, s(:int, 10), s(:int, 1))))
 
     @expect = [Label, LoadConstant, LoadConstant, OperatorInstruction, GetSlot, SetSlot, Label ,
                FunctionReturn]
@@ -18,8 +17,7 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_assign_local
-    @input =  s(:statements, s(:field_def, :Integer, s(:name, :runner)),
-                      s(:assignment, s(:name, :runner), s(:int, 5)))
+    @input =s(:statements, s(:field_def, :Integer, s(:name, :runner)), s(:assignment, s(:name, :runner), s(:int, 5)))
 
     @expect =  [Label, LoadConstant, GetSlot, SetSlot, Label, FunctionReturn]
     check
@@ -33,8 +31,7 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_assign_call
-    @input = s(:statements, s(:field_def, :Integer, s(:name, :r),
-                            s(:call, s(:name, :main), s(:arguments))))
+    @input = s(:statements, s(:field_def, :Integer, s(:name, :r), s(:call, s(:name, :main), s(:arguments))))
     @expect = [Label, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot, LoadConstant ,
                SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,
                GetSlot, GetSlot, GetSlot, SetSlot, Label, FunctionReturn]
@@ -42,8 +39,7 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_frame_get
-    @input = s(:statements, s(:field_def, :Integer, s(:name, :r), s(:int, 5)),
-                            s(:return, s(:name, :r)))
+    @input = s(:statements, s(:field_def, :Integer, s(:name, :r), s(:int, 5)), s(:return, s(:name, :r)))
     @expect =  [Label, LoadConstant, GetSlot, SetSlot, GetSlot, GetSlot, SetSlot ,
                Label, FunctionReturn]
     was = check

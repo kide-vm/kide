@@ -9,7 +9,7 @@ class ToCodeTest < MiniTest::Test
   end
 
   def test_field_access
-    @statement =   s(:field_access, s(:receiver, s(:name, :m)), s(:field, s(:name, :index)))
+    @statement = s(:field_access, s(:receiver, s(:name, :m)), s(:field, s(:name, :index)))
     check "FieldAccess"
   end
   def test_field_def_value
@@ -21,31 +21,31 @@ class ToCodeTest < MiniTest::Test
     check "ClassField"
   end
   def test_simple_while
-    @statement =   s(:while_statement, :false, s(:conditional,s(:int, 1)), s(:statements))
+    @statement = s(:while_statement, :false, s(:conditional,s(:int, 1)), s(:statements))
     check "WhileStatement"
   end
   def test_assignment
-    @statement =   s(:assignment, s(:name, :i), s(:int, 0))
+    @statement = s(:assignment, s(:name, :i), s(:int, 0))
     check "Assignment"
   end
   def test_nil
-    @statement =   s(:nil)
+    @statement = s(:nil)
     check "NilExpression"
   end
   def test_true
-    @statement =   s(:true)
+    @statement = s(:true)
     check "TrueExpression"
   end
   def test_false
-    @statement =   s(:false)
+    @statement = s(:false)
     check "FalseExpression"
   end
   def test_name
-    @statement =   s(:name,  :foo)
+    @statement = s(:name,  :foo)
     check "NameExpression"
   end
   def test_class_name
-    @statement =  s(:class_name, :FooBar)
+    @statement =s(:class_name, :FooBar)
     check "ClassExpression"
   end
 end

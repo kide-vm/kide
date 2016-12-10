@@ -11,19 +11,7 @@ class Space
   end
 end
 HERE
-    @input = s(:statements,
-              s(:class, :Space,
-                s(:derives, nil),
-                s(:statements,
-                  s(:function, :Integer,
-                    s(:name, :main),
-                    s(:parameters),
-                    s(:statements,
-                      s(:call,
-                        s(:name, :putstring),
-                        s(:arguments),
-                        s(:receiver,
-                          s(:string, "Hello again"))))))))
+    @input = s(:statements, s(:class, :Space, s(:derives, nil), s(:statements, s(:function, :Integer, s(:name, :main), s(:parameters), s(:statements, s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "Hello again"))))))))
     super
   end
 

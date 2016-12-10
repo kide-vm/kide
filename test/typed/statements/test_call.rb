@@ -5,9 +5,7 @@ class TestCallStatement < MiniTest::Test
   include Statements
 
   def test_call_constant_int
-    clean_compile  s(:statements, s(:class, :Integer, s(:derives, nil), s(:statements,
-                        s(:function, :Integer, s(:name, :putint), s(:parameters),
-                          s(:statements, s(:return, s(:int, 1)))))))
+    clean_compile s(:statements, s(:class, :Integer, s(:derives, nil), s(:statements, s(:function, :Integer, s(:name, :putint), s(:parameters), s(:statements, s(:return, s(:int, 1)))))))
     @input = s(:call, s(:name, :putint), s(:arguments), s(:receiver, s(:int, 42)))
     @expect =  [Label, GetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant ,
                SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,
@@ -17,22 +15,9 @@ class TestCallStatement < MiniTest::Test
 
 
   def test_call_constant_string
-    clean_compile s(:statements,
-                    s(:class, :Word,
-                      s(:derives, nil),
-                      s(:statements,
-                        s(:function, :Integer,
-                          s(:name, :putstring),
-                          s(:parameters),
-                          s(:statements,
-                            s(:return,
-                              s(:int, 1)))))))
+    clean_compile s(:statements, s(:class, :Word, s(:derives, nil), s(:statements, s(:function, :Integer, s(:name, :putstring), s(:parameters), s(:statements, s(:return, s(:int, 1)))))))
 
-    @input =  s(:call,
-                s(:name, :putstring),
-                s(:arguments),
-                s(:receiver,
-                  s(:string, "Hello")))
+    @input =s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "Hello")))
     @expect =  [Label, GetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant ,
                SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,
                GetSlot, GetSlot, Label, FunctionReturn]
@@ -40,18 +25,8 @@ class TestCallStatement < MiniTest::Test
   end
 
   def _test_call_local_int
-    clean_compile s(:statements,
-                    s(:class, :Integer,
-                      s(:derives, nil),
-                      s(:statements,
-                        s(:function, :Integer,
-                          s(:name, :putint),
-                          s(:parameters),
-                          s(:statements,
-                            s(:return,
-                              s(:int, 1)))))))
-    @input = s(:statements, s(:field_def, :Integer, s(:name, :testi), s(:int, 20)),
-                    s(:call, s(:name, :putint), s(:arguments), s(:receiver, s(:name, :testi))))
+    clean_compile s(:statements, s(:class, :Integer, s(:derives, nil), s(:statements, s(:function, :Integer, s(:name, :putint), s(:parameters), s(:statements, s(:return, s(:int, 1)))))))
+    @input = s(:statements, s(:field_def, :Integer, s(:name, :testi), s(:int, 20)), s(:call, s(:name, :putint), s(:arguments), s(:receiver, s(:name, :testi))))
 
     @expect = [Label, LoadConstant, GetSlot, SetSlot, GetSlot, GetSlot, GetSlot ,
                SetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot ,
@@ -61,25 +36,9 @@ class TestCallStatement < MiniTest::Test
   end
 
   def test_call_local_class
-    clean_compile s(:statements,
-                    s(:class, :List,
-                      s(:derives, :Object),
-                      s(:statements,
-                        s(:function, :Integer,
-                          s(:name, :add),
-                          s(:parameters),
-                          s(:statements,
-                            s(:return,
-                              s(:int, 1)))))))
+    clean_compile s(:statements, s(:class, :List, s(:derives, :Object), s(:statements, s(:function, :Integer, s(:name, :add), s(:parameters), s(:statements, s(:return, s(:int, 1)))))))
 
-    @input =  s(:statements,
-                s(:field_def, :List,
-                  s(:name, :test_l)),
-                s(:call,
-                  s(:name, :add),
-                  s(:arguments),
-                  s(:receiver,
-                    s(:name, :test_l))))
+    @input =s(:statements, s(:field_def, :List, s(:name, :test_l)), s(:call, s(:name, :add), s(:arguments), s(:receiver, s(:name, :test_l))))
     @expect = [Label, GetSlot, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot ,
                LoadConstant, SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label ,
                RegisterTransfer, GetSlot, GetSlot, Label, FunctionReturn]
