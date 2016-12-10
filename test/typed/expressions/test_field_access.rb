@@ -27,7 +27,7 @@ module Register
     end
 
     def test_field
-      add_object_field(:bro,:Object)
+      add_space_field(:bro,:Object)
       @root = :field_access
       @input = s(:field_access,  s(:receiver, s(:name, :self)),  s(:field,    s(:name, :bro)))
       @output = Register::RegisterValue

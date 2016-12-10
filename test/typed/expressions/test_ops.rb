@@ -32,7 +32,7 @@ module Register
     end
 
     def test_field_int
-      add_object_field(:bro,:int)
+      add_space_field(:bro,:int)
       @input = s(:operator_value, :+, s(:field_access,  s(:receiver, s(:name, :self)),
                                                         s(:field, s(:name, :bro))),
                                       s(:int, 3))
@@ -40,7 +40,7 @@ module Register
     end
 
     def test_int_field
-      add_object_field(:bro,:int)
+      add_space_field(:bro,:int)
       @input = s(:operator_value, :+, s(:int, 3), s(:field_access, s(:receiver, s(:name, :self)),
                                                   s(:field,s(:name, :bro))))
       check
