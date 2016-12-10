@@ -4,19 +4,17 @@ require_relative '../helper'
 module Statements
   include AST::Sexp
 
+  def setup
+    Register.machine.boot # force boot to reset main
+  end
+
   def check
     assert @expect , "No output given"
-    Register.machine.boot # force boot to reset main 
     compiler = Typed::Compiler.new Register.machine.space.get_main
     produced = compiler.process( Typed.ast_to_code( @input) )
-    assert_nil produced.first , "Statements should result in nil"
     produced = Register.machine.space.get_main.instructions
     compare_instructions produced , @expect
     produced
-  end
-
-  def as_main(statements)
-    s(:statements, s(:class, :Space, s(:derives, nil), statements ))
   end
 
   def compare_instructions instruction , expect
