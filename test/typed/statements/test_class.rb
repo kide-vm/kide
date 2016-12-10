@@ -1,11 +1,11 @@
 require_relative 'helper'
 
 module Register
-class TestClassStatements < MiniTest::Test
+class TestClassStatements #< MiniTest::Test
   include Statements
 
   def test_class_defs
-    @string_input = <<HERE
+    @input = <<HERE
 class Bar
   int self.buh()
     return 1
@@ -22,7 +22,7 @@ HERE
   end
 
   def test_class_call
-    @string_input = <<HERE
+    @input = <<HERE
 class Bar
   int self.buh()
     return 1
@@ -41,7 +41,7 @@ HERE
   end
 
   def test_class_field
-    @string_input = <<HERE
+    @input = <<HERE
 class Space
   field int boo2
   int main()

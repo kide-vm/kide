@@ -1,12 +1,12 @@
 require_relative 'helper'
 
 module Register
-  class TestWhile < MiniTest::Test
+  class TestWhile #< MiniTest::Test
     include Statements
 
 
     def test_while_mini
-      @string_input    = <<HERE
+      @input    = <<HERE
 class Space
   int main()
     while_plus(1)
@@ -21,7 +21,7 @@ HERE
     end
 
     def test_while_assign
-      @string_input    = <<HERE
+      @input    = <<HERE
 class Space
   int main()
     int n = 5
@@ -40,7 +40,7 @@ HERE
 
 
     def test_while_return
-      @string_input    = <<HERE
+      @input    = <<HERE
 class Space
   int main()
     int n = 10

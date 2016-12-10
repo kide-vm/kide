@@ -2,11 +2,11 @@ require_relative 'helper'
 
 
 module Register
-  class TestFieldStatement < MiniTest::Test
+  class TestFieldStatement #< MiniTest::Test
     include Statements
 
     def test_field_frame
-      @string_input = <<HERE
+      @input = <<HERE
 class Space
   int main()
     Message m
@@ -19,7 +19,7 @@ HERE
     end
 
     def test_field_arg
-      @string_input = <<HERE
+      @input = <<HERE
 class Space
   int get_name(Message main)
     return main.name
@@ -38,7 +38,7 @@ HERE
     end
 
     def test_self_field
-      @string_input = <<HERE
+      @input = <<HERE
 class Space
   int main()
     Type l = self.type
@@ -52,7 +52,7 @@ HERE
     end
 
     def test_message_field
-      @string_input = <<HERE
+      @input = <<HERE
 class Space
   int main()
     Word name = message.name

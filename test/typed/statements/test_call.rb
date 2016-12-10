@@ -1,11 +1,11 @@
 require_relative 'helper'
 
 module Register
-class TestCallStatement < MiniTest::Test
+class TestCallStatement #< MiniTest::Test
   include Statements
 
   def test_call_constant_int
-    @string_input = <<HERE
+    @input = <<HERE
 class Integer
   int putint()
     return 1
@@ -25,7 +25,7 @@ HERE
 
 
   def test_call_constant_string
-    @string_input = <<HERE
+    @input = <<HERE
 class Word
   int putstring()
     return 1
@@ -44,7 +44,7 @@ HERE
   end
 
   def test_call_local_int
-    @string_input = <<HERE
+    @input = <<HERE
 class Integer
   int putint()
     return 1
@@ -65,7 +65,7 @@ HERE
   end
 
   def test_call_local_class
-    @string_input = <<HERE
+    @input = <<HERE
 class List < Object
   int add()
     return 1
@@ -85,7 +85,7 @@ HERE
   end
 
   def test_call_puts
-    @string_input    = <<HERE
+    @input    = <<HERE
 class Space
 int puts(Word str)
   return str

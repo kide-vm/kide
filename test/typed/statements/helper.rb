@@ -1,17 +1,22 @@
-require_relative '../../helper'
+require_relative '../helper'
 
 
 module Statements
+  include AST::Sexp
 
   def check
-    machine = Register.machine
-    machine.boot unless machine.booted
-    machine.parse_and_compile @string_input
-    produced = Register.machine.space.get_main.instructions
     assert @expect , "No output given"
-    #assert_equal @expect.length ,  produced.instructions.length , "instructions length #{produced.instructions.to_ac}"
+    Register.machine.boot # force boot to reset main 
+    compiler = Typed::Compiler.new Register.machine.space.get_main
+    produced = compiler.process( Typed.ast_to_code( @input) )
+    assert_nil produced.first , "Statements should result in nil"
+    produced = Register.machine.space.get_main.instructions
     compare_instructions produced , @expect
     produced
+  end
+
+  def as_main(statements)
+    s(:statements, s(:class, :Space, s(:derives, nil), statements ))
   end
 
   def compare_instructions instruction , expect
