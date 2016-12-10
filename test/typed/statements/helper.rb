@@ -8,6 +8,11 @@ module Statements
     Register.machine.boot # force boot to reset main
   end
 
+  def clean_compile(statements)
+    compiler = Typed::Compiler.new
+    compiler.process( Typed.ast_to_code( statements ) )
+  end
+  
   def check
     assert @expect , "No output given"
     compiler = Typed::Compiler.new Register.machine.space.get_main
