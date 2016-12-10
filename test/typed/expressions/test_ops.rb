@@ -15,30 +15,30 @@ module Register
     end
     def test_ints
       operators.each do |op|
-        @string_input = '2 + 3'.sub("+" , op)
+        @input = '2 + 3'.sub("+" , op)
         check
       end
     end
     def test_local_int
       Register.machine.space.get_main.ensure_local(:bar , :Integer)
-      @string_input    = 'bar  + 3'
+      @input    = 'bar  + 3'
       check
     end
     def test_int_local
       Register.machine.space.get_main.ensure_local(:bar , :Integer)
-      @string_input    = '3  + bar'
+      @input    = '3  + bar'
       check
     end
 
     def test_field_int
       Register.machine.space.get_class_by_name(:Object).instance_type.add_instance_variable(:bro,:int)
-      @string_input = "self.bro + 3"
+      @input = "self.bro + 3"
       check
     end
 
     def test_int_field
       Register.machine.space.get_class_by_name(:Object).instance_type.add_instance_variable(:bro,:int)
-      @string_input = "3 + self.bro"
+      @input = "3 + self.bro"
       check
     end
   end

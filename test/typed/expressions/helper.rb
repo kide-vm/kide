@@ -1,5 +1,4 @@
-require_relative '../../helper'
-require 'parslet/convenience'
+require_relative '../helper'
 
 Typed::Compiler.class_eval do
   def set_main main
@@ -17,17 +16,12 @@ module ExpressionHelper
   def check
     machine = Register.machine
     machine.boot unless machine.booted
-    parser = Parser::Salama.new
-    parser = parser.send @root
-    syntax  = parser.parse_with_debug(@string_input, reporter: Parslet::ErrorReporter::Deepest.new)
-    parts = Parser::Transform.new.apply(syntax)
-    codes = Soml.ast_to_code parts
-    #puts parts.inspect
     compiler = Typed::Compiler.new
     set_main(compiler)
-    produced = compiler.process( codes )
+    code = Typed.ast_to_code @input
+    produced = compiler.process( code )
     assert @output , "No output given"
-    assert_equal  produced.class, @output , "Wrong class"
+    assert_equal  produced.class , @output , "Wrong class"
     produced
   end
 

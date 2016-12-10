@@ -11,28 +11,28 @@ module Register
     end
 
     def test_call_main_plain
-      @string_input    = 'main()'
+      @input    = 'main()'
       check
     end
 
     def test_call_main_int
-      @string_input    =  'main(1)'
+      @input    =  'main(1)'
       check
     end
 
     def test_call_main_string
-      @string_input    = 'main("1")'
+      @input    = 'main("1")'
       check
     end
 
     def test_call_main_op
       Register.machine.space.get_main.ensure_local(:bar , :Integer)
-      @string_input    = 'main( bar )'
+      @input    = 'main( bar )'
       check
     end
 
     def test_call_string_put
-      @string_input    = '"Hello Raisa, I am salama".putstring()'
+      @input    = '"Hello Raisa, I am salama".putstring()'
       check
     end
 
