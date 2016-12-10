@@ -6,7 +6,6 @@ module Register
 
     def setup
       Register.machine.boot
-      @root = :call_site
       @output = Register::RegisterValue
     end
 

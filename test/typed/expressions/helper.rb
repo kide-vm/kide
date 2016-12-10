@@ -25,4 +25,9 @@ module ExpressionHelper
     produced
   end
 
+  # test hack to in place change object type
+  def add_object_field(name,type)
+    class_type = Register.machine.space.get_class_by_name(:Object).instance_type
+    class_type.send(:private_add_instance_variable, name , type)
+  end
 end

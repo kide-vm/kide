@@ -3,6 +3,7 @@ require_relative "helper"
 module Register
   class TestFields < MiniTest::Test
     include ExpressionHelper
+    include AST::Sexp
 
     def setup
       Register.machine.boot
@@ -10,49 +11,25 @@ module Register
 
     def test_field_not_defined
       @root = :field_access
-      @input = <<HERE
-self.a
-HERE
+      @input = s(:field_access, s(:receiver, s(:name, :self)), s(:field, s(:name, :a)))
       assert_raises(RuntimeError) { check }
     end
 
     def test_field_not_space
       @root = :field_access
-      @input = <<HERE
-self.space
-HERE
+      @input = s(:field_access,
+  s(:receiver,
+    s(:name, :self)),
+  s(:field,
+    s(:name, :space)))
+
       assert_raises(RuntimeError) { check }
     end
 
     def test_field
-      Register.machine.space.get_class_by_name(:Object).instance_type.add_instance_variable(:bro,:Object)
+      add_object_field(:bro,:Object)
       @root = :field_access
-      @input = <<HERE
-self.bro
-HERE
-      @output = Register::RegisterValue
-      check
-    end
-
-    def test_local
-      Register.machine.space.get_main.ensure_local(:bar , :Integer)
-      @root = :name
-      @input    = 'bar '
-      @output = Register::RegisterValue
-      check
-    end
-
-    def test_space
-      @root = :name
-      @input    = 'space '
-      @output = Register::RegisterValue
-      check
-    end
-
-    def test_args
-      Register.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :bar)
-      @root = :name
-      @input    = 'bar '
+      @input = s(:field_access,  s(:receiver, s(:name, :self)),  s(:field,    s(:name, :bro)))
       @output = Register::RegisterValue
       check
     end

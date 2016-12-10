@@ -23,7 +23,7 @@ module Typed
       private
 
       def handle_local statement
-        index = @method.has_local( name )
+        index = @method.has_local( statement.name )
         raise "must define variable '#{name}' before using it" unless index
         frame = use_reg :Frame
         add_code Register.get_slot(statement , :message , :frame , frame )

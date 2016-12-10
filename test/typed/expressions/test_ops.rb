@@ -3,6 +3,7 @@ require_relative "helper"
 module Register
   class TestOps < MiniTest::Test
     include ExpressionHelper
+    include AST::Sexp
 
     def setup
       Register.machine.boot
@@ -11,34 +12,37 @@ module Register
     end
 
     def operators
-      ["+" , "-" , "*" , "/" , "=="]
+      [:+ , :- , :* , :/ , :== ]
     end
     def test_ints
       operators.each do |op|
-        @input = '2 + 3'.sub("+" , op)
+        @input = s(:operator_value, op , s(:int, 2), s(:int, 3))
         check
       end
     end
     def test_local_int
       Register.machine.space.get_main.ensure_local(:bar , :Integer)
-      @input    = 'bar  + 3'
+      @input    = s(:operator_value, :+, s(:name, :bar), s(:int, 3))
       check
     end
     def test_int_local
       Register.machine.space.get_main.ensure_local(:bar , :Integer)
-      @input    = '3  + bar'
+      @input    = s(:operator_value, :+, s(:int, 3), s(:name, :bar))
       check
     end
 
     def test_field_int
-      Register.machine.space.get_class_by_name(:Object).instance_type.add_instance_variable(:bro,:int)
-      @input = "self.bro + 3"
+      add_object_field(:bro,:int)
+      @input = s(:operator_value, :+, s(:field_access,  s(:receiver, s(:name, :self)),
+                                                        s(:field, s(:name, :bro))),
+                                      s(:int, 3))
       check
     end
 
     def test_int_field
-      Register.machine.space.get_class_by_name(:Object).instance_type.add_instance_variable(:bro,:int)
-      @input = "3 + self.bro"
+      add_object_field(:bro,:int)
+      @input = s(:operator_value, :+, s(:int, 3), s(:field_access, s(:receiver, s(:name, :self)),
+                                                  s(:field,s(:name, :bro))))
       check
     end
   end
