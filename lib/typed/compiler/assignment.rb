@@ -4,23 +4,23 @@ module Typed
     def on_Assignment( statement )
       #      name , value = *statement
       reset_regs # statements reset registers, ie have all at their disposal
-      name_s = no_space statement.name
       value = process(statement.value)
       raise "Not register #{v}" unless value.is_a?(Register::RegisterValue)
-      code = get_code( statement , name_s , value)
-      raise "must define variable #{name} before using it in #{@method.inspect}" unless code
+      code = get_code( statement  , value)
+      raise "must define variable #{statement.name.name} before using it in #{@method.inspect}" unless code
       add_code code
     end
 
     private
 
-    def get_code( statement , name_s , value)
-      if( index = @method.has_arg(name_s.name))
+    def get_code( statement , value)
+      name = no_space(statement.name).name
+      if( index = @method.has_arg(name))
          # TODO, check type @method.arguments[index].type
         return Register.set_slot(statement , value , :message , Parfait::Message.get_indexed(index) )
       end
       # or a local so it is in the frame
-      index = @method.has_local( name_s.name )
+      index = @method.has_local( name )
       return nil unless index
       # TODO, check type  @method.locals[index].type
       frame = use_reg(:Frame)
