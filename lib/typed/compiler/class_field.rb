@@ -9,7 +9,8 @@ module Typed
       index = for_class.instance_type.variable_index(statement.name)
       raise "class field already defined:#{name} for class #{for_class.name}" if index
 
-      for_class.instance_type.add_instance_variable( statement.name , statement.type )
+      #FIXME should not hack into current type, but create a new
+      for_class.instance_type.send(:private_add_instance_variable, statement.name , statement.type)
 
       return nil # statements don't reurn values, only expressions
     end
