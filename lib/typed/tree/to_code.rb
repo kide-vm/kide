@@ -36,7 +36,7 @@ module Typed
 
     def on_field_def statement
       type , name , value = *statement
-      w = FieldDef.new()
+      w = Tree::FieldDef.new()
       w.type = type
       w.name = process(name)
       w.value = process(value) if value
@@ -45,7 +45,7 @@ module Typed
 
     def on_class_field statement
       type , name = *statement
-      w = ClassField.new()
+      w = Tree::ClassField.new()
       w.type = type
       w.name = name
       w
@@ -53,7 +53,7 @@ module Typed
 
     def on_while_statement statement
       branch_type , condition , statements = *statement
-      w = WhileStatement.new()
+      w = Tree::WhileStatement.new()
       w.branch_type = branch_type
       w.condition = process(condition)
       w.statements = process(statements)
@@ -105,7 +105,7 @@ module Typed
 
     def on_field_access statement
       receiver_ast , field_ast = *statement
-      w = FieldAccess.new()
+      w = Tree::FieldAccess.new()
       w.receiver = process(receiver_ast)
       w.field = process(field_ast)
       w
@@ -148,12 +148,12 @@ module Typed
     end
 
     def on_class_name expression
-      ClassExpression.new(expression.children.first)
+      Tree::ClassExpression.new(expression.children.first)
     end
 
     def on_assignment statement
       name , value = *statement
-      w = Assignment.new()
+      w = Tree::Assignment.new()
       w.name = process name
       w.value = process(value)
       w
