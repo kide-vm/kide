@@ -1,37 +1,41 @@
 require_relative 'helper'
 
 module Register
-  class TestWhile #< MiniTest::Test
+  class TestWhile < MiniTest::Test
     include Statements
 
 
     def test_while_mini
-      @input    = <<HERE
-class Space
-  int main()
-    while_plus(1)
-      return 3
-    end
-  end
-end
-HERE
+      @input = s(:statements,
+                s(:while_statement, :plus,
+                  s(:conditional,
+                    s(:int, 1)),
+                  s(:statements,
+                    s(:return,
+                      s(:int, 3)))))
+
       @expect = [Label, Branch, Label, LoadConstant, SetSlot, Label, LoadConstant ,
                IsPlus, Label, FunctionReturn]
       check
     end
 
     def test_while_assign
-      @input    = <<HERE
-class Space
-  int main()
-    int n = 5
-    while_plus(n)
-      n = n - 1
-    end
-    return n
-  end
-end
-HERE
+      @input    = s(:statements,
+                    s(:field_def, :Integer,
+                      s(:name, :n),
+                      s(:int, 5)),
+                    s(:while_statement, :plus,
+                      s(:conditional,
+                        s(:name, :n)),
+                      s(:statements,
+                        s(:assignment,
+                          s(:name, :n),
+                          s(:operator_value, :-,
+                            s(:name, :n),
+                            s(:int, 1))))),
+                    s(:return,
+                      s(:name, :n)))
+
       @expect = [Label, LoadConstant, GetSlot, SetSlot, Branch, Label, GetSlot ,
                GetSlot, LoadConstant, OperatorInstruction, GetSlot, SetSlot, Label, GetSlot ,
                GetSlot, IsPlus, GetSlot, GetSlot, SetSlot, Label, FunctionReturn]
@@ -40,17 +44,24 @@ HERE
 
 
     def test_while_return
-      @input    = <<HERE
-class Space
-  int main()
-    int n = 10
-    while_plus( n - 5)
-      n = n + 1
-      return n
-    end
-  end
-end
-HERE
+      @input    =   s(:statements,
+                      s(:field_def, :Integer,
+                        s(:name, :n),
+                        s(:int, 10)),
+                      s(:while_statement, :plus,
+                        s(:conditional,
+                          s(:operator_value, :-,
+                            s(:name, :n),
+                            s(:int, 5))),
+                        s(:statements,
+                          s(:assignment,
+                            s(:name, :n),
+                            s(:operator_value, :+,
+                              s(:name, :n),
+                              s(:int, 1))),
+                          s(:return,
+                            s(:name, :n)))))
+
       @expect = [Label, LoadConstant, GetSlot, SetSlot, Branch, Label, GetSlot ,
                GetSlot, LoadConstant, OperatorInstruction, GetSlot, SetSlot, GetSlot, GetSlot ,
                SetSlot, Label, GetSlot, GetSlot, LoadConstant, OperatorInstruction, IsPlus ,
