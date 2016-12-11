@@ -41,7 +41,7 @@ module Register
       end
       at
     end
-    
+
     def assemble_objects
       at = @machine.init.byte_length
       at +=  8 # thats the padding
@@ -69,18 +69,22 @@ module Register
     # case we try again. Once.
     def try_write
       assemble
-      all = @machine.objects.values.sort{|a,b| a.position <=> b.position}
-      # debugging loop accesses all positions to force an error if it's not set
-      all.each do |objekt|
-        next if objekt.is_a?(Register::Label)
-        log.debug "Linked #{objekt.class}(#{objekt.object_id}) at #{objekt.position} / #{objekt.padded_length}"
-        objekt.position
-      end
+      try_write_debug
       try_write_create_binary
       try_write_objects
       try_write_method
       log.debug "Assembled #{stream_position} bytes"
       return @stream.string
+    end
+
+    # debugging loop accesses all positions to force an error if it's not set
+    def try_write_debug
+      all = @machine.objects.values.sort{|a,b| a.position <=> b.position}
+      all.each do |objekt|
+        next if objekt.is_a?(Register::Label)
+        log.debug "Linked #{objekt.class}(#{objekt.object_id}) at #{objekt.position} / #{objekt.padded_length}"
+        objekt.position
+      end
     end
 
     def try_write_create_binary
@@ -144,15 +148,18 @@ module Register
       if @stream.length != obj.position
         raise "Write #{obj.class} #{obj.object_id} at #{stream_position} not #{obj.position}"
       end
+      write_any_out(obj)
+      log.debug "Wrote #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
+      obj.position
+    end
+
+    def write_any_out(obj)
       if obj.is_a?(Parfait::Word) or obj.is_a?(Symbol)
         write_String obj
       else
         write_object obj
       end
-      log.debug "Wrote #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
-      obj.position
     end
-
     # write type of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def write_object( object )
@@ -204,6 +211,10 @@ module Register
       end
       str = string.to_s if string.is_a? Symbol
       log.debug "#{string.class} is #{string} at #{string.position} length #{string.length}"
+      write_checked_string(string , str)
+    end
+
+    def write_checked_string(string, str)
       @stream.write_sint32( MARKER  )
       write_ref_for( string.get_type ) #ref
       @stream.write_sint32( str.length  ) #int
