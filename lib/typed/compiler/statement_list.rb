@@ -1,7 +1,7 @@
 module Typed
   module StatementList
-    def on_statements statement
-      process_all(  statement.children  )
+    def on_Statements statement
+      process_all(  statement.statements  )
     end
   end
 end

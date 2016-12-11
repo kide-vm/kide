@@ -88,10 +88,6 @@ module Typed
       end
     end
 
-    def on_Statements(codes)
-      process_all codes.statements
-    end
-
     # create the method, do some checks and set it as the current method to be added to
     # class_name and method_name are pretty clear, args are given as a ruby array
     def create_method( class_name , method_name , args = {})
