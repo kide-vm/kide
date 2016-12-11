@@ -214,17 +214,7 @@ module Register
       ret_value = 0
       case name
       when :putstring
-        str = get_register( :r1 ) # should test length, ie r2
-        case str
-        when Symbol
-          @stdout += str.to_s
-          ret_value = str.to_s.length
-        when Parfait::Word
-          @stdout += str.to_string
-          ret_value = str.char_length
-        else
-          raise "NO string for putstring #{str.class}:#{str.object_id}" unless str.is_a?(Symbol)
-        end
+        ret_value = handle_putstring
       when :exit
         set_instruction(nil)
         return false
@@ -235,31 +225,26 @@ module Register
       true
     end
 
+    def handle_putstring
+      str = get_register( :r1 ) # should test length, ie r2
+      case str
+      when Symbol
+        @stdout += str.to_s
+        return str.to_s.length
+      when Parfait::Word
+        @stdout += str.to_string
+        return str.char_length
+      else
+        raise "NO string for putstring #{str.class}:#{str.object_id}" unless str.is_a?(Symbol)
+      end
+    end
+
     def execute_OperatorInstruction
       left = get_register(@instruction.left) || 0
       rr = @instruction.right
       right = get_register(rr) || 0
       @flags[:overflow] = false
-      case @instruction.operator.to_s
-      when "+"
-        result = left + right
-      when "-"
-        result = left - right
-      when ">>"
-        result = left / (2**right)
-      when "<<"
-        result = left * (2**right)
-      when "*"
-        result = left * right
-      when "&"
-        result = left & right
-      when "|"
-        result = left | right
-      when "=="
-        result = (left == right) ? 1 : 0
-      else
-        raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
-      end
+      result = handle_operator(left,right)
       if( result > 2**32 )
         @flags[:overflow] = true
         result = result % 2**32
@@ -269,6 +254,29 @@ module Register
       log.debug "#{@instruction} == #{result}(#{result.class})   (#{left}|#{right})"
       right = set_register(@instruction.left , result)
       true
+    end
+
+    def handle_operator(left, right)
+      case @instruction.operator.to_s
+      when "+"
+        return left + right
+      when "-"
+        return left - right
+      when ">>"
+        return left / (2**right)
+      when "<<"
+        return left * (2**right)
+      when "*"
+        return left * right
+      when "&"
+        return left & right
+      when "|"
+        return left | right
+      when "=="
+        return (left == right) ? 1 : 0
+      else
+        raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
+      end
     end
   end
 end
