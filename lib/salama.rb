@@ -1,5 +1,3 @@
-require 'parslet'
-
 require "logging"
 require "elf/object_writer"
 require "ast"

@@ -1,4 +1,3 @@
-require 'parslet/convenience'
 require_relative "collector"
 
 module Register
