@@ -132,25 +132,32 @@ module Register
     end
 
     def write_binary_method_to_stream(method, stream)
+      write_binary_method_checks(method,stream)
       index = 1
-      stream.rewind
-      log.debug "Assembled code #{method.name} with length #{stream.length}"
-      raise "length error #{method.binary.char_length} != #{method.instructions.total_byte_length}" if method.binary.char_length != method.instructions.total_byte_length
-      raise "length error #{stream.length} != #{method.instructions.total_byte_length}" if method.instructions.total_byte_length != stream.length
       stream.each_byte do |b|
         method.binary.set_char(index , b )
         index = index + 1
       end
     end
+    def write_binary_method_checks(method,stream)
+      stream.rewind
+      log.debug "Assembled code #{method.name} with length #{stream.length}"
+      raise "length error #{method.binary.char_length} != #{method.instructions.total_byte_length}" if method.binary.char_length != method.instructions.total_byte_length
+      raise "length error #{stream.length} != #{method.instructions.total_byte_length}" if method.instructions.total_byte_length != stream.length
+    end
 
     def write_any obj
-      log.debug "Write #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
+      write_any_log( obj ,  "Write")
       if @stream.length != obj.position
         raise "Write #{obj.class} #{obj.object_id} at #{stream_position} not #{obj.position}"
       end
       write_any_out(obj)
-      log.debug "Wrote #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
+      write_any_log( obj ,  "Wrote")
       obj.position
+    end
+
+    def write_any_log( obj , at)
+      log.debug "#{at} #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
     end
 
     def write_any_out(obj)
@@ -163,18 +170,21 @@ module Register
     # write type of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def write_object( object )
+      write_object_check(object)
+      obj_written = write_object_variables(object)
+      log.debug "instances=#{object.get_instance_variables.inspect} mem_len=#{object.padded_length}"
+      indexed_written = write_object_indexed(object)
+      log.debug "type #{obj_written} , total #{obj_written + indexed_written} (array #{indexed_written})"
+      log.debug "Len = #{object.get_length} , inst = #{object.get_type.instance_length}" if object.is_a? Parfait::Type
+      pad_after( obj_written + indexed_written  )
+      object.position
+    end
+
+    def write_object_check(object)
       log.debug "Write object #{object.class} #{object.inspect}"
       unless @machine.objects.has_key? object.object_id
         raise "Object(#{object.object_id}) not linked #{object.inspect}"
       end
-      written = write_object_variables(object)
-      lay_len = written
-      log.debug "instances=#{object.get_instance_variables.inspect} mem_len=#{object.padded_length}"
-      written += write_object_indexed(object)
-      log.debug "type #{lay_len} , total #{written} (array #{written - lay_len})"
-      log.debug "Len = #{object.get_length} , inst = #{object.get_type.instance_length}" if object.is_a? Parfait::Type
-      pad_after( written  )
-      object.position
     end
 
     def write_object_indexed(object)
