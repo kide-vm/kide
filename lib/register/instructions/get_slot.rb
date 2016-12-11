@@ -4,31 +4,21 @@ module Register
   # SetSlot moves data into memory from a register.
   # Both use a base memory (a register)
 
-  # While the virtual machine has only one instruction (Set) to move data between slots,
-  # the register has two, namely GetSlot and SetSlot
-  #
   # This is because that is what cpu's can do. In programming terms this would be accessing
   #  an element in an array, in the case of GetSlot setting the value in the array.
 
   # btw: to move data between registers, use RegisterTransfer
 
-  class GetSlot < Instruction
+  class GetSlot < Getter
 
     # If you had a c array and index offset
     # the instruction would do register = array[index]
     # The arguments are in the order that makes sense for the Instruction name
     # So GetSlot means the slot (array and index) moves to the register (last argument)
-    def initialize source , array , index , register
-      super(source)
-      @array = array
-      @index = index
-      @register = register
-      raise "index 0 " if index == 0
-      raise "Not integer or reg #{index}" unless index.is_a?(Numeric) or RegisterValue.look_like_reg(index)
-      raise "Not register #{register}" unless RegisterValue.look_like_reg(register)
-      raise "Not register #{array}" unless RegisterValue.look_like_reg(array)
-    end
-    attr_accessor :array , :index , :register
+    # def initialize source , array , index , register
+    #   super
+    # end
+    # attr_accessor :array , :index , :register
 
     def to_s
       "GetSlot: #{array}[#{index}] -> #{register}"

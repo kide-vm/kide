@@ -1,12 +1,15 @@
 module Register
   # Setter is a base class for set instructions (SetSlot and SetByte , possibly more coming)
   #
-  # The instruction that is modelled is loading data from an array into a register
+  # The instruction that is modelled is loading data from a register into an array
   #
   # Setter has a
-  # - Register that the data is moved to
-  # - an array where the data comes from
+  # - Register that the data is comes from
+  # - an array where the data goes
   # - and (array) index
+
+  # Getter and Setter api follow the pattern from -> to
+
   class Setter < Instruction
 
     # If you had a c array and index offset
