@@ -10,7 +10,7 @@ class Integer < Value
 
 
 
-  int div10_soml()
+  int div10_typed()
     int tmp = self >> 1
     int q = self >> 2
     q = q + tmp

@@ -1,4 +1,4 @@
-require_relative '../../soml/helper'
+require_relative '../../typed/helper'
 
 # Benchmarks for the stuff in results.md
 

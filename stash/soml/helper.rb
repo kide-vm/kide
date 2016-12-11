@@ -4,7 +4,7 @@ require "rye"
 Rye::Cmd.add_command :ld, '/usr/bin/ld'
 Rye::Cmd.add_command :aout, './a.out'
 
-# machinery to run a soml program in 2 ways
+# machinery to run a typed program in 2 ways
 # - first by running it through the interpreter
 # - second by assembling to arm , pushing the binary to a remote machine and executing it there
 #
@@ -13,7 +13,7 @@ Rye::Cmd.add_command :aout, './a.out'
 #   the minimum is REMOTE_PI=username , and off course ssh keys have to be set up
 
 # btw can't test with ruby on a PI as code creation only works on 64bit
-#   that's because ruby nibbles 2 bits from a word, and soml code doesn't work around that
+#   that's because ruby nibbles 2 bits from a word, and typed code doesn't work around that
 module RuntimeTests
 
   def setup

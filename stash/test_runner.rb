@@ -22,7 +22,6 @@ class TestRunner < MiniTest::Test
     parser = Parser::Salama.new
     object_space = Register::Program.new "Arm"
     #TODO : files would have to include s-expressions now
-    # those can be obtained with to_code utility in soml-parser
     syntax  = parser.parse_with_debug(string, reporter: Parslet::ErrorReporter::Deepest.new)
     assert syntax
     parts   = Parser::Transform.new.apply(syntax)

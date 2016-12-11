@@ -7,21 +7,21 @@
 
 Salama is about native code generation in and of ruby.
 
-It is probably best to read the [The Book](http://dancinglightning.gitbooks.io/the-object-machine/content/) first.
+The current (fourth) rewrite adds a typed intermediate representation layer (bit like c,
+but not as a language). The idea is to compile ruby to that typed representation.
 
-The current third rewrite adds a system language, with the idea of compiling ruby to that language, Soml.
-The original ruby parser has been remodeled to parse Soml and later we will use whitequarks
-parser to parse ruby.  Then it will be ruby --> Soml --> assembler --> binary .
+We will use whitequarks parser to parse ruby.  Then it will be ruby --> Typed --> Register --> Arm --> binary .
 
 
 ## Done
 
 Some things that are finished, look below for current status / work
 
-### Soml
+### Typed representation
 
-A working of the [system language](http://salama-vm.org/soml/soml.html) is done. It is
-strongly typed, but leans more towards ruby style syntax.
+The fully typed syntax representation and compiler to the Register level is done.
+It is remodeled after  last years system language, which proved the concept and
+surprised with speed.
 
 Completely object oriented, including calling convention. Not much slower than c.
 
@@ -43,10 +43,9 @@ what is going on, and in finding bugs.
 
 ## Status
 
-Having finished Soml, it's time to compile ruby to it.
+Most work on the statically typed layer should be done (and produces working binaries!).
 
-This will mean more work on the type front.
-
+Next up: compiling ruby and typing it :-)
 
 ### Stary sky
 

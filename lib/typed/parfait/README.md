@@ -1,24 +1,13 @@
-## Notice of change
-
-The stuff below, like the whole of Parfait, was written before soml. Ie before there was a seperate
-language to compile a higher language to. Soml is not so dynamic, could do without much of the
-ObjectSpace that is the core of Parfait.
-
-So things will change. How will become clear when soml is finished.
-
 ### Parfait: a thin layer
 
-Parfait is the run-time of the **vm**.
-To be more precise, it is that part of the run-time needed to boot soml.
+Parfait is the run-time of the object system.
+To be more precise, it is that part of the run-time needed to boot.
 
 The run-time needs to contain quite a lot of functionality for a dynamic system.
 And a large part of that functionality must actually be used at compile time too.
 
 We reuse the Parfait code at compile-time, to create the data for the compiled vm.
 To do this the vm (re) defines the object memory (in parfait_adapter).
-
-To do the actual compiling we parse and compile the parfait code and inline it to
-appropriate places.
 
 A work in progress that started from here : http://salama.github.io/2014/06/10/more-clarity.html
 went on here http://salama.github.io/2014/07/05/layers-vs-passes.html

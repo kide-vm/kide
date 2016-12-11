@@ -5,7 +5,7 @@ The RegisterMachine, is an abstract machine with registers. Think of it as an ar
 normal instruction names. It is not however an abstraction of existing hardware, but only
 of that subset that we need.
 
-Our primary objective is to compile Soml to this level, so the register machine has:
+Our primary objective is to compile typed code to this level, so the register machine has:
 - object access instructions
 - object load
 - object oriented call semantics
