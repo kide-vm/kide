@@ -32,9 +32,9 @@ module Register
   # Produce a GetByte instruction.
   # from and to are translated (from symbol to register if neccessary)
   # but index is left as is.
-  def self.get_byte source , array , index , to
-    from = resolve_to_register from
-    to = resolve_to_register to
-    GetByte.new( source , array , index , to)
-  end
+  # def self.get_byte source , array , index , to
+  #   from = resolve_to_register from
+  #   to = resolve_to_register to
+  #   GetByte.new( source , array , index , to)
+  # end
 end

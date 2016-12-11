@@ -29,11 +29,11 @@ module Register
   # Produce a SetByte instruction.
   # from and to are translated (from symbol to register if neccessary)
   # but index is left as is.
-  def self.set_byte source , from , to , index
-    from = resolve_to_register from
-    index = resolve_index( to , index)
-    to = resolve_to_register to
-    SetByte.new( source, from , to , index)
-  end
+  # def self.set_byte source , from , to , index
+  #   from = resolve_to_register from
+  #   index = resolve_index( to , index)
+  #   to = resolve_to_register to
+  #   SetByte.new( source, from , to , index)
+  # end
 
 end
