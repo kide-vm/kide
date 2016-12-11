@@ -23,17 +23,13 @@ module Register
     def assemble
       at = 0
       #need the initial jump at 0 and then functions
-      @machine.init.set_position(at)
-      at += @machine.init.byte_length
-      at +=  8 # thats the padding
-      # want to have the objects first in the executable
-      @machine.objects.each do | id , objekt|
-        next if objekt.is_a? Register::Label # will get assembled as method.instructions
-        next if objekt.is_a? Parfait::BinaryCode
-        objekt.position = at
-        at += objekt.padded_length
-      end
+      @machine.init.set_position(0)
+      at = assemble_objects
       # and then everything code
+      asseble_code_from( at )
+    end
+
+    def asseble_code_from( at )
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::Method
         objekt.binary.position = at
@@ -43,6 +39,20 @@ module Register
         objekt.binary.set_length(len , 0)
         at += objekt.binary.padded_length
       end
+      at
+    end
+    
+    def assemble_objects
+      at = @machine.init.byte_length
+      at +=  8 # thats the padding
+      # want to have the objects first in the executable
+      @machine.objects.each do | id , objekt|
+        next if objekt.is_a? Register::Label # will get assembled as method.instructions
+        next if objekt.is_a? Parfait::BinaryCode
+        objekt.position = at
+        at += objekt.padded_length
+      end
+      at
     end
 
     def write_as_string
@@ -66,33 +76,40 @@ module Register
         log.debug "Linked #{objekt.class}(#{objekt.object_id}) at #{objekt.position} / #{objekt.padded_length}"
         objekt.position
       end
+      try_write_create_binary
+      try_write_objects
+      try_write_method
+      log.debug "Assembled #{stream_position} bytes"
+      return @stream.string
+    end
 
+    def try_write_create_binary
       # first we need to create the binary code for the methods
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::Method
         assemble_binary_method(objekt)
       end
-
       @stream = StringIO.new
       @machine.init.assemble( @stream )
       8.times do
         @stream.write_uint8(0)
       end
-
+    end
+    def try_write_objects
       #  then the objects , not code yet
       @machine.objects.each do | id, objekt|
         next if objekt.is_a? Parfait::BinaryCode
         next if objekt.is_a? Register::Label # ignore
         write_any( objekt )
       end
+    end
 
+    def try_write_method
       # then write the methods to file
       @machine.objects.each do |id, objekt|
         next unless objekt.is_a? Parfait::BinaryCode
         write_any( objekt )
       end
-      log.debug "Assembled #{stream_position} bytes"
-      return @stream.string
     end
 
     # assemble the MethodSource into a stringio
@@ -107,6 +124,10 @@ module Register
         log.debug "Assembly error #{method.name}\n#{Sof.write(method.instructions).to_s[0...2000]}"
         raise e
       end
+      write_binary_method_to_stream( method, stream)
+    end
+
+    def write_binary_method_to_stream(method, stream)
       index = 1
       stream.rewind
       log.debug "Assembled code #{method.name} with length #{stream.length}"
@@ -139,6 +160,28 @@ module Register
       unless @machine.objects.has_key? object.object_id
         raise "Object(#{object.object_id}) not linked #{object.inspect}"
       end
+      written = write_object_variables(object)
+      lay_len = written
+      log.debug "instances=#{object.get_instance_variables.inspect} mem_len=#{object.padded_length}"
+      written += write_object_indexed(object)
+      log.debug "type #{lay_len} , total #{written} (array #{written - lay_len})"
+      log.debug "Len = #{object.get_length} , inst = #{object.get_type.instance_length}" if object.is_a? Parfait::Type
+      pad_after( written  )
+      object.position
+    end
+
+    def write_object_indexed(object)
+      written = 0
+      if( object.is_a? Parfait::Indexed)
+        object.each do |inst|
+          write_ref_for(inst)
+          written += 4
+        end
+      end
+      written
+    end
+
+    def write_object_variables(object)
       @stream.write_sint32( MARKER  )
       written = 0 # compensate for the "secrect" marker
       object.get_instance_variables.each do |var|
@@ -147,18 +190,7 @@ module Register
         write_ref_for(inst)
         written += 4
       end
-      lay_len = written
-      log.debug "instances=#{object.get_instance_variables.inspect} mem_len=#{object.padded_length}"
-      if( object.is_a? Parfait::Indexed)
-        object.each do |inst|
-          write_ref_for(inst)
-          written += 4
-        end
-      end
-      log.debug "type #{lay_len} , total #{written} (array #{written - lay_len})"
-      log.debug "Len = #{object.get_length} , inst = #{object.get_type.instance_length}" if object.is_a? Parfait::Type
-      pad_after( written  )
-      object.position
+      written
     end
 
     def write_BinaryCode code
