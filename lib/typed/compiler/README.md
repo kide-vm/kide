@@ -51,7 +51,7 @@ basically meaning pinned to a register, the Message.
 
 One can think of the Message as an oo replacement of the stack.
 
-When a Method needs to make a call, it creates a NewMessage object.
+When a TypedMethod needs to make a call, it creates a NewMessage object.
 Messages contain return addresses (yes, plural) and arguments.
 
 The important thing here is that Messages and Frames are normal objects.

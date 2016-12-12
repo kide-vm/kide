@@ -128,7 +128,7 @@ module Register
           :Class => {:instance_methods => :List, :instance_type => :Type, :name => :Word,
                       :super_class_name => :Word},
           :Dictionary => {:keys => :List , :values => :List  } ,
-          :Method => {:name => :Word, :source => :Object, :instructions => :Object, :binary => :Object,
+          :TypedMethod => {:name => :Word, :source => :Object, :instructions => :Object, :binary => :Object,
                       :arguments => :List , :for_class => :Class, :locals => :List  } ,
           :Value => {},
           :Variable => {:value_type => :Class, :name => :Word , :value => :Object}

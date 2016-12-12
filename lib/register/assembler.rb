@@ -31,7 +31,7 @@ module Register
 
     def asseble_code_from( at )
       @machine.objects.each do |id , objekt|
-        next unless objekt.is_a? Parfait::Method
+        next unless objekt.is_a? Parfait::TypedMethod
         objekt.binary.position = at
         objekt.instructions.set_position at + 12 # BinaryCode header
         len = objekt.instructions.total_byte_length
@@ -90,7 +90,7 @@ module Register
     def try_write_create_binary
       # first we need to create the binary code for the methods
       @machine.objects.each do |id , objekt|
-        next unless objekt.is_a? Parfait::Method
+        next unless objekt.is_a? Parfait::TypedMethod
         assemble_binary_method(objekt)
       end
       @stream = StringIO.new

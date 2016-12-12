@@ -60,7 +60,7 @@ module Parfait
     def create_instance_method  method_name , arguments
       raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
       log.debug "Add_method: #{method_name} clazz: #{self.name}"
-      add_instance_method Method.new( self , method_name , arguments )
+      add_instance_method TypedMethod.new( self , method_name , arguments )
     end
 
 

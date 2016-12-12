@@ -38,7 +38,7 @@ module Elf
         end
         label += "=#{slot}" if slot.is_a?(Symbol) or slot.is_a?(String)
         add_symbol  label , slot.position
-        if slot.is_a?(Parfait::Method)
+        if slot.is_a?(Parfait::TypedMethod)
           add_symbol  slot.name.to_s , slot.binary.position
         end
       end

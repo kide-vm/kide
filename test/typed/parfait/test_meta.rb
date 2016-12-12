@@ -9,7 +9,7 @@ class TestMeta < MiniTest::Test
 
   def foo_method for_class = :Try
     args = Parfait.new_list [ Parfait::Variable.new(:Integer , :bar )]
-    ::Parfait::Method.new @space.get_class_by_name(for_class) , :foo , args
+    ::Parfait::TypedMethod.new @space.get_class_by_name(for_class) , :foo , args
   end
 
   def test_meta
@@ -44,7 +44,7 @@ class TestMeta < MiniTest::Test
   end
   def test_method_get
     test_add_method
-    assert_equal Parfait::Method , @try.get_instance_method(:foo).class
+    assert_equal Parfait::TypedMethod , @try.get_instance_method(:foo).class
   end
   def test_method_get_nothere
     assert_nil  @try.get_instance_method(:foo)

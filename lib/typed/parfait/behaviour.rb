@@ -29,7 +29,7 @@ module Parfait
     end
 
     def add_instance_method method
-      raise "not a method #{method.class} #{method.inspect}" unless method.is_a? Method
+      raise "not a method #{method.class} #{method.inspect}" unless method.is_a? TypedMethod
       raise "syserr #{method.name.class}" unless method.name.is_a? Symbol
       if self.is_a?(Class) and (method.for_class != self)
         raise "Adding to wrong class, should be #{method.for_class}"

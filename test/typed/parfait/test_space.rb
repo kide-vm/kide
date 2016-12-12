@@ -6,7 +6,7 @@ class TestSpace < MiniTest::Test
     @machine = Register.machine.boot
   end
   def classes
-    [:Kernel,:Word,:List,:Message,:Frame,:Type,:Object,:Class,:Dictionary,:Method , :Integer]
+    [:Kernel,:Word,:List,:Message,:Frame,:Type,:Object,:Class,:Dictionary,:TypedMethod , :Integer]
   end
   def test_booted
     assert_equal true , @machine.booted

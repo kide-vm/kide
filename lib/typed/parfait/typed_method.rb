@@ -1,5 +1,10 @@
-# A Method (at runtime , sis in Parfait) is static object that primarily holds the executable
-# code.
+# A TypedMethod is static object that primarily holds the executable code.
+# It is called typed, because all arguments and variables it uses are typed.
+# (Type means basic type, ie integer or reference)
+
+# It's relation to the method a ruby programmer knows (called RubyMethod) is many to one,
+# meaning one RubyMethod (untyped) has many TypedMethod implementations.
+# The RubyMethod only holds ruby code, no binary.
 
 # For reflection also holds arguments and such
 
@@ -13,10 +18,10 @@ module Parfait
   # known local variable names
   # executable code
 
-  # ps, the compiler injects its own info, see Register::MethodSource
+  # ps, the compiler injects its own info
 
 
-  class Method < Object
+  class TypedMethod < Object
 
     attributes [:name , :source , :instructions , :binary ,:arguments , :for_class, :locals ]
     # not part of the parfait model, hence ruby accessor

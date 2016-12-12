@@ -17,7 +17,7 @@ module Typed
   # - an object graph containing all the Methods, their classes and Constants
   #
   # Some compile methods just add code, some may add Instructions while
-  # others instantiate Class and Method objects
+  # others instantiate Class and TypedMethod objects
   #
   # Everything in ruby is an statement, ie returns a value. So the effect of every compile
   # is that a value is put into the ReturnSlot of the current Message.

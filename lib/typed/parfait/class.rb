@@ -49,7 +49,7 @@ module Parfait
       clazz = instance_type().object_class()
       raise "??? #{method_name}" unless clazz
       #puts "Self: #{self.class} clazz: #{clazz.name}"
-      add_instance_method Method.new( clazz , method_name , arguments )
+      add_instance_method TypedMethod.new( clazz , method_name , arguments )
     end
 
     # this needs to be done during booting as we can't have all the classes and superclassses

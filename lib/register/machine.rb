@@ -82,7 +82,7 @@ module Register
 
 end
 
-Parfait::Method.class_eval do
+Parfait::TypedMethod.class_eval do
   # for testing we need to reuse the main function (or do we?)
   # so remove the code that is there
   def clear_source
