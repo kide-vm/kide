@@ -6,20 +6,19 @@
 # meaning one RubyMethod (untyped) has many TypedMethod implementations.
 # The RubyMethod only holds ruby code, no binary.
 
-# For reflection also holds arguments and such
+# The Typed method has the following instance variables
+# - name : This is the same as the ruby method name it implements
+# - source: is currently the ast (or string) that represents the "code". This is historic
+#           and will change to the RubyMethod that it implements
+# - instructions: The sequence of instructions the source (ast) was compiled to
+#                 Instructions derive from class Instruction and form a linked list
+# - binary:  The binary (jumpable) code that the instructions get assembled into
+# - arguments: A List of Variables that can/are passed
+# - locals:  A List of Variables that the method has
+# - for_class:  The class the Method is for (TODO, should be Type)
 
-#
 
 module Parfait
-
-  # static description of a method
-  # name
-  # arguments
-  # known local variable names
-  # executable code
-
-  # ps, the compiler injects its own info
-
 
   class TypedMethod < Object
 
