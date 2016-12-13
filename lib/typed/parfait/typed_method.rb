@@ -13,7 +13,7 @@
 # - instructions: The sequence of instructions the source (ast) was compiled to
 #                 Instructions derive from class Instruction and form a linked list
 # - binary:  The binary (jumpable) code that the instructions get assembled into
-# - arguments: A List of Variables that can/are passed
+# - arguments: A type object describing the arguments (name+types) to be passed
 # - locals:  A List of Variables that the method has
 # - for_class:  The class the Method is for (TODO, should be Type)
 
@@ -26,32 +26,37 @@ module Parfait
     # not part of the parfait model, hence ruby accessor
     attr_accessor :source
 
-    def initialize clazz , name , arguments
+    def initialize( clazz , name , arguments )
       super()
       raise "No class #{name}" unless clazz
+      raise "Wrong argument type, expect Type not #{arguments.class}" unless arguments.is_a? Type
       self.for_class = clazz
       self.name = name
       self.binary = BinaryCode.new 0
-      raise "Wrong type, expect List not #{arguments.class}" unless arguments.is_a? List
-      arguments.each do |var|
-        raise "Must be variable argument, not #{var}" unless var.is_a? Variable
-      end
       self.arguments = arguments
       self.locals = List.new
     end
 
     # determine whether this method has an argument by the name
-    def has_arg name
+    def has_arg( name )
       raise "has_arg #{name}.#{name.class}" unless name.is_a? Symbol
-      max = self.arguments.get_length
-      counter = 1
-      while( counter <= max )
-        if( self.arguments.get(counter).name == name)
-          return counter
-        end
-        counter = counter + 1
-      end
-      return nil
+      index = arguments.variable_index( name )
+      index ? (index - 1) : index
+    end
+
+    def add_argument(name , type)
+      self.arguments = self.arguments.add_instance_variable(name,type)
+    end
+
+    def arguments_length
+      arguments.instance_length - 1
+    end
+
+    def argument_name(index)
+      arguments.get(index * 2 + 1)
+    end
+    def argument_type(index)
+      arguments.get(index * 2 + 2)
     end
 
     # determine if method has a local variable or tmp (anonymous local) by given name
