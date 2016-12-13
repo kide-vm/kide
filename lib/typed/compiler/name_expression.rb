@@ -12,7 +12,8 @@ module Typed
         end
         # either an argument, so it's stored in message
         if( index = @method.has_arg(name))
-          ret = use_reg @method.arguments[index].value_type
+          ret = use_reg @method.argument_type(index)
+          #puts "For #{name} at #{index} got #{@method.arguments.inspect}"
           add_code Register.get_slot(statement , :message , Parfait::Message.get_indexed(index), ret )
           return ret
         end
@@ -24,7 +25,7 @@ module Typed
 
       def handle_local statement
         index = @method.has_local( statement.name )
-        raise "must define variable '#{name}' before using it" unless index
+        raise "must define variable '#{statement.name}' before using it" unless index
         frame = use_reg :Frame
         add_code Register.get_slot(statement , :message , :frame , frame )
         ret = use_reg @method.locals[index].value_type

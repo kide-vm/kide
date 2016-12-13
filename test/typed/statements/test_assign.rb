@@ -58,7 +58,7 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_assign_arg
-    Register.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :blar)
+    Register.machine.space.get_main.add_argument(:blar , :Integer)
     @input = s(:statements, s(:assignment, s(:name, :blar), s(:int, 5)))
     @expect =  [Label, LoadConstant, SetSlot, Label, FunctionReturn]
     was = check
@@ -69,7 +69,7 @@ class TestAssignStatement < MiniTest::Test
 
   def test_arg_get
     # have to define bar externally, just because redefining main. Otherwise that would be automatic
-    Register.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :balr)
+    Register.machine.space.get_main.add_argument(:balr , :Integer)
     @input = s(:statements, s(:return, s(:name, :balr)))
     @expect =   [Label, GetSlot, SetSlot, Label, FunctionReturn]
     was = check

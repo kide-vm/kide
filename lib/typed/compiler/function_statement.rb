@@ -5,9 +5,7 @@ module Typed
       #      return_type , name , parameters, kids , receiver = *statement
       raise "Already in method #{@method}" if @method
 
-      args = statement.parameters.collect do |p|
-        Parfait::Variable.new( *p )
-      end
+      args = statement.parameters
 
       class_method = handle_receiver( statement ) #nil for instance method
 

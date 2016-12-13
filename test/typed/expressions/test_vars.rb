@@ -24,7 +24,7 @@ module Register
     end
 
     def test_args
-      Register.machine.space.get_main.arguments.push Parfait::Variable.new(:Integer , :bar)
+      Register.machine.space.get_main.add_argument(:bar , :Integer)
       @input    = s(:name, :bar)
       @output = Register::RegisterValue
       check

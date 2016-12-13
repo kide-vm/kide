@@ -104,16 +104,10 @@ module Typed
     # return the compiler (for chaining)
     def create_method_for clazz , method_name , args
       @clazz = clazz
+      raise "Args must be Hash #{args}" unless args.is_a?(Hash)
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
-      arguments = []
-      if( args.is_a? Array)
-        arguments = args
-      else
-        args.each do | name , type |
-          arguments << Parfait::Variable.new( type , name.to_sym)
-        end
-      end
-      @method = clazz.create_instance_method( method_name , Parfait.new_list(arguments))
+      arguments = Parfait::Type.new_for_hash( clazz , args )
+      @method = clazz.create_instance_method( method_name , arguments)
       self
     end
 

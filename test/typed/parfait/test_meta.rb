@@ -8,7 +8,7 @@ class TestMeta < MiniTest::Test
   end
 
   def foo_method for_class = :Try
-    args = Parfait.new_list [ Parfait::Variable.new(:Integer , :bar )]
+    args = Parfait::Type.new_for_hash( @try , { bar: :Integer})
     ::Parfait::TypedMethod.new @space.get_class_by_name(for_class) , :foo , args
   end
 
@@ -24,7 +24,8 @@ class TestMeta < MiniTest::Test
   end
 
   def test_create_method
-      @try.create_instance_method :bar, Parfait.new_list( [ Parfait::Variable.new(:Integer , :bar )])
+      args = Parfait::Type.new_for_hash( @try , { bar: :Integer})
+      @try.create_instance_method :bar, args
       assert_equal ":bar" , @try.method_names.inspect
     end
   def test_add_method
