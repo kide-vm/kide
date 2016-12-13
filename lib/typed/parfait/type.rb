@@ -63,7 +63,7 @@ module Parfait
       private_add_instance_variable :type ,:Type
       self.object_class = object_class
       hash.each do |name , type|
-        private_add_instance_variable name , type
+        private_add_instance_variable(name , type) unless name == :type
       end if hash
     end
 
@@ -75,6 +75,8 @@ module Parfait
     # Type objects are immutable, so a new object is returned
     # As types are also unique, two same adds will result in identical results
     def add_instance_variable( name , type )
+      raise "No nil name" unless name
+      raise "No nil type" unless type
       hash = to_hash
       hash[name] = type
       code = Type.hash_code_for( hash )
@@ -105,14 +107,14 @@ module Parfait
 
     # index of the variable when using get_internal_word
     # (get_internal_word is 1 based and 1 is always the type)
-    def variable_index name
+    def variable_index( name )
       has = super_index(name)
       return nil unless has
       raise "internal error #{name}:#{has}" if has < 1
       (1 + has / 2).to_i # to_i for opal
     end
 
-    def type_at index
+    def type_at( index )
       type_index = index * 2
       get(type_index)
     end

@@ -4,21 +4,21 @@ class BasicType < MiniTest::Test
 
   def setup
     @mess = Register.machine.boot.space.first_message
+    assert @mess
   end
 
   def test_type_index
     assert_equal @mess.get_type , @mess.get_internal_word(Parfait::TYPE_INDEX) , "mess"
   end
 
-  def test_inspect
-    assert @mess.get_type.inspect.start_with?("Type")
-  end
   def test_type_is_first
     type = @mess.get_type
     assert_equal 1 , type.variable_index(:type)
   end
 
   def test_length
+    assert @mess
+    assert @mess.get_type
     assert_equal 9 , @mess.get_type.instance_length , @mess.get_type.inspect
   end
 
@@ -44,53 +44,9 @@ class BasicType < MiniTest::Test
     end
   end
 
-  def test_class_type
-    oc = Register.machine.boot.space.get_class_by_name( :Object )
-    assert_equal Parfait::Class , oc.class
-    type = oc.instance_type
-    assert_equal Parfait::Type , type.class
-    assert_equal 1 , type.instance_names.get_length , type.instance_names.inspect
-    assert_equal type.first , :type
-  end
-
-
-  def test_class_space
-    space = Register.machine.space
-    assert_equal Parfait::Space , space.class
-    type = space.get_type
-    assert_equal Parfait::Type , type.class
-    assert_equal 4 , type.instance_names.get_length
-    assert_equal type.object_class.class , Parfait::Class
-    assert_equal type.object_class.name , :Space
-  end
   def test_attribute_set
     @mess.receiver = 55
     assert_equal 55 , @mess.receiver
-  end
-
-  def test_add_name
-    type = Parfait::Type.new Register.machine.space.get_class_by_name(:Type)
-    type.send(:private_add_instance_variable, :boo , :Object)
-    assert_equal 2 , type.variable_index(:boo)
-    assert_equal 4 , type.get_length
-    assert_equal :type , type.get(1)
-    assert_equal :boo , type.get(3)
-    type
-  end
-
-  def test_inspect
-    type = test_add_name
-    assert type.inspect.include?("boo") , type.inspect
-  end
-
-  def test_each
-    type = test_add_name
-    assert_equal 4 , type.get_length
-    counter = [:boo , :Object, :type , :Type]
-    type.each do |item|
-      assert_equal item , counter.delete(item)
-    end
-    assert counter.empty?
   end
 
   # not really parfait test, but related and no other place currently

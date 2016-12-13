@@ -12,7 +12,7 @@ class TypeHash < MiniTest::Test
   end
 
   def test_length
-    assert_equal 16 , @types.length
+    assert @types.length > 16
   end
 
   def test_two_hashs_not_equal
