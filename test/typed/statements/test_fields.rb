@@ -6,15 +6,17 @@ module Register
     include Statements
 
     def test_field_frame
-      @input = s(:statements, s(:field_def, :Message, s(:name, :m)), s(:return, s(:field_access, s(:receiver, s(:name, :m)), s(:field, s(:name, :name)))))
-
+      @input = s(:statements, s(:field_def, :Message, s(:name, :m)),
+                  s(:return, s(:field_access, s(:receiver, s(:name, :m)), s(:field, s(:name, :name)))))
       @expect =  [Label, GetSlot, GetSlot, GetSlot, SetSlot, Label, FunctionReturn]
       check
     end
 
     def test_field_arg
-      clean_compile s(:statements, s(:class, :Space, s(:derives, nil), s(:statements, s(:function, :Integer, s(:name, :get_name), s(:parameters, s(:parameter, :Message, :main)), s(:statements, s(:return, s(:field_access, s(:receiver, s(:name, :main)), s(:field, s(:name, :name)))))))))
-
+      clean_compile s(:statements, s(:class, :Space, s(:derives, nil), s(:statements,
+          s(:function, :Integer, s(:name, :get_name), s(:parameters, s(:parameter, :Message, :main)),
+                s(:statements, s(:return, s(:field_access,
+                    s(:receiver, s(:name, :main)), s(:field, s(:name, :name)))))))))
       @input =s(:statements, s(:field_def, :Message, s(:name, :m)), s(:return, s(:call, s(:name, :get_name), s(:arguments, s(:name, :m)))))
 
       @expect =  [Label, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot, LoadConstant ,

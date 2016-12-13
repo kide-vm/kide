@@ -6,6 +6,7 @@ class TestDictionary < MiniTest::Test
     @lookup = ::Parfait::Dictionary.new
   end
   def test_dict_create
+    assert_equal 0 , @lookup.length
     assert @lookup.empty?
   end
   def test_empty_dict_doesnt_return
@@ -14,6 +15,17 @@ class TestDictionary < MiniTest::Test
   end
   def test_one_set1
     assert_equal 1 , @lookup.set(1,1)
+    assert_equal 1 , @lookup.length
+  end
+  def test_one_double
+    assert_equal 1 , @lookup.set(1,1)
+    assert_equal 3 , @lookup.set(1,3)
+    assert_equal 1 , @lookup.length
+  end
+  def test_one_double2
+    assert_equal 1 , @lookup.set(:one,1)
+    assert_equal 3 , @lookup.set(:one,3)
+    assert_equal 1 , @lookup.length
   end
   def test_one_set2
     assert_equal :some , @lookup.set(1,:some)
