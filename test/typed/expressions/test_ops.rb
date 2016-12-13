@@ -21,12 +21,12 @@ module Register
       end
     end
     def test_local_int
-      Register.machine.space.get_main.ensure_local(:bar , :Integer)
+      Register.machine.space.get_main.add_local(:bar , :Integer)
       @input    = s(:operator_value, :+, s(:name, :bar), s(:int, 3))
       check
     end
     def test_int_local
-      Register.machine.space.get_main.ensure_local(:bar , :Integer)
+      Register.machine.space.get_main.add_local(:bar , :Integer)
       @input    = s(:operator_value, :+, s(:int, 3), s(:name, :bar))
       check
     end

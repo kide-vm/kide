@@ -26,7 +26,7 @@ module Register
     end
 
     def test_call_main_op
-      Register.machine.space.get_main.ensure_local(:bar , :Integer)
+      Register.machine.space.get_main.add_local(:bar , :Integer)
       @input    =s(:call,s(:name, :main),s(:arguments , s(:name, :bar) ))
       check
     end

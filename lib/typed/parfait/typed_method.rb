@@ -14,7 +14,7 @@
 #                 Instructions derive from class Instruction and form a linked list
 # - binary:  The binary (jumpable) code that the instructions get assembled into
 # - arguments: A type object describing the arguments (name+types) to be passed
-# - locals:  A List of Variables that the method has
+# - locals:  A type object describing the local variables that the method has
 # - for_class:  The class the Method is for (TODO, should be Type)
 
 
@@ -34,7 +34,8 @@ module Parfait
       self.name = name
       self.binary = BinaryCode.new 0
       self.arguments = arguments
-      self.locals = List.new
+      self.locals = Type.new Space.object_space.get_class_by_name( :Object )
+
     end
 
     # determine whether this method has an argument by the name
@@ -52,33 +53,35 @@ module Parfait
       arguments.instance_length - 1
     end
 
-    def argument_name(index)
+    def argument_name( index )
       arguments.get(index * 2 + 1)
     end
-    def argument_type(index)
+    def argument_type( index )
       arguments.get(index * 2 + 2)
     end
 
     # determine if method has a local variable or tmp (anonymous local) by given name
-    def has_local name
+    def has_local( name )
       raise "has_local #{name}.#{name.class}" unless name.is_a? Symbol
-      max = self.locals.get_length
-      counter = 1
-      while( counter <= max )
-        if( self.locals.get(counter).name == name)
-          return counter
-        end
-        counter = counter + 1
-      end
-      return nil
+      index = locals.variable_index( name )
+      index ? (index - 1) : index
     end
 
-    def ensure_local name , type
+    def add_local( name , type )
       index = has_local name
       return index if index
-      var = Variable.new( type , name)
-      self.locals.push var
-      self.locals.get_length
+      self.locals = self.locals.add_instance_variable(name,type)
+    end
+
+    def locals_length
+      locals.instance_length - 1
+    end
+
+    def locals_name( index )
+      locals.get(index * 2 + 1)
+    end
+    def locals_type( index )
+      locals.get(index * 2 + 2)
     end
 
     def sof_reference_name

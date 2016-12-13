@@ -10,7 +10,7 @@ module Register
     end
 
     def test_local
-      Register.machine.space.get_main.ensure_local(:bar , :Integer)
+      Register.machine.space.get_main.add_local(:bar , :Integer)
       @input    = s(:name, :bar)
       @output = Register::RegisterValue
       check
