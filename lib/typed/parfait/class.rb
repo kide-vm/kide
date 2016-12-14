@@ -44,14 +44,6 @@ module Parfait
       "Class(#{name})"
     end
 
-    def create_instance_method  method_name , arguments
-      raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
-      clazz = instance_type().object_class()
-      raise "??? #{method_name}" unless clazz
-      #puts "Self: #{self.class} clazz: #{clazz.name}"
-      add_instance_method TypedMethod.new( clazz , method_name , arguments )
-    end
-
     # this needs to be done during booting as we can't have all the classes and superclassses
     # instantiated. By that logic it should maybe be part of vm rather.
     # On the other hand vague plans to load the hierachy from sof exist, so for now...

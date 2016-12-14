@@ -15,22 +15,23 @@
 # - binary:  The binary (jumpable) code that the instructions get assembled into
 # - arguments: A type object describing the arguments (name+types) to be passed
 # - locals:  A type object describing the local variables that the method has
-# - for_class:  The class the Method is for (TODO, should be Type)
+# - for_type:  The Type the Method is for
 
 
 module Parfait
 
   class TypedMethod < Object
 
-    attributes [:name , :source , :instructions , :binary ,:arguments , :for_class, :locals ]
+    attributes [:name , :source , :instructions , :binary ,:arguments , :for_type, :locals ]
     # not part of the parfait model, hence ruby accessor
     attr_accessor :source
 
-    def initialize( clazz , name , arguments )
+    def initialize( type , name , arguments )
       super()
-      raise "No class #{name}" unless clazz
+      raise "No class #{name}" unless type
+      raise "For type, not class #{type}" unless type.is_a?(Type)
       raise "Wrong argument type, expect Type not #{arguments.class}" unless arguments.is_a? Type
-      self.for_class = clazz
+      self.for_type = type
       self.name = name
       self.binary = BinaryCode.new 0
       self.arguments = arguments

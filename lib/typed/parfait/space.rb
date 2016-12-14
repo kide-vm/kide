@@ -53,17 +53,17 @@ module Parfait
 
     def get_main
       kernel = get_class_by_name :Space
-      kernel.get_instance_method :main
+      kernel.instance_type.get_instance_method :main
     end
 
     def get_init
       kernel = get_class_by_name :Kernel
-      kernel.get_instance_method :__init__
+      kernel.instance_type.get_instance_method :__init__
     end
 
     # get a class by name (symbol)
     # return nili if no such class. Use bang version if create should be implicit
-    def get_class_by_name name
+    def get_class_by_name( name )
       raise "get_class_by_name #{name}.#{name.class}" unless name.is_a?(Symbol)
       c = self.classes[name]
       #puts "MISS, no class #{name} #{name.class}" unless c # " #{self.classes}"

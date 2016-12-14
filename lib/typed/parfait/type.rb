@@ -34,9 +34,7 @@
 
 module Parfait
   class Type < Object
-    attribute :object_class
-    include Behaviour
-
+    attributes [:object_class , :instance_methods]
     include Indexed
     self.offset(3)
 
@@ -65,6 +63,72 @@ module Parfait
       hash.each do |name , type|
         private_add_instance_variable(name , type) unless name == :type
       end if hash
+      self.instance_methods = List.new
+    end
+
+    def methods
+      m = self.instance_methods
+      return m if m
+      self.instance_methods = List.new
+    end
+
+    def method_names
+      names = List.new
+      self.methods.each do |method|
+        names.push method.name
+      end
+      names
+    end
+
+    def create_instance_method( method_name , arguments )
+      raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
+      #puts "Self: #{self.class} clazz: #{clazz.name}"
+      add_instance_method TypedMethod.new( self , method_name , arguments )
+    end
+
+    def add_instance_method( method )
+      raise "not a method #{method.class} #{method.inspect}" unless method.is_a? TypedMethod
+      raise "syserr #{method.name.class}" unless method.name.is_a? Symbol
+      if self.is_a?(Class) and (method.for_type != self)
+        raise "Adding to wrong class, should be #{method.for_class}"
+      end
+      found = get_instance_method( method.name )
+      if found
+        self.methods.delete(found)
+      end
+      self.methods.push method
+      #puts "#{self.name} add #{method.name}"
+      method
+    end
+
+    def remove_instance_method method_name
+      found = get_instance_method( method_name )
+      if found
+        self.methods.delete(found)
+      else
+        raise "No such method #{method_name} in #{self.name}"
+      end
+      return true
+    end
+
+    def get_instance_method fname
+      raise "get_instance_method #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
+      #if we had a hash this would be easier.  Detect or find would help too
+      self.methods.each do |m|
+        return m if(m.name == fname )
+      end
+      nil
+    end
+
+    # get the method and if not found, try superclasses. raise error if not found
+    def resolve_method m_name
+      raise "resolve_method #{m_name}.#{m_name.class}" unless m_name.is_a?(Symbol)
+      method = get_instance_method(m_name)
+      return method if method
+      if( self.super_class_name )
+        method = self.super_class.resolve_method(m_name)
+      end
+      method
     end
 
     def == other
