@@ -17,7 +17,6 @@ module Arm
       @attributes[:opcode] = attributes[:opcode]
       @operand = 0
 
-      @immediate = 0
       @rn = :r0 # register zero = zero bit pattern
       @extra = nil
     end
@@ -34,50 +33,16 @@ module Arm
       @extra ? 8 : 4
     end
 
+    # don't overwrite instance variables, to make assembly repeatable
     def assemble(io)
-      # don't overwrite instance variables, to make assembly repeatable
       rn = @rn
       operand = @operand
-      immediate = @immediate
       right = @from
-      if (right.is_a?(Numeric))
-        if (right.fits_u8?)
-          # no shifting needed
-          operand = right
-          immediate = 1
-        elsif (op_with_rot = calculate_u8_with_rr(right))
-          operand = op_with_rot
-          immediate = 1
-        else
-            # unfortunately i was wrong in thinking the pi is armv7. The good news is the code
-            # below implements the movw instruction (armv7 for moving a word) and works
-            #armv7 raise "Too big #{right} " if (right >> 16) > 0
-            #armv7 operand = (right & 0xFFF)
-            #armv7 immediate = 1
-            #armv7 rn = (right >> 12)
-            # a little STRANGE, that the armv7 movw (move a 2 byte word) is an old test opcode,
-            # but there it is
-            #armv7 @attributes[:opcode] = :tst
-          raise "No negatives implemented #{right} " if right < 0
-          # and so it continues: when we notice that the const doesn't fit, first time we raise an
-          # error,but set the extra flag, to say the instruction is now 8 bytes
-          # then on subsequent assemblies we can assemble
-          unless @extra
-            @extra = 1
-            #puts "RELINK M at #{self.position.to_s(16)}"
-            raise ::Register::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
-          end
-          # now we can do the actual breaking of instruction, by splitting the operand
-          first = right & 0xFFFFFF00
-          operand = calculate_u8_with_rr( first )
-          raise "no fit for #{right}" unless operand
-          immediate = 1
-          @extra = ArmMachine.add( to , to , (right & 0xFF) )
-          #TODO: this is still a hack, as it does not encode all possible values.
-          # The way it _should_ be done
-          # is to check that the first part is doabe with u8_with_rr AND leaves a u8 remainder
-        end
-      elsif( right.is_a? Register::RegisterValue)
+      immediate = 1
+      case right
+      when Numeric
+        operand = numeric_operand(right)
+      when Register::RegisterValue
         operand = reg_code(right)
         immediate = 0                # ie not immediate is register
       else
@@ -95,12 +60,25 @@ module Arm
       val |= shift(instuction_class ,   12 + 4 + 4  + 1 + 4 + 1)
       val |= shift(cond_bit_code ,      12 + 4 + 4  + 1 + 4 + 1 + 2)
       io.write_uint32 val
-      # by now we have the extra add so assemble that
-      if(@extra)
-        @extra.assemble(io)
-        #puts "Assemble extra at #{val.to_s(16)}"
-      end
+      # by now we have the extra add so assemble that      
+      @extra.assemble(io) if(@extra) #puts "Assemble extra at #{val.to_s(16)}"
     end
 
+    def numeric_operand(right)
+      return right if (right.fits_u8?)
+      if (op_with_rot = calculate_u8_with_rr(right))
+        return op_with_rot
+      end
+      raise "No negatives implemented #{right} " if right < 0
+      unless @extra
+        @extra = 1      # puts "RELINK M at #{self.position.to_s(16)}"
+        raise ::Register::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
+      end
+      # now we can do the actual breaking of instruction, by splitting the operand
+      operand = calculate_u8_with_rr( right & 0xFFFFFF00 )
+      raise "no fit for #{right}" unless operand
+      @extra = ArmMachine.add( to , to , (right & 0xFF) )
+      operand
+    end
   end
 end
