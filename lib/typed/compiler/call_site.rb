@@ -9,14 +9,14 @@ module Typed
       new_message = Register.resolve_to_register(:new_message)
       add_code Register.get_slot(statement, :message , :next_message , new_message )
       me = get_me( statement )
-      clazz = get_clazz(me)
+      type = get_my_type(me)
       # move our receiver there
       add_code Register.set_slot( statement , me , :new_message , :receiver)
 
       set_message_details(statement , statement.arguments)
       set_arguments(statement.arguments)
       ret = use_reg( :Integer ) #TODO real return type
-      do_call(clazz , statement)
+      do_call(type , statement)
       # the effect of the method is that the NewMessage Return slot will be filled, return it
       # but move it into a register too
       add_code Register.get_slot(statement, :new_message , :return_value , ret )
@@ -29,27 +29,34 @@ module Typed
       if statement.receiver
         me = process( statement.receiver  )
       else
-        me = use_reg @method.for_class.name
+        me = use_reg @method.for_type
         add_code Register.get_slot(statement, :message , :receiver , me )
       end
       me
     end
-    def get_clazz( me )
+    def get_my_type( me )
       if(me.type == :MetaClass)
-        clazz = me.value.meta
-      else
-        # now we have to resolve the method name (+ receiver) into a callable method
-        clazz =  Register.machine.space.get_class_by_name(me.type)
+        raise "Remove this test #{me.class}"
       end
-      clazz
+        # now we have to resolve the method name (+ receiver) into a callable method
+      case me.type
+      when Parfait::Type
+        type = me.type
+      when Symbol
+        type =  Register.machine.space.get_class_by_name(me.type).instance_type
+      else
+        raise me.inspect
+      end
+      raise "Not type #{type}" unless type.is_a? Parfait::Type
+      type
     end
-    def do_call clazz , statement
+    def do_call( type , statement )
       name = statement.name
-      #puts "clazz #{clazz.name}"
-      raise "No such class" unless clazz
-      method = clazz.resolve_method(name)
+      #puts "type #{type.inpect}"
+      raise "No such class" unless type
+      method = type.resolve_method(name)
       #puts Register.machine.space.get_class_by_name(:Integer).method_names.to_a
-      raise "Method not implemented #{clazz.name}.#{name}" unless method
+      raise "Method not implemented #{type.inspect}.#{name}" unless method
       Register.issue_call( self , method )
     end
     def set_message_details name_s , arguments

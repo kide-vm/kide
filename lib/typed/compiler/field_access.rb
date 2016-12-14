@@ -5,11 +5,15 @@ module Typed
 #      receiver_ast , field_ast = *statement
       receiver = process(statement.receiver)
 
-      clazz = Register.machine.space.get_class_by_name receiver.type
+      type = receiver.type
+      if(type.is_a?(Symbol))
+        type = Parfait::Space.object_space.get_class_by_name(type).instance_type
+      end
       field_name = statement.field.name
-      index = clazz.instance_type.variable_index(field_name)
-      raise "no such field:#{field_name} for class #{clazz.name}:#{clazz.instance_type.inspect}" unless index
-      value = use_reg(clazz.instance_type.type_at(index))
+
+      index = type.variable_index(field_name)
+      raise "no such field:#{field_name} for class #{type.inspect}" unless index
+      value = use_reg(type.type_at(index))
 
       add_code Register.get_slot(statement , receiver , index, value)
 

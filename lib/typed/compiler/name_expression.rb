@@ -34,7 +34,7 @@ module Typed
       end
 
       def handle_special_self(statement)
-        ret = use_reg @clazz.name
+        ret = use_reg @type
         add_code Register.get_slot(statement , :message , :receiver , ret )
         return ret
       end

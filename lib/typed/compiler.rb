@@ -58,10 +58,10 @@ module Typed
       @regs = []
       return unless method
       @method = method
-      @clazz = method.for_class
+      @type = method.for_type
       @current = method.instructions
     end
-    attr_reader :clazz , :method
+    attr_reader :type , :method
 
 
     # Dispatches `code` according to it's class name, for class NameExpression
@@ -94,20 +94,21 @@ module Typed
       raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
       clazz = Register.machine.space.get_class_by_name class_name
       raise "No such class #{class_name}" unless clazz
-      create_method_for( clazz , method_name , args)
+      create_method_for( clazz.instance_type , method_name , args)
     end
 
-    # create a method for the given class ( Parfait class object)
+    # create a method for the given type ( Parfait type object)
     # method_name is a Symbol
-    # args a ruby array
-    # the created method is set as the current and the given class too
+    # args a hash that will be converted to a type
+    # the created method is set as the current and the given type too
     # return the compiler (for chaining)
-    def create_method_for clazz , method_name , args
-      @clazz = clazz
+    def create_method_for( type , method_name , args )
+      @type = type
+      raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
       raise "Args must be Hash #{args}" unless args.is_a?(Hash)
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
-      arguments = Parfait::Type.new_for_hash( clazz , args )
-      @method = clazz.create_instance_method( method_name , arguments)
+      arguments = Parfait::Type.new_for_hash( type.object_class , args )
+      @method = type.create_instance_method( method_name , arguments)
       self
     end
 
@@ -116,7 +117,7 @@ module Typed
     # return self for chaining
     def init_method
       source = "_init_method"
-      name = "#{method.for_class.name}.#{method.name}"
+      name = "#{method.for_type.name}.#{method.name}"
       @method.instructions = Register::Label.new(source, name)
       @current = enter = method.instructions
       add_code Register::Label.new( source, "return #{name}")
@@ -144,6 +145,7 @@ module Typed
 
     # require a (temporary) register. code must give this back with release_reg
     def use_reg type , value = nil
+      raise "Not type #{type.inspect}" unless type.is_a?(Symbol) or type.is_a?(Parfait::Type)
       if @regs.empty?
         reg = Register.tmp_reg(type , value)
       else
