@@ -97,15 +97,15 @@ module Arm
       val = shift(val , 0 ) # for the test
       val |= shift(op , 0)
       val |= shift(reg_code(@result) ,        12 )
-      val |= shift(reg_code(rn) ,        12+4) #16
-      val |= shift(@is_load ,        12+4  +4)
-      val |= shift(w ,              12+4  +4+1)
-      val |= shift(byte_access ,    12+4  +4+1+1)
-      val |= shift(add_offset ,    12+4  +4+1+1+1)
-      val |= shift(@pre_post_index, 12+4  +4+1+1+1+1)#24
-      val |= shift(i ,              12+4  +4+1+1+1+1  +1)
-      val |= shift(instuction_class,12+4  +4+1+1+1+1  +1+1)
-      val |= shift(cond_bit_code ,  12+4  +4+1+1+1+1  +1+1+2)
+      val |= shift(reg_code(rn) ,        12 + 4) #16
+      val |= shift(@is_load ,        12 + 4  + 4)
+      val |= shift(w ,              12 + 4  + 4 + 1)
+      val |= shift(byte_access ,    12 + 4  + 4 + 1 + 1)
+      val |= shift(add_offset ,    12 + 4  + 4 + 1 + 1 + 1)
+      val |= shift(@pre_post_index, 12 + 4  + 4 + 1 + 1 + 1 + 1)#24
+      val |= shift(i ,              12 + 4  + 4 + 1 + 1 + 1 + 1  + 1)
+      val |= shift(instuction_class,12 + 4  + 4 + 1 + 1 + 1 + 1  + 1 + 1)
+      val |= shift(cond_bit_code ,  12 + 4  + 4 + 1 + 1 + 1 + 1  + 1 + 1 + 2)
       io.write_uint32 val
     end
 

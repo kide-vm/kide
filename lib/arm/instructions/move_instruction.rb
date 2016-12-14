@@ -88,12 +88,12 @@ module Arm
       val = shift(operand , 0)
       val |= shift(op , 0) # any barrel action, is already shifted
       val |= shift(reg_code(@to) ,            12)
-      val |= shift(reg_code(rn) ,            12+4)
-      val |= shift(@attributes[:update_status] , 12+4+4)#20
-      val |= shift(op_bit_code ,        12+4+4  + 1)
-      val |= shift(immediate ,          12+4+4  + 1+4)
-      val |= shift(instuction_class ,   12+4+4  + 1+4+1)
-      val |= shift(cond_bit_code ,      12+4+4  + 1+4+1+2)
+      val |= shift(reg_code(rn) ,            12 + 4)
+      val |= shift(@attributes[:update_status] , 12 + 4 + 4)#20
+      val |= shift(op_bit_code ,        12 + 4 + 4  + 1)
+      val |= shift(immediate ,          12 + 4 + 4  + 1 + 4)
+      val |= shift(instuction_class ,   12 + 4 + 4  + 1 + 4 + 1)
+      val |= shift(cond_bit_code ,      12 + 4 + 4  + 1 + 4 + 1 + 2)
       io.write_uint32 val
       # by now we have the extra add so assemble that
       if(@extra)

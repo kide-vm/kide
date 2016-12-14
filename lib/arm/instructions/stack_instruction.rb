@@ -49,13 +49,13 @@ module Arm
       #assemble of old
       val = operand
       val = val | (reg_code(@rn) <<             16)
-      val = val | (is_pop <<              16+4) #20
-      val = val | (write_base <<          16+4+ 1)
-      val = val | (@attributes[:update_status] <<  16+4+ 1+1)
-      val = val | (up_down <<             16+4+ 1+1+1)
-      val = val | (pre_post_index <<      16+4+ 1+1+1+1)#24
-      val = val | (instuction_class <<    16+4+ 1+1+1+1 +2)
-      val = val | (cond <<                16+4+ 1+1+1+1 +2+2)
+      val = val | (is_pop <<              16 + 4) #20
+      val = val | (write_base <<          16 + 4 + 1)
+      val = val | (@attributes[:update_status] <<  16 + 4 + 1 + 1)
+      val = val | (up_down <<             16 + 4 + 1 + 1 + 1)
+      val = val | (pre_post_index <<      16 + 4 + 1 + 1 + 1 + 1)#24
+      val = val | (instuction_class <<    16 + 4 + 1 + 1 + 1 + 1 + 2)
+      val = val | (cond <<                16 + 4 + 1 + 1 + 1 + 1 + 2 + 2)
       io.write_uint32 val
     end
 
