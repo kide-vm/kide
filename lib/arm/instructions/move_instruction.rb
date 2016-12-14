@@ -35,10 +35,8 @@ module Arm
 
     # don't overwrite instance variables, to make assembly repeatable
     def assemble(io)
-      rn = @rn
-      operand = @operand
-      right = @from
-      immediate = 1
+      rn , operand , right , immediate = @rn ,  @operand ,  @from , 1
+      
       case right
       when Numeric
         operand = numeric_operand(right)
@@ -49,7 +47,6 @@ module Arm
         raise "invalid operand argument #{right.class} , #{self.class}"
       end
       op =  shift_handling
-      instuction_class = 0b00 # OPC_DATA_PROCESSING
       val = shift(operand , 0)
       val |= shift(op , 0) # any barrel action, is already shifted
       val |= shift(reg_code(@to) ,            12)
@@ -60,10 +57,13 @@ module Arm
       val |= shift(instuction_class ,   12 + 4 + 4  + 1 + 4 + 1)
       val |= shift(cond_bit_code ,      12 + 4 + 4  + 1 + 4 + 1 + 2)
       io.write_uint32 val
-      # by now we have the extra add so assemble that      
+      # by now we have the extra add so assemble that
       @extra.assemble(io) if(@extra) #puts "Assemble extra at #{val.to_s(16)}"
     end
 
+    def instuction_class
+      0b00 # OPC_DATA_PROCESSING
+    end
     def numeric_operand(right)
       return right if (right.fits_u8?)
       if (op_with_rot = calculate_u8_with_rr(right))

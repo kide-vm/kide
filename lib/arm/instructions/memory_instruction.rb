@@ -23,10 +23,7 @@ module Arm
 
     def assemble(io)
       # don't overwrite instance variables, to make assembly repeatable
-      rn = @rn
-      operand = @operand
-      add_offset = @add_offset
-      arg = @left
+      rn , operand , add_offset , arg = @rn , @operand , @add_offset , @left
       arg = arg.symbol if( arg.is_a? ::Register::RegisterValue )
       #str / ldr are _serious instructions. With BIG possibilities not half are implemented
       is_reg = arg.is_a?(::Register::RegisterValue)
@@ -58,11 +55,6 @@ module Arm
       #not sure about these 2 constants. They produce the correct output for str r0 , r1
       # but i can't help thinking that that is because they are not used in that instruction and
       # so it doesn't matter. Will see
-      add_offset = 1
-      # TODO to be continued
-      add_offset = 0 if @attributes[:add_offset]
-      w = 0 #W flag
-      byte_access = opcode.to_s[-1] == "b" ? 1 : 0 #B (byte) flag
       instuction_class =  0b01 # OPC_MEMORY_ACCESS
       if (operand.is_a?(Symbol) or operand.is_a?(::Register::RegisterValue))
         val = reg_code(operand)
@@ -82,7 +74,7 @@ module Arm
       val |= shift(reg_code(@result) , 12 )
       val |= shift(reg_code(rn) ,   12 + 4) #16
       val |= shift(@is_load ,       12 + 4  + 4)
-      val |= shift(w ,              12 + 4  + 4 + 1)
+      val |= shift(0 ,              12 + 4  + 4 + 1)
       val |= shift(byte_access ,    12 + 4  + 4 + 1 + 1)
       val |= shift(add_offset ,     12 + 4  + 4 + 1 + 1 + 1)
       val |= shift(@pre_post_index, 12 + 4  + 4 + 1 + 1 + 1 + 1)#24
@@ -92,5 +84,12 @@ module Arm
       io.write_uint32 val
     end
 
+    def add_offset
+      @attributes[:add_offset] ? 0 : 1
+    end
+
+    def byte_access
+      opcode.to_s[-1] == "b" ? 1 : 0 #B (byte) flag
+    end
   end
 end

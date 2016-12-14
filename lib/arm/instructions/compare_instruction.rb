@@ -48,23 +48,26 @@ module Arm
         operand = arg
         immediate = 0
       elsif (arg.is_a?(Arm::Shift))
-        # handle_shift
+        handle_shift
       else
         raise "invalid operand argument #{arg.inspect} , #{inspect}"
       end
-      instuction_class = 0b00 # OPC_DATA_PROCESSING
       val = (operand.is_a?(Symbol) or operand.is_a?(::Register::RegisterValue)) ? reg_code(operand) : operand
       val = 0 if val == nil
       val = shift(val , 0)
       raise inspect unless reg_code(@rd)
-      val |= shift(reg_code(@rd) ,            12)
-      val |= shift(reg_code(rn) ,            12 + 4)
-      val |= shift(@attributes[:update_status] , 12 + 4 + 4)#20
-      val |= shift(op_bit_code ,        12 + 4 + 4  + 1)
+      val |= shift(reg_code(@rd) ,              12)
+      val |= shift(reg_code(rn) ,               12 + 4)
+      val |= shift(@attributes[:update_status], 12 + 4 + 4)#20
+      val |= shift(op_bit_code ,                12 + 4 + 4  + 1)
       val |= shift(immediate ,                  12 + 4 + 4  + 1 + 4)
-      val |= shift(instuction_class ,   12 + 4 + 4  + 1 + 4 + 1)
-      val |= shift(cond_bit_code ,      12 + 4 + 4  + 1 + 4 + 1 + 2)
+      val |= shift(instuction_class ,           12 + 4 + 4  + 1 + 4 + 1)
+      val |= shift(cond_bit_code ,              12 + 4 + 4  + 1 + 4 + 1 + 2)
       io.write_uint32 val
+    end
+
+    def instuction_class
+      0b00 # OPC_DATA_PROCESSING
     end
 
     # Arms special shift abilities are not modelled in the register level
@@ -93,6 +96,7 @@ module Arm
       #   shift_imm = 0
       # end
       # operand = rm_ref | (shift_op << 4) | (shift_imm << 4 +3)
+      raise "No implemented"
     end
     def to_s
       "#{opcode} #{@left} , #{@right} #{super}"

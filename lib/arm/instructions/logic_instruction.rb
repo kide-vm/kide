@@ -32,14 +32,11 @@ module Arm
       else
         raise "invalid operand argument #{right.inspect} , #{inspect}"
       end
-      result = reg_code(@result)
       left_code = reg_code(left)
       op =  shift_handling
-      instuction_class = 0b00 # OPC_DATA_PROCESSING
       if( opcode == :mul )
         operand = reg_code(left) + 0x90
         op = reg_code(right) << 8
-        result = 0
         left_code = reg_code(@result)
       end
       val = shift(operand , 0)
@@ -53,6 +50,14 @@ module Arm
       val |= shift(cond_bit_code ,     12 + 4 + 4  + 1 + 4 + 1 + 2)
       io.write_uint32 val
       assemble_extra
+    end
+
+    def result
+      opcode == :mul ? 0 : reg_code(@result)
+    end
+
+    def instuction_class
+      0b00 # OPC_DATA_PROCESSING
     end
 
     # Arm can't load any large (over 1024) numbers, or larger with fancy shifting,
