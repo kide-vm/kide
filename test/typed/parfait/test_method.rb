@@ -3,7 +3,7 @@ require_relative "../helper"
 class TestMethod < MiniTest::Test
 
   def setup
-    obj = Register.machine.space.get_class_by_name(:Object)
+    obj = Register.machine.space.get_class_by_name(:Object).instance_type
     args = Parfait::Type.new_for_hash( obj , { bar: :Integer , foo: :Type})
     @method = ::Parfait::TypedMethod.new obj , :meth , args
     @method.add_local :local_bar , :Integer
@@ -15,7 +15,7 @@ class TestMethod < MiniTest::Test
   end
 
   def test_class_for
-    assert_equal :Object , @method.for_class.name
+    assert_equal :Object , @method.for_type.object_class.name
   end
 
   def test_arg1

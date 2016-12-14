@@ -19,7 +19,7 @@ class TestSpace < MiniTest::Test
   end
   def test_integer
     int = Parfait::Space.object_space.get_class_by_name :Integer
-    assert_equal 3, int.method_names.get_length
+    assert_equal 3, int.instance_type.method_names.get_length
   end
 
   def test_classes_class
@@ -32,7 +32,7 @@ class TestSpace < MiniTest::Test
   def test_types
     assert  @machine.space.types.is_a? Parfait::Dictionary
   end
-  
+
   def test_classes_type
     classes.each do |name|
       assert_equal Parfait::Type , @machine.space.classes[name].get_type.class
