@@ -22,7 +22,7 @@ module Register
           compiler.add_code Register.get_slot( source , space_reg , message_ind , :message)
           # And store the space as the new self (so the call can move it back as self)
           compiler.add_code Register.set_slot( source, space_reg , :message , :receiver)
-          exit_label = Label.new("_exit_label" , "#{compiler.clazz.name}.#{compiler.method.name}" )
+          exit_label = Label.new("_exit_label" , "#{compiler.type.object_class.name}.#{compiler.method.name}" )
           ret_tmp = compiler.use_reg(:Label)
           compiler.add_code Register::LoadConstant.new(source, exit_label , ret_tmp)
           compiler.add_code Register.set_slot(source, ret_tmp , :message , :return_address)
