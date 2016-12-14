@@ -34,59 +34,50 @@ module Arm
     def assemble(io)
       case @attributes[:opcode]
       when :b, :call
-        arg = @first
-        if arg.is_a?(Register::Label) or arg.is_a?(Parfait::TypedMethod)
-          #relative addressing for jumps/calls
-          # but because of the arm "theoretical" 3- stage pipeline,
-          # we have to subtract 2 words (fetch/decode)
-          if(arg.is_a? Register::Label)
-            diff =  arg.position - self.position - 8
-          else
-            # But, for methods, this happens to be the size of the object header,
-            # so there it balances out, but not blocks
-            # have to use the code, not the mthod object for methods
-            diff = arg.binary.position - self.position
-          end
-          arg = diff
-        end
-        if (arg.is_a?(Numeric))
-          jmp_val = arg >> 2
-          packed = [jmp_val].pack('l')
-          # signed 32-bit, condense to 24-bit
-          # TODO add check that the value fits into 24 bits
-          io << packed[0,3]
-        else
-          raise "else not Attributed arg =\n#{arg.to_s[0..1000]}: #{inspect[0..1000]}"
-        end
-        io.write_uint8 op_bit_code | (COND_CODES[@attributes[:condition_code]] << 4)
+        handle_call(io)
       when :swi
-        arg = @first
-        if (arg.is_a?(Numeric))
-          packed = [arg].pack('L')[0,3]
-          io << packed
-          io.write_uint8 0b1111 | (COND_CODES[@attributes[:condition_code]] << 4)
-        else
-          raise "invalid operand argument expected literal not #{arg} #{inspect}"
-        end
+        handle_swi(io)
       else
         raise "Should not be the case #{inspect}"
       end
     end
 
-    def uses
-      if opcode == :call
-        @first.args.collect {|arg| arg.register }
+    def handle_call(io)
+      case @first
+      when Register::Label
+        # relative addressing for jumps/calls
+        # but because of the arm "theoretical" 3- stage pipeline,
+        # we have to subtract 2 words (fetch/decode)
+        arg =  arg.position - self.position - 8
+      when Parfait::TypedMethod
+        # But, for methods, this happens to be the size of the object header,
+        # so there it balances out, but not blocks
+        # have to use the code, not the mthod object for methods
+        arg = arg.binary.position - self.position
       else
-        []
+        arg = @first
       end
+      write_call(arg, io)
     end
-    def assigns
-      if opcode == :call
-        [RegisterValue.new(RegisterMachine.instance.return_register)]
-      else
-        []
-      end
+
+    def write_call(arg,io)
+      raise "else not Attributed arg =\n#{arg.to_s[0..1000]}: #{inspect[0..1000]}" unless (arg.is_a?(Numeric))
+      jmp_val = arg >> 2
+      packed = [jmp_val].pack('l')
+      # signed 32-bit, condense to 24-bit
+      # TODO add check that the value fits into 24 bits
+      io << packed[0,3]
+      io.write_uint8 op_bit_code | (COND_CODES[@attributes[:condition_code]] << 4)
     end
+
+    def handle_swi(io)
+      arg = @first
+      raise "expected literal not #{arg} #{inspect}" unless (arg.is_a?(Numeric))
+      packed = [arg].pack('L')[0,3]
+      io << packed
+      io.write_uint8 0b1111 | (COND_CODES[@attributes[:condition_code]] << 4)
+    end
+
     def to_s
       "#{opcode} #{@first} #{super}"
     end
