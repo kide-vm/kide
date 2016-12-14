@@ -108,14 +108,5 @@ module Arm
     def to_s
       "#{self.class.name} #{opcode} #{@result} = #{@left} #{@right}  extra=#{@extra}"
     end
-    def uses
-      ret = []
-      ret << @left.register if @left and not @left.is_a? Constant
-      ret << @right.register if @right and not @right.is_a?(Constant)
-      ret
-    end
-    def assigns
-      [@result.register]
-    end
   end
 end

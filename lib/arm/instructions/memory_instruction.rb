@@ -109,13 +109,5 @@ module Arm
       io.write_uint32 val
     end
 
-    def uses
-      ret = [@left.register ]
-      ret << @right.register unless @right.nil?
-      ret
-    end
-    def assigns
-      [@result.register]
-    end
   end
 end

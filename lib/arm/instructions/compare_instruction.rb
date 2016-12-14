@@ -88,14 +88,6 @@ module Arm
       io.write_uint32 val
     end
 
-    def uses
-      ret = [@left.register ]
-      ret << @right.register unless @right.is_a? Constant
-      ret
-    end
-    def assigns
-      []
-    end
     def to_s
       "#{opcode} #{@left} , #{@right} #{super}"
     end

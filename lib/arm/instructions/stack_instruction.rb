@@ -59,18 +59,6 @@ module Arm
       io.write_uint32 val
     end
 
-    def is_push?
-      opcode == :push
-    end
-    def is_pop?
-      !is_push?
-    end
-    def uses
-      is_push? ? regs : []
-    end
-    def assigns
-      is_pop? ? regs : []
-    end
     def regs
       @first
     end

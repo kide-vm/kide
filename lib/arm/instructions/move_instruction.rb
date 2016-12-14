@@ -102,11 +102,5 @@ module Arm
       end
     end
 
-    def uses
-      @from.is_a?(Constant) ? [] : [@from.register]
-    end
-    def assigns
-      [@to.register]
-    end
   end
 end
