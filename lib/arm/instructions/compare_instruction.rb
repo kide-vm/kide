@@ -48,28 +48,7 @@ module Arm
         operand = arg
         immediate = 0
       elsif (arg.is_a?(Arm::Shift))
-        rm_ref = arg.argument
-        immediate = 0
-        shift_op = {'lsl' => 0b000, 'lsr' => 0b010, 'asr' => 0b100,
-                    'ror' => 0b110, 'rrx' => 0b110}[arg.type]
-        if (arg.type == 'ror' and arg.value.nil?)
-          # ror #0 == rrx
-          raise "cannot rotate by zero #{arg} #{inspect}"
-        end
-
-        arg1 = arg.value
-        if (arg1.is_a?(Register::IntegerConstant))
-          if (arg1.value >= 32)
-            raise "cannot shift by more than 31 #{arg1} #{inspect}"
-          end
-          shift_imm = arg1.value
-        elsif (arg1.is_a?(Arm::Register))
-          shift_op val |= 0x1;
-          shift_imm = arg1.number << 1
-        elsif (arg.type == 'rrx')
-          shift_imm = 0
-        end
-        operand = rm_ref | (shift_op << 4) | (shift_imm << 4+3)
+        # handle_shift
       else
         raise "invalid operand argument #{arg.inspect} , #{inspect}"
       end
@@ -88,6 +67,33 @@ module Arm
       io.write_uint32 val
     end
 
+    # Arms special shift abilities are not modelled in the register level
+    # So they would have to be used inoptimisations, that are not implemented
+    # in short unused code
+    def handle_shift
+      # rm_ref = arg.argument
+      # immediate = 0
+      # shift_op = {'lsl' => 0b000, 'lsr' => 0b010, 'asr' => 0b100,
+      #             'ror' => 0b110, 'rrx' => 0b110}[arg.type]
+      # if (arg.type == 'ror' and arg.value.nil?)
+      #   # ror #0 == rrx
+      #   raise "cannot rotate by zero #{arg} #{inspect}"
+      # end
+      #
+      # arg1 = arg.value
+      # if (arg1.is_a?(Register::IntegerConstant))
+      #   if (arg1.value >= 32)
+      #     raise "cannot shift by more than 31 #{arg1} #{inspect}"
+      #   end
+      #   shift_imm = arg1.value
+      # elsif (arg1.is_a?(Arm::Register))
+      #   shift_op val |= 0x1;
+      #   shift_imm = arg1.number << 1
+      # elsif (arg.type == 'rrx')
+      #   shift_imm = 0
+      # end
+      # operand = rm_ref | (shift_op << 4) | (shift_imm << 4+3)
+    end
     def to_s
       "#{opcode} #{@left} , #{@right} #{super}"
     end
