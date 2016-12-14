@@ -1,10 +1,4 @@
 GIT
-  remote: git://github.com/salama/salama-arm.git
-  revision: 866ae7ad961f1a387bfb75526fa170006005b13f
-  specs:
-    salama-arm (0.5.0)
-
-GIT
   remote: git://github.com/salama/salama-object-file.git
   revision: aab01b23108f10063433b1ef9f703ff2927d0b80
   specs:
@@ -112,7 +106,6 @@ DEPENDENCIES
   rb-readline
   rye
   salama!
-  salama-arm!
   salama-object-file!
 
 BUNDLED WITH
