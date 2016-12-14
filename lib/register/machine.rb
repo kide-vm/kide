@@ -22,7 +22,6 @@ module Register
     attr_reader    :constants
     attr_reader :space , :class_mappings , :init , :objects , :booted
 
-
     # idea being that later method missing could catch translate_xxx and translate to target xxx
     # now we just instantiate ArmTranslater and pass instructions
     def translate_arm

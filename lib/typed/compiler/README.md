@@ -24,7 +24,7 @@ The compiler has a method for each class of typed tree, named along on_xxx with 
 #### Compiler holds scope
 
 The Compiler instance can hold arbitrary scope needed during the compilation.
-A class statement sets the current @clazz scope , a method definition the @method.
+A class statement sets the current @type scope , a method definition the @method.
 If either are not set when needed compile errors will follow. So easy, so nice.
 
 All code is encoded as a stream of Instructions in the MethodSource.
