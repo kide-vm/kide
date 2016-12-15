@@ -23,6 +23,14 @@ module Arm
       val << by
     end
 
+    def condition_code
+      shift(cond_bit_code , 28 )
+    end
+
+    def instruction_code
+      shift(instuction_class ,   26)
+    end
+
     def byte_length
       4
     end

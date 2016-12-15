@@ -46,8 +46,8 @@ module Arm
       val |= shift(@attributes[:update_status] , 12 + 4 + 4)#20
       val |= shift(op_bit_code ,       12 + 4 + 4  + 1)
       val |= shift(immediate ,         12 + 4 + 4  + 1 + 4)
-      val |= shift(instuction_class ,  12 + 4 + 4  + 1 + 4 + 1)
-      val |= shift(cond_bit_code ,     12 + 4 + 4  + 1 + 4 + 1 + 2)
+      val |= instruction_code
+      val |= condition_code
       io.write_uint32 val
       assemble_extra
     end

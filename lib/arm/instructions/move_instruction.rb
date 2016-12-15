@@ -36,7 +36,7 @@ module Arm
     # don't overwrite instance variables, to make assembly repeatable
     def assemble(io)
       rn , operand , right , immediate = @rn ,  @operand ,  @from , 1
-      
+
       case right
       when Numeric
         operand = numeric_operand(right)
@@ -54,8 +54,8 @@ module Arm
       val |= shift(@attributes[:update_status] , 12 + 4 + 4)#20
       val |= shift(op_bit_code ,        12 + 4 + 4  + 1)
       val |= shift(immediate ,          12 + 4 + 4  + 1 + 4)
-      val |= shift(instuction_class ,   12 + 4 + 4  + 1 + 4 + 1)
-      val |= shift(cond_bit_code ,      12 + 4 + 4  + 1 + 4 + 1 + 2)
+      val |= instruction_code
+      val |= condition_code
       io.write_uint32 val
       # by now we have the extra add so assemble that
       @extra.assemble(io) if(@extra) #puts "Assemble extra at #{val.to_s(16)}"

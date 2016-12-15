@@ -55,7 +55,6 @@ module Arm
       #not sure about these 2 constants. They produce the correct output for str r0 , r1
       # but i can't help thinking that that is because they are not used in that instruction and
       # so it doesn't matter. Will see
-      instuction_class =  0b01 # OPC_MEMORY_ACCESS
       if (operand.is_a?(Symbol) or operand.is_a?(::Register::RegisterValue))
         val = reg_code(operand)
         @pre_post_index = 0
@@ -79,11 +78,14 @@ module Arm
       val |= shift(add_offset ,     12 + 4  + 4 + 1 + 1 + 1)
       val |= shift(@pre_post_index, 12 + 4  + 4 + 1 + 1 + 1 + 1)#24
       val |= shift(i ,              12 + 4  + 4 + 1 + 1 + 1 + 1  + 1)
-      val |= shift(instuction_class,12 + 4  + 4 + 1 + 1 + 1 + 1  + 1 + 1)
-      val |= shift(cond_bit_code ,  12 + 4  + 4 + 1 + 1 + 1 + 1  + 1 + 1 + 2)
+      val |= instruction_code
+      val |= condition_code
       io.write_uint32 val
     end
 
+    def instuction_class
+      0b01 # OPC_MEMORY_ACCESS
+    end
     def add_offset
       @attributes[:add_offset] ? 0 : 1
     end

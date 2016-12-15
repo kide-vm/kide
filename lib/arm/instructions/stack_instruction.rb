@@ -30,7 +30,7 @@ module Arm
       val = val | (@attributes[:update_status] <<  16 + 4 + 1 + 1)
       val = val | (up_down <<             16 + 4 + 1 + 1 + 1)
       val = val | (pre_post_index <<      16 + 4 + 1 + 1 + 1 + 1)#24
-      val = val | (instuction_class <<    16 + 4 + 1 + 1 + 1 + 1 + 2)
+      val = val | instruction_code
       val = val | (cond <<                16 + 4 + 1 + 1 + 1 + 1 + 2 + 2)
       io.write_uint32 val
     end
