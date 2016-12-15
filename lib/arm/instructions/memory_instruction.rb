@@ -21,37 +21,28 @@ module Arm
       @is_load = opcode.to_s[0] == "l" ? 1 : 0 #L (load) flag
     end
 
+    #str / ldr are _serious instructions. With BIG possibilities not half are implemented
+    # don't overwrite instance variables, to make assembly repeatable
+    #TODO better test, this operand integer (register) does not work.
     def assemble(io)
-      # don't overwrite instance variables, to make assembly repeatable
       rn , operand , add_offset , arg = @rn , @operand , @add_offset , @left
       arg = arg.symbol if( arg.is_a? ::Register::RegisterValue )
-      #str / ldr are _serious instructions. With BIG possibilities not half are implemented
       is_reg = arg.is_a?(::Register::RegisterValue)
       if( arg.is_a?(Symbol) and not is_reg)
         is_reg = (arg.to_s[0] == "r")
       end
-      if (is_reg ) #symbol is register
-        rn = arg
-        if @right
-          operand = @right
-          #TODO better test, this operand integer (register) does not work. but sleep first
-          operand = operand.symbol if operand.is_a? ::Register::RegisterValue
-          unless( operand.is_a? Symbol)         #TODO test/check/understand
-            add_offset = (operand < 0) ? 0 : 1
-            operand *= -1 if (operand < 0)
-            raise "offset too large (max 4095) #{arg} #{inspect}" if (@operand.abs > 4095)
-          end
+      raise "invalid operand argument #{arg.inspect} #{inspect}" unless (is_reg )
+      rn = arg
+      if @right
+        operand = @right
+        operand = operand.symbol if operand.is_a? ::Register::RegisterValue
+        unless( operand.is_a? Symbol)         #TODO test/check/understand
+          add_offset = (operand < 0) ? 0 : 1
+          operand *= -1 if (operand < 0)
+          raise "offset too large (max 4095) #{arg} #{inspect}" if (@operand.abs > 4095)
         end
-      elsif (arg.is_a?(Parfait::Object) or arg.is_a? Symbol ) #use pc relative
-        rn = :pc
-        operand = arg.position - self.position  - 8 #stringtable is after code
-        add_offset = 1
-        if (operand.abs > 4095)
-          raise "reference offset too large/small (4095<#{operand}) #{arg} #{inspect}"
-        end
-      else
-        raise "invalid operand argument #{arg.inspect} #{inspect}"
       end
+
       #not sure about these 2 constants. They produce the correct output for str r0 , r1
       # but i can't help thinking that that is because they are not used in that instruction and
       # so it doesn't matter. Will see
