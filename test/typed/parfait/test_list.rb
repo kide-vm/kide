@@ -137,6 +137,15 @@ class TestList < MiniTest::Test
     end
     assert_equal 2 , counter
   end
+  def test_find
+    @list.set(1,1)
+    @list.set(2,2)
+    assert_equal 2, @list.find{|i| i == 2}
+  end
+  def test_not_find
+    @list.set(1,1)
+    assert_nil @list.find{|i| i == 3}
+  end
   def test_delete_at
     test_many_get
     assert @list.delete_at 2

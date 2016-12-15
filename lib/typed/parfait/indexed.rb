@@ -133,6 +133,16 @@ module Parfait
       self
     end
 
+    def find
+      index = 1
+      while index <= self.get_length
+        item = get(index)
+        return item if yield item
+        index = index + 1
+      end
+      return nil
+    end
+
     def set_length  len
       was = self.get_length
       return if was == len
