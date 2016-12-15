@@ -20,16 +20,11 @@ module Arm
       rn , operand , immediate= @rn ,  @operand , 1
 
       arg = @right
-      if arg.is_a?(Parfait::Object)
-        # do pc relative addressing with the difference to the instuction
-        # 8 is for the funny pipeline adjustment (ie oc pointing to fetch and not execute)
-        arg =  arg.position - self.position - 8
-        rn = :pc
-      end
       operand = Register::RegisterValue.new( arg , :Integer) if( arg.is_a? Symbol )
       case operand
       when Numeric
-        operand = handle_numeric(arg)
+        operand = arg
+        raise "numeric literal operand to large #{arg.inspect}" unless (arg.fits_u8?)
       when Symbol , ::Register::RegisterValue
         immediate = 0
       when Arm::Shift
@@ -49,17 +44,6 @@ module Arm
       val |= instruction_code
       val |= condition_code
       io.write_uint32 val
-    end
-
-    def handle_numeric(arg)
-      if (arg.fits_u8?) # no shifting needed
-        return arg
-      elsif (op_with_rot = calculate_u8_with_rr(arg))
-        #operand = op_with_rot
-        raise "hmm"
-      else
-        raise "cannot fit numeric literal argument in operand #{arg.inspect}"
-      end
     end
 
     def instuction_class
