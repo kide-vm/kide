@@ -134,11 +134,8 @@ module Register
         index = get_register(@instruction.index)
       end
       if object.is_a?(Symbol)
-        if( index == 2 )
-          value = object.to_s.length
-        else
-          raise "Unsupported action, must convert symbol to word:#{object}"
-        end
+        raise "Must convert symbol to word:#{object}" unless( index == 2 )
+        value = object.to_s.length
       else
         value = object.get_internal_word( index )
       end
@@ -167,11 +164,8 @@ module Register
       else
         index = get_register(@instruction.index)
       end
-      if object.is_a?(Symbol)
-        raise "Unsupported action, must convert symbol to word:#{object}"
-      else
-        value = object.get_char( index )
-      end
+      raise "Unsupported action, must convert symbol to word:#{object}" if object.is_a?(Symbol)
+      value = object.get_char( index )
       #value = value.object_id unless value.is_a? Fixnum
       set_register( @instruction.register , value )
       true
@@ -185,7 +179,7 @@ module Register
       else
         index = get_register(@instruction.index)
       end
-      object.set_internal_byte( index , value )
+      object.set_char( index , value )
       trigger(:object_changed, @instruction.array , index / 4 )
       true
     end

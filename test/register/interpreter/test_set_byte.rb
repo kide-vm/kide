@@ -1,6 +1,6 @@
 require_relative "helper"
 
-class TestInterpretWord < MiniTest::Test
+class TestInterpretGetByte < MiniTest::Test
   include Ticker
 
   def setup
