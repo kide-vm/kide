@@ -8,7 +8,7 @@
 # TODO how this idea works with Numeric ?
 
 module Parfait
-  class Integer < Value
+  class Integer
 
     # :integer?, :odd?, :even?, :upto, :downto, :times, :succ, :next, :pred, :chr, :ord, :to_i, :to_int, :floor,
     # :ceil, :truncate, :round, :gcd, :lcm, :gcdlcm, :numerator, :denominator, :to_r, :rationalize,

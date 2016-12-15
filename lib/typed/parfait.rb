@@ -2,7 +2,6 @@
 module Parfait
 end
 
-require_relative "parfait/value"
 require_relative "parfait/integer"
 require_relative "parfait/object"
 require_relative "parfait/behaviour"

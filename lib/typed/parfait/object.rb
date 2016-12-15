@@ -15,7 +15,7 @@
 module Parfait
   TYPE_INDEX  = 1
 
-  class Object < Value
+  class Object 
 
     # we define new, so we can do memory layout also at compile time.
     # At compile time we fake memory by using a global array for pages
@@ -46,7 +46,7 @@ module Parfait
     def get_internal_word(index)
       @memory[index]
     end
-    
+
     # 1 -based index
     def set_internal_word(index , value)
       raise "failed init for #{self.class}" unless @memory
