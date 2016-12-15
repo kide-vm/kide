@@ -37,36 +37,34 @@ module Arm
       ArmMachine.mov( code.to , code.from)
     end
 
-    def translate_GetSlot code
+    def translate_GetSlot( code )
+      ArmMachine.ldr( *slot_args_for(code) )
+    end
+
+    def translate_SetSlot( code )
+      ArmMachine.str( *slot_args_for(code) )
+    end
+
+    def slot_args_for( code )
       if(code.index.is_a? Numeric)
-        ArmMachine.ldr( code.register ,  code.array , arm_index(code) )
+        [ code.register ,  code.array  , arm_index(code) ]
       else
-        ArmMachine.ldr( code.register ,  code.array , code.index , :shift_lsl => 2 )
+        [ code.register ,  code.array  , code.index , :shift_lsl => 2]
       end
     end
 
-    def translate_SetSlot code
-      if(code.index.is_a? Numeric)
-        ArmMachine.str( code.register ,  code.array , arm_index(code) )
-      else
-        ArmMachine.str( code.register ,  code.array , code.index , :shift_lsl => 2 )
-      end
+    def byte_args_for( code )
+        args = slot_args_for( code )
+        args.pop if(code.index.is_a? Numeric)
+        args
     end
 
     def translate_GetByte code
-      if(code.index.is_a? Numeric)
-        ArmMachine.ldrb( code.register ,  code.array , arm_index(code) )
-      else
-        ArmMachine.ldrb( code.register ,  code.array , code.index )
-      end
+      ArmMachine.ldrb( *byte_args_for(code) )
     end
 
     def translate_SetByte code
-      if(code.index.is_a? Numeric)
-        ArmMachine.strb( code.register ,  code.array , arm_index(code) )
-      else
-        ArmMachine.strb( code.register ,  code.array , code.index )
-      end
+      ArmMachine.strb( *byte_args_for(code) )
     end
 
     def translate_FunctionCall code
