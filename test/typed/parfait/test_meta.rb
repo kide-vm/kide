@@ -13,20 +13,19 @@ class TestMeta < MiniTest::Test
   end
 
   def test_meta
-    assert @try
+    assert @try.name
   end
+
   def test_meta_object
     assert @space.get_class_by_name(:Object).meta
   end
 
-  def test_new_methods
+  def test_no_methods
     assert_equal 0 , @try.method_names.get_length
   end
 
-  def test_create_method
-    #FIXME args = Parfait::Type.new_for_hash( @try , { bar: :Integer})
-    # @try.create_instance_method :bar, args
-    # assert_equal ":bar" , @try.method_names.inspect
+  def test_meta_methods
+    assert @try.methods
   end
 
   def test_add_method

@@ -37,9 +37,6 @@ module Parfait
     def get_instance_method fname
       self.object.get_type.get_instance_method fname
     end
-    def resolve_method m_name
-      self.object.get_type.resolve_method m_name
-    end
 
     # the modifying part creates a new type
     # forwards the action and replaces the type
@@ -56,13 +53,6 @@ module Parfait
       self.object.set_type type
       ret
     end
-
-    def create_instance_method  method_name , arguments
-      raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
-      log.debug "Add_method: #{method_name} clazz: #{self.name}"
-      add_instance_method TypedMethod.new( self , method_name , arguments )
-    end
-
 
   end
 end
