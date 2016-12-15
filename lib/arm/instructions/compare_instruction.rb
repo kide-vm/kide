@@ -10,7 +10,6 @@ module Arm
       @right = right.is_a?(Fixnum) ? IntegerConstant.new(right) : right
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
-      @immediate = 0
       @attributes[:update_status] = 1
       @rn = left
       @rd = :r0
@@ -18,9 +17,7 @@ module Arm
 
     def assemble(io)
       # don't overwrite instance variables, to make assembly repeatable
-      rn = @rn
-      operand = @operand
-      immediate = @immediate
+      rn , operand , immediate= @rn ,  @operand , 1
 
       arg = @right
       if arg.is_a?(Parfait::Object)
@@ -29,25 +26,13 @@ module Arm
         arg =  arg.position - self.position - 8
         rn = :pc
       end
-      if( arg.is_a? Symbol )
-        arg = Register::RegisterValue.new( arg , :Integer)
-      end
-      if (arg.is_a?(Numeric))
-        if (arg.fits_u8?)
-          # no shifting needed
-          operand = arg
-          immediate = 1
-        elsif (op_with_rot = calculate_u8_with_rr(arg))
-          operand = op_with_rot
-          immediate = 1
-          raise "hmm"
-        else
-          raise "cannot fit numeric literal argument in operand #{arg.inspect}"
-        end
-      elsif (arg.is_a?(Symbol) or arg.is_a?(::Register::RegisterValue))
-        operand = arg
+      operand = Register::RegisterValue.new( arg , :Integer) if( arg.is_a? Symbol )
+      case operand
+      when Numeric
+        operand = handle_numeric(arg)
+      when Symbol , ::Register::RegisterValue
         immediate = 0
-      elsif (arg.is_a?(Arm::Shift))
+      when Arm::Shift
         handle_shift
       else
         raise "invalid operand argument #{arg.inspect} , #{inspect}"
@@ -61,9 +46,20 @@ module Arm
       val |= shift(@attributes[:update_status], 12 + 4 + 4)#20
       val |= shift(op_bit_code ,                12 + 4 + 4  + 1)
       val |= shift(immediate ,                  12 + 4 + 4  + 1 + 4)
-      val |= shift(instuction_class ,           12 + 4 + 4  + 1 + 4 + 1)
-      val |= shift(cond_bit_code ,              12 + 4 + 4  + 1 + 4 + 1 + 2)
+      val |= instruction_code
+      val |= condition_code
       io.write_uint32 val
+    end
+
+    def handle_numeric(arg)
+      if (arg.fits_u8?) # no shifting needed
+        return arg
+      elsif (op_with_rot = calculate_u8_with_rr(arg))
+        #operand = op_with_rot
+        raise "hmm"
+      else
+        raise "cannot fit numeric literal argument in operand #{arg.inspect}"
+      end
     end
 
     def instuction_class
