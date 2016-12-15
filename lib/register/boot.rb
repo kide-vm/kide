@@ -132,7 +132,6 @@ module Register
           :TypedMethod => {:name => :Word, :source => :Object, :instructions => :Object, :binary => :Object,
                       :arguments => :Type , :for_type => :Type, :locals => :Type } ,
           :Value => {},
-          :Variable => {:value_type => :Class, :name => :Word , :value => :Object}
         }
     end
 
