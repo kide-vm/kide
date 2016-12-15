@@ -1,6 +1,6 @@
 require_relative "helper"
 
-class TestWord < MiniTest::Test
+class TestInterpretWord < MiniTest::Test
   include Ticker
 
   def setup
@@ -17,7 +17,6 @@ HERE
                                   s(:name, :get_internal_byte),
                                   s(:arguments, s(:int, 1)),
                                   s(:receiver, s(:string, "Hello"))))))))
-
     super
   end
 
