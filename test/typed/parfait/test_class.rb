@@ -24,4 +24,13 @@ class TestClass < MiniTest::Test
   def test_remove_nothere
     assert  !@try.remove_instance_method(:foo)
   end
+  def test_resolve
+    assert_nil @try.resolve_method :foo
+  end
+  def test_remove_method
+    assert_equal false , @try.remove_instance_method( :foo)
+  end
+  def test_add_method
+    assert_raises{ @try.add_instance_method(nil)}
+  end
 end
