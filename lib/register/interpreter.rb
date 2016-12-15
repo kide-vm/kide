@@ -170,7 +170,7 @@ module Register
       if object.is_a?(Symbol)
         raise "Unsupported action, must convert symbol to word:#{object}"
       else
-        value = object.get_internal_byte( index )
+        value = object.get_char( index )
       end
       #value = value.object_id unless value.is_a? Fixnum
       set_register( @instruction.register , value )
