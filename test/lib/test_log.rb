@@ -31,4 +31,9 @@ class LoggerTest < MiniTest::Test
     assert @logger.log.error "Error"
     assert MemLogger.stream.string.include? "Error"
   end
+  def test_set_level
+    [:unknown, :fatal, :error , :warn,  :info].each do |level|
+      assert @logger.log_level( level)
+    end
+  end
 end
