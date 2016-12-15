@@ -10,11 +10,7 @@ class TestAttributes < MiniTest::Test
   def test_message_get_type
     assert_equal Parfait::Type , @type.class
   end
-  def test_message_type_first
-    @type.object_class = :next_message
-    assert_equal :type , @type.instance_names.first
-    assert_equal :next_message , @type.object_class
-  end
+
   def test_message_name_nil
     last = @type.instance_names.last
     assert_equal :indexed_length , last , @type.instance_names.inspect

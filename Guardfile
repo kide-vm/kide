@@ -10,22 +10,9 @@ guard :minitest do
   #Arm instructions
   watch(%r{^lib/arm/instructions/(.+)_instruction.rb}) { |m| "test/arm/test_#{m[1]}.rb" }
 
-  # with Minitest::Spec
-  # watch(%r{^spec/(.*)_spec\.rb$})
-  # watch(%r{^lib/(.+)\.rb$})         { |m| "spec/#{m[1]}_spec.rb" }
-  # watch(%r{^spec/spec_helper\.rb$}) { 'spec' }
+  #parfait basics
+  watch(%r{^lib/typed/parfait/(.+).rb}) { |m| "test/typed/parfait/test_#{m[1]}.rb" }
+  watch(%r{^lib/typed/parfait/type.rb}) { |m| "test/typed/type/test_all.rb" }
+  watch(%r{^lib/typed/parfait/typed_method.rb}) { |m| "test/typed/type/test_method_api.rb" }
 
-  # Rails 4
-  # watch(%r{^app/(.+)\.rb$})                               { |m| "test/#{m[1]}_test.rb" }
-  # watch(%r{^app/controllers/application_controller\.rb$}) { 'test/controllers' }
-  # watch(%r{^app/controllers/(.+)_controller\.rb$})        { |m| "test/integration/#{m[1]}_test.rb" }
-  # watch(%r{^app/views/(.+)_mailer/.+})                   { |m| "test/mailers/#{m[1]}_mailer_test.rb" }
-  # watch(%r{^lib/(.+)\.rb$})                               { |m| "test/lib/#{m[1]}_test.rb" }
-  # watch(%r{^test/.+_test\.rb$})
-  # watch(%r{^test/test_helper\.rb$}) { 'test' }
-
-  # Rails < 4
-  # watch(%r{^app/controllers/(.*)\.rb$}) { |m| "test/functional/#{m[1]}_test.rb" }
-  # watch(%r{^app/helpers/(.*)\.rb$})     { |m| "test/helpers/#{m[1]}_test.rb" }
-  # watch(%r{^app/models/(.*)\.rb$})      { |m| "test/unit/#{m[1]}_test.rb" }
 end
