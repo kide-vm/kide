@@ -33,7 +33,7 @@ class LoggerTest < MiniTest::Test
   end
   def test_set_level
     [:unknown, :fatal, :error , :warn,  :info].each do |level|
-      assert @logger.log_level( level)
+      assert MemLogger.log_level( level)
     end
   end
 end
