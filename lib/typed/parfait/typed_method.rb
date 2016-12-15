@@ -90,7 +90,7 @@ module Parfait
     end
 
     def inspect
-      "#{self.for_class.name}:#{name}(#{arguments.inspect})"
+      "#{self.for_type.object_class.name}:#{name}(#{arguments.inspect})"
     end
 
   end

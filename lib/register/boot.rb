@@ -74,8 +74,9 @@ module Register
         cl = object_with_type Parfait::Class
         cl.instance_type = @types[name]
         @types[name].object_class = cl
+        @types[name].instance_methods = object_with_type Parfait::List
         cl.instance_methods = object_with_type Parfait::List
-#        puts "instance_methods is #{cl.instance_methods.class}"
+        #puts "instance_methods is #{cl.instance_methods.class}"
         cl.name = name
         classes[name] = cl
       end

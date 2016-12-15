@@ -27,8 +27,8 @@ module Register
     def translate_arm
       translator = Arm::Translator.new
       methods = []
-      @space.classes.values.each do |c|
-        c.instance_methods.each do |f|
+      self.space.types.each do |hash , t|
+        t.instance_methods.each do |f|
           methods << f
         end
       end

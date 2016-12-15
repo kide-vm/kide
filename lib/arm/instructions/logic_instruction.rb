@@ -49,7 +49,7 @@ module Arm
       val |= instruction_code
       val |= condition_code
       io.write_uint32 val
-      assemble_extra
+      assemble_extra(io)
     end
 
     def result
@@ -104,7 +104,7 @@ module Arm
     end
 
     # by now we have the extra add so assemble that
-    def assemble_extra
+    def assemble_extra(io)
       return unless @extra
       if(@extra == 1) # unles things have changed and then we add a noop (to keep the length same)
         @extra = ArmMachine.mov( :r1 , :r1  )

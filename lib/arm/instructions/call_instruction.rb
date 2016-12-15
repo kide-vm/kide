@@ -48,7 +48,7 @@ module Arm
         # relative addressing for jumps/calls
         # but because of the arm "theoretical" 3- stage pipeline,
         # we have to subtract 2 words (fetch/decode)
-        arg =  arg.position - self.position - 8
+        arg =  @first.position - self.position - 8
       when Parfait::TypedMethod
         # But, for methods, this happens to be the size of the object header,
         # so there it balances out, but not blocks
