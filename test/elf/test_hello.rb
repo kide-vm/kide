@@ -9,7 +9,7 @@ class HelloTest < MiniTest::Test
     machine.collect
     machine.translate_arm
     writer = Elf::ObjectWriter.new
-    writer.save "hello.o"
+    writer.save "test/hello.o"
   end
 
   def test_string_put
@@ -17,7 +17,6 @@ class HelloTest < MiniTest::Test
               s(:statements, s(:function, :Integer, s(:name, :main), s(:parameters),
                 s(:statements, s(:return, s(:call, s(:name, :putstring), s(:arguments),
                       s(:receiver, s(:string, "Hello again\\n")))))))))
-#FIXME: some more assembly tests need to get to the bottom of this one
     check
   end
 end

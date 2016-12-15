@@ -21,7 +21,7 @@ module Elf
       set_text assembler.write_as_string
 
       # for debug add labels to the block positions
-      Register.machine.space.classes.values.each do |clazz|
+      Register.machine.space.types.values.each do |clazz|
         clazz.instance_methods.each do |f|
           f.instructions.each_label do |label|
               add_symbol "#{clazz.name}::#{f.name}:#{label.name}" , label.position
@@ -43,11 +43,14 @@ module Elf
         end
       end
     end
+
     attr_reader :text
+
     def set_text(text)
       @text.text = text
       add_symbol "_start", 0
     end
+    
     def add_symbol(name, offset, linkage = Elf::Constants::STB_GLOBAL)
       return add_symbol( name + "_" , offset ) if @symbol_table.has_name(name)
       @symbol_table.add_func_symbol name, offset, @text, linkage
