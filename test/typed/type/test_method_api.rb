@@ -46,10 +46,10 @@ class TestMethodApi < MiniTest::Test
     test_remove_method
     assert_nil  @try.get_instance_method(:foo)
   end
-  def test_resolve
+  def test_get_instance
     foo = foo_method :Object
     type = @space.get_class_by_name(:Object).instance_type
     type.add_instance_method(foo)
-    assert_equal :foo , type.resolve_method(:foo).name
+    assert_equal :foo , type.get_instance_method(:foo).name
   end
 end

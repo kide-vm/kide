@@ -111,24 +111,13 @@ module Parfait
       return true
     end
 
-    def get_instance_method fname
+    def get_instance_method( fname )
       raise "get_instance_method #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
       #if we had a hash this would be easier.  Detect or find would help too
       self.methods.each do |m|
         return m if(m.name == fname )
       end
       nil
-    end
-
-    # get the method and if not found, try superclasses. raise error if not found
-    def resolve_method m_name
-      raise "resolve_method #{m_name}.#{m_name.class}" unless m_name.is_a?(Symbol)
-      method = get_instance_method(m_name)
-      return method if method
-      if( self.super_class_name )
-        method = self.super_class.resolve_method(m_name)
-      end
-      method
     end
 
     def == other
@@ -191,10 +180,6 @@ module Parfait
       "#{self.object_class.name}_Type"
     end
     alias :name :sof_reference_name
-
-    def super_class_name
-      nil  # stop resolve recursing up metaclasses
-    end
 
     def to_hash
       hash = Dictionary.new

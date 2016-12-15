@@ -28,38 +28,20 @@ module Parfait
       names
     end
 
-    def add_instance_method method
-      raise "not a method #{method.class} #{method.inspect}" unless method.is_a? TypedMethod
-      raise "syserr #{method.name.class}" unless method.name.is_a? Symbol
-      if self.is_a?(Class) and (method.for_class != self)
-        raise "Adding to wrong class, should be #{method.for_class}"
-      end
-      found = get_instance_method( method.name )
-      if found
-        self.methods.delete(found)
-      end
-      self.methods.push method
-      #puts "#{self.name} add #{method.name}"
+    def add_instance_method( method )
+      raise "not implemented #{method.class} #{method.inspect}" unless method.is_a? RubyMethod
       method
     end
 
-    def remove_instance_method method_name
+    def remove_instance_method( method_name )
       found = get_instance_method( method_name )
-      if found
-        self.methods.delete(found)
-      else
-        raise "No such method #{method_name} in #{self.name}"
-      end
-      return true
+      found ? self.methods.delete(found) : false
     end
 
-    def get_instance_method fname
+    def get_instance_method( fname )
       raise "get_instance_method #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
       #if we had a hash this would be easier.  Detect or find would help too
-      self.methods.each do |m|
-        return m if(m.name == fname )
-      end
-      nil
+      self.methods.find {|m| m.name == fname }
     end
 
     # get the method and if not found, try superclasses. raise error if not found

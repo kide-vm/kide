@@ -22,8 +22,6 @@ class TestClass < MiniTest::Test
     assert_equal @try.method_names.get_length , @try.instance_methods.get_length
   end
   def test_remove_nothere
-    assert_raises RuntimeError do
-       @try.remove_instance_method(:foo)
-    end
+    assert  !@try.remove_instance_method(:foo)
   end
 end

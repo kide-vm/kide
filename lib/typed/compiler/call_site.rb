@@ -54,7 +54,7 @@ module Typed
       name = statement.name
       #puts "type #{type.inpect}"
       raise "No such class" unless type
-      method = type.resolve_method(name)
+      method = type.get_instance_method(name)
       #puts Register.machine.space.get_class_by_name(:Integer).method_names.to_a
       raise "Method not implemented #{type.inspect}.#{name}" unless method
       Register.issue_call( self , method )
