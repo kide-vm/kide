@@ -12,8 +12,9 @@ module Register
         return me , index
       end
 
-      def compiler_for( method_name , args)
-        Typed::Compiler.new.create_method(:Object , method_name , args ).init_method
+      def compiler_for( type , method_name , extra_args = {})
+        args = {:index => :Integer}.merge( extra_args )
+        Typed::Compiler.new.create_method(type , method_name , args ).init_method
       end
 
       # Load the value

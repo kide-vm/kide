@@ -10,7 +10,7 @@ module Register
         # return is stored in return_value
         # (this method returns a new method off course, like all builtin)
         def get_internal_word context
-          compiler = compiler_for(:get_internal_word , {:index => :Integer})
+          compiler = compiler_for(:Object , :get_internal_word )
           source = "get_internal_word"
           me , index = self_and_arg(compiler,source)
           # reduce me to me[index]
@@ -23,7 +23,7 @@ module Register
         # self[index] = val basically. Index is the first arg , value the second
         # no return
         def set_internal_word context
-          compiler = compiler_for(:set_internal_word , {:index => :Integer, :value => :Object} )
+          compiler = compiler_for(:Object , :set_internal_word , {:value => :Object} )
           source = "set_internal_word"
           me , index = self_and_arg(compiler,source)
           value = do_load(compiler,source)

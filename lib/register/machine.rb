@@ -46,7 +46,6 @@ module Register
     def translate_methods(methods , translator )
       methods.each do |method|
         instruction = method.instructions
-        puts method.name
         while instruction.next
           nekst = instruction.next
           t = translator.translate(nekst) # returning nil means no replace
