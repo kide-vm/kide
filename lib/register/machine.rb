@@ -26,14 +26,27 @@ module Register
     # now we just instantiate ArmTranslater and pass instructions
     def translate_arm
       translator = Arm::Translator.new
+      methods = collect_methods
+      translate_methods( methods , translator)
+      label = @init.next
+      @init = translator.translate( @init)
+      @init.append label
+    end
+
+    def collect_methods
       methods = []
       self.space.types.each do |hash , t|
         t.instance_methods.each do |f|
           methods << f
         end
       end
+      methods
+    end
+
+    def translate_methods(methods , translator )
       methods.each do |method|
         instruction = method.instructions
+        puts method.name
         while instruction.next
           nekst = instruction.next
           t = translator.translate(nekst) # returning nil means no replace
@@ -44,11 +57,7 @@ module Register
           instruction = nekst
         end
       end
-      label = @init.next
-      @init = translator.translate( @init)
-      @init.append label
     end
-
 
     # Objects are data and get assembled after functions
     def add_object o

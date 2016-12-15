@@ -138,6 +138,9 @@ module Typed
       unless  instruction.is_a?(Register::Instruction)
         raise instruction.to_s
       end
+      if( instruction.class.name.split("::").first == "Arm")
+        raise instruction.to_s
+      end
       @current.insert(instruction) #insert after current
       @current = instruction
       self
