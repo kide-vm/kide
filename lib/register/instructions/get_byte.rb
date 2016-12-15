@@ -16,10 +16,6 @@ module Register
     # end
     # attr_accessor :array , :index , :register
 
-    def to_s
-      "GetByte: #{array}[#{index}] -> #{register}"
-    end
-
   end
 
   # Produce a GetByte instruction.

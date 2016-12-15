@@ -27,6 +27,10 @@ module Register
     end
     attr_accessor :register , :array , :index
 
+    def to_s
+      "#{self.class.name}: #{array}[#{index}] -> #{register}"
+    end
+
   end
 
 end

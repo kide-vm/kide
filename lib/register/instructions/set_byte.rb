@@ -6,10 +6,6 @@ module Register
 
   class SetByte < Setter
 
-    def to_s
-      "SetByte: #{register} -> #{array} [#{index}]"
-    end
-
   end
 
   # Produce a SetByte instruction.
