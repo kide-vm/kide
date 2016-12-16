@@ -2,7 +2,7 @@ require_relative "tree"
 
 module Typed
 
-  CompilerModules = [ "assignment" , "basic_values" , "call_site", "class_field" ,
+  CompilerModules = [ "assignment" , "basic_values" , "call_site", 
                       "class_statement" , "collections" , "field_def" , "field_access",
                       "function_statement" , "if_statement" , "name_expression" ,
                       "operator_expression" , "return_statement", "statement_list",
@@ -92,7 +92,7 @@ module Typed
     # class_name and method_name are pretty clear, args are given as a ruby array
     def create_method( class_name , method_name , args = {})
       raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
-      clazz = Register.machine.space.get_class_by_name class_name
+      clazz = Register.machine.space.get_class_by_name! class_name
       raise "No such class #{class_name}" unless clazz
       create_method_for( clazz.instance_type , method_name , args)
     end

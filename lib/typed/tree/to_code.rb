@@ -49,14 +49,6 @@ module Typed
       w
     end
 
-    def on_class_field statement
-      type , name = *statement
-      w = Tree::ClassField.new()
-      w.type = type
-      w.name = name
-      w
-    end
-
     def on_while_statement statement
       branch_type , condition , statements = *statement
       w = Tree::WhileStatement.new()

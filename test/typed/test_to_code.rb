@@ -16,10 +16,6 @@ class ToCodeTest < MiniTest::Test
     @statement = s(:field_def, :Integer, s(:name, :abba), s(:int, 5))
     check "FieldDef"
   end
-  def test_class_field
-    @statement = s(:class_field, :Integer, :fff, s(:int, 3))
-    check "ClassField"
-  end
   def test_simple_while
     @statement = s(:while_statement, :false, s(:conditional,s(:int, 1)), s(:statements))
     check "WhileStatement"

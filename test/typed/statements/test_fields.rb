@@ -13,10 +13,9 @@ module Register
     end
 
     def test_field_arg
-      clean_compile s(:statements, s(:class, :Space, s(:derives, nil), s(:statements,
-          s(:function, :Integer, s(:name, :get_name), s(:parameters, s(:parameter, :Message, :main)),
+      clean_compile :Space, :get_name, { :main => :Message},
                 s(:statements, s(:return, s(:field_access,
-                    s(:receiver, s(:name, :main)), s(:field, s(:name, :name)))))))))
+                    s(:receiver, s(:name, :main)), s(:field, s(:name, :name)))))
       @input =s(:statements, s(:field_def, :Message, s(:name, :m)), s(:return, s(:call, s(:name, :get_name), s(:arguments, s(:name, :m)))))
 
       @expect =  [Label, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot, LoadConstant ,
