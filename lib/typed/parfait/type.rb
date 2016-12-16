@@ -83,6 +83,7 @@ module Parfait
     def create_instance_method( method_name , arguments )
       raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
       #puts "Self: #{self.class} clazz: #{clazz.name}"
+      arguments = Parfait::Type.new_for_hash( self.object_class , arguments) if arguments.is_a?(Hash)
       add_instance_method TypedMethod.new( self , method_name , arguments )
     end
 
