@@ -48,7 +48,7 @@ module Arm
       end
     end
 
-    def self.create_method(name,  &block)
+    def self.def_method(name,  &block)
         self.class.send(:define_method, name , &block)
     end
 
@@ -73,7 +73,7 @@ module Arm
     #   be overriden in subclasses
     def self.define_instruction_one(inst , clazz ,  defaults = {} )
       clazz = class_for(clazz)
-      create_method(inst) do |first , options = nil|
+      def_method(inst) do |first , options = nil|
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
@@ -85,7 +85,7 @@ module Arm
     # same for two args (left right, from to etc)
     def self.define_instruction_two(inst , clazz ,  defaults = {} )
       clazz =  self.class_for(clazz)
-      create_method(inst) do |left ,right , options = nil|
+      def_method(inst) do |left ,right , options = nil|
         options = {} if options == nil
         options.merge defaults
         left = Register::RegisterValue.convert(left)
@@ -98,7 +98,7 @@ module Arm
     # same for three args (result = left right,)
     def self.define_instruction_three(inst , clazz ,  defaults = {} )
       clazz =  self.class_for(clazz)
-      create_method(inst) do |result , left ,right = nil , options = nil|
+      def_method(inst) do |result , left ,right = nil , options = nil|
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
