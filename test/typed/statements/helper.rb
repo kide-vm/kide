@@ -3,19 +3,16 @@ require_relative '../helper'
 
 module Statements
   include AST::Sexp
+  include Compiling
 
   def setup
     Register.machine.boot # force boot to reset main
   end
 
-  def clean_compile(clazz_name , method_name , args , statements)
-    compiler = Typed::Compiler.new.create_method(clazz_name,method_name,args ).init_method
-    compiler.process( Typed.ast_to_code( statements ) )
-  end
 
   def check
     assert @expect , "No output given"
-    compiler = Typed::Compiler.new Register.machine.space.get_main
+    compiler = Typed::Compiler.new
     produced = compiler.process( Typed.ast_to_code( @input) )
     produced = Register.machine.space.get_main.instructions
     compare_instructions produced , @expect

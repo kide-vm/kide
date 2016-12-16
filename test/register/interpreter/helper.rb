@@ -1,4 +1,4 @@
-require_relative "../../helper"
+require_relative "../helper"
 require "register/interpreter"
 
 module Ticker
@@ -6,12 +6,17 @@ module Ticker
 
   def setup
     machine = Register.machine.boot
+    do_clean_compile
     Typed.compile( @input )
     machine.collect
     @interpreter = Register::Interpreter.new
     @interpreter.start Register.machine.init
   end
 
+  # must be after boot, but before main compile, to define method
+  def do_clean_compile
+  end
+  
   def check_chain should
     should.each_with_index do |name , index|
       got = ticks(1)
