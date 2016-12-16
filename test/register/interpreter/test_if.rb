@@ -2,6 +2,7 @@ require_relative "helper"
 
 class IfTest < MiniTest::Test
   include Ticker
+  include Compiling
 
   def setup
     @string_input = <<HERE
@@ -19,10 +20,17 @@ class Space
   end
 end
 HERE
-    @input = s(:statements, s(:class, :Space, s(:derives, nil), s(:statements, s(:function, :Integer, s(:name, :itest), s(:parameters, s(:parameter, :Integer, :n)), s(:statements, s(:if_statement, :zero, s(:condition, s(:operator_value, :-, s(:name, :n), s(:int, 12))), s(:true_statements, s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "then")))), s(:false_statements, s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "else"))))))), s(:function, :Integer, s(:name, :main), s(:parameters), s(:statements, s(:call, s(:name, :itest), s(:arguments, s(:int, 20))))))))
+    @input = s(:statements, s(:call, s(:name, :itest), s(:arguments, s(:int, 20))))
     super
   end
 
+  # must be after boot, but before main compile, to define method
+  def do_clean_compile
+    clean_compile :Space , :itest , {:n => :Integer} ,
+          s(:statements, s(:if_statement, :zero, s(:condition, s(:operator_value, :-, s(:name, :n), s(:int, 12))),
+                  s(:true_statements, s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "then")))),
+                  s(:false_statements, s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "else"))))))
+  end
   def test_if
       #show_ticks # get output of what is
       check_chain ["Branch","Label","LoadConstant","GetSlot","SetSlot",

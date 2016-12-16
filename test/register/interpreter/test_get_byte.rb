@@ -11,12 +11,10 @@ class Space
   end
 end
 HERE
-    @input =  s(:statements, s(:class, :Space, s(:derives, nil), s(:statements,
-                    s(:function, :Integer, s(:name, :main), s(:parameters),
-                      s(:statements, s(:call,
-                                  s(:name, :set_internal_byte),
-                                  s(:arguments, s(:int, 1), s(:int, 104)),
-                                  s(:receiver, s(:string, "Hello"))))))))
+    @input =  s(:statements, s(:call,
+                  s(:name, :set_internal_byte),
+                  s(:arguments, s(:int, 1), s(:int, 104)),
+                    s(:receiver, s(:string, "Hello"))))
     super
   end
 
