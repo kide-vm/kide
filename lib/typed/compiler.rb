@@ -2,7 +2,7 @@ require_relative "tree"
 
 module Typed
 
-  CompilerModules = [ "assignment" , "basic_values" , "call_site", 
+  CompilerModules = [ "assignment" , "basic_values" , "call_site",
                       "class_statement" , "collections" , "field_def" , "field_access",
                       "function_statement" , "if_statement" , "name_expression" ,
                       "operator_expression" , "return_statement", "statement_list",
@@ -56,10 +56,15 @@ module Typed
 
     def initialize( method = nil )
       @regs = []
-      return unless method
-      @method = method
-      @type = method.for_type
-      @current = method.instructions
+      if method
+        @method = method
+        @type = method.for_type
+      else
+        @type = Parfait::Space.object_space.get_type()
+        @method = @type.get_instance_method( :main )
+        @method = @type.create_instance_method( :main ,{}) unless @method
+      end
+      @current = @method.instructions
     end
     attr_reader :type , :method
 

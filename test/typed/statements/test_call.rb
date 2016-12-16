@@ -5,8 +5,8 @@ class TestCallStatement < MiniTest::Test
   include Statements
 
   def test_call_constant_int
-    clean_compile :Integer, :putint, {}, s(:statements, s(:return, s(:int, 1)))
-    @input = s(:call, s(:name, :putint), s(:arguments), s(:receiver, s(:int, 42)))
+    clean_compile :Integer, :puti, {}, s(:statements, s(:return, s(:int, 1)))
+    @input = s(:call, s(:name, :puti), s(:arguments), s(:receiver, s(:int, 42)))
     @expect =  [Label, GetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant ,
                SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,
                GetSlot, GetSlot, Label, FunctionReturn]
@@ -15,9 +15,9 @@ class TestCallStatement < MiniTest::Test
 
 
   def test_call_constant_string
-    clean_compile :Word, :putstring,{}, s(:statements, s(:return, s(:int, 1)))
+    clean_compile :Word, :putstr,{}, s(:statements, s(:return, s(:int, 1)))
 
-    @input =s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "Hello")))
+    @input =s(:call, s(:name, :putstr), s(:arguments), s(:receiver, s(:string, "Hello")))
     @expect =  [Label, GetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant ,
                SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,
                GetSlot, GetSlot, Label, FunctionReturn]
