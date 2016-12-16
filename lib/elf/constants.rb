@@ -15,7 +15,7 @@ module Elf
     EM_860 = 7
     EM_MIPS = 8
     EM_ARM = 40
-  
+
     EV_NONE = 0
     EV_CURRENT = 1
 
@@ -51,7 +51,7 @@ module Elf
     ABI_SYSTEMV = 0
     ABI_ARM = 0x61
 
-    ARM_INFLOOP = "\x08\xf0\x4f\xe2"
+    #ARM_INFLOOP = "\x08\xf0\x4f\xe2"
 
     TARGET_ARM = [ELFCLASS32, Elf::DATA2LSB, ABI_ARM, EM_ARM]
     TARGET_X86 = [ELFCLASS32, Elf::DATA2LSB, ABI_SYSTEMV, EM_386]

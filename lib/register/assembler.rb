@@ -32,12 +32,13 @@ module Register
     def asseble_code_from( at )
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::TypedMethod
-        objekt.binary.position = at
+        binary = objekt.binary
+        binary.position = at
         objekt.instructions.set_position at + 12 # BinaryCode header
         len = objekt.instructions.total_byte_length
-        log.debug "CODE #{objekt.name} at #{objekt.binary.position} len: #{len}"
-        objekt.binary.set_length(len , 0)
-        at += objekt.binary.padded_length
+        log.debug "CODE #{objekt.name} at #{binary.position} len: #{len}"
+        binary.set_length(len , 0)
+        at += binary.padded_length
       end
       at
     end
@@ -141,9 +142,12 @@ module Register
     end
     def write_binary_method_checks(method,stream)
       stream.rewind
-      log.debug "Assembled code #{method.name} with length #{stream.length}"
-      raise "length error #{method.binary.char_length} != #{method.instructions.total_byte_length}" if method.binary.char_length != method.instructions.total_byte_length
-      raise "length error #{stream.length} != #{method.instructions.total_byte_length}" if method.instructions.total_byte_length != stream.length
+      length = stream.length
+      binary = method.binary
+      total_byte_length = method.instructions.total_byte_length
+      log.debug "Assembled code #{method.name} with length #{length}"
+      raise "length error #{binary.char_length} != #{total_byte_length}" if binary.char_length != total_byte_length
+      raise "length error #{length} != #{total_byte_length}" if total_byte_length != length
     end
 
     def write_any obj
