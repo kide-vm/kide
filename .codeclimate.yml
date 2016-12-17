@@ -15,7 +15,7 @@ engines:
     enabled: false
 ratings:
   paths:
-  - "lib/**.rb"
-exclude_paths:
+  - lib/**
+  - "**.rb"
 - test/**/*
 - stash/**/*
