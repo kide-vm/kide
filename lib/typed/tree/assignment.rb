@@ -6,9 +6,5 @@ module Typed
         @name , @value = n , v
       end
     end
-
-    class FieldDef < Statement
-      attr_accessor :name , :type , :value
-    end
   end
 end

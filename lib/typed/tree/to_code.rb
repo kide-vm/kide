@@ -40,15 +40,6 @@ module Typed
       params
     end
 
-    def on_field_def statement
-      type , name , value = *statement
-      w = Tree::FieldDef.new()
-      w.type = type
-      w.name = process(name)
-      w.value = process(value) if value
-      w
-    end
-
     def on_while_statement statement
       branch_type , condition , statements = *statement
       w = Tree::WhileStatement.new()

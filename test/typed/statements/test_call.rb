@@ -25,8 +25,9 @@ class TestCallStatement < MiniTest::Test
   end
 
   def _test_call_local_int
+    Register.machine.space.get_main.add_local(:testi , :Integer)
     clean_compile :Integer, :putint, {}, s(:statements, s(:return, s(:int, 1)))
-    @input = s(:statements, s(:field_def, :Integer, s(:name, :testi), s(:int, 20)), s(:call, s(:name, :putint), s(:arguments), s(:receiver, s(:name, :testi))))
+    @input = s(:statements, s(:assignment, s(:name, :testi), s(:int, 20)), s(:call, s(:name, :putint), s(:arguments), s(:receiver, s(:name, :testi))))
 
     @expect = [Label, LoadConstant, GetSlot, SetSlot, GetSlot, GetSlot, GetSlot ,
                SetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot, LoadConstant, SetSlot ,
@@ -36,9 +37,10 @@ class TestCallStatement < MiniTest::Test
   end
 
   def test_call_local_class
+    Register.machine.space.get_main.add_local(:test_l , :List)
     clean_compile :List, :add, {}, s(:statements, s(:return, s(:int, 1)))
 
-    @input =s(:statements, s(:field_def, :List, s(:name, :test_l)), s(:call, s(:name, :add), s(:arguments), s(:receiver, s(:name, :test_l))))
+    @input =s(:statements, s(:call, s(:name, :add), s(:arguments), s(:receiver, s(:name, :test_l))))
     @expect = [Label, GetSlot, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot ,
                LoadConstant, SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label ,
                RegisterTransfer, GetSlot, GetSlot, Label, FunctionReturn]

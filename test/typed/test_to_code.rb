@@ -12,10 +12,6 @@ class ToCodeTest < MiniTest::Test
     @statement = s(:field_access, s(:receiver, s(:name, :m)), s(:field, s(:name, :index)))
     check "FieldAccess"
   end
-  def test_field_def_value
-    @statement = s(:field_def, :Integer, s(:name, :abba), s(:int, 5))
-    check "FieldDef"
-  end
   def test_simple_while
     @statement = s(:while_statement, :false, s(:conditional,s(:int, 1)), s(:statements))
     check "WhileStatement"

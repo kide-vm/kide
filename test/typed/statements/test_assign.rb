@@ -4,12 +4,10 @@ module Register
 class TestAssignStatement < MiniTest::Test
   include Statements
 
-  def setup
-    Register.machine.boot
-  end
-
   def test_assign_op
-    @input    = s(:statements, s(:field_def, :Integer, s(:name, :n), s(:operator_value, :+, s(:int, 10), s(:int, 1))))
+    Register.machine.space.get_main.add_local(:r , :Integer)
+
+    @input    = s(:statements, s(:assignment, s(:name, :r), s(:operator_value, :+, s(:int, 10), s(:int, 1))))
 
     @expect = [Label, LoadConstant, LoadConstant, OperatorInstruction, GetSlot, SetSlot, Label ,
                FunctionReturn]
@@ -17,21 +15,25 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_assign_local
-    @input =s(:statements, s(:field_def, :Integer, s(:name, :runner)), s(:assignment, s(:name, :runner), s(:int, 5)))
+    Register.machine.space.get_main.add_local(:r , :Integer)
+    @input =s(:statements, s(:assignment, s(:name, :r), s(:int, 5)))
 
     @expect =  [Label, LoadConstant, GetSlot, SetSlot, Label, FunctionReturn]
     check
   end
 
   def test_assign_local_assign
-    @input = s(:statements, s(:field_def, :Integer, s(:name, :runner), s(:int, 5)))
+    Register.machine.space.get_main.add_local(:r , :Integer)
+
+    @input = s(:statements, s(:assignment, s(:name, :r), s(:int, 5)))
 
     @expect =  [Label, LoadConstant, GetSlot, SetSlot, Label, FunctionReturn]
   check
   end
 
   def test_assign_call
-    @input = s(:statements, s(:field_def, :Integer, s(:name, :r), s(:call, s(:name, :main), s(:arguments))))
+    Register.machine.space.get_main.add_local(:r , :Integer)
+    @input = s(:statements, s(:assignment, s(:name, :r), s(:call, s(:name, :main), s(:arguments))))
     @expect = [Label, GetSlot, GetSlot, SetSlot, LoadConstant, SetSlot, LoadConstant ,
                SetSlot, LoadConstant, SetSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,
                GetSlot, GetSlot, GetSlot, SetSlot, Label, FunctionReturn]
@@ -39,7 +41,8 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_frame_get
-    @input = s(:statements, s(:field_def, :Integer, s(:name, :r), s(:int, 5)), s(:return, s(:name, :r)))
+    Register.machine.space.get_main.add_local(:r , :Integer)
+    @input = s(:statements, s(:assignment, s(:name, :r), s(:int, 5)), s(:return, s(:name, :r)))
     @expect =  [Label, LoadConstant, GetSlot, SetSlot, GetSlot, GetSlot, SetSlot ,
                Label, FunctionReturn]
     was = check
@@ -49,7 +52,8 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_assign_int
-    @input = s(:statements, s(:field_def, :Integer, s(:name, :r), s(:int, 5)) )
+    Register.machine.space.get_main.add_local(:r , :Integer)
+    @input = s(:statements, s(:assignment, s(:name, :r), s(:int, 5)) )
     @expect =  [Label, LoadConstant, GetSlot, SetSlot, Label, FunctionReturn]
     was = check
     set = was.next(3)
