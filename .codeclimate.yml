@@ -18,6 +18,5 @@ ratings:
   - Gemfile.lock
   - "**.rb"
 exclude_paths:
-- config/
-- db/
-- spec/
+- test/
+- stash/
