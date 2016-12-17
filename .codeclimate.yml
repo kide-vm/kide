@@ -10,7 +10,7 @@ engines:
   fixme:
     enabled: true
   rubocop:
-    enabled: false
+    enabled: true
   reek:
     enabled: true
 ratings:
