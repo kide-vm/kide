@@ -3,7 +3,7 @@ require_relative "tree"
 module Typed
 
   CompilerModules = [ "assignment" , "basic_values" , "call_site",
-                      "class_statement" , "collections" , "field_access",
+                      "collections" , "field_access",
                       "if_statement" , "name_expression" ,
                       "operator_expression" , "return_statement", "statement_list",
                       "while_statement"]
