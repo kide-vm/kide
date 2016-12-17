@@ -20,17 +20,6 @@ module Typed
       w
     end
 
-    def on_function  statement
-      return_type , name , parameters, statements , receiver = *statement
-      w = Tree::FunctionStatement.new()
-      w.return_type = return_type
-      w.name = name.children.first
-      w.parameters = process parameters
-      w.statements = process(statements)
-      w.receiver = receiver
-      w
-    end
-
     def on_parameters statement
       params = {}
       statement.children.each do |param , type , name|

@@ -9,7 +9,7 @@ end
 
 ["while_statement", "if_statement" , "return_statement" , "statements",
   "operator_expression" , "field_access" , "call_site" , "basic_values",
-  "assignment" , "class_statement" , "function_statement" , "to_code"].each do |code|
+  "assignment" , "class_statement" , "to_code"].each do |code|
     require_relative "tree/" + code
 end
 

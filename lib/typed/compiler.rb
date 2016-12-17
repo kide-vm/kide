@@ -4,7 +4,7 @@ module Typed
 
   CompilerModules = [ "assignment" , "basic_values" , "call_site",
                       "class_statement" , "collections" , "field_access",
-                      "function_statement" , "if_statement" , "name_expression" ,
+                      "if_statement" , "name_expression" ,
                       "operator_expression" , "return_statement", "statement_list",
                       "while_statement"]
 
