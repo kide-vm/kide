@@ -106,15 +106,15 @@ module Typed
       Tree::IntegerExpression.new(expression.children.first)
     end
 
-    def on_true expression
+    def on_true _expression
       Tree::TrueExpression.new
     end
 
-    def on_false expression
+    def on_false _expression
       Tree::FalseExpression.new
     end
 
-    def on_nil expression
+    def on_nil _expression
       Tree::NilExpression.new
     end
 
