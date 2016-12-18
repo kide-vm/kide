@@ -1,3 +1,4 @@
+require_relative "type_collector"
 
 
 module Melon
@@ -15,8 +16,9 @@ module Melon
     end
 
     def on_class statement
-      name , sup , _ = *statement
-      Parfait::Space.object_space.create_class(get_name(name) , get_name(sup) )
+      name , sup , body = *statement
+      clazz = Parfait::Space.object_space.create_class(get_name(name) , get_name(sup) )
+      clazz.set_instance_names( TypeCollector.new.collect(body) )
     end
   end
 end
