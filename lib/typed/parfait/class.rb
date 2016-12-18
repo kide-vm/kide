@@ -16,7 +16,7 @@
 module Parfait
   class Class < Object
     include Behaviour
-    attributes [:instance_type , :name , :super_class_name]
+    attributes [:instance_type , :name , :super_class_name , :instance_names]
 
     def initialize name , superclass
       super()
@@ -26,13 +26,18 @@ module Parfait
       # as an instance. The relation is from an object through the Type to it's class
       # TODO the object type should copy the stuff from superclass
       self.instance_type = Type.new(self)
+      self.instance_names = List.new()
     end
 
     def allocate_object
       #space, and ruby allocate
     end
 
+    def set_instance_names( names )
+      self.instance_names = names
+    end
     def add_instance_name name
+      self.instance_names << name
       self.instance_type.push name
     end
 

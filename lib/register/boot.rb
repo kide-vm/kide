@@ -76,6 +76,7 @@ module Register
         @types[name].object_class = cl
         @types[name].instance_methods = object_with_type Parfait::List
         cl.instance_methods = object_with_type Parfait::List
+        cl.instance_names = object_with_type Parfait::List
         #puts "instance_methods is #{cl.instance_methods.class}"
         cl.name = name
         classes[name] = cl
@@ -127,7 +128,7 @@ module Register
           :Frame => {:next_frame => :Frame, :indexed_length => :Integer},
           :Type => {:object_class => :Class, :instance_methods => :List , :indexed_length => :Integer} ,
           :Class => {:instance_methods => :List, :instance_type => :Type, :name => :Word,
-                      :super_class_name => :Word},
+                      :super_class_name => :Word , :instance_names => :List },
           :Dictionary => {:keys => :List , :values => :List  } ,
           :TypedMethod => {:name => :Word, :source => :Object, :instructions => :Object, :binary => :Object,
                       :arguments => :Type , :for_type => :Type, :locals => :Type } ,
