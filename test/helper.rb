@@ -21,7 +21,7 @@ require 'salama'
 
 module Compiling
   def clean_compile(clazz_name , method_name , args , statements)
-    compiler = Typed::Compiler.new.create_method(clazz_name,method_name,args ).init_method
+    compiler = Typed::MethodCompiler.new.create_method(clazz_name,method_name,args ).init_method
     compiler.process( Typed.ast_to_code( statements ) )
   end
 

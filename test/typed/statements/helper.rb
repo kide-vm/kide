@@ -12,7 +12,7 @@ module Statements
 
   def check
     assert @expect , "No output given"
-    compiler = Typed::Compiler.new
+    compiler = Typed::MethodCompiler.new
     produced = compiler.process( Typed.ast_to_code( @input) )
     produced = Register.machine.space.get_main.instructions
     compare_instructions produced , @expect

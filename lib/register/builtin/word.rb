@@ -7,7 +7,7 @@ module Register
         include CompileHelper
 
         def putstring context
-          compiler = Typed::Compiler.new.create_method(:Word , :putstring ).init_method
+          compiler = Typed::MethodCompiler.new.create_method(:Word , :putstring ).init_method
           compiler.add_code Register.get_slot( "putstring" , :message , :receiver , :new_message )
           index = Parfait::Word.get_length_index
           reg = RegisterValue.new(:r2 , :Integer)

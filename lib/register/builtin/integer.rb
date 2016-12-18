@@ -6,18 +6,18 @@ module Register
         include AST::Sexp
 
         def mod4 context
-          compiler = Typed::Compiler.new.create_method(:Integer,:mod4 ).init_method
+          compiler = Typed::MethodCompiler.new.create_method(:Integer,:mod4 ).init_method
           return compiler.method
         end
         def putint context
-          compiler = Typed::Compiler.new.create_method(:Integer,:putint ).init_method
+          compiler = Typed::MethodCompiler.new.create_method(:Integer,:putint ).init_method
           return compiler.method
         end
 
 
         def div10 context
           s = "div_10"
-          compiler = Typed::Compiler.new.create_method(:Integer,:div10 ).init_method
+          compiler = Typed::MethodCompiler.new.create_method(:Integer,:div10 ).init_method
           me = compiler.process( Typed::Tree::NameExpression.new( :self) )
           tmp = compiler.process( Typed::Tree::NameExpression.new( :self) )
           q = compiler.process( Typed::Tree::NameExpression.new( :self) )

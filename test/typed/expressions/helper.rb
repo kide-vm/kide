@@ -4,7 +4,7 @@ module ExpressionHelper
 
   def check
     Register.machine.boot unless Register.machine.booted
-    compiler = Typed::Compiler.new Register.machine.space.get_main
+    compiler = Typed::MethodCompiler.new Register.machine.space.get_main
     code = Typed.ast_to_code @input
     produced = compiler.process( code )
     assert @output , "No output given"

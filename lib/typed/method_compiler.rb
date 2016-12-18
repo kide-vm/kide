@@ -9,7 +9,7 @@ module Typed
                       "while_statement"]
 
   CompilerModules.each do |mod|
-    require_relative "compiler/" + mod
+    require_relative "method_compiler/" + mod
   end
 
   # Compiling is the conversion of the AST into 2 things:
@@ -44,12 +44,12 @@ module Typed
 
   # Helper function to create a new compiler and compie the statement(s)
   def self.compile statement
-    compiler = Compiler.new
+    compiler = MethodCompiler.new
     code = Typed.ast_to_code statement
     compiler.process code
   end
 
-  class Compiler
+  class MethodCompiler
     CompilerModules.each do |mod|
       include Typed.const_get( mod.camelize )
     end
