@@ -83,7 +83,8 @@ module Parfait
     # so we get and keep exactly one per name
     def create_class name , superclass
       raise "create_class #{name.class}" unless name.is_a? Symbol
-      c = Class.new(name , superclass)
+      superclass = :Object unless superclass
+      c = Class.new(name , superclass )
       self.classes[name] = c
     end
 
