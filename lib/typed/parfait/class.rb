@@ -26,19 +26,10 @@ module Parfait
       # as an instance. The relation is from an object through the Type to it's class
       # TODO the object type should copy the stuff from superclass
       self.instance_type = Type.new(self)
-      self.instance_names = List.new()
     end
 
     def allocate_object
       #space, and ruby allocate
-    end
-
-    def set_instance_names( names )
-      self.instance_names = names
-    end
-    def add_instance_name name
-      self.instance_names << name
-      self.instance_type.push name
     end
 
     def sof_reference_name
@@ -49,6 +40,12 @@ module Parfait
       "Class(#{name})"
     end
 
+    # setting the type generates all methods for this type
+    # (or will do, once we storet the methods code to do that)
+    def set_instance_type( type )
+      self.instance_type = type
+    end
+    
     # this needs to be done during booting as we can't have all the classes and superclassses
     # instantiated. By that logic it should maybe be part of vm rather.
     # On the other hand vague plans to load the hierachy from sof exist, so for now...

@@ -3,16 +3,17 @@ module Melon
   class TypeCollector < AST::Processor
 
     def initialize
-      @ivar_names = []
+      @ivars = {}
     end
 
     def collect(statement)
       process statement
-      @ivar_names
+      @ivars
     end
 
     def on_ivar(statement)
-      @ivar_names.push statement.children[0].to_s[1..-1].to_sym
+      var = statement.children[0].to_s[1..-1].to_sym
+      @ivars[var] = :Object #guess, can maybe guess better
     end
 
     def handler_missing(node)

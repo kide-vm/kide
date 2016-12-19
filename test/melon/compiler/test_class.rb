@@ -22,7 +22,7 @@ module Melon
     def test_picks_up_an_ivar_name
       Compiler.compile  "class TestIvar < Object ; def meth; return @ivar;end; end"
       itest = Parfait::Space.object_space.get_class_by_name(:TestIvar)
-      assert itest.instance_names.include?(:ivar) , itest.instance_names.inspect
+      assert itest.instance_type.instance_names.include?(:ivar) , itest.instance_type.instance_names.inspect
     end
 
   end
