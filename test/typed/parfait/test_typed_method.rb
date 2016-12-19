@@ -4,7 +4,7 @@ class TestMethod < MiniTest::Test
 
   def setup
     obj = Register.machine.space.get_class_by_name(:Object).instance_type
-    args = Parfait::Type.new_for_hash( obj , { bar: :Integer , foo: :Type})
+    args = Parfait::Type.for_hash( obj , { bar: :Integer , foo: :Type})
     @method = ::Parfait::TypedMethod.new obj , :meth , args
     @method.add_local :local_bar , :Integer
     @method.add_local :local_foo , :Type

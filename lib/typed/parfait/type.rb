@@ -38,7 +38,7 @@ module Parfait
     include Indexed
     self.offset(3)
 
-    def self.new_for_hash( object_class , hash)
+    def self.for_hash( object_class , hash)
       new_type = Type.new( object_class , hash)
       code = new_type.hash
       Space.object_space.types[code] = new_type
@@ -83,7 +83,7 @@ module Parfait
     def create_instance_method( method_name , arguments )
       raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
       #puts "Self: #{self.class} clazz: #{clazz.name}"
-      arguments = Parfait::Type.new_for_hash( self.object_class , arguments) if arguments.is_a?(Hash)
+      arguments = Parfait::Type.for_hash( self.object_class , arguments) if arguments.is_a?(Hash)
       add_instance_method TypedMethod.new( self , method_name , arguments )
     end
 
@@ -138,7 +138,7 @@ module Parfait
       if existing
         return existing
       else
-        return Type.new_for_hash( object_class , hash)
+        return Type.for_hash( object_class , hash)
       end
     end
 
