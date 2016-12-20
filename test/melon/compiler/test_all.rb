@@ -1,2 +1,2 @@
-require_relative "test_class"
-require_relative "test_collector"
+require_relative "test_type_collector"
+require_relative "test_method_collector"
