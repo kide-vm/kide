@@ -17,5 +17,5 @@ ratings:
   paths:
   - lib/**
   - "**.rb"
-- test/**/*
-- stash/**/*
+  - test/**/*
+  - stash/**/*
