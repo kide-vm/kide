@@ -26,10 +26,10 @@ module Typed
       def handle_local statement
         index = @method.has_local( statement.name )
         raise "must define variable '#{statement.name}' before using it" unless index
-        frame = use_reg :Frame
+        frame = use_reg :NamedList
         add_code Register.get_slot(statement , :message , :frame , frame )
         ret = use_reg @method.locals_type( index )
-        add_code Register.get_slot(statement , frame , Parfait::Frame.get_indexed(index), ret )
+        add_code Register.get_slot(statement , frame , Parfait::NamedList.get_indexed(index), ret )
         return ret
       end
 

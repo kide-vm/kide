@@ -7,7 +7,7 @@ module Register
 
   # Four known objects exist and those correspond to subclasses:
   # - the message that has been received: MessageSlot
-  # - the frame of the method that is executing (local variables): FrameSlot
+  # - the frame of the method that is executing (local variables): NamedListSlot
   # - self as an object: SelfsSlot
   # - a message that will be sent, NewMessageSlot
 

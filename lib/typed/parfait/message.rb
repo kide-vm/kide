@@ -17,7 +17,7 @@ module Parfait
 
     def initialize next_m
       self.next_message = next_m
-      self.frame = Frame.new()
+      self.frame = NamedList.new()
       self.caller = nil
       super()
     end

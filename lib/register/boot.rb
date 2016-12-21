@@ -115,7 +115,7 @@ module Register
     def type_names
        {  :Word => {:char_length => :Integer} ,
           :List => {:indexed_length => :Integer} ,
-          :Message => { :next_message => :Message, :receiver => :Object, :frame => :Frame ,
+          :Message => { :next_message => :Message, :receiver => :Object, :frame => :NamedList ,
                         :return_address => :Integer, :return_value => :Integer,
                         :caller => :Message , :name => :Word , :indexed_length => :Integer },
           :MetaClass => {:object => :Object},
@@ -124,7 +124,7 @@ module Register
           :Kernel => {}, #fix, kernel is a class, but should be a module
           :BinaryCode => {:char_length => :Integer} ,
           :Space => {:classes => :Dictionary , :types => :Dictionary , :first_message => :Message},
-          :Frame => {:next_frame => :Frame, :indexed_length => :Integer},
+          :NamedList => {:next_list => :NamedList, :indexed_length => :Integer},
           :Type => {:object_class => :Class, :instance_methods => :List , :indexed_length => :Integer} ,
           :Class => {:instance_methods => :List, :instance_type => :Type, :name => :Word,
                       :super_class_name => :Word , :instance_names => :List },

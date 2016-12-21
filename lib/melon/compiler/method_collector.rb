@@ -30,7 +30,7 @@ module Melon
 
     def make_locals(body)
       locals = LocalsCollector.new.collect(body)
-      type = Parfait::Space.object_space.get_class_by_name(:Frame ).instance_type
+      type = Parfait::Space.object_space.get_class_by_name(:NamedList ).instance_type
       locals.each do |name , local_type |
         type = type.add_instance_variable( name , local_type )
       end

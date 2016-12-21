@@ -12,7 +12,7 @@ module Register
 
   # The caller creates the Message and passes control to the receiver's method
 
-  # The receiver create a new Frame to hold local and temporary variables and (later) creates
+  # The receiver create a new NamedList to hold local and temporary variables and (later) creates
   # default values for arguments that were not passed
 
   # How the actual finding of the method takes place (acording to the ruby rules) is not simple,

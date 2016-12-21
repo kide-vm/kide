@@ -1,6 +1,6 @@
 require_relative "../helper"
 
-class TestFrames < MiniTest::Test
+class TestNamedLists < MiniTest::Test
 
   def setup
     @frame = Register.machine.boot.space.first_message.frame
@@ -12,8 +12,8 @@ class TestFrames < MiniTest::Test
   end
 
   def test_frame_next_set
-    @frame.next_frame = :next_frame
-    assert_equal :next_frame , @frame.next_frame
+    @frame.next_list = :next_list
+    assert_equal :next_list , @frame.next_list
   end
 
 end

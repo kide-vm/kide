@@ -23,9 +23,9 @@ module Typed
       index = @method.has_local( name )
       return nil unless index
       # TODO, check type  @method.locals[index].type
-      frame = use_reg(:Frame)
+      frame = use_reg(:NamedList)
       add_code Register.get_slot(statement , :message , :frame , frame )
-      return Register.set_slot(statement , value , frame , Parfait::Frame.get_indexed(index) )
+      return Register.set_slot(statement , value , frame , Parfait::NamedList.get_indexed(index) )
     end
   end
 end
