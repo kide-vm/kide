@@ -25,7 +25,7 @@ module Typed
       # TODO, check type  @method.locals[index].type
       named_list = use_reg(:NamedList)
       add_code Register.get_slot(statement , :message , :named_list , named_list )
-      return Register.set_slot(statement , value , named_list , Parfait::NamedList.get_indexed(index) )
+      return Register.set_slot(statement , value , named_list , index )
     end
   end
 end

@@ -23,8 +23,5 @@ module Parfait
   class NamedList < Object
     attribute :next_list
 
-    include Indexed
-    self.offset(2)  # 1 == the next_list attributes above + type. (indexed_length gets added)
-
   end
 end
