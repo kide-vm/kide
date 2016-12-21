@@ -27,7 +27,7 @@ module Typed
         index = @method.has_local( statement.name )
         raise "must define variable '#{statement.name}' before using it" unless index
         named_list = use_reg :NamedList
-        add_code Register.get_slot(statement , :message , :named_list , named_list )
+        add_code Register.get_slot(statement , :message , :locals , named_list )
         ret = use_reg @method.locals_type( index )
         add_code Register.get_slot(statement , named_list , index, ret )
         return ret

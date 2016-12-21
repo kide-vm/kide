@@ -99,7 +99,7 @@ module Register
 
   # if a symbol is given, it may be one of the four objects that the vm knows.
   # These are mapped to register references.
-  # The valid symbols (:message, :self,:named_list,:new_message) are the same that are returned
+  # The valid symbols (:message, :self,:locals,:new_message) are the same that are returned
   # by the slots. All data (at any time) is in one of the instance variables of these four
   # objects. Register defines module methods with the same names (and _reg)
   def self.resolve_to_register reference

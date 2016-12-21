@@ -31,7 +31,7 @@ module Register
       # a named_list represents the local and temporary variables at a point in the program.
       @named_list = nil
     end
-    attr_reader :me, :next_normal, :next_exception, :arguments , :named_list
+    attr_reader :me, :next_normal, :next_exception, :arguments , :locals
 
     #
   end

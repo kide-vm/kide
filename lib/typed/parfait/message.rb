@@ -9,7 +9,7 @@
 
 module Parfait
   class Message < Object
-    attributes [:next_message , :receiver , :named_list , :return_address ]
+    attributes [:next_message , :receiver , :locals , :return_address ]
     attributes [:return_value, :caller , :name ]
 
     include Indexed
@@ -17,7 +17,7 @@ module Parfait
 
     def initialize next_m
       self.next_message = next_m
-      self.named_list = NamedList.new()
+      self.locals = NamedList.new()
       self.caller = nil
       super()
     end
