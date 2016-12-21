@@ -23,9 +23,14 @@ module Melon
       assert method.args_type.variable_index(:arg1) , method.args_type.inspect
     end
 
-    def test_ivar_operator_assign
+    def test_three_args
       method = parse_collect("def meth3(yksi,kaksi,kolme); 1;end").first
       assert method.args_type.variable_index(:kolme) , method.args_type.inspect
+    end
+
+    def test_one_local
+      method = parse_collect("def meth2(arg1); foo = 2 ;end").first
+      assert method.locals_type.variable_index(:foo) , method.locals_type.inspect
     end
 
   end

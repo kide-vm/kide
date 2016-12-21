@@ -14,8 +14,11 @@ module Melon
     def on_def(statement)
       name , args , body = *statement
       args_type = make_type(args)
-      @methods << RubyMethod.new(name , args_type , body )
+      locals_type = make_locals(body)
+      @methods << RubyMethod.new(name , args_type , locals_type , body )
     end
+
+    private
 
     def make_type( statement )
       type = Parfait::Space.object_space.get_class_by_name(:Message ).instance_type
@@ -25,5 +28,13 @@ module Melon
       type
     end
 
+    def make_locals(body)
+      locals = LocalsCollector.new.collect(body)
+      type = Parfait::Space.object_space.get_class_by_name(:Frame ).instance_type
+      locals.each do |name , local_type |
+        type = type.add_instance_variable( name , local_type )
+      end
+      type
+    end
   end
 end
