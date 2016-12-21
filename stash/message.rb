@@ -2,7 +2,7 @@ module Register
   # So when an object calls a method, or sends a message, this is what it sends: a Message
 
   # A message contains the sender, return and exceptional return addresses,the arguments,
-  #  and a slot for the frame.
+  #  and a slot for the named_list.
 
   # As such it is a very run-time object, deep in the machinery as it were, and does not have
   # meaningful methods you could call at compile time.
@@ -19,7 +19,7 @@ module Register
   # but as there is a guaranteed result (be it method_missing) it does not matter to the passing
   #  mechanism described
 
-  # During compilation Message and frame objects are created to do type analysis
+  # During compilation Message and named_list objects are created to do type analysis
 
   class Message
 
@@ -28,10 +28,10 @@ module Register
       @next_normal = normal
       @next_exception = exceptional
       @arguments = arguments
-      # a frame represents the local and temporary variables at a point in the program.
-      @frame = nil
+      # a named_list represents the local and temporary variables at a point in the program.
+      @named_list = nil
     end
-    attr_reader :me, :next_normal, :next_exception, :arguments , :frame
+    attr_reader :me, :next_normal, :next_exception, :arguments , :named_list
 
     #
   end

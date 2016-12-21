@@ -2,7 +2,7 @@ require_relative "attributed"
 
 module Arm
 
-  # A Machines main responsibility in the framework is to instantiate Instructions
+  # A Machines main responsibility in the named_listwork is to instantiate Instructions
 
   # Value functions are mapped to machines by concatenating the values class name + the methd name
   # Example:  IntegerValue.plus( value ) ->  Machine.signed_plus (value )

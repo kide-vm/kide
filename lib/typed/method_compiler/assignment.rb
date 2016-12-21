@@ -19,13 +19,13 @@ module Typed
          # TODO, check type @method.arguments[index].type
         return Register.set_slot(statement , value , :message , Parfait::Message.get_indexed(index) )
       end
-      # or a local so it is in the frame
+      # or a local so it is in the named_list
       index = @method.has_local( name )
       return nil unless index
       # TODO, check type  @method.locals[index].type
-      frame = use_reg(:NamedList)
-      add_code Register.get_slot(statement , :message , :frame , frame )
-      return Register.set_slot(statement , value , frame , Parfait::NamedList.get_indexed(index) )
+      named_list = use_reg(:NamedList)
+      add_code Register.get_slot(statement , :message , :named_list , named_list )
+      return Register.set_slot(statement , value , named_list , Parfait::NamedList.get_indexed(index) )
     end
   end
 end

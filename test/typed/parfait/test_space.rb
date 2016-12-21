@@ -60,7 +60,7 @@ class TestSpace < MiniTest::Test
     all = []
     while mess
       all << mess
-      assert mess.frame
+      assert mess.named_list
       mess = mess.next_message
     end
     assert_equal all.length , all.uniq.length

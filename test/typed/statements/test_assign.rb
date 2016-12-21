@@ -40,7 +40,7 @@ class TestAssignStatement < MiniTest::Test
     check
   end
 
-  def test_frame_get
+  def test_named_list_get
     Register.machine.space.get_main.add_local(:r , :Integer)
     @input = s(:statements, s(:assignment, s(:name, :r), s(:int, 5)), s(:return, s(:name, :r)))
     @expect =  [Label, LoadConstant, GetSlot, SetSlot, GetSlot, GetSlot, SetSlot ,
@@ -48,7 +48,7 @@ class TestAssignStatement < MiniTest::Test
     was = check
     get = was.next(5)
     assert_equal GetSlot , get.class
-    assert_equal 4, get.index , "Get to frame index must be offset, not #{get.index}"
+    assert_equal 4, get.index , "Get to named_list index must be offset, not #{get.index}"
   end
 
   def test_assign_int
@@ -58,7 +58,7 @@ class TestAssignStatement < MiniTest::Test
     was = check
     set = was.next(3)
     assert_equal SetSlot , set.class
-    assert_equal 4, set.index , "Set to frame index must be offset, not #{set.index}"
+    assert_equal 4, set.index , "Set to named_list index must be offset, not #{set.index}"
   end
 
   def test_assign_arg
@@ -79,7 +79,7 @@ class TestAssignStatement < MiniTest::Test
     was = check
     get = was.next(1)
     assert_equal GetSlot , get.class
-    assert_equal 10, get.index , "Get to frame index must be offset, not #{get.index}"
+    assert_equal 10, get.index , "Get to named_list index must be offset, not #{get.index}"
   end
 end
 end

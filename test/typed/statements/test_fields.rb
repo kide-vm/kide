@@ -5,7 +5,7 @@ module Register
   class TestFieldStatement < MiniTest::Test
     include Statements
 
-    def test_field_frame
+    def test_field_named_list
       Register.machine.space.get_main.add_local( :m , :Message)
       @input = s(:statements,  s(:return, s(:field_access,
                                 s(:receiver, s(:name, :m)), s(:field, s(:name, :name)))))

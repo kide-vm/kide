@@ -115,7 +115,7 @@ module Register
     def type_names
        {  :Word => {:char_length => :Integer} ,
           :List => {:indexed_length => :Integer} ,
-          :Message => { :next_message => :Message, :receiver => :Object, :frame => :NamedList ,
+          :Message => { :next_message => :Message, :receiver => :Object, :named_list => :NamedList ,
                         :return_address => :Integer, :return_value => :Integer,
                         :caller => :Message , :name => :Word , :indexed_length => :Integer },
           :MetaClass => {:object => :Object},

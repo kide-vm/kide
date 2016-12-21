@@ -17,7 +17,7 @@ module Typed
           add_code Register.get_slot(statement , :message , Parfait::Message.get_indexed(index), ret )
           return ret
         end
-        # or a local so it is in the frame
+        # or a local so it is in the named_list
         handle_local(statement)
       end
 
@@ -26,10 +26,10 @@ module Typed
       def handle_local statement
         index = @method.has_local( statement.name )
         raise "must define variable '#{statement.name}' before using it" unless index
-        frame = use_reg :NamedList
-        add_code Register.get_slot(statement , :message , :frame , frame )
+        named_list = use_reg :NamedList
+        add_code Register.get_slot(statement , :message , :named_list , named_list )
         ret = use_reg @method.locals_type( index )
-        add_code Register.get_slot(statement , frame , Parfait::NamedList.get_indexed(index), ret )
+        add_code Register.get_slot(statement , named_list , Parfait::NamedList.get_indexed(index), ret )
         return ret
       end
 
