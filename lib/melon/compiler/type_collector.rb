@@ -1,6 +1,6 @@
 module Melon
 
-  class TypeCollector < AST::Processor
+  class TypeCollector < TotalProcessor
 
     def initialize
       @ivars = {}
@@ -23,11 +23,6 @@ module Melon
       var = statement.children[0].to_s[1..-1].to_sym
       @ivars[var] = :Object #guess, can maybe guess better
     end
-    
-    def handler_missing(node)
-      node.children.each do |kid |
-        process(kid) if kid.is_a?(AST::Node)
-      end
-    end
+
   end
 end

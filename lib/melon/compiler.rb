@@ -1,3 +1,4 @@
+require_relative "compiler/total_processor"
 require_relative "compiler/type_collector"
 require_relative "compiler/method_collector"
 require_relative "compiler/ruby_method"

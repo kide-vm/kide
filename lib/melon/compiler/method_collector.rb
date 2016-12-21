@@ -1,6 +1,6 @@
 module Melon
 
-  class MethodCollector < AST::Processor
+  class MethodCollector < TotalProcessor
 
     def initialize
       @methods = []
@@ -23,12 +23,6 @@ module Melon
         type = type.add_instance_variable( arg.children[0] , :Object )
       end
       type
-    end
-
-    def handler_missing(node)
-      node.children.each do |kid |
-        process(kid) if kid.is_a?(AST::Node)
-      end
     end
 
   end
