@@ -117,7 +117,7 @@ module Register
           :List => {:indexed_length => :Integer} ,
           :Message => { :next_message => :Message, :receiver => :Object, :locals => :NamedList ,
                         :return_address => :Integer, :return_value => :Integer,
-                        :caller => :Message , :name => :Word , :indexed_length => :Integer },
+                        :caller => :Message , :name => :Word , :arguments => :NamedList },
           :MetaClass => {:object => :Object},
           :Integer => {},
           :Object => {},

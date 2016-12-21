@@ -16,7 +16,7 @@ module Ticker
   # must be after boot, but before main compile, to define method
   def do_clean_compile
   end
-  
+
   def check_chain should
     should.each_with_index do |name , index|
       got = ticks(1)
@@ -51,6 +51,7 @@ module Ticker
     rescue => e
       puts "Error at tick #{tick}"
       puts e
+      puts e.backtrace
     end
     classes = classes.collect {|c| '"' + c.name.sub("Register::","")  + '",' }
     classes << "length = #{classes.length}"

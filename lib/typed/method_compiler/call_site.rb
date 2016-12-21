@@ -15,7 +15,7 @@ module Typed
 
       set_message_details(statement , statement.arguments)
       set_arguments(statement.arguments)
-      ret = use_reg( :Integer ) #TODO real return type
+      ret = use_reg( :Integer ) #FIXME real return type
       do_call(type , statement)
       # the effect of the method is that the NewMessage Return slot will be filled, return it
       # but move it into a register too
@@ -35,10 +35,7 @@ module Typed
       me
     end
     def get_my_type( me )
-      if(me.type == :MetaClass)
-        raise "Remove this test #{me.class}"
-      end
-        # now we have to resolve the method name (+ receiver) into a callable method
+      # now we have to resolve the method name (+ receiver) into a callable method
       case me.type
       when Parfait::Type
         type = me.type
@@ -50,6 +47,7 @@ module Typed
       raise "Not type #{type}" unless type.is_a? Parfait::Type
       type
     end
+
     def do_call( type , statement )
       name = statement.name
       #puts "type #{type.inspect}"
@@ -58,16 +56,24 @@ module Typed
       raise "Method not implemented #{type.inspect}.#{name}" unless method
       Register.issue_call( self , method )
     end
+
+    # load method name and set to new message (for exceptions/debug)
     def set_message_details name_s , arguments
       name = name_s.name
-      # load method name and set to new message (for exceptions/debug)
       name_tmp = use_reg(:Word)
       add_code Register::LoadConstant.new(name_s, name , name_tmp)
       add_code Register.set_slot( name_s , name_tmp , :new_message , :name)
-      # next arguments. first length then args
-      len_tmp = use_reg(:Integer , arguments.to_a.length )
-      add_code Register::LoadConstant.new(name_s, arguments.to_a.length , len_tmp)
-      add_code Register.set_slot( name_s , len_tmp , :new_message , :indexed_length)
+      # next arg and local types
+      args_reg = use_reg(:Type , @method.arguments )
+      list_reg = use_reg(:NamedList , arguments )
+      add_code Register::LoadConstant.new(name_s, @method , args_reg)
+      add_code Register.get_slot( name_s , :message , :arguments , list_reg )
+      add_code Register.set_slot( name_s , args_reg , list_reg , 1  )
+
+#FIXME need to set type of locals too. sama sama
+#      len_tmp = use_reg(:Integer , arguments.to_a.length )
+#      add_code Register::LoadConstant.new(name_s, arguments.to_a.length , len_tmp)
+#      add_code Register.set_slot( name_s , len_tmp , :new_message , :indexed_length)
     end
     def set_arguments arguments
       # reset tmp regs for each and load result into new_message
@@ -76,8 +82,10 @@ module Typed
         # processing should return the register with the value
         val = process( arg)
         raise "Not register #{val}" unless val.is_a?(Register::RegisterValue)
+        list_reg = use_reg(:NamedList , arguments )
+        add_code Register.get_slot( "Set arg #{i}#{arg}" , :message , :arguments , list_reg )
         # which we load int the new_message at the argument's index (the one comes from c index)
-        set = Register.set_slot( arg , val , :new_message , Parfait::Message.get_indexed(i+1))
+        set = Register.set_slot( arg , val , list_reg , i + 1 )
         add_code set
       end
     end

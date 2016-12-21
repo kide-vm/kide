@@ -3,12 +3,12 @@ module Register
   module Builtin
     module CompileHelper
 
-      def self_and_arg(compiler , source)
+      def self_and_int_arg(compiler , source)
         #Load self by "calling" on_name
         me = compiler.process( Typed::Tree::NameExpression.new( :self) )
         # Load the argument
         index = compiler.use_reg :Integer
-        compiler.add_code Register.get_slot(source , :message , Parfait::Message.get_indexed(1), index )
+        compiler.add_code Register.get_slot(source , :message , 1 , index )
         return me , index
       end
 
@@ -18,9 +18,9 @@ module Register
       end
 
       # Load the value
-      def do_load(compiler, source)
+      def load_arg_at(compiler, source , at)
         value = compiler.use_reg :Integer
-        compiler.add_code Register.get_slot(source , :message , Parfait::Message.get_indexed(2), value )
+        compiler.add_code Register.get_slot(source , :message , at , value )
         value
       end
 

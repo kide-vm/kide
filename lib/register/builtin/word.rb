@@ -21,7 +21,7 @@ module Register
         def get_internal_byte context
           compiler = compiler_for(:Word , :get_internal_byte)
           source = "get_internal_byte"
-          me , index = self_and_arg(compiler,source)
+          me , index = self_and_int_arg(compiler,source)
           # reduce me to me[index]
           compiler.add_code GetByte.new( source , me , index , me)
           # and put it back into the return value
@@ -35,8 +35,8 @@ module Register
         def set_internal_byte context
           compiler = compiler_for(:Word, :set_internal_byte , {:value => :Integer} )
           source = "set_internal_byte"
-          me , index = self_and_arg(compiler,source)
-          value = do_load(compiler,source)
+          me , index = self_and_int_arg(compiler,source)
+          value = load_arg_at(compiler , source , 2 )
           # do the set
           compiler.add_code SetByte.new( source , value , me , index)
           return compiler.method

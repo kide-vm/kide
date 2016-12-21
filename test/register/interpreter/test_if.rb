@@ -32,7 +32,7 @@ HERE
                   s(:false_statements, s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "else"))))))
   end
   def test_if
-      #show_ticks # get output of what is
+      show_ticks # get output of what is
       check_chain ["Branch","Label","LoadConstant","GetSlot","SetSlot",
      "LoadConstant","SetSlot","FunctionCall","Label","GetSlot",
      "GetSlot","SetSlot","LoadConstant","SetSlot","LoadConstant",

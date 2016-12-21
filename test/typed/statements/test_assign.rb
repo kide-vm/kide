@@ -79,7 +79,7 @@ class TestAssignStatement < MiniTest::Test
     was = check
     get = was.next(1)
     assert_equal GetSlot , get.class
-    assert_equal 10, get.index , "Get to named_list index must be offset, not #{get.index}"
+    assert_equal 1, get.index , "Get to args index must be offset, not #{get.index}"
   end
 end
 end

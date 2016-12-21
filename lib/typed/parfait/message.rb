@@ -10,14 +10,12 @@
 module Parfait
   class Message < Object
     attributes [:next_message , :receiver , :locals , :return_address ]
-    attributes [:return_value, :caller , :name ]
-
-    include Indexed
-    self.offset(8)  # 8 == the seven attributes above + type. (indexed_length gets added)
+    attributes [:return_value, :caller , :name , :arguments]
 
     def initialize next_m
       self.next_message = next_m
       self.locals = NamedList.new()
+      self.arguments = NamedList.new()
       self.caller = nil
       super()
     end

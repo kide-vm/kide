@@ -14,7 +14,7 @@ module Typed
         if( index = @method.has_arg(name))
           ret = use_reg @method.argument_type(index)
           #puts "For #{name} at #{index} got #{@method.arguments.inspect}"
-          add_code Register.get_slot(statement , :message , Parfait::Message.get_indexed(index), ret )
+          add_code Register.get_slot(statement , :message , index, ret )
           return ret
         end
         # or a local so it is in the named_list

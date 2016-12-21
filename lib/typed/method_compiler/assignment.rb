@@ -15,16 +15,18 @@ module Typed
 
     def get_code( statement , value)
       name = no_space(statement.name).name
+      named_list = use_reg(:NamedList)
       if( index = @method.has_arg(name))
          # TODO, check type @method.arguments[index].type
-        return Register.set_slot(statement , value , :message , Parfait::Message.get_indexed(index) )
+         type = :arguments
+       else
+         # or a local so it is in the frame
+         index = @method.has_local( name )
+         type = :locals
+         return nil unless index
       end
-      # or a local so it is in the named_list
-      index = @method.has_local( name )
-      return nil unless index
       # TODO, check type  @method.locals[index].type
-      named_list = use_reg(:NamedList)
-      add_code Register.get_slot(statement , :message , :locals , named_list )
+      add_code Register.get_slot(statement , :message , type , named_list )
       return Register.set_slot(statement , value , named_list , index )
     end
   end
