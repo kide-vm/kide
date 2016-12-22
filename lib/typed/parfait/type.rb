@@ -40,20 +40,24 @@ module Parfait
 
     def self.for_hash( object_class , hash)
       new_type = Type.new( object_class , hash)
-      code = new_type.hash
+      code = hash_code_for_hash( hash )
       Space.object_space.types[code] = new_type
       new_type
     end
 
-    def self.hash_code_for( dict )
+    def self.hash_for_type(type)
+      self.hash_code_for_hash( type.to_hash )
+    end
+
+    def self.hash_code_for_hash( dict )
       index = 1
-      hash = 0
+      hash_code = ""
       dict.each do |name , type|
-        item_hash = name.hash + type.hash
-        hash  += item_hash + (item_hash / 256 ) * index
+        item_hash = name.to_s + type.to_s
+        hash_code  += item_hash #+ (item_hash / 256 ) * index
         index += 1
       end
-      hash
+      hash_code.to_sym
     end
 
     def initialize( object_class , hash = nil)
@@ -83,8 +87,9 @@ module Parfait
     def create_instance_method( method_name , arguments )
       raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
       #puts "Self: #{self.class} clazz: #{clazz.name}"
-      arguments = Parfait::Type.for_hash( self.object_class , arguments) if arguments.is_a?(Hash)
-      add_instance_method TypedMethod.new( self , method_name , arguments )
+      type = arguments
+      type = Parfait::Type.for_hash( self.object_class , arguments) if arguments.is_a?(Hash)
+      add_instance_method TypedMethod.new( self , method_name , type )
     end
 
     def add_instance_method( method )
@@ -133,7 +138,7 @@ module Parfait
       raise "No nil type" unless type
       hash = to_hash
       hash[name] = type
-      code = Type.hash_code_for( hash )
+      code = Type.hash_code_for_hash( hash )
       existing = Space.object_space.types[code]
       if existing
         return existing
@@ -191,7 +196,7 @@ module Parfait
     end
 
     def hash
-      Type.hash_code_for( to_hash )
+      Type.hash_code_for_hash( to_hash )
     end
 
     private

@@ -31,13 +31,13 @@ class TypeHash < MiniTest::Test
   end
 
   def test_hashcode_with_hash
-    assert_equal @first.hash , Parfait::Type.hash_code_for( @first.to_hash)
+    assert_equal @first.hash , Parfait::Type.hash_code_for_hash( @first.to_hash)
   end
 
   def test_second_hash_different
     hash2 = @first.to_hash
     hash2[:random] = :Type
-    assert @first.hash != Parfait::Type.hash_code_for( hash2 )
+    assert @first.hash != Parfait::Type.hash_code_for_hash( hash2 )
   end
 
   def test_add_is_different
