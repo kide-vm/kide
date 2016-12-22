@@ -11,15 +11,6 @@ module Typed
       raise "No handler  on_#{node.type}(node)"
     end
 
-    def on_class statement
-      name , derives , statements = *statement
-      w = Tree::ClassStatement.new()
-      w.name = name
-      w.derives = derives.children.first
-      w.statements = process(statements)
-      w
-    end
-
     def on_parameters statement
       params = {}
       statement.children.each do |param , type , name|
@@ -131,7 +122,7 @@ module Typed
 
     def on_assignment statement
       name , value = *statement
-      w = Tree::Assignment.new()
+      w = Typed::Tree::Assignment.new()
       w.name = process name
       w.value = process(value)
       w
