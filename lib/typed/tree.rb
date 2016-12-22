@@ -7,11 +7,16 @@ module Typed
 
 end
 
-["while_statement", "if_statement" , "return_statement" , "statements",
-  "operator_expression" , "field_access" , "call_site" , "basic_values",
-  "assignment" , "to_code"].each do |code|
-    require_relative "tree/" + code
-end
+require_relative "tree/while_statement"
+require_relative "tree/if_statement"
+require_relative "tree/return_statement"
+require_relative "tree/statements"
+require_relative "tree/operator_expression"
+require_relative "tree/field_access"
+require_relative "tree/call_site"
+require_relative "tree/basic_values"
+require_relative "tree/assignment"
+require_relative "tree/to_code"
 
 AST::Node.class_eval do
 

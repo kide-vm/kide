@@ -1,4 +1,15 @@
 require_relative "tree"
+require_relative "method_compiler/assignment"
+require_relative "method_compiler/basic_values"
+require_relative "method_compiler/call_site"
+require_relative "method_compiler/collections"
+require_relative "method_compiler/field_access"
+require_relative "method_compiler/if_statement"
+require_relative "method_compiler/name_expression"
+require_relative "method_compiler/operator_expression"
+require_relative "method_compiler/return_statement"
+require_relative "method_compiler/statement_list"
+require_relative "method_compiler/while_statement"
 
 module Typed
 
@@ -9,7 +20,7 @@ module Typed
                       "while_statement"]
 
   CompilerModules.each do |mod|
-    require_relative "method_compiler/" + mod
+#    require_relative "method_compiler/" + mod
   end
 
   # Compiling is the conversion of the AST into 2 things:
