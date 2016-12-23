@@ -5,6 +5,11 @@ module Typed
   class Statement < Code  ; end
   class Expression < Code ; end
 
+  module ValuePrinter
+    def to_s
+      @value.to_s
+    end
+  end
 end
 
 require_relative "tree/while_statement"
