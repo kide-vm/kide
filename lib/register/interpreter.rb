@@ -157,7 +157,7 @@ module Register
       true
     end
 
-    def execute_GetByte
+    def execute_ByteToReg
       object = get_register( @instruction.array )
       if( @instruction.index.is_a?(Numeric) )
         index = @instruction.index
@@ -171,7 +171,7 @@ module Register
       true
     end
 
-    def execute_SetByte
+    def execute_RegToByte
       value = get_register( @instruction.register )
       object = get_register( @instruction.array )
       if( @instruction.index.is_a?(Numeric) )

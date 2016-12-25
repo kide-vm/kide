@@ -1,6 +1,6 @@
 require_relative "helper"
 
-class TestInterpretSetByte < MiniTest::Test
+class TestInterpretRegToByte < MiniTest::Test
   include Ticker
 
   def setup
@@ -25,7 +25,7 @@ HERE
      "LoadConstant","RegToSlot","LoadConstant","RegToSlot","LoadConstant",
      "RegToSlot","LoadConstant","RegToSlot","LoadConstant","RegToSlot",
      "LoadConstant","RegToSlot","RegisterTransfer","FunctionCall","Label",
-     "SlotToReg","SlotToReg","SlotToReg","SetByte","Label",
+     "SlotToReg","SlotToReg","SlotToReg","RegToByte","Label",
      "FunctionReturn","RegisterTransfer","SlotToReg","SlotToReg","Label",
      "FunctionReturn","RegisterTransfer","Syscall","NilClass"]
   end
@@ -54,9 +54,9 @@ HERE
     assert_equal NilClass ,  done.class
   end
 
-  def test_set_byte
+  def test_reg_to_byte
     done = ticks(29)
-    assert_equal Register::SetByte ,  done.class
+    assert_equal Register::RegToByte ,  done.class
     assert_equal "h".ord ,  @interpreter.get_register(done.register)
   end
 

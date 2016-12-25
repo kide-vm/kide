@@ -59,11 +59,11 @@ module Arm
         args
     end
 
-    def translate_GetByte code
+    def translate_ByteToReg code
       ArmMachine.ldrb( *byte_args_for(code) )
     end
 
-    def translate_SetByte code
+    def translate_RegToByte code
       ArmMachine.strb( *byte_args_for(code) )
     end
 

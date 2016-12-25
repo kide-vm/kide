@@ -1,6 +1,6 @@
 module Register
 
-  # Getter is a base class for get instructions (SlotToReg and GetByte , possibly more coming)
+  # Getter is a base class for get instructions (SlotToReg and ByteToReg , possibly more coming)
   #
   # The instruction that is modelled is loading data from an array into a register
   #
