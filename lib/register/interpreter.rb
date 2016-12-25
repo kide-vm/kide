@@ -7,8 +7,8 @@ module Register
   # interpreting it is not so terribly difficult.
   #
   # There is a certain amount of basic machinery to fetch and execute the next instruction
-  # (as a cpu would), and then there is a method for each instruction. Eg an instruction GetSlot
-  # will be executed by method execute_GetSlot
+  # (as a cpu would), and then there is a method for each instruction. Eg an instruction SlotToReg
+  # will be executed by method execute_SlotToReg
   #
   # The Interpreter (a bit like a cpu) has a state flag, a current instruction and registers
   # We collect the stdout (as a hack not to interpret the OS)
@@ -126,7 +126,7 @@ module Register
       true
     end
 
-    def execute_GetSlot
+    def execute_SlotToReg
       object = get_register( @instruction.array )
       if( @instruction.index.is_a?(Numeric) )
         index = @instruction.index

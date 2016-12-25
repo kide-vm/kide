@@ -8,10 +8,10 @@ module Register
 
         def putstring context
           compiler = Typed::MethodCompiler.new.create_method(:Word , :putstring ).init_method
-          compiler.add_code Register.get_slot( "putstring" , :message , :receiver , :new_message )
+          compiler.add_code Register.slot_to_reg( "putstring" , :message , :receiver , :new_message )
           index = Parfait::Word.get_length_index
           reg = RegisterValue.new(:r2 , :Integer)
-          compiler.add_code Register.get_slot( "putstring" , :new_message , index , reg )
+          compiler.add_code Register.slot_to_reg( "putstring" , :new_message , index , reg )
           Kernel.emit_syscall( compiler , :putstring )
           compiler.method
         end

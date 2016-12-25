@@ -14,7 +14,7 @@ module Typed
         if( index = @method.has_arg(name))
           ret = use_reg @method.argument_type(index)
           #puts "For #{name} at #{index} got #{@method.arguments.inspect}"
-          add_code Register.get_slot(statement , :message , index, ret )
+          add_code Register.slot_to_reg(statement , :message , index, ret )
           return ret
         end
         # or a local so it is in the named_list
@@ -27,15 +27,15 @@ module Typed
         index = @method.has_local( statement.name )
         raise "must define variable '#{statement.name}' before using it" unless index
         named_list = use_reg :NamedList
-        add_code Register.get_slot(statement , :message , :locals , named_list )
+        add_code Register.slot_to_reg(statement , :message , :locals , named_list )
         ret = use_reg @method.locals_type( index )
-        add_code Register.get_slot(statement , named_list , index, ret )
+        add_code Register.slot_to_reg(statement , named_list , index, ret )
         return ret
       end
 
       def handle_special_self(statement)
         ret = use_reg @type
-        add_code Register.get_slot(statement , :message , :receiver , ret )
+        add_code Register.slot_to_reg(statement , :message , :receiver , ret )
         return ret
       end
 

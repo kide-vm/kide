@@ -20,13 +20,13 @@ HERE
 
   def test_chain
     #show_ticks # get output of what is
-    check_chain ["Branch","Label","LoadConstant","GetSlot","RegToSlot",
-     "LoadConstant","RegToSlot","FunctionCall","Label","GetSlot",
+    check_chain ["Branch","Label","LoadConstant","SlotToReg","RegToSlot",
+     "LoadConstant","RegToSlot","FunctionCall","Label","SlotToReg",
      "LoadConstant","RegToSlot","LoadConstant","RegToSlot","LoadConstant",
      "RegToSlot","LoadConstant","RegToSlot","LoadConstant","RegToSlot",
      "LoadConstant","RegToSlot","RegisterTransfer","FunctionCall","Label",
-     "GetSlot","GetSlot","GetSlot","SetByte","Label",
-     "FunctionReturn","RegisterTransfer","GetSlot","GetSlot","Label",
+     "SlotToReg","SlotToReg","SlotToReg","SetByte","Label",
+     "FunctionReturn","RegisterTransfer","SlotToReg","SlotToReg","Label",
      "FunctionReturn","RegisterTransfer","Syscall","NilClass"]
   end
 
@@ -42,7 +42,7 @@ HERE
     assert_equal :r2,  @interpreter.instruction.array.symbol
   end
   def test_get
-    assert_equal Register::GetSlot , ticks(4).class
+    assert_equal Register::SlotToReg , ticks(4).class
     assert @interpreter.get_register( :r1 )
     assert Integer , @interpreter.get_register( :r1 ).class
   end

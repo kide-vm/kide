@@ -3,7 +3,7 @@ module Register
   # transfer the constents of one register to another.
   # possibly called move in some cpus
 
-  # There are other instructions to move data from / to memory, namely GetSlot and RegToSlot
+  # There are other instructions to move data from / to memory, namely SlotToReg and RegToSlot
 
   # Get/Set Slot move data around in vm objects, but transfer moves the objects (in the machine)
   #

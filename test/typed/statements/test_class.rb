@@ -20,9 +20,9 @@ class TestClassStatements < MiniTest::Test
     # class_def
     # @input = s(:statements, s(:return, s(:call, s(:name, :buh), s(:arguments), s(:receiver, s(:class_name, :Bar)))))
     #
-    # @expect = [Label, GetSlot, LoadConstant, RegToSlot, LoadConstant, RegToSlot, LoadConstant ,
+    # @expect = [Label, SlotToReg, LoadConstant, RegToSlot, LoadConstant, RegToSlot, LoadConstant ,
     #            RegToSlot, LoadConstant, RegToSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,
-    #            GetSlot, GetSlot, RegToSlot, Label, FunctionReturn]
+    #            SlotToReg, SlotToReg, RegToSlot, Label, FunctionReturn]
     # check
   end
 
@@ -31,7 +31,7 @@ class TestClassStatements < MiniTest::Test
     #FIXME class_field handling unclear at the moment
     # @input =s(:statements, s(:return, s(:field_access, s(:receiver, s(:name, :self)),
     #             s(:field,s(:name, :boo2)))))
-    # @expect =  [Label, GetSlot,GetSlot,RegToSlot,Label,FunctionReturn]
+    # @expect =  [Label, SlotToReg,SlotToReg,RegToSlot,Label,FunctionReturn]
     # check
   end
 end

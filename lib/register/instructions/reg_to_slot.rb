@@ -1,7 +1,7 @@
 module Register
 
   # RegToSlot moves data into memory from a register.
-  # GetSlot moves data into a register from memory.
+  # SlotToReg moves data into a register from memory.
   # Both use a base memory (a register)
 
   # This is because that is what cpu's can do. In programming terms this would be accessing

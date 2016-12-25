@@ -17,14 +17,14 @@ HERE
 
   def test_chain
     #show_ticks # get output of what is
-    check_chain ["Branch","Label","LoadConstant","GetSlot","RegToSlot",
+    check_chain ["Branch","Label","LoadConstant","SlotToReg","RegToSlot",
      "LoadConstant","RegToSlot","FunctionCall","Label","LoadConstant",
      "LoadConstant","OperatorInstruction","RegToSlot","Label","FunctionReturn",
      "RegisterTransfer","Syscall","NilClass"]
   end
 
   def test_get
-    assert_equal Register::GetSlot , ticks(4).class
+    assert_equal Register::SlotToReg , ticks(4).class
     assert @interpreter.get_register( :r2 )
     assert  Integer , @interpreter.get_register( :r2 ).class
   end

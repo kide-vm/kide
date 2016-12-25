@@ -31,7 +31,7 @@ way of generating code is by new of the Class. This is ok for some.
 But often one finds a little massaging of the incoming data is better, while keeping that logic
 out of the Instructions classes. In such cases Module functions are again quite nice. Example:
 
-Instead of GetSlot.new( register, index , register) we use Register.get_slot( name , name , name).
+Instead of SlotToReg.new( register, index , register) we use Register.slot_to_reg( name , name , name).
 All names are resolved to registers, or index via Type. More readable code less repetition.
 
 As the example shows, in this case the module function name should be the instruction class name.

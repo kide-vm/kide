@@ -26,7 +26,7 @@ module Typed
          return nil unless index
       end
       # TODO, check type  @method.locals[index].type
-      add_code Register.get_slot(statement , :message , type , named_list )
+      add_code Register.slot_to_reg(statement , :message , type , named_list )
       return Register.reg_to_slot(statement , value , named_list , index )
     end
   end

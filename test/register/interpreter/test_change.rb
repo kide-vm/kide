@@ -36,7 +36,7 @@ class AddChange < MiniTest::Test
 
   def test_chain
     #show_ticks # get output of what is
-    check_chain ["Branch","Label","LoadConstant","GetSlot","RegToSlot",
+    check_chain ["Branch","Label","LoadConstant","SlotToReg","RegToSlot",
      "LoadConstant","RegToSlot","FunctionCall","Label","LoadConstant",
      "LoadConstant","OperatorInstruction","RegToSlot","Label","FunctionReturn",
      "RegisterTransfer","Syscall","NilClass"]

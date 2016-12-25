@@ -33,18 +33,18 @@ HERE
   end
   def test_if
       #show_ticks # get output of what is
-      check_chain ["Branch","Label","LoadConstant","GetSlot","RegToSlot",
-     "LoadConstant","RegToSlot","FunctionCall","Label","GetSlot",
-     "GetSlot","RegToSlot","LoadConstant","RegToSlot","LoadConstant",
+      check_chain ["Branch","Label","LoadConstant","SlotToReg","RegToSlot",
+     "LoadConstant","RegToSlot","FunctionCall","Label","SlotToReg",
+     "SlotToReg","RegToSlot","LoadConstant","RegToSlot","LoadConstant",
      "RegToSlot","LoadConstant","RegToSlot","LoadConstant","RegToSlot",
-     "RegisterTransfer","FunctionCall","Label","GetSlot","LoadConstant",
-     "OperatorInstruction","IsZero","GetSlot","LoadConstant","RegToSlot",
+     "RegisterTransfer","FunctionCall","Label","SlotToReg","LoadConstant",
+     "OperatorInstruction","IsZero","SlotToReg","LoadConstant","RegToSlot",
      "LoadConstant","RegToSlot","LoadConstant","RegToSlot","LoadConstant",
-     "RegToSlot","RegisterTransfer","FunctionCall","Label","GetSlot",
-     "GetSlot","RegisterTransfer","Syscall","RegisterTransfer","RegisterTransfer",
-     "RegToSlot","Label","FunctionReturn","RegisterTransfer","GetSlot",
-     "GetSlot","Branch","Label","Label","FunctionReturn",
-     "RegisterTransfer","GetSlot","GetSlot","Label","FunctionReturn",
+     "RegToSlot","RegisterTransfer","FunctionCall","Label","SlotToReg",
+     "SlotToReg","RegisterTransfer","Syscall","RegisterTransfer","RegisterTransfer",
+     "RegToSlot","Label","FunctionReturn","RegisterTransfer","SlotToReg",
+     "SlotToReg","Branch","Label","Label","FunctionReturn",
+     "RegisterTransfer","SlotToReg","SlotToReg","Label","FunctionReturn",
      "RegisterTransfer","Syscall","NilClass"]
   end
 end

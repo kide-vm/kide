@@ -8,7 +8,7 @@ module Register
         me = compiler.process( Typed::Tree::NameExpression.new( :self) )
         # Load the argument
         index = compiler.use_reg :Integer
-        compiler.add_code Register.get_slot(source , :message , 1 , index )
+        compiler.add_code Register.slot_to_reg(source , :message , 1 , index )
         return me , index
       end
 
@@ -20,7 +20,7 @@ module Register
       # Load the value
       def load_arg_at(compiler, source , at)
         value = compiler.use_reg :Integer
-        compiler.add_code Register.get_slot(source , :message , at , value )
+        compiler.add_code Register.slot_to_reg(source , :message , at , value )
         value
       end
 

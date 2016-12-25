@@ -1,6 +1,6 @@
 module Register
 
-  # Getter is a base class for get instructions (GetSlot and GetByte , possibly more coming)
+  # Getter is a base class for get instructions (SlotToReg and GetByte , possibly more coming)
   #
   # The instruction that is modelled is loading data from an array into a register
   #
@@ -16,7 +16,7 @@ module Register
     # If you had a c array and index offset
     # the instruction would do register = array[index]
     # The arguments are in the order that makes sense for the Instruction name
-    # So GetSlot means the slot (array and index) moves to the register (last argument)
+    # So SlotToReg means the slot (array and index) moves to the register (last argument)
     def initialize source , array , index , register
       super(source)
       @array = array

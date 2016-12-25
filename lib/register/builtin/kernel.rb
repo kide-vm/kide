@@ -19,7 +19,7 @@ module Register
           compiler.add_code LoadConstant.new(source, space , space_reg)
           message_ind = Register.resolve_index( :space , :first_message )
           # Load the message to new message register (r1)
-          compiler.add_code Register.get_slot( source , space_reg , message_ind , :message)
+          compiler.add_code Register.slot_to_reg( source , space_reg , message_ind , :message)
           # And store the space as the new self (so the call can move it back as self)
           compiler.add_code Register.reg_to_slot( source, space_reg , :message , :receiver)
           exit_label = Label.new("_exit_label" , "#{compiler.type.object_class.name}.#{compiler.method.name}" )

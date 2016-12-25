@@ -37,7 +37,7 @@ module Arm
       ArmMachine.mov( code.to , code.from)
     end
 
-    def translate_GetSlot( code )
+    def translate_SlotToReg( code )
       ArmMachine.ldr( *slot_args_for(code) )
     end
 
