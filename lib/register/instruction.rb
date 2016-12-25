@@ -119,7 +119,7 @@ end
 
 require_relative "instructions/setter"
 require_relative "instructions/getter"
-require_relative "instructions/set_slot"
+require_relative "instructions/reg_to_slot"
 require_relative "instructions/get_slot"
 require_relative "instructions/set_byte"
 require_relative "instructions/get_byte"

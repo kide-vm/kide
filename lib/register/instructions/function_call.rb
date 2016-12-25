@@ -20,7 +20,7 @@ module Register
     return_label = Label.new("_return_label" , "#{compiler.type.object_class.name}.#{compiler.method.name}" )
     ret_tmp = compiler.use_reg(:Label)
     compiler.add_code Register::LoadConstant.new(source, return_label , ret_tmp)
-    compiler.add_code Register.set_slot(source, ret_tmp , :new_message , :return_address)
+    compiler.add_code Register.reg_to_slot(source, ret_tmp , :new_message , :return_address)
     # move the current new_message to message
     compiler.add_code RegisterTransfer.new(source, Register.new_message_reg , Register.message_reg )
     # do the register call

@@ -1,5 +1,5 @@
 module Register
-  # Setter is a base class for set instructions (SetSlot and SetByte , possibly more coming)
+  # Setter is a base class for set instructions (RegToSlot and SetByte , possibly more coming)
   #
   # The instruction that is modelled is loading data from a register into an array
   #

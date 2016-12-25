@@ -144,7 +144,7 @@ module Register
       true
     end
 
-    def execute_SetSlot
+    def execute_RegToSlot
       value = get_register( @instruction.register )
       object = get_register( @instruction.array )
       if( @instruction.index.is_a?(Numeric) )

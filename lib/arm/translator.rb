@@ -41,7 +41,7 @@ module Arm
       ArmMachine.ldr( *slot_args_for(code) )
     end
 
-    def translate_SetSlot( code )
+    def translate_RegToSlot( code )
       ArmMachine.str( *slot_args_for(code) )
     end
 

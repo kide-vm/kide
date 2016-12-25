@@ -27,7 +27,7 @@ module Typed
       end
       # TODO, check type  @method.locals[index].type
       add_code Register.get_slot(statement , :message , type , named_list )
-      return Register.set_slot(statement , value , named_list , index )
+      return Register.reg_to_slot(statement , value , named_list , index )
     end
   end
 end

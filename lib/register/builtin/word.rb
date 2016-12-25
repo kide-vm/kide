@@ -25,7 +25,7 @@ module Register
           # reduce me to me[index]
           compiler.add_code GetByte.new( source , me , index , me)
           # and put it back into the return value
-          compiler.add_code Register.set_slot( source , me , :message , :return_value)
+          compiler.add_code Register.reg_to_slot( source , me , :message , :return_value)
           return compiler.method
         end
 

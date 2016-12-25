@@ -32,17 +32,17 @@ HERE
                   s(:false_statements, s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "else"))))))
   end
   def test_if
-      show_ticks # get output of what is
-      check_chain ["Branch","Label","LoadConstant","GetSlot","SetSlot",
-     "LoadConstant","SetSlot","FunctionCall","Label","GetSlot",
-     "GetSlot","SetSlot","LoadConstant","SetSlot","LoadConstant",
-     "SetSlot","LoadConstant","SetSlot","LoadConstant","SetSlot",
+      #show_ticks # get output of what is
+      check_chain ["Branch","Label","LoadConstant","GetSlot","RegToSlot",
+     "LoadConstant","RegToSlot","FunctionCall","Label","GetSlot",
+     "GetSlot","RegToSlot","LoadConstant","RegToSlot","LoadConstant",
+     "RegToSlot","LoadConstant","RegToSlot","LoadConstant","RegToSlot",
      "RegisterTransfer","FunctionCall","Label","GetSlot","LoadConstant",
-     "OperatorInstruction","IsZero","GetSlot","LoadConstant","SetSlot",
-     "LoadConstant","SetSlot","LoadConstant","SetSlot","LoadConstant",
-     "SetSlot","RegisterTransfer","FunctionCall","Label","GetSlot",
+     "OperatorInstruction","IsZero","GetSlot","LoadConstant","RegToSlot",
+     "LoadConstant","RegToSlot","LoadConstant","RegToSlot","LoadConstant",
+     "RegToSlot","RegisterTransfer","FunctionCall","Label","GetSlot",
      "GetSlot","RegisterTransfer","Syscall","RegisterTransfer","RegisterTransfer",
-     "SetSlot","Label","FunctionReturn","RegisterTransfer","GetSlot",
+     "RegToSlot","Label","FunctionReturn","RegisterTransfer","GetSlot",
      "GetSlot","Branch","Label","Label","FunctionReturn",
      "RegisterTransfer","GetSlot","GetSlot","Label","FunctionReturn",
      "RegisterTransfer","Syscall","NilClass"]

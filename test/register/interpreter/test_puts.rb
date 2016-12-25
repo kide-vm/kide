@@ -17,12 +17,12 @@ HERE
 
   def test_chain
     #show_ticks # get output of what is
-    check_chain ["Branch","Label","LoadConstant","GetSlot","SetSlot",
-     "LoadConstant","SetSlot","FunctionCall","Label","GetSlot",
-     "LoadConstant","SetSlot","LoadConstant","SetSlot","LoadConstant",
-     "SetSlot","LoadConstant","SetSlot","RegisterTransfer","FunctionCall",
+    check_chain ["Branch","Label","LoadConstant","GetSlot","RegToSlot",
+     "LoadConstant","RegToSlot","FunctionCall","Label","GetSlot",
+     "LoadConstant","RegToSlot","LoadConstant","RegToSlot","LoadConstant",
+     "RegToSlot","LoadConstant","RegToSlot","RegisterTransfer","FunctionCall",
      "Label","GetSlot","GetSlot","RegisterTransfer","Syscall",
-     "RegisterTransfer","RegisterTransfer","SetSlot","Label","FunctionReturn",
+     "RegisterTransfer","RegisterTransfer","RegToSlot","Label","FunctionReturn",
      "RegisterTransfer","GetSlot","GetSlot","Label","FunctionReturn",
      "RegisterTransfer","Syscall","NilClass"]
   end

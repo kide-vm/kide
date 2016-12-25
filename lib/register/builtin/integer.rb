@@ -65,7 +65,7 @@ module Register
           compiler.add_code Register.op( s , ">>" , tmp , const )
           # return q + tmp
           compiler.add_code Register.op( s , "+" , q , tmp )
-          compiler.add_code Register.set_slot( s , q , :message , :return_value)
+          compiler.add_code Register.reg_to_slot( s , q , :message , :return_value)
           return compiler.method
         end
       end

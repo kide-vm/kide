@@ -16,7 +16,7 @@ module Register
           # reduce me to me[index]
           compiler.add_code  GetSlot.new( source , me , index , me)
           # and put it back into the return value
-          compiler.add_code Register.set_slot( source , me , :message , :return_value)
+          compiler.add_code Register.reg_to_slot( source , me , :message , :return_value)
           return compiler.method
         end
 
@@ -29,7 +29,7 @@ module Register
           value = load_arg_at(compiler,source , 2)
 
           # do the set
-          compiler.add_code SetSlot.new( source , value , me , index)
+          compiler.add_code RegToSlot.new( source , value , me , index)
           return compiler.method
         end
 

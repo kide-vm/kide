@@ -11,7 +11,7 @@ module Typed
       me = get_me( statement )
       type = get_my_type(me)
       # move our receiver there
-      add_code Register.set_slot( statement , me , :new_message , :receiver)
+      add_code Register.reg_to_slot( statement , me , :new_message , :receiver)
 
       set_message_details(statement , statement.arguments)
       set_arguments(statement.arguments)
@@ -62,18 +62,18 @@ module Typed
       name = name_s.name
       name_tmp = use_reg(:Word)
       add_code Register::LoadConstant.new(name_s, name , name_tmp)
-      add_code Register.set_slot( name_s , name_tmp , :new_message , :name)
+      add_code Register.reg_to_slot( name_s , name_tmp , :new_message , :name)
       # next arg and local types
       args_reg = use_reg(:Type , @method.arguments )
       list_reg = use_reg(:NamedList , arguments )
       add_code Register::LoadConstant.new(name_s, @method , args_reg)
       add_code Register.get_slot( name_s , :message , :arguments , list_reg )
-      add_code Register.set_slot( name_s , args_reg , list_reg , 1  )
+      add_code Register.reg_to_slot( name_s , args_reg , list_reg , 1  )
 
 #FIXME need to set type of locals too. sama sama
 #      len_tmp = use_reg(:Integer , arguments.to_a.length )
 #      add_code Register::LoadConstant.new(name_s, arguments.to_a.length , len_tmp)
-#      add_code Register.set_slot( name_s , len_tmp , :new_message , :indexed_length)
+#      add_code Register.reg_to_slot( name_s , len_tmp , :new_message , :indexed_length)
     end
     def set_arguments arguments
       # reset tmp regs for each and load result into new_message
@@ -85,7 +85,7 @@ module Typed
         list_reg = use_reg(:NamedList , arguments )
         add_code Register.get_slot( "Set arg #{i}#{arg}" , :message , :arguments , list_reg )
         # which we load int the new_message at the argument's index (the one comes from c index)
-        set = Register.set_slot( arg , val , list_reg , i + 1 )
+        set = Register.reg_to_slot( arg , val , list_reg , i + 1 )
         add_code set
       end
     end

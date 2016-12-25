@@ -21,11 +21,11 @@ module Register
           # Load the message to new message register (r1)
           compiler.add_code Register.get_slot( source , space_reg , message_ind , :message)
           # And store the space as the new self (so the call can move it back as self)
-          compiler.add_code Register.set_slot( source, space_reg , :message , :receiver)
+          compiler.add_code Register.reg_to_slot( source, space_reg , :message , :receiver)
           exit_label = Label.new("_exit_label" , "#{compiler.type.object_class.name}.#{compiler.method.name}" )
           ret_tmp = compiler.use_reg(:Label)
           compiler.add_code Register::LoadConstant.new(source, exit_label , ret_tmp)
-          compiler.add_code Register.set_slot(source, ret_tmp , :message , :return_address)
+          compiler.add_code Register.reg_to_slot(source, ret_tmp , :message , :return_address)
           # do the register call
           compiler.add_code FunctionCall.new( source ,  Register.machine.space.get_main )
           compiler.add_code exit_label
@@ -65,7 +65,7 @@ module Register
           # load the stored message into the base RegisterMachine
           compiler.add_code RegisterTransfer.new(source, r8 , Register.message_reg )
           # save the return value into the message
-          compiler.add_code Register.set_slot( source , return_tmp , :message , :return_value )
+          compiler.add_code Register.reg_to_slot( source , return_tmp , :message , :return_value )
         end
       end
       extend ClassMethods
