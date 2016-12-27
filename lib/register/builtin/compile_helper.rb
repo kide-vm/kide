@@ -4,12 +4,9 @@ module Register
     module CompileHelper
 
       def self_and_int_arg(compiler , source)
-        #Load self by "calling" on_name
         me = compiler.process( Typed::Tree::NameExpression.new( :self) )
-        # Load the argument
-        index = compiler.use_reg :Integer
-        compiler.add_code Register.slot_to_reg(source , :message , 1 , index )
-        return me , index
+        int_arg = load_int_arg_at(compiler , source , 1 )
+        return me , int_arg
       end
 
       def compiler_for( type , method_name , extra_args = {})
@@ -18,10 +15,11 @@ module Register
       end
 
       # Load the value
-      def load_arg_at(compiler, source , at)
-        value = compiler.use_reg :Integer
-        compiler.add_code Register.slot_to_reg(source , :message , at , value )
-        value
+      def load_int_arg_at(compiler, source , at)
+        int_arg = compiler.use_reg :Integer
+        compiler.add_code Register.slot_to_reg(source , :message , :arguments , int_arg )
+        compiler.add_code Register.slot_to_reg(source , int_arg , at + 1, int_arg ) #1 for type
+        return int_arg
       end
 
     end

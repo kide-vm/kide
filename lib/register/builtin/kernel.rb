@@ -6,28 +6,22 @@ module Register
         # it isn't really a function, ie it is jumped to (not called), exits and may not return
         # so it is responsible for initial setup
         def __init__ context
-          source = "__init__"
           compiler = Typed::MethodCompiler.new.create_method(:Kernel,:__init__ )
-          # no method enter or return (automatically added), remove
-          new_start = Label.new(source , source )
+          new_start = Label.new("__init__ start" , "__init__" )
           compiler.method.instructions = new_start
           compiler.set_current new_start
 
-          #Set up the Space as self upon init
           space = Parfait::Space.object_space
-          space_reg = compiler.use_reg(:Space)
-          compiler.add_code LoadConstant.new(source, space , space_reg)
+          space_reg = compiler.use_reg(:Space) #Set up the Space as self upon init
+          compiler.add_code LoadConstant.new("__init__ load Space", space , space_reg)
           message_ind = Register.resolve_index( :space , :first_message )
-          # Load the message to new message register (r1)
-          compiler.add_code Register.slot_to_reg( source , space_reg , message_ind , :message)
-          # And store the space as the new self (so the call can move it back as self)
-          compiler.add_code Register.reg_to_slot( source, space_reg , :message , :receiver)
-          exit_label = Label.new("_exit_label" , "#{compiler.type.object_class.name}.#{compiler.method.name}" )
+          compiler.add_code Register.slot_to_reg( "__init__ load 1st message" , space_reg , message_ind , :message)
+          compiler.add_code Register.reg_to_slot( "__init__ store Space in message", space_reg , :message , :receiver)
+          exit_label = Label.new("_exit_label for __init__" , "#{compiler.type.object_class.name}.#{compiler.method.name}" )
           ret_tmp = compiler.use_reg(:Label)
-          compiler.add_code Register::LoadConstant.new(source, exit_label , ret_tmp)
-          compiler.add_code Register.reg_to_slot(source, ret_tmp , :message , :return_address)
-          # do the register call
-          compiler.add_code FunctionCall.new( source ,  Register.machine.space.get_main )
+          compiler.add_code Register::LoadConstant.new("__init__ load return", exit_label , ret_tmp)
+          compiler.add_code Register.reg_to_slot("__init__ store return", ret_tmp , :message , :return_address)
+          compiler.add_code FunctionCall.new( "__init__ issue call" ,  Register.machine.space.get_main )
           compiler.add_code exit_label
           emit_syscall( compiler , :exit )
           return compiler.method
