@@ -1,6 +1,6 @@
 require_relative "helper"
 
-class IfTest < MiniTest::Test
+class IfCalledTest < MiniTest::Test
   include Ticker
   include Compiling
 
@@ -36,15 +36,16 @@ HERE
       check_chain ["Branch","Label","LoadConstant","SlotToReg","RegToSlot",
      "LoadConstant","RegToSlot","FunctionCall","Label","SlotToReg",
      "SlotToReg","RegToSlot","LoadConstant","RegToSlot","LoadConstant",
-     "RegToSlot","LoadConstant","RegToSlot","LoadConstant","RegToSlot",
-     "RegisterTransfer","FunctionCall","Label","SlotToReg","LoadConstant",
-     "OperatorInstruction","IsZero","SlotToReg","LoadConstant","RegToSlot",
-     "LoadConstant","RegToSlot","LoadConstant","RegToSlot","LoadConstant",
-     "RegToSlot","RegisterTransfer","FunctionCall","Label","SlotToReg",
-     "SlotToReg","RegisterTransfer","Syscall","RegisterTransfer","RegisterTransfer",
-     "RegToSlot","Label","FunctionReturn","RegisterTransfer","SlotToReg",
-     "SlotToReg","Branch","Label","Label","FunctionReturn",
-     "RegisterTransfer","SlotToReg","SlotToReg","Label","FunctionReturn",
-     "RegisterTransfer","Syscall","NilClass"]
+     "SlotToReg","SlotToReg","RegToSlot","LoadConstant","SlotToReg",
+     "RegToSlot","LoadConstant","RegToSlot","RegisterTransfer","FunctionCall",
+     "Label","SlotToReg","SlotToReg","LoadConstant","OperatorInstruction",
+     "IsZero","SlotToReg","LoadConstant","RegToSlot","LoadConstant",
+     "RegToSlot","LoadConstant","SlotToReg","SlotToReg","RegToSlot",
+     "LoadConstant","RegToSlot","RegisterTransfer","FunctionCall","Label",
+     "SlotToReg","SlotToReg","RegisterTransfer","Syscall","RegisterTransfer",
+     "RegisterTransfer","RegToSlot","Label","FunctionReturn","RegisterTransfer",
+     "SlotToReg","SlotToReg","Branch","Label","Label",
+     "FunctionReturn","RegisterTransfer","SlotToReg","SlotToReg","Label",
+     "FunctionReturn","RegisterTransfer","Syscall","NilClass"]
   end
 end

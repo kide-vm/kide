@@ -8,8 +8,8 @@ class TestCallStatement < MiniTest::Test
     clean_compile :Integer, :puti, {}, s(:statements, s(:return, s(:int, 1)))
     @input = s(:call, s(:name, :puti), s(:arguments), s(:receiver, s(:int, 42)))
     @expect =  [Label, SlotToReg, LoadConstant, RegToSlot, LoadConstant, RegToSlot, LoadConstant ,
-               RegToSlot, LoadConstant, RegToSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,
-               SlotToReg, SlotToReg, Label, FunctionReturn]
+                 SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer, FunctionCall ,
+                 Label, RegisterTransfer, SlotToReg, SlotToReg, Label, FunctionReturn]
     check
   end
 
@@ -19,8 +19,8 @@ class TestCallStatement < MiniTest::Test
 
     @input =s(:call, s(:name, :putstr), s(:arguments), s(:receiver, s(:string, "Hello")))
     @expect =  [Label, SlotToReg, LoadConstant, RegToSlot, LoadConstant, RegToSlot, LoadConstant ,
-               RegToSlot, LoadConstant, RegToSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,
-               SlotToReg, SlotToReg, Label, FunctionReturn]
+                 SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer, FunctionCall ,
+                 Label, RegisterTransfer, SlotToReg, SlotToReg, Label, FunctionReturn]
     check
   end
 
@@ -42,9 +42,9 @@ class TestCallStatement < MiniTest::Test
 
     @input =s(:statements, s(:call, s(:name, :add), s(:arguments), s(:receiver, s(:name, :test_l))))
     @expect = [Label, SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot ,
-               LoadConstant, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer, FunctionCall, Label ,
-               RegisterTransfer, SlotToReg, SlotToReg, Label, FunctionReturn]
-  check
+                 LoadConstant, SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer ,
+                 FunctionCall, Label, RegisterTransfer, SlotToReg, SlotToReg, Label, FunctionReturn]
+    check
   end
 
   def _test_call_puts

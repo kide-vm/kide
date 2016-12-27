@@ -20,10 +20,10 @@ module Register
                     s(:receiver, s(:name, :main)), s(:field, s(:name, :name)))))
       @input =s(:statements, s(:return, s(:call, s(:name, :get_name), s(:arguments, s(:name, :m)))))
 
-      @expect =  [Label, SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot, LoadConstant ,
-                 RegToSlot, SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer ,
-                 FunctionCall, Label, RegisterTransfer, SlotToReg, SlotToReg, RegToSlot, Label ,
-                 FunctionReturn]
+      @expect = [ Label, SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot, LoadConstant ,
+                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg, RegToSlot ,
+                 LoadConstant, RegToSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer, SlotToReg ,
+                 SlotToReg, RegToSlot, Label, FunctionReturn]
       check
     end
 

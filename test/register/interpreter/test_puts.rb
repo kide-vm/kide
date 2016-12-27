@@ -20,11 +20,11 @@ HERE
     check_chain ["Branch","Label","LoadConstant","SlotToReg","RegToSlot",
      "LoadConstant","RegToSlot","FunctionCall","Label","SlotToReg",
      "LoadConstant","RegToSlot","LoadConstant","RegToSlot","LoadConstant",
-     "RegToSlot","LoadConstant","RegToSlot","RegisterTransfer","FunctionCall",
-     "Label","SlotToReg","SlotToReg","RegisterTransfer","Syscall",
-     "RegisterTransfer","RegisterTransfer","RegToSlot","Label","FunctionReturn",
-     "RegisterTransfer","SlotToReg","SlotToReg","Label","FunctionReturn",
-     "RegisterTransfer","Syscall","NilClass"]
+     "SlotToReg","SlotToReg","RegToSlot","LoadConstant","RegToSlot",
+     "RegisterTransfer","FunctionCall","Label","SlotToReg","SlotToReg",
+     "RegisterTransfer","Syscall","RegisterTransfer","RegisterTransfer","RegToSlot",
+     "Label","FunctionReturn","RegisterTransfer","SlotToReg","SlotToReg",
+     "Label","FunctionReturn","RegisterTransfer","Syscall","NilClass"]
   end
 
   def test_branch
@@ -48,13 +48,13 @@ HERE
   end
 
   def test_putstring
-    done = ticks(25)
+    done = ticks(27)
     assert_equal Register::Syscall ,  done.class
     assert_equal "Hello again" , @interpreter.stdout
   end
 
   def test_return
-    done = ticks(30)
+    done = ticks(32)
     assert_equal Register::FunctionReturn ,  done.class
     assert Register::Label , @interpreter.instruction.class
     assert @interpreter.instruction.is_a?(Register::Instruction) , "not instruction #{@interpreter.instruction}"

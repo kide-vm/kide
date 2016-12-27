@@ -23,11 +23,12 @@ HERE
     check_chain ["Branch","Label","LoadConstant","SlotToReg","RegToSlot",
      "LoadConstant","RegToSlot","FunctionCall","Label","SlotToReg",
      "LoadConstant","RegToSlot","LoadConstant","RegToSlot","LoadConstant",
-     "RegToSlot","LoadConstant","RegToSlot","LoadConstant","RegToSlot",
-     "RegisterTransfer","FunctionCall","Label","SlotToReg","SlotToReg",
-     "ByteToReg","RegToSlot","Label","FunctionReturn","RegisterTransfer",
-     "SlotToReg","SlotToReg","Label","FunctionReturn","RegisterTransfer",
-     "Syscall","NilClass"]
+     "SlotToReg","SlotToReg","RegToSlot","LoadConstant","SlotToReg",
+     "RegToSlot","LoadConstant","RegToSlot","RegisterTransfer","FunctionCall",
+     "Label","SlotToReg","SlotToReg","SlotToReg","ByteToReg",
+     "RegToSlot","Label","FunctionReturn","RegisterTransfer","SlotToReg",
+     "SlotToReg","Label","FunctionReturn","RegisterTransfer","Syscall",
+     "NilClass"]
   end
 
   def test_branch
@@ -50,12 +51,12 @@ HERE
     assert_equal Register::FunctionCall ,  ticks(8).class
   end
   def test_exit
-    done = ticks(37)
+    done = ticks(41)
     assert_equal NilClass ,  done.class
   end
 
   def test_byte_to_reg
-    done = ticks(26)
+    done = ticks(30)
     assert_equal Register::ByteToReg ,  done.class
     assert_equal "H".ord ,  @interpreter.get_register(done.register)
   end

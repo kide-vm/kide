@@ -28,8 +28,8 @@ class TestReturnStatement < MiniTest::Test
   def test_return_call
     @input =s(:statements, s(:return, s(:call, s(:name, :main), s(:arguments))))
     @expect =  [Label, SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot, LoadConstant ,
-               RegToSlot, LoadConstant, RegToSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,
-               SlotToReg, SlotToReg, RegToSlot, Label, FunctionReturn]
+                 SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer, FunctionCall ,
+                 Label, RegisterTransfer, SlotToReg, SlotToReg, RegToSlot, Label, FunctionReturn]
     check
   end
 
