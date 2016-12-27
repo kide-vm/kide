@@ -10,13 +10,19 @@ module Typed
       add_code Register.slot_to_reg(statement, :message , :next_message , new_message )
       me = get_me( statement )
       type = get_my_type(me)
+
+      method = type.get_instance_method(statement.name)
+      raise "Method not implemented #{type.inspect}.#{statement.name}" unless method
+
       # move our receiver there
       add_code Register.reg_to_slot( statement , me , :new_message , :receiver)
 
-      set_message_details(statement , statement.arguments)
-      set_arguments(statement.arguments)
+      set_message_details(method , statement , statement.arguments)
+      set_arguments(method , statement.arguments)
       ret = use_reg( :Integer ) #FIXME real return type
-      do_call(type , statement)
+
+      Register.issue_call( self , method )
+
       # the effect of the method is that the NewMessage Return slot will be filled, return it
       # but move it into a register too
       add_code Register.slot_to_reg(statement, :new_message , :return_value , ret )
@@ -48,44 +54,44 @@ module Typed
       type
     end
 
-    def do_call( type , statement )
-      name = statement.name
-      #puts "type #{type.inspect}"
-      method = type.get_instance_method(name)
-      #puts type.method_names.to_a
-      raise "Method not implemented #{type.inspect}.#{name}" unless method
-      Register.issue_call( self , method )
-    end
-
     # load method name and set to new message (for exceptions/debug)
-    def set_message_details name_s , arguments
+    def set_message_details( method , name_s , arguments )
       name = name_s.name
       name_tmp = use_reg(:Word)
-      add_code Register::LoadConstant.new(name_s, name , name_tmp)
-      add_code Register.reg_to_slot( name_s , name_tmp , :new_message , :name)
+      add_code Register::LoadConstant.new("#{name} load method name", name , name_tmp)
+      add_code Register.reg_to_slot( "#{name} store method name" , name_tmp , :new_message , :name)
       # next arg and local types
-      args_reg = use_reg(:Type , @method.arguments )
+      args_reg = use_reg(:Type , method.arguments )
       list_reg = use_reg(:NamedList , arguments )
-      add_code Register::LoadConstant.new(name_s, @method , args_reg)
-      add_code Register.slot_to_reg( name_s , :message , :arguments , list_reg )
-      add_code Register.reg_to_slot( name_s , args_reg , list_reg , 1  )
+      add_code Register::LoadConstant.new("#{name} load methods", method , args_reg)
+      args_type_index = method.get_type().variable_index(:arguments)
+      raise args_type_index.to_s unless args_type_index == 6
+      add_code Register.slot_to_reg( "#{name} get args type from method" , args_reg ,  args_type_index ,  args_reg  )
+      add_code Register.slot_to_reg( "#{name} get args from method" , :new_message , :arguments , list_reg )
+      add_code Register.reg_to_slot( "#{name} store args type in args" , args_reg , list_reg , 1  )
 
 #FIXME need to set type of locals too. sama sama
 #      len_tmp = use_reg(:Integer , arguments.to_a.length )
 #      add_code Register::LoadConstant.new(name_s, arguments.to_a.length , len_tmp)
 #      add_code Register.reg_to_slot( name_s , len_tmp , :new_message , :indexed_length)
     end
-    def set_arguments arguments
+
+    def set_arguments( method , arguments )
       # reset tmp regs for each and load result into new_message
-      arguments.to_a.each_with_index do |arg , i|
+      arg_type = method.arguments
+      message = "Arg number mismatch, method=#{arg_type.instance_length - 1} , call=#{arguments.length}"
+      raise  message if (arg_type.instance_length - 1 ) != arguments.length
+      arguments.each_with_index do |arg , i |
         reset_regs
         # processing should return the register with the value
         val = process( arg)
         raise "Not register #{val}" unless val.is_a?(Register::RegisterValue)
+        #FIXME definately needs some tests
+        raise "TypeMismatch calling with #{val.type} , instead of #{arg_type.type_at(i + 2)}" if val.type != arg_type.type_at(i + 2)
         list_reg = use_reg(:NamedList , arguments )
-        add_code Register.slot_to_reg( "Set arg #{i}#{arg}" , :message , :arguments , list_reg )
-        # which we load int the new_message at the argument's index (the one comes from c index)
-        set = Register.reg_to_slot( arg , val , list_reg , i + 1 )
+        add_code Register.slot_to_reg( "Set arg #{i}:#{arg}" , :new_message , :arguments , list_reg )
+        # which we load int the new_message at the argument's index
+        set = Register.reg_to_slot( arg , val , list_reg , i + 2 ) #one for type and one for ruby
         add_code set
       end
     end
