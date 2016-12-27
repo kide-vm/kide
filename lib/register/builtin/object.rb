@@ -26,7 +26,7 @@ module Register
           compiler = compiler_for(:Object , :set_internal_word , {:value => :Object} )
           source = "set_internal_word"
           me , index = self_and_int_arg(compiler,source)
-          value = load_arg_at(compiler,source , 2)
+          value = load_int_arg_at(compiler,source , 2)
 
           # do the set
           compiler.add_code RegToSlot.new( source , value , me , index)

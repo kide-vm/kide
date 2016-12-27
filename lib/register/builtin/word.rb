@@ -34,9 +34,12 @@ module Register
         # no return
         def set_internal_byte context
           compiler = compiler_for(:Word, :set_internal_byte , {:value => :Integer} )
+          args = compiler.method.arguments
+          len = args.instance_length
+          raise "Compiler arg number mismatch, method=#{args} " if  len != 3
           source = "set_internal_byte"
           me , index = self_and_int_arg(compiler,source)
-          value = load_arg_at(compiler , source , 2 )
+          value = load_int_arg_at(compiler , source , 2 )
           # do the set
           compiler.add_code RegToByte.new( source , value , me , index)
           return compiler.method

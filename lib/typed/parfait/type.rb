@@ -60,14 +60,18 @@ module Parfait
       hash_code.to_sym
     end
 
-    def initialize( object_class , hash = nil)
+    def initialize( object_class , hash = {})
       super()
       private_add_instance_variable :type ,:Type
       self.object_class = object_class
       hash.each do |name , type|
         private_add_instance_variable(name , type) unless name == :type
-      end if hash
+      end
       self.instance_methods = List.new
+    end
+
+    def to_s
+      ""
     end
 
     def methods
