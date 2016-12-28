@@ -124,7 +124,7 @@ module Register
           :Kernel => {}, #fix, kernel is a class, but should be a module
           :BinaryCode => {:char_length => :Integer} ,
           :Space => {:classes => :Dictionary , :types => :Dictionary , :first_message => :Message},
-          :NamedList => {:next_list => :NamedList},
+          :NamedList => {},
           :Type => {:object_class => :Class, :instance_methods => :List , :indexed_length => :Integer} ,
           :Class => {:instance_methods => :List, :instance_type => :Type, :name => :Word,
                       :super_class_name => :Word , :instance_names => :List },

@@ -13,11 +13,6 @@ class TestNamedLists < MiniTest::Test
     assert @named_list.get_instance_variables
   end
 
-  def test_named_list_next_set
-    @named_list.next_list = :next_list
-    assert_equal :next_list , @named_list.next_list
-  end
-
   def test_new
     list = Parfait::NamedList.new
     assert list.get_type
