@@ -61,9 +61,17 @@ module Parfait
     end
 
     def self.str_hash(str)
-      str = str.hash
+      if RUBY_ENGINE == "OPAL"
+        hash = 5381
+        str.to_s.each_char do |c|
+          hash = ((hash << 5) + hash) + c.to_i; # hash * 33 + c  without getting bignums
+        end
+        hash % (2 ** 51)
+      else
+        str.hash
+      end
     end
-    
+
     def initialize( object_class , hash = {})
       super()
       private_add_instance_variable :type ,:Type
