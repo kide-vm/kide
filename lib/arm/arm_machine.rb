@@ -77,7 +77,6 @@ module Arm
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
-        first = Register::RegisterValue.convert(first)
         clazz.new(first , options)
       end
     end
@@ -88,8 +87,6 @@ module Arm
       def_method(inst) do |left ,right , options = nil|
         options = {} if options == nil
         options.merge defaults
-        left = Register::RegisterValue.convert(left)
-        right = Register::RegisterValue.convert(right)
         options[:opcode] = inst
         clazz.new(left , right ,options)
       end
@@ -102,9 +99,6 @@ module Arm
         options = {} if options == nil
         options.merge defaults
         options[:opcode] = inst
-        result = Register::RegisterValue.convert(result)
-        left = Register::RegisterValue.convert(left)
-        right = Register::RegisterValue.convert(right)
         clazz.new(result, left , right ,options)
       end
     end
