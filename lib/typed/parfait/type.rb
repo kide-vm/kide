@@ -61,7 +61,7 @@ module Parfait
     end
 
     def self.str_hash(str)
-      if RUBY_ENGINE == "OPAL"
+      if RUBY_ENGINE == 'opal'
         hash = 5381
         str.to_s.each_char do |c|
           hash = ((hash << 5) + hash) + c.to_i; # hash * 33 + c  without getting bignums
