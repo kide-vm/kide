@@ -4,7 +4,7 @@ module Typed
       attr_accessor :branch_type , :condition , :statements
       def to_s
         str = "while_#{branch_type}(#{condition}) do\n"
-        str + statements.join(" ") + "\nend\n"
+        str + statements.to_s + "\nend\n"
       end
     end
   end
