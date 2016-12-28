@@ -6,6 +6,7 @@ module ExpressionHelper
     Register.machine.boot unless Register.machine.booted
     compiler = Typed::MethodCompiler.new Register.machine.space.get_main
     code = Typed.ast_to_code @input
+    assert code.to_s , @input
     produced = compiler.process( code )
     assert @output , "No output given"
     assert_equal produced.class , @output , "Wrong class"

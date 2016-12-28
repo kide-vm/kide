@@ -21,7 +21,7 @@ module Typed
     end
     class FalseExpression < Expression
       def to_s
-        false
+        "false"
       end
     end
     class NilExpression < Expression

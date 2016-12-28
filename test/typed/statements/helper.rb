@@ -13,7 +13,9 @@ module Statements
   def check
     assert @expect , "No output given"
     compiler = Typed::MethodCompiler.new
-    produced = compiler.process( Typed.ast_to_code( @input) )
+    code = Typed.ast_to_code( @input )
+    assert code.to_s , @input
+    produced = compiler.process( code )
     produced = Register.machine.space.get_main.instructions
     compare_instructions produced , @expect
     produced
