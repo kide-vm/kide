@@ -7,15 +7,6 @@ module Register
 
   class ByteToReg < Getter
 
-    # If you had a c array (of int8) and index offset
-    # the instruction would do register = array[index]
-    # The arguments are in the order that makes sense for the Instruction name
-    # So SlotToReg means the slot (array and index) moves to the register (last argument)
-    # def initialize source , array , index , register
-    #   super
-    # end
-    # attr_accessor :array , :index , :register
-
   end
 
   # Produce a ByteToReg instruction.

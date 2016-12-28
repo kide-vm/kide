@@ -11,15 +11,6 @@ module Register
 
   class RegToSlot < Setter
 
-    # If you had a c array and index offset
-    # the instruction would do array[index] = register
-    # So RegToSlot means the register (first argument) moves to the slot (array and index)
-
-    # def initialize source , register , array , index
-    # super
-    # end
-    # attr_accessor :register , :array , :index
-
   end
 
   # Produce a RegToSlot instruction.
