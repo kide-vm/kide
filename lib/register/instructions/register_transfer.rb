@@ -29,7 +29,7 @@ module Register
       "RegisterTransfer: #{from} -> #{to}"
     end
   end
-  def self.transfer source , from , to
-    RegisterTransfer.new source , from , to
+  def self.transfer( source , from , to)
+    RegisterTransfer.new( source , from , to)
   end
 end

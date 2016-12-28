@@ -51,7 +51,7 @@ module Typed
 
       def handle_special_message(statement)
         reg = use_reg :Message
-        add_code Register::RegisterTransfer.new( "#{statement} load message", Register.message_reg , reg )
+        add_code Register.transfer( "#{statement} load message", Register.message_reg , reg )
         return reg
       end
   end #module

@@ -47,7 +47,7 @@ module Register
         #
         def save_message(compiler)
           r8 = RegisterValue.new( :r8 , :Message)
-          compiler.add_code RegisterTransfer.new("save_message", Register.message_reg , r8 )
+          compiler.add_code Register.transfer("save_message", Register.message_reg , r8 )
         end
 
         def restore_message(compiler)
@@ -55,9 +55,9 @@ module Register
           return_tmp = Register.tmp_reg :Integer
           source = "_restore_message"
           # get the sys return out of the way
-          compiler.add_code RegisterTransfer.new(source, Register.message_reg , return_tmp )
+          compiler.add_code Register.transfer(source, Register.message_reg , return_tmp )
           # load the stored message into the base RegisterMachine
-          compiler.add_code RegisterTransfer.new(source, r8 , Register.message_reg )
+          compiler.add_code Register.transfer(source, r8 , Register.message_reg )
           # save the return value into the message
           compiler.add_code Register.reg_to_slot( source , return_tmp , :message , :return_value )
         end
