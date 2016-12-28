@@ -1,5 +1,5 @@
-require_relative "test_compare"
 require_relative "test_call"
+require_relative "test_compare"
 require_relative "test_logic"
 require_relative "test_memory"
 require_relative "test_move"
