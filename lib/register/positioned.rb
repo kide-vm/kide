@@ -15,7 +15,7 @@ module Positioned
     end
     pos
   end
-  def position= pos
+  def set_position( pos )
     raise "Position must be number not :#{pos}:" unless pos.is_a?(Numeric)
     # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
     # in measures (of 32)

@@ -100,7 +100,7 @@ module Register
     end
 
     def set_position position , labels = []
-      self.position = position
+      super(position)
       position += byte_length
       if self.next
         self.next.set_position(position , labels)

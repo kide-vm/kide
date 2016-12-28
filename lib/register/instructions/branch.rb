@@ -35,7 +35,7 @@ module Register
 
     # labels have the same position as their next
     def set_position position , labels = []
-      position = self.label.set_position( position , labels ) if self.label
+      set_position self.label.set_position( position , labels ) if self.label
       super(position,labels)
     end
 

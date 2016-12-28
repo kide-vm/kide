@@ -17,6 +17,7 @@ module Register
     def to_s
       "Label: #{@name} (#{self.next.class.name.split("::").last})"
     end
+
     def sof_reference_name
       @name
     end
@@ -61,7 +62,7 @@ module Register
     def set_position position , labels = []
       return position if labels.include?(self)
       labels << self
-      self.position = position
+      super(position , labels)
       self.next.set_position(position,labels)
     end
 

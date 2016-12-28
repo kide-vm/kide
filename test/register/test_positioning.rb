@@ -32,13 +32,13 @@ class TestPositioning < MiniTest::Test
     assert_raises { TestPosition.new.position}
   end
   def test_raises_set_nil
-    assert_raises { TestPosition.new.position = nil}
+    assert_raises { TestPosition.new.set_position  nil}
   end
   def test_raises_reset_far
     assert_raises do
       test = TestPosition.new
-      test.position = 0
-      test.position = 12000
+      test.set_position  0
+      test.set_position  12000
     end
   end
 end

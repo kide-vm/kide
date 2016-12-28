@@ -38,7 +38,6 @@ module Parfait
 
     def compile_time_init
       @memory = Array.new(16)
-      @position = nil
       self # for chaining
     end
 

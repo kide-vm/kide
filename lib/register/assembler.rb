@@ -33,7 +33,7 @@ module Register
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::TypedMethod
         binary = objekt.binary
-        binary.position = at
+        binary.set_position  at
         objekt.instructions.set_position at + 12 # BinaryCode header
         len = objekt.instructions.total_byte_length
         log.debug "CODE #{objekt.name} at #{binary.position} len: #{len}"
@@ -50,7 +50,7 @@ module Register
       @machine.objects.each do | id , objekt|
         next if objekt.is_a? Register::Label # will get assembled as method.instructions
         next if objekt.is_a? Parfait::BinaryCode
-        objekt.position = at
+        objekt.set_position  at
         at += objekt.padded_length
       end
       at
