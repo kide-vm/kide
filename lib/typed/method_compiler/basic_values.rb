@@ -13,25 +13,25 @@ module Typed
     def on_IntegerExpression expression
       int = expression.value
       reg = use_reg :Integer , int
-      add_code Register.load_constant( expression, int , reg )
+      add_load_constant( expression, int , reg )
       return reg
     end
 
     def on_TrueExpression expression
       reg = use_reg :Boolean
-      add_code Register.load_constant( expression, true , reg )
+      add_load_constant( expression, true , reg )
       return reg
     end
 
     def on_FalseExpression expression
       reg = use_reg :Boolean
-      add_code Register.load_constant( expression, false , reg )
+      add_load_constant( expression, false , reg )
       return reg
     end
 
     def on_NilExpression expression
       reg = use_reg :NilClass
-      add_code Register.load_constant( expression, nil , reg )
+      add_load_constant( expression, nil , reg )
       return reg
     end
 
@@ -39,7 +39,7 @@ module Typed
       value = Parfait.new_word expression.value.to_sym
       reg = use_reg :Word
       Register.machine.constants << value
-      add_code Register.load_constant( expression, value , reg )
+      add_load_constant( expression, value , reg )
       return reg
     end
 
@@ -48,7 +48,7 @@ module Typed
       clazz = Parfait::Space.object_space.get_class_by_name! name
       raise "No such class #{name}" unless clazz
       reg = use_reg :MetaClass , clazz
-      add_code Register.load_constant( expression, clazz , reg )
+      add_load_constant( expression, clazz , reg )
       return reg
     end
 

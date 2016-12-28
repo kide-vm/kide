@@ -14,9 +14,9 @@ module Register
           source = "get_internal_word"
           me , index = self_and_int_arg(compiler,source)
           # reduce me to me[index]
-          compiler.add_code  Register.slot_to_reg( source , me , index , me)
+          compiler.add_slot_to_reg( source , me , index , me)
           # and put it back into the return value
-          compiler.add_code Register.reg_to_slot( source , me , :message , :return_value)
+          compiler.add_reg_to_slot( source , me , :message , :return_value)
           return compiler.method
         end
 
@@ -29,7 +29,7 @@ module Register
           value = load_int_arg_at(compiler,source , 2)
 
           # do the set
-          compiler.add_code Register.reg_to_slot( source , value , me , index)
+          compiler.add_reg_to_slot( source , value , me , index)
           return compiler.method
         end
 

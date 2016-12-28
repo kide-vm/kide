@@ -17,8 +17,8 @@ module Register
       # Load the value
       def load_int_arg_at(compiler, source , at)
         int_arg = compiler.use_reg :Integer
-        compiler.add_code Register.slot_to_reg(source , :message , :arguments , int_arg )
-        compiler.add_code Register.slot_to_reg(source , int_arg , at + 1, int_arg ) #1 for type
+        compiler.add_slot_to_reg(source , :message , :arguments , int_arg )
+        compiler.add_slot_to_reg(source , int_arg , at + 1, int_arg ) #1 for type
         return int_arg
       end
 

@@ -15,7 +15,7 @@ module Typed
       raise "no such field:#{field_name} for class #{type.inspect}" unless index
       value = use_reg(type.type_at(index))
 
-      add_code Register.slot_to_reg(statement , receiver , index, value)
+      add_slot_to_reg(statement , receiver , index, value)
 
       value
     end

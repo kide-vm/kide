@@ -135,9 +135,9 @@ module Typed
       name = "#{method.for_type.name}.#{method.name}"
       @method.instructions = Register.label(source, name)
       @current = enter = method.instructions
-      add_code Register.label( source, "return #{name}")
+      add_label( source, "return #{name}")
       #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
-      add_code Register.function_return( source , Register.message_reg , Register.resolve_to_index(:message , :return_address) )
+      add_function_return( source , Register.message_reg , Register.resolve_to_index(:message , :return_address) )
       @current = enter
       self
     end
@@ -155,6 +155,13 @@ module Typed
       @current.insert(instruction) #insert after current
       @current = instruction
       self
+    end
+
+    [:label, :reg_to_slot , :slot_to_reg , :load_constant, :function_return ,
+      :transfer , :reg_to_slot , :byte_to_reg , :reg_to_byte].each do |method|
+      define_method("add_#{method}".to_sym) do |*args|
+        add_code Register.send( method , *args )
+      end
     end
 
     # require a (temporary) register. code must give this back with release_reg

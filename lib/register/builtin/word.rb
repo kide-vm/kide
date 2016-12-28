@@ -8,10 +8,10 @@ module Register
 
         def putstring context
           compiler = Typed::MethodCompiler.new.create_method(:Word , :putstring ).init_method
-          compiler.add_code Register.slot_to_reg( "putstring" , :message , :receiver , :new_message )
+          compiler.add_slot_to_reg( "putstring" , :message , :receiver , :new_message )
           index = Parfait::Word.get_length_index
           reg = RegisterValue.new(:r2 , :Integer)
-          compiler.add_code Register.slot_to_reg( "putstring" , :new_message , index , reg )
+          compiler.add_slot_to_reg( "putstring" , :new_message , index , reg )
           Kernel.emit_syscall( compiler , :putstring )
           compiler.method
         end
@@ -23,9 +23,9 @@ module Register
           source = "get_internal_byte"
           me , index = self_and_int_arg(compiler,source)
           # reduce me to me[index]
-          compiler.add_code Register.byte_to_reg( source , me , index , me)
+          compiler.add_byte_to_reg( source , me , index , me)
           # and put it back into the return value
-          compiler.add_code Register.reg_to_slot( source , me , :message , :return_value)
+          compiler.add_reg_to_slot( source , me , :message , :return_value)
           return compiler.method
         end
 
@@ -41,7 +41,7 @@ module Register
           me , index = self_and_int_arg(compiler,source)
           value = load_int_arg_at(compiler , source , 2 )
           # do the set
-          compiler.add_code Register.reg_to_byte( source , value , me , index)
+          compiler.add_reg_to_byte( source , value , me , index)
           return compiler.method
         end
 

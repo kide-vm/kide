@@ -17,8 +17,8 @@ module Typed
          value_type = @method.locals_type( index )
       end
       raise "Type mismatch for #{type} access #{value.type}!=#{value_type}" unless value.type == value_type
-      add_code Register.slot_to_reg(statement , :message , type , named_list )
-      add_code Register.reg_to_slot(statement , value , named_list , index + 1 ) # one for type
+      add_slot_to_reg(statement , :message , type , named_list )
+      add_reg_to_slot(statement , value , named_list , index + 1 ) # one for type
     end
 
     # ensure the name given is not space and raise exception otherwise
