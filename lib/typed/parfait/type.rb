@@ -51,15 +51,19 @@ module Parfait
 
     def self.hash_code_for_hash( dict )
       index = 1
-      hash_code = ""
+      hash_code = 1
       dict.each do |name , type|
-        item_hash = name.to_s + type.to_s
-        hash_code  += item_hash #+ (item_hash / 256 ) * index
+        item_hash = str_hash(name) + str_hash(type)
+        hash_code  += item_hash + (item_hash / 256 ) * index
         index += 1
       end
-      hash_code.to_sym
+      hash_code
     end
 
+    def self.str_hash(str)
+      str = str.hash
+    end
+    
     def initialize( object_class , hash = {})
       super()
       private_add_instance_variable :type ,:Type
