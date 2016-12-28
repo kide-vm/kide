@@ -10,7 +10,7 @@ module Register
     attr_reader :label
 
     def to_s
-      "#{self.class.name}: #{label ? label.name : ''}"
+      "#{self.class.name.split("::").last}: #{label ? label.name : ''}"
     end
     alias :inspect :to_s
 

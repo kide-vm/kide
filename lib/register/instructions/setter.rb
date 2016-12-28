@@ -28,7 +28,7 @@ module Register
     attr_accessor :register , :array , :index
 
     def to_s
-      "#{self.class.name}: #{register} -> #{array}[#{index}]"
+      "#{self.class.name.split("::").last}: #{register} -> #{array}[#{index}]"
     end
 
   end

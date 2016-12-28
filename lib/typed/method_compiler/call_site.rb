@@ -82,17 +82,21 @@ module Typed
       message = "Arg number mismatch, method=#{arg_type.instance_length - 1} , call=#{arguments.length}"
       raise  message if (arg_type.instance_length - 1 ) != arguments.length
       arguments.each_with_index do |arg , i |
-        reset_regs
-        # processing should return the register with the value
-        val = process( arg)
-        raise "Not register #{val}" unless val.is_a?(Register::RegisterValue)
-        #FIXME definately needs some tests
-        raise "TypeMismatch calling with #{val.type} , instead of #{arg_type.type_at(i + 2)}" if val.type != arg_type.type_at(i + 2)
-        list_reg = use_reg(:NamedList , arguments )
-        add_slot_to_reg( "Set arg #{i}:#{arg}" , :new_message , :arguments , list_reg )
-        # which we load int the new_message at the argument's index
-        add_reg_to_slot( arg , val , list_reg , i + 2 ) #one for type and one for ruby
+        store_arg_no(arguments , arg_type , arg , i + 1) #+1 for ruby(0 based)
       end
+    end
+    
+    def store_arg_no(arguments , arg_type , arg , i )
+      reset_regs
+      i = i + 1             # disregarding type field
+      val = process( arg)   # processing should return the register with the value
+      raise "Not register #{val}" unless val.is_a?(Register::RegisterValue)
+      #FIXME definately needs some tests
+      raise "TypeMismatch calling with #{val.type} , instead of #{arg_type.type_at(i)}" if val.type != arg_type.type_at(i)
+      list_reg = use_reg(:NamedList , arguments )
+      add_slot_to_reg( "Set arg #{i}:#{arg}" , :new_message , :arguments , list_reg )
+      # which we load int the new_message at the argument's index
+      add_reg_to_slot( arg , val , list_reg , i ) #one for type and one for ruby
     end
   end
 end

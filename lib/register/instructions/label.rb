@@ -15,7 +15,7 @@ module Register
     attr_reader :name
 
     def to_s
-      "Label: #{@name} (#{self.next.class})"
+      "Label: #{@name} (#{self.next.class.name.split("::").last})"
     end
     def sof_reference_name
       @name

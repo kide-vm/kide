@@ -8,24 +8,26 @@ module Typed
       def on_NameExpression statement
         name = statement.name
         [:self , :space , :message].each do |special|
-          return send(:"handle_special_#{special}" , statement ) if name == special
+          return send(:"load_special_#{special}" , statement ) if name == special
         end
-        # either an argument, so it's stored in message
-        if( index = @method.has_arg(name))
-          named_list = use_reg :NamedList
-          ret = use_reg @method.argument_type(index)
-          #puts "For #{name} at #{index} got #{@method.arguments.inspect}"
-          add_slot_to_reg("#{statement} load args" , :message , :arguments, named_list )
-          add_slot_to_reg("#{statement} load #{name}" , named_list , index + 1, ret )
-          return ret
-        end
-        # or a local so it is in the named_list
-        handle_local(statement)
+        return load_argument(statement) if( @method.has_arg(name))
+        load_local(statement)
       end
 
       private
 
-      def handle_local( statement )
+      def load_argument(statement)
+        name = statement.name
+        index = @method.has_arg(name)
+        named_list = use_reg :NamedList
+        ret = use_reg @method.argument_type(index)
+        #puts "For #{name} at #{index} got #{@method.arguments.inspect}"
+        add_slot_to_reg("#{statement} load args" , :message , :arguments, named_list )
+        add_slot_to_reg("#{statement} load #{name}" , named_list , index + 1, ret )
+        return ret
+      end
+
+      def load_local( statement )
         name = statement.name
         index = @method.has_local( name )
         raise "must define variable '#{name}' before using it" unless index
@@ -36,20 +38,20 @@ module Typed
         return ret
       end
 
-      def handle_special_self(statement)
+      def load_special_self(statement)
         ret = use_reg @type
         add_slot_to_reg("#{statement} load self" , :message , :receiver , ret )
         return ret
       end
 
-      def handle_special_space(statement)
+      def load_special_space(statement)
         space = Parfait::Space.object_space
         reg = use_reg :Space , space
         add_load_constant( "#{statement} load space", space , reg )
         return reg
       end
 
-      def handle_special_message(statement)
+      def load_special_message(statement)
         reg = use_reg :Message
         add_transfer( "#{statement} load message", Register.message_reg , reg )
         return reg
