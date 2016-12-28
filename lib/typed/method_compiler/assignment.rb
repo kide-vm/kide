@@ -2,32 +2,31 @@ module Typed
   module Assignment
 
     def on_Assignment( statement )
-      #      name , value = *statement
       reset_regs # statements reset registers, ie have all at their disposal
       value = process(statement.value)
       raise "Not register #{v}" unless value.is_a?(Register::RegisterValue)
-      code = get_code( statement  , value)
-      raise "must define variable #{statement.name.name} before using it in #{@method.inspect}" unless code
-      add_code code
-    end
-
-    private
-
-    def get_code( statement , value)
-      name = no_space(statement.name).name
+      name = check_name(statement.name.name)
       named_list = use_reg(:NamedList)
       if( index = @method.has_arg(name))
-         # TODO, check type @method.arguments[index].type
          type = :arguments
+         value_type = @method.argument_type( index )
        else
-         # or a local so it is in the frame
          index = @method.has_local( name )
          type = :locals
-         return nil unless index
+         raise "must define variable #{statement.name.name} before using it in #{@method.inspect}" unless index
+         value_type = @method.locals_type( index )
       end
-      # TODO, check type  @method.locals[index].type
+      raise "Type mismatch for #{type} access #{value.type}!=#{value_type}" unless value.type == value_type
       add_code Register.slot_to_reg(statement , :message , type , named_list )
-      return Register.reg_to_slot(statement , value , named_list , index + 1 ) # one for type
+      add_code Register.reg_to_slot(statement , value , named_list , index + 1 ) # one for type
     end
+
+    # ensure the name given is not space and raise exception otherwise
+    # return the name
+    def check_name( name )
+      raise "space is a reserved name" if name == :space
+      name
+    end
+
   end
 end

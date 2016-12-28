@@ -150,19 +150,15 @@ module Typed
     # add an instruction after the current (insertion point)
     # the added instruction will become the new insertion point
     def add_code instruction
-      unless  instruction.is_a?(Register::Instruction)
-        raise instruction.to_s
-      end
-      if( instruction.class.name.split("::").first == "Arm")
-        raise instruction.to_s
-      end
+      raise instruction.to_s unless  instruction.is_a?(Register::Instruction)
+      raise instruction.to_s if( instruction.class.name.split("::").first == "Arm")
       @current.insert(instruction) #insert after current
       @current = instruction
       self
     end
 
     # require a (temporary) register. code must give this back with release_reg
-    def use_reg type , value = nil
+    def use_reg( type , value = nil )
       raise "Not type #{type.inspect}" unless type.is_a?(Symbol) or type.is_a?(Parfait::Type)
       if @regs.empty?
         reg = Register.tmp_reg(type , value)
@@ -173,7 +169,7 @@ module Typed
       return reg
     end
 
-    def copy reg , source
+    def copy( reg , source )
       copied = use_reg reg.type
       add_code Reister.transfer source , reg , copied
       copied
@@ -193,11 +189,5 @@ module Typed
       @regs.clear
     end
 
-    # ensure the name given is not space and raise exception otherwise
-    # return the name for chaining
-    def no_space name
-      raise "space is a reserved name" if name == :space
-      name
-    end
   end
 end

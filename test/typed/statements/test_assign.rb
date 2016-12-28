@@ -52,7 +52,7 @@ class TestAssignStatement < MiniTest::Test
     assert_equal 1 + 1, get.index , "Get to named_list index must be offset, not #{get.index}"
   end
 
-  def test_assign_int
+  def test_assign_local_int
     Register.machine.space.get_main.add_local(:r , :Integer)
     @input = s(:statements, s(:assignment, s(:name, :r), s(:int, 5)) )
     @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
@@ -60,6 +60,13 @@ class TestAssignStatement < MiniTest::Test
     set = was.next(3)
     assert_equal RegToSlot , set.class
     assert_equal 1 + 1, set.index , "Set to named_list index must be offset, not #{set.index}"
+  end
+
+  def test_misassign_local
+    Register.machine.space.get_main.add_local(:r , :Integer)
+    @input = s(:statements, s(:assignment, s(:name, :r), s(:string, "5")) )
+    @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
+    assert_raises {check }
   end
 
   def test_assign_arg
@@ -70,6 +77,13 @@ class TestAssignStatement < MiniTest::Test
     set = was.next(3)
     assert_equal RegToSlot , set.class
     assert_equal 1 + 1, set.index , "Set to args index must be offset, not #{set.index}"
+  end
+
+  def test_misassign_arg
+    Register.machine.space.get_main.add_argument(:blar , :Integer)
+    @input = s(:statements, s(:assignment, s(:name, :blar), s(:string, "5")))
+    @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
+    assert_raises {check }
   end
 
   def test_arg_get
