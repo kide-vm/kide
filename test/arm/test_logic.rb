@@ -81,7 +81,7 @@ class TestLogic < MiniTest::Test
   end
 
   def label pos = 0x22
-    l  = Register::Label.new("some" , "Label")
+    l  = Register.label("some" , "Label")
     l.position =  pos
     l
   end

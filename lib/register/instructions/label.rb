@@ -8,7 +8,7 @@ module Register
   #
 
   class Label < Instruction
-    def initialize source , name , nekst = nil
+    def initialize( source , name , nekst = nil)
       super(source , nekst)
       @name = name
     end
@@ -76,5 +76,9 @@ module Register
       block.yield(self)
       super
     end
+  end
+
+  def self.label( source , name , nekst = nil)
+    Label.new( source , name , nekst = nil)
   end
 end

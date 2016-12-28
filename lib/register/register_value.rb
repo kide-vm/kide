@@ -105,7 +105,7 @@ module Register
     when :new_message
       return new_message_reg
     else
-      raise "not recognized register reference #{reference}"
+      raise "not recognized register reference #{reference} #{reference.class}"
     end
   end
 

@@ -23,7 +23,7 @@ module Register
           source = "get_internal_byte"
           me , index = self_and_int_arg(compiler,source)
           # reduce me to me[index]
-          compiler.add_code ByteToReg.new( source , me , index , me)
+          compiler.add_code Register.byte_to_reg( source , me , index , me)
           # and put it back into the return value
           compiler.add_code Register.reg_to_slot( source , me , :message , :return_value)
           return compiler.method
@@ -41,7 +41,7 @@ module Register
           me , index = self_and_int_arg(compiler,source)
           value = load_int_arg_at(compiler , source , 2 )
           # do the set
-          compiler.add_code RegToByte.new( source , value , me , index)
+          compiler.add_code Register.reg_to_byte( source , value , me , index)
           return compiler.method
         end
 

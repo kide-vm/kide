@@ -4,7 +4,7 @@ module Register
   # register and index specify where the return address is stored
 
   class FunctionReturn < Instruction
-    def initialize source , register , index
+    def initialize( source , register , index)
       super(source)
       @register = register
       @index = index
@@ -14,6 +14,9 @@ module Register
     def to_s
       "FunctionReturn: #{register} [#{index}]"
     end
+  end
 
+  def self.function_return( source , register , index)
+    FunctionReturn.new( source , register , index)
   end
 end

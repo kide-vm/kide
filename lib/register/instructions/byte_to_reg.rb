@@ -12,9 +12,9 @@ module Register
   # Produce a ByteToReg instruction.
   # from and to are translated (from symbol to register if neccessary)
   # but index is left as is.
-  # def self.byte_to_reg source , array , index , to
-  #   from = resolve_to_register from
-  #   to = resolve_to_register to
-  #   ByteToReg.new( source , array , index , to)
-  # end
+  def self.byte_to_reg( source , array , index , to)
+     array = resolve_to_register( array)
+     to = resolve_to_register( to)
+     ByteToReg.new( source , array , index , to)
+  end
 end

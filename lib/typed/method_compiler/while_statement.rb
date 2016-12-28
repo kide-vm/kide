@@ -22,13 +22,13 @@ module Typed
     private
 
     def compile_while_preamble( statement )
-      condition_label = Register::Label.new(statement.condition , "condition_label")
+      condition_label = Register.label(statement.condition , "condition_label")
       # unconditionally branch to the condition upon entering the loop
       add_code Register::Branch.new(statement.condition , condition_label)
       condition_label
     end
     def compile_while_body( statement )
-      start = Register::Label.new(statement , "while_start" )
+      start = Register.label(statement , "while_start" )
       add_code start
       reset_regs
       process(statement.statements)

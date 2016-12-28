@@ -7,7 +7,7 @@ module Register
         # so it is responsible for initial setup
         def __init__ context
           compiler = Typed::MethodCompiler.new.create_method(:Kernel,:__init__ )
-          new_start = Label.new("__init__ start" , "__init__" )
+          new_start = Register.label("__init__ start" , "__init__" )
           compiler.method.instructions = new_start
           compiler.set_current new_start
 
@@ -17,11 +17,11 @@ module Register
           message_ind = Register.resolve_to_index( :space , :first_message )
           compiler.add_code Register.slot_to_reg( "__init__ load 1st message" , space_reg , message_ind , :message)
           compiler.add_code Register.reg_to_slot( "__init__ store Space in message", space_reg , :message , :receiver)
-          exit_label = Label.new("_exit_label for __init__" , "#{compiler.type.object_class.name}.#{compiler.method.name}" )
+          exit_label = Register.label("_exit_label for __init__" , "#{compiler.type.object_class.name}.#{compiler.method.name}" )
           ret_tmp = compiler.use_reg(:Label)
           compiler.add_code Register.load_constant("__init__ load return", exit_label , ret_tmp)
           compiler.add_code Register.reg_to_slot("__init__ store return", ret_tmp , :message , :return_address)
-          compiler.add_code FunctionCall.new( "__init__ issue call" ,  Register.machine.space.get_main )
+          compiler.add_code Register.function_call( "__init__ issue call" ,  Register.machine.space.get_main )
           compiler.add_code exit_label
           emit_syscall( compiler , :exit )
           return compiler.method
@@ -38,7 +38,7 @@ module Register
           compiler.add_code Syscall.new("emit_syscall(#{name})", name )
           restore_message(compiler)
           return unless (@clazz and @method)
-          compiler.add_code Label.new( "#{@clazz.name}.#{@message.name}" , "return_syscall" )
+          compiler.add_code Register.label( "#{@clazz.name}.#{@message.name}" , "return_syscall" )
         end
 
         # save the current message, as the syscall destroys all context

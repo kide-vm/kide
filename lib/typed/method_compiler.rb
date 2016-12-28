@@ -133,11 +133,11 @@ module Typed
     def init_method
       source = "_init_method"
       name = "#{method.for_type.name}.#{method.name}"
-      @method.instructions = Register::Label.new(source, name)
+      @method.instructions = Register.label(source, name)
       @current = enter = method.instructions
-      add_code Register::Label.new( source, "return #{name}")
+      add_code Register.label( source, "return #{name}")
       #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
-      add_code Register::FunctionReturn.new( source , Register.message_reg , Register.resolve_to_index(:message , :return_address) )
+      add_code Register.function_return( source , Register.message_reg , Register.resolve_to_index(:message , :return_address) )
       @current = enter
       self
     end
