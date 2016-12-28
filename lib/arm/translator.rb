@@ -146,7 +146,7 @@ module Arm
     end
 
     def exit int_code
-      codes =  ArmMachine.ldr( :r0 ,  :r0 , arm_index(Register.resolve_index(:Message , :return_value)) )
+      codes =  ArmMachine.ldr( :r0 ,  :r0 , arm_index(Register.resolve_to_index(:Message , :return_value)) )
       syscall int_code , codes
     end
 

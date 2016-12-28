@@ -13,7 +13,7 @@ module Register
   # but index is left as is.
   # def self.reg_to_byte source , from , to , index
   #   from = resolve_to_register from
-  #   index = resolve_index( to , index)
+  #   index = resolve_to_index( to , index)
   #   to = resolve_to_register to
   #   RegToByte.new( source, from , to , index)
   # end

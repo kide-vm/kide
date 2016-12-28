@@ -79,7 +79,7 @@ module Register
 
   # The first scratch register. There is a next_reg_use to get a next and next.
   # Current thinking is that scratch is schatch between instructions
-  def self.tmp_reg type , value = nil
+  def self.tmp_reg( type , value = nil)
     RegisterValue.new :r2 , type , value
   end
 
@@ -87,7 +87,7 @@ module Register
   # By looking up the class and the type for that class, we can resolve the instance
   # variable name to an index.
   # The class can be mapped to a register, and so we get a memory address (reg+index)
-  def self.resolve_index( clazz_name , instance_name )
+  def self.resolve_to_index( clazz_name , instance_name )
     return instance_name unless instance_name.is_a? Symbol
     real_name = clazz_name.to_s.split('_').last.capitalize.to_sym
     clazz = Parfait::Space.object_space.get_class_by_name(real_name)
@@ -97,24 +97,21 @@ module Register
     return index #  the type word is at index 0, but type is a list and starts at 1 == type
   end
 
-  # if a symbol is given, it may be one of the four objects that the vm knows.
+  # if a symbol is given, it may be the message or the new_message.
   # These are mapped to register references.
-  # The valid symbols (:message, :self,:locals,:new_message) are the same that are returned
-  # by the slots. All data (at any time) is in one of the instance variables of these four
+  # The valid symbols (:message,:new_message) are the same that are returned
+  # by the slots. All data (at any time) is in one of the instance variables of these two
   # objects. Register defines module methods with the same names (and _reg)
-  def self.resolve_to_register reference
-    register = reference
-    if reference.is_a? Symbol
-      case reference
-      when :message
-        register = message_reg
-      when :new_message
-        register = new_message_reg
-      else
-        raise "not recognized register reference #{reference}"
-      end
+  def self.resolve_to_register( reference )
+    return reference if reference.is_a?(RegisterValue)
+    case reference
+    when :message
+      return message_reg
+    when :new_message
+      return new_message_reg
+    else
+      raise "not recognized register reference #{reference}"
     end
-    return register
   end
 
 end

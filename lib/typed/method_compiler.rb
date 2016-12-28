@@ -137,7 +137,7 @@ module Typed
       @current = enter = method.instructions
       add_code Register::Label.new( source, "return #{name}")
       #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
-      add_code Register::FunctionReturn.new( source , Register.message_reg , Register.resolve_index(:message , :return_address) )
+      add_code Register::FunctionReturn.new( source , Register.message_reg , Register.resolve_to_index(:message , :return_address) )
       @current = enter
       self
     end
