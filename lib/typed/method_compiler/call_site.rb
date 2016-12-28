@@ -58,12 +58,12 @@ module Typed
     def set_message_details( method , name_s , arguments )
       name = name_s.name
       name_tmp = use_reg(:Word)
-      add_code Register::LoadConstant.new("#{name} load method name", name , name_tmp)
+      add_code Register.load_constant("#{name} load method name", name , name_tmp)
       add_code Register.reg_to_slot( "#{name} store method name" , name_tmp , :new_message , :name)
       # next arg and local types
       args_reg = use_reg(:Type , method.arguments )
       list_reg = use_reg(:NamedList , arguments )
-      add_code Register::LoadConstant.new("#{name} load methods", method , args_reg)
+      add_code Register.load_constant("#{name} load methods", method , args_reg)
       args_type_index = method.get_type().variable_index(:arguments)
       raise args_type_index.to_s unless args_type_index == 6
       add_code Register.slot_to_reg( "#{name} get args type from method" , args_reg ,  args_type_index ,  args_reg  )
@@ -72,7 +72,7 @@ module Typed
 
 #FIXME need to set type of locals too. sama sama
 #      len_tmp = use_reg(:Integer , arguments.to_a.length )
-#      add_code Register::LoadConstant.new(name_s, arguments.to_a.length , len_tmp)
+#      add_code Register.load_constant(name_s, arguments.to_a.length , len_tmp)
 #      add_code Register.reg_to_slot( name_s , len_tmp , :new_message , :indexed_length)
     end
 

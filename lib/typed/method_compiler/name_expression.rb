@@ -45,7 +45,7 @@ module Typed
       def handle_special_space(statement)
         space = Parfait::Space.object_space
         reg = use_reg :Space , space
-        add_code Register::LoadConstant.new( "#{statement} load space", space , reg )
+        add_code Register.load_constant( "#{statement} load space", space , reg )
         return reg
       end
 

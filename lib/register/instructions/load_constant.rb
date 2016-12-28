@@ -30,7 +30,7 @@ module Register
       end
     end
   end
-  def self.load_constant source , constant , register
+  def self.load_constant( source , constant , register )
     LoadConstant.new source , constant , register
   end
 end

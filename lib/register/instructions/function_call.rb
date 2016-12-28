@@ -18,7 +18,7 @@ module Register
   def self.issue_call( compiler , callee )
     return_label = Label.new("_return_label #{callee.name}" , "#{compiler.type.object_class.name}.#{compiler.method.name}" )
     ret_tmp = compiler.use_reg(:Label)
-    compiler.add_code Register::LoadConstant.new("#{callee.name} load ret", return_label , ret_tmp)
+    compiler.add_code Register.load_constant("#{callee.name} load ret", return_label , ret_tmp)
     compiler.add_code Register.reg_to_slot("#{callee.name} store ret", ret_tmp , :new_message , :return_address)
     compiler.add_code RegisterTransfer.new("#{callee.name} move new message", Register.new_message_reg , Register.message_reg )
     compiler.add_code FunctionCall.new( "#{callee.name} call" , callee )
