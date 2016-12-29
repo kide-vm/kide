@@ -2,6 +2,28 @@ module Register
 
   # Booting is complicated, so it is extracted into this file, even it has only one entry point
 
+  # a ruby object as a placeholder for the parfait Space during boot
+  class BootSpace
+    attr_reader :classes
+    def initialize
+      @classes = {}
+    end
+
+    def get_class_by_name(name)
+      cl = @classes[name]
+      raise "No class for #{name}" unless cl
+      cl
+    end
+  end
+  # another ruby object to shadow the parfait, just during booting.
+  # all it needs is the type, which we make the Parfait type
+  class BootClass
+    attr_reader :instance_type
+    def initialize type
+      @instance_type = type
+    end
+  end
+
   class Machine
 
     # The general idea is that compiling is creating an object graph. Functionally
@@ -24,86 +46,82 @@ module Register
     # - create a space by "hand" , using allocate, not new
     # - create the Class objects and assign them to the types
     def boot_parfait!
-      boot_types
-      boot_space
-      boot_classes
+      types = boot_types
+      boot_boot_space(types)
+      classes = boot_classes(types)
+      fix_types(types , classes)
 
-      @space.late_init
+      @space = Parfait::Space.new(classes)
+      Parfait::Space.set_object_space @space
 
       #puts Sof.write(@space)
       boot_functions!
     end
 
-    # types is where the snake bites its tail. Every chain end at a type and then it
-    # goes around (circular references). We create them from the list below and keep them
-    # in an instance variable (that is a smell, because after booting it is not needed)
+    # types is where the snake bites its tail. Every chain ends at a type and then it
+    # goes around (circular references). We create them from the list below, just as empty
+    # shells, that we pass back, for the BootSpace to be created
     def boot_types
-      @types = {}
+      types = {}
       type_names.each do |name , ivars |
-        @types[name] = type_for( name , ivars)
+        types[name] = Parfait::Type.allocate
       end
-      type_type = @types[:Type]
-      @types.each do |name , type |
+      type_type = types[:Type]
+      types.each do |name , type |
         type.set_type(type_type)
       end
+      types
     end
 
-    # once we have the types we can create the space by creating the instance variables
-    # by hand (can't call new yet as that uses the space)
-    def boot_space
-      @space = object_with_type Parfait::Space
-      @space.classes = make_dictionary
-      @space.types = make_dictionary
-      Parfait::Space.set_object_space @space
+    def fix_types(types , classes)
+      type_names.each do |name , ivars |
+        type = types[name]
+        clazz = classes[name]
+        type.set_object_class( clazz )
+        type.init_lists(ivars)
+      end
     end
 
-    def make_dictionary
-      dict = object_with_type Parfait::Dictionary
-      dict.keys = object_with_type Parfait::List
-      dict.values = object_with_type Parfait::List
-      dict
+    # The BootSpace is an object that holds fake classes, that hold _real_ types
+    # Once we plug it in we can use .new
+    # then we need to create the parfait classes and fix the types before creating a Space
+    def boot_boot_space(types)
+      boot_space = BootSpace.new
+      types.each do |name , type|
+        clazz = BootClass.new(type)
+        boot_space.classes[name] = clazz
+      end
+      Parfait::Space.set_object_space boot_space
     end
 
+    # superclasses other than default object
+    def  super_class_names
+       {  :Object => :Kernel , :Kernel => :Value,
+        :Integer => :Value , :BinaryCode => :Word }
+    end
     # when running code instantiates a class, a type is created automatically
     # but even to get our space up, we have already instantiated all types
     # so we have to continue and allocate classes and fill the data by hand
     # and off cource we can't use space.create_class , but still they need to go there
-    def boot_classes
-      classes = space.classes
+    def boot_classes(types)
+      classes = Parfait::Dictionary.new
       type_names.each do |name , vars|
-        cl = object_with_type Parfait::Class
-        cl.instance_type = @types[name]
-        @types[name].object_class = cl
-        @types[name].instance_methods = object_with_type Parfait::List
-        cl.instance_methods = object_with_type Parfait::List
-        #puts "instance_methods is #{cl.instance_methods.class}"
-        cl.name = name
-        classes[name] = cl
+        super_c = super_class_names[name] || :Object
+        classes[name] = Parfait::Class.new(name , super_c , types[name] )
       end
-      # superclasses other than default object
-      supers = {  :Object => :Kernel , :Kernel => :Value,
-                  :Integer => :Value , :BinaryCode => :Word }
-      type_names.each do |classname , ivar|
-        next if classname == :Value  # has no superclass
-        clazz = classes[classname]
-        super_name = supers[classname] || :Object
-        clazz.set_super_class_name super_name
-      end
+      classes
     end
 
-    # helper to create a Type, name is the parfait name, ie :Type
-    def type_for( name , ivars )
-      l = Parfait::Type.allocate.compile_time_init
-      l.send(:private_add_instance_variable , :type , name)
-      ivars.each {|n,t| l.send(:private_add_instance_variable, n , t) }
-      l
+    def set_ivars_for(type , name , ivars)
+      type.send(:private_add_instance_variable , :type , name)
+      ivars.each {|n,t| type.send(:private_add_instance_variable, n , t) }
     end
 
     # create an object with type (ie allocate it and assign type)
     # meaning the lauouts have to be booted, @types filled
     # here we pass the actual (ruby) class
     def object_with_type(cl)
-      o = cl.allocate.compile_time_init
+      o = cl.allocate
       name = cl.name.split("::").last.to_sym
       o.set_type @types[name]
       o
@@ -118,14 +136,14 @@ module Register
           :Message => { :next_message => :Message, :receiver => :Object, :locals => :NamedList ,
                         :return_address => :Integer, :return_value => :Integer,
                         :caller => :Message , :name => :Word , :arguments => :NamedList },
-          :MetaClass => {:object => :Object},
           :Integer => {},
           :Object => {},
           :Kernel => {}, #fix, kernel is a class, but should be a module
           :BinaryCode => {:char_length => :Integer} ,
           :Space => {:classes => :Dictionary , :types => :Dictionary , :first_message => :Message},
           :NamedList => {},
-          :Type => {:object_class => :Class, :instance_methods => :List , :indexed_length => :Integer} ,
+          :Type => {:names => :List , :types => :List  ,
+                    :object_class => :Class, :instance_methods => :List } ,
           :Class => {:instance_methods => :List, :instance_type => :Type, :name => :Word,
                       :super_class_name => :Word , :instance_names => :List },
           :Dictionary => {:keys => :List , :values => :List  } ,
