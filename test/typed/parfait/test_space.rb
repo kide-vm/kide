@@ -74,4 +74,13 @@ class TestSpace < MiniTest::Test
     assert all.include?(:next_message)
   end
 
+  def test_create_class
+    assert @machine.space.create_class( :NewClass )
+  end
+
+  def test_created_class_is_stored
+    @machine.space.create_class( :NewerClass )
+    assert @machine.space.get_class_by_name(:NewerClass)
+  end
+
 end

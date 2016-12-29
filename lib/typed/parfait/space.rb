@@ -21,25 +21,26 @@ module Parfait
 
   class Space < Object
 
-    def initialize
-      raise "Space can not be instantiated by new, you'd need a space to do so. Chicken and egg"
-    end
-    attributes [:classes , :types, :first_message]
-
-    # need a two phase init for the object space (and generally parfait) because the space
-    # is an interconnected graph, so not everthing is ready
-    def late_init
+    def initialize(classes )
+      @classes = classes
+      @types = Dictionary.new
       message = Message.new(nil)
       50.times do
-        self.first_message = Message.new message
-        #puts "INIT caller #{message.object_id} to #{self.first_message.object_id}"
-        message.set_caller self.first_message
-        message = self.first_message
+        @first_message = Message.new message
+        #puts "INIT caller #{message.object_id} to #{@first_message.object_id}"
+        message.set_caller @first_message
+        message = @first_message
       end
-      classes.each do |name , cl|
-        types[cl.instance_type.hash] = cl.instance_type
+      @classes.each do |name , cl|
+        @types[cl.instance_type.hash] = cl.instance_type
       end
     end
+
+    def self.attributes
+      [:classes , :types, :first_message]
+    end
+
+    attr_reader :types , :classes , :first_message
 
     # Make the object space globally available
     def self.object_space
@@ -65,8 +66,8 @@ module Parfait
     # return nili if no such class. Use bang version if create should be implicit
     def get_class_by_name( name )
       raise "get_class_by_name #{name}.#{name.class}" unless name.is_a?(Symbol)
-      c = self.classes[name]
-      #puts "MISS, no class #{name} #{name.class}" unless c # " #{self.classes}"
+      c = @classes[name]
+      #puts "MISS, no class #{name} #{name.class}" unless c # " #{@classes}"
       #puts "CLAZZ, #{name} #{c.get_type.get_length}" if c
       c
     end
@@ -76,16 +77,18 @@ module Parfait
     def get_class_by_name! name
       c = get_class_by_name(name)
       return c if c
-      create_class name , get_class_by_name(:Object)
+      create_class name 
     end
 
     # this is the way to instantiate classes (not Parfait::Class.new)
     # so we get and keep exactly one per name
-    def create_class name , superclass
+    def create_class( name , superclass = nil )
       raise "create_class #{name.class}" unless name.is_a? Symbol
       superclass = :Object unless superclass
-      c = Class.new(name , superclass )
-      self.classes[name] = c
+      raise "create_class #{superclass.class}" unless superclass.is_a? Symbol
+      type = get_class_by_name(superclass).instance_type
+      c = Class.new(name , superclass , type )
+      @classes[name] = c
     end
 
     def sof_reference_name

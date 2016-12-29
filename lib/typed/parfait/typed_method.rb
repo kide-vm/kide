@@ -22,7 +22,12 @@ module Parfait
 
   class TypedMethod < Object
 
-    attributes [:name , :source , :instructions , :binary ,:arguments , :for_type, :locals ]
+    def self.attributes
+      [:name , :source , :instructions , :binary ,:arguments , :for_type, :locals ]
+    end
+
+    attr_reader :name , :instructions , :for_type ,:arguments , :locals , :binary
+
     # not part of the parfait model, hence ruby accessor
     attr_accessor :source
 
@@ -31,12 +36,15 @@ module Parfait
       raise "No class #{name}" unless type
       raise "For type, not class #{type}" unless type.is_a?(Type)
       raise "Wrong argument type, expect Type not #{arguments.class}" unless arguments.is_a? Type
-      self.for_type = type
-      self.name = name
-      self.binary = BinaryCode.new 0
-      self.arguments = arguments
-      self.locals = Type.new Space.object_space.get_class_by_name( :Object )
+      @for_type = type
+      @name = name
+      @binary = BinaryCode.new 0
+      @arguments = arguments
+      @locals = Type.new Space.object_space.get_class_by_name( :Object )
+    end
 
+    def set_instructions(inst)
+      @instructions = inst
     end
 
     # determine whether this method has an argument by the name
@@ -47,7 +55,7 @@ module Parfait
     end
 
     def add_argument(name , type)
-      self.arguments = self.arguments.add_instance_variable(name,type)
+      @arguments = @arguments.add_instance_variable(name,type)
     end
 
     def arguments_length
@@ -55,10 +63,10 @@ module Parfait
     end
 
     def argument_name( index )
-      arguments.get(index * 2 + 1)
+      arguments.names.get(index + 1)
     end
     def argument_type( index )
-      arguments.get(index * 2 + 2)
+      arguments.types.get(index + 1)
     end
 
     # determine if method has a local variable or tmp (anonymous local) by given name
@@ -71,7 +79,7 @@ module Parfait
     def add_local( name , type )
       index = has_local name
       return index if index
-      self.locals = self.locals.add_instance_variable(name,type)
+      @locals = @locals.add_instance_variable(name,type)
     end
 
     def locals_length
@@ -79,18 +87,19 @@ module Parfait
     end
 
     def locals_name( index )
-      locals.get(index * 2 + 1)
+      locals.names.get(index + 1)
     end
+
     def locals_type( index )
-      locals.get(index * 2 + 2)
+      locals.types.get(index + 1)
     end
 
     def sof_reference_name
-      "Method: " + self.name.to_s
+      "Method: " + @name.to_s
     end
 
     def inspect
-      "#{self.for_type.object_class.name}:#{name}(#{arguments.inspect})"
+      "#{@for_type.object_class.name}:#{name}(#{arguments.inspect})"
     end
 
   end
