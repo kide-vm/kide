@@ -60,4 +60,11 @@ class TestDictionary < MiniTest::Test
       assert_equal v , shouldda[k]
     end
   end
+
+  def test_values
+    assert @lookup.values
+  end
+  def test_keys
+    assert @lookup.keys
+  end
 end

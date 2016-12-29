@@ -12,8 +12,8 @@ class TestAttributes < MiniTest::Test
   end
 
   def test_message_name_nil
-    last = @type.instance_names.last
-    assert_equal :arguments , last , @type.instance_names.inspect
+    last = @type.names.last
+    assert_equal :arguments , last , @type.names.inspect
     assert_nil  @mess.name
   end
   def test_message_next_set
@@ -21,21 +21,14 @@ class TestAttributes < MiniTest::Test
     assert_equal :next_message , @mess.next_message
   end
   def test_message_type_set
-    @mess.set_type :type
-    assert_equal :type , @mess.get_type
+    @mess.set_type @type
+    assert_equal @type , @mess.get_type
   end
   def test_attribute_index
     @mess.next_message = :message
     assert_equal Parfait::Type , @mess.get_type.class
   end
-  def test_type_attribute
-    @type.object_class = :message
-    assert_equal :message , @type.object_class
-  end
-  def test_type_attribute_check
-    @type.object_class = :message
-    assert_equal Parfait::Type , @type.get_type.class
-  end
+
   def test_type_type
     assert_equal Parfait::Type , @type.get_type.get_type.class
   end

@@ -34,7 +34,7 @@ class TestList < MiniTest::Test
 
   def test_length0
     assert_equal 0 , @list.get_length
-    assert_nil  @list.indexed_length
+    assert_equal 0,  @list.indexed_length
   end
   def test_offset
     assert_equal 2 , @list.get_offset

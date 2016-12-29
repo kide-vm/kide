@@ -24,8 +24,11 @@ class TypeHash < MiniTest::Test
   end
 
   def test_to_hash
+    assert_equal "Word_Type" ,  @first.name
+    assert_equal :Word ,  @first.object_class.name
     hash = @first.to_hash
-    assert_equal hash[:type] , :Word
+    assert_equal :Type , @first.types.first
+    assert_equal hash[:type] , :Type
     assert_equal hash[:char_length] , :Integer
     assert_equal 2 , @first.instance_length
   end
