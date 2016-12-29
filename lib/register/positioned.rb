@@ -19,6 +19,7 @@ module Positioned
     raise "Position must be number not :#{pos}:" unless pos.is_a?(Numeric)
     # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
     # in measures (of 32)
+    #puts "Setting #{pos} for #{self.class}"
     old = Positioned.positions[self]
     if old != nil and ((old - pos).abs > 10000)
       raise "position set again #{pos}!=#{old} for #{self}"

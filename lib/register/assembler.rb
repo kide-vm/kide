@@ -11,7 +11,7 @@ module Register
   class Assembler
     include Padding
     include Logging
-    log_level :info
+    log_level :debug
 
     MARKER = 0xA51AF00D
 
@@ -33,8 +33,8 @@ module Register
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::TypedMethod
         binary = objekt.binary
-        binary.set_position  at
-        objekt.instructions.set_position at + 12 # BinaryCode header
+        binary.set_position( at )
+        objekt.instructions.set_position( at + 12 )# BinaryCode header
         len = objekt.instructions.total_byte_length
         log.debug "CODE #{objekt.name} at #{binary.position} len: #{len}"
         binary.set_length(len , 0)

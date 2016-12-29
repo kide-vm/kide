@@ -27,11 +27,11 @@ module Arm
     # The register is called link , or lr for short .
     # Maybe because it provides the "link" back to the caller
     # the vm defines a register for the location, so we store it there.
-    def translate_SaveReturn code
+    def translate_SaveReturn( code )
       ArmMachine.str( :lr ,  code.register , arm_index(code) )
     end
 
-    def translate_RegisterTransfer code
+    def translate_RegisterTransfer( code )
       # Register machine convention is from => to
       # But arm has the receiver/result as the first
       ArmMachine.mov( code.to , code.from)

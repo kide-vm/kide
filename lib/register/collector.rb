@@ -14,7 +14,7 @@ module Register
       #puts "ADD #{object.first.class}, #{object.last.class}" if object.is_a? Array
       return unless self.add_object object
       # probably should make labels or even instructions derive from Parfait::Object, but . .
-      if  object.is_a? Register::Label
+      if object.is_a? Register::Label
         object.each_label { |l| self.add_object(l)}
       end
       return unless object.respond_to? :has_type?

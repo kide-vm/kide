@@ -13,6 +13,8 @@ module Register
 
   class Machine
     include Collector
+    include Logging
+    log_level :debug
 
     def initialize
       @objects = {}
@@ -25,11 +27,10 @@ module Register
     # idea being that later method missing could catch translate_xxx and translate to target xxx
     # now we just instantiate ArmTranslater and pass instructions
     def translate_arm
-      translator = Arm::Translator.new
       methods = collect_methods
-      translate_methods( methods , translator)
+      translate_methods( methods )
       label = @init.next
-      @init = translator.translate( @init)
+      @init = Arm::Translator.new.translate( @init )
       @init.append label
     end
 
@@ -43,8 +44,10 @@ module Register
       methods
     end
 
-    def translate_methods(methods , translator )
+    def translate_methods(methods)
+      translator = Arm::Translator.new
       methods.each do |method|
+        log.debug "Method #{method.name}"
         instruction = method.instructions
         while instruction.next
           nekst = instruction.next
