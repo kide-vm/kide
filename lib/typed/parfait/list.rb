@@ -17,6 +17,13 @@ module Parfait
     include Indexed
     self.offset(1)
 
+    def self.attributes
+      [:indexed_length]
+    end
+    def indexed_length
+      get_length()
+    end
+
     def initialize(  )
       super()
     end

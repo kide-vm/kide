@@ -13,7 +13,11 @@ module Parfait
   module Indexed # marker module
     def self.included(base)
       base.extend(OffsetMethods)
-      base.attribute :indexed_length
+    end
+
+    def initialize(  )
+      super()
+      @memory = []
     end
 
     # include? means non nil index
@@ -163,6 +167,18 @@ module Parfait
         index = index + 1
       end
       ret
+    end
+
+    # 1 -based index
+    def get_internal_word(index)
+      @memory[index]
+    end
+
+    # 1 -based index
+    def set_internal_word(index , value)
+      raise "Word[#{index}] = " if((self.class == Parfait::Word) and value.nil? )
+      @memory[index] = value
+      value
     end
 
     module OffsetMethods

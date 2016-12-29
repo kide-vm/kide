@@ -21,7 +21,6 @@ module Parfait
     # At compile time we fake memory by using a global array for pages
     def self.new *args
       object = self.allocate
-      object.compile_time_init if object.respond_to?(:compile_time_init)
 
       # have to grab the class, because we are in the ruby class not the parfait one
       cl = Space.object_space.get_class_by_name( self.name.split("::").last.to_sym)
@@ -36,31 +35,21 @@ module Parfait
     include Padding
     include Positioned
 
-    def compile_time_init
-      @memory = Array.new(16)
-      self # for chaining
-    end
-
     # 1 -based index
     def get_internal_word(index)
-      @memory[index]
+      name = get_type().name_at(index)
+      return nil unless name
+      eval "@#{name}"
     end
 
     # 1 -based index
     def set_internal_word(index , value)
-      raise "failed init for #{self.class}" unless @memory
-      raise "Word[#{index}] = " if((self.class == Parfait::Word) and value.nil? )
-      @memory[index] = value
+      return set_type(value) if( index == 1)
+      raise "not type #{@type.class}" unless @type.is_a?(Type)
+      name = @type.name_at(index)
+      raise "object type has no name at index #{index} " unless name
+      eval "@#{name} = value"
       value
-    end
-
-    def self.attributes names
-      names.each{|name| attribute(name) }
-    end
-
-    def self.attribute name
-      define_method(name) { get_instance_variable(name) }
-      define_method("#{name}=".to_sym) { |value| set_instance_variable(name , value) }
     end
 
     def == other
@@ -81,20 +70,18 @@ module Parfait
     # private
     def set_type(type)
       # puts "Type was set for #{self.class}"
-      raise "Nil type" unless type
-      set_internal_word(TYPE_INDEX , type)
+      raise "not type #{type.class}" unless type.is_a?(Type)
+      @type = type
     end
 
     # so we can keep the raise in get_type
     def has_type?
-      ! get_internal_word(TYPE_INDEX).nil?
+      ! @type.nil?
     end
 
     def get_type()
-      l = get_internal_word(TYPE_INDEX)
-      #puts "get type for #{self.class} returns #{l.class}"
-      raise "No type #{self.object_id.to_s(16)}:#{self.class} " unless l
-      return l
+      raise "No type #{self.object_id.to_s(16)}:#{self.class} " unless has_type?
+      @type
     end
 
     # return the metaclass
@@ -103,28 +90,28 @@ module Parfait
     end
 
     def get_instance_variables
-      get_type().instance_names
+      @type.names
     end
 
-    def get_instance_variable name
+    def get_instance_variable( name )
       index = instance_variable_defined(name)
       #puts "getting #{name} at #{index}"
       return nil if index == nil
       return get_internal_word(index)
     end
 
-    def set_instance_variable name , value
+    def set_instance_variable( name , value )
       index = instance_variable_defined(name)
       return nil if index == nil
       return set_internal_word(index , value)
     end
 
-    def instance_variable_defined name
-      get_type().variable_index(name)
+    def instance_variable_defined( name )
+      @type.variable_index(name)
     end
 
     def padded_length
-      padded_words( get_type().instance_length )
+      padded_words( @type.instance_length )
     end
 
     # parfait versions are deliberately called different, so we "relay"

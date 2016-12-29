@@ -13,7 +13,10 @@ module Parfait
   # Object length is measured in non-type cells though
 
   class Word < Object
-    attribute :char_length
+    def self.attributes
+      [:char_length]
+    end
+    attr_reader :char_length
 
     #semi "indexed" methods for interpreter
     def self.get_length_index
@@ -27,12 +30,26 @@ module Parfait
     # Register provides methods to create Parfait objects from ruby
     def initialize len
       super()
-      self.char_length = 0
+      @char_length = 0
+      @memory = []
       raise "Must init with int, not #{len.class}" unless len.kind_of? Fixnum
       raise "Must init with positive, not #{len}" if len < 0
       set_length( len , 32 ) unless len == 0 #32 beeing ascii space
       #puts "type #{self.get_type} #{self.object_id.to_s(16)}"
     end
+
+    # 1 -based index
+    def get_internal_word(index)
+      @memory[index]
+    end
+
+    # 1 -based index
+    def set_internal_word(index , value)
+      raise "Word[#{index}] = nil" if( value.nil? )
+      @memory[index] = value
+      value
+    end
+
 
     # return a copy of self
     def copy
@@ -47,7 +64,7 @@ module Parfait
 
     # return the number of characters
     def length()
-      obj_len = self.char_length
+      obj_len = @char_length
       return obj_len
     end
 
@@ -75,9 +92,9 @@ module Parfait
     #
     def set_length(len , fill_char)
       return if len <= 0
-      old = self.char_length
+      old = @char_length
       return if old >= len
-      self.char_length = len
+      @char_length = len
       check_length
       fill_from_with( old + 1 , fill_char )
     end
@@ -168,7 +185,7 @@ module Parfait
     def to_string
       string = ""
       index = 1
-      while( index <= self.char_length)
+      while( index <= @char_length)
         char = get_char(index)
         string += char ? char.chr : "*"
         index = index + 1
@@ -182,12 +199,12 @@ module Parfait
     end
 
     def padded_length
-      padded( 4 * get_type().instance_length + self.char_length  )
+      padded( 4 * get_type().instance_length + @char_length  )
     end
 
     private
     def check_length
-      raise "Length out of bounds #{self.char_length}" if self.char_length > 1000
+      raise "Length out of bounds #{@char_length}" if @char_length > 1000
     end
   end
 
