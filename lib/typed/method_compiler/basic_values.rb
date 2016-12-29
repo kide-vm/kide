@@ -45,11 +45,7 @@ module Typed
 
     def on_ClassExpression expression
       name = expression.value
-      clazz = Parfait::Space.object_space.get_class_by_name! name
-      raise "No such class #{name}" unless clazz
-      reg = use_reg :MetaClass , clazz
-      add_load_constant( expression, clazz , reg )
-      return reg
+      raise "No meta class #{name}" 
     end
 
   end
