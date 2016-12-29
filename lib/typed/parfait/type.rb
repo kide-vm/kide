@@ -34,9 +34,10 @@
 
 module Parfait
   class Type < Object
-    attributes [:object_class , :instance_methods]
-    include Indexed
-    self.offset(3)
+    def self.attributes
+      [:names , :types , :object_class , :instance_methods ]
+    end
+    attr_reader :object_class , :names , :types , :instance_methods
 
     def self.for_hash( object_class , hash)
       new_type = Type.new( object_class , hash)
@@ -74,22 +75,28 @@ module Parfait
 
     def initialize( object_class , hash = {})
       super()
+      set_object_class( object_class)
+      init_lists( hash )
+    end
+
+    # this part of the init is seperate because at boot time we can not use normal new
+    # new is overloaded to grab the type from space, and before boot, that is not set up
+    def init_lists(hash)
+      @instance_methods = List.new
+      @names = List.new
+      @types = List.new
       private_add_instance_variable :type ,:Type
-      self.object_class = object_class
       hash.each do |name , type|
         private_add_instance_variable(name , type) unless name == :type
       end
-      self.instance_methods = List.new
     end
 
     def to_s
-      ""
+      "#{@object_class.name}:#{@names.inspect}"
     end
 
     def methods
-      m = self.instance_methods
-      return m if m
-      self.instance_methods = List.new
+      @instance_methods
     end
 
     def method_names
@@ -104,7 +111,7 @@ module Parfait
       raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
       #puts "Self: #{self.class} clazz: #{clazz.name}"
       type = arguments
-      type = Parfait::Type.for_hash( self.object_class , arguments) if arguments.is_a?(Hash)
+      type = Parfait::Type.for_hash( @object_class , arguments) if arguments.is_a?(Hash)
       add_instance_method TypedMethod.new( self , method_name , type )
     end
 
@@ -159,54 +166,53 @@ module Parfait
       if existing
         return existing
       else
-        return Type.for_hash( object_class , hash)
+        return Type.for_hash( @object_class , hash)
       end
     end
 
-    def instance_names
-      names = List.new
-      each_pair do |name , type|
-        names.push(name)
-      end
-      names
+    def set_object_class(oc)
+      raise "object class should be a class, not #{oc.class}" unless oc.is_a?(Class)
+      @object_class = oc
     end
 
     def instance_length
-      (self.get_length / 2).to_i # to_i for opal
-    end
-
-    alias :super_index :index_of
-    def index_of(name)
-      raise "Use variable_index instead"
+      @names.get_length()
     end
 
     # index of the variable when using get_internal_word
     # (get_internal_word is 1 based and 1 is always the type)
     def variable_index( name )
-      has = super_index(name)
+      has = names.index_of(name)
       return nil unless has
       raise "internal error #{name}:#{has}" if has < 1
-      (1 + has / 2).to_i # to_i for opal
+      has
+    end
+
+    def get_length()
+      @names.get_length()
+    end
+
+    def name_at( index )
+      @names.get(index)
     end
 
     def type_at( index )
-      type_index = index * 2
-      get(type_index)
+      @types.get(index)
     end
 
     def inspect
-      "Type[#{super}]"
+      "Type[#{names.inspect}]"
     end
 
     def sof_reference_name
-      "#{self.object_class.name}_Type"
+      "#{@object_class.name}_Type"
     end
     alias :name :sof_reference_name
 
     def to_hash
       hash = Dictionary.new
-      each_pair do |name, type |
-        hash[name] = type
+      @names.each_with_index do |name, index |
+        hash[name] = @types[index]
       end
       hash
     end
@@ -220,8 +226,8 @@ module Parfait
     def private_add_instance_variable( name , type)
       raise "Name shouldn't be nil" unless name
       raise "Value Type shouldn't be nil" unless type
-      self.push(name)
-      self.push(type)
+      @names.push(name)
+      @types.push(type)
     end
 
   end
