@@ -21,7 +21,7 @@ module Register
       type = object.get_type
       keep(type  , depth + 1)
       return if object.is_a? Symbol
-      type.instance_names.each do |name|
+      type.names.each do |name|
         #puts "Keep #{name} for #{object.class}"
         inst = object.get_instance_variable name
         keep(inst , depth + 1)

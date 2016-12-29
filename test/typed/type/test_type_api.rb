@@ -16,8 +16,8 @@ class TypeApi < MiniTest::Test
     assert_equal Parfait::Class , oc.class
     type = oc.instance_type
     assert_equal Parfait::Type , type.class
-    assert_equal 1 , type.instance_names.get_length , type.instance_names.inspect
-    assert_equal type.first , :type
+    assert_equal 1 , type.names.get_length , type.names.inspect
+    assert_equal type.names.first , :type
   end
 
   def test_class_space
@@ -25,20 +25,22 @@ class TypeApi < MiniTest::Test
     assert_equal Parfait::Space , space.class
     type = space.get_type
     assert_equal Parfait::Type , type.class
-    assert_equal 4 , type.instance_names.get_length
+    assert_equal 4 , type.names.get_length
     assert_equal type.object_class.class , Parfait::Class
     assert_equal type.object_class.name , :Space
   end
 
   def test_add_name
-    @type.add_instance_variable( :boo , :Object)
+    t = @type.add_instance_variable( :boo , :Object)
+    assert t
+    t
   end
 
   def test_added_name_length
     type = test_add_name
-    assert_equal 4 , type.get_length , type.inspect
-    assert_equal :type , type.get(1)
-    assert_equal :boo , type.get(3)
+    assert_equal 2 , type.names.get_length , type.inspect
+    assert_equal :type , type.names.get(1)
+    assert_equal :boo , type.names.get(2)
   end
 
   def test_added_name_index
@@ -61,16 +63,26 @@ class TypeApi < MiniTest::Test
 
   def test_added_names
     type = test_add_name
-    assert_equal :type , type.instance_names.get(1)
-    assert_equal :boo , type.instance_names.get(2)
-    assert_equal 2 , type.instance_names.get_length
+    assert_equal :type , type.names.get(1)
+    assert_equal :boo , type.names.get(2)
+    assert_equal 2 , type.names.get_length
   end
 
-  def test_each
+  def test_each_name
     type = test_add_name
-    assert_equal 4 , type.get_length
-    counter = [ :boo , :Object , :type , :Type]
-    type.each do |item|
+    assert_equal 2 , type.get_length
+    counter = [ :boo  , :type ]
+    type.names.each do |item|
+      assert_equal item , counter.delete(item)
+    end
+    assert counter.empty? , counter.inspect
+  end
+
+  def test_each_type
+    type = test_add_name
+    assert_equal 2 , type.get_length
+    counter = [  :Object  , :Type]
+    type.types.each do |item|
       assert_equal item , counter.delete(item)
     end
     assert counter.empty? , counter.inspect

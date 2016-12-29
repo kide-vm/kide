@@ -9,7 +9,7 @@ class TestNamedLists < MiniTest::Test
 
   def test_named_list_get_type
     assert_equal Parfait::Type , @type.class
-    assert @type.instance_names
+    assert @type.names
     assert @named_list.get_instance_variables
   end
 

@@ -8,7 +8,7 @@ module Register
         def __init__ context
           compiler = Typed::MethodCompiler.new.create_method(:Kernel,:__init__ )
           new_start = Register.label("__init__ start" , "__init__" )
-          compiler.method.instructions = new_start
+          compiler.method.set_instructions( new_start)
           compiler.set_current new_start
 
           space = Parfait::Space.object_space

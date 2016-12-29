@@ -21,7 +21,7 @@ class TypeMessages < MiniTest::Test
   end
 
   def test_type_methods
-    assert_equal 3 , @mess.get_type.get_type.variable_index(:instance_methods)
+    assert_equal 5 , @mess.get_type.get_type.variable_index(:instance_methods)
   end
 
 end

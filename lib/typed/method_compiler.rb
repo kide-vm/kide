@@ -133,7 +133,7 @@ module Typed
     def init_method
       source = "_init_method"
       name = "#{method.for_type.name}.#{method.name}"
-      @method.instructions = Register.label(source, name)
+      @method.set_instructions( Register.label(source, name))
       @current = enter = method.instructions
       add_label( source, "return #{name}")
       #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)

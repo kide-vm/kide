@@ -11,7 +11,7 @@ class TestMessage < MiniTest::Test
   end
 
   def test_attribute_set
-    @mess.receiver = 55
+    @mess.set_receiver( 55)
     assert_equal 55 , @mess.receiver
   end
 
@@ -19,4 +19,7 @@ class TestMessage < MiniTest::Test
     assert_equal 9 , @mess.get_type.variable_index(:arguments)
   end
 
+  def test_next
+    assert @mess.next_message
+  end
 end

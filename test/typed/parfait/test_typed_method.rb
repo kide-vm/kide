@@ -4,7 +4,7 @@ class TestMethod < MiniTest::Test
 
   def setup
     obj = Register.machine.space.get_class_by_name(:Object).instance_type
-    args = Parfait::Type.for_hash( obj , { bar: :Integer , foo: :Type})
+    args = Parfait::Type.for_hash( obj.object_class , { bar: :Integer , foo: :Type})
     @method = ::Parfait::TypedMethod.new obj , :meth , args
     @method.add_local :local_bar , :Integer
     @method.add_local :local_foo , :Type
@@ -20,7 +20,7 @@ class TestMethod < MiniTest::Test
 
   def test_arg1
     assert_equal 2 , @method.arguments_length , @method.arguments.inspect
-    assert_equal Symbol , @method.arguments.first.class
+    assert_equal Symbol , @method.arguments.names.first.class
     assert_equal :bar , @method.argument_name(1)
   end
 
@@ -57,7 +57,7 @@ class TestMethod < MiniTest::Test
 
   def test_local1
     assert_equal 2 , @method.locals_length , @method.locals.inspect
-    assert_equal Symbol , @method.locals.first.class
+    assert_equal Symbol , @method.locals.names.first.class
     assert_equal :local_bar , @method.locals_name(1)
   end
 
