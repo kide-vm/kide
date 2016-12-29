@@ -16,20 +16,17 @@
 module Parfait
   class Class < Object
     include Behaviour
-    attributes [:instance_type , :name , :super_class_name , :instance_names]
-
-    def initialize name , superclass
-      super()
-      self.name = name
-      self.super_class_name = superclass
-      # the type for this class (class = object of type Class) carries the class
-      # as an instance. The relation is from an object through the Type to it's class
-      # TODO the object type should copy the stuff from superclass
-      self.instance_type = Type.new(self)
+    def self.attributes
+      [:instance_type , :name , :super_class_name , :instance_names , :instance_methods]
     end
 
-    def allocate_object
-      #space, and ruby allocate
+    attr_reader :instance_type , :name , :instance_methods , :super_class_name
+
+    def initialize( name , superclass , instance_type)
+      super()
+      @name = name
+      @super_class_name = superclass
+      @instance_type = instance_type
     end
 
     def sof_reference_name
@@ -43,21 +40,13 @@ module Parfait
     # setting the type generates all methods for this type
     # (or will do, once we storet the methods code to do that)
     def set_instance_type( type )
-      self.instance_type = type
-    end
-    
-    # this needs to be done during booting as we can't have all the classes and superclassses
-    # instantiated. By that logic it should maybe be part of vm rather.
-    # On the other hand vague plans to load the hierachy from sof exist, so for now...
-    def set_super_class_name sup
-      raise "super_class_name must be a name, not #{sup}" unless sup.is_a?(Symbol)
-      self.super_class_name = sup
+      @instance_type = type
     end
 
     def super_class
-      raise "No super_class for class #{self.name}" unless self.super_class_name
-      s = Parfait::Space.object_space.get_class_by_name(self.super_class_name)
-      raise "superclass not found for class #{self.name} (#{self.super_class_name})" unless s
+      raise "No super_class for class #{@name}" unless @super_class_name
+      s = Parfait::Space.object_space.get_class_by_name(@super_class_name)
+      raise "superclass not found for class #{@name} (#{@super_class_name})" unless s
       s
     end
 

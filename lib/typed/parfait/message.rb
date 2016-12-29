@@ -9,20 +9,27 @@
 
 module Parfait
   class Message < Object
-    attributes [:next_message , :receiver , :locals , :return_address ]
-    attributes [:return_value, :caller , :name , :arguments]
+    def self.attributes
+      [:next_message , :receiver , :locals , :return_address ,
+       :return_value, :caller , :name , :arguments]
+    end
+
+    attr_reader :locals , :receiver  , :return_value , :name 
+    attr_accessor :next_message
 
     def initialize next_m
-      self.next_message = next_m
-      self.locals = NamedList.new()
-      self.arguments = NamedList.new()
-      self.caller = nil
+      @next_message = next_m
+      @locals = NamedList.new()
+      @arguments = NamedList.new()
       super()
     end
 
+    def set_receiver(rec)
+      @receiver = rec
+    end
 
-    def set_caller caller
-      self.caller = caller
+    def set_caller(caller)
+      @caller = caller
     end
 
     def get_type_for(name)

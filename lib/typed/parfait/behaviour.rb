@@ -4,20 +4,16 @@
 
 module Parfait
   module Behaviour
-    # when included we set up the instance_methods attribute
-    def self.included(base)
-      base.attribute :instance_methods
-    end
 
     def initialize
       super()
-      self.instance_methods = List.new
+      @instance_methods = List.new
     end
 
     def methods
-      m = self.instance_methods
+      m = @instance_methods
       return m if m
-      self.instance_methods = List.new
+      @instance_methods = List.new
     end
 
     def method_names
@@ -49,7 +45,7 @@ module Parfait
       raise "resolve_method #{m_name}.#{m_name.class}" unless m_name.is_a?(Symbol)
       method = get_instance_method(m_name)
       return method if method
-      if( self.super_class_name )
+      if( @super_class_name != :Object )
         method = self.super_class.resolve_method(m_name)
       end
       method
