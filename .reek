@@ -4,7 +4,7 @@ TooManyStatements:
   max_statements: 8
 DuplicateMethodCall:
   max_calls: 2
-Feature Envy:
+FeatureEnvy:
   exclude:
     - "Register::Interpreter"
     - "Arm::Translator"
