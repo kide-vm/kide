@@ -4,3 +4,23 @@ TooManyStatements:
   max_statements: 8
 DuplicateMethodCall:
   max_calls: 2
+Feature Envy:
+  exclude:
+    - "Register::Interpreter"
+    - "Arm::Translator"
+    - "Typed::ToCode"
+TooManyMethods:
+  exclude:
+    - "Register::Interpreter"
+    - "Arm::Translator"
+    - "Typed::ToCode"
+UtilityFunction:
+  exclude:
+    - "Register::Interpreter"
+    - "Arm::Translator"
+    - "Typed::ToCode"
+UncommunicativeMethodName:
+  exclude:
+    - "Register::Interpreter"
+    - "Arm::Translator"
+    - "Typed::ToCode"
