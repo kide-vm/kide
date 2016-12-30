@@ -3,7 +3,8 @@ require_relative "../helper"
 class TestEmptyWord < MiniTest::Test
 
   def setup
-    @word = ::Parfait::Word.new(0)
+    Register.machine.boot
+    @word = Parfait::Word.new(0)
   end
   def test_word_create
     assert @word.empty?
@@ -28,8 +29,8 @@ end
 class TestWord < MiniTest::Test
 
   def setup
-    Register.machine.boot unless Register.machine.booted
-    @word = ::Parfait::Word.new(5)
+    Register.machine.boot
+    @word = Parfait::Word.new(5)
   end
   def test_len
     assert_equal 5 , @word.length

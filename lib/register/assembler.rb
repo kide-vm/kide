@@ -32,11 +32,12 @@ module Register
     def asseble_code_from( at )
       @machine.objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::TypedMethod
+        log.debug "CODE1 #{objekt.name}"
         binary = objekt.binary
         binary.set_position( at )
         objekt.instructions.set_position( at + 12 )# BinaryCode header
         len = objekt.instructions.total_byte_length
-        log.debug "CODE #{objekt.name} at #{binary.position} len: #{len}"
+        log.debug "CODE2 #{objekt.name} at #{binary.position} len: #{len}"
         binary.set_length(len , 0)
         at += binary.padded_length
       end

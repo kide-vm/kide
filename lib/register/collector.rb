@@ -5,14 +5,14 @@ module Register
     def collect_space
       @objects.clear
       keep Parfait.object_space , 0
-      constants.each {|o| keep(o,0)}
+      constants.each {|obj| keep(obj,0)}
     end
 
     def keep object , depth
       return if object.nil?
       #puts "adding #{' ' * depth}:#{object.class}"
-      #puts "ADD #{object.first.class}, #{object.last.class}" if object.is_a? Array
-      return unless self.add_object object
+      #puts "ADD #{object.inspect}, #{object.hash}" if object.is_a? Parfait::Type
+      return unless add_object( object )
       # probably should make labels or even instructions derive from Parfait::Object, but . .
       if object.is_a? Register::Label
         object.each_label { |l| self.add_object(l)}

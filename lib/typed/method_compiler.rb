@@ -122,8 +122,7 @@ module Typed
       raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
       raise "Args must be Hash #{args}" unless args.is_a?(Hash)
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
-      arguments = Parfait::Type.for_hash( type.object_class , args )
-      @method = type.create_method( method_name , arguments)
+      @method = type.create_method( method_name , args)
       self
     end
 

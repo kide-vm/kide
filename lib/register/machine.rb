@@ -51,7 +51,7 @@ module Register
     end
 
     # Objects are data and get assembled after functions
-    def add_object objekt
+    def add_object( objekt )
       return false if @objects[objekt.object_id]
       return true if objekt.is_a? Fixnum
       unless objekt.is_a?( Parfait::Object) or objekt.is_a?( Symbol) or objekt.is_a?( Register::Label)
