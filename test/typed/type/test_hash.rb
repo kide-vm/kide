@@ -5,7 +5,7 @@ class TypeHash < MiniTest::Test
   def setup
     Register.machine.boot
     @space = Parfait.object_space
-    @types = @space.types
+    @types = @space.instance_variable_get("@types")
     @first = @types.values.first
   end
 
@@ -14,7 +14,7 @@ class TypeHash < MiniTest::Test
   end
 
   def test_length
-    assert @types.length > 16
+    assert @types.length > 11
   end
 
   def test_two_hashs_not_equal
@@ -22,12 +22,12 @@ class TypeHash < MiniTest::Test
   end
 
   def test_name
-    assert_equal "Word_Type" , @types.values.first.name
+    assert_equal "BinaryCode_Type" , @types.values.first.name
   end
 
   def test_to_hash
-    assert_equal "Word_Type" ,  @first.name
-    assert_equal :Word ,  @first.object_class.name
+    assert_equal "BinaryCode_Type" ,  @first.name
+    assert_equal :BinaryCode ,  @first.object_class.name
     hash = @first.to_hash
     assert_equal :Type , @first.types.first
     assert_equal hash[:type] , :Type

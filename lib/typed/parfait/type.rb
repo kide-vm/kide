@@ -42,9 +42,7 @@ module Parfait
     def self.for_hash( object_class , hash)
       hash = {type: object_class.name }.merge(hash) unless hash[:type]
       new_type = Type.new( object_class , hash)
-      code = hash_code_for_hash( hash )
-      Parfait.object_space.types[code] = new_type
-      new_type
+      Parfait.object_space.add_type(new_type)
     end
 
     def self.hash_code_for_hash( dict )
@@ -152,9 +150,6 @@ module Parfait
       raise "No nil type" unless type
       hash = to_hash
       hash[name] = type
-      code = Type.hash_code_for_hash( hash )
-      existing = Parfait.object_space.types[code]
-      return existing if existing
       return Type.for_hash( @object_class , hash)
     end
 

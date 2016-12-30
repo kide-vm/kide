@@ -6,6 +6,7 @@ class TestSpace < MiniTest::Test
     @machine = Register.machine.boot
     @space = Parfait.object_space
   end
+
   def classes
     [:Kernel,:Word,:List,:Message,:NamedList,:Type,:Object,:Class,:Dictionary,:TypedMethod , :Integer]
   end
@@ -16,6 +17,7 @@ class TestSpace < MiniTest::Test
   def test_global_space
     assert_equal Parfait::Space , Parfait.object_space.class
   end
+
   def test_integer
     int = Parfait.object_space.get_class_by_name :Integer
     assert_equal 3, int.instance_type.method_names.get_length
@@ -29,12 +31,19 @@ class TestSpace < MiniTest::Test
   end
 
   def test_types
-    assert  @space.types.is_a? Parfait::Dictionary
+    assert  @space.instance_variable_get("@types").is_a? Parfait::Dictionary
   end
 
   def test_types_each
     @space.each_type do |type|
       assert type.is_a?(Parfait::Type)
+    end
+  end
+
+  def test_types_hashes
+    types = @space.instance_variable_get("@types")
+    types.each do |has , type|
+      assert has.is_a?(Fixnum) , has.inspect
     end
   end
 

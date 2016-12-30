@@ -42,6 +42,8 @@ module Parfait
         message = @first_message
       end
       @classes.each do |name , cl|
+        raise "upps #{cl.instance_type.hash}" unless cl.instance_type.hash.is_a?(Fixnum)
+
         @types[cl.instance_type.hash] = cl.instance_type
       end
     end
@@ -50,12 +52,24 @@ module Parfait
       [:classes , :types, :first_message]
     end
 
-    attr_reader :types , :classes , :first_message
+    attr_reader  :classes , :first_message
 
     def each_type
       @types.values.each do |type|
         yield(type)
       end
+    end
+
+    def add_type(type)
+      hash = type.hash
+      raise "upps #{hash}" unless hash.is_a?(Fixnum)
+      was = @types[hash]
+      return was if was
+      @types[hash] = type
+    end
+
+    def get_type_for( hash )
+      @types[hash]
     end
 
     # all methods form all types
