@@ -5,7 +5,7 @@ class TestAssignStatement < MiniTest::Test
   include Statements
 
   def test_assign_op
-    Register.machine.space.get_main.add_local(:r , :Integer)
+    Parfait::Space.object_space.get_main.add_local(:r , :Integer)
 
     @input    = s(:statements, s(:assignment, s(:name, :r), s(:operator_value, :+, s(:int, 10), s(:int, 1))))
 
@@ -15,7 +15,7 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_assign_local
-    Register.machine.space.get_main.add_local(:r , :Integer)
+    Parfait::Space.object_space.get_main.add_local(:r , :Integer)
     @input =s(:statements, s(:assignment, s(:name, :r), s(:int, 5)))
 
     @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
@@ -23,7 +23,7 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_assign_local_assign
-    Register.machine.space.get_main.add_local(:r , :Integer)
+    Parfait::Space.object_space.get_main.add_local(:r , :Integer)
 
     @input = s(:statements, s(:assignment, s(:name, :r), s(:int, 5)))
 
@@ -32,7 +32,7 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_assign_call
-    Register.machine.space.get_main.add_local(:r , :Integer)
+    Parfait::Space.object_space.get_main.add_local(:r , :Integer)
     @input = s(:statements, s(:assignment, s(:name, :r), s(:call, s(:name, :main), s(:arguments))))
     @expect = [Label, SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot, LoadConstant ,
                  SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer, FunctionCall ,
@@ -42,7 +42,7 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_named_list_get
-    Register.machine.space.get_main.add_local(:r , :Integer)
+    Parfait::Space.object_space.get_main.add_local(:r , :Integer)
     @input = s(:statements, s(:assignment, s(:name, :r), s(:int, 5)), s(:return, s(:name, :r)))
     @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot ,
                Label, FunctionReturn]
@@ -53,7 +53,7 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_assign_local_int
-    Register.machine.space.get_main.add_local(:r , :Integer)
+    Parfait::Space.object_space.get_main.add_local(:r , :Integer)
     @input = s(:statements, s(:assignment, s(:name, :r), s(:int, 5)) )
     @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
     was = check
@@ -63,14 +63,14 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_misassign_local
-    Register.machine.space.get_main.add_local(:r , :Integer)
+    Parfait::Space.object_space.get_main.add_local(:r , :Integer)
     @input = s(:statements, s(:assignment, s(:name, :r), s(:string, "5")) )
     @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
     assert_raises {check }
   end
 
   def test_assign_arg
-    Register.machine.space.get_main.add_argument(:blar , :Integer)
+    Parfait::Space.object_space.get_main.add_argument(:blar , :Integer)
     @input = s(:statements, s(:assignment, s(:name, :blar), s(:int, 5)))
     @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
     was = check
@@ -80,7 +80,7 @@ class TestAssignStatement < MiniTest::Test
   end
 
   def test_misassign_arg
-    Register.machine.space.get_main.add_argument(:blar , :Integer)
+    Parfait::Space.object_space.get_main.add_argument(:blar , :Integer)
     @input = s(:statements, s(:assignment, s(:name, :blar), s(:string, "5")))
     @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
     assert_raises {check }
@@ -88,7 +88,7 @@ class TestAssignStatement < MiniTest::Test
 
   def test_arg_get
     # have to define bar externally, just because redefining main. Otherwise that would be automatic
-    Register.machine.space.get_main.add_argument(:balr , :Integer)
+    Parfait::Space.object_space.get_main.add_argument(:balr , :Integer)
     @input = s(:statements, s(:return, s(:name, :balr)))
     @expect =  [Label, SlotToReg, SlotToReg, RegToSlot, Label, FunctionReturn]
     was = check

@@ -3,7 +3,9 @@ require_relative "../helper"
 class BasicType < MiniTest::Test
 
   def setup
-    @mess = Register.machine.boot.space.first_message
+    Register.machine.boot
+    @space = Parfait::Space.object_space
+    @mess = @space.first_message
     assert @mess
     @type = @mess.get_type()
   end
@@ -36,7 +38,7 @@ class BasicType < MiniTest::Test
 
   def test_type_length_index
     type = @mess.get_type.get_type
-    assert_equal 5 , type.variable_index(:instance_methods)
+    assert_equal 5 , type.variable_index(:methods)
     assert_equal type.object_class , type.get_internal_word(4)
   end
 

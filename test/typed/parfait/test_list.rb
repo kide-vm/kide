@@ -10,10 +10,10 @@ class TestList < MiniTest::Test
     assert @list.is_a? Parfait::Indexed
   end
   def test_old_type
-    assert_equal Parfait::Type , Register.machine.space.classes.keys.get_type.class
+    assert_equal Parfait::Type , Parfait::Space.object_space.classes.keys.get_type.class
   end
   def test_old_type_push
-    list = Register.machine.space.classes.keys
+    list = Parfait::Space.object_space.classes.keys
     assert_equal Parfait::Type , list.get_type.class
   end
   def test_new_type
@@ -28,7 +28,7 @@ class TestList < MiniTest::Test
     assert_equal 1 , type.variable_index(:type)
   end
   def notest_type_is_first_old
-    type =  Register.machine.space.classes.keys.get_type
+    type =  Parfait::Space.object_space.classes.keys.get_type
     assert_equal 1 , type.variable_index(:type)
   end
 

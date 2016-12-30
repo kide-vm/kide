@@ -10,7 +10,7 @@ module Register
     end
 
     def test_local
-      Register.machine.space.get_main.add_local(:bar , :Integer)
+      Parfait::Space.object_space.get_main.add_local(:bar , :Integer)
       @input    = s(:name, :bar)
       @output = Register::RegisterValue
       check
@@ -24,7 +24,7 @@ module Register
     end
 
     def test_args
-      Register.machine.space.get_main.add_argument(:bar , :Integer)
+      Parfait::Space.object_space.get_main.add_argument(:bar , :Integer)
       @input    = s(:name, :bar)
       @output = Register::RegisterValue
       check

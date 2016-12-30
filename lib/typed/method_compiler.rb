@@ -108,7 +108,7 @@ module Typed
     # class_name and method_name are pretty clear, args are given as a ruby array
     def create_method( class_name , method_name , args = {})
       raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
-      clazz = Register.machine.space.get_class_by_name! class_name
+      clazz = Parfait::Space.object_space.get_class_by_name! class_name
       create_method_for( clazz.instance_type , method_name , args)
     end
 

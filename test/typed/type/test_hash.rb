@@ -3,7 +3,9 @@ require_relative "../helper"
 class TypeHash < MiniTest::Test
 
   def setup
-    @types = Register.machine.boot.space.types
+    Register.machine.boot
+    @space = Parfait::Space.object_space
+    @types = @space.types
     @first = @types.values.first
   end
 

@@ -47,15 +47,15 @@ module Register
     # - create the Class objects and assign them to the types
     def boot_parfait!
       types = boot_types
-      boot_boot_space(types)
-      classes = boot_classes(types)
-      fix_types(types , classes)
+      boot_boot_space( types )
+      classes = boot_classes( types )
+      fix_types( types , classes )
 
-      @space = Parfait::Space.new(classes)
-      Parfait::Space.set_object_space @space
+      space = Parfait::Space.new( classes )
+      Parfait::Space.set_object_space( space )
 
       #puts Sof.write(@space)
-      boot_functions!
+      boot_functions!( space )
     end
 
     # types is where the snake bites its tail. Every chain ends at a type and then it
@@ -158,29 +158,29 @@ module Register
     # Methods are grabbed from respective modules by sending the method name. This should return the
     # implementation of the method (ie a method object), not actually try to implement it
     #                                                     (as that's impossible in ruby)
-    def boot_functions!
+    def boot_functions!( space )
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we
       # have to define some dummies, just for the others to compile
       # TODO go through the virtual parfait layer and adjust function names to what they really are
-      space = @space.get_class_by_name(:Space)
-      space.instance_type.add_method Builtin::Space.send(:main, nil)
+      space_class = space.get_class_by_name(:Space)
+      space_class.instance_type.add_method Builtin::Space.send(:main, nil)
 
-      obj = @space.get_class_by_name(:Object)
+      obj = space.get_class_by_name(:Object)
       [ :get_internal_word , :set_internal_word ].each do |f|
         obj.instance_type.add_method Builtin::Object.send(f , nil)
       end
-      obj = @space.get_class_by_name(:Kernel)
+      obj = space.get_class_by_name(:Kernel)
       # create __init__ main first, __init__ calls it
       [:exit , :__init__ ].each do |f|
         obj.instance_type.add_method Builtin::Kernel.send(f , nil)
       end
 
-      obj = @space.get_class_by_name(:Word)
+      obj = space.get_class_by_name(:Word)
       [:putstring , :get_internal_byte , :set_internal_byte ].each do |f|
         obj.instance_type.add_method Builtin::Word.send(f , nil)
       end
 
-      obj = @space.get_class_by_name(:Integer)
+      obj = space.get_class_by_name(:Integer)
       [ :putint, :mod4, :div10].each do |f|   #mod4 is just a forward declaration
         obj.instance_type.add_method Builtin::Integer.send(f , nil)
       end

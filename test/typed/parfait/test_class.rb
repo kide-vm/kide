@@ -3,7 +3,8 @@ require_relative "../helper"
 class TestClass < MiniTest::Test
 
   def setup
-    @space = Register.machine.boot.space
+    Register.machine.boot
+    @space = Parfait::Space.object_space
     @try = @space.create_class :Try , :Object
   end
 

@@ -16,20 +16,20 @@ module Register
     end
 
     def test_call_main_int
-      Register.machine.space.get_main.add_argument(:blar , :Integer)
+      Parfait::Space.object_space.get_main.add_argument(:blar , :Integer)
       @input    =s(:call,s(:name, :main),s(:arguments , s(:int, 1)))
       check
     end
 
     def test_call_main_string
-      Register.machine.space.get_main.add_argument(:blar , :Word)
+      Parfait::Space.object_space.get_main.add_argument(:blar , :Word)
       @input    =s(:call,s(:name, :main),s(:arguments , s(:string, "1") ))
       check
     end
 
     def test_call_main_op
-      Register.machine.space.get_main.add_local(:bar , :Integer)
-      Register.machine.space.get_main.add_argument(:blar , :Integer)
+      Parfait::Space.object_space.get_main.add_local(:bar , :Integer)
+      Parfait::Space.object_space.get_main.add_argument(:blar , :Integer)
       @input    =s(:call,s(:name, :main),s(:arguments , s(:name, :bar) ))
       check
     end

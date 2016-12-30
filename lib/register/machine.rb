@@ -21,27 +21,16 @@ module Register
       @booted = false
       @constants = []
     end
-    attr_reader    :constants
-    attr_reader :space , :class_mappings , :init , :objects , :booted
+    attr_reader  :constants , :init , :objects , :booted
 
     # idea being that later method missing could catch translate_xxx and translate to target xxx
     # now we just instantiate ArmTranslater and pass instructions
     def translate_arm
-      methods = collect_methods
+      methods = Parfait::Space.object_space.collect_methods
       translate_methods( methods )
       label = @init.next
       @init = Arm::Translator.new.translate( @init )
       @init.append label
-    end
-
-    def collect_methods
-      methods = []
-      self.space.types.each do |hash , t|
-        t.methods.each do |f|
-          methods << f
-        end
-      end
-      methods
     end
 
     def translate_methods(methods)
@@ -75,7 +64,7 @@ module Register
     def boot
       initialize
       boot_parfait!
-      @init =  Branch.new( "__initial_branch__" , self.space.get_init.instructions )
+      @init =  Branch.new( "__initial_branch__" , Parfait::Space.object_space.get_init.instructions )
       @booted = true
       self
     end

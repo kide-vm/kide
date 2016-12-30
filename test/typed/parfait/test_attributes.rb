@@ -3,7 +3,9 @@ require_relative "../helper"
 class TestAttributes < MiniTest::Test
 
   def setup
-    @mess = Register.machine.boot.space.first_message
+    Register.machine.boot
+    @space = Parfait::Space.object_space
+    @mess = @space.first_message
     @type = @mess.get_type
   end
 

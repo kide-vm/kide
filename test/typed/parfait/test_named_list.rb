@@ -3,7 +3,9 @@ require_relative "../helper"
 class TestNamedLists < MiniTest::Test
 
   def setup
-    @named_list = Register.machine.boot.space.first_message.locals
+    Register.machine.boot
+    @space = Parfait::Space.object_space
+    @named_list = @space.first_message.locals
     @type = @named_list.get_type
   end
 

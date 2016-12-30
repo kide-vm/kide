@@ -52,6 +52,23 @@ module Parfait
       @@object_space = space
     end
 
+    def each_type
+      @types.values.each do |type|
+        yield(type)
+      end
+    end
+
+    # all methods form all types
+    def collect_methods
+      methods = []
+      each_type do | type |
+        type.methods.each do |meth|
+          methods << meth
+        end
+      end
+      methods
+    end
+
     def get_main
       kernel = get_class_by_name :Space
       kernel.instance_type.get_method :main

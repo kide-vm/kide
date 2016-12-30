@@ -3,7 +3,9 @@ require_relative "../helper"
 class TypeApi < MiniTest::Test
 
   def setup
-    tc = Register.machine.boot.space.get_class_by_name( :Type )
+    Register.machine.boot
+    @space = Parfait::Space.object_space
+    tc = @space.get_class_by_name( :Type )
     @type = Parfait::Type.new tc
   end
 
@@ -12,7 +14,7 @@ class TypeApi < MiniTest::Test
   end
 
   def test_class_type
-    oc = Register.machine.boot.space.get_class_by_name( :Object )
+    oc = @space.get_class_by_name( :Object )
     assert_equal Parfait::Class , oc.class
     type = oc.instance_type
     assert_equal Parfait::Type , type.class
@@ -21,7 +23,7 @@ class TypeApi < MiniTest::Test
   end
 
   def test_class_space
-    space = Register.machine.space
+    space = Parfait::Space.object_space
     assert_equal Parfait::Space , space.class
     type = space.get_type
     assert_equal Parfait::Type , type.class

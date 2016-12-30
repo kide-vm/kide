@@ -21,7 +21,7 @@ module Register
           ret_tmp = compiler.use_reg(:Label)
           compiler.add_load_constant("__init__ load return", exit_label , ret_tmp)
           compiler.add_reg_to_slot("__init__ store return", ret_tmp , :message , :return_address)
-          compiler.add_code Register.function_call( "__init__ issue call" ,  Register.machine.space.get_main )
+          compiler.add_code Register.function_call( "__init__ issue call" ,  Parfait::Space.object_space.get_main )
           compiler.add_code exit_label
           emit_syscall( compiler , :exit )
           return compiler.method
