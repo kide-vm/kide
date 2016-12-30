@@ -16,7 +16,7 @@ module Statements
     code = Typed.ast_to_code( @input )
     assert code.to_s , @input
     produced = compiler.process( code )
-    produced = Parfait::Space.object_space.get_main.instructions
+    produced = Parfait.object_space.get_main.instructions
     compare_instructions produced , @expect
     produced
   end

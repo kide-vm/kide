@@ -4,7 +4,7 @@ class TestNamedLists < MiniTest::Test
 
   def setup
     Register.machine.boot
-    @space = Parfait::Space.object_space
+    @space = Parfait.object_space
     @named_list = @space.first_message.locals
     @type = @named_list.get_type
   end

@@ -4,7 +4,7 @@ class TypeApi < MiniTest::Test
 
   def setup
     Register.machine.boot
-    @space = Parfait::Space.object_space
+    @space = Parfait.object_space
     tc = @space.get_class_by_name( :Type )
     @type = Parfait::Type.new tc
   end
@@ -23,7 +23,7 @@ class TypeApi < MiniTest::Test
   end
 
   def test_class_space
-    space = Parfait::Space.object_space
+    space = Parfait.object_space
     assert_equal Parfait::Space , space.class
     type = space.get_type
     assert_equal Parfait::Type , type.class

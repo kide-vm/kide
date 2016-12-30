@@ -40,7 +40,7 @@ module Parfait
       @name = name
       @binary = BinaryCode.new 0
       @arguments = arguments
-      @locals = Type.new Space.object_space.get_class_by_name( :Object )
+      @locals = Type.new Parfait.object_space.get_class_by_name( :Object )
     end
 
     def set_instructions(inst)

@@ -42,7 +42,7 @@ module Parfait
     def self.for_hash( object_class , hash)
       new_type = Type.new( object_class , hash)
       code = hash_code_for_hash( hash )
-      Space.object_space.types[code] = new_type
+      Parfait.object_space.types[code] = new_type
       new_type
     end
 
@@ -154,7 +154,7 @@ module Parfait
       hash = to_hash
       hash[name] = type
       code = Type.hash_code_for_hash( hash )
-      existing = Space.object_space.types[code]
+      existing = Parfait.object_space.types[code]
       if existing
         return existing
       else

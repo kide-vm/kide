@@ -21,7 +21,7 @@ module Melon
     private
 
     def make_type( statement )
-      type = Parfait::Space.object_space.get_class_by_name(:Message ).instance_type
+      type = Parfait.object_space.get_class_by_name(:Message ).instance_type
       statement.children.each do |arg|
         type = type.add_instance_variable( arg.children[0] , :Object )
       end
@@ -30,7 +30,7 @@ module Melon
 
     def make_locals(body)
       locals = LocalsCollector.new.collect(body)
-      type = Parfait::Space.object_space.get_class_by_name(:NamedList ).instance_type
+      type = Parfait.object_space.get_class_by_name(:NamedList ).instance_type
       locals.each do |name , local_type |
         type = type.add_instance_variable( name , local_type )
       end

@@ -46,7 +46,7 @@ module Typed
       when Parfait::Type
         type = me.type
       when Symbol
-        type =  Parfait::Space.object_space.get_class_by_name(me.type).instance_type
+        type =  Parfait.object_space.get_class_by_name(me.type).instance_type
       else
         raise me.inspect
       end

@@ -7,7 +7,7 @@ class Symbol
     true
   end
   def get_type
-    l = Parfait::Space.object_space.classes[:Word].instance_type
+    l = Parfait.object_space.classes[:Word].instance_type
     #puts "LL #{l.class}"
     l
   end

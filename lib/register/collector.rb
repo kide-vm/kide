@@ -4,7 +4,7 @@ module Register
   module Collector
     def collect
       self.objects.clear
-      keep Parfait::Space.object_space , 0
+      keep Parfait.object_space , 0
       constants.each {|o| keep(o,0)}
     end
 

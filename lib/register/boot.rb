@@ -52,7 +52,7 @@ module Register
       fix_types( types , classes )
 
       space = Parfait::Space.new( classes )
-      Parfait::Space.set_object_space( space )
+      Parfait.set_object_space( space )
 
       #puts Sof.write(@space)
       boot_functions!( space )
@@ -91,7 +91,7 @@ module Register
         clazz = BootClass.new(type)
         boot_space.classes[name] = clazz
       end
-      Parfait::Space.set_object_space boot_space
+      Parfait.set_object_space boot_space
     end
 
     # superclasses other than default object

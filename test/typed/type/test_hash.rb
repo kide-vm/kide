@@ -4,7 +4,7 @@ class TypeHash < MiniTest::Test
 
   def setup
     Register.machine.boot
-    @space = Parfait::Space.object_space
+    @space = Parfait.object_space
     @types = @space.types
     @first = @types.values.first
   end

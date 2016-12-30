@@ -26,7 +26,7 @@ module Register
     # idea being that later method missing could catch translate_xxx and translate to target xxx
     # now we just instantiate ArmTranslater and pass instructions
     def translate_arm
-      methods = Parfait::Space.object_space.collect_methods
+      methods = Parfait.object_space.collect_methods
       translate_methods( methods )
       label = @init.next
       @init = Arm::Translator.new.translate( @init )
@@ -64,7 +64,7 @@ module Register
     def boot
       initialize
       boot_parfait!
-      @init =  Branch.new( "__initial_branch__" , Parfait::Space.object_space.get_init.instructions )
+      @init =  Branch.new( "__initial_branch__" , Parfait.object_space.get_init.instructions )
       @booted = true
       self
     end

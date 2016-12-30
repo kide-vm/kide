@@ -4,7 +4,7 @@ class TestMethodApi < MiniTest::Test
 
   def setup
     Register.machine.boot
-    @space = Parfait::Space.object_space
+    @space = Parfait.object_space
     @try_class = @space.create_class( :Try )
     @try_type = @try_class.instance_type
   end

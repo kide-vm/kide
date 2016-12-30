@@ -25,7 +25,7 @@ class TestCallStatement < MiniTest::Test
   end
 
   def _test_call_local_int
-    Parfait::Space.object_space.get_main.add_local(:testi , :Integer)
+    Parfait.object_space.get_main.add_local(:testi , :Integer)
     clean_compile :Integer, :putint, {}, s(:statements, s(:return, s(:int, 1)))
     @input = s(:statements, s(:assignment, s(:name, :testi), s(:int, 20)), s(:call, s(:name, :putint), s(:arguments), s(:receiver, s(:name, :testi))))
 
@@ -37,7 +37,7 @@ class TestCallStatement < MiniTest::Test
   end
 
   def test_call_local_class
-    Parfait::Space.object_space.get_main.add_local(:test_l , :List)
+    Parfait.object_space.get_main.add_local(:test_l , :List)
     clean_compile :List, :add, {}, s(:statements, s(:return, s(:int, 1)))
 
     @input =s(:statements, s(:call, s(:name, :add), s(:arguments), s(:receiver, s(:name, :test_l))))

@@ -6,7 +6,7 @@ module Register
     include Statements
 
     def test_field_named_list
-      Parfait::Space.object_space.get_main.add_local( :m , :Message)
+      Parfait.object_space.get_main.add_local( :m , :Message)
       @input = s(:statements,  s(:return, s(:field_access,
                                 s(:receiver, s(:name, :m)), s(:field, s(:name, :name)))))
       @expect =  [Label, SlotToReg, SlotToReg, SlotToReg, RegToSlot, Label, FunctionReturn]
@@ -14,7 +14,7 @@ module Register
     end
 
     def test_field_arg
-      Parfait::Space.object_space.get_main.add_local( :m , :Message)
+      Parfait.object_space.get_main.add_local( :m , :Message)
       clean_compile :Space, :get_name, { :main => :Message},
                 s(:statements, s(:return, s(:field_access,
                     s(:receiver, s(:name, :main)), s(:field, s(:name, :name)))))
@@ -28,7 +28,7 @@ module Register
     end
 
     def test_message_field
-      Parfait::Space.object_space.get_main.add_local(:name , :Word)
+      Parfait.object_space.get_main.add_local(:name , :Word)
       @input = s(:statements, s(:assignment, s(:name, :name), s(:field_access, s(:receiver, s(:name, :message)), s(:field, s(:name, :name)))), s(:return, s(:name, :name)))
 
       @expect =   [Label, RegisterTransfer, SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg ,

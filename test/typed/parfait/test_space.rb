@@ -4,7 +4,7 @@ class TestSpace < MiniTest::Test
 
   def setup
     @machine = Register.machine.boot
-    @space = Parfait::Space.object_space
+    @space = Parfait.object_space
   end
   def classes
     [:Kernel,:Word,:List,:Message,:NamedList,:Type,:Object,:Class,:Dictionary,:TypedMethod , :Integer]
@@ -14,10 +14,10 @@ class TestSpace < MiniTest::Test
   end
 
   def test_global_space
-    assert_equal Parfait::Space , Parfait::Space.object_space.class
+    assert_equal Parfait::Space , Parfait.object_space.class
   end
   def test_integer
-    int = Parfait::Space.object_space.get_class_by_name :Integer
+    int = Parfait.object_space.get_class_by_name :Integer
     assert_equal 3, int.instance_type.method_names.get_length
   end
 

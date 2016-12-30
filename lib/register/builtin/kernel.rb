@@ -11,7 +11,7 @@ module Register
           compiler.method.set_instructions( new_start)
           compiler.set_current new_start
 
-          space = Parfait::Space.object_space
+          space = Parfait.object_space
           space_reg = compiler.use_reg(:Space) #Set up the Space as self upon init
           compiler.add_load_constant("__init__ load Space", space , space_reg)
           message_ind = Register.resolve_to_index( :space , :first_message )
@@ -21,7 +21,7 @@ module Register
           ret_tmp = compiler.use_reg(:Label)
           compiler.add_load_constant("__init__ load return", exit_label , ret_tmp)
           compiler.add_reg_to_slot("__init__ store return", ret_tmp , :message , :return_address)
-          compiler.add_code Register.function_call( "__init__ issue call" ,  Parfait::Space.object_space.get_main )
+          compiler.add_code Register.function_call( "__init__ issue call" ,  Parfait.object_space.get_main )
           compiler.add_code exit_label
           emit_syscall( compiler , :exit )
           return compiler.method

@@ -4,7 +4,7 @@ class TestClass < MiniTest::Test
 
   def setup
     Register.machine.boot
-    @space = Parfait::Space.object_space
+    @space = Parfait.object_space
     @try = @space.create_class :Try , :Object
   end
 

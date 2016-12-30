@@ -4,7 +4,7 @@ class BasicType < MiniTest::Test
 
   def setup
     Register.machine.boot
-    @space = Parfait::Space.object_space
+    @space = Parfait.object_space
     @mess = @space.first_message
     assert @mess
     @type = @mess.get_type()
