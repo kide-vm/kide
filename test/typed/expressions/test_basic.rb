@@ -6,6 +6,7 @@ class TestBasic < MiniTest::Test
   include AST::Sexp
 
   def setup
+    Register.machine.boot
     @output = Register::RegisterValue
   end
 
