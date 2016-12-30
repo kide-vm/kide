@@ -37,7 +37,7 @@ module Register
     def collect_methods
       methods = []
       self.space.types.each do |hash , t|
-        t.instance_methods.each do |f|
+        t.methods.each do |f|
           methods << f
         end
       end

@@ -54,12 +54,12 @@ module Parfait
 
     def get_main
       kernel = get_class_by_name :Space
-      kernel.instance_type.get_instance_method :main
+      kernel.instance_type.get_method :main
     end
 
     def get_init
       kernel = get_class_by_name :Kernel
-      kernel.instance_type.get_instance_method :__init__
+      kernel.instance_type.get_method :__init__
     end
 
     # get a class by name (symbol)
@@ -77,7 +77,7 @@ module Parfait
     def get_class_by_name! name
       c = get_class_by_name(name)
       return c if c
-      create_class name 
+      create_class name
     end
 
     # this is the way to instantiate classes (not Parfait::Class.new)

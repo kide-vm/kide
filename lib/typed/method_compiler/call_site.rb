@@ -11,7 +11,7 @@ module Typed
       me = get_me( statement )
       type = get_my_type(me)
 
-      method = type.get_instance_method(statement.name)
+      method = type.get_method(statement.name)
       raise "Method not implemented #{type.inspect}.#{statement.name}" unless method
 
       # move our receiver there
@@ -85,7 +85,7 @@ module Typed
         store_arg_no(arguments , arg_type , arg , i + 1) #+1 for ruby(0 based)
       end
     end
-    
+
     def store_arg_no(arguments , arg_type , arg , i )
       reset_regs
       i = i + 1             # disregarding type field

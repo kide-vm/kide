@@ -143,7 +143,7 @@ module Register
           :Space => {:classes => :Dictionary , :types => :Dictionary , :first_message => :Message},
           :NamedList => {},
           :Type => {:names => :List , :types => :List  ,
-                    :object_class => :Class, :instance_methods => :List } ,
+                    :object_class => :Class, :methods => :List } ,
           :Class => {:instance_methods => :List, :instance_type => :Type, :name => :Word,
                       :super_class_name => :Word , :instance_names => :List },
           :Dictionary => {:keys => :List , :values => :List  } ,
@@ -163,26 +163,26 @@ module Register
       # have to define some dummies, just for the others to compile
       # TODO go through the virtual parfait layer and adjust function names to what they really are
       space = @space.get_class_by_name(:Space)
-      space.instance_type.add_instance_method Builtin::Space.send(:main, nil)
+      space.instance_type.add_method Builtin::Space.send(:main, nil)
 
       obj = @space.get_class_by_name(:Object)
       [ :get_internal_word , :set_internal_word ].each do |f|
-        obj.instance_type.add_instance_method Builtin::Object.send(f , nil)
+        obj.instance_type.add_method Builtin::Object.send(f , nil)
       end
       obj = @space.get_class_by_name(:Kernel)
       # create __init__ main first, __init__ calls it
       [:exit , :__init__ ].each do |f|
-        obj.instance_type.add_instance_method Builtin::Kernel.send(f , nil)
+        obj.instance_type.add_method Builtin::Kernel.send(f , nil)
       end
 
       obj = @space.get_class_by_name(:Word)
       [:putstring , :get_internal_byte , :set_internal_byte ].each do |f|
-        obj.instance_type.add_instance_method Builtin::Word.send(f , nil)
+        obj.instance_type.add_method Builtin::Word.send(f , nil)
       end
 
       obj = @space.get_class_by_name(:Integer)
       [ :putint, :mod4, :div10].each do |f|   #mod4 is just a forward declaration
-        obj.instance_type.add_instance_method Builtin::Integer.send(f , nil)
+        obj.instance_type.add_method Builtin::Integer.send(f , nil)
       end
     end
   end

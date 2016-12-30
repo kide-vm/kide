@@ -35,9 +35,9 @@
 module Parfait
   class Type < Object
     def self.attributes
-      [:names , :types , :object_class , :instance_methods ]
+      [:names , :types , :object_class , :methods ]
     end
-    attr_reader :object_class , :names , :types , :instance_methods
+    attr_reader :object_class , :names , :types , :methods
 
     def self.for_hash( object_class , hash)
       new_type = Type.new( object_class , hash)
@@ -82,7 +82,7 @@ module Parfait
     # this part of the init is seperate because at boot time we can not use normal new
     # new is overloaded to grab the type from space, and before boot, that is not set up
     def init_lists(hash)
-      @instance_methods = List.new
+      @methods = List.new
       @names = List.new
       @types = List.new
       private_add_instance_variable :type ,:Type
@@ -95,55 +95,47 @@ module Parfait
       "#{@object_class.name}:#{@names.inspect}"
     end
 
-    def methods
-      @instance_methods
-    end
-
     def method_names
       names = List.new
-      self.methods.each do |method|
+      @methods.each do |method|
         names.push method.name
       end
       names
     end
 
-    def create_instance_method( method_name , arguments )
-      raise "create_instance_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
+    def create_method( method_name , arguments )
+      raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
       #puts "Self: #{self.class} clazz: #{clazz.name}"
       type = arguments
       type = Parfait::Type.for_hash( @object_class , arguments) if arguments.is_a?(Hash)
-      add_instance_method TypedMethod.new( self , method_name , type )
+      add_method TypedMethod.new( self , method_name , type )
     end
 
-    def add_instance_method( method )
+    def add_method( method )
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? TypedMethod
       raise "syserr #{method.name.class}" unless method.name.is_a? Symbol
       if self.is_a?(Class) and (method.for_type != self)
         raise "Adding to wrong class, should be #{method.for_class}"
       end
-      found = get_instance_method( method.name )
+      found = get_method( method.name )
       if found
-        self.methods.delete(found)
+        @methods.delete(found)
       end
-      self.methods.push method
+      @methods.push method
       #puts "#{self.name} add #{method.name}"
       method
     end
 
-    def remove_instance_method method_name
-      found = get_instance_method( method_name )
-      if found
-        self.methods.delete(found)
-      else
-        raise "No such method #{method_name} in #{self.name}"
-      end
-      return true
+    def remove_method( method_name )
+      found = get_method( method_name )
+      raise "No such method #{method_name} in #{self.name}" unless found
+      @methods.delete(found)
     end
 
-    def get_instance_method( fname )
-      raise "get_instance_method #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
+    def get_method( fname )
+      raise "get_method #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
       #if we had a hash this would be easier.  Detect or find would help too
-      self.methods.each do |m|
+      @methods.each do |m|
         return m if(m.name == fname )
       end
       nil

@@ -72,8 +72,8 @@ module Typed
         @type = method.for_type
       else
         @type = Parfait::Space.object_space.get_type()
-        @method = @type.get_instance_method( :main )
-        @method = @type.create_instance_method( :main ,{}) unless @method
+        @method = @type.get_method( :main )
+        @method = @type.create_method( :main ,{}) unless @method
       end
       @current = @method.instructions
     end
@@ -123,7 +123,7 @@ module Typed
       raise "Args must be Hash #{args}" unless args.is_a?(Hash)
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
       arguments = Parfait::Type.for_hash( type.object_class , args )
-      @method = type.create_instance_method( method_name , arguments)
+      @method = type.create_method( method_name , arguments)
       self
     end
 
