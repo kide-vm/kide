@@ -9,7 +9,7 @@ rescue Bundler::BundlerError => e
 end
 if ENV['CODECLIMATE_REPO_TOKEN']
   require 'simplecov'
-  SimpleCov.start { add_filter "test" }
+  SimpleCov.start { add_filter "/test/" }
 end
 
 require "minitest/autorun"
