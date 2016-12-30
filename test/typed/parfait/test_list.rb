@@ -7,7 +7,6 @@ class TestList < MiniTest::Test
   end
   def test_isa
     assert @list.is_a? Parfait::List
-    assert @list.is_a? Parfait::Indexed
   end
   def test_old_type
     assert_equal Parfait::Type , Parfait.object_space.classes.keys.get_type.class
