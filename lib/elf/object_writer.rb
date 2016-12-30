@@ -20,12 +20,12 @@ module Elf
       assembler = Register::Assembler.new(Register.machine)
       set_text assembler.write_as_string
 
-      # for debug add labels to the block positions
-      Register.machine.space.types.values.each do |clazz|
-        clazz.instance_methods.each do |f|
+      # for debug add labels for labels
+      Register.machine.space.types.values.each do |type|
+        type.instance_methods.each do |f|
           f.instructions.each_label do |label|
-              add_symbol "#{clazz.name}::#{f.name}:#{label.name}" , label.position
-            end
+            add_symbol "#{clazz.name}::#{f.name}:#{label.name}" , label.position
+          end
         end
       end
 
@@ -37,9 +37,9 @@ module Elf
           label = "#{slot.class.name}::#{slot.position.to_s(16)}"
         end
         label += "=#{slot}" if slot.is_a?(Symbol) or slot.is_a?(String)
-        add_symbol  label , slot.position
+        add_symbol label , slot.position
         if slot.is_a?(Parfait::TypedMethod)
-          add_symbol  slot.name.to_s , slot.binary.position
+          add_symbol slot.name.to_s , slot.binary.position
         end
       end
     end
@@ -50,7 +50,7 @@ module Elf
       @text.text = text
       add_symbol "_start", 0
     end
-    
+
     def add_symbol(name, offset, linkage = Elf::Constants::STB_GLOBAL)
       return add_symbol( name + "_" , offset ) if @symbol_table.has_name(name)
       @symbol_table.add_func_symbol name, offset, @text, linkage
