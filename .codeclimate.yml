@@ -17,5 +17,6 @@ ratings:
   paths:
   - lib/**
   - "**.rb"
-  - test/**/*
-  - stash/**/*
+exclude_paths:
+- "tests/"
+- "stash/"
