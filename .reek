@@ -1,0 +1,6 @@
+---
+TooManyStatements:
+  enabled: true
+  max_statements: 8
+DuplicateMethodCall:
+  max_calls: 2
