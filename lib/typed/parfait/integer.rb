@@ -1,5 +1,5 @@
 
-# Integer class for representing mathods on Integers
+# Integer class for representing maths on Integers
 # Integers are Values (not Objects),
 # - they have fixed value
 # - they are immutable

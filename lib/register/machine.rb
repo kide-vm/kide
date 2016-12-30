@@ -51,13 +51,14 @@ module Register
     end
 
     # Objects are data and get assembled after functions
-    def add_object o
-      return false if @objects[o.object_id]
-      return true if o.is_a? Fixnum
-      unless o.is_a? Parfait::Object or o.is_a? Symbol or o.is_a? Register::Label
-        raise "adding non parfait #{o.class}"
+    def add_object objekt
+      return false if @objects[objekt.object_id]
+      return true if objekt.is_a? Fixnum
+      unless objekt.is_a?( Parfait::Object) or objekt.is_a?( Symbol) or objekt.is_a?( Register::Label)
+        raise "adding non parfait #{objekt.class}"
       end
-      @objects[o.object_id] = o
+      #raise "Method #{objekt.name}" if objekt.is_a? Parfait::TypedMethod
+      @objects[objekt.object_id] = objekt
       true
     end
 

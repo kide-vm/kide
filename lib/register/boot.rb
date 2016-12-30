@@ -15,11 +15,13 @@ module Register
       cl
     end
   end
+
   # another ruby object to shadow the parfait, just during booting.
   # all it needs is the type, which we make the Parfait type
   class BootClass
     attr_reader :instance_type
-    def initialize type
+
+    def initialize( type)
       @instance_type = type
     end
   end
@@ -43,8 +45,10 @@ module Register
 
     # There are some helpers below, but the roadmap is something like:
     # - create all the Type instances, with their basic types, but no classes
-    # - create a space by "hand" , using allocate, not new
+    # - create a BootSpace that has BootClasses , used only during booting
     # - create the Class objects and assign them to the types
+    # - flesh out the types , create the real space
+    # - and finally load the methods
     def boot_parfait!
       types = boot_types
       boot_boot_space( types )
@@ -54,8 +58,8 @@ module Register
       space = Parfait::Space.new( classes )
       Parfait.set_object_space( space )
 
-      #puts Sof.write(@space)
-      boot_functions!( space )
+      #puts Sof.write(space)
+      boot_functions( space )
     end
 
     # types is where the snake bites its tail. Every chain ends at a type and then it
@@ -73,15 +77,6 @@ module Register
       types
     end
 
-    def fix_types(types , classes)
-      type_names.each do |name , ivars |
-        type = types[name]
-        clazz = classes[name]
-        type.set_object_class( clazz )
-        type.init_lists(ivars)
-      end
-    end
-
     # The BootSpace is an object that holds fake classes, that hold _real_ types
     # Once we plug it in we can use .new
     # then we need to create the parfait classes and fix the types before creating a Space
@@ -91,14 +86,20 @@ module Register
         clazz = BootClass.new(type)
         boot_space.classes[name] = clazz
       end
-      Parfait.set_object_space boot_space
+      Parfait.set_object_space( boot_space )
     end
 
-    # superclasses other than default object
-    def  super_class_names
-       {  :Object => :Kernel , :Kernel => :Value,
-        :Integer => :Value , :BinaryCode => :Word }
+    # Types are hollow shells before this, so we need to set the object_class
+    # and initialize the list variables (which we now can with .new)
+    def fix_types(types , classes)
+      type_names.each do |name , ivars |
+        type = types[name]
+        clazz = classes[name]
+        type.set_object_class( clazz )
+        type.init_lists({:type => :Type }.merge(ivars))
+      end
     end
+
     # when running code instantiates a class, a type is created automatically
     # but even to get our space up, we have already instantiated all types
     # so we have to continue and allocate classes and fill the data by hand
@@ -112,19 +113,9 @@ module Register
       classes
     end
 
-    def set_ivars_for(type , name , ivars)
-      type.send(:private_add_instance_variable , :type , name)
-      ivars.each {|n,t| type.send(:private_add_instance_variable, n , t) }
-    end
-
-    # create an object with type (ie allocate it and assign type)
-    # meaning the lauouts have to be booted, @types filled
-    # here we pass the actual (ruby) class
-    def object_with_type(cl)
-      o = cl.allocate
-      name = cl.name.split("::").last.to_sym
-      o.set_type @types[name]
-      o
+    # superclasses other than default object
+    def  super_class_names
+       { :Object => :Kernel , :Kernel => :Value , :Integer => :Value , :BinaryCode => :Word }
     end
 
     # the function really just returns a constant (just avoiding the constant)
@@ -149,7 +140,6 @@ module Register
           :Dictionary => {:keys => :List , :values => :List  } ,
           :TypedMethod => {:name => :Word, :source => :Object, :instructions => :Object, :binary => :Object,
                       :arguments => :Type , :for_type => :Type, :locals => :Type } ,
-          :Value => {},
         }
     end
 
@@ -158,7 +148,7 @@ module Register
     # Methods are grabbed from respective modules by sending the method name. This should return the
     # implementation of the method (ie a method object), not actually try to implement it
     #                                                     (as that's impossible in ruby)
-    def boot_functions!( space )
+    def boot_functions( space )
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we
       # have to define some dummies, just for the others to compile
       # TODO go through the virtual parfait layer and adjust function names to what they really are

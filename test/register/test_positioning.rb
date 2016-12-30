@@ -17,7 +17,7 @@ class TestPositioning < MiniTest::Test
     assert_equal 32 , list.padded_length
   end
   def test_type
-    type = Parfait::Type.new Parfait.object_space.get_class_by_name(:Object)
+    type = Parfait::Type.for_hash Parfait.object_space.get_class_by_name(:Object) , {}
     type.set_type( type )
     assert_equal 32 , type.padded_length
   end

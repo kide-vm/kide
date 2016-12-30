@@ -8,7 +8,7 @@ module Ticker
     machine = Register.machine.boot
     do_clean_compile
     Typed.compile( @input )
-    machine.collect
+    machine.collect_space
     @interpreter = Register::Interpreter.new
     @interpreter.start Register.machine.init
   end

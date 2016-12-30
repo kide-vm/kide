@@ -17,8 +17,6 @@ module Parfait
 
   class Object
 
-    # we define new, so we can do memory layout also at compile time.
-    # At compile time we fake memory by using a global array for pages
     def self.new *args
       object = self.allocate
 

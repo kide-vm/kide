@@ -5,8 +5,8 @@ class TypeApi < MiniTest::Test
   def setup
     Register.machine.boot
     @space = Parfait.object_space
-    tc = @space.get_class_by_name( :Type )
-    @type = Parfait::Type.new tc
+    tc = @space.get_class_by_name( :NamedList )
+    @type = tc.instance_type
   end
 
   def test_inspect

@@ -2,8 +2,8 @@ module Register
 
   #  collect anything that is in the space but and reachable from init
   module Collector
-    def collect
-      self.objects.clear
+    def collect_space
+      @objects.clear
       keep Parfait.object_space , 0
       constants.each {|o| keep(o,0)}
     end
