@@ -11,7 +11,7 @@
 # PS: it turns out that both messages and named_lists are created at compile, not run-time, and
 #  just constantly reused. Each message has two named_list object ready and is also linked
 #  to the next message.
-# The better way to say above is that a message is *used* by the caller, and a named_list 
+# The better way to say above is that a message is *used* by the caller, and a named_list
 #  by the callee.
 
 # Also at runtime Messages and NamedLists remain completely "normal" objects.
@@ -23,5 +23,9 @@
 module Parfait
   class NamedList < Object
 
+    def self.type_for( arguments )
+      my_class = Parfait.object_space.classes[:NamedList]
+      Parfait::Type.for_hash( my_class , arguments.merge(type: my_class.instance_type))
+    end
   end
 end

@@ -40,7 +40,7 @@ module Parfait
     attr_reader :object_class , :names , :types , :methods
 
     def self.for_hash( object_class , hash)
-      hash[:type] = :Type unless hash[:type]
+      hash = {type: object_class.name }.merge(hash) unless hash[:type]
       new_type = Type.new( object_class , hash)
       code = hash_code_for_hash( hash )
       Parfait.object_space.types[code] = new_type
@@ -105,9 +105,9 @@ module Parfait
     def create_method( method_name , arguments )
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
       #puts "Self: #{self.class} clazz: #{clazz.name}"
-      type = arguments
-      type = Parfait::Type.for_hash( @object_class , arguments) if arguments.is_a?(Hash)
-      add_method TypedMethod.new( self , method_name , type )
+      arg_type = arguments
+      arg_type = NamedList.type_for( arguments ) if arguments.is_a?(Hash)
+      add_method TypedMethod.new( self , method_name , arg_type )
     end
 
     def add_method( method )
