@@ -40,20 +40,18 @@ module Parfait
     attr_reader :object_class , :names , :types , :methods
 
     def self.for_hash( object_class , hash)
+      hash[:type] = :Type unless hash[:type]
       new_type = Type.new( object_class , hash)
       code = hash_code_for_hash( hash )
       Parfait.object_space.types[code] = new_type
       new_type
     end
 
-    def self.hash_for_type(type)
-      self.hash_code_for_hash( type.to_hash )
-    end
-
     def self.hash_code_for_hash( dict )
       index = 1
-      hash_code = 1
+      hash_code = 5467
       dict.each do |name , type|
+        next if name == :type
         item_hash = str_hash(name) + str_hash(type)
         hash_code  += item_hash + (item_hash / 256 ) * index
         index += 1
@@ -73,7 +71,7 @@ module Parfait
       end
     end
 
-    def initialize( object_class , hash = {})
+    def initialize( object_class , hash )
       super()
       set_object_class( object_class)
       init_lists( hash )
@@ -85,14 +83,15 @@ module Parfait
       @methods = List.new
       @names = List.new
       @types = List.new
-      private_add_instance_variable :type ,:Type
+      raise "No type Type in #{hash}" unless hash[:type]
+      private_add_instance_variable(:type , hash[:type]) #first
       hash.each do |name , type|
         private_add_instance_variable(name , type) unless name == :type
       end
     end
 
     def to_s
-      "#{@object_class.name}:#{@names.inspect}"
+      "#{@object_class.name}-#{@names.inspect}"
     end
 
     def method_names
@@ -155,11 +154,8 @@ module Parfait
       hash[name] = type
       code = Type.hash_code_for_hash( hash )
       existing = Parfait.object_space.types[code]
-      if existing
-        return existing
-      else
-        return Type.for_hash( @object_class , hash)
-      end
+      return existing if existing
+      return Type.for_hash( @object_class , hash)
     end
 
     def set_object_class(oc)
