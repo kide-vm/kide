@@ -60,11 +60,17 @@ class TestDictionary < MiniTest::Test
       assert_equal v , shouldda[k]
     end
   end
-
   def test_values
-    assert @lookup.values
+    @lookup[2] = 2
+    assert @lookup.values.get_length == 1
   end
   def test_keys
-    assert @lookup.keys
+    @lookup[2] = 2
+    assert @lookup.keys.get_length == 1
+  end
+  def test_override_exising
+    @lookup[2] = 2
+    @lookup[2] = :two
+    assert @lookup[2] == :two
   end
 end

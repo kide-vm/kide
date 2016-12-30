@@ -33,6 +33,15 @@ module Parfait
     def to_sof_node(writer , level , ref )
       Sof.array_to_sof_node(self , writer , level , ref )
     end
+
+    def dup
+      list = List.new
+      each do |item|
+        list.push(item)
+      end
+      list
+    end
+
     def to_a
       array = []
       index = 1

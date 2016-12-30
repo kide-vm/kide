@@ -15,7 +15,13 @@ module Parfait
       @values = List.new()
     end
 
-    attr_reader :values , :keys  #FIXME these should be dupped, not handed out
+    def keys
+      @keys.dup
+    end
+
+    def values
+      @values.dup
+    end
 
     # are there any key/value items in the list
     def empty?
@@ -46,24 +52,14 @@ module Parfait
 
     # private method
     def key_index(key)
-      len = @keys.get_length()
-      index = 1
-      found = nil
-      while(index <= len)
-        if( @keys.get(index) == key)
-          found = index
-          break
-        end
-        index += 1
-      end
-      found
+      @keys.index_of(key)
     end
 
     # set key with value, returns value
     def set(key , value)
       index = key_index(key)
       if( index )
-        @keys.set(index , value)
+        @values.set(index , value)
       else
         @keys.push(key)
         @values.push(value)
