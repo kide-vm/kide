@@ -190,7 +190,7 @@ module Parfait
         hash_code  += item_hash + (item_hash / 256 ) * index
         index += 1
       end
-      hash_code
+      hash_code % (2 ** 62)
     end
 
     def self.str_hash(str)
