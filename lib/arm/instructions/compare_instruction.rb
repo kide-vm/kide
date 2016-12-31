@@ -43,7 +43,7 @@ module Arm
       val |= shift(immediate ,                  12 + 4 + 4  + 1 + 4)
       val |= instruction_code
       val |= condition_code
-      io.write_uint32 val
+      io.write_unsigned_int_32 val
     end
 
     def instuction_class

@@ -32,7 +32,7 @@ module Arm
       val = val | (pre_post_index <<      16 + 4 + 1 + 1 + 1 + 1)#24
       val = val | instruction_code
       val = val | (cond <<                16 + 4 + 1 + 1 + 1 + 1 + 2 + 2)
-      io.write_uint32 val
+      io.write_unsigned_int_32 val
     end
 
     def cond

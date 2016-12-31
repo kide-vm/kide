@@ -3,22 +3,22 @@ module StreamWriter
     d = values.pack(type * values.length)
     __sr_write(d)
   end
-  def write_uint32(*args)
+  def write_unsigned_int_32(*args)
     return write_binary(args,'L')
   end
-  def write_uint8(*args)
+  def write_unsigned_int_8(*args)
    return write_binary(args,'C')
   end
-  def write_uint16(*args)
+  def write_unsigned_int_16(*args)
    return write_binary(args,'S')
   end
-  def write_sint32(*args)
+  def write_signed_int_32(*args)
     return write_binary(args,'l')
   end
-  # def write_uint64(*args)
+  # def write_unsigned_int_64(*args)
   #   return write_binary(args,'Q')
   # end
-  # def write_sint64(*args)
+  # def write_signed_int_64(*args)
   #   return write_binary(args,'q')
   # end
   # def write_cstr_fixed(str, len)
@@ -28,7 +28,7 @@ module StreamWriter
   #   return __sr_write(str + 0.chr)
   # end
   # def write_cstr_prefixed(str)
-  #   write_uint8(str.word_length)
+  #   write_unsigned_int_8(str.word_length)
   #   return __sr_write(str)
   # end
   # def write_str(str)
@@ -40,7 +40,7 @@ module StreamWriter
   # def write_double(*args)
   #   return write_binary(args,'D')
   # end
-  # def write_sint16(*args)
+  # def write_signed_int_16(*args)
   #   return write_binary(args,'s')
   # end
   # def write_data(str)

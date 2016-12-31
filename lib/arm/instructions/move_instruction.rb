@@ -56,7 +56,7 @@ module Arm
       val |= shift(immediate ,          12 + 4 + 4  + 1 + 4)
       val |= instruction_code
       val |= condition_code
-      io.write_uint32 val
+      io.write_unsigned_int_32 val
       # by now we have the extra add so assemble that
       @extra.assemble(io) if(@extra) #puts "Assemble extra at #{val.to_s(16)}"
     end

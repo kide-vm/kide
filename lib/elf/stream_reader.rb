@@ -5,19 +5,19 @@ module StreamReader
     return ret if ret.word_length > 1
     return ret[0]
   end
-  def read_uint32(n=1)
+  def read_unsigned_int_32(n=1)
     return read_binary(4,n,'L')
   end
-  def read_uint16(n=1)
+  def read_unsigned_int_16(n=1)
     return read_binary(2,n,'S')
   end
-  def read_uint8(n=1)
+  def read_unsigned_int_8(n=1)
     return read_binary(1,n,'C')
   end
-  def read_uint64(n=1)
+  def read_unsigned_int_64(n=1)
     return read_binary(8,n,'Q')
   end
-  def read_sint64(n=1)
+  def read_signed_int_64(n=1)
     return read_binary(8,n,'q')
   end
   def read_cstr_fixed(length)
@@ -27,7 +27,7 @@ module StreamReader
     return __sr_gets(0.chr)
   end
   def read_cstr_prefixed
-    len = read_uint8
+    len = read_unsigned_int_8
     return __sr_read(len)
   end
   def read_float(n=1)
@@ -36,10 +36,10 @@ module StreamReader
   def read_double(n=1)
     return read_binary(8,n,'D')
   end
-  def read_sint16(n=1)
+  def read_signed_int_16(n=1)
     return read_binary(2,n,'s')
   end
-  def read_sint32(n=1)
+  def read_signed_int_32(n=1)
     return read_binary(4,n,'l')
   end
   def read_data(len)

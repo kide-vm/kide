@@ -67,7 +67,7 @@ module Arm
       # signed 32-bit, condense to 24-bit
       # TODO add check that the value fits into 24 bits
       io << packed[0,3]
-      io.write_uint8 op_bit_code | (COND_CODES[@attributes[:condition_code]] << 4)
+      io.write_unsigned_int_8 op_bit_code | (COND_CODES[@attributes[:condition_code]] << 4)
     end
 
     def handle_swi(io)
@@ -75,7 +75,7 @@ module Arm
       raise "expected literal not #{arg} #{inspect}" unless (arg.is_a?(Numeric))
       packed = [arg].pack('L')[0,3]
       io << packed
-      io.write_uint8 0b1111 | (COND_CODES[@attributes[:condition_code]] << 4)
+      io.write_unsigned_int_8 0b1111 | (COND_CODES[@attributes[:condition_code]] << 4)
     end
 
     def to_s

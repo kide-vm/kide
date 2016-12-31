@@ -55,25 +55,25 @@ module Elf
 
     def write(io)
       # write undefined symbol
-      io.write_uint32 0
-      io.write_uint32 0
-      io.write_uint32 0
-      io.write_uint8 Elf::Constants::STB_LOCAL << 4
-      io.write_uint8 0
-      io.write_uint16 0
+      io.write_unsigned_int_32 0
+      io.write_unsigned_int_32 0
+      io.write_unsigned_int_32 0
+      io.write_unsigned_int_8 Elf::Constants::STB_LOCAL << 4
+      io.write_unsigned_int_8 0
+      io.write_unsigned_int_16 0
 
       # write other symbols
       @symbols.each { |sym|
-        io.write_uint32 @strtab.index_for(sym[0])
-        io.write_uint32 sym[1]
-        io.write_uint32 0
-        io.write_uint8((sym[3] << 4) + 0)
-        io.write_uint8 0
+        io.write_unsigned_int_32 @strtab.index_for(sym[0])
+        io.write_unsigned_int_32 sym[1]
+        io.write_unsigned_int_32 0
+        io.write_unsigned_int_8((sym[3] << 4) + 0)
+        io.write_unsigned_int_8 0
         if (sym[2])
-          io.write_uint16 sym[2].index
+          io.write_unsigned_int_16 sym[2].index
         else
           # undefined symbol
-          io.write_uint16 0
+          io.write_unsigned_int_16 0
         end
       }
     end

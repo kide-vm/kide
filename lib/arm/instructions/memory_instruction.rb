@@ -62,7 +62,7 @@ module Arm
       val |= shift(1, 24) #pre_post index , not used
       val |= instruction_code
       val |= condition_code
-      io.write_uint32 val
+      io.write_unsigned_int_32 val
     end
     def get_operand
       return @operand unless  @right
