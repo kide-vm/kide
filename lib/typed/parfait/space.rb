@@ -60,7 +60,7 @@ module Parfait
 
     def add_type(type)
       hash = type.hash
-      raise "upps #{hash}" unless hash.is_a?(Fixnum)
+      raise "upps #{hash} #{hash.class}" unless hash.is_a?(Fixnum)
       was = @types[hash]
       return was if was
       @types[hash] = type
