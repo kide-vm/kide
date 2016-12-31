@@ -50,6 +50,7 @@ module Register
     # - flesh out the types , create the real space
     # - and finally load the methods
     def boot_parfait!
+      Parfait.set_object_space( nil )
       types = boot_types
       boot_boot_space( types )
       classes = boot_classes( types )
@@ -89,17 +90,6 @@ module Register
       Parfait.set_object_space( boot_space )
     end
 
-    # Types are hollow shells before this, so we need to set the object_class
-    # and initialize the list variables (which we now can with .new)
-    def fix_types(types , classes)
-      type_names.each do |name , ivars |
-        type = types[name]
-        clazz = classes[name]
-        type.set_object_class( clazz )
-        type.init_lists({:type => :Type }.merge(ivars))
-      end
-    end
-
     # when running code instantiates a class, a type is created automatically
     # but even to get our space up, we have already instantiated all types
     # so we have to continue and allocate classes and fill the data by hand
@@ -111,6 +101,17 @@ module Register
         classes[name] = Parfait::Class.new(name , super_c , types[name] )
       end
       classes
+    end
+
+    # Types are hollow shells before this, so we need to set the object_class
+    # and initialize the list variables (which we now can with .new)
+    def fix_types(types , classes)
+      type_names.each do |name , ivars |
+        type = types[name]
+        clazz = classes[name]
+        type.set_object_class( clazz )
+        type.init_lists({:type => :Type }.merge(ivars))
+      end
     end
 
     # superclasses other than default object
