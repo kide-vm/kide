@@ -10,7 +10,7 @@ class TestZeroCode < MiniTest::Test
         type.remove_method(method) unless keeper(method)
       end
     end
-    @machine.collect_space
+    @objects = @machine.collect_space
   end
   def keeper name
     name == :main or name == :__init__
@@ -19,13 +19,13 @@ class TestZeroCode < MiniTest::Test
   def test_empty_translate
     assert_equal 2 , @space.collect_methods.length
     @machine.translate_arm
-    writer = Elf::ObjectWriter.new
+    writer = Elf::ObjectWriter.new(@machine , @objects )
     writer.save "test/zero.o"
   end
 
   def test_methods_match_objects
     assert_equal 2 , @space.collect_methods.length
-    @machine.objects.each do |id , objekt|
+    @objects.each do |id , objekt|
       next unless objekt.is_a? Parfait::TypedMethod
       assert keeper(objekt.name) ,  "CODE1 #{objekt.name}"
     end

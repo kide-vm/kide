@@ -15,8 +15,9 @@ module Register
 
     MARKER = 0xA51AF00D
 
-    def initialize machine
+    def initialize( machine , objects)
       @machine = machine
+      @objects = objects
       @load_at = 0x8054 # this is linux/arm
     end
 
@@ -24,13 +25,14 @@ module Register
       at = 0
       #need the initial jump at 0 and then functions
       @machine.init.set_position(0)
-      at = assemble_objects
+      at = @machine.init.byte_length
+      at = assemble_objects( at )
       # and then everything code
-      asseble_code_from( at )
+      asseble_code_from(  at )
     end
 
     def asseble_code_from( at )
-      @machine.objects.each do |id , objekt|
+      @objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::TypedMethod
         log.debug "CODE1 #{objekt.name}"
         binary = objekt.binary
@@ -44,11 +46,10 @@ module Register
       at
     end
 
-    def assemble_objects
-      at = @machine.init.byte_length
+    def assemble_objects( at)
       at +=  8 # thats the padding
       # want to have the objects first in the executable
-      @machine.objects.each do | id , objekt|
+      @objects.each do | id , objekt|
         next if objekt.is_a? Register::Label # will get assembled as method.instructions
         next if objekt.is_a? Parfait::BinaryCode
         objekt.set_position  at
@@ -81,7 +82,7 @@ module Register
 
     # debugging loop accesses all positions to force an error if it's not set
     def try_write_debug
-      all = @machine.objects.values.sort{|a,b| a.position <=> b.position}
+      all = @objects.values.sort{|a,b| a.position <=> b.position}
       all.each do |objekt|
         next if objekt.is_a?(Register::Label)
         log.debug "Linked #{objekt.class}(#{objekt.object_id}) at #{objekt.position} / #{objekt.padded_length}"
@@ -91,19 +92,19 @@ module Register
 
     def try_write_create_binary
       # first we need to create the binary code for the methods
-      @machine.objects.each do |id , objekt|
+      @objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::TypedMethod
         assemble_binary_method(objekt)
       end
       @stream = StringIO.new
       @machine.init.assemble( @stream )
       8.times do
-        @stream.write_uint8(0)
+        @stream.write_unsigned_int_8(0)
       end
     end
     def try_write_objects
       #  then the objects , not code yet
-      @machine.objects.each do | id, objekt|
+      @objects.each do | id, objekt|
         next if objekt.is_a? Parfait::BinaryCode
         next if objekt.is_a? Register::Label # ignore
         write_any( objekt )
@@ -112,7 +113,7 @@ module Register
 
     def try_write_method
       # then write the methods to file
-      @machine.objects.each do |id, objekt|
+      @objects.each do |id, objekt|
         next unless objekt.is_a? Parfait::BinaryCode
         write_any( objekt )
       end
@@ -187,7 +188,7 @@ module Register
 
     def write_object_check(object)
       log.debug "Write object #{object.class} #{object.inspect}"
-      unless @machine.objects.has_key? object.object_id
+      unless @objects.has_key? object.object_id
         raise "Object(#{object.object_id}) not linked #{object.inspect}"
       end
     end
@@ -204,7 +205,7 @@ module Register
     end
 
     def write_object_variables(object)
-      @stream.write_sint32( MARKER  )
+      @stream.write_signed_int_32( MARKER  )
       written = 0 # compensate for the "secrect" marker
       object.get_instance_variables.each do |var|
         inst = object.get_instance_variable(var)
@@ -230,9 +231,9 @@ module Register
     end
 
     def write_checked_string(string, str)
-      @stream.write_sint32( MARKER  )
+      @stream.write_signed_int_32( MARKER  )
       write_ref_for( string.get_type ) #ref
-      @stream.write_sint32( str.length  ) #int
+      @stream.write_signed_int_32( str.length  ) #int
       @stream.write str
       pad_after(str.length + 8 ) # type , length   *4 == 12
       log.debug "String (#{string.length}) stream #{@stream.length}"
@@ -249,11 +250,11 @@ module Register
     def write_ref_for object
       case object
       when nil
-        @stream.write_sint32(0)
+        @stream.write_signed_int_32(0)
       when Fixnum
-        @stream.write_sint32(object)
+        @stream.write_signed_int_32(object)
       else
-        @stream.write_sint32(object.position + @load_at)
+        @stream.write_signed_int_32(object.position + @load_at)
       end
     end
 
@@ -262,7 +263,7 @@ module Register
       before = stream_position
       pad = padding_for(length) - 4  # four is for the MARKER we write
       pad.times do
-        @stream.write_uint8(0)
+        @stream.write_unsigned_int_8(0)
       end
       after = stream_position
       log.debug "padded #{length} with #{pad} stream #{before}/#{after}"

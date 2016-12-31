@@ -17,11 +17,10 @@ module Register
     log_level :info
 
     def initialize
-      @objects = {}
       @booted = false
       @constants = []
     end
-    attr_reader  :constants , :init , :objects , :booted
+    attr_reader  :constants , :init  , :booted
 
     # idea being that later method missing could catch translate_xxx and translate to target xxx
     # now we just instantiate ArmTranslater and pass instructions

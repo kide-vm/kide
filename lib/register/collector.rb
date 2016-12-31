@@ -3,9 +3,10 @@ module Register
   #  collect anything that is in the space but and reachable from init
   module Collector
     def collect_space
-      @objects.clear
+      @objects = {}
       keep Parfait.object_space , 0
       constants.each {|obj| keep(obj,0)}
+      @objects
     end
 
     def keep( object , depth )
