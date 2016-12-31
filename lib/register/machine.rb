@@ -36,7 +36,7 @@ module Register
     def translate_methods(methods)
       translator = Arm::Translator.new
       methods.each do |method|
-        log.debug "Method #{method.name}"
+        log.debug "Translate method #{method.name}"
         instruction = method.instructions
         while instruction.next
           nekst = instruction.next
@@ -48,18 +48,6 @@ module Register
           instruction = nekst
         end
       end
-    end
-
-    # Objects are data and get assembled after functions
-    def add_object( objekt )
-      return false if @objects[objekt.object_id]
-      return true if objekt.is_a? Fixnum
-      unless objekt.is_a?( Parfait::Object) or objekt.is_a?( Symbol) or objekt.is_a?( Register::Label)
-        raise "adding non parfait #{objekt.class}"
-      end
-      #raise "Method #{objekt.name}" if objekt.is_a? Parfait::TypedMethod
-      @objects[objekt.object_id] = objekt
-      true
     end
 
     def boot
