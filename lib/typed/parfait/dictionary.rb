@@ -2,9 +2,6 @@
 
 module Parfait
   class Dictionary < Object
-    def self.attributes
-      [:keys, :values]
-    end
 
     # only empty initialization for now
     #

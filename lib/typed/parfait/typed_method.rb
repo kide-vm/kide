@@ -22,10 +22,6 @@ module Parfait
 
   class TypedMethod < Object
 
-    def self.attributes
-      [:name , :source , :instructions , :binary ,:arguments , :for_type, :locals ]
-    end
-
     attr_reader :name , :instructions , :for_type ,:arguments , :locals , :binary
 
     # not part of the parfait model, hence ruby accessor
@@ -40,7 +36,7 @@ module Parfait
       @name = name
       @binary = BinaryCode.new 0
       @arguments = arguments
-      @locals = Parfait.object_space.get_class_by_name( :NamedList ).instance_type 
+      @locals = Parfait.object_space.get_class_by_name( :NamedList ).instance_type
     end
 
     def set_instructions(inst)

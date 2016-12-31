@@ -16,9 +16,6 @@
 module Parfait
   class Class < Object
     include Behaviour
-    def self.attributes
-      [:instance_type , :name , :super_class_name , :instance_names , :instance_methods]
-    end
 
     attr_reader :instance_type , :name , :instance_methods , :super_class_name
 

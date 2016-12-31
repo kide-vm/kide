@@ -9,12 +9,8 @@
 
 module Parfait
   class Message < Object
-    def self.attributes
-      [:next_message , :receiver , :locals , :return_address ,
-       :return_value, :caller , :name , :arguments]
-    end
 
-    attr_reader :locals , :receiver  , :return_value , :name 
+    attr_reader :locals , :receiver  , :return_value , :name
     attr_accessor :next_message
 
     def initialize next_m

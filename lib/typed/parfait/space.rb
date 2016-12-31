@@ -46,10 +46,6 @@ module Parfait
       end
     end
 
-    def self.attributes
-      [:classes , :types, :first_message]
-    end
-
     attr_reader  :classes , :first_message
 
     def each_type

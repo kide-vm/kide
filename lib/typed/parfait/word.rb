@@ -13,9 +13,6 @@ module Parfait
   # Object length is measured in non-type cells though
 
   class Word < Object
-    def self.attributes
-      [:char_length]
-    end
     attr_reader :char_length
 
     #semi "indexed" methods for interpreter

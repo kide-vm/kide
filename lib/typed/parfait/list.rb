@@ -68,10 +68,6 @@ module Parfait
       set_internal_word( 2  , len)
     end
 
-    def self.attributes
-      [:indexed_length]
-    end
-
     def indexed_length
       get_length()
     end

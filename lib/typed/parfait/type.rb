@@ -34,9 +34,7 @@
 
 module Parfait
   class Type < Object
-    def self.attributes
-      [:names , :types , :object_class , :methods ]
-    end
+
     attr_reader :object_class , :names , :types , :methods
 
     def self.for_hash( object_class , hash)
