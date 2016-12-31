@@ -30,7 +30,6 @@ module Parfait
       object
     end
 
-    include Padding
     include Positioned
 
     # 1 -based index
@@ -109,7 +108,7 @@ module Parfait
     end
 
     def padded_length
-      padded_words( @type.instance_length )
+      Padding.padded_words( @type.instance_length )
     end
 
     # parfait versions are deliberately called different, so we "relay"

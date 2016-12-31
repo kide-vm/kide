@@ -9,7 +9,6 @@ module Register
   #  functions on the objects, but now it has gone to a visitor pattern.
 
   class Assembler
-    include Padding
     include Logging
     log_level :info
 
@@ -261,7 +260,7 @@ module Register
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
     def pad_after length
       before = stream_position
-      pad = padding_for(length) - 4  # four is for the MARKER we write
+      pad = Padding.padding_for(length) - 4  # four is for the MARKER we write
       pad.times do
         @stream.write_unsigned_int_8(0)
       end

@@ -1,7 +1,6 @@
 
 class Symbol
   include Positioned
-  include Padding
 
   def has_type?
     true
@@ -12,7 +11,7 @@ class Symbol
     l
   end
   def padded_length
-    padded to_s.length + 4
+    Padding.padded( to_s.length + 4)
   end
 
 end

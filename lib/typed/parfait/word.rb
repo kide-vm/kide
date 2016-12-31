@@ -196,7 +196,7 @@ module Parfait
     end
 
     def padded_length
-      padded( 4 * get_type().instance_length + @char_length  )
+      Padding.padded( 4 * get_type().instance_length + @char_length  )
     end
 
     private

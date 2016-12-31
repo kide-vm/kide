@@ -5,17 +5,17 @@ module Padding
 
   # objects only come in lengths of multiple of 8 words / 32 bytes
   # and there is a "hidden" 1 word that is used for debug/check memory corruption
-  def padded len
+  def self.padded( len )
     a = 32 * (1 + (len + 3)/32 )
     #puts "#{a} for #{len}"
     a
   end
 
-  def padded_words words
+  def self.padded_words( words )
     padded(words*4) # 4 == word length, a constant waiting for a home
   end
 
-  def padding_for length
+  def self.padding_for( length )
     pad = padded(length) - length  # for header, type
     pad
   end
