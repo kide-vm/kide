@@ -26,25 +26,10 @@ class TypeHash < MiniTest::Test
   end
 
   def test_to_hash
-    assert_equal "Word_Type" ,  @first.name
-    assert_equal :Word ,  @first.object_class.name
     hash = @first.to_hash
-    assert_equal :Type , @first.types.first
     assert_equal hash[:type] , :Type
-    assert_equal hash[:char_length] , :Integer
-    assert_equal 2 , @first.instance_length
+    assert_equal 2 ,  hash.length 
   end
-
-  def test_hashcode_with_hash
-    assert_equal @first.hash , Parfait::Type.hash_code_for_hash( @first.to_hash)
-  end
-
-  def test_second_hash_different
-    hash2 = @first.to_hash
-    hash2[:random] = :Type
-    assert @first.hash != Parfait::Type.hash_code_for_hash( hash2 )
-  end
-
   def test_add_is_different
     type = @first.add_instance_variable :random , :Integer
     assert type != @first , "new: #{type.inspect} , old: #{@first.inspect}"
@@ -52,8 +37,9 @@ class TypeHash < MiniTest::Test
   end
 
   def test_hash_for_no_ivars
-    h1 = Parfait::Type.hash_code_for_hash( type: :NewInt)
-    h2 = Parfait::Type.hash_code_for_hash( type: :NewObj)
-    assert  h1 != h2 , "Hashes should differ" 
+    list = @space.get_class_by_name(:NamedList )
+    t1 = Parfait::Type.for_hash( list , type: :NewInt)
+    t2 = Parfait::Type.for_hash( list , type: :NewObj)
+    assert  t1.hash != t2.hash , "Hashes should differ"
   end
 end

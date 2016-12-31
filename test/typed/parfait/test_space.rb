@@ -47,6 +47,20 @@ class TestSpace < MiniTest::Test
     end
   end
 
+  def test_classes_types_in_space_types
+    @space.classes do |name , clazz|
+      assert_equal clazz.instance_type , @space.get_type_for(clazz.instance_type.hash) , clazz.name
+    end
+  end
+
+  def test_word_class
+    word = @space.classes[:Word]
+    assert word.instance_type
+    t_word = @space.get_type_for(word.instance_type.hash)
+    assert_equal word.instance_type.hash , t_word.hash
+    assert_equal word.instance_type.object_id , t_word.object_id
+  end
+
   def test_classes_type
     classes.each do |name|
       assert_equal Parfait::Type , @space.classes[name].get_type.class
@@ -95,6 +109,40 @@ class TestSpace < MiniTest::Test
   def test_created_class_is_stored
     @space.create_class( :NewerClass )
     assert @space.get_class_by_name(:NewerClass)
+  end
+
+  def test_class_types_are_stored
+    @space.classes.each do |name,clazz|
+      assert @space.get_type_for(clazz.instance_type.hash)
+    end
+  end
+
+  def test_class_types_are_identical
+    @space.classes.each do |name , clazz|
+      cl_type = @space.get_type_for(clazz.instance_type.hash)
+      assert_equal cl_type.object_id , clazz.instance_type.object_id
+    end
+  end
+
+  def test_remove_methods
+    @space.each_type do | type |
+      type.method_names.each do |method|
+        type.remove_method(method)
+      end
+    end
+    assert_equal 0 , @space.collect_methods.length
+  end
+  def test_no_methods_in_types
+    test_remove_methods
+    @space.each_type do |type|
+      assert_equal 0 , type.methods.get_length , "name #{type.name}"
+    end
+  end
+  def ttest_no_methods_in_classes
+    test_remove_methods
+    @space.classes.each do |name , cl|
+      assert_equal 0 , cl.instance_type.methods.get_length , "name #{cl.name}"
+    end
   end
 
 end

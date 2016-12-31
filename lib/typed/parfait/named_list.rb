@@ -25,7 +25,7 @@ module Parfait
 
     def self.type_for( arguments )
       my_class = Parfait.object_space.classes[:NamedList]
-      Parfait::Type.for_hash( my_class , arguments.merge(type: my_class.instance_type))
+      Type.for_hash( my_class , {type: my_class.instance_type}.merge(arguments))
     end
   end
 end

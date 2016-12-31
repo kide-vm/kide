@@ -42,9 +42,7 @@ module Parfait
         message = @first_message
       end
       @classes.each do |name , cl|
-        raise "upps #{cl.instance_type.hash}" unless cl.instance_type.hash.is_a?(Fixnum)
-
-        @types[cl.instance_type.hash] = cl.instance_type
+        add_type(cl.instance_type)
       end
     end
 

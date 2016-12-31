@@ -45,30 +45,6 @@ module Parfait
       Parfait.object_space.add_type(new_type)
     end
 
-    def self.hash_code_for_hash( dict )
-      index = 1
-      hash_code = str_hash(dict[:type])
-      dict.each do |name , type|
-        next if name == :type
-        item_hash = str_hash(name) + str_hash(type)
-        hash_code  += item_hash + (item_hash / 256 ) * index
-        index += 1
-      end
-      hash_code
-    end
-
-    def self.str_hash(str)
-      if RUBY_ENGINE == 'opal'
-        hash = 5381
-        str.to_s.each_char do |c|
-          hash = ((hash << 5) + hash) + c.to_i; # hash * 33 + c  without getting bignums
-        end
-        hash % (2 ** 51)
-      else
-        str.hash
-      end
-    end
-
     def initialize( object_class , hash )
       super()
       set_object_class( object_class)
@@ -192,16 +168,43 @@ module Parfait
     end
     alias :name :sof_reference_name
 
+    def each
+      index = 1
+      while( index <=  get_length() )
+        yield( name_at(index) , type_at(index) )
+        index += 1
+      end
+    end
+
     def to_hash
-      hash = Dictionary.new
-      @names.each_with_index do |name, index |
-        hash[name] = @types[index]
+      hash = {}
+      each do |name , type|
+        hash[name] = type
       end
       hash
     end
 
     def hash
-      Type.hash_code_for_hash( to_hash )
+      index = 1
+      hash_code = Type.str_hash( @object_class.name )
+      each do |name , type|
+        item_hash = Type.str_hash(name) + Type.str_hash(type)
+        hash_code  += item_hash + (item_hash / 256 ) * index
+        index += 1
+      end
+      hash_code
+    end
+
+    def self.str_hash(str)
+      if RUBY_ENGINE == 'opal'
+        hash = 5381
+        str.to_s.each_char do |c|
+          hash = ((hash << 5) + hash) + c.to_i; # hash * 33 + c  without getting bignums
+        end
+        hash % (2 ** 51)
+      else
+        str.hash
+      end
     end
 
     private
