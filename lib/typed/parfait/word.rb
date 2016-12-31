@@ -162,7 +162,7 @@ module Parfait
     # compare the word to another
     # currently checks for same class, though really identity of the characters
     # in right order would suffice
-    def == other
+    def compare( other )
       return false if other.class != self.class
       return false if other.length != self.length
       len = self.length

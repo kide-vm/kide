@@ -1,5 +1,5 @@
 require_relative "../helper"
-
+module Parfait
 class TestEmptyWord < MiniTest::Test
 
   def setup
@@ -99,4 +99,15 @@ class TestWord < MiniTest::Test
       assert_equal v , @word.get_char(k)
     end
   end
+  def test_not_same
+    one = Parfait.new_word("one")
+    two = Parfait.new_word("two")
+    assert !one.compare(two)
+  end
+  def test_is_same
+    one = Parfait.new_word("one")
+    two = Parfait.new_word("one")
+    assert one.compare(two)
+  end
+end
 end
