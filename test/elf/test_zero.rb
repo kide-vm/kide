@@ -10,7 +10,7 @@ class TestZeroCode < MiniTest::Test
         type.remove_method(method) unless keeper(method)
       end
     end
-    @objects = @machine.collect_space
+    @objects = Register::Collector.collect_space
   end
   def keeper name
     name == :main or name == :__init__

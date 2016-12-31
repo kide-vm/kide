@@ -2,14 +2,14 @@ module Register
 
   #  collect anything that is in the space but and reachable from init
   module Collector
-    def collect_space
+    def self.collect_space
       @objects = {}
       keep Parfait.object_space , 0
-      constants.each {|obj| keep(obj,0)}
+      Register.machine.constants.each {|obj| keep(obj,0)}
       @objects
     end
 
-    def keep( object , depth )
+    def self.keep( object , depth )
       return if object.nil?
       return unless add_object( object , depth )
       # probably should make labels or even instructions derive from Parfait::Object, but . .
@@ -22,20 +22,18 @@ module Register
       return if object.is_a? Symbol
       type.names.each do |name|
         keep(name , depth + 1)
-        #puts "Keep #{name} for #{object.class}"
         inst = object.get_instance_variable name
         keep(inst , depth + 1)
       end
       if object.is_a? Parfait::List
         object.each do |item|
-          #puts "Keep item "
           keep(item , depth + 1)
         end
       end
     end
 
     # Objects are data and get assembled after functions
-    def add_object( objekt , depth)
+    def self.add_object( objekt , depth)
       return false if @objects[objekt.object_id]
       return true if objekt.is_a? Fixnum
       #puts message(objekt , depth)
@@ -48,7 +46,7 @@ module Register
       true
     end
 
-    def message(object , depth)
+    def self.message(object , depth)
       msg =  "adding #{depth}#{' ' * depth}:"
       if( object.respond_to?(:sof_reference_name))
         msg + object.sof_reference_name.to_s

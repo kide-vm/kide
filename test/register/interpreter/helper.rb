@@ -5,10 +5,10 @@ module Ticker
   include AST::Sexp
 
   def setup
-    machine = Register.machine.boot
+    Register.machine.boot
     do_clean_compile
     Typed.compile( @input )
-    machine.collect_space
+    Register::Collector.collect_space
     @interpreter = Register::Interpreter.new
     @interpreter.start Register.machine.init
   end

@@ -10,8 +10,8 @@ module Positioned
     pos = Positioned.positions[self]
     if pos == nil
       str = "position accessed but not set, "
-      str += "#{Register.machine.objects.has_key?(self.object_id)}, at #{self.object_id.to_s(16)}\n"
-      raise str + "for #{self.class} byte_length #{byte_length} for #{self.inspect[0...100]}"
+      str += "#{self.object_id.to_s(16)}\n"
+      raise str + "for #{self.class} byte_length #{self.byte_length if self.respond_to?(:byte_length)} for #{self.inspect[0...100]}"
     end
     pos
   end

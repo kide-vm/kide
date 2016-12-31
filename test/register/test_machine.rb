@@ -8,7 +8,7 @@ module Register
     end
 
     def test_collect_all_types
-      objects = @machine.collect_space
+      objects = Register::Collector.collect_space
       objects.each do |id, objekt|
         next unless objekt.is_a?( Parfait::Type )
         assert Parfait.object_space.get_type_for( objekt.hash ) , objekt.hash

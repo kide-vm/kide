@@ -6,7 +6,7 @@ class HelloTest < MiniTest::Test
   def check
     machine = Register.machine.boot
     Typed.compile( @input )
-    objects = machine.collect_space
+    objects = Register::Collector.collect_space
     machine.translate_arm
     writer = Elf::ObjectWriter.new(machine , objects )
     writer.save "test/hello.o"
