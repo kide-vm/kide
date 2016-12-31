@@ -22,12 +22,12 @@ class TypeHash < MiniTest::Test
   end
 
   def test_name
-    assert_equal "BinaryCode_Type" , @types.values.first.name
+    assert_equal "Word_Type" , @types.values.first.name
   end
 
   def test_to_hash
-    assert_equal "BinaryCode_Type" ,  @first.name
-    assert_equal :BinaryCode ,  @first.object_class.name
+    assert_equal "Word_Type" ,  @first.name
+    assert_equal :Word ,  @first.object_class.name
     hash = @first.to_hash
     assert_equal :Type , @first.types.first
     assert_equal hash[:type] , :Type
@@ -51,4 +51,9 @@ class TypeHash < MiniTest::Test
     assert @first.hash != type.hash
   end
 
+  def test_hash_for_no_ivars
+    h1 = Parfait::Type.hash_code_for_hash( type: :NewInt)
+    h2 = Parfait::Type.hash_code_for_hash( type: :NewObj)
+    assert  h1 != h2 , "Hashes should differ" 
+  end
 end

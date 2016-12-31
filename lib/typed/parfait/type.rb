@@ -47,7 +47,7 @@ module Parfait
 
     def self.hash_code_for_hash( dict )
       index = 1
-      hash_code = 5467
+      hash_code = str_hash(dict[:type])
       dict.each do |name , type|
         next if name == :type
         item_hash = str_hash(name) + str_hash(type)
