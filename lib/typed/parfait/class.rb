@@ -26,7 +26,7 @@ module Parfait
       super()
       @name = name
       @super_class_name = superclass
-      @instance_type = instance_type
+      set_instance_type( instance_type )
     end
 
     def sof_reference_name
@@ -38,8 +38,9 @@ module Parfait
     end
 
     # setting the type generates all methods for this type
-    # (or will do, once we storet the methods code to do that)
+    # (or will do, once we store the methods code to do that)
     def set_instance_type( type )
+      raise "type must be type #{type}" unless type.is_a?(Type)
       @instance_type = type
     end
 
