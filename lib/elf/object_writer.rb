@@ -21,10 +21,10 @@ module Elf
       set_text assembler.write_as_string
 
       # for debug add labels for labels
-      Parfait.object_space.types.values.each do |type|
+      Parfait.object_space.each_type do |type|
         type.methods.each do |f|
           f.instructions.each_label do |label|
-            add_symbol "#{clazz.name}::#{f.name}:#{label.name}" , label.position
+            add_symbol "#{type.name}::#{f.name}:#{label.name}" , label.position
           end
         end
       end

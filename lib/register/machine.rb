@@ -14,7 +14,7 @@ module Register
   class Machine
     include Collector
     include Logging
-    log_level :debug
+    log_level :info
 
     def initialize
       @objects = {}

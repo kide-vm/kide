@@ -6,7 +6,7 @@ class HelloTest < MiniTest::Test
   def check
     machine = Register.machine.boot
     Typed.compile( @input )
-    machine.collect
+    machine.collect_space
     machine.translate_arm
     writer = Elf::ObjectWriter.new
     writer.save "test/hello.o"
@@ -15,6 +15,6 @@ class HelloTest < MiniTest::Test
   def test_string_put
     @input = s(:statements, s(:return, s(:call, s(:name, :putstring), s(:arguments),
                   s(:receiver, s(:string, "Hello again\\n")))))
-#    check
+    check
   end
 end

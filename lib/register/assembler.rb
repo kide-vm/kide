@@ -11,7 +11,7 @@ module Register
   class Assembler
     include Padding
     include Logging
-    log_level :debug
+    log_level :info
 
     MARKER = 0xA51AF00D
 
@@ -194,7 +194,7 @@ module Register
 
     def write_object_indexed(object)
       written = 0
-      if( object.is_a? Parfait::Indexed)
+      if( object.is_a? Parfait::List)
         object.each do |inst|
           write_ref_for(inst)
           written += 4
