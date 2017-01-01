@@ -6,7 +6,7 @@ gem "ast" , :github => "whitequark/ast" , branch: :master
 gem "rake"
 gem "rye"
 
-gem "salama-object-file" , :github => "ruby-x/salama-object-file"
+gem "salama-object-file" , :github => "ruby-x/rubyx-object-file"
 #gem "salama-object-file" , :path => "../salama-object-file"
 
 gem "codeclimate-test-reporter", require: nil

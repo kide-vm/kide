@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/salama/salama-object-file.git
+  remote: git://github.com/ruby-x/rubyx-object-file.git
   revision: aab01b23108f10063433b1ef9f703ff2927d0b80
   specs:
     salama-object-file (0.3.0)
