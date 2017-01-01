@@ -23,7 +23,7 @@ module Register
     def assemble
       at = 0
       #need the initial jump at 0 and then functions
-      @machine.init.set_position(0)
+      @machine.init.set_position( 0)
       at = @machine.init.byte_length
       at = assemble_objects( at )
       # and then everything code
@@ -35,10 +35,10 @@ module Register
         next unless objekt.is_a? Parfait::TypedMethod
         log.debug "CODE1 #{objekt.name}"
         binary = objekt.binary
-        binary.set_position( at )
-        objekt.instructions.set_position( at + 12 )# BinaryCode header
+        Positioned.set_position(binary,at)
+        objekt.instructions.set_position( at + 12) # BinaryCode header
         len = objekt.instructions.total_byte_length
-        log.debug "CODE2 #{objekt.name} at #{binary.position} len: #{len}"
+        log.debug "CODE2 #{objekt.name} at #{Positioned.position(binary)} len: #{len}"
         binary.set_length(len , 0)
         at += binary.padded_length
       end
@@ -51,7 +51,7 @@ module Register
       @objects.each do | id , objekt|
         next if objekt.is_a? Register::Label # will get assembled as method.instructions
         next if objekt.is_a? Parfait::BinaryCode
-        objekt.set_position  at
+        Positioned.set_position(objekt,at)
         at += objekt.padded_length
       end
       at
@@ -81,11 +81,11 @@ module Register
 
     # debugging loop accesses all positions to force an error if it's not set
     def try_write_debug
-      all = @objects.values.sort{|a,b| a.position <=> b.position}
+      all = @objects.values.sort{|a,b| Positioned.position(a) <=> Positioned.position(b)}
       all.each do |objekt|
         next if objekt.is_a?(Register::Label)
-        log.debug "Linked #{objekt.class}(#{objekt.object_id}) at #{objekt.position} / #{objekt.padded_length}"
-        objekt.position
+        log.debug "Linked #{objekt.class}(#{objekt.object_id}) at #{Positioned.position(objekt)} / #{objekt.padded_length}"
+        Positioned.position(objekt)
       end
     end
 
@@ -101,6 +101,7 @@ module Register
         @stream.write_unsigned_int_8(0)
       end
     end
+
     def try_write_objects
       #  then the objects , not code yet
       @objects.each do | id, objekt|
@@ -153,16 +154,16 @@ module Register
 
     def write_any obj
       write_any_log( obj ,  "Write")
-      if @stream.length != obj.position
-        raise "Write #{obj.class} #{obj.object_id} at #{stream_position} not #{obj.position}"
+      if @stream.length != Positioned.position(obj)
+        raise "Write #{obj.class} #{obj.object_id} at #{stream_position} not #{Positioned.position(obj)}"
       end
       write_any_out(obj)
       write_any_log( obj ,  "Wrote")
-      obj.position
+      Positioned.position(obj)
     end
 
     def write_any_log( obj , at)
-      log.debug "#{at} #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{obj.position} , len:#{obj.padded_length}"
+      log.debug "#{at} #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{Positioned.position(obj)} , len:#{obj.padded_length}"
     end
 
     def write_any_out(obj)
@@ -182,7 +183,7 @@ module Register
       log.debug "type #{obj_written} , total #{obj_written + indexed_written} (array #{indexed_written})"
       log.debug "Len = #{object.get_length} , inst = #{object.get_type.instance_length}" if object.is_a? Parfait::Type
       pad_after( obj_written + indexed_written  )
-      object.position
+      Positioned.position(object)
     end
 
     def write_object_check(object)
@@ -225,7 +226,7 @@ module Register
         raise "length mismatch #{str.length} != #{string.char_length}" if str.length != string.char_length
       end
       str = string.to_s if string.is_a? Symbol
-      log.debug "#{string.class} is #{string} at #{string.position} length #{string.length}"
+      log.debug "#{string.class} is #{string} at #{Positioned.position(string)} length #{string.length}"
       write_checked_string(string , str)
     end
 
@@ -253,7 +254,7 @@ module Register
       when Fixnum
         @stream.write_signed_int_32(object)
       else
-        @stream.write_signed_int_32(object.position + @load_at)
+        @stream.write_signed_int_32(Positioned.position(object) + @load_at)
       end
     end
 

@@ -27,7 +27,7 @@ module Elf
       Parfait.object_space.each_type do |type|
         type.methods.each do |f|
           f.instructions.each_label do |label|
-            add_symbol "#{type.name}::#{f.name}:#{label.name}" , label.position
+            add_symbol "#{type.name}::#{f.name}:#{label.name}" , Positioned.position(label)
           end
         end
       end
@@ -37,12 +37,12 @@ module Elf
         if( slot.respond_to? :sof_reference_name )
           label = "#{slot.sof_reference_name}"
         else
-          label = "#{slot.class.name}::#{slot.position.to_s(16)}"
+          label = "#{slot.class.name}::#{Positioned.position(slot).to_s(16)}"
         end
         label += "=#{slot}" if slot.is_a?(Symbol) or slot.is_a?(String)
-        add_symbol label , slot.position
+        add_symbol label , Positioned.position(slot)
         if slot.is_a?(Parfait::TypedMethod)
-          add_symbol slot.name.to_s , slot.binary.position
+          add_symbol slot.name.to_s , Positioned.position(slot.binary)
         end
       end
     end
