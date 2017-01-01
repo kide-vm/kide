@@ -1,6 +1,6 @@
 require_relative "../helper"
 
-class TestPositioning < MiniTest::Test
+class TestPositioned < MiniTest::Test
   def setup
     Register.machine.boot unless Register.machine.booted
   end
@@ -22,10 +22,10 @@ class TestPositioning < MiniTest::Test
     assert_equal 32 , word.padded_length
   end
   def test_raises_no_init
-    assert_raises { TestPosition.new.position}
+    assert_raises { Positioned.position(self)}
   end
   def test_raises_set_nil
-    assert_raises { TestPosition.new.set_position  nil}
+    assert_raises { Positioned.set_position(self,nil)}
   end
   def test_raises_reset_far
     assert_raises do
