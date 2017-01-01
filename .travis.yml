@@ -2,7 +2,7 @@ language: ruby
 sudo: false
 cache: bundler
 script:
-  - CODECLIMATE_REPO_TOKEN=e778c5658e8488a37795ec48f8c6990135f7a2ec35ceadc2e816a4ed1e3f20ab ruby test/test_all.rb
-  - CODECLIMATE_REPO_TOKEN=e778c5658e8488a37795ec48f8c6990135f7a2ec35ceadc2e816a4ed1e3f20ab bundle exec codeclimate-test-reporter
+  - CODECLIMATE_REPO_TOKEN=f4348836cab14fdd5a2b7c9be26b9bbce45e3175144446a43a1ea21503a89dbb ruby test/test_all.rb
+  - CODECLIMATE_REPO_TOKEN=f4348836cab14fdd5a2b7c9be26b9bbce45e3175144446a43a1ea21503a89dbb bundle exec codeclimate-test-reporter
 rvm:
   - 2.3.3

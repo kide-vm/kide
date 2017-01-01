@@ -1,17 +1,19 @@
-[![Build Status](https://travis-ci.org/ruby-x/salama.svg?branch=master)](https://travis-ci.org/ruby-x/salama)
-[![Gem Version](https://badge.fury.io/rb/salama.svg)](http://badge.fury.io/rb/salama)
-[![Code Climate](https://codeclimate.com/github/ruby-x/ruby-x/badges/gpa.svg)](https://codeclimate.com/github/ruby-x/salama)
-[![Test Coverage](https://codeclimate.com/github/ruby-x/ruby-x/badges/coverage.svg)](https://codeclimate.com/github/ruby-x/salama)
+[![Build Status](https://travis-ci.org/ruby-x/rubyx.svg?branch=master)](https://travis-ci.org/ruby-x/salama)
+[![Code Climate](https://codeclimate.com/github/ruby-x/rubyx/badges/gpa.svg)](https://codeclimate.com/github/ruby-x/rubyx)
+[![Test Coverage](https://codeclimate.com/github/ruby-x/rubyx/badges/coverage.svg)](https://codeclimate.com/github/ruby-x/rubyx)
 
 # RubyX
 
-RubyX is about native code generation in and of ruby. X can be read as 10 times faster,
-or a decade away, depending on mindset.
+RubyX is about native code generation in and of ruby.
+
+X can be read as 10 times faster, or a decade away, depending on mindset.
 
 The current (fourth) rewrite adds a typed intermediate representation layer (bit like c,
 but not as a language). The idea is to compile ruby to that typed representation.
 
-We will use whitequarks parser to parse ruby.  Then it will be ruby --> Typed --> Register --> Arm --> binary .
+We use whitequarks parser to parse ruby.
+
+Processing is roughly: ruby --> Typed --> Register --> Arm --> binary .
 
 
 ## Done
