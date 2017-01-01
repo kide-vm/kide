@@ -1,9 +1,5 @@
 require_relative "../helper"
 
-class TestPosition
-  include Positioned
-end
-
 class TestPositioning < MiniTest::Test
   def setup
     Register.machine.boot unless Register.machine.booted
@@ -37,5 +33,10 @@ class TestPositioning < MiniTest::Test
       test.set_position  0
       test.set_position  12000
     end
+  end
+
+  def test_pos_arm
+    mov = Arm::ArmMachine.mov  :r1,  128
+    mov.set_position(0)
   end
 end

@@ -13,7 +13,6 @@ module Register
   # Branches fan out, Labels collect
   # Labels are the only valid branch targets
   class Instruction
-    include Positioned
 
     def initialize source , nekst = nil
       @source = source
@@ -100,7 +99,7 @@ module Register
     end
 
     def set_position position , labels = []
-      super(position)
+      Positioned.set_position(self,position)
       position += byte_length
       if self.next
         self.next.set_position(position , labels)

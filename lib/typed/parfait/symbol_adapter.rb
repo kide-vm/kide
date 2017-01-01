@@ -1,6 +1,5 @@
 
 class Symbol
-  include Positioned
 
   def has_type?
     true

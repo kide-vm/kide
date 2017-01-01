@@ -30,8 +30,6 @@ module Parfait
       object
     end
 
-    include Positioned
-
     # 1 -based index
     def get_internal_word(index)
       name = get_type().name_at(index)
