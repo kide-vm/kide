@@ -67,7 +67,7 @@ module RuntimeTests
     return unless box = connected
     load_program
     file = write_object_file
-    r_file = file.sub("./" , "salama/")
+    r_file = file.sub("./" , "ruby-x/")
     box.file_upload file , r_file
     print "\nfile #{file} "
     return if dont_run

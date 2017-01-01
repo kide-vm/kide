@@ -19,7 +19,7 @@ class TestRunner < MiniTest::Test
 
   def execute file
     string = File.read(file)
-    parser = Parser::Salama.new
+    parser = Parser::RubyX.new
     object_space = Register::Program.new "Arm"
     #TODO : files would have to include s-expressions now
     syntax  = parser.parse_with_debug(string, reporter: Parslet::ErrorReporter::Deepest.new)

@@ -13,6 +13,6 @@ A normal ruby function is one that is parsed and transformed to code. But not al
 be written in ruby, one of those chicken and egg things.
 C uses Assembler in this situation, we use Builtin functions.
 
-Slightly more here : http://salama.github.io/2014/06/10/more-clarity.html (then still called Kernel)
+Slightly more here : http://ruby-x.org/2014/06/10/more-clarity.html (then still called Kernel)
 
 The Builtin module is scattered into several files, but that is just so the file doesn't get too long.

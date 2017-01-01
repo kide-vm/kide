@@ -54,7 +54,7 @@ module Parfait
     # This is the crux of the object system. The class of an object is stored in the objects
     # memory (as opposed to an integer that has no memory and so always has the same class)
     #
-    # In Salama we store the class in the Type, and so the Type is the only fixed
+    # In RubyX we store the class in the Type, and so the Type is the only fixed
     # data that every object carries.
     def get_class()
       l = get_type()

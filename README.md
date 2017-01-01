@@ -1,11 +1,12 @@
-[![Build Status](https://travis-ci.org/salama/salama.svg?branch=master)](https://travis-ci.org/salama/salama)
+[![Build Status](https://travis-ci.org/ruby-x/salama.svg?branch=master)](https://travis-ci.org/ruby-x/salama)
 [![Gem Version](https://badge.fury.io/rb/salama.svg)](http://badge.fury.io/rb/salama)
-[![Code Climate](https://codeclimate.com/github/salama/salama/badges/gpa.svg)](https://codeclimate.com/github/salama/salama)
-[![Test Coverage](https://codeclimate.com/github/salama/salama/badges/coverage.svg)](https://codeclimate.com/github/salama/salama)
+[![Code Climate](https://codeclimate.com/github/ruby-x/ruby-x/badges/gpa.svg)](https://codeclimate.com/github/ruby-x/salama)
+[![Test Coverage](https://codeclimate.com/github/ruby-x/ruby-x/badges/coverage.svg)](https://codeclimate.com/github/ruby-x/salama)
 
-# Salama
+# RubyX
 
-Salama is about native code generation in and of ruby.
+RubyX is about native code generation in and of ruby. X can be read as 10 times faster,
+or a decade away, depending on mindset.
 
 The current (fourth) rewrite adds a typed intermediate representation layer (bit like c,
 but not as a language). The idea is to compile ruby to that typed representation.
@@ -28,7 +29,7 @@ Completely object oriented, including calling convention. Not much slower than c
 ### A runtime: Parfait
 
 In a dynamic system the distinction between compile-time and run-time is blurs. But a minimum
-of support is needed to get the system up, and that is [Parfait](http://salama-vm.org/soml/parfait.html)
+of support is needed to get the system up, and that is [Parfait](http://ruby-x.org/soml/parfait.html)
 
 ### Interpreter
 
@@ -37,7 +38,7 @@ register layer. That way test runs on the interpreter reveal most issues.
 
 ### Debugger
 
-And after the interpreter was done, i wrote a [visual debugger](https://github.com/salama/salama-debugger).
+And after the interpreter was done, i wrote a [visual debugger](https://github.com/ruby-x/salama-debugger).
 It is a simple opal application that nevertheless has proven great help both in figuring out
 what is going on, and in finding bugs.
 

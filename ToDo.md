@@ -1,26 +1,23 @@
 ToDo
 =====
 
-Some things that would be nice . . (if you did them :-) )
+Some things that would be nice . .
 
-- Better elf support. I think it should be relatively easy to produce an executable binary (so linking
-    could be skipped). Off course the possibility to link in another library would be nice
+- Better elf support. I think it should be relatively easy to produce an executable binary
+(so linking could be skipped). Off course the possibility to link in another library would be nice
+- better elf tests
+- better arm coverage (more instructions, better tests)
 - utf8 support (string improvements generally)
-- SOF parser
-
-Or the list of things i am not even planning of tackling at the moment
 
 
 Platforms
 ---------
 
-x86 is up for grabs. I have intentionally started on arm (the most sold cpu) because i do this for fun.
-And my pi is fun.
+x86 is up for grabs. I have intentionally started on arm (the most sold cpu) because i do
+this for fun. And my pi is fun.
 
-Trying to get mainstream acknowledgement/acceptence is not fun, it's hard work and should be undertaken by
-someone with funding.
-
-I hope to get the multi-machine architecture done at some point as i also want to port to Arduino
+There is a ruby intel assembler called wilson out there. Or then there is Metasm, with
+good support for many other cpu's (and a lot more code)
 
 Compliance
 ----------
@@ -38,4 +35,8 @@ Stdlib is not clean. More like a layer that accumulated over the years.
 Very nice solutions exist for most of the important things. Like celluloid for concurrency. Celluloid-io for
 good performance io with or without zero-mq. Fiddle looks nice admittedly.
 
-Anyway, as i want to use gpio mostly the whole c wrapping is not too high on the list.
+Interesting
+-----------
+
+Solving concurrency is up for grabs. Any solution is a start, channels ala go are nice and
+lock free stuff is the ultimate goal.

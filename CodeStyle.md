@@ -1,13 +1,19 @@
 # Code Style and Conventions
 
 Just  few things that have become important enough to write down. Apart from what is written here
-standard blah applies (ie RoboCop stuff).
+standard blah applies (ie RoboCop/Reek stuff).
 
 ## Formatting
 
 ### Line Length
 
 While the days of 80 are over, too big steps seems difficult. I've settled on 100 (ish)
+
+### Brackets
+
+While ruby allows the ommision of brackets even with arguments, i try to avoid that because
+of readablity. There may be an exception for an assignment, a single call with a single arg.
+Brackets without arguments look funny though.
 
 ### Hash
 
@@ -25,13 +31,8 @@ the code reads much nicer when they are on the module.
 
 ### Code generators
 
-Since code is represented by instances of Instructions (and subclasses) the most straightforward
-way of generating code is by new of the Class. This is ok for some.
-
-But often one finds a little massaging of the incoming data is better, while keeping that logic
-out of the Instructions classes. In such cases Module functions are again quite nice. Example:
-
 Instead of SlotToReg.new( register, index , register) we use Register.slot_to_reg( name , name , name).
 All names are resolved to registers, or index via Type. More readable code less repetition.
-
 As the example shows, in this case the module function name should be the instruction class name.
+
+Singletons should hang off the module (not the class), eg Parfait.object_space
