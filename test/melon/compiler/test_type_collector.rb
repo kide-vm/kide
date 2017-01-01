@@ -4,7 +4,7 @@ module Melon
   class TestTypeCollector < MiniTest::Test
 
     def setup
-      Register.machine.boot unless Register.machine.booted
+      Register.machine.boot
     end
 
     def parse_collect( input )
@@ -30,6 +30,7 @@ module Melon
     def test_compile_class
       Compiler.compile  "class TestIvar < Object ; def meth; @ivar;end; end"
       itest = Parfait.object_space.get_class_by_name(:TestIvar)
+      assert itest
       assert itest.instance_type.names.include?(:ivar) , itest.instance_type.names.inspect
     end
 

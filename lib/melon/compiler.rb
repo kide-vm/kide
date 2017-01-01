@@ -21,7 +21,8 @@ module Melon
 
     def on_class statement
       name , sup , body = *statement
-      clazz = Parfait.object_space.create_class(get_name(name) , get_name(sup) )
+      class_name = get_name(name)
+      clazz = Parfait.object_space.create_class(class_name , get_name(sup) )
       ivar_hash = TypeCollector.new.collect(body)
       clazz.set_instance_type( Parfait::Type.for_hash( clazz ,  ivar_hash ) )
 
