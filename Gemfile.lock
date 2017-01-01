@@ -90,7 +90,7 @@ GEM
     sysinfo (0.8.1)
       drydock
       storable
-    thor (0.19.4)
+    thor (0.19.1)
 
 PLATFORMS
   ruby
@@ -107,6 +107,7 @@ DEPENDENCIES
   rye
   salama!
   salama-object-file!
+  thor (= 0.19.1)
 
 BUNDLED WITH
    1.13.5

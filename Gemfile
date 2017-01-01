@@ -11,7 +11,9 @@ gem "salama-object-file" , :github => "salama/salama-object-file"
 
 gem "codeclimate-test-reporter", require: nil
 
+
 group :development do
+  gem "thor" , "0.19.1"
   gem "minitest"
   gem 'guard' # NOTE: this is necessary in newer versions
   gem 'guard-minitest'
