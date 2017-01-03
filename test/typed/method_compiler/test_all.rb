@@ -1,5 +1,5 @@
 require_relative "test_assign"
-require_relative "test_call"
+require_relative "test_call_site"
 require_relative "test_class"
 require_relative "test_fields"
 require_relative "test_if"
