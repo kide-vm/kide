@@ -8,13 +8,6 @@ class TestClassStatements < MiniTest::Test
     clean_compile :Bar, :buh, {}, s(:statements, s(:return, s(:int, 1)))
   end
 
-  def test_class_defs
-    class_def
-    @input =s(:statements, s(:return, s(:int, 1)))
-    @expect =  [Label, LoadConstant,RegToSlot,Label,FunctionReturn]
-    check
-  end
-
   def test_class_call
     #FIXME class call
     # class_def

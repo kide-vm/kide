@@ -1,4 +1,5 @@
 require_relative 'helper'
+require_relative "test_call_expression"
 
 module Register
 class TestCallStatement < MiniTest::Test
