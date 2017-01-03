@@ -60,7 +60,7 @@ module Typed
       name_tmp = use_reg(:Word)
       add_load_constant("#{name} load method name", name , name_tmp)
       add_reg_to_slot( "#{name} store method name" , name_tmp , :new_message , :name)
-      # next arg and local types
+      # next arg type
       args_reg = use_reg(:Type , method.arguments )
       list_reg = use_reg(:NamedList , arguments )
       add_load_constant("#{name} load methods", method , args_reg)
@@ -69,11 +69,6 @@ module Typed
       add_slot_to_reg( "#{name} get args type from method" , args_reg ,  args_type_index ,  args_reg  )
       add_slot_to_reg( "#{name} get args from method" , :new_message , :arguments , list_reg )
       add_reg_to_slot( "#{name} store args type in args" , args_reg , list_reg , 1  )
-
-#FIXME need to set type of locals too. sama sama
-#      len_tmp = use_reg(:Integer , arguments.to_a.length )
-#      add_load_constant(name_s, arguments.to_a.length , len_tmp)
-#      add_reg_to_slot( name_s , len_tmp , :new_message , :indexed_length)
     end
 
     def set_arguments( method , arguments )
