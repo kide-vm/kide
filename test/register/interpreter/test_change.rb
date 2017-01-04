@@ -31,16 +31,17 @@ module Register
     def test_instruction_events
       @interpreter.register_event :instruction_changed , self
       ticks 30
-      assert_equal 17 ,  @instruction_events.length
+      assert_equal 20 ,  @instruction_events.length
       @interpreter.unregister_event :instruction_changed , self
     end
 
     def test_chain
       #show_ticks # get output of what is
-      check_chain ["Branch","Label","LoadConstant","SlotToReg","RegToSlot",
-       "LoadConstant","RegToSlot","FunctionCall","Label","LoadConstant",
-       "LoadConstant","OperatorInstruction","RegToSlot","Label","FunctionReturn",
-       "RegisterTransfer","Syscall","NilClass"]
+      check_chain [Branch, Label, LoadConstant, SlotToReg, RegToSlot,
+             LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,
+             LoadConstant, OperatorInstruction, RegToSlot, LoadConstant, SlotToReg,
+             RegToSlot, Label, FunctionReturn, RegisterTransfer, Syscall,
+             NilClass]
     end
 
   end

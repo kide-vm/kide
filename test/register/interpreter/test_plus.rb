@@ -18,10 +18,11 @@ HERE
 
     def test_add
       #show_ticks # get output of what is
-      check_chain ["Branch","Label","LoadConstant","SlotToReg","RegToSlot",
-       "LoadConstant","RegToSlot","FunctionCall","Label","LoadConstant",
-       "LoadConstant","OperatorInstruction","RegToSlot","Label","FunctionReturn",
-       "RegisterTransfer","Syscall","NilClass"]
+      check_chain [Branch, Label, LoadConstant, SlotToReg, RegToSlot,
+             LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,
+             LoadConstant, OperatorInstruction, RegToSlot, LoadConstant, SlotToReg,
+             RegToSlot, Label, FunctionReturn, RegisterTransfer, Syscall,
+             NilClass]
       check_return 0
     end
 
