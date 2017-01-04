@@ -12,6 +12,7 @@ if ENV['CODECLIMATE_REPO_TOKEN']
   SimpleCov.start { add_filter "/test/" }
 end
 
+require "minitest/color"
 require "minitest/autorun"
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))

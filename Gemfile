@@ -14,7 +14,7 @@ gem "codeclimate-test-reporter", require: nil
 
 group :development do
   gem "thor" , "0.19.1"
-  gem "minitest"
+  gem "minitest-color"
   gem 'guard' # NOTE: this is necessary in newer versions
   gem 'guard-minitest'
   gem "rb-readline"
