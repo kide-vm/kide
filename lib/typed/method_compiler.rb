@@ -132,8 +132,16 @@ module Typed
     def init_method
       source = "_init_method"
       name = "#{method.for_type.name}.#{method.name}"
-      @method.set_instructions( Register.label(source, name))
-      @current = enter = method.instructions
+      @current = @method.set_instructions( Register.label(source, name))
+
+      # add the type of the locals to the existing NamedList instance
+      locals_reg = use_reg(:Type , method.locals )
+      list_reg = use_reg(:NamedList )
+      add_load_constant("#{name} load locals type", method.locals , locals_reg)
+      add_slot_to_reg( "#{name} get locals from method" , :message , :locals , list_reg )
+      add_reg_to_slot( "#{name} store locals type in locals" , locals_reg , list_reg , 1  )
+
+      enter = @current # this is where method body goes
       add_label( source, "return #{name}")
       #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
       add_function_return( source , Register.message_reg , Register.resolve_to_index(:message , :return_address) )
