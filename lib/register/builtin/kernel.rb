@@ -17,6 +17,7 @@ module Register
           message_ind = Register.resolve_to_index( :space , :first_message )
           compiler.add_slot_to_reg( "__init__ load 1st message" , space_reg , message_ind , :message)
           compiler.add_reg_to_slot( "__init__ store Space in message", space_reg , :message , :receiver)
+          #fixme: should add arg type here, as done in call_site (which this sort of is)
           exit_label = Register.label("_exit_label for __init__" , "#{compiler.type.object_class.name}.#{compiler.method.name}" )
           ret_tmp = compiler.use_reg(:Label)
           compiler.add_load_constant("__init__ load return", exit_label , ret_tmp)

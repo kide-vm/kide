@@ -63,10 +63,7 @@ module Typed
       # next arg type
       args_reg = use_reg(:Type , method.arguments )
       list_reg = use_reg(:NamedList , arguments )
-      add_load_constant("#{name} load methods", method , args_reg)
-      args_type_index = method.get_type().variable_index(:arguments)
-      raise args_type_index.to_s unless args_type_index == 6
-      add_slot_to_reg( "#{name} get args type from method" , args_reg ,  args_type_index ,  args_reg  )
+      add_load_constant("#{name} load arguments type", method.arguments , args_reg)
       add_slot_to_reg( "#{name} get args from method" , :new_message , :arguments , list_reg )
       add_reg_to_slot( "#{name} store args type in args" , args_reg , list_reg , 1  )
     end
