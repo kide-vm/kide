@@ -9,8 +9,8 @@ module Register
       Register.machine.boot
       do_clean_compile
       Typed.compile( @input )
-      Register::Collector.collect_space
-      @interpreter = Register::Interpreter.new
+      Collector.collect_space
+      @interpreter = Interpreter.new
       @interpreter.start Register.machine.init
     end
 
@@ -21,7 +21,7 @@ module Register
     def check_chain should
       should.each_with_index do |name , index|
         got = ticks(1)
-        assert got.class.name.index(name) , "Wrong class for #{index+1}, expect #{name} , got #{got}"
+        assert_equal got.class ,name , "Wrong class for #{index+1}, expect #{name} , got #{got}"
       end
     end
 
@@ -54,11 +54,11 @@ module Register
         puts e
         puts e.backtrace
       end
-      classes = classes.collect {|c| '"' + c.name.sub("Register::","")  + '",' }
-      classes << "length = #{classes.length}"
-      classes.each_slice(5).each do |line|
-        puts "     " + line.join
+      str = classes.to_s.gsub("Register::","")
+      str.split(",").each_slice(5).each do |line|
+        puts "            " + line.join(",") + ","
       end
+      puts "length = #{classes.length}"
       exit(1)
     end
   end
