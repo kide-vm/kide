@@ -8,9 +8,10 @@ module Register
     def test_while_mini
       @input = s(:statements, s(:while_statement, :plus, s(:conditional, s(:int, 1)), s(:statements, s(:return, s(:int, 3)))))
 
-      @expect = [Label, Branch, Label, LoadConstant, RegToSlot, Label, LoadConstant ,
-               IsPlus, Label, FunctionReturn]
-      check
+      @expect =  [Label, Branch, Label, LoadConstant, RegToSlot, Label ,
+                 LoadConstant, IsPlus, LoadConstant, SlotToReg, RegToSlot, Label ,
+                 FunctionReturn]
+      assert_nil msg = check_nil , msg
     end
 
     def test_while_assign
@@ -18,10 +19,11 @@ module Register
 
       @input    = s(:statements, s(:assignment, s(:name, :n), s(:int, 5)), s(:while_statement, :plus, s(:conditional, s(:name, :n)), s(:statements, s(:assignment, s(:name, :n), s(:operator_value, :-, s(:name, :n), s(:int, 1))))), s(:return, s(:name, :n)))
 
-      @expect = [Label, LoadConstant, SlotToReg, RegToSlot, Branch, Label, SlotToReg ,
-               SlotToReg, LoadConstant, OperatorInstruction, SlotToReg, RegToSlot, Label, SlotToReg ,
-               SlotToReg, IsPlus, SlotToReg, SlotToReg, RegToSlot, Label, FunctionReturn]
-      check
+      @expect = [Label, LoadConstant, SlotToReg, RegToSlot, Branch, Label ,
+                 SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, SlotToReg, RegToSlot ,
+                 Label, SlotToReg, SlotToReg, IsPlus, SlotToReg, SlotToReg ,
+                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
+      assert_nil msg = check_nil , msg
     end
 
 
@@ -30,11 +32,12 @@ module Register
 
       @input    = s(:statements, s(:assignment, s(:name, :n), s(:int, 10)), s(:while_statement, :plus, s(:conditional, s(:operator_value, :-, s(:name, :n), s(:int, 5))), s(:statements, s(:assignment, s(:name, :n), s(:operator_value, :+, s(:name, :n), s(:int, 1))), s(:return, s(:name, :n)))))
 
-      @expect = [Label, LoadConstant, SlotToReg, RegToSlot, Branch, Label, SlotToReg ,
-               SlotToReg, LoadConstant, OperatorInstruction, SlotToReg, RegToSlot, SlotToReg, SlotToReg ,
-               RegToSlot, Label, SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsPlus ,
-               Label, FunctionReturn]
-      check
+      @expect = [Label, LoadConstant, SlotToReg, RegToSlot, Branch, Label ,
+                 SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, SlotToReg, RegToSlot ,
+                 SlotToReg, SlotToReg, RegToSlot, Label, SlotToReg, SlotToReg ,
+                 LoadConstant, OperatorInstruction, IsPlus, LoadConstant, SlotToReg, RegToSlot ,
+                 Label, FunctionReturn]
+      assert_nil msg = check_nil , msg
     end
   end
 end
