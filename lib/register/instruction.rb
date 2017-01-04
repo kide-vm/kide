@@ -71,9 +71,9 @@ module Register
       ret
     end
 
-    def to_ac labels = []
+    def to_arr labels = []
       ret  = [self.class]
-      ret += self.next.to_ac(labels) if self.next
+      ret += self.next.to_arr(labels) if self.next
       ret
     end
 

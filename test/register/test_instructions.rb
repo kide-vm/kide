@@ -54,7 +54,7 @@ module Register
       @instruction.replace_next @label
       assert_equal @label, @instruction.last
       assert_equal @label, @instruction.next
-      assert_equal 2 , @instruction.length , @instruction.to_ac
+      assert_equal 2 , @instruction.length , @instruction.to_arr
     end
     def test_each_label1
       @instruction.set_next @label

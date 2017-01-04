@@ -27,7 +27,7 @@ module Register
       @name.split(".").length == 2
     end
 
-    def to_ac labels = []
+    def to_arr labels = []
       return [] if labels.include?(self)
       labels << self
       super

@@ -20,9 +20,9 @@ module Register
       ret
     end
 
-    def to_ac labels = []
+    def to_arr( labels = [] )
       ret = super(labels)
-      ret += self.label.to_ac(labels) if self.label
+      ret += self.label.to_arr(labels) if self.label
       ret
     end
 
