@@ -1,10 +1,10 @@
 require_relative 'helper'
 
 module Melon
-  class TestRubyCalls < MiniTest::Test
+  class TestManyCalls < MiniTest::Test
     include MelonTests
 
-    def pest_ruby_calls
+    def pest_ruby_calls_looping
       @string_input = <<HERE
 
       def fibo_r( n )
@@ -15,9 +15,15 @@ module Melon
          end
       end
 
-      fibo 40
+      counter = 1000
+
+      while(counter > 0) do
+        fibo_r(20)
+        counter -= 1
+      end
 HERE
-      @stdout = "Hello there"
+      @length = 37
+      @stdout = ""
       check
     end
   end
