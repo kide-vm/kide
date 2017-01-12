@@ -6,11 +6,9 @@ module Melon
 
 
     def test_ruby_hello
-      @string_input = <<HERE
-    puts "Hello there"
-HERE
-      @stdout = "Hello there"
-      check
+      @string_input = 'puts "Hello there"'
+      assert !check
+#      assert_equal "Hello there" , @interpreter.stdout
     end
 
   end

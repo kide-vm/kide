@@ -23,6 +23,7 @@ module Parfait
       super()
       @name = name
       @super_class_name = superclass
+      @methods = {}
       set_instance_type( instance_type )
     end
 
@@ -34,6 +35,14 @@ module Parfait
       "Class(#{name})"
     end
 
+    def add_method(method)
+      @methods[method.name] = method
+    end
+
+    def get_method(name)
+      @methods[name]
+    end
+    
     # setting the type generates all methods for this type
     # (or will do, once we store the methods code to do that)
     def set_instance_type( type )

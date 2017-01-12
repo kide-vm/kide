@@ -6,12 +6,15 @@ module Melon
   module MelonTests
 
     def setup
-      @parser = Parser::Ruby22
+      Register.machine.boot
     end
 
     def check
-      assert true
-      #puts @parser.parse @string_input
+      Compiler.compile @string_input
+      Register::Collector.collect_space
+      @interpreter = Register::Interpreter.new
+      @interpreter.start Register.machine.init
+      nil
     end
   end
 end

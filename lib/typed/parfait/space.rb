@@ -29,7 +29,7 @@ module Parfait
   # While data ususally would live in a .data section, we may also "inline" it into the code
   # in an oo system all data is represented as objects
 
-  class Space < Object
+    class Space < Object
 
     def initialize(classes )
       @classes = classes
@@ -99,10 +99,10 @@ module Parfait
 
     # get or create the class by the (symbol) name
     # notice that this method of creating classes implies Object superclass
-    def get_class_by_name! name
+    def get_class_by_name!(name , super_class = :Object)
       c = get_class_by_name(name)
       return c if c
-      create_class name
+      create_class( name ,super_class)
     end
 
     # this is the way to instantiate classes (not Parfait::Class.new)
