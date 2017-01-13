@@ -17,7 +17,7 @@ module Melon
 
     def add_local(statement)
       var = statement.children[0]
-      @locals[var] = :Object #guess, can maybe guess better
+      @locals[var] = :Object #not really used right now
     end
 
   end

@@ -20,7 +20,7 @@ module Melon
     def test_one_arg
       method = parse_collect("def meth2(arg1); 1;end").first
       assert method.name == :meth2
-      assert method.args_type.variable_index(:arg1) , method.args_type.inspect
+      assert_equal 2 , method.args_type.variable_index(:arg1) , method.args_type.inspect
     end
 
     def test_three_args
