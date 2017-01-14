@@ -8,7 +8,7 @@ module Register
     def setup
       Register.machine.boot
       do_clean_compile
-      Vm.compile( @input )
+      Vm.compile_ast( @input )
       Collector.collect_space
       @interpreter = Interpreter.new
       @interpreter.start Register.machine.init

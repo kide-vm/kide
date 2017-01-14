@@ -6,7 +6,7 @@ require_relative "compiler/ruby_method"
 
 
 module Melon
-  class Compiler < AST::Processor
+  class Compiler < TotalProcessor
 
     def self.compile( input )
       ast = Parser::Ruby22.parse( input )
@@ -29,14 +29,8 @@ module Melon
       end
     end
 
-    def handler_missing(node)
-#      raise "Oh"
-      node.children.each do |kid |
-        process(kid) if kid.is_a?(AST::Node)
-      end
-    end
-
     private
+
     def get_name( statement )
       return nil unless statement
       statement.children[1]

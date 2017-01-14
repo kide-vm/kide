@@ -5,7 +5,7 @@ class HelloTest < MiniTest::Test
 
   def check
     machine = Register.machine.boot
-    Vm.compile( @input )
+    Vm.compile_ast( @input )
     objects = Register::Collector.collect_space
     machine.translate_arm
     writer = Elf::ObjectWriter.new(machine , objects )
