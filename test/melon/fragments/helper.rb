@@ -10,7 +10,7 @@ module Melon
     end
 
     def check
-      Compiler.compile @string_input
+      RubyCompiler.compile @string_input
       Register::Collector.collect_space
       @interpreter = Register::Interpreter.new
       @interpreter.start Register.machine.init
