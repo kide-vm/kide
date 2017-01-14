@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Melon
-  class TestClass < MiniTest::Test
+  class TestCompiler < MiniTest::Test
 
     def setup
       Register.machine.boot
