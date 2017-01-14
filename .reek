@@ -8,19 +8,19 @@ FeatureEnvy:
   exclude:
     - "Register::Interpreter"
     - "Arm::Translator"
-    - "Typed::ToCode"
+    - "Vm::ToCode"
 TooManyMethods:
   exclude:
     - "Register::Interpreter"
     - "Arm::Translator"
-    - "Typed::ToCode"
+    - "Vm::ToCode"
 UtilityFunction:
   exclude:
     - "Register::Interpreter"
     - "Arm::Translator"
-    - "Typed::ToCode"
+    - "Vm::ToCode"
 UncommunicativeMethodName:
   exclude:
     - "Register::Interpreter"
     - "Arm::Translator"
-    - "Typed::ToCode"
+    - "Vm::ToCode"

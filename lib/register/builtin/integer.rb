@@ -6,22 +6,22 @@ module Register
         include AST::Sexp
 
         def mod4 context
-          compiler = Typed::MethodCompiler.new.create_method(:Integer,:mod4 ).init_method
+          compiler = Vm::MethodCompiler.new.create_method(:Integer,:mod4 ).init_method
           return compiler.method
         end
         def putint context
-          compiler = Typed::MethodCompiler.new.create_method(:Integer,:putint ).init_method
+          compiler = Vm::MethodCompiler.new.create_method(:Integer,:putint ).init_method
           return compiler.method
         end
 
 
         def div10 context
           s = "div_10"
-          compiler = Typed::MethodCompiler.new.create_method(:Integer,:div10 ).init_method
-          me = compiler.process( Typed::Tree::NameExpression.new( :self) )
-          tmp = compiler.process( Typed::Tree::NameExpression.new( :self) )
-          q = compiler.process( Typed::Tree::NameExpression.new( :self) )
-          const = compiler.process( Typed::Tree::IntegerExpression.new(1) )
+          compiler = Vm::MethodCompiler.new.create_method(:Integer,:div10 ).init_method
+          me = compiler.process( Vm::Tree::NameExpression.new( :self) )
+          tmp = compiler.process( Vm::Tree::NameExpression.new( :self) )
+          q = compiler.process( Vm::Tree::NameExpression.new( :self) )
+          const = compiler.process( Vm::Tree::IntegerExpression.new(1) )
           # int tmp = self >> 1
           compiler.add_code Register.op( s , ">>" , tmp , const)
           # int q = self >> 2

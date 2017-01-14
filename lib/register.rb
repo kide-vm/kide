@@ -7,9 +7,9 @@ end
 
 require "register/padding"
 require "register/positioned"
-require "typed/method_compiler"
+require "vm/method_compiler"
 
-require "typed/parfait"
+require "vm/parfait"
 require "register/machine"
 
 class Fixnum

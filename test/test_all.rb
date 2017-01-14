@@ -8,4 +8,4 @@ require_relative "melon/test_all"
 
 require_relative "register/test_all"
 
-require_relative "typed/test_all"
+require_relative "vm/test_all"

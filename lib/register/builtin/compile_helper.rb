@@ -4,14 +4,14 @@ module Register
     module CompileHelper
 
       def self_and_int_arg(compiler , source)
-        me = compiler.process( Typed::Tree::NameExpression.new( :self) )
+        me = compiler.process( Vm::Tree::NameExpression.new( :self) )
         int_arg = load_int_arg_at(compiler , source , 1 )
         return me , int_arg
       end
 
       def compiler_for( type , method_name , extra_args = {})
         args = {:index => :Integer}.merge( extra_args )
-        Typed::MethodCompiler.new.create_method(type , method_name , args ).init_method
+        Vm::MethodCompiler.new.create_method(type , method_name , args ).init_method
       end
 
       # Load the value

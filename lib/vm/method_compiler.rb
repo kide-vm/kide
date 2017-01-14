@@ -1,0 +1,207 @@
+require_relative "tree"
+require_relative "method_compiler/assignment"
+require_relative "method_compiler/basic_values"
+require_relative "method_compiler/call_site"
+require_relative "method_compiler/collections"
+require_relative "method_compiler/field_access"
+require_relative "method_compiler/if_statement"
+require_relative "method_compiler/name_expression"
+require_relative "method_compiler/operator_expression"
+require_relative "method_compiler/return_statement"
+require_relative "method_compiler/statement_list"
+require_relative "method_compiler/while_statement"
+
+module Vm
+
+  CompilerModules = [ "assignment" , "basic_values" , "call_site",
+                      "collections" , "field_access",
+                      "if_statement" , "name_expression" ,
+                      "operator_expression" , "return_statement", "statement_list",
+                      "while_statement"]
+
+  CompilerModules.each do |mod|
+#    require_relative "method_compiler/" + mod
+  end
+
+  # Compiling is the conversion of the AST into 2 things:
+  # - code (ie sequences of Instructions inside Methods)
+  # - an object graph containing all the Methods, their classes and Constants
+  #
+  # Some compile methods just add code, some may add Instructions while
+  # others instantiate Class and TypedMethod objects
+  #
+  # Everything in ruby is an statement, ie returns a value. So the effect of every compile
+  # is that a value is put into the ReturnSlot of the current Message.
+  # The compile method (so every compile method) returns the value that it deposits.
+  #
+  # The process uses a visitor pattern (from AST::Processor) to dispatch according to the
+  # type the statement. So a s(:if xx) will become an on_if(node) call.
+  # This makes the dispatch extensible, ie Expressions may be added by external code,
+  # as long as matching compile methods are supplied too.
+  #
+  # A compiler can also be used to generate code for a method without AST nodes. In the same way
+  # compile methods do, ie adding Instructions etc. In this way code may be generated that
+  # has no code equivalent.
+  #
+  # The Compiler also keeps a list of used registers, from which one may take to use and return to
+  # when done. The list may be reset.
+  #
+  # The Compiler also carries method and class instance variables. The method is where code is
+  # added to (with add_code). To be more precise, the @current instruction is where code is added
+  # to, and that may be changed with set_current
+
+  # All Statements reset the registers and return nil.
+  # Expressions use registers and return the register where their value is stored.
+
+  # Helper function to create a new compiler and compie the statement(s)
+  def self.compile statement
+    compiler = MethodCompiler.new
+    code = Vm.ast_to_code statement
+    compiler.process code
+  end
+
+  class MethodCompiler
+    CompilerModules.each do |mod|
+      include Vm.const_get( mod.camelize )
+    end
+
+    def initialize( method = nil )
+      @regs = []
+      if method
+        @method = method
+        @type = method.for_type
+      else
+        @type = Parfait.object_space.get_type()
+        @method = @type.get_method( :main )
+        @method = @type.create_method( :main ,{}) unless @method
+      end
+      @current = @method.instructions
+    end
+    attr_reader :type , :method
+
+
+    # Dispatches `code` according to it's class name, for class NameExpression
+    # a method named `on_NameExpression` is invoked with one argument, the `code`
+    #
+    # @param  [Vm::Code, nil] code
+    def process(code)
+      name = code.class.name.split("::").last
+      # Invoke a specific handler
+      on_handler = :"on_#{name}"
+      if respond_to? on_handler
+        return send on_handler, code
+      else
+        raise "No handler  on_#{name}(code) #{code.inspect}"
+      end
+    end
+
+    # {#process}es each code from `codes` and returns an array of
+    # results.
+    #
+    def process_all(codes)
+      codes.to_a.map do |code|
+        process code
+      end
+    end
+
+    # create the method, do some checks and set it as the current method to be added to
+    # class_name and method_name are pretty clear, args are given as a ruby array
+    def create_method( class_name , method_name , args = {})
+      raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
+      clazz = Parfait.object_space.get_class_by_name! class_name
+      create_method_for( clazz.instance_type , method_name , args)
+    end
+
+    # create a method for the given type ( Parfait type object)
+    # method_name is a Symbol
+    # args a hash that will be converted to a type
+    # the created method is set as the current and the given type too
+    # return the compiler (for chaining)
+    def create_method_for( type , method_name , args )
+      @type = type
+      raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
+      raise "Args must be Hash #{args}" unless args.is_a?(Hash)
+      raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
+      @method = type.create_method( method_name , args)
+      self
+    end
+
+    # add method entry and exit code. Mainly save_return for the enter and
+    # message shuffle and FunctionReturn for the return
+    # return self for chaining
+    def init_method
+      source = "_init_method"
+      name = "#{method.for_type.name}.#{method.name}"
+      @current = @method.set_instructions( Register.label(source, name))
+
+      # add the type of the locals to the existing NamedList instance
+      locals_reg = use_reg(:Type , method.locals )
+      list_reg = use_reg(:NamedList )
+      add_load_constant("#{name} load locals type", method.locals , locals_reg)
+      add_slot_to_reg( "#{name} get locals from method" , :message , :locals , list_reg )
+      add_reg_to_slot( "#{name} store locals type in locals" , locals_reg , list_reg , 1  )
+
+      enter = @current # this is where method body goes
+      add_label( source, "return #{name}")
+      #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
+      add_function_return( source , Register.message_reg , Register.resolve_to_index(:message , :return_address) )
+      @current = enter
+      self
+    end
+
+    # set the insertion point (where code is added with add_code)
+    def set_current c
+      @current = c
+    end
+
+    # add an instruction after the current (insertion point)
+    # the added instruction will become the new insertion point
+    def add_code instruction
+      raise instruction.to_s unless  instruction.is_a?(Register::Instruction)
+      raise instruction.to_s if( instruction.class.name.split("::").first == "Arm")
+      @current.insert(instruction) #insert after current
+      @current = instruction
+      self
+    end
+
+    [:label, :reg_to_slot , :slot_to_reg , :load_constant, :function_return ,
+      :transfer , :reg_to_slot , :byte_to_reg , :reg_to_byte].each do |method|
+      define_method("add_#{method}".to_sym) do |*args|
+        add_code Register.send( method , *args )
+      end
+    end
+
+    # require a (temporary) register. code must give this back with release_reg
+    def use_reg( type , value = nil )
+      raise "Not type #{type.inspect}" unless type.is_a?(Symbol) or type.is_a?(Parfait::Type)
+      if @regs.empty?
+        reg = Register.tmp_reg(type , value)
+      else
+        reg = @regs.last.next_reg_use(type , value)
+      end
+      @regs << reg
+      return reg
+    end
+
+    def copy( reg , source )
+      copied = use_reg reg.type
+      add_code Reister.transfer source , reg , copied
+      copied
+    end
+
+    # releasing a register (accuired by use_reg) makes it available for use again
+    # thus avoiding possibly using too many registers
+    def release_reg reg
+      last = @regs.pop
+      raise "released register in wrong order, expect #{last} but was #{reg}" if reg != last
+    end
+
+    # reset the registers to be used. Start at r4 for next usage.
+    # Every statement starts with this, meaning each statement may use all registers, but none
+    # get saved. Statements have affect on objects.
+    def reset_regs
+      @regs.clear
+    end
+
+  end
+end
