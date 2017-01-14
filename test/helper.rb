@@ -18,7 +18,7 @@ require "minitest/autorun"
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'test'))
 
-require 'salama'
+require 'rubyx'
 
 module Compiling
   def clean_compile(clazz_name , method_name , args , statements)

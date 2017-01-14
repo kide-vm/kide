@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Melon
-  class TestMethod < MiniTest::Test
+  class TestRubyMethod < MiniTest::Test
     include CompilerHelper
 
     def setup
@@ -13,7 +13,7 @@ module Melon
       space = Parfait.object_space.get_class
       space.get_method(:meth)
     end
-    
+
     def test_creates_method_in_class
       method = create_method
       assert method , "No method created"

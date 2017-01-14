@@ -1,12 +1,14 @@
-require_relative "compiler/total_processor"
-require_relative "compiler/type_collector"
-require_relative "compiler/method_collector"
-require_relative "compiler/locals_collector"
-require_relative "compiler/ruby_method"
+require "parser/ruby22"
+
+require_relative "compilers/total_processor"
+require_relative "compilers/type_collector"
+require_relative "compilers/method_collector"
+require_relative "compilers/locals_collector"
+require_relative "ruby_method"
 
 
 module Melon
-  class Compiler < TotalProcessor
+  class Compiler < Compilers::TotalProcessor
 
     def self.compile( input )
       ast = Parser::Ruby22.parse( input )
@@ -17,13 +19,13 @@ module Melon
       name , sup , body = *statement
       class_name = get_name(name)
       clazz = Parfait.object_space.get_class_by_name!(class_name , get_name(sup) )
-      ivar_hash = TypeCollector.new.collect(body)
+      ivar_hash = Compilers::TypeCollector.new.collect(body)
       clazz.set_instance_type( Parfait::Type.for_hash( clazz ,  ivar_hash ) )
       create_methods(clazz , body)
     end
 
     def create_methods(clazz , body)
-      methods = MethodCollector.new.collect(body)
+      methods = Compilers::MethodCollector.new.collect(body)
       methods.each do |method|
         clazz.add_method( method )
       end
