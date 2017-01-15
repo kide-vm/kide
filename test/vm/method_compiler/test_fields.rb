@@ -31,7 +31,7 @@ module Register
 
     def test_message_field
       Parfait.object_space.get_main.add_local(:name , :Word)
-      @input = s(:statements, s(:assignment, s(:name, :name), s(:field_access, s(:receiver, s(:name, :message)), s(:field, s(:name, :name)))), s(:return, s(:name, :name)))
+      @input = s(:statements, s(:l_assignment, s(:name, :name), s(:field_access, s(:receiver, s(:name, :message)), s(:field, s(:name, :name)))), s(:return, s(:name, :name)))
 
       @expect = [Label, RegisterTransfer, SlotToReg, SlotToReg, RegToSlot, SlotToReg ,
                  SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, Label ,

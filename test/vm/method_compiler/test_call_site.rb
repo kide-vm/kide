@@ -30,7 +30,7 @@ module Register
     def test_call_local_int
       Parfait.object_space.get_main.add_local(:testi , :Integer)
       clean_compile :Integer, :putint, {}, s(:statements, s(:return, s(:int, 1)))
-      @input = s(:statements, s(:assignment, s(:name, :testi), s(:int, 20)), s(:call, s(:name, :putint), s(:arguments), s(:receiver, s(:name, :testi))))
+      @input = s(:statements, s(:l_assignment, s(:name, :testi), s(:int, 20)), s(:call, s(:name, :putint), s(:arguments), s(:receiver, s(:name, :testi))))
 
       @expect = [Label, LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg ,
                  RegToSlot, LoadConstant, RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant ,

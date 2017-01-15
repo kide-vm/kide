@@ -7,7 +7,7 @@ module Register
     def test_assign_op
       Parfait.object_space.get_main.add_local(:r , :Integer)
 
-      @input    = s(:statements, s(:assignment, s(:name, :r), s(:operator_value, :+, s(:int, 10), s(:int, 1))))
+      @input    = s(:statements, s(:l_assignment, s(:name, :r), s(:operator_value, :+, s(:int, 10), s(:int, 1))))
 
       @expect = [Label, LoadConstant, LoadConstant, OperatorInstruction, SlotToReg, RegToSlot ,
                  LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
@@ -16,7 +16,7 @@ module Register
 
     def test_assign_local
       Parfait.object_space.get_main.add_local(:r , :Integer)
-      @input =s(:statements, s(:assignment, s(:name, :r), s(:int, 5)))
+      @input =s(:statements, s(:l_assignment, s(:name, :r), s(:int, 5)))
 
       @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg ,
                  RegToSlot, Label, FunctionReturn]
@@ -26,7 +26,7 @@ module Register
     def test_assign_local_assign
       Parfait.object_space.get_main.add_local(:r , :Integer)
 
-      @input = s(:statements, s(:assignment, s(:name, :r), s(:int, 5)))
+      @input = s(:statements, s(:l_assignment, s(:name, :r), s(:int, 5)))
 
       @expect = [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg ,
                RegToSlot, Label, FunctionReturn]
@@ -35,7 +35,7 @@ module Register
 
     def test_assign_call
       Parfait.object_space.get_main.add_local(:r , :Integer)
-      @input = s(:statements, s(:assignment, s(:name, :r), s(:call, s(:name, :main), s(:arguments))))
+      @input = s(:statements, s(:l_assignment, s(:name, :r), s(:call, s(:name, :main), s(:arguments))))
       @expect = [Label, SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot ,
                LoadConstant, SlotToReg, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer ,
                FunctionCall, Label, RegisterTransfer, SlotToReg, SlotToReg, SlotToReg ,
@@ -45,7 +45,7 @@ module Register
 
     def test_named_list_get
       Parfait.object_space.get_main.add_local(:r , :Integer)
-      @input = s(:statements, s(:assignment, s(:name, :r), s(:int, 5)), s(:return, s(:name, :r)))
+      @input = s(:statements, s(:l_assignment, s(:name, :r), s(:int, 5)), s(:return, s(:name, :r)))
       @expect = [Label, LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg ,
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
       was = check_return
@@ -56,7 +56,7 @@ module Register
 
     def test_assign_local_int
       Parfait.object_space.get_main.add_local(:r , :Integer)
-      @input = s(:statements, s(:assignment, s(:name, :r), s(:int, 5)) )
+      @input = s(:statements, s(:l_assignment, s(:name, :r), s(:int, 5)) )
       @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg ,
                  RegToSlot, Label, FunctionReturn]
       was = check_return
@@ -67,14 +67,14 @@ module Register
 
     def test_misassign_local
       Parfait.object_space.get_main.add_local(:r , :Integer)
-      @input = s(:statements, s(:assignment, s(:name, :r), s(:string, "5")) )
+      @input = s(:statements, s(:l_assignment, s(:name, :r), s(:string, "5")) )
       @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
       assert_raises {check }
     end
 
     def test_assign_arg
       Parfait.object_space.get_main.add_argument(:blar , :Integer)
-      @input = s(:statements, s(:assignment, s(:name, :blar), s(:int, 5)))
+      @input = s(:statements, s(:a_assignment, s(:name, :blar), s(:int, 5)))
       @expect = [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg ,
                  RegToSlot, Label, FunctionReturn]
       was = check_return
@@ -85,7 +85,7 @@ module Register
 
     def test_misassign_arg
       Parfait.object_space.get_main.add_argument(:blar , :Integer)
-      @input = s(:statements, s(:assignment, s(:name, :blar), s(:string, "5")))
+      @input = s(:statements, s(:a_assignment, s(:name, :blar), s(:string, "5")))
       @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
       assert_raises {check }
     end

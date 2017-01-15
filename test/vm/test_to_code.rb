@@ -16,9 +16,17 @@ class ToCodeTest < MiniTest::Test
     @statement = s(:while_statement, :false, s(:conditional,s(:int, 1)), s(:statements))
     check "WhileStatement"
   end
-  def test_assignment
-    @statement = s(:assignment, s(:name, :i), s(:int, 0))
-    check "Assignment"
+  def test_l_assignment
+    @statement = s(:l_assignment, s(:name, :i), s(:int, 0))
+    check "LocalAssignment"
+  end
+  def test_a_assignment
+    @statement = s(:a_assignment, s(:name, :i), s(:int, 0))
+    check "ArgAssignment"
+  end
+  def test_i_assignment
+    @statement = s(:i_assignment, s(:name, :i), s(:int, 0))
+    check "IvarAssignment"
   end
   def test_nil
     @statement = s(:nil)

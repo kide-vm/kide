@@ -17,7 +17,7 @@ module Register
     def test_while_assign
       Parfait.object_space.get_main.add_local(:n , :Integer)
 
-      @input    = s(:statements, s(:assignment, s(:name, :n), s(:int, 5)), s(:while_statement, :plus, s(:conditional, s(:name, :n)), s(:statements, s(:assignment, s(:name, :n), s(:operator_value, :-, s(:name, :n), s(:int, 1))))), s(:return, s(:name, :n)))
+      @input    = s(:statements, s(:l_assignment, s(:name, :n), s(:int, 5)), s(:while_statement, :plus, s(:conditional, s(:name, :n)), s(:statements, s(:l_assignment, s(:name, :n), s(:operator_value, :-, s(:name, :n), s(:int, 1))))), s(:return, s(:name, :n)))
 
       @expect = [Label, LoadConstant, SlotToReg, RegToSlot, Branch, Label ,
                  SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, SlotToReg, RegToSlot ,
@@ -30,7 +30,7 @@ module Register
     def test_while_return
       Parfait.object_space.get_main.add_local(:n , :Integer)
 
-      @input    = s(:statements, s(:assignment, s(:name, :n), s(:int, 10)), s(:while_statement, :plus, s(:conditional, s(:operator_value, :-, s(:name, :n), s(:int, 5))), s(:statements, s(:assignment, s(:name, :n), s(:operator_value, :+, s(:name, :n), s(:int, 1))), s(:return, s(:name, :n)))))
+      @input    = s(:statements, s(:l_assignment, s(:name, :n), s(:int, 10)), s(:while_statement, :plus, s(:conditional, s(:operator_value, :-, s(:name, :n), s(:int, 5))), s(:statements, s(:l_assignment, s(:name, :n), s(:operator_value, :+, s(:name, :n), s(:int, 1))), s(:return, s(:name, :n)))))
 
       @expect = [Label, LoadConstant, SlotToReg, RegToSlot, Branch, Label ,
                  SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, SlotToReg, RegToSlot ,
