@@ -139,7 +139,7 @@ module Parfait
     # index of the variable when using get_internal_word
     # (get_internal_word is 1 based and 1 is always the type)
     def variable_index( name )
-      has = names.index_of(name)
+      has = @names.index_of(name)
       return nil unless has
       raise "internal error #{name}:#{has}" if has < 1
       has

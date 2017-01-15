@@ -153,7 +153,7 @@ module Register
       # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we
       # have to define some dummies, just for the others to compile
       # TODO go through the virtual parfait layer and adjust function names to what they really are
-      space_class = space.get_class_by_name(:Space)
+      space_class = space.get_class
       space_class.instance_type.add_method Builtin::Space.send(:main, nil)
 
       obj = space.get_class_by_name(:Object)
