@@ -1,7 +1,15 @@
 require_relative '../helper'
 
 module Register
+  module SpaceHack
+    # test hack to in place change object type
+    def add_space_field(name,type)
+      class_type = Parfait.object_space.get_class_by_name(:Space).instance_type
+      class_type.send(:private_add_instance_variable, name , type)
+    end
+  end
   module ExpressionHelper
+    include SpaceHack
 
     def check
       Register.machine.boot unless Register.machine.booted
@@ -14,17 +22,13 @@ module Register
       produced
     end
 
-    # test hack to in place change object type
-    def add_space_field(name,type)
-      class_type = Parfait.object_space.get_class_by_name(:Space).instance_type
-      class_type.send(:private_add_instance_variable, name , type)
-    end
   end
 
   module Statements
     include AST::Sexp
     include Compiling
-
+    include SpaceHack
+    
     def setup
       Register.machine.boot # force boot to reset main
     end

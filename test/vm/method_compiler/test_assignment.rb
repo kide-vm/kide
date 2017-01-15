@@ -14,9 +14,16 @@ module Register
       assert_nil msg = check_nil , msg
     end
 
-    def test_assign_local
-      Parfait.object_space.get_main.add_local(:r , :Integer)
-      @input =s(:statements, s(:l_assignment, s(:name, :r), s(:int, 5)))
+    def test_assign_ivar_notpresent
+      @input =s(:statements, s(:i_assignment, s(:name, :r), s(:int, 5)))
+      @expect =  []
+      assert_raises{ check_nil }
+    end
+
+    def test_assign_ivar
+      add_space_field(:r , :Integer)
+      
+      @input =s(:statements, s(:i_assignment, s(:name, :r), s(:int, 5)))
 
       @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg ,
                  RegToSlot, Label, FunctionReturn]
