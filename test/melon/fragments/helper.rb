@@ -4,7 +4,8 @@ require "parser/ruby22"
 
 module Melon
   module MelonTests
-
+    include CompilerHelper
+    
     def setup
       Register.machine.boot
     end

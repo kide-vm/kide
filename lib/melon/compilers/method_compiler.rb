@@ -27,6 +27,20 @@ module Melon
         w
       end
 
+      def on_send( statement )
+        receiver , name , args = *statement
+        w = Vm::Tree::CallSite.new()
+        puts "receiver #{statement}"
+        w.name = process(receiver)
+        w.arguments = process(args)
+        w.receiver = nil
+        w
+      end
+
+      def on_str( string )
+        Vm::Tree::StringExpression.new(string.children.first)
+      end
+
       def on_int( expression)
         Vm::Tree::IntegerExpression.new(expression.children.first)
       end

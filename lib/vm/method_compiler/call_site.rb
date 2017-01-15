@@ -12,7 +12,7 @@ module Vm
       type = get_my_type(me)
 
       method = type.get_method(statement.name)
-      raise "Method not implemented #{type.inspect}.#{statement.name}" unless method
+      raise "Method not implementedfor me#{type} #{type.inspect}.#{statement.name}" unless method
 
       # move our receiver there
       add_reg_to_slot( statement , me , :new_message , :receiver)

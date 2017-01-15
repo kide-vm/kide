@@ -40,7 +40,6 @@ module Melon
     def compile_methods(clazz , methods)
       methods.each do |method|
         typed_method = method.create_vm_method(clazz.instance_type)
-        raise "NIL" unless method
         code = Compilers::MethodCompiler.new(method).get_code
         Vm::MethodCompiler.new( typed_method ).init_method.process( code)
       end
