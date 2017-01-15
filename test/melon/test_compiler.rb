@@ -7,6 +7,13 @@ module Melon
       Register.machine.boot
     end
 
+    def test_doesnt_create_existing_clas
+      space_class = Parfait.object_space.get_class_by_name(:Space)
+      RubyCompiler.compile "class Space ; end"
+      clazz = Parfait.object_space.get_class_by_name(:Space)
+      assert_equal clazz , space_class
+    end
+
     def test_creates_class_without_deriviation
       RubyCompiler.compile "class Testing ; end"
       clazz = Parfait.object_space.get_class_by_name(:Testing)

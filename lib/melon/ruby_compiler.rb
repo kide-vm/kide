@@ -50,7 +50,9 @@ module Melon
 
     def get_name( statement )
       return nil unless statement
-      statement.children[1]
+      name = statement.children[1]
+      raise "Not symbol #{name}" unless name.is_a? Symbol
+      name
     end
 
   end
