@@ -112,6 +112,7 @@ module Vm
     def on_name statement
       Tree::NameExpression.new(statement.children.first)
     end
+
     def on_string expression
       Tree::StringExpression.new(expression.children.first)
     end

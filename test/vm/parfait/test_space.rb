@@ -10,8 +10,15 @@ class TestSpace < MiniTest::Test
   def classes
     [:Kernel,:Word,:List,:Message,:NamedList,:Type,:Object,:Class,:Dictionary,:TypedMethod , :Integer]
   end
+
   def test_booted
     assert_equal true , @machine.booted
+  end
+
+  def test_methods_booted
+    word = @space.get_class_by_name(:Word).instance_type
+    assert_equal 3 , word.method_names.get_length
+    assert word.get_method(:putstring) , "no putstring"
   end
 
   def test_global_space
