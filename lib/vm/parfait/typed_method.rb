@@ -44,8 +44,8 @@ module Parfait
     end
 
     # determine whether this method has an argument by the name
-    def has_arg( name )
-      raise "has_arg #{name}.#{name.class}" unless name.is_a? Symbol
+    def has_argument( name )
+      raise "has_argument #{name}.#{name.class}" unless name.is_a? Symbol
       index = arguments.variable_index( name )
       index ? (index - 1) : index
     end
@@ -61,7 +61,7 @@ module Parfait
     def argument_name( index )
       arguments.names.get(index + 1)
     end
-    def argument_type( index )
+    def arguments_type( index )
       arguments.types.get(index + 1)
     end
 

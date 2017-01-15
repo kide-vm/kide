@@ -10,7 +10,7 @@ module Vm
         [:self , :space , :message].each do |special|
           return send(:"load_special_#{special}" , statement ) if name == special
         end
-        return load_argument(statement) if( @method.has_arg(name))
+        return load_argument(statement) if( @method.has_argument(name))
         load_local(statement)
       end
 
@@ -18,9 +18,9 @@ module Vm
 
       def load_argument(statement)
         name = statement.name
-        index = @method.has_arg(name)
+        index = @method.has_argument(name)
         named_list = use_reg :NamedList
-        ret = use_reg @method.argument_type(index)
+        ret = use_reg @method.arguments_type(index)
         #puts "For #{name} at #{index} got #{@method.arguments.inspect}"
         add_slot_to_reg("#{statement} load args" , :message , :arguments, named_list )
         add_slot_to_reg("#{statement} load #{name}" , named_list , index + 1, ret )

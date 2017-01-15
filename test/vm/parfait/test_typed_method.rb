@@ -24,35 +24,35 @@ class TestMethod < MiniTest::Test
     assert_equal :bar , @method.argument_name(1)
   end
 
-  def test_has_arg
-    assert_equal 1 , @method.has_arg(:bar)
-    assert_equal 2 , @method.has_arg(:foo)
+  def test_has_argument
+    assert_equal 1 , @method.has_argument(:bar)
+    assert_equal 2 , @method.has_argument(:foo)
   end
 
   def test_add_arg
     @method.add_argument(:foo2 , :Object)
     assert_equal 3 , @method.arguments_length
     assert_equal :foo2 , @method.argument_name(3)
-    assert_equal :Object , @method.argument_type(3)
+    assert_equal :Object , @method.arguments_type(3)
   end
 
   def test_get_arg_name1
-    index = @method.has_arg(:bar)
+    index = @method.has_argument(:bar)
     assert_equal 1 , index
     assert_equal :bar , @method.argument_name(index)
   end
   def test_get_arg_type1
-    index = @method.has_arg(:bar)
-    assert_equal :Integer , @method.argument_type(index)
+    index = @method.has_argument(:bar)
+    assert_equal :Integer , @method.arguments_type(index)
   end
   def test_get_arg_name2
-    index = @method.has_arg(:foo)
+    index = @method.has_argument(:foo)
     assert_equal 2 , index
     assert_equal :foo , @method.argument_name(index)
   end
   def test_get_arg_type2
-    index = @method.has_arg(:foo)
-    assert_equal :Type , @method.argument_type(index)
+    index = @method.has_argument(:foo)
+    assert_equal :Type , @method.arguments_type(index)
   end
 
   def test_local1
