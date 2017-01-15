@@ -120,12 +120,23 @@ module Vm
       Tree::ClassExpression.new(expression.children.first)
     end
 
-    def on_assignment statement
+    def on_i_assignment statement
+      assignment_for( statement, Vm::Tree::IvarAssignment)
+    end
+
+    def on_a_assignment statement
+      assignment_for( statement, Vm::Tree::ArgAssignment)
+    end
+
+    def on_l_assignment( statement )
+      assignment_for( statement, Vm::Tree::LocalAssignment)
+    end
+
+    def assignment_for( statement , clazz)
       name , value = *statement
-      w = Vm::Tree::Assignment.new()
-      w.name = process name
-      w.value = process(value)
-      w
+      p_name = process name
+      p_value = process(value)
+      clazz.new(p_name , p_value)
     end
 
   end
