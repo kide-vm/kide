@@ -42,7 +42,12 @@ module Parfait
     def get_method(name)
       @methods[name]
     end
-    
+
+    # adding an instance changes the instance_type to include that variable
+    def add_instance_variable( name , type)
+      @instance_type = @instance_type.add_instance_variable( name , type )
+    end
+
     # setting the type generates all methods for this type
     # (or will do, once we store the methods code to do that)
     def set_instance_type( type )

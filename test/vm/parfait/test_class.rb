@@ -34,4 +34,15 @@ class TestClass < MiniTest::Test
   def test_add_method
     assert_raises{ @try.add_instance_method(nil)}
   end
+  def test_add_instance_variable_changes_type
+    before = @space.get_class.instance_type
+    @space.get_class.add_instance_variable(:counter , :Integer)
+    assert before != @space.get_class.instance_type
+  end
+  def test_add_instance_variable_changes_type_hash
+    before = @space.get_class.instance_type.hash
+    @space.get_class.add_instance_variable(:counter , :Integer)
+    assert before != @space.get_class.instance_type.hash
+  end
+
 end
