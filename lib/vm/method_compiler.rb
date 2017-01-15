@@ -61,11 +61,6 @@ module Vm
     compiler.process code
   end
 
-  def self.compile_method( method )
-    compiler = new(method)
-    compiler.process( code )
-  end
-
   class MethodCompiler
     CompilerModules.each do |mod|
       include Vm.const_get( mod.camelize )
