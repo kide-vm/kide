@@ -1,7 +1,6 @@
 #statements
 require_relative "test_assignment"
 require_relative "test_call_site"
-require_relative "test_class"
 require_relative "test_fields"
 require_relative "test_if_statement"
 require_relative "test_return_statement"

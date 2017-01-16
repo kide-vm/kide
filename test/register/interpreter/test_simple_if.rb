@@ -18,8 +18,8 @@ module Register
   end
 HERE
       @input =  s(:statements, s(:if_statement, :zero, s(:condition, s(:operator_value, :-, s(:int, 10), s(:int, 12))),
-                  s(:true_statements, s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "then")))),
-                  s(:false_statements, s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "else"))))))
+                  s(:true_statements, s(:call, :putstring, s(:arguments), s(:receiver, s(:string, "then")))),
+                  s(:false_statements, s(:call, :putstring, s(:arguments), s(:receiver, s(:string, "else"))))))
 
       super
     end

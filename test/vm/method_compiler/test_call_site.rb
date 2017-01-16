@@ -7,7 +7,7 @@ module Register
 
     def test_call_constant_int
       clean_compile :Integer, :puti, {}, s(:statements, s(:return, s(:int, 1)))
-      @input = s(:call, s(:name, :puti), s(:arguments), s(:receiver, s(:int, 42)))
+      @input = s(:call, :puti , s(:arguments), s(:receiver, s(:int, 42)))
       @expect =  [Label, SlotToReg, LoadConstant, RegToSlot, LoadConstant, RegToSlot, LoadConstant ,
                  SlotToReg, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer, FunctionCall, Label ,
                  RegisterTransfer, SlotToReg, SlotToReg, LoadConstant, SlotToReg, RegToSlot, Label ,
@@ -19,7 +19,7 @@ module Register
     def test_call_constant_string
       clean_compile :Word, :putstr,{}, s(:statements, s(:return, s(:int, 1)))
 
-      @input =s(:call, s(:name, :putstr), s(:arguments), s(:receiver, s(:string, "Hello")))
+      @input =s(:call, :putstr, s(:arguments), s(:receiver, s(:string, "Hello")))
       @expect = [Label, SlotToReg, LoadConstant, RegToSlot, LoadConstant, RegToSlot, LoadConstant ,
                  SlotToReg, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer, FunctionCall, Label ,
                  RegisterTransfer, SlotToReg, SlotToReg, LoadConstant, SlotToReg, RegToSlot, Label ,
@@ -30,7 +30,7 @@ module Register
     def test_call_local_int
       Parfait.object_space.get_main.add_local(:testi , :Integer)
       clean_compile :Integer, :putint, {}, s(:statements, s(:return, s(:int, 1)))
-      @input = s(:statements, s(:l_assignment, s(:name, :testi), s(:int, 20)), s(:call, s(:name, :putint), s(:arguments), s(:receiver, s(:name, :testi))))
+      @input = s(:statements, s(:l_assignment, s(:local, :testi), s(:int, 20)), s(:call, :putint, s(:arguments), s(:receiver, s(:local, :testi))))
 
       @expect = [Label, LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg ,
                  RegToSlot, LoadConstant, RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant ,
@@ -43,7 +43,7 @@ module Register
       Parfait.object_space.get_main.add_local(:test_l , :List)
       clean_compile :List, :add, {}, s(:statements, s(:return, s(:int, 1)))
 
-      @input =s(:statements, s(:call, s(:name, :add), s(:arguments), s(:receiver, s(:name, :test_l))))
+      @input =s(:statements, s(:call, :add, s(:arguments), s(:receiver, s(:local, :test_l))))
       @expect =  [Label, SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot ,
                  LoadConstant, SlotToReg, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer, FunctionCall ,
                  Label, RegisterTransfer, SlotToReg, SlotToReg, LoadConstant, SlotToReg, RegToSlot ,
@@ -52,8 +52,8 @@ module Register
     end
 
     def test_call_puts
-      clean_compile :Space, :putstr, {str: :Word}, s(:statements, s(:return, s(:name, :str)))
-      @input =s(:call, s(:name, :putstr), s(:arguments, s(:string, "Hello") ) )
+      clean_compile :Space, :putstr, {str: :Word}, s(:statements, s(:return, s(:arg, :str)))
+      @input =s(:call, :putstr , s(:arguments, s(:string, "Hello") ) )
       @expect = [Label, SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot ,
                  LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot ,
                  LoadConstant, RegToSlot, RegisterTransfer, FunctionCall, Label, RegisterTransfer ,

@@ -13,7 +13,7 @@ class HelloTest < MiniTest::Test
   end
 
   def test_string_put
-    @input = s(:statements, s(:return, s(:call, s(:name, :putstring), s(:arguments),
+    @input = s(:statements, s(:return, s(:call, :putstring, s(:arguments),
                   s(:receiver, s(:string, "Hello again\\n")))))
     check
   end

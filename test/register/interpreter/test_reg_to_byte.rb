@@ -13,7 +13,7 @@ module Register
   end
 HERE
       @input =  s(:statements, s(:call,
-                  s(:name, :get_internal_byte),
+                   :get_internal_byte,
                   s(:arguments, s(:int, 1)),
                     s(:receiver, s(:string, "Hello"))))
       super

@@ -29,7 +29,7 @@ module Register
       check
     end
     def test_self
-      @input    = s(:name, :self)
+      @input    = s(:known, :self)
       check
     end
     def test_string

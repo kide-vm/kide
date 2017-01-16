@@ -11,21 +11,21 @@ module Register
 
     def test_local
       Parfait.object_space.get_main.add_local(:bar , :Integer)
-      @input    = s(:name, :bar)
+      @input    = s(:local, :bar)
       @output = Register::RegisterValue
       check
     end
 
     def test_space
       @root = :name
-      @input    = s(:name, :space)
+      @input    = s(:known, :space)
       @output = Register::RegisterValue
       check
     end
 
     def test_args
       Parfait.object_space.get_main.add_argument(:bar , :Integer)
-      @input    = s(:name, :bar)
+      @input    = s(:arg, :bar)
       @output = Register::RegisterValue
       check
     end

@@ -21,16 +21,16 @@ module Register
     end
   end
 HERE
-      @input = s(:statements, s(:call, s(:name, :itest), s(:arguments, s(:int, 20))))
+      @input = s(:statements, s(:call, :itest , s(:arguments, s(:int, 20))))
       super
     end
 
     # must be after boot, but before main compile, to define method
     def do_clean_compile
       clean_compile :Space , :itest , {:n => :Integer} ,
-            s(:statements, s(:if_statement, :zero, s(:condition, s(:operator_value, :-, s(:name, :n), s(:int, 12))),
-                    s(:true_statements, s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "then")))),
-                    s(:false_statements, s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "else"))))))
+            s(:statements, s(:if_statement, :zero, s(:condition, s(:operator_value, :-, s(:arg, :n), s(:int, 12))),
+                    s(:true_statements, s(:call, :putstring , s(:arguments), s(:receiver, s(:string, "then")))),
+                    s(:false_statements, s(:call, :putstring , s(:arguments), s(:receiver, s(:string, "else"))))))
     end
     def test_if
         #show_ticks # get output of what is

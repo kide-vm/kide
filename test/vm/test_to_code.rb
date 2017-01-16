@@ -9,7 +9,7 @@ class ToCodeTest < MiniTest::Test
   end
 
   def test_field_access
-    @statement = s(:field_access, s(:receiver, s(:name, :m)), s(:field, s(:name, :index)))
+    @statement = s(:field_access, s(:receiver, s(:ivar, :m)), s(:field, s(:ivar, :index)))
     check "FieldAccess"
   end
   def test_simple_while
@@ -17,15 +17,15 @@ class ToCodeTest < MiniTest::Test
     check "WhileStatement"
   end
   def test_l_assignment
-    @statement = s(:l_assignment, s(:name, :i), s(:int, 0))
+    @statement = s(:l_assignment, s(:local, :i), s(:int, 0))
     check "LocalAssignment"
   end
   def test_a_assignment
-    @statement = s(:a_assignment, s(:name, :i), s(:int, 0))
+    @statement = s(:a_assignment, s(:arg, :i), s(:int, 0))
     check "ArgAssignment"
   end
   def test_i_assignment
-    @statement = s(:i_assignment, s(:name, :i), s(:int, 0))
+    @statement = s(:i_assignment, s(:ivar, :i), s(:int, 0))
     check "IvarAssignment"
   end
   def test_nil
@@ -40,9 +40,13 @@ class ToCodeTest < MiniTest::Test
     @statement = s(:false)
     check "FalseExpression"
   end
-  def test_name
-    @statement = s(:name,  :foo)
-    check "NameExpression"
+  def test_known
+    @statement = s(:known,  :self)
+    check "KnownName"
+  end
+  def test_ivar
+    @statement = s(:ivar,  :you)
+    check "InstanceName"
   end
   def test_class_name
     @statement =s(:class_name, :FooBar)

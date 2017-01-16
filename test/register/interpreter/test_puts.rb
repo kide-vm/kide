@@ -12,7 +12,7 @@ module Register
     end
   end
 HERE
-      @input = s(:statements, s(:call, s(:name, :putstring), s(:arguments), s(:receiver, s(:string, "Hello again"))))
+      @input = s(:statements, s(:call, :putstring, s(:arguments), s(:receiver, s(:string, "Hello again"))))
       super
     end
 
