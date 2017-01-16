@@ -5,12 +5,13 @@ require "parser/ruby22"
 module Melon
   module MelonTests
     include CompilerHelper
-    
+    include Register::InterpreterHelpers
+
     def setup
       Register.machine.boot
     end
 
-    def check
+    def check_nil
       RubyCompiler.compile @string_input
       Register::Collector.collect_space
       @interpreter = Register::Interpreter.new
