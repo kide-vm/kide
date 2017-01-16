@@ -18,9 +18,9 @@ module Register
         def div10 context
           s = "div_10"
           compiler = Vm::MethodCompiler.new.create_method(:Integer,:div10 ).init_method
-          me = compiler.process( Vm::Tree::NameExpression.new( :self) )
-          tmp = compiler.process( Vm::Tree::NameExpression.new( :self) )
-          q = compiler.process( Vm::Tree::NameExpression.new( :self) )
+          me = compiler.process( Vm::Tree::KnownName.new( :self) )
+          tmp = compiler.process( Vm::Tree::KnownName.new( :self) )
+          q = compiler.process( Vm::Tree::KnownName.new( :self) )
           const = compiler.process( Vm::Tree::IntegerExpression.new(1) )
           # int tmp = self >> 1
           compiler.add_code Register.op( s , ">>" , tmp , const)

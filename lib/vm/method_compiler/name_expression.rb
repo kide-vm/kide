@@ -5,20 +5,18 @@ module Vm
       # compiling name needs to check if it's a local variable
       # or an argument
       # whichever way this goes the result is stored in the return slot (as all compiles)
-      def on_NameExpression statement
+      def on_KnownName statement
         name = statement.name
         [:self , :space , :message].each do |special|
           return send(:"load_special_#{special}" , statement ) if name == special
         end
-        return load_argument(statement) if( @method.has_argument(name))
-        load_local(statement)
+        raise "Unknow 'known' expression #{name}"
       end
 
-      private
-
-      def load_argument(statement)
+      def on_ArgumentName(statement)
         name = statement.name
         index = @method.has_argument(name)
+        raise "no arg #{name}" unless index
         named_list = use_reg :NamedList
         ret = use_reg @method.arguments_type(index)
         #puts "For #{name} at #{index} got #{@method.arguments.inspect}"
@@ -27,10 +25,10 @@ module Vm
         return ret
       end
 
-      def load_local( statement )
+      def on_LocalName( statement )
         name = statement.name
         index = @method.has_local( name )
-        raise "must define variable '#{name}' before using it" unless index
+        raise "must define local '#{name}' before using it" unless index
         named_list = use_reg :NamedList
         add_slot_to_reg("#{name} load locals" , :message , :locals , named_list )
         ret = use_reg @method.locals_type( index )

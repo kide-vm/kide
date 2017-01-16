@@ -85,9 +85,9 @@ module Vm
     end
 
     def on_call statement
-      name_s , arguments , receiver = *statement
+      name , arguments , receiver = *statement
       w = Tree::CallSite.new()
-      w.name = name_s.children.first
+      w.name = name
       w.arguments = process_all(arguments)
       w.receiver = process(receiver)
       w
@@ -109,8 +109,17 @@ module Vm
       Tree::NilExpression.new
     end
 
-    def on_name statement
-      Tree::NameExpression.new(statement.children.first)
+    def on_arg statement
+      Tree::ArgumentName.new(statement.children.first)
+    end
+    def on_local statement
+      Tree::LocalName.new(statement.children.first)
+    end
+    def on_ivar statement
+      Tree::InstanceName.new(statement.children.first)
+    end
+    def on_known statement
+      Tree::KnownName.new(statement.children.first)
     end
 
     def on_string expression

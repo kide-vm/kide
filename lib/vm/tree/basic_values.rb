@@ -36,6 +36,7 @@ module Vm
         @value = value
       end
     end
+
     class NameExpression < Expression
       include ValuePrinter
       attr_accessor :value
@@ -44,6 +45,16 @@ module Vm
         @value = value
       end
     end
+
+    class  LocalName < NameExpression
+    end
+    class  ArgumentName < NameExpression
+    end
+    class  InstanceName < NameExpression
+    end
+    class  KnownName < NameExpression
+    end
+
     class ClassExpression < Expression
       include ValuePrinter
       attr_accessor :value

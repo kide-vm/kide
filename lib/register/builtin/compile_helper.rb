@@ -4,7 +4,7 @@ module Register
     module CompileHelper
 
       def self_and_int_arg(compiler , source)
-        me = compiler.process( Vm::Tree::NameExpression.new( :self) )
+        me = compiler.process( Vm::Tree::KnownName.new( :self) )
         int_arg = load_int_arg_at(compiler , source , 1 )
         return me , int_arg
       end
