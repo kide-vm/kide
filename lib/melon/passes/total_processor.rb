@@ -1,6 +1,6 @@
 module Melon
 
-  module Compilers
+  module Passes
     class TotalProcessor < AST::Processor
 
       def handler_missing(node)

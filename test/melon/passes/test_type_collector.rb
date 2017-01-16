@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Melon
-  module Compilers
+  module Passes
     class TestTypeCollector < MiniTest::Test
 
       def setup

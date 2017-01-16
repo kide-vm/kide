@@ -1,5 +1,5 @@
 module Melon
-  module Compilers
+  module Passes
     class TypeCollector < TotalProcessor
 
       def initialize
