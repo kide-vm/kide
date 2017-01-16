@@ -2,24 +2,22 @@ module Vm
   module CallSite
 
     def on_CallSite( statement )
-#      name_s , arguments , receiver = *statement
       raise "not inside method " unless @method
       reset_regs
       #move the new message (that we need to populate to make a call) to std register
-      new_message = Register.resolve_to_register(:new_message)
-      add_slot_to_reg(statement, :message , :next_message , new_message )
+      load_new_message(statement)
       me = get_me( statement )
       type = get_my_type(me)
 
       method = type.get_method(statement.name)
-      raise "Method not implementedfor me#{type} #{type.inspect}.#{statement.name}" unless method
+      raise "Method not implemented for me:#{me} #{type.inspect}.#{statement.name}" unless method
 
       # move our receiver there
       add_reg_to_slot( statement , me , :new_message , :receiver)
 
       set_message_details(method , statement , statement.arguments)
       set_arguments(method , statement.arguments)
-      ret = use_reg( :Integer ) #FIXME real return type
+      ret = use_reg( :Object ) #FIXME real return type
 
       Register.issue_call( self , method )
 
@@ -31,6 +29,12 @@ module Vm
 
     private
 
+    def load_new_message(statement)
+      new_message = Register.resolve_to_register(:new_message)
+      add_slot_to_reg(statement, :message , :next_message , new_message )
+      new_message
+    end
+
     def get_me( statement )
       if statement.receiver
         me = process( statement.receiver  )
@@ -40,6 +44,7 @@ module Vm
       end
       me
     end
+
     def get_my_type( me )
       # now we have to resolve the method name (+ receiver) into a callable method
       case me.type

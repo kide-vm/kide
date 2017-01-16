@@ -41,7 +41,7 @@ module Register
     end
 
     def test_assign_call
-      Parfait.object_space.get_main.add_local(:r , :Integer)
+      Parfait.object_space.get_main.add_local(:r , :Object)
       @input = s(:statements, s(:l_assignment, s(:local, :r), s(:call, :main, s(:arguments))))
       @expect = [Label, SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot ,
                LoadConstant, SlotToReg, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer ,
