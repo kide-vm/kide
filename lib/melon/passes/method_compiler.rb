@@ -30,7 +30,6 @@ module Melon
       def on_send( statement )
         receiver , name , args = *statement
         w = Vm::Tree::CallSite.new()
-        puts "receiver #{statement}"
         w.name = name
         w.arguments = process(args) || []
         w.receiver = process(receiver)
