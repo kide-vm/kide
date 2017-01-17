@@ -9,9 +9,9 @@ module Melon
     end
 
     def create_method
-      RubyCompiler.compile in_Space("def meth; @ivar ;end")
-      space = Parfait.object_space.get_class
-      space.get_method(:meth)
+      RubyCompiler.compile in_Test("def meth; @ivar ;end")
+      test = Parfait.object_space.get_class_by_name(:Test)
+      test.get_method(:meth)
     end
 
     def test_creates_method_in_class

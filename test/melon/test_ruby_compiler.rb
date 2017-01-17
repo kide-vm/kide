@@ -28,5 +28,19 @@ module Melon
       assert_equal :List , clazz.super_class_name
     end
 
+    def test_space_is_unchanged_by_compile
+      space1 = Parfait.object_space.get_class_by_name(:Space)
+      RubyCompiler.compile  "class Space ;end"
+      space2 = Parfait.object_space.get_class_by_name(:Space)
+      assert_equal space1 , space2
+    end
+
+    def test_space_type_is_unchanged_by_compile
+      space1 = Parfait.object_space.get_class_by_name(:Space).instance_type
+      RubyCompiler.compile  "class Space ;end"
+      space2 = Parfait.object_space.get_class_by_name(:Space).instance_type
+      assert_equal space1 , space2
+    end
+
   end
 end
