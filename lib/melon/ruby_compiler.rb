@@ -20,9 +20,14 @@ module Melon
     def on_class statement
       name , sup , body = *statement
       class_name = get_name(name)
-      clazz = Parfait.object_space.get_class_by_name!(class_name , get_name(sup) )
-      ivar_hash = Passes::TypeCollector.new.collect(body)
-      clazz.set_instance_type( Parfait::Type.for_hash( clazz ,  ivar_hash ) )
+      clazz = Parfait.object_space.get_class_by_name(class_name )
+      if(clazz)
+        #FIXME super class check with "sup"
+      else #existing class, don't overwrite type (parfait only?)
+        clazz = Parfait.object_space.create_class(class_name , get_name(sup) )
+        ivar_hash = Passes::TypeCollector.new.collect(body)
+        clazz.set_instance_type( Parfait::Type.for_hash( clazz ,  ivar_hash ) )
+      end
       methods = create_methods(clazz , body)
       compile_methods(clazz,methods)
     end
@@ -39,9 +44,9 @@ module Melon
 
     def compile_methods(clazz , methods)
       methods.each do |method|
-        typed_method = method.create_vm_method(clazz.instance_type)
         code = Passes::MethodCompiler.new(method).get_code
-        Vm::MethodCompiler.new( typed_method ).init_method.process( code)
+        typed_method = method.create_vm_method(clazz.instance_type)
+        Vm::MethodCompiler.new( typed_method ).init_method.process( code )
       end
     end
 
@@ -49,6 +54,7 @@ module Melon
 
     def get_name( statement )
       return nil unless statement
+      raise "Not const #{statement}" unless statement.type == :const
       name = statement.children[1]
       raise "Not symbol #{name}" unless name.is_a? Symbol
       name
