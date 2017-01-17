@@ -14,4 +14,4 @@ require "register/builtin/space"
 require "arm/arm_machine"
 require "arm/translator"
 
-require "melon/ruby_compiler"
+require "rubyx/ruby_compiler"

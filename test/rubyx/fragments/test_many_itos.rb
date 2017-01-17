@@ -1,8 +1,8 @@
 require_relative 'helper'
 
-module Melon
+module Rubyx
   class TestManyItos < MiniTest::Test
-    include MelonTests
+    include RubyxTests
 
     def pest_ruby_itos_looping
       @string_input = <<HERE

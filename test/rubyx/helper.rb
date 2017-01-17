@@ -1,6 +1,6 @@
 require_relative '../helper'
 
-module Melon
+module Rubyx
   module CompilerHelper
 
     def in_Test(statements)

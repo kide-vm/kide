@@ -2,8 +2,8 @@ require_relative '../helper'
 require "register/interpreter"
 require "parser/ruby22"
 
-module Melon
-  module MelonTests
+module Rubyx
+  module RubyxTests
     include CompilerHelper
     include Register::InterpreterHelpers
     subs = ObjectSpace.each_object(Class).select { |klass| klass < Register::Instruction }

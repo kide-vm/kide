@@ -9,7 +9,7 @@ require_relative "passes/normalizer"
 require_relative "ruby_method"
 
 
-module Melon
+module Rubyx
   class RubyCompiler < Passes::TotalProcessor
 
     def self.compile( input )

@@ -1,8 +1,8 @@
 require_relative 'helper'
 
-module Melon
+module Rubyx
   class TestManyCalls < MiniTest::Test
-    include MelonTests
+    include RubyxTests
 
     def pest_ruby_calls_looping
       @string_input = <<HERE

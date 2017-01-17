@@ -1,8 +1,8 @@
 require_relative 'helper'
 
-module Melon
+module Rubyx
   class TestRubyHello < MiniTest::Test
-    include MelonTests
+    include RubyxTests
     Branch = Register::Branch
     Label = Register::Label
 

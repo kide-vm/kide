@@ -1,4 +1,4 @@
-module Melon
+module Rubyx
   module Passes
 
     class Normalizer < AST::Processor

@@ -1,6 +1,6 @@
 require_relative "helper"
 
-module Melon
+module Rubyx
   module Passes
     class TestLocalsCollector < MiniTest::Test
 

@@ -1,6 +1,6 @@
 require_relative "helper"
 
-module Melon
+module Rubyx
   class TestCompiler < MiniTest::Test
 
     def setup

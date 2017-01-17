@@ -1,4 +1,4 @@
-module Melon
+module Rubyx
   module Passes
 
     class MethodCollector < TotalProcessor

@@ -1,10 +1,10 @@
 require_relative 'helper'
 
-module Melon
-  class TestManyAdds < MiniTest::Test
-    include MelonTests
+module Rubyx
+  class TestRubyAdds < MiniTest::Test
+    include RubyxTests
 
-    def pest_ruby_adds_looping
+    def pest_ruby_adds
       @string_input = <<HERE
       def fibo( n)
       	 a = 0
@@ -18,15 +18,7 @@ module Melon
         end
       	return result
       end
-
-      counter = 100000
-
-      while(counter > 0) do
-      	fibo(40)
-        counter -= 1
-      end
 HERE
-      @length = 37
       @stdout = "Hello there"
       check
     end

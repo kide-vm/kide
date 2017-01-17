@@ -1,4 +1,4 @@
-module Melon
+module Rubyx
 
   class RubyMethod
 
