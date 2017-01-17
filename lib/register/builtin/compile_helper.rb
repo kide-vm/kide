@@ -11,7 +11,7 @@ module Register
 
       def compiler_for( type , method_name , extra_args = {})
         args = {:index => :Integer}.merge( extra_args )
-        Vm::MethodCompiler.new.create_method(type , method_name , args ).init_method
+        Vm::MethodCompiler.create_method(type , method_name , args ).init_method
       end
 
       # Load the value

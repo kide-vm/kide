@@ -28,7 +28,7 @@ module Register
     include AST::Sexp
     include Compiling
     include SpaceHack
-    
+
     def setup
       Register.machine.boot # force boot to reset main
     end
@@ -41,7 +41,7 @@ module Register
     end
     def check_nil
       assert @expect , "No output given"
-      compiler = Vm::MethodCompiler.new
+      compiler = Vm::MethodCompiler.new(:main)
       code = Vm.ast_to_code( @input )
       assert code.to_s , @input
       produced = compiler.process( code )

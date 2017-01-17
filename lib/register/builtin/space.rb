@@ -9,7 +9,7 @@ module Register
         # main entry point, ie __init__ calls this
         # defined here as empty, to be redefined
         def main context
-          compiler = Vm::MethodCompiler.new.create_method(:Space , :main ).init_method
+          compiler = Vm::MethodCompiler.create_method(:Space , :main ).init_method
           return compiler.method
         end
 

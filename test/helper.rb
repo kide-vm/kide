@@ -22,7 +22,7 @@ require 'rubyx'
 
 module Compiling
   def clean_compile(clazz_name , method_name , args , statements)
-    compiler = Vm::MethodCompiler.new.create_method(clazz_name,method_name,args ).init_method
+    compiler = Vm::MethodCompiler.create_method(clazz_name,method_name,args ).init_method
     compiler.process( Vm.ast_to_code( statements ) )
   end
 
