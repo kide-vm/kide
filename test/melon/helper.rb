@@ -2,6 +2,11 @@ require_relative '../helper'
 
 module Melon
   module CompilerHelper
+
+    def in_Test(statements)
+      "class Test ; #{statements} ; end"
+    end
+    
     def in_Space(statements)
       "class Space ; #{statements} ; end"
     end
