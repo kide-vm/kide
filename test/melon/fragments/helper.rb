@@ -6,17 +6,12 @@ module Melon
   module MelonTests
     include CompilerHelper
     include Register::InterpreterHelpers
-
-    def setup
-      Register.machine.boot
-    end
-
-    def check_nil
-      RubyCompiler.compile @string_input
-      Register::Collector.collect_space
-      @interpreter = Register::Interpreter.new
-      @interpreter.start Register.machine.init
-      nil
+    subs = ObjectSpace.each_object(Class).select { |klass| klass < Register::Instruction }
+    subs.each do |clazz|
+      name = clazz.to_s
+      next if name.include?("Arm")
+      scoped = name.split("::").last
+      module_eval "#{scoped} = #{name}"
     end
   end
 end
