@@ -1,4 +1,3 @@
-require_relative "tree"
 require_relative "method_compiler/assignment"
 require_relative "method_compiler/basic_values"
 require_relative "method_compiler/call_site"

@@ -7,7 +7,7 @@ end
 
 require "register/padding"
 require "register/positioned"
-require "vm/method_compiler"
+require "vm"
 
 require "vm/parfait"
 require "register/machine"
