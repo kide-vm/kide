@@ -9,7 +9,7 @@ require "register/padding"
 require "register/positioned"
 require "vm"
 
-require "vm/parfait"
+require "parfait"
 require "register/machine"
 
 class Fixnum

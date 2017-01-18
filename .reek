@@ -7,20 +7,24 @@ DuplicateMethodCall:
 FeatureEnvy:
   exclude:
     - "Register::Interpreter"
+    - "Register::Assembler"
     - "Arm::Translator"
     - "Vm::ToCode"
 TooManyMethods:
   exclude:
     - "Register::Interpreter"
+    - "Register::Assembler"
     - "Arm::Translator"
     - "Vm::ToCode"
 UtilityFunction:
   exclude:
     - "Register::Interpreter"
+    - "Register::Assembler"
     - "Arm::Translator"
     - "Vm::ToCode"
 UncommunicativeMethodName:
   exclude:
+    - "Register::Assembler"
     - "Register::Interpreter"
     - "Arm::Translator"
     - "Vm::ToCode"
