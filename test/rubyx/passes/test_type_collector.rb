@@ -5,7 +5,7 @@ module Rubyx
     class TestTypeCollector < MiniTest::Test
 
       def setup
-        Register.machine.boot
+        Risc.machine.boot
       end
 
       def parse_collect( input )

@@ -5,7 +5,7 @@ module Rubyx
     include CompilerHelper
 
     def setup
-      Register.machine.boot
+      Risc.machine.boot
     end
 
     def create_method

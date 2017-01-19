@@ -11,7 +11,7 @@ module ParfaitTests
 
   def setup
     @stdout =  ""
-    @machine = Register.machine.boot
+    @machine = Risc.machine.boot
     Vm::Compiler.load_parfait
   end
 

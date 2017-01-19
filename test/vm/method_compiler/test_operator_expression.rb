@@ -1,14 +1,14 @@
 require_relative "helper"
 
-module Register
+module Risc
   class TestOps < MiniTest::Test
     include ExpressionHelper
     include AST::Sexp
 
     def setup
-      Register.machine.boot
+      Risc.machine.boot
       @root = :operator_value
-      @output = Register::RegisterValue
+      @output = Risc::RiscValue
     end
 
     def operators

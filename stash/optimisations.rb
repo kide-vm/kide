@@ -1,4 +1,4 @@
-module Register
+module Risc
   # Passes, or BlockPasses, could have been procs that just get each block passed.
   # Instead they are proper objects in case they want to save state.
   # The idea is 

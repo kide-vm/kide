@@ -9,8 +9,8 @@ AST::Node.class_eval do
 end
 
 require "salama-object-file"
-require "register"
-require "register/builtin/space"
+require "risc"
+require "risc/builtin/space"
 require "arm/arm_machine"
 require "arm/translator"
 

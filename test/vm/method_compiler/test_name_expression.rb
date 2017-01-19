@@ -1,32 +1,32 @@
 require_relative "helper"
 
-module Register
+module Risc
   class TestFields < MiniTest::Test
     include ExpressionHelper
     include AST::Sexp
 
     def setup
-      Register.machine.boot
+      Risc.machine.boot
     end
 
     def test_local
       Parfait.object_space.get_main.add_local(:bar , :Integer)
       @input    = s(:local, :bar)
-      @output = Register::RegisterValue
+      @output = Risc::RiscValue
       check
     end
 
     def test_space
       @root = :name
       @input    = s(:known, :space)
-      @output = Register::RegisterValue
+      @output = Risc::RiscValue
       check
     end
 
     def test_args
       Parfait.object_space.get_main.add_argument(:bar , :Integer)
       @input    = s(:arg, :bar)
-      @output = Register::RegisterValue
+      @output = Risc::RiscValue
       check
     end
 

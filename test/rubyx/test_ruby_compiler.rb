@@ -4,7 +4,7 @@ module Rubyx
   class TestCompiler < MiniTest::Test
 
     def setup
-      Register.machine.boot
+      Risc.machine.boot
     end
 
     def test_doesnt_create_existing_clas

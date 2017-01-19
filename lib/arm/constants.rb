@@ -56,11 +56,11 @@ module Arm
     def reg r_name
       code = reg_code r_name
       raise "no such register #{r_name}" unless code
-      Arm::Register.new(r_name.to_sym , code )
+      Arm::Risc.new(r_name.to_sym , code )
     end
     def reg_code r_name
       raise "double r #{r_name}" if( :rr1 == r_name)
-      if r_name.is_a? ::Register::RegisterValue
+      if r_name.is_a? ::Risc::RiscValue
         r_name = r_name.symbol
       end
       if r_name.is_a? Fixnum
@@ -93,7 +93,7 @@ module Arm
      end
    end
 
-   Register::RegisterValue.class_eval do
+   Risc::RiscValue.class_eval do
     def reg_no
       @symbol.to_s[1 .. -1].to_i
     end

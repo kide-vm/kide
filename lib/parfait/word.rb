@@ -24,7 +24,7 @@ module Parfait
     end
     # initialize with length. For now we try to keep all non-parfait (including String) out
     # String will contain spaces for non-zero length
-    # Register provides methods to create Parfait objects from ruby
+    # Risc provides methods to create Parfait objects from ruby
     def initialize len
       super()
       @char_length = 0

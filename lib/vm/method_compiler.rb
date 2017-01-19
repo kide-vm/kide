@@ -131,7 +131,7 @@ module Vm
     def init_method
       source = "_init_method"
       name = "#{method.for_type.name}.#{method.name}"
-      @current = @method.set_instructions( Register.label(source, name))
+      @current = @method.set_instructions( Risc.label(source, name))
 
       # add the type of the locals to the existing NamedList instance
       locals_reg = use_reg(:Type , method.locals )
@@ -143,7 +143,7 @@ module Vm
       enter = @current # this is where method body goes
       add_label( source, "return #{name}")
       #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
-      add_function_return( source , Register.message_reg , Register.resolve_to_index(:message , :return_address) )
+      add_function_return( source , Risc.message_reg , Risc.resolve_to_index(:message , :return_address) )
       @current = enter
       self
     end
@@ -156,7 +156,7 @@ module Vm
     # add an instruction after the current (insertion point)
     # the added instruction will become the new insertion point
     def add_code instruction
-      raise instruction.to_s unless  instruction.is_a?(Register::Instruction)
+      raise instruction.to_s unless  instruction.is_a?(Risc::Instruction)
       raise instruction.to_s if( instruction.class.name.split("::").first == "Arm")
       @current.insert(instruction) #insert after current
       @current = instruction
@@ -166,7 +166,7 @@ module Vm
     [:label, :reg_to_slot , :slot_to_reg , :load_constant, :function_return ,
       :transfer , :reg_to_slot , :byte_to_reg , :reg_to_byte].each do |method|
       define_method("add_#{method}".to_sym) do |*args|
-        add_code Register.send( method , *args )
+        add_code Risc.send( method , *args )
       end
     end
 
@@ -174,7 +174,7 @@ module Vm
     def use_reg( type , value = nil )
       raise "Not type #{type.inspect}" unless type.is_a?(Symbol) or type.is_a?(Parfait::Type)
       if @regs.empty?
-        reg = Register.tmp_reg(type , value)
+        reg = Risc.tmp_reg(type , value)
       else
         reg = @regs.last.next_reg_use(type , value)
       end

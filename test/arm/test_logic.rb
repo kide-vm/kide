@@ -82,7 +82,7 @@ module Arm
     end
 
     def label pos = 0x22
-      l  = Register.label("some" , "Label")
+      l  = Risc.label("some" , "Label")
       l.set_position   pos
       l
     end

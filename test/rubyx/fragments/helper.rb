@@ -1,12 +1,12 @@
 require_relative '../helper'
-require "register/interpreter"
+require "risc/interpreter"
 require "parser/ruby22"
 
 module Rubyx
   module RubyxTests
     include CompilerHelper
-    include Register::InterpreterHelpers
-    subs = ObjectSpace.each_object(Class).select { |klass| klass < Register::Instruction }
+    include Risc::InterpreterHelpers
+    subs = ObjectSpace.each_object(Class).select { |klass| klass < Risc::Instruction }
     subs.each do |clazz|
       name = clazz.to_s
       next if name.include?("Arm")

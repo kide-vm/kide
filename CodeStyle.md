@@ -31,7 +31,7 @@ the code reads much nicer when they are on the module.
 
 ### Code generators
 
-Instead of SlotToReg.new( register, index , register) we use Register.slot_to_reg( name , name , name).
+Instead of SlotToReg.new( register, index , register) we use Risc.slot_to_reg( name , name , name).
 All names are resolved to registers, or index via Type. More readable code less repetition.
 As the example shows, in this case the module function name should be the instruction class name.
 

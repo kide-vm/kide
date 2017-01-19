@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-module Register
+module Risc
   class TestReturnStatement < MiniTest::Test
     include Statements
 
@@ -30,8 +30,8 @@ module Register
     def test_return_call
       @input =s(:statements, s(:return, s(:call, :main, s(:arguments))))
       @expect =  [Label, SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot ,
-                 LoadConstant, SlotToReg, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer ,
-                 FunctionCall, Label, RegisterTransfer, SlotToReg, SlotToReg, RegToSlot ,
+                 LoadConstant, SlotToReg, RegToSlot, LoadConstant, RegToSlot, RiscTransfer ,
+                 FunctionCall, Label, RiscTransfer, SlotToReg, SlotToReg, RegToSlot ,
                  LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
       assert_nil msg = check_nil , msg
     end

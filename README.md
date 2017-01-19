@@ -13,7 +13,7 @@ but not as a language). The idea is to compile ruby to that typed representation
 
 We use whitequarks parser to parse ruby.
 
-Processing is roughly: ruby --> Typed --> Register --> Arm --> binary .
+Processing is roughly: Ruby --> Vm --> Risc --> Arm --> binary .
 
 
 ## Done
@@ -22,7 +22,7 @@ Some things that are finished, look below for current status / work
 
 ### Typed representation
 
-The fully typed syntax representation and compiler to the Register level is done.
+The fully typed syntax representation and compiler to the Risc level is done.
 It is remodeled after  last years system language, which proved the concept and
 surprised with speed.
 
@@ -36,7 +36,7 @@ of support is needed to get the system up, and that is [Parfait](http://ruby-x.o
 ### Interpreter
 
 After doing some debugging on the generated binaries i opted to write an interpreter for the
-register layer. That way test runs on the interpreter reveal most issues.
+risc layer. That way test runs on the interpreter reveal most issues.
 
 ### Debugger
 

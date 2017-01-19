@@ -5,7 +5,7 @@ module Rubyx
     class TestLocalsCollector < MiniTest::Test
 
       def setup
-        Register.machine.boot unless Register.machine.booted
+        Risc.machine.boot unless Risc.machine.booted
       end
 
       def parse_collect( input )

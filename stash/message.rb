@@ -1,4 +1,4 @@
-module Register
+module Risc
   # So when an object calls a method, or sends a message, this is what it sends: a Message
 
   # A message contains the sender, return and exceptional return addresses,the arguments,

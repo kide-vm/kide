@@ -4,9 +4,9 @@ class HelloTest < MiniTest::Test
   include AST::Sexp
 
   def check
-    machine = Register.machine.boot
+    machine = Risc.machine.boot
     Vm.compile_ast( @input )
-    objects = Register::Collector.collect_space
+    objects = Risc::Collector.collect_space
     machine.translate_arm
     writer = Elf::ObjectWriter.new(machine , objects )
     writer.save "test/hello.o"

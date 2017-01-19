@@ -3,7 +3,7 @@ require_relative "../helper"
 class TestMethodApi < MiniTest::Test
 
   def setup
-    Register.machine.boot
+    Risc.machine.boot
     @space = Parfait.object_space
     @try_class = @space.create_class( :Try )
     @try_type = @try_class.instance_type

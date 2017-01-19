@@ -1,7 +1,7 @@
 module Arm
   # ADDRESSING MODE 4
 
-  class StackInstruction < Register::Instruction
+  class StackInstruction < Risc::Instruction
     include Constants
     include Attributed
 

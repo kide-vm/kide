@@ -5,7 +5,7 @@ module Vm
 
     # Constant expressions can by definition be evaluated at compile time.
     # But that does not solve their storage, ie they need to be accessible at runtime from _somewhere_
-    # So expressions move the data into a Register.
+    # So expressions move the data into a Risc.
     # All expressions return registers
 
     # But in the future (in the one that holds great things) we optimize those unneccesay moves away
@@ -38,7 +38,7 @@ module Vm
     def on_StringExpression expression
       value = Parfait.new_word expression.value.to_sym
       reg = use_reg :Word
-      Register.machine.constants << value
+      Risc.machine.constants << value
       add_load_constant( expression, value , reg )
       return reg
     end

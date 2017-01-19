@@ -2,7 +2,7 @@ module Arm
   # ADDRESSING MODE 2
   # Implemented: immediate offset with offset=0
 
-  class MemoryInstruction < Register::Instruction
+  class MemoryInstruction < Risc::Instruction
     include Constants
     include Attributed
 
@@ -15,7 +15,7 @@ module Arm
       @attributes[:update_status] = 1 if @attributes[:update_status] == nil
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
-      raise "alert" if right.is_a? Register::Label
+      raise "alert" if right.is_a? Risc::Label
       @add_offset = @attributes[:add_offset] ? 0 : 1 #U flag
       @is_load = opcode.to_s[0] == "l" ? 1 : 0 #L (load) flag
     end
@@ -25,8 +25,8 @@ module Arm
     #TODO better test, this operand integer (register) does not work.
     def assemble(io)
       arg = @left
-      arg = arg.symbol if( arg.is_a? ::Register::RegisterValue )
-      is_reg = arg.is_a?(::Register::RegisterValue)
+      arg = arg.symbol if( arg.is_a? ::Risc::RiscValue )
+      is_reg = arg.is_a?(::Risc::RiscValue)
       is_reg = (arg.to_s[0] == "r") if( arg.is_a?(Symbol) and not is_reg)
 
       raise "invalid operand argument #{arg.inspect} #{inspect}" unless (is_reg )
@@ -35,7 +35,7 @@ module Arm
       #not sure about these 2 constants. They produce the correct output for str r0 , r1
       # but i can't help thinking that that is because they are not used in that instruction and
       # so it doesn't matter. Will see
-      if (operand.is_a?(Symbol) or operand.is_a?(::Register::RegisterValue))
+      if (operand.is_a?(Symbol) or operand.is_a?(::Risc::RiscValue))
         val = reg_code(operand)
         i = 1  # not quite sure about this, but it gives the output of as. read read read.
       else
@@ -67,7 +67,7 @@ module Arm
     def get_operand
       return @operand unless  @right
       operand = @right
-      operand = operand.symbol if operand.is_a? ::Register::RegisterValue
+      operand = operand.symbol if operand.is_a? ::Risc::RiscValue
       unless( operand.is_a? Symbol)
         # TODO test/check/understand: has no effect in current tests
         # add_offset = (operand < 0) ? 0 : 1

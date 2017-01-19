@@ -1,14 +1,14 @@
 require_relative "helper"
 
-module Register
+module Risc
 
   class TestBasic < MiniTest::Test
     include ExpressionHelper
     include AST::Sexp
 
     def setup
-      Register.machine.boot
-      @output = Register::RegisterValue
+      Risc.machine.boot
+      @output = Risc::RiscValue
     end
 
     def test_number

@@ -1,4 +1,4 @@
-module Register
+module Risc
   # Plock (Proc-Block) is mostly a Block but also somewhat Proc-ish: A Block that carries data.
   #
   # Data in a Block is usefull in the same way data in objects is. Plocks being otherwise just code.
@@ -23,18 +23,18 @@ module Register
     def initialize(name , method , next_block )
       super
       @data = []
-      @branch_code = RegisterMachine.instance.b next_block
+      @branch_code = RiscMachine.instance.b next_block
     end
 
     def set_next next_b
       super
-      @branch_code = RegisterMachine.instance.b next_block
+      @branch_code = RiscMachine.instance.b next_block
     end
 
     # Data gets assembled after methods
     def add_data o
       return if @objects.include? o
-      raise "must be derived from Code #{o.inspect}" unless o.is_a? Register::Code
+      raise "must be derived from Code #{o.inspect}" unless o.is_a? Risc::Code
       @data << o # TODO check type , no basic values allowed (must be wrapped)
     end
 

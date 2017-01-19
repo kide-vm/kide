@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-module Register
+module Risc
 class TestBasicClass < MiniTest::Test
   include Fragments
 

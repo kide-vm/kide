@@ -2,7 +2,7 @@ module Arm
   class MachineCode
 
     def function_call into , call
-      raise "Not CallSite #{call.inspect}" unless call.is_a? Register::CallSite
+      raise "Not CallSite #{call.inspect}" unless call.is_a? Risc::CallSite
       raise "Not linked #{call.inspect}" unless call.function
       into.add_code  call(  call.function  )
       raise "No return type for #{call.function.name}" unless call.function.return_type
@@ -10,13 +10,13 @@ module Arm
     end
 
     def main_start context
-      entry = Register::Block.new("main_entry",nil,nil)
+      entry = Risc::Block.new("main_entry",nil,nil)
       entry.add_code mov(  :fp ,  0 )
       entry.add_code call( context.function )
       entry
     end
     def main_exit context
-      exit = Register::Block.new("main_exit",nil,nil)
+      exit = Risc::Block.new("main_exit",nil,nil)
       syscall(exit , 1)
       exit
     end
@@ -44,7 +44,7 @@ module Arm
     end
 
 
-    # the number (a Register::integer) is (itself) divided by 10, ie overwritten by the result
+    # the number (a Risc::integer) is (itself) divided by 10, ie overwritten by the result
     #  and the remainder is overwritten (ie an out argument)
     # not really a function, more a macro,
     def div10 function, number , remainder
@@ -69,8 +69,8 @@ module Arm
     def syscall block , num
       # This is very arm specific, syscall number is passed in r7,
       # other arguments like a c call ie 0 and up
-      sys = Register::Integer.new( Register::RegisterValue.new(SYSCALL_REG) )
-      ret = Register::Integer.new( Register::RegisterValue.new(RETURN_REG) )
+      sys = Risc::Integer.new( Risc::RiscValue.new(SYSCALL_REG) )
+      ret = Risc::Integer.new( Risc::RiscValue.new(RETURN_REG) )
       block.add_code  mov(  sys , num )
       block.add_code  swi(  0 )
       #todo should write type into r1 according to syscall

@@ -1,5 +1,5 @@
 module Arm
-  class LogicInstruction < Register::Instruction
+  class LogicInstruction < Risc::Instruction
     include Constants
     include Attributed
 
@@ -26,7 +26,7 @@ module Arm
 
       if (right.is_a?(Numeric))
         operand = handle_numeric(right)
-      elsif (right.is_a?(Symbol) or right.is_a?(::Register::RegisterValue))
+      elsif (right.is_a?(Symbol) or right.is_a?(::Risc::RiscValue))
         operand = reg_code(right)    #integer means the register the integer is in (otherwise constant)
         immediate = 0                # ie not immediate is register
       else
@@ -73,7 +73,7 @@ module Arm
         unless @extra
           @extra = 1
           #puts "RELINK L at #{self.position.to_s(16)}"
-          raise ::Register::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
+          raise ::Risc::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
         end
         # now we can do the actual breaking of instruction, by splitting the operand
         operand = calculate_u8_with_rr( right & 0xFFFFFF00 )
@@ -87,8 +87,8 @@ module Arm
     # don't overwrite instance variables, to make assembly repeatable
     # this also loads constants, which are issued as pc relative adds
     def determine_operands
-      if( @left.is_a?(Parfait::Object) or @left.is_a?(Register::Label) or
-        (@left.is_a?(Symbol) and !Register::RegisterValue.look_like_reg(@left)))
+      if( @left.is_a?(Parfait::Object) or @left.is_a?(Risc::Label) or
+        (@left.is_a?(Symbol) and !Risc::RiscValue.look_like_reg(@left)))
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie pointing to fetch and not execute)
         right = Positioned.position(@left) - Positioned.position(self) - 8

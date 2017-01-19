@@ -1,13 +1,13 @@
 module Arm
-  class MoveInstruction < Register::Instruction
+  class MoveInstruction < Risc::Instruction
     include Constants
     include Attributed
 
     def initialize to , from , options = {}
       super(nil)
       @attributes = options
-      if( from.is_a?(Symbol) and Register::RegisterValue.look_like_reg(from) )
-        from = Register::RegisterValue.new(from , :Integer)
+      if( from.is_a?(Symbol) and Risc::RiscValue.look_like_reg(from) )
+        from = Risc::RiscValue.new(from , :Integer)
       end
       @from = from
       @to = to
@@ -40,7 +40,7 @@ module Arm
       case right
       when Numeric
         operand = numeric_operand(right)
-      when Register::RegisterValue
+      when Risc::RiscValue
         operand = reg_code(right)
         immediate = 0                # ie not immediate is register
       else
@@ -72,7 +72,7 @@ module Arm
       raise "No negatives implemented #{right} " if right < 0
       unless @extra
         @extra = 1      # puts "RELINK M at #{self.position.to_s(16)}"
-        raise ::Register::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
+        raise ::Risc::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
       end
       # now we can do the actual breaking of instruction, by splitting the operand
       operand = calculate_u8_with_rr( right & 0xFFFFFF00 )

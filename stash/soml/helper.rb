@@ -21,7 +21,7 @@ module RuntimeTests
   end
 
   def load_program
-    @machine = Register.machine.boot
+    @machine = Risc.machine.boot
     @machine.parse_and_compile main()
     @machine.collect
   end
@@ -34,7 +34,7 @@ module RuntimeTests
 
   def check_local ret = nil
     load_program
-    interpreter = Register::Interpreter.new
+    interpreter = Risc::Interpreter.new
     interpreter.start @machine.init
     count = 0
     begin
@@ -89,7 +89,7 @@ module RuntimeTests
     file_name = caller(3).first.split("in ").last.chop.sub("`","")
     return if file_name.include?("run")
     file_name =  "./tmp/" + file_name + ".o"
-    Register.machine.translate_arm
+    Risc.machine.translate_arm
     writer = Elf::ObjectWriter.new
     writer.save file_name
     file_name

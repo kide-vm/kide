@@ -19,7 +19,7 @@ module Arm
     #  in bytes, so *4
     # if an instruction is passed in we get the index with index function
     def arm_index index
-      index = index.index if index.is_a?(Register::Instruction)
+      index = index.index if index.is_a?(Risc::Instruction)
       raise "index error 0" if index == 0
       index * 4
     end
@@ -31,8 +31,8 @@ module Arm
       ArmMachine.str( :lr ,  code.register , arm_index(code) )
     end
 
-    def translate_RegisterTransfer( code )
-      # Register machine convention is from => to
+    def translate_RiscTransfer( code )
+      # Risc machine convention is from => to
       # But arm has the receiver/result as the first
       ArmMachine.mov( code.to , code.from)
     end
@@ -77,7 +77,7 @@ module Arm
 
     def translate_LoadConstant code
       constant = code.constant
-      if constant.is_a?(Parfait::Object) or constant.is_a?(Symbol) or constant.is_a?(Register::Label)
+      if constant.is_a?(Parfait::Object) or constant.is_a?(Symbol) or constant.is_a?(Risc::Label)
         return ArmMachine.add( code.register , constant )
       else
         return ArmMachine.mov( code.register ,  constant )
@@ -146,7 +146,7 @@ module Arm
     end
 
     def exit int_code
-      codes =  ArmMachine.ldr( :r0 ,  :r0 , arm_index(Register.resolve_to_index(:Message , :return_value)) )
+      codes =  ArmMachine.ldr( :r0 ,  :r0 , arm_index(Risc.resolve_to_index(:Message , :return_value)) )
       syscall int_code , codes
     end
 

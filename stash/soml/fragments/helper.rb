@@ -10,7 +10,7 @@ module Fragments
   # define setup to NOT load parfait.
   def setup
     @stdout =  ""
-    @machine = Register.machine.boot
+    @machine = Risc.machine.boot
   end
 
   def main()

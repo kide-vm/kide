@@ -19,7 +19,7 @@ module Vm
       set_arguments(method , statement.arguments)
       ret = use_reg( :Object ) #FIXME real return type
 
-      Register.issue_call( self , method )
+      Risc.issue_call( self , method )
 
       # the effect of the method is that the NewMessage Return slot will be filled, return it
       # but move it into a register too
@@ -30,7 +30,7 @@ module Vm
     private
 
     def load_new_message(statement)
-      new_message = Register.resolve_to_register(:new_message)
+      new_message = Risc.resolve_to_register(:new_message)
       add_slot_to_reg(statement, :message , :next_message , new_message )
       new_message
     end
@@ -87,7 +87,7 @@ module Vm
       reset_regs
       i = i + 1             # disregarding type field
       val = process( arg)   # processing should return the register with the value
-      raise "Not register #{val}" unless val.is_a?(Register::RegisterValue)
+      raise "Not register #{val}" unless val.is_a?(Risc::RiscValue)
       #FIXME definately needs some tests
       raise "TypeMismatch calling with #{val.type} , instead of #{arg_type.type_at(i)}" if val.type != arg_type.type_at(i)
       list_reg = use_reg(:NamedList , arguments )

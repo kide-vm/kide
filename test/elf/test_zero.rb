@@ -3,14 +3,14 @@ require_relative "../helper"
 class TestZeroCode < MiniTest::Test
 
   def setup
-    @machine = Register.machine.boot
+    @machine = Risc.machine.boot
     @space = Parfait.object_space
     @space.each_type do | type |
       type.method_names.each do |method|
         type.remove_method(method) unless keeper(method)
       end
     end
-    @objects = Register::Collector.collect_space
+    @objects = Risc::Collector.collect_space
   end
   def keeper name
     name == :main or name == :__init__

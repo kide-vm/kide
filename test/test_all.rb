@@ -8,6 +8,6 @@ require_relative "rubyx/test_all"
 
 require_relative "parfait/test_all"
 
-require_relative "register/test_all"
+require_relative "risc/test_all"
 
 require_relative "vm/test_all"

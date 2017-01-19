@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-module Register
+module Risc
   class TestAssignStatement < MiniTest::Test
     include Statements
 
@@ -44,8 +44,8 @@ module Register
       Parfait.object_space.get_main.add_local(:r , :Object)
       @input = s(:statements, s(:l_assignment, s(:local, :r), s(:call, :main, s(:arguments))))
       @expect = [Label, SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot ,
-               LoadConstant, SlotToReg, RegToSlot, LoadConstant, RegToSlot, RegisterTransfer ,
-               FunctionCall, Label, RegisterTransfer, SlotToReg, SlotToReg, SlotToReg ,
+               LoadConstant, SlotToReg, RegToSlot, LoadConstant, RegToSlot, RiscTransfer ,
+               FunctionCall, Label, RiscTransfer, SlotToReg, SlotToReg, SlotToReg ,
                RegToSlot, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
       assert_nil msg = check_nil , msg
     end

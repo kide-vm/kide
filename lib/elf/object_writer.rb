@@ -20,7 +20,7 @@ module Elf
       @text = Elf::TextSection.new(".text")
       @object.add_section @text
 
-      assembler = Register::Assembler.new(@machine , @objects)
+      assembler = Risc::Assembler.new(@machine , @objects)
       set_text assembler.write_as_string
 
       # for debug add labels for labels

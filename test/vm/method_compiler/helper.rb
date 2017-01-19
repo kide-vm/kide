@@ -1,6 +1,6 @@
 require_relative '../helper'
 
-module Register
+module Risc
   module SpaceHack
     # test hack to in place change object type
     def add_space_field(name,type)
@@ -12,7 +12,7 @@ module Register
     include SpaceHack
 
     def check
-      Register.machine.boot unless Register.machine.booted
+      Risc.machine.boot unless Risc.machine.booted
       compiler = Vm::MethodCompiler.new Parfait.object_space.get_main
       code = Vm.ast_to_code @input
       assert code.to_s , @input
@@ -30,7 +30,7 @@ module Register
     include SpaceHack
 
     def setup
-      Register.machine.boot # force boot to reset main
+      Risc.machine.boot # force boot to reset main
     end
 
     def preamble
@@ -71,7 +71,7 @@ module Register
     def should( all )
       #preamble.each {all.shift}
       #postamble.each {all.pop}
-      str = all.to_s.gsub("Register::","")
+      str = all.to_s.gsub("Risc::","")
       ret = ""
       str.split(",").each_slice(6).each do |line|
         ret += "                " + line.join(",") + " ,\n"

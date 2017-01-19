@@ -20,8 +20,8 @@ module Vm
     def compile_if_condition( statement )
       reset_regs
       process(statement.condition)
-      branch_class = Object.const_get "Register::Is#{statement.branch_type.capitalize}"
-      true_block = Register.label(statement, "if_true")
+      branch_class = Object.const_get "Risc::Is#{statement.branch_type.capitalize}"
+      true_block = Risc.label(statement, "if_true")
       add_code branch_class.new( statement.condition , true_block )
       return true_block
     end
@@ -33,8 +33,8 @@ module Vm
     def compile_if_false( statement )
       reset_regs
       process(statement.if_false) if statement.if_false.statements
-      merge = Register.label(statement , "if_merge")
-      add_code Register::Branch.new(statement.if_false, merge )
+      merge = Risc.label(statement , "if_merge")
+      add_code Risc::Branch.new(statement.if_false, merge )
       merge
     end
   end

@@ -42,7 +42,7 @@ module Vm
     def assignment_value(statement)
       reset_regs # statements reset registers, ie have all at their disposal
       value = process(statement.value)
-      raise "Not register #{v}" unless value.is_a?(Register::RegisterValue)
+      raise "Not register #{v}" unless value.is_a?(Risc::RiscValue)
       value
     end
     # ensure the name given is not space and raise exception otherwise

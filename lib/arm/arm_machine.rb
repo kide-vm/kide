@@ -55,7 +55,7 @@ module Arm
     def self.class_for clazz
       my_module = self.class.name.split("::").first
       clazz_name = clazz.name.split("::").last
-      if(my_module != Register )
+      if(my_module != Risc )
         module_class = eval("#{my_module}::#{clazz_name}") rescue nil
         clazz = module_class if module_class
       end
@@ -63,11 +63,11 @@ module Arm
     end
 
     #defining the instruction (opcode, symbol) as an given class.
-    # the class is a Register::Instruction derived base class and to create machine specific function
+    # the class is a Risc::Instruction derived base class and to create machine specific function
     #  an actual machine must create derived classes (from this base class)
     # These instruction classes must follow a naming pattern and take a hash in the contructor
-    #  Example, a mov() opcode  instantiates a Register::MoveInstruction
-    #   for an Arm machine, a class Arm::MoveInstruction < Register::MoveInstruction exists, and it
+    #  Example, a mov() opcode  instantiates a Risc::MoveInstruction
+    #   for an Arm machine, a class Arm::MoveInstruction < Risc::MoveInstruction exists, and it
     #   will be used to define the mov on an arm machine.
     # This methods picks up that derived class and calls a define_instruction methods that can
     #   be overriden in subclasses

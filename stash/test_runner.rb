@@ -20,7 +20,7 @@ class TestRunner < MiniTest::Test
   def execute file
     string = File.read(file)
     parser = Parser::RubyX.new
-    object_space = Register::Program.new "Arm"
+    object_space = Risc::Program.new "Arm"
     #TODO : files would have to include s-expressions now
     syntax  = parser.parse_with_debug(string, reporter: Parslet::ErrorReporter::Deepest.new)
     assert syntax
@@ -32,7 +32,7 @@ class TestRunner < MiniTest::Test
         expr    = part.compile( program.context )
       else
         expr    = part.compile( program.context )
-        raise "should be function definition for now" unless expr.is_a? Register::Function
+        raise "should be function definition for now" unless expr.is_a? Risc::Function
       end
     end
 

@@ -3,7 +3,7 @@ module Parfait
 class TestEmptyWord < MiniTest::Test
 
   def setup
-    Register.machine.boot
+    Risc.machine.boot
     @word = Parfait::Word.new(0)
   end
   def test_word_create
@@ -29,7 +29,7 @@ end
 class TestWord < MiniTest::Test
 
   def setup
-    Register.machine.boot
+    Risc.machine.boot
     @word = Parfait::Word.new(5)
   end
   def test_len

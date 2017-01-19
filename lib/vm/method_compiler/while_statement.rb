@@ -13,7 +13,7 @@ module Vm
 
       compile_while_condition( statement )
 
-      branch_class = Object.const_get "Register::Is#{statement.branch_type.capitalize}"
+      branch_class = Object.const_get "Risc::Is#{statement.branch_type.capitalize}"
       # this is where the while ends and both branches meet
       add_code branch_class.new( statement.condition , start )
 
@@ -22,13 +22,13 @@ module Vm
     private
 
     def compile_while_preamble( statement )
-      condition_label = Register.label(statement.condition , "condition_label")
+      condition_label = Risc.label(statement.condition , "condition_label")
       # unconditionally branch to the condition upon entering the loop
-      add_code Register::Branch.new(statement.condition , condition_label)
+      add_code Risc::Branch.new(statement.condition , condition_label)
       condition_label
     end
     def compile_while_body( statement )
-      start = Register.label(statement , "while_start" )
+      start = Risc.label(statement , "while_start" )
       add_code start
       reset_regs
       process(statement.statements)

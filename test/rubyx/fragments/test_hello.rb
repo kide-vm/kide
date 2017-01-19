@@ -3,17 +3,17 @@ require_relative 'helper'
 module Rubyx
   class TestRubyHello < MiniTest::Test
     include RubyxTests
-    Branch = Register::Branch
-    Label = Register::Label
+    Branch = Risc::Branch
+    Label = Risc::Label
 
     def setup
       @string_input = as_main '"Hello there".putstring'
-      Register.machine.boot
+      Risc.machine.boot
       #      do_clean_compile
       RubyCompiler.compile @string_input
-      Register::Collector.collect_space
-      @interpreter = Register::Interpreter.new
-      @interpreter.start Register.machine.init
+      Risc::Collector.collect_space
+      @interpreter = Risc::Interpreter.new
+      @interpreter.start Risc.machine.init
     end
 
     def test_chain
@@ -22,16 +22,16 @@ module Rubyx
              LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,
              SlotToReg, RegToSlot, SlotToReg, LoadConstant, RegToSlot,
              LoadConstant, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             LoadConstant, RegToSlot, RegisterTransfer, FunctionCall, Label,
+             LoadConstant, RegToSlot, RiscTransfer, FunctionCall, Label,
              LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegisterTransfer, Syscall, RegisterTransfer, RegisterTransfer, RegToSlot,
-             Label, FunctionReturn, RegisterTransfer, SlotToReg, SlotToReg,
-             Label, FunctionReturn, RegisterTransfer, Syscall, NilClass]
+             RiscTransfer, Syscall, RiscTransfer, RiscTransfer, RegToSlot,
+             Label, FunctionReturn, RiscTransfer, SlotToReg, SlotToReg,
+             Label, FunctionReturn, RiscTransfer, Syscall, NilClass]
     end
 
     def test_overflow
       instruction = ticks( 24 )
-      assert_equal Register::FunctionCall , instruction.class
+      assert_equal Risc::FunctionCall , instruction.class
       assert_equal :putstring , instruction.method.name
     end
 

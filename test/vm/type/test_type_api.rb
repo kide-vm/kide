@@ -3,7 +3,7 @@ require_relative "../helper"
 class TypeApi < MiniTest::Test
 
   def setup
-    Register.machine.boot
+    Risc.machine.boot
     @space = Parfait.object_space
     tc = @space.get_class_by_name( :NamedList )
     @type = tc.instance_type

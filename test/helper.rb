@@ -28,7 +28,7 @@ module Compiling
 
 end
 
-module Register
+module Risc
   # relies on @interpreter instance to be set up during setup
   module InterpreterHelpers
 
@@ -68,7 +68,7 @@ module Register
         puts e
         puts e.backtrace
       end
-      str = classes.to_s.gsub("Register::","")
+      str = classes.to_s.gsub("Risc::","")
       str.split(",").each_slice(5).each do |line|
         puts "            " + line.join(",") + ","
       end

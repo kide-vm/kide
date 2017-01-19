@@ -5,7 +5,7 @@ module Rubyx
     class TestNormalizer < MiniTest::Test
 
       def setup
-        Register.machine.boot unless Register.machine.booted
+        Risc.machine.boot unless Risc.machine.booted
       end
 
       def test_no_thing

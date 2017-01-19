@@ -3,6 +3,8 @@ require "register/interpreter"
 require "parser/ruby22"
 require "yaml"
 
+# An experiment to find out how much ruby there is to achieve bootstrap
+#
 class Walker < AST::Processor
   def initialize collector
     @collector = collector

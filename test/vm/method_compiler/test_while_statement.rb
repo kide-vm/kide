@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-module Register
+module Risc
   class TestWhile < MiniTest::Test
     include Statements
 

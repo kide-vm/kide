@@ -51,7 +51,7 @@ module Vm
 
       def load_special_message(statement)
         reg = use_reg :Message
-        add_transfer( "#{statement} load message", Register.message_reg , reg )
+        add_transfer( "#{statement} load message", Risc.message_reg , reg )
         return reg
       end
   end #module

@@ -1,3 +1,3 @@
 require_relative "../helper"
 
-Register.machine.boot unless Register.machine.booted
+Risc.machine.boot unless Risc.machine.booted

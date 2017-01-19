@@ -1,5 +1,5 @@
 module Arm
-  class CompareInstruction < Register::Instruction
+  class CompareInstruction < Risc::Instruction
     include Constants
     include Attributed
 
@@ -20,19 +20,19 @@ module Arm
       rn , operand , immediate= @rn ,  @operand , 1
 
       arg = @right
-      operand = Register::RegisterValue.new( arg , :Integer) if( arg.is_a? Symbol )
+      operand = Risc::RiscValue.new( arg , :Integer) if( arg.is_a? Symbol )
       case operand
       when Numeric
         operand = arg
         raise "numeric literal operand to large #{arg.inspect}" unless (arg.fits_u8?)
-      when Symbol , ::Register::RegisterValue
+      when Symbol , ::Risc::RiscValue
         immediate = 0
       when Arm::Shift
         handle_shift
       else
         raise "invalid operand argument #{arg.inspect} , #{inspect}"
       end
-      val = (operand.is_a?(Symbol) or operand.is_a?(::Register::RegisterValue)) ? reg_code(operand) : operand
+      val = (operand.is_a?(Symbol) or operand.is_a?(::Risc::RiscValue)) ? reg_code(operand) : operand
       val = 0 if val == nil
       val = shift(val , 0)
       raise inspect unless reg_code(@rd)
@@ -64,12 +64,12 @@ module Arm
       # end
       #
       # arg1 = arg.value
-      # if (arg1.is_a?(Register::IntegerConstant))
+      # if (arg1.is_a?(Risc::IntegerConstant))
       #   if (arg1.value >= 32)
       #     raise "cannot shift by more than 31 #{arg1} #{inspect}"
       #   end
       #   shift_imm = arg1.value
-      # elsif (arg1.is_a?(Arm::Register))
+      # elsif (arg1.is_a?(Arm::Risc))
       #   shift_op val |= 0x1;
       #   shift_imm = arg1.number << 1
       # elsif (arg.type == 'rrx')

@@ -3,7 +3,7 @@ require_relative "../helper"
 class BasicType < MiniTest::Test
 
   def setup
-    Register.machine.boot
+    Risc.machine.boot
     @space = Parfait.object_space
     @mess = @space.first_message
     assert @mess
@@ -58,7 +58,7 @@ class BasicType < MiniTest::Test
 
   # not really parfait test, but related and no other place currently
   def test_reg_index
-    message_ind = Register.resolve_to_index( :message , :receiver )
+    message_ind = Risc.resolve_to_index( :message , :receiver )
     assert_equal 3 , message_ind
     @mess.set_receiver( 55)
     assert_equal 55 , @mess.get_internal_word(message_ind)
