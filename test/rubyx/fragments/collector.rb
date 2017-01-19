@@ -1,9 +1,12 @@
 require_relative '../helper'
-require "register/interpreter"
+require "risc/interpreter"
 require "parser/ruby22"
 require "yaml"
 
 # An experiment to find out how much ruby there is to achieve bootstrap
+#
+# currently (jan/2017) just under 150 classes, 1.5k methods , 10k sends, only 10 yields
+# 1 retry and redo (to be avoided), 4 ensure , 5 rescue
 #
 class Walker < AST::Processor
   def initialize collector
@@ -69,7 +72,7 @@ class Collector
   end
 
   def run
-    load "salama.rb"
+    load "rubyx.rb"
     load "parser/ruby22.rb"
 #    load "../../../.rbenv/versions/2.2.3/lib/ruby/2.2.0/racc/parser.rb"
     print
