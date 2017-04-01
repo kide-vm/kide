@@ -13,5 +13,5 @@ require "risc"
 require "risc/builtin/space"
 require "arm/arm_machine"
 require "arm/translator"
-
 require "rubyx/ruby_compiler"
+require "vool.rb"
