@@ -20,5 +20,9 @@ module Vool
       assert_equal :Base , @lst.super_class_name
     end
 
+    def test_compile_class_body
+      assert_equal [] , @lst.body
+    end
+
   end
 end
