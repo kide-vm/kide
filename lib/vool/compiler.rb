@@ -69,9 +69,10 @@ module Vool
     def on_dsym
       raise "Not implemented dynamix symbols (with interpolation)"
     end
-    def on_kwbegin expression
-      ScopeStatement.new process_all( expression.children )
+    def on_kwbegin statement
+      ScopeStatement.new process_all( statement.children )
     end
+    alias  :on_begin :on_kwbegin
 
     # Array + Hashes
     def on_array expression
@@ -88,8 +89,10 @@ module Vool
     end
 
     #Variables
+    def on_lvar expression
+      LocalVariable.new(expression.children.first)
+    end
     def on_lvasgn expression
-      puts "EXP #{expression}"
       name = expression.children[0]
       value = process(expression.children[1])
       LocalAssignment.new(name,value)
@@ -148,25 +151,23 @@ module Vool
     end
 
     def on_send statement
-      puts "SEND #{statement}"
       kids = statement.children.dup
       receiver = kids.shift
       name = kids.shift
       arguments = kids
-      w = SendStatement.new()
+      w = SendStatement.new( name )
       w.receiver = process(receiver) || SelfStatement.new
-      w.name = name
       w.arguments = process_all(arguments)
       w
     end
 
-    def on_name statement
-      NameStatement.new(statement.children.first)
-    end
+    # def on_name statement
+    #   NameStatement.new(statement.children.first)
+    # end
 
-    def on_class_name expression
-      ClassStatement.new(expression.children.first)
-    end
+    # def on_class_name expression
+    #   ClassStatement.new(expression.children.first)
+    # end
 
     def on_assignment statement
       name , value = *statement
