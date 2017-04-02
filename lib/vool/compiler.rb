@@ -86,7 +86,6 @@ module Vool
 
     #Variables
     def on_lvasgn expression
-      puts "EXP #{expression}"
       name = expression.children[0]
       value = process(expression.children[1])
       LocalAssignment.new(name,value)
