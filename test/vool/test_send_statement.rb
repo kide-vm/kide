@@ -36,5 +36,28 @@ module Vool
       lst = Compiler.compile( "bar(1)")
       assert_equal 1 , lst.arguments.first.value
     end
+
+    def test_super0_receiver
+      lst = Compiler.compile( "super")
+      assert_equal SuperStatement , lst.receiver.class
+    end
+    def test_super0
+      lst = Compiler.compile( "super")
+      assert_equal SendStatement , lst.class
+    end
+
+    def test_super_receiver
+      lst = Compiler.compile( "super(1)")
+      assert_equal SuperStatement , lst.receiver.class
+    end
+    def test_super_args
+      lst = Compiler.compile( "super(1)")
+      assert_equal 1 , lst.arguments.first.value
+    end
+    def test_super_name #is nil
+      lst = Compiler.compile( "super(1)")
+      assert_nil lst.name
+    end
+
   end
 end

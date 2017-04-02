@@ -19,6 +19,8 @@ module Vool
   end
   class SelfStatement < Statement
   end
+  class SuperStatement < Statement
+  end
   class StringStatement < Statement
     attr_accessor :value
     def initialize(value)

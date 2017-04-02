@@ -161,6 +161,22 @@ module Vool
       w
     end
 
+    # this is a call to super without args (z = zero arity)
+    def on_zsuper exp
+      w = SendStatement.new( nil )
+      w.receiver = SuperStatement.new
+      w
+    end
+
+    # this is a call to super with args and
+    # same name as current method, which is set later
+    def on_super( statement )
+      w = SendStatement.new( nil )
+      w.receiver = SuperStatement.new
+      w.arguments = process_all(statement.children)
+      w
+    end
+
     # def on_name statement
     #   NameStatement.new(statement.children.first)
     # end
