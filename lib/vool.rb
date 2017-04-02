@@ -6,6 +6,7 @@ end
 require_relative "vool/array_statement"
 require_relative "vool/basic_values"
 require_relative "vool/class_statement"
+require_relative "vool/hash_statement"
 require_relative "vool/method_statement"
 
 require_relative "vool/while_statement"

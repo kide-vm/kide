@@ -71,6 +71,15 @@ module Vool
       ArrayStatement.new expression.children.collect{ |elem| process(elem) }
     end
 
+    def on_hash expression
+      hash = HashStatement.new
+      expression.children.each do |elem|
+        raise "Hash error, hash contains non pair: #{elem.type}" if elem.type != :pair
+        hash.add( process(elem.children[0]) , process(elem.children[1]) )
+      end
+      hash
+    end
+
     def on_return statement
       w = ReturnStatement.new()
       w.return_value = process(statement.children.first)
