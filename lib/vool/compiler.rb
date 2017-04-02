@@ -1,5 +1,5 @@
 module Vool
-  class Compiler < ::Rubyx::Passes::TotalProcessor
+  class Compiler < AST::Processor
 
     def self.compile(input)
       ast = Parser::Ruby22.parse( input )
@@ -8,7 +8,7 @@ module Vool
 
     def on_class( statement )
       name , sup , body = *statement
-      ClassStatement.new( get_name(name) , get_name(sup) , body )
+      ClassStatement.new( get_name(name) , get_name(sup) , process_all(body) )
     end
 
     def on_def( statement )
@@ -19,6 +19,41 @@ module Vool
 
     def on_arg( arg )
       arg.first
+    end
+
+    def on_int expression
+      IntegerStatement.new(expression.children.first)
+    end
+
+    def on_float expression
+      FloatStatement.new(expression.children.first)
+    end
+
+    def on_true expression
+      TrueStatement.new
+    end
+
+    def on_false expression
+      FalseStatement.new
+    end
+
+    def on_nil expression
+      NilStatement.new
+    end
+
+    def on_str expression
+      StringStatement.new(expression.children.first)
+    end
+    alias  :on_string :on_str
+
+    def on_dstr
+      raise "Not implemented dynamix strings (with interpolation)"
+    end
+    
+    def on_return statement
+      w = ReturnStatement.new()
+      w.return_value = process(statement.children.first)
+      w
     end
 
     def on_function  statement
@@ -32,23 +67,6 @@ module Vool
       end
       w.statements = process(statements)
       w.receiver = receiver
-      w
-    end
-
-    def on_field_def statement
-      type , name , value = *statement
-      w = FieldDef.new()
-      w.type = type
-      w.name = process(name)
-      w.value = process(value) if value
-      w
-    end
-
-    def on_class_field statement
-      type , name = *statement
-      w = ClassField.new()
-      w.type = type
-      w.name = name
       w
     end
 
@@ -71,44 +89,12 @@ module Vool
       w
     end
 
-    def process_first code
-      raise "Too many children #{code.inspect}" if code.children.length != 1
-      process code.children.first
-    end
-    alias  :on_conditional :process_first
-    alias  :on_condition :process_first
-    alias  :on_field :process_first
-
-    def on_statements statement
-      w = Statements.new()
-      return w unless statement.children
-      return w unless statement.children.first
-      w.statements = process_all(statement.children)
-      w
-    end
-    alias :on_true_statements :on_statements
-    alias :on_false_statements :on_statements
-
-    def on_return statement
-      w = ReturnStatement.new()
-      w.return_value = process(statement.children.first)
-      w
-    end
-
     def on_operator_value statement
       operator , left_e , right_e = *statement
-      w = OperatorExpression.new()
+      w = OperatorStatement.new()
       w.operator = operator
       w.left_expression = process(left_e)
       w.right_expression = process(right_e)
-      w
-    end
-
-    def on_field_access statement
-      receiver_ast , field_ast = *statement
-      w = FieldAccess.new()
-      w.receiver = process(receiver_ast)
-      w.field = process(field_ast)
       w
     end
 
@@ -125,31 +111,12 @@ module Vool
       w
     end
 
-    def on_int expression
-      IntegerExpression.new(expression.children.first)
-    end
-
-    def on_true expression
-      TrueExpression.new
-    end
-
-    def on_false expression
-      FalseExpression.new
-    end
-
-    def on_nil expression
-      NilExpression.new
-    end
-
     def on_name statement
-      NameExpression.new(statement.children.first)
-    end
-    def on_string expression
-      StringExpression.new(expression.children.first)
+      NameStatement.new(statement.children.first)
     end
 
     def on_class_name expression
-      ClassExpression.new(expression.children.first)
+      ClassStatement.new(expression.children.first)
     end
 
     def on_assignment statement
