@@ -36,6 +36,5 @@ module Vool
       lst = Compiler.compile( "bar(1)")
       assert_equal 1 , lst.arguments.first.value
     end
-
   end
 end

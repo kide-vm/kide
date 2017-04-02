@@ -5,7 +5,7 @@ module Vool
 
     def test_self
       lst = Compiler.compile( "self")
-      assert_equal SelfStatement , lst.class      
+      assert_equal SelfStatement , lst.class
     end
     def test_nil
       lst = Compiler.compile( "nil")
@@ -35,6 +35,15 @@ module Vool
       assert_raises RuntimeError do
         Compiler.compile( '"dstr#{self}"')
       end
+    end
+
+    def test_scope
+      lst = Compiler.compile( "begin ; 1 ; end")
+      assert_equal ScopeStatement , lst.class , lst.inspect
+    end
+    def test_scope_contents
+      lst = Compiler.compile( "begin ; 1 ; end")
+      assert_equal 1 , lst.statements.first.value
     end
   end
 end
