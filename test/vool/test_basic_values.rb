@@ -3,6 +3,10 @@ require_relative "../helper"
 module Vool
   class TestBasicValues < MiniTest::Test
 
+    def test_self
+      lst = Compiler.compile( "self")
+      assert_equal SelfStatement , lst.class      
+    end
     def test_nil
       lst = Compiler.compile( "nil")
       assert_equal NilStatement , lst.class

@@ -27,6 +27,14 @@ module Vool
     end
 
     #basic Values
+    def on_self exp
+      SelfStatement.new
+    end
+
+    def on_nil expression
+      NilStatement.new
+    end
+
     def on_int expression
       IntegerStatement.new(expression.children.first)
     end
@@ -41,10 +49,6 @@ module Vool
 
     def on_false expression
       FalseStatement.new
-    end
-
-    def on_nil expression
-      NilStatement.new
     end
 
     def on_str expression
@@ -78,6 +82,14 @@ module Vool
         hash.add( process(elem.children[0]) , process(elem.children[1]) )
       end
       hash
+    end
+
+    #Variables
+    def on_lvasgn expression
+      puts "EXP #{expression}"
+      name = expression.children[0]
+      value = process(expression.children[1])
+      LocalAssignment.new(name,value)
     end
 
     def on_return statement
@@ -132,12 +144,15 @@ module Vool
       process expression.children.first
     end
 
-    def on_call statement
-      name_s , arguments , receiver = *statement
-      w = CallSite.new()
-      w.name = name_s.children.first
+    def on_send statement
+      kids = statement.children.dup
+      receiver = kids.shift
+      name = kids.shift
+      arguments = kids
+      w = SendStatement.new()
+      w.receiver = process(receiver) || SelfStatement.new
+      w.name = name
       w.arguments = process_all(arguments)
-      w.receiver = process(receiver)
       w
     end
 
