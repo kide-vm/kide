@@ -6,6 +6,11 @@ module Vool
       self.new.process(ast)
     end
 
+    # default to error, so non implemented stuff shows early
+    def handler_missing(node)
+      raise "Not implemented #{node.type}"
+    end
+
     def on_class( statement )
       name , sup , body = *statement
       ClassStatement.new( get_name(name) , get_name(sup) , process_all(body) )
@@ -21,6 +26,7 @@ module Vool
       arg.first
     end
 
+    #basic Values
     def on_int expression
       IntegerStatement.new(expression.children.first)
     end
@@ -46,10 +52,25 @@ module Vool
     end
     alias  :on_string :on_str
 
-    def on_dstr
-      raise "Not implemented dynamix strings (with interpolation)"
+    def on_dstr expression
+      raise "Not implemented dynamic strings (with interpolation)"
     end
-    
+    alias  :on_xstr :on_dstr
+
+    def on_sym expression
+      SymbolStatement.new(expression.children.first)
+    end
+    alias  :on_string :on_str
+
+    def on_dsym
+      raise "Not implemented dynamix symbols (with interpolation)"
+    end
+
+    # Array + Hashes
+    def on_array expression
+      ArrayStatement.new expression.children.collect{ |elem| process(elem) }
+    end
+
     def on_return statement
       w = ReturnStatement.new()
       w.return_value = process(statement.children.first)

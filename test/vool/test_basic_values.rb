@@ -23,5 +23,14 @@ module Vool
       lst = Compiler.compile( "'string'")
       assert_equal StringStatement , lst.class , lst.inspect
     end
+    def test_sym
+      lst = Compiler.compile( ":symbol")
+      assert_equal SymbolStatement , lst.class , lst.inspect
+    end
+    def test_dstr
+      assert_raises RuntimeError do
+        Compiler.compile( '"dstr#{self}"')
+      end
+    end
   end
 end
