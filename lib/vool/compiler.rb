@@ -118,11 +118,10 @@ module Vool
       w
     end
 
-    def on_while_statement statement
-      branch_type , condition , statements = *statement
-      w = WhileStatement.new()
-      w.branch_type = branch_type
-      w.condition = process(condition)
+    def on_while statement
+      condition , statements = *statement
+      w = WhileStatement.new( process(condition) )
+      simplify_condition(w)
       w.statements = process(statements)
       w
     end
@@ -130,14 +129,16 @@ module Vool
     def on_if statement
 #      puts "IF #{statement}"
       condition , if_true , if_false = *statement
-      w = IfStatement.new()
-      w.condition = process(condition)
-      if(w.condition.is_a?(ScopeStatement) and w.condition.single?)
-        w.condition = w.condition.first
-      end
+      w = IfStatement.new( process(condition) )
+      simplify_condition(w)
       w.if_true = process(if_true)
       w.if_false = process(if_false)
       w
+    end
+
+    def simplify_condition( cond )
+      return unless cond.condition.is_a?(ScopeStatement)
+      cond.condition = cond.condition.first if cond.condition.single?
     end
 
     def on_operator_value statement
