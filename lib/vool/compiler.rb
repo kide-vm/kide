@@ -101,6 +101,14 @@ module Vool
       ClassVariable.new(expression.children.first.to_s[2 .. -1].to_sym)
     end
 
+    def on_const expression
+      scope = expression.children.first
+      if scope
+        raise "Only unscoped Names implemented #{scope}" unless scope.type == :cbase
+      end
+      ModuleName.new(expression.children[1])
+    end
+
     def on_lvasgn expression
       name = expression.children[0]
       value = process(expression.children[1])

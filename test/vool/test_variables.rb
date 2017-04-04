@@ -31,5 +31,20 @@ module Vool
       lst = Compiler.compile( "return @@var" )
       assert_equal ClassVariable , lst.return_value.class
     end
+
+    def test_module_basic
+      lst = Compiler.compile( "Module" )
+      assert_equal ModuleName , lst.class
+      assert_equal :Module , lst.name
+    end
+
+    def test_module_base_scoped
+      lst = Compiler.compile( "::Module" )
+      assert_equal ModuleName , lst.class
+      assert_equal :Module , lst.name
+    end
+    def test_module_module_scoped
+      assert_raises {Compiler.compile( "M::Module" ) }
+    end
   end
 end

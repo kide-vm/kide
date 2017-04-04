@@ -18,4 +18,7 @@ module Vool
     include Named
   end
 
+  class ModuleName < Statement
+    include Named
+  end
 end
