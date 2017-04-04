@@ -127,20 +127,6 @@ module Vool
       ReturnStatement.new( return_value )
     end
 
-    def on_function  statement
-      return_type , name , parameters, statements , receiver = *statement
-      w = FunctionStatement.new()
-      w.return_type = return_type
-      w.name = name.children.first
-      w.parameters = parameters.to_a.collect do |p|
-        raise "error, argument must be a identifier, not #{p}" unless p.type == :parameter
-        p.children
-      end
-      w.statements = process(statements)
-      w.receiver = receiver
-      w
-    end
-
     def on_while statement
       condition , statements = *statement
       w = WhileStatement.new( process(condition) )
@@ -150,26 +136,11 @@ module Vool
     end
 
     def on_if statement
-#      puts "IF #{statement}"
       condition , if_true , if_false = *statement
       w = IfStatement.new( process(condition) )
       simplify_condition(w)
       w.if_true = process(if_true)
       w.if_false = process(if_false)
-      w
-    end
-
-    def simplify_condition( cond )
-      return unless cond.condition.is_a?(ScopeStatement)
-      cond.condition = cond.condition.first if cond.condition.single?
-    end
-
-    def on_operator_value statement
-      operator , left_e , right_e = *statement
-      w = OperatorStatement.new()
-      w.operator = operator
-      w.left_expression = process(left_e)
-      w.right_expression = process(right_e)
       w
     end
 
@@ -209,6 +180,11 @@ module Vool
     end
 
     private
+
+    def simplify_condition( cond )
+      return unless cond.condition.is_a?(ScopeStatement)
+      cond.condition = cond.condition.first if cond.condition.single?
+    end
 
     def instance_name sym
       sym.to_s[1 .. -1].to_sym
