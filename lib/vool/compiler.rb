@@ -155,6 +155,14 @@ module Vool
       w
     end
 
+    def on_and expression
+      name = expression.type
+      left = process(expression.children[0])
+      right = process( expression.children[1] )
+      LogicalStatement.new( name , left , right)
+    end
+    alias :on_or :on_and
+
     # this is a call to super without args (z = zero arity)
     def on_zsuper exp
       w = SendStatement.new( nil )
