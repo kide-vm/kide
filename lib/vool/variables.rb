@@ -9,4 +9,13 @@ module Vool
   class LocalVariable < Statement
     include Named
   end
+
+  class InstanceVariable < Statement
+    include Named
+  end
+
+  class ClassVariable < Statement
+    include Named
+  end
+
 end

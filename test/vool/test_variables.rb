@@ -10,5 +10,26 @@ module Vool
     #   assert_equal SendStatement , lst.class
     # end
 
+    def test_instance_basic
+      lst = Compiler.compile( "@var" )
+      assert_equal InstanceVariable , lst.class
+      assert_equal :var , lst.name
+    end
+
+    def test_instance_return
+      lst = Compiler.compile( "return @var" )
+      assert_equal InstanceVariable , lst.return_value.class
+    end
+
+    def test_class_basic
+      lst = Compiler.compile( "@@var" )
+      assert_equal ClassVariable , lst.class
+      assert_equal :var , lst.name
+    end
+
+    def test_class_return
+      lst = Compiler.compile( "return @@var" )
+      assert_equal ClassVariable , lst.return_value.class
+    end
   end
 end

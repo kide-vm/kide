@@ -92,6 +92,15 @@ module Vool
     def on_lvar expression
       LocalVariable.new(expression.children.first)
     end
+
+    def on_ivar expression
+      InstanceVariable.new(expression.children.first.to_s[1 .. -1].to_sym)
+    end
+
+    def on_cvar expression
+      ClassVariable.new(expression.children.first.to_s[2 .. -1].to_sym)
+    end
+
     def on_lvasgn expression
       name = expression.children[0]
       value = process(expression.children[1])
