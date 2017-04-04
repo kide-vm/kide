@@ -12,5 +12,14 @@ module Vool
       assert_equal :foo , lst.name
     end
 
+    def test_instance
+      lst = Compiler.compile( "@foo = bar")
+      assert_equal InstanceAssignment , lst.class
+    end
+    def test_instance_name
+      lst = Compiler.compile( "@foo = bar")
+      assert_equal :foo , lst.name
+    end
+
   end
 end

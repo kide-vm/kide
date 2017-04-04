@@ -94,7 +94,7 @@ module Vool
     end
 
     def on_ivar expression
-      InstanceVariable.new(expression.children.first.to_s[1 .. -1].to_sym)
+      InstanceVariable.new(instance_name(expression.children.first))
     end
 
     def on_cvar expression
@@ -109,10 +109,17 @@ module Vool
       ModuleName.new(expression.children[1])
     end
 
+    # Assignements
     def on_lvasgn expression
       name = expression.children[0]
       value = process(expression.children[1])
       LocalAssignment.new(name,value)
+    end
+
+    def on_ivasgn expression
+      name = expression.children[0]
+      value = process(expression.children[1])
+      InstanceAssignment.new(instance_name(name),value)
     end
 
     def on_return statement
@@ -166,10 +173,6 @@ module Vool
       w
     end
 
-    def on_receiver expression
-      process expression.children.first
-    end
-
     def on_send statement
       kids = statement.children.dup
       receiver = kids.shift
@@ -197,14 +200,6 @@ module Vool
       w
     end
 
-    # def on_name statement
-    #   NameStatement.new(statement.children.first)
-    # end
-
-    # def on_class_name expression
-    #   ClassStatement.new(expression.children.first)
-    # end
-
     def on_assignment statement
       name , value = *statement
       w = Assignment.new()
@@ -214,6 +209,10 @@ module Vool
     end
 
     private
+
+    def instance_name sym
+      sym.to_s[1 .. -1].to_sym
+    end
 
     def get_name( statement )
       return nil unless statement

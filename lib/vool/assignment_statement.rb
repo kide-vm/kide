@@ -7,5 +7,6 @@ module Vool
   end
   class LocalAssignment < Assignment
   end
-  
+  class InstanceAssignment < Assignment
+  end
 end
