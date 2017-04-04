@@ -99,9 +99,8 @@ module Vool
     end
 
     def on_return statement
-      w = ReturnStatement.new()
-      w.return_value = process(statement.children.first)
-      w
+      return_value = process(statement.children.first)
+      ReturnStatement.new( return_value )
     end
 
     def on_function  statement
