@@ -5,10 +5,17 @@ module Vool
 
     # "free standing" local can not be tested as it will result in send
     # in other words ther is no way of knowing if a name is variable or method
-    # def test_send_to_local
-    #   lst = Compiler.compile( "foo.bar")
-    #   assert_equal SendStatement , lst.class
-    # end
+    # one needs an assignemnt first, to "tell" the parser it's a local
+    def test_local_basic
+      lst = Compiler.compile( "foo = 1 ; foo")
+      assert_equal ScopeStatement , lst.class
+      assert_equal LocalVariable , lst.statements[1].class
+    end
+
+    def test_local_nane
+      lst = Compiler.compile( "foo = 1 ; foo")
+      assert_equal LocalVariable , lst.statements[1].class
+    end
 
     def test_instance_basic
       lst = Compiler.compile( "@var" )
