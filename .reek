@@ -6,24 +6,28 @@ DuplicateMethodCall:
   max_calls: 2
 FeatureEnvy:
   exclude:
+    - "Vool::Compiler"
     - "Risc::Interpreter"
     - "Risc::Assembler"
     - "Arm::Translator"
     - "Vm::ToCode"
 TooManyMethods:
   exclude:
+    - "Vool::Compiler"
     - "Risc::Interpreter"
     - "Risc::Assembler"
     - "Arm::Translator"
     - "Vm::ToCode"
 UtilityFunction:
   exclude:
+    - "Vool::Compiler"
     - "Risc::Interpreter"
     - "Risc::Assembler"
     - "Arm::Translator"
     - "Vm::ToCode"
 UncommunicativeMethodName:
   exclude:
+    - "Vool::Compiler"
     - "Risc::Assembler"
     - "Risc::Interpreter"
     - "Arm::Translator"
