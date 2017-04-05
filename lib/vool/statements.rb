@@ -13,6 +13,9 @@ module Vool
     def first
       @statements.first
     end
+    def length
+      @statements.length
+    end
   end
 
   class ScopeStatement < Statements

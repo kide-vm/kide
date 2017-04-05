@@ -190,8 +190,9 @@ module Vool
     private
 
     def simplify_condition( cond )
-      return unless cond.condition.is_a?(ScopeStatement)
-      cond.condition = cond.condition.first if cond.condition.single?
+      condition = cond.condition
+      return unless condition.is_a?(ScopeStatement)
+      cond.condition = condition.first if condition.single?
     end
 
     def instance_name sym
