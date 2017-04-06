@@ -3,26 +3,28 @@ require_relative "helper"
 module Vool
   class TestMethodStatement < MiniTest::Test
 
-    def setup
-      input = "def tryout(arg1, arg2) ; end "
+    def basic_setup()
+      input = "def tryout(arg1, arg2) ; true ; false ; end "
       @lst = Compiler.compile( input )
     end
-
-    def test_compile_method
+    def test_method
+      basic_setup
       assert_equal MethodStatement , @lst.class
     end
 
-    def test_compile_method_name
+    def test_method_name
+      basic_setup
       assert_equal :tryout , @lst.name
     end
 
-    def test_compile_method_super
+    def test_method_args
+      basic_setup
       assert_equal [:arg1, :arg2] , @lst.args
     end
-
-    def test_compile_method_body
-      assert_equal [] , @lst.body
+    def test_basic_body
+      basic_setup
+      assert_equal ScopeStatement , @lst.body.class
+      assert_equal 2 , @lst.body.length
     end
-
   end
 end

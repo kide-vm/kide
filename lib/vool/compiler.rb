@@ -19,7 +19,7 @@ module Vool
     def on_def( statement )
       name , args , body = *statement
       arg_array = process_all( args )
-      MethodStatement.new( name , arg_array , body )
+      MethodStatement.new( name , arg_array , process(body) )
     end
 
     def on_arg( arg )
