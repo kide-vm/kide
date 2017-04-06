@@ -5,7 +5,7 @@ module Vool
 
     def setup
       input = "class Tryout < Base;end"
-      @lst = Compiler.compile( input )
+      @lst = RubyCompiler.compile( input )
     end
 
     def test_compile_class

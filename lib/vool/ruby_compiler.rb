@@ -1,5 +1,13 @@
 module Vool
-  class Compiler < AST::Processor
+  # This RubyCompiler compiles incoming ruby (string) into vools internal representation
+  # with the help of the parser gem. The parser outputs an abstract ast (nodes)
+  # that get transformed into concrete, specific classes.
+  #
+  # As a second step, it extracts classes, methods, ivars and locals.
+  #
+  # The next step is then to normalize the code and then finally to compile
+  # to the next level down, MOM (Minimal Object Machine)
+  class RubyCompiler < AST::Processor
 
     def self.compile(input)
       ast = Parser::Ruby22.parse( input )

@@ -1,2 +1,2 @@
 require_relative "helper"
-require_relative "test_compiler"
+require_relative "test_ruby_compiler"

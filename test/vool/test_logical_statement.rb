@@ -4,7 +4,7 @@ module Vool
   class TestLogical < MiniTest::Test
 
     def simple
-      Compiler.compile( "@a and @b")
+      RubyCompiler.compile( "@a and @b")
     end
     def test_simple
       lst = simple
@@ -24,16 +24,16 @@ module Vool
     end
 
     def test_or
-      lst = Compiler.compile( "@a or @b")
+      lst = RubyCompiler.compile( "@a or @b")
       assert_equal :or , lst.name
     end
 
     def test_or2
-      lst = Compiler.compile( "@a || @b")
+      lst = RubyCompiler.compile( "@a || @b")
       assert_equal :or , lst.name
     end
     def test_and2
-      lst = Compiler.compile( "@a && @b")
+      lst = RubyCompiler.compile( "@a && @b")
       assert_equal :and , lst.name
     end
   end

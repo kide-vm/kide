@@ -7,15 +7,15 @@ module Vool
       "if(10 < 12) ; true ; end"
     end
     def test_if_basic
-      lst = Compiler.compile( basic_if )
+      lst = RubyCompiler.compile( basic_if )
       assert_equal IfStatement , lst.class
     end
     def test_if_basic_cond
-      lst = Compiler.compile( basic_if )
+      lst = RubyCompiler.compile( basic_if )
       assert_equal SendStatement , lst.condition.class
     end
     def test_if_basic_branches
-      lst = Compiler.compile( basic_if )
+      lst = RubyCompiler.compile( basic_if )
       assert_equal TrueStatement , lst.if_true.class
       assert_nil lst.if_false
     end
@@ -24,15 +24,15 @@ module Vool
       "if(false) ; true ; else ; false; end"
     end
     def test_if_double
-      lst = Compiler.compile( double_if )
+      lst = RubyCompiler.compile( double_if )
       assert_equal IfStatement , lst.class
     end
     def test_if_double_cond
-      lst = Compiler.compile( double_if )
+      lst = RubyCompiler.compile( double_if )
       assert_equal FalseStatement , lst.condition.class
     end
     def test_if_double_branches
-      lst = Compiler.compile( double_if )
+      lst = RubyCompiler.compile( double_if )
       assert_equal TrueStatement , lst.if_true.class
       assert_equal FalseStatement, lst.if_false.class
     end
@@ -41,15 +41,15 @@ module Vool
       "true if(false)"
     end
     def test_if_reverse
-      lst = Compiler.compile( reverse_if )
+      lst = RubyCompiler.compile( reverse_if )
       assert_equal IfStatement , lst.class
     end
     def test_if_reverse_cond
-      lst = Compiler.compile( reverse_if )
+      lst = RubyCompiler.compile( reverse_if )
       assert_equal FalseStatement , lst.condition.class
     end
     def test_if_reverse_branches
-      lst = Compiler.compile( reverse_if )
+      lst = RubyCompiler.compile( reverse_if )
       assert_equal TrueStatement , lst.if_true.class
       assert_nil lst.if_false
     end
@@ -58,15 +58,15 @@ module Vool
       "true unless(false)"
     end
     def test_if_reverse
-      lst = Compiler.compile( reverse_unless )
+      lst = RubyCompiler.compile( reverse_unless )
       assert_equal IfStatement , lst.class
     end
     def test_if_reverse_cond
-      lst = Compiler.compile( reverse_unless )
+      lst = RubyCompiler.compile( reverse_unless )
       assert_equal FalseStatement , lst.condition.class
     end
     def test_if_reverse_branches
-      lst = Compiler.compile( reverse_unless )
+      lst = RubyCompiler.compile( reverse_unless )
       assert_nil  lst.if_true
       assert_equal TrueStatement ,lst.if_false.class
     end
@@ -75,15 +75,15 @@ module Vool
       "false ? true : false"
     end
     def test_if_ternary
-      lst = Compiler.compile( ternary )
+      lst = RubyCompiler.compile( ternary )
       assert_equal IfStatement , lst.class
     end
     def test_if_ternary_cond
-      lst = Compiler.compile( ternary )
+      lst = RubyCompiler.compile( ternary )
       assert_equal FalseStatement , lst.condition.class
     end
     def test_if_ternary_branches
-      lst = Compiler.compile( ternary )
+      lst = RubyCompiler.compile( ternary )
       assert_equal TrueStatement , lst.if_true.class
       assert_equal FalseStatement, lst.if_false.class
     end

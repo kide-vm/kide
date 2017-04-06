@@ -5,7 +5,7 @@ module Vool
 
     def basic_setup()
       input = "def tryout(arg1, arg2) ; true ; false ; end "
-      @lst = Compiler.compile( input )
+      @lst = RubyCompiler.compile( input )
     end
     def test_method
       basic_setup

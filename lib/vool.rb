@@ -18,4 +18,4 @@ require_relative "vool/send_statement"
 require_relative "vool/variables"
 require_relative "vool/while_statement"
 
-require_relative "vool/compiler"
+require_relative "vool/ruby_compiler"
