@@ -1,12 +1,12 @@
 module Vool
   class IntegerStatement < Statement
-    attr_accessor :value
+    attr_reader :value
     def initialize(value)
       @value = value
     end
   end
   class FloatStatement < Statement
-    attr_accessor :value
+    attr_reader :value
     def initialize(value)
       @value = value
     end
@@ -22,7 +22,7 @@ module Vool
   class SuperStatement < Statement
   end
   class StringStatement < Statement
-    attr_accessor :value
+    attr_reader :value
     def initialize(value)
       @value = value
     end

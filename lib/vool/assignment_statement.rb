@@ -1,6 +1,6 @@
 module Vool
   class Assignment < Statement
-    attr_accessor :name , :value
+    attr_reader :name , :value
     def initialize(name , value )
       @name , @value = name , value
     end

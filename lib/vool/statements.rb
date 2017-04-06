@@ -1,6 +1,6 @@
 module Vool
   class Statements < Statement
-    attr_accessor :statements
+    attr_reader :statements
     def initialize(statements)
       @statements = statements
     end

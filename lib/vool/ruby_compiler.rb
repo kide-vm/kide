@@ -137,30 +137,22 @@ module Vool
 
     def on_while statement
       condition , statements = *statement
-      w = WhileStatement.new( process(condition) )
-      simplify_condition(w)
-      w.statements = process(statements)
-      w
+      WhileStatement.new( process(condition) , process(statements))
     end
 
     def on_if statement
       condition , if_true , if_false = *statement
-      w = IfStatement.new( process(condition) )
-      simplify_condition(w)
-      w.if_true = process(if_true)
-      w.if_false = process(if_false)
-      w
+      if_true = process(if_true)
+      if_false = process(if_false)
+      IfStatement.new( process(condition) , if_true , if_false )
     end
 
     def on_send statement
       kids = statement.children.dup
-      receiver = kids.shift
+      receiver = process(kids.shift) || SelfStatement.new
       name = kids.shift
-      arguments = kids
-      w = SendStatement.new( name )
-      w.receiver = process(receiver) || SelfStatement.new
-      w.arguments = process_all(arguments)
-      w
+      arguments = process_all(kids)
+      SendStatement.new( name , receiver , arguments )
     end
 
     def on_and expression
@@ -173,18 +165,14 @@ module Vool
 
     # this is a call to super without args (z = zero arity)
     def on_zsuper exp
-      w = SendStatement.new( nil )
-      w.receiver = SuperStatement.new
-      w
+      SendStatement.new( nil , SuperStatement.new )
     end
 
     # this is a call to super with args and
     # same name as current method, which is set later
     def on_super( statement )
-      w = SendStatement.new( nil )
-      w.receiver = SuperStatement.new
-      w.arguments = process_all(statement.children)
-      w
+      arguments = process_all(statement.children)
+      SendStatement.new( nil , SuperStatement.new , arguments)
     end
 
     def on_assignment statement
@@ -196,12 +184,6 @@ module Vool
     end
 
     private
-
-    def simplify_condition( cond )
-      condition = cond.condition
-      return unless condition.is_a?(ScopeStatement)
-      cond.condition = condition.first if condition.single?
-    end
 
     def instance_name sym
       sym.to_s[1 .. -1].to_sym
