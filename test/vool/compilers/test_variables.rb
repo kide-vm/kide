@@ -23,7 +23,7 @@ module Vool
         assert_equal :var , vars.first
       end
 
-      def ttest_assign_collect
+      def test_assign_collect
         vars = compile( "@var = 5" )
         assert_equal :var , vars.first
       end
