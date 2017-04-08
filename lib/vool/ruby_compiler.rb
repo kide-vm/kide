@@ -1,17 +1,4 @@
-require_relative "statements/array_statement"
-require_relative "statements/assignment_statement"
-require_relative "statements/basic_values"
-require_relative "statements/class_statement"
-require_relative "statements/hash_statement"
-require_relative "statements/if_statement"
-require_relative "statements/logical_statement"
-require_relative "statements/method_statement"
-
-require_relative "statements/return_statement"
-require_relative "statements/statements"
-require_relative "statements/send_statement"
-require_relative "statements/variables"
-require_relative "statements/while_statement"
+require_relative "statement"
 
 module Vool
   # This RubyCompiler compiles incoming ruby (string) into vools internal representation
@@ -36,7 +23,8 @@ module Vool
 
     def on_class( statement )
       name , sup , body = *statement
-      ClassStatement.new( get_name(name) , get_name(sup) , process_all(body) )
+      puts "CLASS #{statement}"
+      ClassStatement.new( get_name(name) , get_name(sup) , process(body) )
     end
 
     def on_def( statement )
