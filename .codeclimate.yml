@@ -3,10 +3,7 @@ engines:
   bundler-audit:
     enabled: true
   duplication:
-    enabled: true
-    checks:
-      Similar Code:
-        enabled: false
+    enabled: false
     config:
       languages:
       - ruby
