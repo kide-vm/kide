@@ -36,6 +36,10 @@ module Vool
     # used to collect frame information
     def add_local( array )
     end
+
+    # used for method creation
+    def set_class( clazz )
+    end
   end
 end
 

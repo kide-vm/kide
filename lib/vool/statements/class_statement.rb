@@ -22,9 +22,8 @@ module Vool
 #        ivar_hash = Passes::TypeCollector.new.collect(body)
 #        @clazz.set_instance_type( Parfait::Type.for_hash( clazz ,  ivar_hash ) )
       end
+      body.collect([]).each {|node| node.set_class(@clazz)  }
       body.create_objects
-#      methods = create_methods(clazz , body)
-#      compile_methods(clazz,methods)
     end
 
   end

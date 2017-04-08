@@ -14,7 +14,12 @@ module Vool
       test.get_method(:meth)
     end
 
-    def pest_creates_method_in_class
+    def test_method_statement_has_class
+      clazz = VoolCompiler.compile in_Test("def meth; @ivar ;end")
+      assert_equal Parfait::Class , clazz.body.clazz.class
+    end
+
+    def test_creates_method_in_class
       method = create_method
       assert method , "No method created"
     end
