@@ -12,6 +12,10 @@ module Vool
 
   class InstanceVariable < Statement
     include Named
+    # used to collect type information
+    def add_ivar( array )
+      array << @name
+    end
   end
 
   class ClassVariable < Statement
