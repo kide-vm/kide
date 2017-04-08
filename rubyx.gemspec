@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = 'salama'
-  s.version = '0.5.0'
+  s.name = 'rubyx'
+  s.version = '0.6.0'
 
   s.authors = ['Torsten Ruger']
   s.email = 'torsten@villataika.fi'

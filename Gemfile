@@ -1,12 +1,13 @@
-source "http://rubygems.org"
+source "https://rubygems.org"
 
-gem "salama" , :path => "."
-gem "ast" , :github => "whitequark/ast" , branch: :master
+gem "rubyx" , :path => "."
+#gem "ast"
+#, :github => "whitequark/ast" , branch: :master
 
 gem "rake"
 gem "rye"
 
-gem "salama-object-file" , :github => "ruby-x/rubyx-object-file"
+gem "salama-object-file" , :git => "https://github.com/ruby-x/rubyx-object-file"
 #gem "salama-object-file" , :path => "../salama-object-file"
 
 gem "codeclimate-test-reporter", require: nil

@@ -1,37 +1,31 @@
 GIT
-  remote: git://github.com/ruby-x/rubyx-object-file.git
+  remote: https://github.com/ruby-x/rubyx-object-file
   revision: aab01b23108f10063433b1ef9f703ff2927d0b80
   specs:
     salama-object-file (0.3.0)
 
-GIT
-  remote: git://github.com/whitequark/ast.git
-  revision: 93c43433ec4d4344485eb4ea6f8948925f092af1
-  branch: master
-  specs:
-    ast (2.3.0)
-
 PATH
   remote: .
   specs:
-    salama (0.5.0)
+    rubyx (0.6.0)
       parser (~> 2.3.0)
       salama-object-file (~> 0.3)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     annoy (0.5.6)
       highline (>= 1.5.0)
-    codeclimate-test-reporter (1.0.4)
-      simplecov
+    ast (2.3.0)
+    codeclimate-test-reporter (1.0.8)
+      simplecov (<= 0.13)
     coderay (1.1.1)
     docile (1.1.5)
     drydock (0.6.9)
-    ffi (1.9.14)
-    ffi (1.9.14-x64-mingw32)
+    ffi (1.9.18)
+    ffi (1.9.18-x64-mingw32)
     formatador (0.2.5)
-    guard (2.14.0)
+    guard (2.14.1)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
       lumberjack (~> 1.0)
@@ -45,12 +39,12 @@ GEM
       guard-compat (~> 1.2)
       minitest (>= 3.0)
     highline (1.7.8)
-    json (2.0.2)
+    json (2.0.3)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    lumberjack (1.0.10)
+    lumberjack (1.0.11)
     method_source (0.8.2)
     minitest (5.10.1)
     minitest-color (0.0.2)
@@ -58,7 +52,7 @@ GEM
     nenv (0.3.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
-    net-ssh (3.2.0)
+    net-ssh (4.1.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
@@ -68,11 +62,11 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    rake (11.3.0)
+    rake (12.0.0)
     rb-fsevent (0.9.8)
-    rb-inotify (0.9.7)
+    rb-inotify (0.9.8)
       ffi (>= 0.5.0)
-    rb-readline (0.5.3)
+    rb-readline (0.5.4)
     ruby_dep (1.5.0)
     rye (0.9.13)
       annoy
@@ -82,7 +76,7 @@ GEM
       net-ssh (>= 2.0.13)
       sysinfo (>= 0.8.1)
     shellany (0.0.1)
-    simplecov (0.12.0)
+    simplecov (0.13.0)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
@@ -99,17 +93,16 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
-  ast!
   codeclimate-test-reporter
   guard
   guard-minitest
   minitest-color
   rake
   rb-readline
+  rubyx!
   rye
-  salama!
   salama-object-file!
   thor (= 0.19.1)
 
 BUNDLED WITH
-   1.13.5
+   1.14.6
