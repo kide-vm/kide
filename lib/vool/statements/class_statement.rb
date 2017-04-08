@@ -16,11 +16,14 @@ module Vool
       @clazz = Parfait.object_space.get_class_by_name(@name )
       if(@clazz)
         #FIXME super class check with "sup"
-      else #existing class, don't overwrite type (parfait only?)
+        #existing class, don't overwrite type (parfait only?)
+      else
         @clazz = Parfait.object_space.create_class(@name , @super_class_name )
-#FIXME
-#        ivar_hash = Passes::TypeCollector.new.collect(body)
-#        @clazz.set_instance_type( Parfait::Type.for_hash( clazz ,  ivar_hash ) )
+        vars = []
+        @body.collect([]).each { |node| node.add_ivar(vars) }
+        ivar_hash = {}
+        vars.each { |var| ivar_hash[var] = :Object }
+        @clazz.set_instance_type( Parfait::Type.for_hash( @clazz ,  ivar_hash ) )
       end
       body.collect([]).each {|node| node.set_class(@clazz)  }
       body.create_objects

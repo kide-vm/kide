@@ -7,7 +7,6 @@ module Vool
     end
 
     def collect(arr)
-      @args.each{ |arg| arg.collect(arr)}
       @body.collect(arr)
       super
     end
@@ -28,22 +27,15 @@ module Vool
 
     def make_type(  )
       type_hash = {}
-      @args.each do |arg|
-        puts "ARG #{arg}"
-        type_hash[arg.children[0]] = :Object
-      end
+      @args.each {|arg| type_hash[arg.children[0]] = :Object }
       Parfait::NamedList.type_for( type_hash )
     end
 
     def make_locals
       type_hash = {}
       vars = []
-      @body.collect([]).each do |node|
-        node.add_local(vars)
-      end
-      vars.each do |var|
-        type_hash[var] = :Object
-      end
+      @body.collect([]).each { |node| node.add_local(vars) }
+      vars.each { |var| type_hash[var] = :Object }
       Parfait::NamedList.type_for( type_hash )
     end
 
