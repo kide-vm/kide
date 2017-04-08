@@ -4,6 +4,10 @@ module Vool
     def initialize(name , value )
       @name , @value = name , value
     end
+    def collect(arr)
+      @value.collect(arr)
+      super
+    end
   end
   class LocalAssignment < Assignment
   end

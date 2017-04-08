@@ -5,5 +5,10 @@ module Vool
     def initialize(value)
       @return_value = value
     end
+
+    def collect(arr)
+      @return_value.collect(arr)
+      super
+    end
   end
 end

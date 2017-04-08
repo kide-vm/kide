@@ -13,5 +13,11 @@ module Vool
       @condition = @condition.first if @condition.single?
     end
 
+    def collect(arr)
+      @condition.collect(arr)
+      @statements.collect(arr)
+      super
+    end
+
   end
 end

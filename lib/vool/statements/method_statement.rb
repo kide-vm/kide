@@ -6,5 +6,11 @@ module Vool
       @name , @args , @body = name , args , (body || [])
     end
 
+    def collect(arr)
+      @args.collect(arr)
+      @body.collect(arr) 
+      super
+    end
+
   end
 end

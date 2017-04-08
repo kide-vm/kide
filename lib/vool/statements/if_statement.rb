@@ -9,6 +9,12 @@ module Vool
       simplify_condition
     end
 
+    def collect(arr)
+      @if_true.collect(arr)
+      @if_false.collect(arr)
+      super
+    end
+
     def simplify_condition
       return unless @condition.is_a?(ScopeStatement)
       @condition = @condition.first if @condition.single?

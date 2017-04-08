@@ -16,6 +16,11 @@ module Vool
     def length
       @statements.length
     end
+
+    def collect(arr)
+      @statements.each { |s| s.collect(arr) }
+      super
+    end
   end
 
   class ScopeStatement < Statements
