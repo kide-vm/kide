@@ -10,6 +10,10 @@ module Vool
     end
   end
   class LocalAssignment < Assignment
+    # used to collect frame information
+    def add_local( array )
+      array << @name
+    end
   end
   class InstanceAssignment < Assignment
     # used to collect type information

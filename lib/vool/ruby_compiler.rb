@@ -23,7 +23,6 @@ module Vool
 
     def on_class( statement )
       name , sup , body = *statement
-      puts "CLASS #{statement}"
       ClassStatement.new( get_name(name) , get_name(sup) , process(body) )
     end
 
