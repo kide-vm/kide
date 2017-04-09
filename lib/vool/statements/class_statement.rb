@@ -4,7 +4,11 @@ module Vool
     attr_reader :clazz
 
     def initialize( name , supe , body)
-      @name , @super_class_name , @body = name , supe , (body || [])
+      @name , @super_class_name , @body = name , supe , body
+      unless( body.is_a?(ScopeStatement))
+        @body = ScopeStatement.new([])
+        @body.statements << body if body
+      end
     end
 
     def collect(arr)
@@ -25,6 +29,7 @@ module Vool
         vars.each { |var| ivar_hash[var] = :Object }
         @clazz.set_instance_type( Parfait::Type.for_hash( @clazz ,  ivar_hash ) )
       end
+      puts "BODY is #{body.class}"
       body.collect([]).each {|node| node.set_class(@clazz)  }
       body.create_objects
     end
