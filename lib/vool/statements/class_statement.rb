@@ -29,7 +29,6 @@ module Vool
         vars.each { |var| ivar_hash[var] = :Object }
         @clazz.set_instance_type( Parfait::Type.for_hash( @clazz ,  ivar_hash ) )
       end
-      puts "BODY is #{body.class}"
       body.collect([]).each {|node| node.set_class(@clazz)  }
       body.create_objects
     end

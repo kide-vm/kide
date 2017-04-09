@@ -27,7 +27,7 @@ module Vool
 
     def make_type(  )
       type_hash = {}
-      @args.each {|arg| type_hash[arg.children[0]] = :Object }
+      @args.each {|arg| type_hash[arg] = :Object }
       Parfait::NamedList.type_for( type_hash )
     end
 

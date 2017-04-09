@@ -21,6 +21,10 @@ module Vool
       @statements.each { |s| s.collect(arr) }
       super
     end
+
+    def create_objects
+      @statements.each{ |s| s.create_objects }
+    end
   end
 
   class ScopeStatement < Statements
