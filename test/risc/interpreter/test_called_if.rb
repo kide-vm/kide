@@ -3,7 +3,7 @@ require_relative "helper"
 module Risc
   class IfCalledTest < MiniTest::Test
     include Ticker
-    include Compiling
+    include CleanCompile
 
     def setup
       @string_input = <<HERE

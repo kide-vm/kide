@@ -26,7 +26,7 @@ module Risc
 
   module Statements
     include AST::Sexp
-    include Compiling
+    include CleanCompile
     include SpaceHack
 
     def setup
