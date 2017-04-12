@@ -1,4 +1,5 @@
 module Vool
+
   class Assignment < Statement
     attr_reader :name , :value
     def initialize(name , value )
@@ -10,10 +11,15 @@ module Vool
     end
   end
 
-  class InstanceAssignment < Assignment
+  class IvarAssignment < Assignment
     # used to collect type information
     def add_ivar( array )
       array << @name
     end
+
+    def to_mom( method )
+      Mom::SlotConstant.new([:message , :self , @name] , @value)
+    end
+
   end
 end

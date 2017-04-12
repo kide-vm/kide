@@ -14,7 +14,7 @@ module Vool
 
     def test_instance
       lst = RubyCompiler.compile( "@foo = bar")
-      assert_equal InstanceAssignment , lst.class
+      assert_equal IvarAssignment , lst.class
     end
     def test_instance_name
       lst = RubyCompiler.compile( "@foo = bar")

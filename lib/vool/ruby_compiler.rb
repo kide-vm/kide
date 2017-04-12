@@ -129,7 +129,7 @@ module Vool
     def on_ivasgn expression
       name = expression.children[0]
       value = process(expression.children[1])
-      InstanceAssignment.new(instance_name(name),value)
+      IvarAssignment.new(instance_name(name),value)
     end
 
     def on_return statement

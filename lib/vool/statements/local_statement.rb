@@ -7,7 +7,7 @@ module Vool
     end
 
     def to_mom( method )
-      Mom::SlotConstant.new([:message , :self , @name] , @value)
+      Mom::SlotConstant.new([:message , :frame , @name] , @value)
     end
   end
 
