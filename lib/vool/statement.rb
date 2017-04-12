@@ -24,6 +24,12 @@ module Vool
     def collect(arr)
       arr << self
     end
+
+    def to_mom( _ )
+      # temporary warning to find unimplemented kids
+      raise "Not implemented for #{self}"
+    end
+
     # create corresponding parfait objects, ie classes, types, methods
     # mainly implemented by class/method statement
     def create_objects

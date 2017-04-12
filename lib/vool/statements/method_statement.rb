@@ -3,7 +3,20 @@ module Vool
     attr_reader :name, :args , :body , :clazz
 
     def initialize( name , args , body)
-      @name , @args , @body = name , args , (body || [])
+      @name , @args , @body = name , args , body
+      unless( body.is_a?(ScopeStatement))
+        @body = ScopeStatement.new([])
+        @body.statements << body if body
+      end
+
+    end
+
+    # compile to mom instructions. methods themselves do no result in instructions (yet)
+    # instead the resulting instruction tree is saved into the method object that
+    #  represents the method
+    def to_mom( _ )
+      method = @clazz.get_method( @name )
+      @body.to_mom(method)
     end
 
     def collect(arr)

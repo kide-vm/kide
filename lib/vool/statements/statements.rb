@@ -4,6 +4,14 @@ module Vool
     def initialize(statements)
       @statements = statements
     end
+
+    # create machine instructions
+    def to_mom( method )
+      @statements.collect do |statement|
+        statement.to_mom( method )
+      end
+    end
+
     def empty?
       @statements.empty?
     end
