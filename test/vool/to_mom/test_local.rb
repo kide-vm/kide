@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestAssignemnt < MiniTest::Test
+  class TestLocalMom < MiniTest::Test
     include CompilerHelper
 
     def setup
