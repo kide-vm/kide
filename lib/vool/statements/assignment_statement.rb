@@ -14,10 +14,12 @@ module Vool
     def add_local( array )
       array << @name
     end
+
     def to_mom( method )
-      Mom::SlotLoad.new
+      Mom::SlotConstant.new([:message , :self , @name] , @value)
     end
   end
+        
   class InstanceAssignment < Assignment
     # used to collect type information
     def add_ivar( array )
