@@ -16,7 +16,8 @@ module Vool
 
     def test_method_has_source
       method = create_method
-      assert_equal Vool::InstanceVariable ,  method.source.class
+      assert_equal ScopeStatement ,  method.source.class
+      assert_equal InstanceVariable ,  method.source.statements.first.class
     end
 
     def test_method_has_no_locals
@@ -35,11 +36,25 @@ module Vool
       assert_equal Rubyx::RubyMethod , method.class
     end
 
+
+    def test_creates_method_statement_in_class
+      clazz = VoolCompiler.compile in_Test("def meth; @ivar ;end")
+      assert_equal MethodStatement , clazz.body.statements.first.class
+    end
+
+    def test_parfait_class_creation
+      clazz = VoolCompiler.compile in_Test("def meth; @ivar ;end")
+      assert_equal Parfait::Class , clazz.body.statements.first.clazz.class
+    end
+
     def test_method_statement_has_class
       clazz = VoolCompiler.compile in_Test("def meth; @ivar ;end")
-      assert_equal ScopeStatement , clazz.body.class
-      assert_equal MethodStatement , clazz.body.statements.first.class
-      assert_equal Parfait::Class , clazz.body.statements.first.clazz.class
+      assert clazz.body.statements.first.clazz
+    end
+
+    def test_method_statement_has_class_in_main
+      clazz = VoolCompiler.compile as_main("def meth; @ivar ;end")
+      assert clazz.body.statements.first.clazz
     end
 
     def test_method_has_one_local

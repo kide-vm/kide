@@ -32,6 +32,11 @@ module Vool
       assert_equal clazz , space_class
     end
 
+    def test_class_body_is_scope
+      clazz = VoolCompiler.compile in_Test("def meth; @ivar ;end")
+      assert_equal ScopeStatement , clazz.body.class
+    end
+
     def test_creates_class_without_deriviation
       VoolCompiler.compile "class Testing ; end"
       clazz = Parfait.object_space.get_class_by_name(:Testing)

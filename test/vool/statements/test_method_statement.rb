@@ -26,5 +26,15 @@ module Vool
       assert_equal ScopeStatement , @lst.body.class
       assert_equal 2 , @lst.body.length
     end
+    def test_body_is_scope_one_statement
+      input = "def tryout(arg1, arg2) ; true  ; end "
+      lst = RubyCompiler.compile( input )
+      assert_equal ScopeStatement , lst.body.class
+    end
+    def test_body_is_scope_zero_statement
+      input = "def tryout(arg1, arg2) ;  ; end "
+      lst = RubyCompiler.compile( input )
+      assert_equal ScopeStatement , lst.body.class
+    end
   end
 end
