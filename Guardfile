@@ -1,12 +1,17 @@
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
-guard :minitest do
-  # with Minitest::Unit
+guard :minitest do   # with Minitest::Unit
+
+  # if any test file changes, run that test
   watch(%r{^test/(.*)\/?test_(.*)\.rb$})
+
+  # if any helper in any directory changes, run test_all in the same directory
   watch(%r{^test/(.*/)?helper.rb$})     { |m| "test/#{m[1]}test_all.rb" }
+
+  # if any file XX in any directory in the /lib changes, run a test_XX in the
+  # shadow directory in the /test
   watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { |m| "test/#{m[1]}test_#{m[2]}.rb" }
-  watch(%r{^test/test_helper\.rb$})      { 'test' }
 
   #Arm instructions
   watch(%r{^lib/arm/instructions/(.+)_instruction.rb}) { |m| "test/arm/test_#{m[1]}.rb" }
