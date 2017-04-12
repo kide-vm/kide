@@ -5,3 +5,5 @@ module Mom
   end
 
 end
+
+require_relative "slot_load"

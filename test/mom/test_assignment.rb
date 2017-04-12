@@ -4,8 +4,14 @@ module Mom
   class TestAssignemnt < MiniTest::Test
     include CompilerHelper
 
-    def test_class_exists
-      assert Instruction.new
+    def setup
+      Risc.machine.boot
     end
+
+    def compile_first input
+      lst = Vool::VoolCompiler.compile in_Space( input )
+      lst.to_mom( nil )
+    end
+
   end
 end

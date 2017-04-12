@@ -14,6 +14,9 @@ module Vool
     def add_local( array )
       array << @name
     end
+    def to_mom( method )
+      Mom::SlotLoad.new
+    end
   end
   class InstanceAssignment < Assignment
     # used to collect type information
