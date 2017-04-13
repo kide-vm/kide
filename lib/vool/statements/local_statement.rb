@@ -7,7 +7,12 @@ module Vool
     end
 
     def to_mom( method )
-      Mom::SlotConstant.new([:message , :frame , @name] , @value)
+      if method.args_type.variable_index(@name)
+        type = :arguments
+      else
+        type = :frame
+      end
+      Mom::SlotConstant.new([:message , type , @name] , @value)
     end
   end
 

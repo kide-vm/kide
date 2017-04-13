@@ -6,29 +6,29 @@ module Vool
 
     def setup
       Risc.machine.boot
-      @method = compile_first_method( "a = 5")
+      @stats = compile_first_method( "a = 5")
     end
 
     def test_class_compiles
-      assert_equal Mom::SlotConstant , @method.first.class , @method
+      assert_equal Mom::SlotConstant , @stats.first.class , @stats
     end
     def test_slot_is_set
-      assert @method.first.left
+      assert @stats.first.left
     end
     def test_slot_starts_at_message
-      assert_equal :message , @method.first.left[0]
+      assert_equal :message , @stats.first.left[0]
     end
     def test_slot_gets_self
-      assert_equal :frame , @method.first.left[1]
+      assert_equal :frame , @stats.first.left[1]
     end
     def test_slot_assigns_to_local
-      assert_equal :a , @method.first.left[-1]
+      assert_equal :a , @stats.first.left[-1]
     end
     def test_slot_assigns_something
-      assert @method.first.right
+      assert @stats.first.right
     end
     def test_slot_assigns_int
-      assert_equal IntegerStatement ,  @method.first.right.class
+      assert_equal IntegerStatement ,  @stats.first.right.class
     end
   end
 end

@@ -12,6 +12,10 @@ module CompilerHelper
   def as_main(statements)
     in_Space("def main ; #{statements}; end")
   end
+
+  def as_test_main( statements )
+    in_Test("def main(arg) ; #{statements}; end")    
+  end
 end
 
 
