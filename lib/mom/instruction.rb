@@ -7,3 +7,4 @@ module Mom
 end
 
 require_relative "slot_load"
+require_relative "return_sequence"
