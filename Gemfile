@@ -10,8 +10,9 @@ gem "rye"
 gem "salama-object-file" , :git => "https://github.com/ruby-x/rubyx-object-file"
 #gem "salama-object-file" , :path => "../salama-object-file"
 
-gem "codeclimate-test-reporter", require: nil
-
+group :test do
+  gem "codeclimate-test-reporter"
+end
 
 group :development do
   gem "thor" , "0.19.1"
