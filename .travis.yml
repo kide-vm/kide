@@ -1,7 +1,7 @@
 language: ruby
 sudo: false
 script:
-  - CODECLIMATE_REPO_TOKEN=f4348836cab14fdd5a2b7c9be26b9bbce45e3175144446a43a1ea21503a89dbb bundle exec test/test_all.rb
-  - CODECLIMATE_REPO_TOKEN=f4348836cab14fdd5a2b7c9be26b9bbce45e3175144446a43a1ea21503a89dbb bundle exec codeclimate-test-reporter
+  - ruby test/test_all.rb
+  - bundle exec codeclimate-test-reporter
 rvm:
   - 2.3.3

@@ -102,6 +102,7 @@ DEPENDENCIES
   rubyx!
   rye
   salama-object-file!
+  simplecov
   thor (= 0.19.1)
 
 BUNDLED WITH
