@@ -10,8 +10,14 @@
 module Parfait
   class Message < Object
 
-    attr_reader :locals , :receiver  , :return_value , :name
+    # :next_message => :Message, :receiver => :Object, :locals => :NamedList ,
+    # :return_address => :Integer, :return_value => :Integer,
+    # :caller => :Message , :name => :Word , :arguments => :NamedList
+
     attr_accessor :next_message
+    attr_reader   :receiver  , :locals
+    attr_reader   :return_address, :return_value
+    attr_reader   :caller , :name , :arguments
 
     def initialize next_m
       @next_message = next_m
