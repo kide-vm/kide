@@ -1,12 +1,12 @@
 require_relative "helper"
 
 module Vool
-  class TestLocalMom < MiniTest::Test
+  class TestReturnMom < MiniTest::Test
     include MomCompile
 
     def setup
       Risc.machine.boot
-      @stats = compile_first_method( "a = 5")
+      @stats = compile_first_method( "return 5").first
     end
 
     def test_class_compiles
@@ -18,11 +18,8 @@ module Vool
     def test_slot_starts_at_message
       assert_equal :message , @stats.first.left[0]
     end
-    def test_slot_gets_frame
-      assert_equal :frame , @stats.first.left[1]
-    end
-    def test_slot_assigns_to_local
-      assert_equal :a , @stats.first.left[-1]
+    def test_slot_gets_self
+      assert_equal :return_value , @stats.first.left[1]
     end
     def test_slot_assigns_something
       assert @stats.first.right
