@@ -7,8 +7,7 @@ gem "rubyx" , :path => "."
 gem "rake"
 gem "rye"
 
-gem "salama-object-file" , :git => "https://github.com/ruby-x/rubyx-object-file"
-#gem "salama-object-file" , :path => "../salama-object-file"
+gem "rubyx-object-file" , :git => "https://github.com/ruby-x/rubyx-object-file"
 
 group :test do
   gem "codeclimate-test-reporter" , require: false

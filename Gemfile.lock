@@ -1,15 +1,15 @@
 GIT
   remote: https://github.com/ruby-x/rubyx-object-file
-  revision: aab01b23108f10063433b1ef9f703ff2927d0b80
+  revision: bf1b3e95bde4a9110bfb713c178655b84bbbc0cc
   specs:
-    salama-object-file (0.3.0)
+    rubyx-object-file (0.3.0)
 
 PATH
   remote: .
   specs:
     rubyx (0.6.0)
       parser (~> 2.3.0)
-      salama-object-file (~> 0.3)
+      rubyx-object-file (~> 0.3)
 
 GEM
   remote: https://rubygems.org/
@@ -100,8 +100,8 @@ DEPENDENCIES
   rake
   rb-readline
   rubyx!
+  rubyx-object-file!
   rye
-  salama-object-file!
   simplecov
   thor (= 0.19.1)
 

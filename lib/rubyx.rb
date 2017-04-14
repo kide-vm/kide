@@ -8,7 +8,7 @@ AST::Node.class_eval do
   end
 end
 
-require "salama-object-file"
+require "rubyx-object-file"
 require "risc"
 require "risc/builtin/space"
 require "arm/arm_machine"
