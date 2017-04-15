@@ -1,6 +1,6 @@
 
-# A message is what is sent when you invoke a method. Args and stuff are packed up in to a Message
-# and the Message is sent to the receiver.
+# A message is what is created when a message is sent. Args and stuff are packed up in to a
+# Message and the Message is activated (by swapping it into the machine).
 
 # Part of the housekeeping (see attributes) makes messages a double linked list (next_message and
 #  caller) , and maybe surprisingly this means that we can create all messages at runtime

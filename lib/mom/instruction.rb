@@ -6,5 +6,6 @@ module Mom
 
 end
 
+require_relative "simple_call"
 require_relative "slot_load"
 require_relative "return_sequence"

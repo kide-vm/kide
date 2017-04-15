@@ -167,7 +167,7 @@ module Vool
 
     # this is a call to super without args (z = zero arity)
     def on_zsuper exp
-      SendStatement.new( nil , SuperStatement.new )
+      SendStatement.new( nil , SuperStatement.new , nil)
     end
 
     # this is a call to super with args and

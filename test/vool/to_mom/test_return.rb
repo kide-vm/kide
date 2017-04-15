@@ -34,4 +34,17 @@ module Vool
       assert_equal IntegerStatement ,  @stats.first.right.class
     end
   end
+  class TestReturnSendMom < MiniTest::Test
+    include MomCompile
+
+    def setup
+      Risc.machine.boot
+      @stats = compile_first_method( "return foo").first
+    end
+
+    def test_two_instructions_are_returned
+#need to implement send first
+#      assert_equal 2 ,  @stats.length
+    end
+  end
 end
