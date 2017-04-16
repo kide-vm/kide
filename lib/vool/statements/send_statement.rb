@@ -10,7 +10,6 @@ module Vool
     def collect(arr)
       @receiver.collect(arr)
       @arguments.each do |arg|
-        puts "ARG#{arg}"
         arg.collect(arr)
       end
       super
@@ -42,7 +41,7 @@ module Vool
       pops = [Mom::SlotConstant.new([:message , :next_message , :receiver] , @receiver) ]
       @arguments.each_with_index do |arg , index|
         arg_target = [:message , :next_message , :arguments]
-        pops << Mom::SlotConstant.new( arg_target + index , @arg)
+        pops << Mom::SlotConstant.new( arg_target << index , arg)
       end
       pops
     end
