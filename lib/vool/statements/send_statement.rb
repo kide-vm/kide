@@ -41,24 +41,21 @@ module Vool
       pops = [Mom::SlotConstant.new([:message , :next_message , :receiver] , @receiver) ]
       @arguments.each_with_index do |arg , index|
         arg_target = [:message , :next_message , :arguments]
-        pops << Mom::SlotConstant.new( arg_target << index , arg)
+        pops << Mom::SlotConstant.new( arg_target + [index] , arg)
       end
       pops
     end
 
     def call_instruction
-      if(receiver_type)
+      if(@receiver.ct_type)
         simple_call
       else
         cached_call
       end
     end
 
-    def receiver_type
-      Parfait.object_space.get_class_by_name(:Integer).instance_type
-    end
     def simple_call
-      type = receiver_type
+      type = @receiver.ct_type
       method = type.get_method(@name)
       [Mom::SimpleCall.new( method) ]
     end

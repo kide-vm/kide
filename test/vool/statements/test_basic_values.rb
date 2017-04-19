@@ -46,4 +46,32 @@ module Vool
       assert_equal 1 , lst.statements.first.value
     end
   end
+  class TestBasicTypes < MiniTest::Test
+    def setup
+      Risc.machine.boot
+    end
+    def compile( input )
+      lst = RubyCompiler.compile( input )
+      lst.ct_type
+    end
+    def test_integer
+      assert_equal "Integer_Type" , compile( "123").name
+    end
+    def test_string
+      assert_equal "Word_Type" , compile( "'string'").name
+    end
+    def test_sym
+      assert_equal "Word_Type" , compile( ":symbol").name
+    end
+    # classes fot these are not implemented in parfait yet
+    # def pest_nil
+    #   assert_equal "Nil_Type" , compile( "nil").name
+    # end
+    # def pest_false
+    #   assert_equal "False_Type" , compile( "false").name
+    # end
+    # def pest_true
+    #   assert_equal "True_Type" , compile( "true").name
+    # end
+  end
 end

@@ -30,6 +30,9 @@ module Vool
       raise "Not implemented for #{self}"
     end
 
+    def ct_type
+      nil
+    end
     # create corresponding parfait objects, ie classes, types, methods
     # mainly implemented by class/method statement
     def create_objects

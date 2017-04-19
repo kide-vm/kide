@@ -58,6 +58,22 @@ module Vool
       lst = RubyCompiler.compile( "super(1)")
       assert_nil lst.name
     end
+  end
+  class TestSendReceiverType < MiniTest::Test
 
+    def setup
+      Risc.machine.boot
+    end
+
+    def test_int_receiver
+      sent = RubyCompiler.compile( "5.mod4")
+      assert_equal Parfait::Type , sent.receiver.ct_type.class
+      assert_equal "Integer_Type" , sent.receiver.ct_type.name
+    end
+    def test_string_receiver
+      sent = RubyCompiler.compile( "'5'.putstring")
+      assert_equal Parfait::Type , sent.receiver.ct_type.class
+      assert_equal "Word_Type" , sent.receiver.ct_type.name
+    end
   end
 end

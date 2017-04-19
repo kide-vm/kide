@@ -18,11 +18,15 @@ module Vool
     def test_two_instructions_are_returned
       assert_equal 2 ,  @stats.length
     end
-    def test_receiver_class
+    def test_receiver_move_class
       assert_equal Mom::SlotConstant,  @stats.first.class
     end
     def test_receiver_move
       assert_equal :receiver,  @stats.first.left[2]
+    end
+    def test_receiver
+      assert_equal IntegerStatement,  @stats.first.right.class
+      assert_equal 5,  @stats.first.right.value
     end
     def test_call_is
       assert_equal Mom::SimpleCall,  @stats[1].class

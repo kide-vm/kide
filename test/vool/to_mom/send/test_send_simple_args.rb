@@ -15,25 +15,30 @@ module Vool
     def test_four_instructions_are_returned
       assert_equal 4 ,  @stats.length
     end
-    def test_receiver_class
-      assert_equal Mom::SlotConstant,  @stats.first.class
-    end
     def test_receiver_move
+      assert_equal Mom::SlotConstant,  @stats[0].class
       assert_equal :receiver,  @stats[0].left[2]
+    end
+    def test_receiver
+      assert_equal IntegerStatement,  @stats[0].right.class
+      assert_equal 5,  @stats[0].right.value
     end
     def test_args_one_move
       assert_equal :next_message, @stats[1].left[1]
       assert_equal :arguments,    @stats[1].left[2]
+      assert_equal 0 ,    @stats[1].left[3]
     end
     def test_args_one_int
-      assert_equal IntegerStatement,    @stats[1].right.class
+      assert_equal IntegerStatement, @stats[1].right.class
       assert_equal 1,    @stats[1].right.value
     end
     def test_args_two_move
+      assert_equal :next_message, @stats[2].left[1]
       assert_equal :arguments,  @stats[2].left[2]
+      assert_equal 1 ,  @stats[2].left[3]
     end
     def test_args_two_int
-      assert_equal IntegerStatement,    @stats[2].right.class
+      assert_equal IntegerStatement,  @stats[2].right.class
       assert_equal 2,    @stats[2].right.value
     end
     def test_call_is
