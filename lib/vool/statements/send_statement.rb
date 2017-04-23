@@ -61,6 +61,7 @@ module Vool
     end
 
     def cached_call
+      raise "Not implemented"
       [Mom::SlotConstant.new([:message , :next_message , :receiver] , @receiver) ]
     end
 
