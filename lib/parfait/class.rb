@@ -55,13 +55,23 @@ module Parfait
       @instance_type = type
     end
 
-    def super_class
+    # return the super class, but raise exception if either the super class name
+    # or the super classs is nil.
+    # Use only for non Object base class
+    def super_class!
       raise "No super_class for class #{@name}" unless @super_class_name
-      s = Parfait.object_space.get_class_by_name(@super_class_name)
+      s = super_class
       raise "superclass not found for class #{@name} (#{@super_class_name})" unless s
       s
     end
 
+    # return the super class
+    # we only store the name, and so have to resolve.
+    # Nil name means no superclass, and so nil is a valid return value
+    def super_class
+      return nil unless @super_class_name
+      Parfait.object_space.get_class_by_name(@super_class_name)
+    end
 
     # ruby 2.1 list (just for reference, keep at bottom)
     #:allocate, :new, :superclass

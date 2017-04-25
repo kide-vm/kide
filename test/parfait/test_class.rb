@@ -16,6 +16,7 @@ class TestClass < MiniTest::Test
     assert_equal :Object , @try.super_class_name
   end
   def test_new_superclass
+    assert_equal "Class(Object)" , @try.super_class!.inspect
     assert_equal "Class(Object)" , @try.super_class.inspect
   end
   def test_new_methods
@@ -31,7 +32,7 @@ class TestClass < MiniTest::Test
   def test_remove_method
     assert_equal false , @try.remove_instance_method( :foo)
   end
-  def test_add_method
+  def test_add_nil_method_raises
     assert_raises{ @try.add_instance_method(nil)}
   end
   def test_add_instance_variable_changes_type
