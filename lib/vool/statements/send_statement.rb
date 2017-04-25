@@ -56,7 +56,8 @@ module Vool
 
     def simple_call
       type = @receiver.ct_type
-      method = type.get_method(@name)
+      method = type.resolve_method(@name)
+      raise "No method #{@name} for #{type}" unless method
       [Mom::SimpleCall.new( method) ]
     end
 

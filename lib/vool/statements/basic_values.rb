@@ -33,6 +33,14 @@ module Vool
     end
   end
   class SelfStatement < Statement
+    attr_reader :clazz
+
+    def set_class(clazz)
+      @clazz = clazz
+    end
+    def ct_type
+      @clazz.instance_type
+    end
   end
   class SuperStatement < Statement
   end
