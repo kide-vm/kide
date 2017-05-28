@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/966202b0ec3e46e3ac4995dcaf640d54)](https://www.codacy.com/app/dancinglightning/rubyx?utm_source=github.com&utm_medium=referral&utm_content=ruby-x/rubyx&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/ruby-x/rubyx.svg?branch=master)](https://travis-ci.org/ruby-x/salama)
 [![Code Climate](https://codeclimate.com/github/ruby-x/rubyx/badges/gpa.svg)](https://codeclimate.com/github/ruby-x/rubyx)
 [![Test Coverage](https://codeclimate.com/github/ruby-x/rubyx/badges/coverage.svg)](https://codeclimate.com/github/ruby-x/rubyx)
