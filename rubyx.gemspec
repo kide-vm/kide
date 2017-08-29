@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.email = 'torsten@villataika.fi'
   s.extra_rdoc_files = ['README.md']
   s.files = %w(README.md LICENSE.txt Rakefile) + Dir.glob("lib/**/*")
-  s.homepage = 'https://github.com/ruby-x/salama'
+  s.homepage = 'http://ruby-x.org/'
   s.license = 'MIT'
   s.require_paths = ['lib']
   s.summary = 'RubyX is a native object vm without any c, one day possibly a ruby vm'

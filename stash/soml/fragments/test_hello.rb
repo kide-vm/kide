@@ -7,12 +7,12 @@ class TestHello < MiniTest::Test
     @string_input = <<HERE
 class Space
   int main()
-    "Hello Raisa, I am salama".putstring()
+    "Hello Raisa, I am rubyx".putstring()
   end
 end
 HERE
     @length = 37
-    @stdout = "Hello Raisa, I am salama"
+    @stdout = "Hello Raisa, I am rubyx"
     check
   end
 end

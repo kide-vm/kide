@@ -35,7 +35,7 @@ module Risc
     end
 
     def test_call_string_put
-      @input    = s(:call, :putstring,s(:arguments),s(:receiver,s(:string, "Hello Raisa, I am salama")))
+      @input    = s(:call, :putstring,s(:arguments),s(:receiver,s(:string, "Hello Raisa, I am rubyx")))
       check
     end
 

@@ -5,7 +5,7 @@ It is meant to make the transition (between vool and risc) easier to understand.
 
 Previous efforts were doing the transition without an intermediate layer. But while
 this was possible, it was more difficult than need be, and so we go to the old saying
-than everything in computing can be fixed by another layer :-)
+that everything in computing can be fixed by another layer :-)
 
 ## Recap
 
@@ -49,7 +49,7 @@ no registers
 
 ### Instruction based
 
-So a machine than language. No control structures, but compare and jump instructions.
+So a machine rather than a language. No control structures, but compare and jump instructions.
 
 No send or call, just objects and jump.
 

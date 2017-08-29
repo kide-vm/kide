@@ -35,7 +35,7 @@ module Risc
     # And so we have a chicken and egg problem. At the end of the boot function we want to have a
     # working Space object
     # But that has instance variables (List and Dictionary) and off course a class.
-    # Or more precisely in salama, a Type, that points to a class.
+    # Or more precisely in rubyx, a Type, that points to a class.
     # So we need a Type, but that has Type and Class too. hmmm
     #
     # The way out is to build empty shell objects and stuff the neccessary data into them

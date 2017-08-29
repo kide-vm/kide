@@ -15,7 +15,7 @@ module Rubyx
     str
 HERE
       @length = 37
-      @stdout = "Hello Raisa, I am salama"
+      @stdout = "Hello Raisa, I am rubyx"
       check
     end
   end

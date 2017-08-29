@@ -36,7 +36,7 @@ There is an interpreter that can interpret compiled register machine programs.
 This is very handy for debugging (an nothing else).
 
 Even more handy is the graphical interface for the interpreter, which is in it's own repository:
-salama-debugger.
+rubyx-debugger.
 
 Arm / Elf
 =========

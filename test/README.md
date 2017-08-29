@@ -7,7 +7,7 @@ But it is difficult to write tests when you don't know what the functionality is
 Also TDD does not really help as it assumes you know what you're doing.
 
 I used minitest as the framework, just because it is lighter and thus when the
-time comes to move to salama, less work.
+time comes to move to rubyx, less work.
 
 ### All
 

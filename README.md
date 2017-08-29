@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ruby-x/rubyx.svg?branch=master)](https://travis-ci.org/ruby-x/salama)
+[![Build Status](https://travis-ci.org/ruby-x/rubyx.svg?branch=master)](https://travis-ci.org/ruby-x/rubyx)
 [![Code Climate](https://codeclimate.com/github/ruby-x/rubyx/badges/gpa.svg)](https://codeclimate.com/github/ruby-x/rubyx)
 [![Test Coverage](https://codeclimate.com/github/ruby-x/rubyx/badges/coverage.svg)](https://codeclimate.com/github/ruby-x/rubyx)
 
@@ -40,7 +40,7 @@ risc layer. That way test runs on the interpreter reveal most issues.
 
 ### Debugger
 
-And after the interpreter was done, i wrote a [visual debugger](https://github.com/ruby-x/salama-debugger).
+And after the interpreter was done, i wrote a [visual debugger](https://github.com/ruby-x/rubyx-debugger).
 It is a simple opal application that nevertheless has proven great help both in figuring out
 what is going on, and in finding bugs.
 
@@ -71,7 +71,7 @@ And generally optimize and work towards that perfect world (we never seem to be 
 
 
 
-Contributing to salama
+Contributing to rubyx
 -----------------------
 
 Probably best to talk to me, if it's not a typo or so.
