@@ -1,7 +1,7 @@
 module Mom
 
   # SlotLoad is an abstract base class for moving data into a slot
-  # A Slot is the basically an instance variable, but it must be of known type
+  # A Slot is basically an instance variable, but it must be of known type
   #
   # The value loaded can be a constant (SlotConstant) or come from another Slot (SlotMove)
   #
@@ -20,7 +20,7 @@ module Mom
   # @left: is an array of symbols, that specifies the first the object, and then the Slot.
   #        The first element is either a known type name (Capitalized symbol of the class name) ,
   #        or the symbol :message
-  #        Ant subsequent symbols must be instance variables on the previous type.
+  #        And subsequent symbols must be instance variables on the previous type.
   #        Examples:  [:message , :self] or [:Space : :next_message]
   #
   # @right: depends on the derived Class
