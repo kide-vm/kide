@@ -2,7 +2,7 @@
 require_relative "helper"
 
 module Vool
-  class TestIfMom < MiniTest::Test
+  class TestSimpleIfMom < MiniTest::Test
     include MomCompile
 
     def setup

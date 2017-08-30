@@ -12,18 +12,14 @@ module Vool
     def to_mom( method )
       if_true = @if_true.to_mom( method )
       if_false = @if_false.to_mom( method )
-      make_condition( if_true , if_false )
+      merge = Mom::Noop.new(:merge)
+      make_condition( add_jump(if_true,merge) , add_jump(if_false,merge) , merge)
     end
 
     # conditions in ruby are almost always method sends (as even comparisons are)
     # currently we just deal with straight up values which get tested
     # for the funny ruby logic (everything but false and nil is true)
-    def make_condition( if_true , if_false )
-      merge = Mom::Noop.new(:merge)
-      if_true = [if_true] unless if_true.is_a?(Array)
-      if_true << Mom::Jump.new(merge)
-      if_false = [if_false] unless if_false.is_a?(Array)
-      if_false << Mom::Jump.new(merge)
+    def make_condition( if_true , if_false , merge)
       check = Mom::TruthCheck.new( @condition , if_true , if_false , merge)
       [ check , if_true , if_false , merge ]
     end
@@ -45,6 +41,13 @@ module Vool
 
     def has_true?
       @if_true != nil
+    end
+
+    private
+    def add_jump( block , merge)
+      block = [block] unless block.is_a?(Array)
+      block << Mom::Jump.new(merge)
+      block
     end
   end
 end
