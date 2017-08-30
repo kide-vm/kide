@@ -1,6 +1,6 @@
 # Virtual
 # Object Oriented
-# Langiage
+# Language
 #
 # VOOL is the abstraction of ruby, ruby minus some of the fluff
 #      fluff is generally what makes ruby nice to use, like 3 ways to achieve the same thing
@@ -12,6 +12,7 @@
 #
 # This allows us to write compilers or passes of the compiler(s) as functions on the
 # classes.
+#
 module Vool
 
   # Base class for all statements in the tree. Derived classes correspond to known language
