@@ -15,13 +15,14 @@ module Vool
       if_false = add_jump(@if_false.to_mom( method ) , merge)
       cond = hoist_condition( method )
       check = Mom::TruthCheck.new( cond.pop , if_true , if_false , merge)
-      [ *check , if_true , if_false , merge ]
+      [ *cond , check , if_true , if_false , merge ]
     end
 
-    def  hoist_condition( method )
+    def hoist_condition( method )
       return [@condition] if @condition.is_a?(Vool::Named)
       local = method.create_tmp
-      puts local
+      assign = LocalAssignment.new( local , @condition).to_mom(method)
+      [assign , Vool::LocalVariable.new(local)]
     end
 
     def collect(arr)

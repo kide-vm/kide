@@ -59,7 +59,7 @@ module Rubyx
 
     def test_method_create_tmp
       name = create_method.create_tmp
-      assert_equal "tmp_1" , name
+      assert_equal :tmp_1 , name
     end
 
     def test_method_add_tmp

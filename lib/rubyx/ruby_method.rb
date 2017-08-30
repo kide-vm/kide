@@ -21,7 +21,7 @@ module Rubyx
     end
 
     def create_tmp
-      tmp_name = "tmp_#{@locals_type.instance_length}"
+      tmp_name = "tmp_#{@locals_type.instance_length}".to_sym
       @locals_type = @locals_type.add_instance_variable( tmp_name , :Object )
       tmp_name
     end
