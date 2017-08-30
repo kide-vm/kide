@@ -10,18 +10,18 @@ module Vool
     end
 
     def to_mom( method )
-      if_true = @if_true.to_mom( method )
-      if_false = @if_false.to_mom( method )
       merge = Mom::Noop.new(:merge)
-      make_condition( add_jump(if_true,merge) , add_jump(if_false,merge) , merge)
+      if_true = add_jump(@if_true.to_mom( method ) , merge)
+      if_false = add_jump(@if_false.to_mom( method ) , merge)
+      cond = hoist_condition( method )
+      check = Mom::TruthCheck.new( cond.pop , if_true , if_false , merge)
+      [ *check , if_true , if_false , merge ]
     end
 
-    # conditions in ruby are almost always method sends (as even comparisons are)
-    # currently we just deal with straight up values which get tested
-    # for the funny ruby logic (everything but false and nil is true)
-    def make_condition( if_true , if_false , merge)
-      check = Mom::TruthCheck.new( @condition , if_true , if_false , merge)
-      [ check , if_true , if_false , merge ]
+    def  hoist_condition( method )
+      return [@condition] if @condition.is_a?(Vool::Named)
+      local = method.create_tmp
+      puts local
     end
 
     def collect(arr)

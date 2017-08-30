@@ -131,8 +131,8 @@ module Vm
       Tree::KnownName.new(statement.children.first)
     end
 
-    def on_string expression
-      Tree::StringExpression.new(expression.children.first)
+    def on_string expressions
+      Tree::StringExpression.new(expressions.children.first)
     end
 
     def on_class_name expression

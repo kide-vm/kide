@@ -185,6 +185,10 @@ module Vool
       w
     end
 
+    def handler_missing(node)
+      raise "Handler missing #{node}"
+    end
+
     private
 
     def instance_name sym

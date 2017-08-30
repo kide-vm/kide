@@ -20,6 +20,10 @@ module Rubyx
       type.create_method( @name , @args_type )#FIXME, @locals_type)
     end
 
-
+    def create_tmp
+      tmp_name = "tmp_#{@locals_type.instance_length}"
+      @locals_type = @locals_type.add_instance_variable( tmp_name , :Object )
+      tmp_name
+    end
   end
 end
