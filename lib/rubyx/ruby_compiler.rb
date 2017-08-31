@@ -6,7 +6,7 @@ require_relative "passes/method_collector"
 require_relative "passes/method_compiler"
 require_relative "passes/locals_collector"
 require_relative "passes/normalizer"
-require_relative "ruby_method"
+require "vool/vool_method"
 
 
 module Rubyx

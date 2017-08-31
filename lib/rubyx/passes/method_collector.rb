@@ -16,7 +16,7 @@ module Rubyx
         name , args , body = *statement
         args_type = make_type(args)
         locals_type = make_locals(body)
-        @methods << RubyMethod.new(name , args_type , locals_type , body )
+        @methods << Vool::VoolMethod.new(name , args_type , locals_type , body )
       end
 
       private

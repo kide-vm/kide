@@ -31,7 +31,7 @@ module Vool
     def create_objects
       args_type = make_type
       locals_type = make_locals
-      method = Rubyx::RubyMethod.new(name , args_type , locals_type , body )
+      method = Vool::VoolMethod.new(name , args_type , locals_type , body )
       @clazz.add_method( method )
       #      compile_methods(clazz,methods)
     end

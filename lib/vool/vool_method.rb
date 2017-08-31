@@ -1,6 +1,6 @@
-module Rubyx
+module Vool
 
-  class RubyMethod
+  class VoolMethod
 
     attr_reader :name , :args_type , :locals_type , :source
 
