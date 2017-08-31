@@ -29,7 +29,7 @@ module Rubyx
       end
 
       def test_compile_class
-        RubyCompiler.compile  "class TestIvar < Object ; def meth; @ivar;end; end"
+        RubyxCompiler.compile  "class TestIvar < Object ; def meth; @ivar;end; end"
         itest = Parfait.object_space.get_class_by_name(:TestIvar)
         assert itest
         assert itest.instance_type.names.include?(:ivar) , itest.instance_type.names.inspect

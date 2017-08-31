@@ -10,7 +10,7 @@ module Rubyx
       @string_input = as_main '"Hello there".putstring'
       Risc.machine.boot
       #      do_clean_compile
-      RubyCompiler.compile @string_input
+      RubyxCompiler.compile @string_input
       Risc::Collector.collect_space
       @interpreter = Risc::Interpreter.new
       @interpreter.start Risc.machine.init

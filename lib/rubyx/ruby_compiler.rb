@@ -10,7 +10,7 @@ require_relative "ruby_method"
 
 
 module Rubyx
-  class RubyCompiler < Passes::TotalProcessor
+  class RubyxCompiler < Passes::TotalProcessor
 
     def self.compile( input )
       ast = Parser::Ruby22.parse( input )
