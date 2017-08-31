@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Rubyx
-  class TestCompiler < MiniTest::Test
+  class TestCompiler #< MiniTest::Test
 
     def setup
       Risc.machine.boot

@@ -1,7 +1,7 @@
 require_relative 'helper'
 
 module Rubyx
-  class TestRubyHello < MiniTest::Test
+  class TestRubyHello #< MiniTest::Test
     include RubyxTests
     Branch = Risc::Branch
     Label = Risc::Label

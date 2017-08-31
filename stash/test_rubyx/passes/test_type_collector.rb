@@ -2,7 +2,7 @@ require_relative "helper"
 
 module Rubyx
   module Passes
-    class TestTypeCollector < MiniTest::Test
+    class TestTypeCollector #< MiniTest::Test
 
       def setup
         Risc.machine.boot
