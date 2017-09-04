@@ -36,10 +36,9 @@ The *essential* step from vool to risc, is the one from a language to a machine.
 that hang in the air, to an instruction set.
 So to put a layer in the middle of those two, MOM will be:
 
-### Tree based
+### Linked list
 
-So almost 1-1 from vool (leave that transformation for next step, which is part of the
-simplification. Flattening needs state to be carried around and so we can do without that)
+But, see below, in two steps
 
 ### Use object memory
 
@@ -53,11 +52,29 @@ So a machine rather than a language. No control structures, but compare and jump
 
 No send or call, just objects and jump.
 
+Again in two steps, see below
+
 Machine capabilities (instructions) for basic operations. Use of macros for higher level.
 
-## Outlook
+## Two step approach
 
-The next transformation from mom to the Risc layer will naturally include the transformation of:
-- tree to list
-- mom instructions to risc instructions (which is 1 to n so relatively simple)
-- memory to memory transfer, to memory register memory transfers.
+To make the transition even easier, it is done in two steps.
+
+## 1. Everything but control structures
+
+So we go from language to machine as the first step, in terms of memory instructions.
+Memory gets moved around between the main machine objects (frames and messages).
+But control structures stay "intact", so we stay at tree structure
+
+## 2. Flattening control structures
+
+By flattening control structures and introducing jumps instead, we go from tree to linked
+list of instructions.
+
+After this, it is quite trivial to translate to risc, as it mostly expands instructions.
+
+## The future
+
+I hope that in the future this simple 2 stage pipeline will expand into more steps.
+This is the ideal layer to do code analysis and meaningful optimisations, as one can still
+understand what is going on in higher terms. 
