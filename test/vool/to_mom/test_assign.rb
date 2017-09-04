@@ -7,28 +7,29 @@ module Vool
     def setup
       Risc.machine.boot
       @stats = compile_first_method( "arg = 5")
+      @first = @stats.first
     end
 
     def test_class_compiles
-      assert_equal Mom::SlotConstant , @stats.first.class , @stats
+      assert_equal Mom::SlotConstant , @first.class , @stats
     end
     def test_slot_is_set
-      assert @stats.first.left
+      assert @first.left
     end
     def test_slot_starts_at_message
-      assert_equal :message , @stats.first.left[0]
+      assert_equal :message , @first.left.known_object
     end
     def test_slot_gets_self
-      assert_equal :arguments , @stats.first.left[1]
+      assert_equal :arguments , @first.left.slots[0]
     end
     def test_slot_assigns_to_local
-      assert_equal :arg , @stats.first.left[-1]
+      assert_equal :arg , @first.left.slots[-1]
     end
     def test_slot_assigns_something
       assert @stats.first.right
     end
     def test_slot_assigns_int
-      assert_equal IntegerStatement ,  @stats.first.right.class
+      assert_equal IntegerStatement ,  @first.right.class
     end
   end
 
@@ -39,28 +40,29 @@ module Vool
     def setup
       Risc.machine.boot
       @stats = compile_first_method( "arg = 5")
+      @first = @stats.first
     end
 
     def test_class_compiles
-      assert_equal Mom::SlotConstant , @stats.first.class , @stats
+      assert_equal Mom::SlotConstant , @first.class , @stats
     end
     def test_slot_is_set
-      assert @stats.first.left
+      assert @first.left
     end
     def test_slot_starts_at_message
-      assert_equal :message , @stats.first.left[0]
+      assert_equal :message , @first.left.known_object
     end
     def test_slot_gets_self
-      assert_equal :arguments , @stats.first.left[1]
+      assert_equal :arguments , @first.left.slots[0]
     end
     def test_slot_assigns_to_local
-      assert_equal :arg , @stats.first.left[-1]
+      assert_equal :arg , @first.left.slots[-1]
     end
     def test_slot_assigns_something
-      assert @stats.first.right
+      assert @first.right
     end
     def test_slot_assigns_int
-      assert_equal IntegerStatement ,  @stats.first.right.class
+      assert_equal IntegerStatement ,  @first.right.class
     end
   end
 
