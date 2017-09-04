@@ -12,7 +12,7 @@ module Vool
       else
         type = :frame
       end
-      Mom::SlotConstant.new([:message , type , @name] , @value)
+      Mom::SlotConstant.new(Mom::SlotDefinition.new(:message , [type , @name]) , @value)
     end
   end
 

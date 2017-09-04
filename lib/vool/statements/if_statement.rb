@@ -13,7 +13,8 @@ module Vool
       if_true =   @if_true.to_mom( method )
       if_false =  @if_false.to_mom( method )
       condition , hoisted  = hoist_condition( method )
-      check = Mom::IfStatement.new( Mom::TruthCheck.new(condition) , if_true , if_false )
+      cond = Mom::TruthCheck.new(condition.to_mom(method))
+      check = Mom::IfStatement.new(  cond , if_true , if_false )
       check.hoisted = hoisted.to_mom(method) if hoisted
       check
     end

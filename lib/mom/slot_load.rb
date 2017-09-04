@@ -43,4 +43,12 @@ module Mom
 
   class SlotMove < SlotLoad
   end
+
+  class SlotDefinition
+    attr_reader :known_object , :slots
+    def initialize( object , slots)
+      @known_object , @slots = object , slots
+      slot = [slot] unless slot.is_a?(Array)
+    end
+  end
 end

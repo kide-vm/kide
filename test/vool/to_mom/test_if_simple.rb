@@ -17,8 +17,8 @@ module Vool
     def test_condition_compiles_to_check
       assert_equal Mom::TruthCheck , @first.condition.class , @stats
     end
-    def test_condition_is_instance
-      assert_equal Vool::InstanceVariable , @first.condition.condition.class , @stats
+    def test_condition_is_slot
+      assert_equal Mom::SlotDefinition , @first.condition.condition.class , @stats
     end
     def test_nothing_hoisted
       assert_nil @first.hoisted , @stats

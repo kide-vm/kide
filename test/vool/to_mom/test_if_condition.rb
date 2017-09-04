@@ -17,8 +17,8 @@ module Vool
     def test_condition_compiles_to_slot
       assert_equal Mom::TruthCheck , @first.condition.class
     end
-    def test_condition_is_send
-      assert_equal Vool::LocalVariable , @first.condition.condition.class
+    def test_condition_is_slot
+      assert_equal Mom::SlotDefinition , @first.condition.condition.class , @stats
     end
     def test_hoisetd
       assert_equal Mom::SlotConstant , @first.hoisted.class
