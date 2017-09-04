@@ -12,16 +12,16 @@ module Vool
     end
 
     def test_if_compiles_as_array
-      assert_equal Array , @first.class , @stats
+      assert_equal Mom::IfStatement , @first.class , @stats
     end
     def test_condition_compiles_to_check
-      assert_equal Mom::TruthCheck , @first.first.class , @stats
+      assert_equal Mom::TruthCheck , @first.condition.class , @stats
     end
     def test_condition_is_instance
-      assert_equal Vool::InstanceVariable , @first.first.condition.class , @stats
+      assert_equal Vool::InstanceVariable , @first.condition.condition.class , @stats
     end
-    def test_true_block_is_second
-      assert_equal  @first[1] , @first.first.true_block , @stats
+    def test_nothing_hoisted
+      assert_nil @first.hoisted , @stats
     end
   end
 end

@@ -12,19 +12,16 @@ module Vool
     end
 
     def test_if_compiles_as_array
-      assert_equal Array , @first.class , @stats
-    end
-    def test_if_compiles_as_array_2
-      assert_equal 5 , @first.length , @stats
+      assert_equal Mom::IfStatement , @first.class , @stats
     end
     def test_condition_compiles_to_slot
-      assert_equal Mom::SlotConstant , @first.first.class
-    end
-    def test_condition_compiles_to_check_second
-      assert_equal Mom::TruthCheck , @first[1].class
+      assert_equal Mom::TruthCheck , @first.condition.class
     end
     def test_condition_is_send
-      assert_equal Vool::LocalVariable , @first[1].condition.class
+      assert_equal Vool::LocalVariable , @first.condition.condition.class
+    end
+    def test_hoisetd
+      assert_equal Mom::SlotConstant , @first.hoisted.class
     end
   end
 end
