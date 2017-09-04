@@ -20,6 +20,7 @@ guard :minitest do   # with Minitest::Unit
   watch(%r{^lib/parfait/type.rb}) { Dir["test/parfait/type/test_*.rb"] }
 
   # Vool to_mom compile process +   # Ruby to vool compile process
-  watch(%r{^lib/vool/statements/(.+)_statement.rb}) { |m| ["test/vool/to_mom/test_#{m[1]}*.rb" ,"test/vool/statements/test_#{m[1]}.rb"] }
+  watch(%r{^lib/vool/statements/(.+)_statement.rb}) { |m|
+    [ Dir["test/vool/to_mom/test_#{m[1]}*.rb"] , "test/vool/statements/test_#{m[1]}.rb"] }
 
 end
