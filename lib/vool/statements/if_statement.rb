@@ -1,5 +1,8 @@
+require_relative "hoister"
 module Vool
   class IfStatement < Statement
+    include Hoister
+    
     attr_reader :condition , :if_true , :if_false
 
     def initialize( cond , if_true , if_false = nil)
@@ -19,12 +22,6 @@ module Vool
       check
     end
 
-    def hoist_condition( method )
-      return [@condition] if @condition.is_a?(Vool::Named)
-      local = method.create_tmp
-      assign = LocalAssignment.new( local , @condition)
-      [Vool::LocalVariable.new(local) , assign]
-    end
 
     def collect(arr)
       @if_true.collect(arr)
