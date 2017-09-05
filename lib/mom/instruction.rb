@@ -24,6 +24,7 @@ end
 
 require_relative "simple_call"
 require_relative "if_statement"
+require_relative "while_statement"
 require_relative "truth_check"
 require_relative "jump"
 require_relative "slot_load"
