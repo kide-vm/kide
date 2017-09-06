@@ -1,5 +1,5 @@
 module Mom
-  class IfStatement < Instruction
+  class IfStatement < Statement
     attr_reader :condition , :if_true , :if_false
 
     attr_accessor :hoisted

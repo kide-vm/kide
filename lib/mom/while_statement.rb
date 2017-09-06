@@ -1,6 +1,6 @@
 
 module Mom
-  class WhileStatement < Instruction
+  class WhileStatement < Statement
     attr_reader :condition , :statements
 
     attr_accessor :hoisted

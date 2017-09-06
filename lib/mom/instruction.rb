@@ -4,10 +4,8 @@ module Mom
   class Instruction
     attr :next_instruction
 
-    # flattening will change the structure from a tree to a linked list (and use
-    # next_instruction to do so)
+    # implement flatten as noop to avoid condition
     def flatten
-      raise "not implemented"
     end
   end
 
@@ -19,6 +17,13 @@ module Mom
     end
   end
 
+  class Statement
+    # flattening will change the structure from a tree to a linked list (and use
+    # next_instruction to do so)
+    def flatten
+      raise "not implemented"
+    end
+  end
 
 end
 
