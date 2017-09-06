@@ -34,7 +34,7 @@ module Vool
     #        in a not so distant future, temporary variables will have to be created
     #        and complex statements hoisted to assign to them. pps: same as in conditions
     def to_mom( method )
-      message_setup + call_instruction
+      Mom::Statements.new( message_setup + call_instruction )
     end
 
     def message_setup

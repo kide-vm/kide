@@ -15,10 +15,15 @@ module Common
     def first
       @statements.first
     end
+    def last
+      @statements.last
+    end
     def length
       @statements.length
     end
-
+    def [](i)
+      @statements[i]
+    end
     def collect(arr)
       @statements.each { |s| s.collect(arr) }
       super

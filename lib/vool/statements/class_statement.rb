@@ -18,7 +18,7 @@ module Vool
       @body.statements.each do |meth|
         methods << meth.to_mom( nil )
       end
-      methods
+      Mom::Statements.new(methods)
     end
 
     def collect(arr)

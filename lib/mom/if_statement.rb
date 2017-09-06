@@ -9,6 +9,10 @@ module Mom
       @if_true = if_true
       @if_false = if_false
     end
+
+    def flatten
+      self
+    end
   end
 
 end

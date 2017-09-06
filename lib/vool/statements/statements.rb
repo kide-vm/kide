@@ -4,9 +4,7 @@ module Vool
 
     # create machine instructions
     def to_mom( method )
-      all = @statements.collect do |statement|
-        statement.to_mom( method )
-      end
+      all = @statements.collect { |statement| statement.to_mom( method ) }
       Mom::Statements.new(all)
     end
 

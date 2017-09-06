@@ -10,7 +10,7 @@ module Vool
     end
 
     def test_stats
-      assert_equal Array , @stats.class
+      assert_equal Mom::Statements , @stats.class
     end
     def test_class_compiles
       assert_equal Mom::SlotConstant , @stats.first.class , @stats
