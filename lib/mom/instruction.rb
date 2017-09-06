@@ -17,20 +17,11 @@ module Mom
     end
   end
 
-  class Statement
-    # flattening will change the structure from a tree to a linked list (and use
-    # next_instruction to do so)
-    def flatten
-      raise "not implemented"
-    end
-  end
-
 end
 
 require_relative "simple_call"
-require_relative "if_statement"
-require_relative "while_statement"
 require_relative "truth_check"
 require_relative "jump"
 require_relative "slot_load"
 require_relative "return_sequence"
+require_relative "statement"
