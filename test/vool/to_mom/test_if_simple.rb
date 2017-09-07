@@ -11,6 +11,9 @@ module Vool
       @first = @stats.first
     end
 
+    def test_compiles_not_array
+      assert Array != @stats.class , @stats
+    end
     def test_if_compiles_as_array
       assert_equal Mom::IfStatement , @first.class , @stats
     end

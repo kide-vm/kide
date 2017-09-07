@@ -11,7 +11,10 @@ module Vool
       @first = @stats.first
     end
 
-    def test_if_compiles_as_array
+    def test_compiles_not_array
+      assert Array != @stats.class , @stats
+    end
+    def test_compiles_as_while
       assert_equal Mom::WhileStatement , @first.class , @stats
     end
     def test_condition_compiles_to_check

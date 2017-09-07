@@ -9,6 +9,9 @@ module Vool
       @stats = compile_first_method( "return 5").first
     end
 
+    def test_compiles_not_array
+      assert Array != @stats.class , @stats
+    end
     def test_class_compiles
       assert_equal Mom::SlotConstant , @stats.first.class , @stats
     end
