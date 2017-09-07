@@ -14,7 +14,25 @@ module CompilerHelper
   end
 
   def as_test_main( statements )
-    in_Test("def main(arg) ; #{statements}; end")    
+    in_Test("def main(arg) ; #{statements}; end")
+  end
+end
+
+module MomCompile
+  include CompilerHelper
+
+  def compile_first_method input
+    lst = Vool::VoolCompiler.compile as_test_main( input )
+    assert_equal Parfait::Class , lst.clazz.class , input
+    @method = lst.clazz.get_method(:main)
+    assert @method
+    res = lst.to_mom( nil )
+    #puts "#{res.class}"
+    res.first
+  end
+
+  def compile_first_method_flat(input)
+    compile_first_method(input).flatten
   end
 end
 
