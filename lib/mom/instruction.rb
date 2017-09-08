@@ -2,21 +2,21 @@ module Mom
 
   # Base class for MOM instructions
   class Instruction
-    attr :next_instruction
+    include Common::List
 
     # implement flatten as noop to avoid condition
-    def flatten
+    def flatten( options = {} )
+      return self
     end
   end
 
   # A label with a name
-  class Label
+  class Label < Instruction
     attr_reader :name
     def initialize(name)
       @name = name
     end
   end
-
 end
 
 require_relative "simple_call"
