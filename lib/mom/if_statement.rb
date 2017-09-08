@@ -11,7 +11,17 @@ module Mom
     end
 
     def flatten
-      self
+      head = hoisted.flatten
+      true_label = Label.new( "true_label_#{object_id}")
+      false_label = Label.new( "false_label_#{object_id}")
+      merge_label = Label.new( "merge_label_#{object_id}")
+      head.append condition.flatten( true_label: true_label , false_label: false_label)
+      head.append true_label
+      head.append if_true.flatten( merge_label: merge_label)
+      head.append false_label
+      head.append if_false.flatten( merge_label: merge_label)
+      head.append merge_label
+      head
     end
   end
 

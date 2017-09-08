@@ -1,7 +1,7 @@
 module Mom
   class Statement
     # flattening will change the structure from a tree to a linked list (and use
-    # next_instruction to do so)
+    # nekst to do so)
     def flatten
       raise "not implemented for #{self}"
     end
@@ -10,9 +10,14 @@ module Mom
   class Statements < Statement
     include Common::Statements
 
-    def flatten
-      @statements.each{ |s| s.flatten }
+    def flatten( options = {}  )
+      flat = @statements.pop.flatten
+      while( nekst = @statements.pop )
+        flat.append nekst.flatten()
+      end
+      flat
     end
+
   end
 
 end
