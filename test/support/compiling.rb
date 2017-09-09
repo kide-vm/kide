@@ -34,6 +34,25 @@ module MomCompile
   def compile_first_method_flat(input)
     compile_first_method(input).flatten
   end
+
+  def check_array( should , is )
+    index = 0
+    test = is
+    while(test)
+      assert_equal should[index] , test.class , "Wrong class for #{index+1}, #{dump(is)}"
+      index += 1
+      test = test.next
+    end
+  end
+  def dump(is)
+    res =[]
+    while(is)
+      res << is.class.name.split("::").last
+      is = is.next
+    end
+    "[#{res.join(',')}]"
+  end
+
 end
 
 
