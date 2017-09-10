@@ -13,13 +13,13 @@ module Vool
       assert_equal Mom::Statements , @stats.class
     end
     def test_class_compiles
-      assert_equal Mom::SlotMove , @stats.first.class , @stats
+      assert_equal Mom::SlotConstant , @stats.first.class , @stats
     end
     def test_four_instructions_are_returned
       assert_equal 4 ,  @stats.length
     end
     def test_receiver_move
-      assert_equal Mom::SlotMove,  @stats[0].class
+      assert_equal Mom::SlotConstant,  @stats[0].class
       assert_equal :receiver,  @stats[0].left[2]
     end
     def test_receiver

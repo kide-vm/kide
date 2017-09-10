@@ -38,10 +38,10 @@ module Vool
     end
 
     def message_setup
-      pops = [Mom::SlotConstant.new([:message , :next_message , :receiver] , @receiver) ]
+      pops = [@receiver.slot_class.new([:message , :next_message , :receiver] , @receiver) ]
       @arguments.each_with_index do |arg , index|
         arg_target = [:message , :next_message , :arguments]
-        pops << Mom::SlotConstant.new( arg_target + [index] , arg)
+        pops << arg.slot_class.new( arg_target + [index] , arg)
       end
       pops
     end
@@ -63,7 +63,7 @@ module Vool
 
     def cached_call
       raise "Not implemented"
-      [Mom::SlotConstant.new([:message , :next_message , :receiver] , @receiver) ]
+      [@receiver.slot_class.new([:message , :next_message , :receiver] , @receiver) ]
     end
 
   end

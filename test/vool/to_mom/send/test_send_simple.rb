@@ -7,13 +7,14 @@ module Vool
     def setup
       Risc.machine.boot
       @stats = compile_first_method( "5.mod4").first
+      @first = @stats.first
     end
 
     def test_compiles_not_array
       assert Array != @stats.class , @stats
     end
     def test_class_compiles
-      assert_equal Mom::SlotMove , @stats.first.class , @stats
+      assert_equal Mom::SlotConstant , @first.class , @stats
     end
     def test_slot_is_set
       assert @stats.first.left
@@ -22,13 +23,13 @@ module Vool
       assert_equal 2 ,  @stats.length
     end
     def test_receiver_move_class
-      assert_equal Mom::SlotMove,  @stats.first.class
+      assert_equal Mom::SlotConstant,  @first.class
     end
     def test_receiver_move
-      assert_equal :receiver,  @stats.first.left[2]
+      assert_equal :receiver,  @first.left[2]
     end
     def test_receiver
-      assert_equal IntegerStatement,  @stats.first.right.class
+      assert_equal IntegerStatement,  @first.right.class
       assert_equal 5,  @stats.first.right.value
     end
     def test_call_is

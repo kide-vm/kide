@@ -7,24 +7,25 @@ module Vool
     def setup
       Risc.machine.boot
       @stats = compile_first_method( "'5'.get_internal_byte(1)").first
+      @first = @stats.first
     end
 
     def test_compiles_not_array
       assert Array != @stats.class , @stats
     end
     def test_class_compiles
-      assert_equal Mom::SlotMove , @stats.first.class , @stats
+      assert_equal Mom::SlotConstant , @first.class , @stats
     end
     def test_four_instructions_are_returned
       assert_equal 3 ,  @stats.length
     end
     def test_receiver_move
-      assert_equal Mom::SlotMove,  @stats.first.class
-      assert_equal :receiver,  @stats[0].left[2]
+      assert_equal Mom::SlotConstant,  @stats.first.class
+      assert_equal :receiver,  @first.left[2]
     end
     def test_receiver
       assert_equal StringStatement,  @stats[0].right.class
-      assert_equal "5",  @stats[0].right.value
+      assert_equal "5",  @first.right.value
     end
     def test_args_one_move
       assert_equal :next_message, @stats[1].left[1]
