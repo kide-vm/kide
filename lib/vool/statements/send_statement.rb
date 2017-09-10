@@ -34,35 +34,32 @@ module Vool
     #        in a not so distant future, temporary variables will have to be created
     #        and complex statements hoisted to assign to them. pps: same as in conditions
     def to_mom( method )
-      Mom::Statements.new( message_setup + call_instruction )
+      if(@receiver.ct_type)
+        simple_call(method)
+      else
+        cached_call(method)
+      end
     end
 
-    def message_setup
+    def message_setup(method)
       pops = [@receiver.slot_class.new([:message , :next_message , :receiver] , @receiver) ]
+      arg_target = [:message , :next_message , :arguments]
       @arguments.each_with_index do |arg , index|
-        arg_target = [:message , :next_message , :arguments]
         pops << arg.slot_class.new( arg_target + [index] , arg)
       end
       pops
     end
 
-    def call_instruction
-      if(@receiver.ct_type)
-        simple_call
-      else
-        cached_call
-      end
-    end
-
-    def simple_call
+    def simple_call(method)
       type = @receiver.ct_type
       method = type.resolve_method(@name)
       raise "No method #{@name} for #{type}" unless method
-      [Mom::SimpleCall.new( method) ]
+      Mom::Statements.new( message_setup(method)  << Mom::SimpleCall.new( method) )
     end
 
-    def cached_call
+    def cached_call(method)
       raise "Not implemented"
+      Mom::Statements.new( message_setup + call_instruction )
       [@receiver.slot_class.new([:message , :next_message , :receiver] , @receiver) ]
     end
 
