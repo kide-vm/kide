@@ -11,7 +11,7 @@ module Vool
     end
 
     def test_class_compiles
-      assert_equal Mom::SlotMove , @first.class , @stats
+      assert_equal Mom::SlotConstant , @first.class , @stats
     end
     def test_slot_is_set
       assert @first.left
@@ -33,6 +33,19 @@ module Vool
     end
   end
 
+  #otherwise as above, but assigning instance, so should get a SlotMove
+  class TestAssignMomInstance < MiniTest::Test
+    include MomCompile
+    def setup
+      Risc.machine.boot
+      @stats = compile_first_method( "arg = @a")
+    end
+
+    def test_class_compiles
+      assert_equal Mom::SlotMove , @stats.first.class , @stats
+    end
+  end
+  
   #compiling to an argument should result in different second parameter in the slot array
   class TestArgMom < MiniTest::Test
     include MomCompile
@@ -44,7 +57,7 @@ module Vool
     end
 
     def test_class_compiles
-      assert_equal Mom::SlotMove , @first.class , @stats
+      assert_equal Mom::SlotConstant , @first.class , @stats
     end
     def test_slot_is_set
       assert @first.left

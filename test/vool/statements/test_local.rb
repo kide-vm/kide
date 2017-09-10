@@ -11,6 +11,10 @@ module Vool
       lst = RubyCompiler.compile( "foo = bar")
       assert_equal :foo , lst.name
     end
+    def test_local_const
+      lst = RubyCompiler.compile( "foo = 5")
+      assert_equal LocalAssignment , lst.class
+    end
 
   end
 end
