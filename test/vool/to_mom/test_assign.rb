@@ -11,7 +11,7 @@ module Vool
     end
 
     def test_class_compiles
-      assert_equal Mom::SlotConstant , @first.class , @stats
+      assert_equal Mom::SlotMove , @first.class , @stats
     end
     def test_slot_is_set
       assert @first.left
@@ -44,7 +44,7 @@ module Vool
     end
 
     def test_class_compiles
-      assert_equal Mom::SlotConstant , @first.class , @stats
+      assert_equal Mom::SlotMove , @first.class , @stats
     end
     def test_slot_is_set
       assert @first.left

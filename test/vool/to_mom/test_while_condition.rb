@@ -21,7 +21,7 @@ module Vool
       assert_equal Mom::SlotDefinition , @first.condition.condition.class , @stats
     end
     def test_hoisetd
-      assert_equal Mom::SlotConstant , @first.hoisted.class
+      assert_equal Mom::SlotMove , @first.hoisted.class
     end
   end
 end

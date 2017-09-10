@@ -1,5 +1,16 @@
 module Vool
-  class IntegerStatement < Statement
+  class Statement
+    def slot_class
+      Mom::SlotMove
+    end
+  end
+  class ConstantStatement < Statement
+    def slot_class
+      Mom::SlotConstant
+    end
+  end
+
+  class IntegerStatement < ConstantStatement
     attr_reader :value
     def initialize(value)
       @value = value
@@ -8,7 +19,7 @@ module Vool
       Parfait.object_space.get_class_by_name(:Integer).instance_type
     end
   end
-  class FloatStatement < Statement
+  class FloatStatement < ConstantStatement
     attr_reader :value
     def initialize(value)
       @value = value
@@ -17,17 +28,17 @@ module Vool
       true
     end
   end
-  class TrueStatement < Statement
+  class TrueStatement < ConstantStatement
     def ct_type
       Parfait.object_space.get_class_by_name(:True).instance_type
     end
   end
-  class FalseStatement < Statement
+  class FalseStatement < ConstantStatement
     def ct_type
       Parfait.object_space.get_class_by_name(:False).instance_type
     end
   end
-  class NilStatement < Statement
+  class NilStatement < ConstantStatement
     def ct_type
       Parfait.object_space.get_class_by_name(:Nil).instance_type
     end
@@ -44,7 +55,7 @@ module Vool
   end
   class SuperStatement < Statement
   end
-  class StringStatement < Statement
+  class StringStatement < ConstantStatement
     attr_reader :value
     def initialize(value)
       @value = value

@@ -39,6 +39,12 @@ module Mom
   # @left:  See SlotLoad, and array of symbols
   # @right: A Constant from parse, ie an instance of classes in basc_value, like TrueStatement
   class SlotConstant < SlotLoad
+
+    def initialize(left , right)
+      super
+      raise "right not constant, #{right}" unless right.is_a? Vool::ConstantStatement
+    end
+
   end
 
   class SlotMove < SlotLoad

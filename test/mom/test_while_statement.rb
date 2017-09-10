@@ -24,7 +24,7 @@ module Mom
       assert_equal 4 , @stats.length
     end
     def test_array
-      check_array [Label,SlotConstant,TruthCheck,Label] , @stats
+      check_array [Label,SlotMove,TruthCheck,Label] , @stats
     end
   end
 end

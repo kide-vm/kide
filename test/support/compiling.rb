@@ -39,10 +39,12 @@ module MomCompile
     index = 0
     test = is
     while(test)
-      assert_equal should[index] , test.class , "Wrong class for #{index+1}, #{dump(is)}"
+      # if we assert here, we get output pointing here. Without stack, not useful
+      raise "Wrong class for #{index+1}, #{dump(is)}" if should[index] != test.class 
       index += 1
       test = test.next
     end
+    assert 1  #just to get an assertion in the output.
   end
   def dump(is)
     res =[]

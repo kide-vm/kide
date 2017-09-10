@@ -10,7 +10,7 @@ module Vool
     end
 
     def test_class_compiles
-      assert_equal Mom::SlotConstant , @stats.first.class , @stats
+      assert_equal Mom::SlotMove , @stats.first.class , @stats
     end
     def test_slot_is_set
       assert @stats.first.left
@@ -19,7 +19,7 @@ module Vool
       assert_equal 3 ,  @stats.length
     end
     def test_receiver_move_class
-      assert_equal Mom::SlotConstant,  @stats.first.class
+      assert_equal Mom::SlotMove,  @stats.first.class
     end
     def test_receiver_move
       assert_equal :receiver,  @stats.first.left[2]
