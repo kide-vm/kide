@@ -21,6 +21,11 @@ module Vool
       assert_equal :foo , lst.name
     end
 
+    def test_const
+      lst = RubyCompiler.compile( "@foo = 5")
+      assert_equal IvarAssignment , lst.class
+    end
+
 
   end
 end
