@@ -21,10 +21,10 @@ module Mom
       assert_equal SlotDefinition , @first.condition.class , @first
     end
     def test_length
-      assert_equal 9 , @stats.length
+      assert_equal 11 , @stats.length
     end
     def test_array
-      check_array [SlotMove,TruthCheck,Label,SimpleCall,SlotConstant,Label,SimpleCall,SlotConstant,Label] , @stats
+      check_array [SlotMove,TruthCheck,Label,SimpleCall,ArgumentTransfer,MessageSetup,Label,SimpleCall,ArgumentTransfer,MessageSetup,Label] , @stats
     end
   end
 end

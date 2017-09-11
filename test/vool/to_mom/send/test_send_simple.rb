@@ -1,45 +1,22 @@
 require_relative "../helper"
+require_relative "simple_send_harness"
 
 module Vool
   class TestSendSimpleMom < MiniTest::Test
     include MomCompile
+    include SimpleSendHarness
 
     def setup
       Risc.machine.boot
       @stats = compile_first_method( "5.mod4").first
       @first = @stats.first
     end
-
-    def test_compiles_not_array
-      assert Array != @stats.class , @stats
-    end
-    def test_class_compiles
-      assert_equal Mom::SlotConstant , @first.class , @stats
-    end
-    def test_slot_is_set
-      assert @stats.first.left
-    end
-    def test_two_instructions_are_returned
-      assert_equal 2 ,  @stats.length
-    end
-    def test_receiver_move_class
-      assert_equal Mom::SlotConstant,  @first.class
-    end
-    def test_receiver_move
-      assert_equal :receiver,  @first.left[2]
-    end
-    def test_receiver
-      assert_equal IntegerStatement,  @first.right.class
-      assert_equal 5,  @stats.first.right.value
-    end
-    def test_call_is
-      assert_equal Mom::SimpleCall,  @stats[1].class
-    end
-    def test_call_has_method
-      assert_equal Parfait::TypedMethod,  @stats[1].method.class
+    def receiver
+      [IntegerStatement , 5]
     end
     def test_call_has_right_method
-      assert_equal :mod4,  @stats[1].method.name
+      assert_equal :mod4,  @stats[2].method.name
     end
+
   end
 end
