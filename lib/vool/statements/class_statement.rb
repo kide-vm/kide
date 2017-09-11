@@ -14,10 +14,7 @@ module Vool
     # compilation to the next layer, mom
     # context coming in for class is nil, also for methods, henceafter a method is passed down
     def to_mom( _ )
-      methods = []
-      @body.statements.each do |meth|
-        methods << meth.to_mom( nil )
-      end
+      methods = @body.statements.collect { |meth|  meth.to_mom( nil ) }
       Mom::Statements.new(methods)
     end
 
