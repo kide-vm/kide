@@ -4,32 +4,41 @@ module Vool
   class TestSendSelfMom < MiniTest::Test
     include MomCompile
 
-    def setup
+    def do_setup(str)
       Risc.machine.boot
-      @stats = compile_first_method( "self.get_internal_word(0)").first
+      @stats = compile_first_method( str).first
+      @first = @stats.first
+    end
+    def setup
+      do_setup("self.get_internal_word(0)")
     end
 
-    def test_class_compiles
-      assert_equal Mom::SlotMove , @stats.first.class , @stats
+    def test_compiles
+      assert_equal Mom::Statements , @stats.class , @stats
     end
-    def test_slot_is_set
-      assert @stats.first.left
+    def test_compile_starts_with_setup
+      assert_equal Mom::MessageSetup , @stats[0].class , @stats
     end
-    def test_two_instructions_are_returned
+    def test_compile_continues_with_transfer
+      assert_equal Mom::ArgumentTransfer , @stats[1].class , @stats
+    end
+    def test_method_is_set
+      assert @first.method
+    end
+    def test_three_instructions_are_returned
       assert_equal 3 ,  @stats.length
     end
-    def test_receiver_move_class
-      assert_equal Mom::SlotMove,  @stats.first.class
+    def test_arg_transfers
+      assert_equal Mom::ArgumentTransfer,  @stats[1].class
     end
     def test_receiver_move
-      assert_equal :receiver,  @stats.first.left[2]
+      assert_equal Mom::SlotMove,  @stats[1].receiver.class
     end
-    def test_receiver
-      assert_equal SelfStatement,  @stats.first.right.class
-      assert_equal :Test,  @stats.first.right.clazz.name
+    def test_receiver_self
+      assert_equal SelfStatement,  @stats[1].receiver.right.class
     end
     def test_arg_one
-      assert_equal Mom::SlotConstant,  @stats[1].class
+      assert_equal Mom::SlotConstant,  @stats[1].arguments[0].class
     end
     def test_call_two
       assert_equal Mom::SimpleCall,  @stats[2].class
@@ -44,8 +53,7 @@ module Vool
   class TestSendSelfImplicitMom < TestSendSelfMom
 
     def setup
-      Risc.machine.boot
-      @stats = compile_first_method( "get_internal_word(0)").first
+      do_setup( "get_internal_word(0)")
     end
   end
 end
