@@ -42,23 +42,25 @@ module Vool
     end
 
     def message_setup(method)
-      pops = [@receiver.slot_class.new([:message , :next_message , :receiver] , @receiver) ]
+      setup  = [Mom::MessageSetup.new(method)]
+      receiver = @receiver.slot_class.new([:message , :next_message , :receiver] , @receiver)
       arg_target = [:message , :next_message , :arguments]
+      args = []
       @arguments.each_with_index do |arg , index|
-        pops << arg.slot_class.new( arg_target + [index] , arg)
+        args << arg.slot_class.new( arg_target + [index] , arg)
       end
-      pops
+      setup << Mom::ArgumentTransfer.new( receiver , args )
     end
 
     def simple_call(method)
       type = @receiver.ct_type
       method = type.resolve_method(@name)
       raise "No method #{@name} for #{type}" unless method
-      Mom::Statements.new( message_setup(method)  << Mom::SimpleCall.new( method) )
+      Mom::Statements.new( message_setup(method) << Mom::SimpleCall.new( method) )
     end
 
     def cached_call(method)
-      raise "Not implemented"
+      raise "Not implemented #{method}"
       Mom::Statements.new( message_setup + call_instruction )
       [@receiver.slot_class.new([:message , :next_message , :receiver] , @receiver) ]
     end
