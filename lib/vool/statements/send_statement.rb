@@ -33,16 +33,16 @@ module Vool
     # FIXME: we now presume direct (assignable) values for the arguments and receiver.
     #        in a not so distant future, temporary variables will have to be created
     #        and complex statements hoisted to assign to them. pps: same as in conditions
-    def to_mom( method )
+    def to_mom( in_method )
       if(@receiver.ct_type)
-        simple_call(method)
+        simple_call(in_method)
       else
-        cached_call(method)
+        cached_call(in_method)
       end
     end
 
-    def message_setup(method)
-      setup  = [Mom::MessageSetup.new(method)]
+    def message_setup(in_method)
+      setup  = [Mom::MessageSetup.new(in_method)]
       receiver = @receiver.slot_class.new([:message , :next_message , :receiver] , @receiver)
       arg_target = [:message , :next_message , :arguments]
       args = []
@@ -52,16 +52,16 @@ module Vool
       setup << Mom::ArgumentTransfer.new( receiver , args )
     end
 
-    def simple_call(method)
+    def simple_call(in_method)
       type = @receiver.ct_type
-      method = type.resolve_method(@name)
-      raise "No method #{@name} for #{type}" unless method
-      Mom::Statements.new( message_setup(method) << Mom::SimpleCall.new( method) )
+      called_method = type.resolve_method(@name)
+      raise "No method #{@name} for #{type}" unless called_method
+      Mom::Statements.new( message_setup(in_method) << Mom::SimpleCall.new( called_method) )
     end
 
     def cached_call(method)
       raise "Not implemented #{method}"
-      Mom::Statements.new( message_setup + call_instruction )
+      Mom::Statements.new( message_setup(method) + call_instruction )
       [@receiver.slot_class.new([:message , :next_message , :receiver] , @receiver) ]
     end
 
