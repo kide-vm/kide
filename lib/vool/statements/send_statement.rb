@@ -74,16 +74,11 @@ module Vool
     # if not, change and find method for the type (simple_call to resolve_method)
     # conceptually easy in ruby, but we have to compile that "easy" ruby
     def cache_check(in_method)
-      # return if cached_type == current_type
-      # cached_type = current_type
-      # cached_method = current_type.resolve_method(method.name)
-      check = []
-      cached_type = Mom::SlotDefinition.new(:message , [:frame , type_var_name])
-      current_type = Mom::SlotDefinition.new(:message , [:self , :type])
-      cond = Mom::NotSameCheck.new(cached_type , current_type)
-      if_true =   nil #@if_true.to_mom( in_method ) #find and assign
-      check << Mom::IfStatement.new(  cond , if_true )
-      check
+      # if cached_type != current_type
+      #   cached_type = current_type
+      #   cached_method = current_type.resolve_method(method.name)
+      if_true = [build_type_cache_update , build_method_cache_update] #@if_true.to_mom( in_method ) #find and assign
+      [Mom::IfStatement.new(  build_condition , if_true )]
     end
 
     # this may look like a simple_call, but the difference is that we don't know
@@ -104,6 +99,18 @@ module Vool
     end
     def type_var_name
        "cached_type_#{object_id}"
+    end
+    private
+    def build_condition
+      cached_type = Mom::SlotDefinition.new(:message , [:frame , type_var_name])
+      current_type = Mom::SlotDefinition.new(:message , [:self , :type])
+      Mom::NotSameCheck.new(cached_type , current_type)
+    end
+    def build_type_cache_update
+
+    end
+    def build_method_cache_update
+
     end
   end
 end

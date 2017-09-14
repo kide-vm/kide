@@ -13,8 +13,14 @@ module Vool
     def test_compiles_not_array
       assert Array != @stats.class , @stats
     end
-    def test_class_compiles
-      assert_equal Mom::IfStatement , @first.class , @stats
+    def test_if_first
+      assert_equal Mom::IfStatement , @first.class , @first
+    end
+    def test_if_condition_set
+      assert_equal Mom::NotSameCheck , @first.condition.class , @first
+    end
+    def test_if_true_set
+      assert @first.if_true , @first
     end
     def est_slot_is_set
       assert @stats.first.left
