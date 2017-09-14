@@ -20,7 +20,9 @@ module Mom
 end
 
 require_relative "simple_call"
+require_relative "dynamic_call"
 require_relative "truth_check"
+require_relative "not_same_check"
 require_relative "jump"
 require_relative "slot_load"
 require_relative "return_sequence"

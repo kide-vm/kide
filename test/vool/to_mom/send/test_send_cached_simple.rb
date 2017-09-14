@@ -10,11 +10,11 @@ module Vool
       @first = @stats.first
     end
 
-    def est_compiles_not_array
+    def test_compiles_not_array
       assert Array != @stats.class , @stats
     end
-    def est_class_compiles
-      assert_equal Mom::SlotConstant , @first.class , @stats
+    def test_class_compiles
+      assert_equal Mom::IfStatement , @first.class , @stats
     end
     def est_slot_is_set
       assert @stats.first.left
