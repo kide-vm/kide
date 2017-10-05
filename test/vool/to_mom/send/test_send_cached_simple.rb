@@ -22,8 +22,11 @@ module Vool
     def test_if_true_set
       assert @first.if_true , @first
     end
-    def est_slot_is_set
-      assert @stats.first.left
+    def test_if_true_not_empty
+      assert @first.if_true.first , @first
+    end
+    def test_slot_is_set
+      assert_equal 1 ,  @stats , @stats.to_rxf
     end
     def est_two_instructions_are_returned
       assert_equal 2 ,  @stats.length

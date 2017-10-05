@@ -9,7 +9,7 @@ AST::Node.class_eval do
   end
 end
 
-require "rubyx-object-file"
+require "rx-file"
 require "risc"
 require "risc/builtin/space"
 require "arm/arm_machine"

@@ -275,5 +275,5 @@ module Risc
     end
   end
 
-  Sof::Volotile.add(Assembler , [:objects])
+  RxFile::Volotile.add(Assembler , [:objects])
 end

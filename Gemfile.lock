@@ -1,15 +1,15 @@
 GIT
-  remote: https://github.com/ruby-x/rubyx-object-file
-  revision: bf1b3e95bde4a9110bfb713c178655b84bbbc0cc
+  remote: https://github.com/ruby-x/rx-file
+  revision: c1de10352d8af105fe532008ceafcdd30b5fbdab
   specs:
-    rubyx-object-file (0.3.0)
+    rx-file (0.3.0)
 
 PATH
   remote: .
   specs:
     rubyx (0.6.0)
       parser (~> 2.3.0)
-      rubyx-object-file (~> 0.3)
+      rx-file (~> 0.3)
 
 GEM
   remote: https://rubygems.org/
@@ -19,7 +19,7 @@ GEM
     ast (2.3.0)
     codeclimate-test-reporter (1.0.8)
       simplecov (<= 0.13)
-    coderay (1.1.1)
+    coderay (1.1.2)
     docile (1.1.5)
     drydock (0.6.9)
     ffi (1.9.18)
@@ -39,34 +39,33 @@ GEM
       guard-compat (~> 1.2)
       minitest (>= 3.0)
     highline (1.7.8)
-    json (2.0.3)
+    json (2.1.0)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    lumberjack (1.0.11)
-    method_source (0.8.2)
-    minitest (5.10.1)
+    lumberjack (1.0.12)
+    method_source (0.9.0)
+    minitest (5.10.3)
     minitest-color (0.0.2)
       minitest (~> 5)
     nenv (0.3.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
-    net-ssh (4.1.0)
+    net-ssh (4.2.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
     parser (2.3.3.1)
       ast (~> 2.2)
-    pry (0.10.4)
+    pry (0.11.1)
       coderay (~> 1.1.0)
-      method_source (~> 0.8.1)
-      slop (~> 3.4)
-    rake (12.0.0)
-    rb-fsevent (0.9.8)
-    rb-inotify (0.9.8)
-      ffi (>= 0.5.0)
-    rb-readline (0.5.4)
+      method_source (~> 0.9.0)
+    rake (12.1.0)
+    rb-fsevent (0.10.2)
+    rb-inotify (0.9.10)
+      ffi (>= 0.5.0, < 2)
+    rb-readline (0.5.5)
     ruby_dep (1.5.0)
     rye (0.9.13)
       annoy
@@ -80,8 +79,7 @@ GEM
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
-    simplecov-html (0.10.0)
-    slop (3.6.0)
+    simplecov-html (0.10.2)
     storable (0.8.9)
     sysinfo (0.8.1)
       drydock
@@ -100,10 +98,10 @@ DEPENDENCIES
   rake
   rb-readline
   rubyx!
-  rubyx-object-file!
+  rx-file!
   rye
   simplecov
   thor (= 0.19.1)
 
 BUNDLED WITH
-   1.15.1
+   1.15.4

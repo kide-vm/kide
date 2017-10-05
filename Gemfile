@@ -1,13 +1,11 @@
 source "https://rubygems.org"
 
 gem "rubyx" , :path => "."
-#gem "ast"
-#, :github => "whitequark/ast" , branch: :master
 
 gem "rake"
 gem "rye"
 
-gem "rubyx-object-file" , :git => "https://github.com/ruby-x/rubyx-object-file"
+gem "rx-file" , :git => "https://github.com/ruby-x/rx-file"
 
 group :test do
   gem "codeclimate-test-reporter" , require: false

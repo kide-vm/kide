@@ -14,5 +14,5 @@ Gem::Specification.new do |s|
   s.summary = 'RubyX is a native object vm without any c, one day possibly a ruby vm'
 
   s.add_dependency "parser" , "~> 2.3.0"
-  s.add_dependency "rubyx-object-file" , "~> 0.3"
+  s.add_dependency "rx-file" , "~> 0.3"
 end
