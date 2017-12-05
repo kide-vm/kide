@@ -7,11 +7,14 @@ module Vool
     def setup
       Risc.machine.boot
       @stats = compile_first_method( "arg.mod4").first
-      @first = @stats.first
+      @first, @second , @third ,@fourth= @stats[0],@stats[1],@stats[2],@stats[3]
     end
 
     def test_compiles_not_array
       assert Array != @stats.class , @stats
+    end
+    def test_four_instructions_are_returned
+      assert_equal 4 ,  @stats.length
     end
     def test_if_first
       assert_equal Mom::IfStatement , @first.class , @first
@@ -23,14 +26,27 @@ module Vool
       assert @first.if_true , @first
     end
     def test_if_true_not_empty
-      assert @first.if_true.first , @first
+      assert @first.if_true.first , @first.to_rxf
     end
-    def test_slot_is_set
-      assert_equal 1 ,  @stats , @stats.to_rxf
+    def test_if_true_not_empty
+      assert @first.if_true.first , @first.to_rxf
     end
-    def est_two_instructions_are_returned
-      assert_equal 2 ,  @stats.length
+    def test_setup_second
+      assert_equal Mom::MessageSetup ,  @second.class , @second.to_rxf
     end
+
+    def test_transfer_third
+      assert_equal Mom::ArgumentTransfer ,  @third.class , @third.to_rxf
+    end
+
+    def test_call_third
+      assert_equal Mom::DynamicCall ,  @fourth.class , @fourth.to_rxf
+    end
+
+    def test_call_third
+      assert @fourth.method_var_name.start_with?("cached_") , @fourth.to_rxf
+    end
+
     def est_receiver_move_class
       assert_equal Mom::SlotConstant,  @first.class
     end

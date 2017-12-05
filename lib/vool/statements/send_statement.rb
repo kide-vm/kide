@@ -70,6 +70,7 @@ module Vool
     def flatten
       raise "flat"
     end
+
     # check that current type is the cached type
     # if not, change and find method for the type (simple_call to resolve_method)
     # conceptually easy in ruby, but we have to compile that "easy" ruby
@@ -77,14 +78,15 @@ module Vool
       # if cached_type != current_type
       #   cached_type = current_type
       #   cached_method = current_type.resolve_method(method.name)
-      if_true = [build_type_cache_update , build_method_cache_update] #@if_true.to_mom( in_method ) #find and assign
-      [Mom::IfStatement.new(  build_condition , if_true )]
+      if_true = [build_type_cache_update , build_method_cache_update]
+      #@if_true.to_mom( in_method ) #find and assign
+      [Mom::IfStatement.new( build_condition , if_true )]
     end
 
     # this may look like a simple_call, but the difference is that we don't know
     # the method until run-time. Alas the setup is the same
     def call_cached_method(in_method)
-      message_setup(in_method) << Mom::DynamicCall.new( method_var_name)
+      message_setup(in_method) << Mom::DynamicCall.new(method_var_name)
     end
     private
     # cached type and method are stored in the frame as local variables.
@@ -92,6 +94,7 @@ module Vool
     def create_tmps(in_method)
       in_method.create_tmp
     end
+
     # we store the (one!) cached mathod in the frame, under the name that this
     # method returns
     def method_var_name
@@ -107,10 +110,10 @@ module Vool
       Mom::NotSameCheck.new(cached_type , current_type)
     end
     def build_type_cache_update
-
+      1
     end
     def build_method_cache_update
-
+      1
     end
   end
 end
