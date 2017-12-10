@@ -33,7 +33,7 @@ module Vool
     def test_creates_method_in_class
       method = create_method
       assert method , "No method created"
-      assert_equal Vool::VoolMethod , method.class
+      assert_equal Parfait::VoolMethod , method.class
     end
 
 

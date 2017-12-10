@@ -1,4 +1,4 @@
-# Class is mainly a list of methods with a name. The methods are untyped.
+# Class is mainly a list of methods with a name. The methods are untyped, sis Vool.
 
 # The memory layout of an object is determined by the Type (see there).
 # The class carries the "current" type, ie the type an object would be if you created an instance
@@ -36,6 +36,7 @@ module Parfait
     end
 
     def add_method(method)
+      raise "Must be untyped method #{method}" unless method.is_a? Parfait::VoolMethod
       @methods[method.name] = method
     end
 

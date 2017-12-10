@@ -1,6 +1,5 @@
 # A TypedMethod is static object that primarily holds the executable code.
 # It is called typed, because all arguments and variables it uses are typed.
-# (Type means basic type, ie integer or reference)
 
 # It's relation to the method a ruby programmer knows (called RubyMethod) is many to one,
 # meaning one RubyMethod (untyped) has many TypedMethod implementations.

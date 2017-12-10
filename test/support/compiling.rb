@@ -25,7 +25,7 @@ module MomCompile
     lst = Vool::VoolCompiler.compile as_test_main( input )
     assert_equal Parfait::Class , lst.clazz.class , input
     @method = lst.clazz.get_method(:main)
-    assert @method
+    assert_equal Parfait::VoolMethod , @method.class
     res = lst.to_mom( nil )
     #puts "#{res.class}"
     res.first
@@ -40,7 +40,7 @@ module MomCompile
     test = is
     while(test)
       # if we assert here, we get output pointing here. Without stack, not useful
-      raise "Wrong class for #{index+1}, #{dump(is)}" if should[index] != test.class 
+      raise "Wrong class for #{index+1}, #{dump(is)}" if should[index] != test.class
       index += 1
       test = test.next
     end
