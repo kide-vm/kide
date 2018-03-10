@@ -11,6 +11,10 @@ module Vool
     def create_objects
       @statements.each{ |s| s.create_objects }
     end
+
+    def <<(o)
+      @statements << o
+    end
   end
 
   class ScopeStatement < Statements

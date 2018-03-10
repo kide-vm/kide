@@ -23,14 +23,20 @@ module Vool
       assert_equal Mom::NotSameCheck , @first.condition.class , @first
     end
     def test_if_true_moves_type
-      assert_equal @first.if_true[0].class, Mom::SlotMove , @first.to_rxf
+      assert_equal @first.if_true[0].class, Mom::SlotMove , @first.if_true.to_rxf
     end
-    def test_if_true_resolves
-      assert_equal @first.if_true[1] , 2,  @first.if_true.to_rxf
+    def test_if_true_resolves_setup
+      assert_equal @first.if_true[1].class , Mom::MessageSetup,  @first.if_true.to_rxf
     end
-
-
-
+    def test_if_true_resolves_transfer
+      assert_equal @first.if_true[2].class , Mom::ArgumentTransfer,  @first.if_true.to_rxf
+    end
+    def test_if_true_resolves_call
+      assert_equal @first.if_true[3].class , Mom::SimpleCall,  @first.if_true.to_rxf
+    end
+    def test_if_true_resolves_move
+      assert_equal @first.if_true[4].class , Mom::SlotMove,  @first.if_true.to_rxf
+    end
 
     def test_setup_second
       assert_equal Mom::MessageSetup ,  @second.class , @second.to_rxf
@@ -44,24 +50,5 @@ module Vool
       assert_equal Mom::DynamicCall ,  @fourth.class , @fourth.to_rxf
     end
 
-    def est_receiver_move_class
-      assert_equal Mom::SlotConstant,  @first.class
-    end
-    def est_receiver_move
-      assert_equal :receiver,  @first.left[2]
-    end
-    def est_receiver
-      assert_equal IntegerStatement,  @first.right.class
-      assert_equal 5,  @stats.first.right.value
-    end
-    def est_call_is
-      assert_equal Mom::SimpleCall,  @stats[1].class
-    end
-    def est_call_has_method
-      assert_equal Parfait::TypedMethod,  @stats[1].method.class
-    end
-    def est_call_has_right_method
-      assert_equal :mod4,  @stats[1].method.name
-    end
   end
 end

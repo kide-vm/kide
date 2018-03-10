@@ -45,6 +45,21 @@ module Risc
           return compiler.method
         end
 
+        # resolve the method name of self, on the given object
+        # may seem wrong way around at first sight, but we know the type of string And
+        # thus resolving this method happens at compile time, whereas any method on an
+        # unknown self (the object given) needs resolving and that is just what we are doing
+        #  ( ie the snake bites it's tail)
+        # This method is just a placeholder until boot is over and the real method is
+        # parsed.
+        def resolve_method context
+          compiler = compiler_for(:Word, :resolve_method , {:value => :Object} )
+          args = compiler.method.arguments
+          len = args.instance_length
+          raise "Compiler arg number mismatch, method=#{args} " if  len != 3
+          return compiler.method
+        end
+
       end
       extend ClassMethods
     end

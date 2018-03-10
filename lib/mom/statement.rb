@@ -18,6 +18,10 @@ module Mom
       flat
     end
 
+    def <<(o)
+      @statements << o
+    end
+
   end
 
 end
