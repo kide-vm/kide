@@ -44,7 +44,8 @@ module Vool
     end
 
     def test_call_third
-      assert @fourth.method_var_name.start_with?("cached_") , @fourth.to_rxf
+      assert @fourth.cached_method.start_with?("cached_") , @fourth.to_rxf
+      assert @fourth.cached_type.start_with?("cached_") , @fourth.to_rxf
     end
 
     def est_receiver_move_class

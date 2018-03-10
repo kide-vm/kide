@@ -14,7 +14,7 @@ module Vool
       assert_equal Mom::ArgumentTransfer,  @stats[1].class
     end
     def test_receiver_move
-      assert_equal :receiver,  @stats[1].receiver.left[2]
+      assert_equal :receiver,  @stats[1].receiver.left.slots[1]
     end
     def test_receiver
       type , value = receiver

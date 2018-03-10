@@ -19,13 +19,13 @@ module Vool
       assert @method.first.left
     end
     def test_slot_starts_at_message
-      assert_equal :message , @method.first.left[0]
+      assert_equal :message , @method.first.left.known_object
     end
     def test_slot_gets_self
-      assert_equal :self , @method.first.left[1]
+      assert_equal :self , @method.first.left.slots[0]
     end
     def test_slot_assigns_to_local
-      assert_equal :a , @method.first.left[-1]
+      assert_equal :a , @method.first.left.slots[-1]
     end
     def test_slot_assigns_something
       assert @method.first.right

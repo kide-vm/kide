@@ -28,15 +28,17 @@ module Mom
   class SlotLoad < Instruction
     attr_reader :left , :right
     def initialize(left , right)
+      left = SlotDefinition.new(left.shift , left) if left.is_a? Array
       @left , @right = left , right
+      raise "right not SlotDefinition, #{left}" unless left.is_a? SlotDefinition
     end
   end
 
-  # A SlotConstant moves a constant into a know Slot.
+  # A SlotConstant moves a constant into a known Slot.
   # Eg when you write a = 5 , the 5 becomes a constant, and so the right side
   # the a is an instance variable on the current frame, and the frame is an instance
   # of the current message, so the effect is something like message.frame.a = 5
-  # @left:  See SlotLoad, and array of symbols
+  # @left:  See SlotLoad, an array of symbols
   # @right: A Constant from parse, ie an instance of classes in basc_value, like TrueStatement
   class SlotConstant < SlotLoad
 
@@ -47,6 +49,7 @@ module Mom
 
   end
 
+  #SlotMove is a SlotLoad where the right side is a slot, just like the left.
   class SlotMove < SlotLoad
   end
 

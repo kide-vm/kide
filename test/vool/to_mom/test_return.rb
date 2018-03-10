@@ -25,10 +25,10 @@ module Vool
       assert_equal Mom::ReturnSequence,  @stats.last.class
     end
     def test_slot_starts_at_message
-      assert_equal :message , @stats.first.left[0]
+      assert_equal :message , @stats.first.left.known_object
     end
     def test_slot_gets_return
-      assert_equal :return_value , @stats.first.left[1]
+      assert_equal :return_value , @stats.first.left.slots[0]
     end
     def test_slot_assigns_something
       assert @stats.first.right
