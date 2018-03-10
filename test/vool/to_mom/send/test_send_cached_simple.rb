@@ -22,15 +22,16 @@ module Vool
     def test_if_condition_set
       assert_equal Mom::NotSameCheck , @first.condition.class , @first
     end
-    def test_if_true_set
-      assert @first.if_true , @first
+    def test_if_true_moves_type
+      assert_equal @first.if_true[0].class, Mom::SlotMove , @first.to_rxf
     end
-    def test_if_true_not_empty
-      assert @first.if_true.first , @first.to_rxf
+    def test_if_true_resolves
+      assert_equal @first.if_true[1] , 2,  @first.if_true.to_rxf
     end
-    def test_if_true_not_empty
-      assert @first.if_true.first , @first.to_rxf
-    end
+
+
+
+
     def test_setup_second
       assert_equal Mom::MessageSetup ,  @second.class , @second.to_rxf
     end
@@ -41,11 +42,6 @@ module Vool
 
     def test_call_third
       assert_equal Mom::DynamicCall ,  @fourth.class , @fourth.to_rxf
-    end
-
-    def test_call_third
-      assert @fourth.cached_method.start_with?("cached_") , @fourth.to_rxf
-      assert @fourth.cached_type.start_with?("cached_") , @fourth.to_rxf
     end
 
     def est_receiver_move_class
