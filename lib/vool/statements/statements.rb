@@ -12,9 +12,6 @@ module Vool
       @statements.each{ |s| s.create_objects }
     end
 
-    def <<(o)
-      @statements << o
-    end
   end
 
   class ScopeStatement < Statements

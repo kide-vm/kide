@@ -5,7 +5,7 @@ Virtual Object Oriented Language
 
 in other words, ruby without the fluff.
 
-Possibly later other languages can compile to this level, eg by running in the same jvm.
+Possibly later other languages can compile to this level and use rx-file as code definition.
 
 ## Syntax tree
 
@@ -13,7 +13,7 @@ Vool is the layer of concrete syntax tree. The Parser gem is used to parse ruby.
 an abstract syntax tree which is then transformed.
 
 The next layer down is the Mom, Minimal object Machine, which uses an instruction tree.
-That is on the way down we create instructions, but stay in tree format. Only the next step
+That is on the way down we create instructions, but stays in tree format. Only the next step
 down to the Risc layer moves to an instruction stream.
 
 The nodes of the syntax tree are all the things one would expect from a language, if statements

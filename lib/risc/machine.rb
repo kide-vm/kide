@@ -5,7 +5,7 @@ module Risc
   # actual assembler level to allow for several cpu architectures.
   # The Instructions (see class Instruction) define what the machine can do (ie load/store/maths)
 
-  # The ast is transformed to virtual-machine objects, some of which represent code, some data.
+  # From code, the next step down is Vool, then Mom (in two steps)
   #
   # The next step transforms to the register machine layer, which is quite close to what actually
   #  executes. The step after transforms to Arm, which creates executables.

@@ -5,20 +5,20 @@ module Arm
     # for each instruction we call the translator with translate_XXX
     #  with XXX being the class name.
     # the result is replaced in the stream
-    def translate  instruction
+    def translate( instruction )
       class_name = instruction.class.name.split("::").last
       self.send( "translate_#{class_name}".to_sym , instruction)
     end
 
     # don't replace labels
-    def translate_Label code
+    def translate_Label( code )
       nil
     end
 
     # arm indexes are
     #  in bytes, so *4
     # if an instruction is passed in we get the index with index function
-    def arm_index index
+    def arm_index( index )
       index = index.index if index.is_a?(Risc::Instruction)
       raise "index error 0" if index == 0
       index * 4

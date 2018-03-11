@@ -24,6 +24,9 @@ module Common
     def [](i)
       @statements[i]
     end
+    def <<(o)
+      @statements << o
+    end
     def collect(arr)
       @statements.each { |s| s.collect(arr) }
       super

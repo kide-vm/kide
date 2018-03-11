@@ -1,7 +1,7 @@
 module Arm
   class MachineCode
 
-    def function_call into , call
+    def function_call( into , call )
       raise "Not CallSite #{call.inspect}" unless call.is_a? Risc::CallSite
       raise "Not linked #{call.inspect}" unless call.function
       into.add_code  call(  call.function  )
@@ -9,28 +9,28 @@ module Arm
       call.function.return_type
     end
 
-    def main_start context
+    def main_start( context )
       entry = Risc::Block.new("main_entry",nil,nil)
       entry.add_code mov(  :fp ,  0 )
       entry.add_code call( context.function )
       entry
     end
-    def main_exit context
+    def main_exit( context )
       exit = Risc::Block.new("main_exit",nil,nil)
       syscall(exit , 1)
       exit
     end
-    def function_entry block, f_name
+    def function_entry( block, f_name )
         block.add_code  push( [:lr] )
         block
     end
-    def function_exit entry , f_name
+    def function_exit( entry , f_name )
       entry.add_code   pop(  [:pc] )
       entry
     end
 
     # assumes string in standard receiver reg (r2) and moves them down for the syscall
-    def write_stdout function #, string
+    def write_stdout( function ) #, string
       # TODO save and restore r0
       function.mov( :r0 ,  1 ) # 1 == stdout
       function.mov( :r1 , receiver_register )
@@ -39,7 +39,7 @@ module Arm
     end
 
     # stop, do not return
-    def exit function #, string
+    def exit( function )#, string
       syscall( function.insertion_point , 1 ) # 1 == exit
     end
 
@@ -47,7 +47,7 @@ module Arm
     # the number (a Risc::integer) is (itself) divided by 10, ie overwritten by the result
     #  and the remainder is overwritten (ie an out argument)
     # not really a function, more a macro,
-    def div10 function, number , remainder
+    def div10( function, number , remainder )
       # Note about division: devision is MUCH more expensive than one would have thought
       # And coding it is a bit of a mind leap: it's all about finding a a result that gets the
       #  remainder smaller than an int. i'll post some links sometime. This is from the arm manual
@@ -66,7 +66,7 @@ module Arm
       end
     end
 
-    def syscall block , num
+    def syscall( block , num )
       # This is very arm specific, syscall number is passed in r7,
       # other arguments like a c call ie 0 and up
       sys = Risc::Integer.new( Risc::RiscValue.new(SYSCALL_REG) )
