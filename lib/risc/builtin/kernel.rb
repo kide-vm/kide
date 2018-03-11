@@ -6,7 +6,7 @@ module Risc
         # it isn't really a function, ie it is jumped to (not called), exits and may not return
         # so it is responsible for initial setup
         def __init__ context
-          compiler = Vm::MethodCompiler.create_method(:Kernel,:__init__ )
+          compiler = Risc::MethodCompiler.create_method(:Kernel,:__init__ )
           new_start = Risc.label("__init__ start" , "__init__" )
           compiler.method.set_instructions( new_start)
           compiler.set_current new_start
@@ -29,7 +29,7 @@ module Risc
         end
 
         def exit context
-          compiler = Vm::MethodCompiler.create_method(:Kernel,:exit ).init_method
+          compiler = Risc::MethodCompiler.create_method(:Kernel,:exit ).init_method
           emit_syscall( compiler , :exit )
           return compiler.method
         end

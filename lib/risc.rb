@@ -7,10 +7,10 @@ end
 
 require "risc/padding"
 require "risc/positioned"
-require "vm"
 
 require "parfait"
 require "risc/machine"
+require "risc/method_compiler"
 
 class Fixnum
   def fits_u8?

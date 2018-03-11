@@ -32,7 +32,7 @@ HERE
                     s(:true_statements, s(:call, :putstring , s(:arguments), s(:receiver, s(:string, "then")))),
                     s(:false_statements, s(:call, :putstring , s(:arguments), s(:receiver, s(:string, "else"))))))
     end
-    def test_if
+    def pest_if
         #show_ticks # get output of what is
         check_chain [Branch, Label, LoadConstant, SlotToReg, RegToSlot,
              LoadConstant, RegToSlot, FunctionCall, Label, SlotToReg,

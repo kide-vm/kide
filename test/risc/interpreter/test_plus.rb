@@ -16,7 +16,7 @@ HERE
       super
     end
 
-    def test_add
+    def pest_add
       #show_ticks # get output of what is
       check_chain [Branch, Label, LoadConstant, SlotToReg, RegToSlot,
              LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,
@@ -26,12 +26,12 @@ HERE
       check_return 0
     end
 
-    def test_overflow
+    def pest_overflow
       ticks( 12 )
       assert @interpreter.flags[:overflow]
     end
 
-    def test_zero
+    def pest_zero
       ticks( 12 )
       assert @interpreter.flags[:zero]
     end

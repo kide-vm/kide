@@ -9,7 +9,7 @@ module Risc
     def setup
       Risc.machine.boot
       do_clean_compile
-      Vm.compile_ast( @input )
+      #FIXME Vm.compile_ast( @input )
       Collector.collect_space
       @interpreter = Interpreter.new
       @interpreter.start Risc.machine.init

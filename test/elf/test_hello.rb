@@ -12,7 +12,7 @@ class HelloTest < MiniTest::Test
     writer.save "test/hello.o"
   end
 
-  def test_string_put
+  def pest_string_put
     @input = s(:statements, s(:return, s(:call, :putstring, s(:arguments),
                   s(:receiver, s(:string, "Hello again\\n")))))
     check

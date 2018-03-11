@@ -7,7 +7,7 @@ module Risc
         include CompileHelper
 
         def putstring context
-          compiler = Vm::MethodCompiler.create_method(:Word , :putstring ).init_method
+          compiler = Risc::MethodCompiler.create_method(:Word , :putstring ).init_method
           compiler.add_slot_to_reg( "putstring" , :message , :receiver , :new_message )
           index = Parfait::Word.get_length_index
           reg = RiscValue.new(:r2 , :Integer)

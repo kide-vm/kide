@@ -6,22 +6,23 @@ module Risc
         include AST::Sexp
 
         def mod4 context
-          compiler = Vm::MethodCompiler.create_method(:Integer,:mod4 ).init_method
+          compiler = Risc::MethodCompiler.create_method(:Integer,:mod4 ).init_method
           return compiler.method
         end
         def putint context
-          compiler = Vm::MethodCompiler.create_method(:Integer,:putint ).init_method
+          compiler = Risc::MethodCompiler.create_method(:Integer,:putint ).init_method
           return compiler.method
         end
 
 
         def div10 context
           s = "div_10"
-          compiler = Vm::MethodCompiler.create_method(:Integer,:div10 ).init_method
-          me = compiler.process( Vm::Tree::KnownName.new( :self) )
-          tmp = compiler.process( Vm::Tree::KnownName.new( :self) )
-          q = compiler.process( Vm::Tree::KnownName.new( :self) )
-          const = compiler.process( Vm::Tree::IntegerExpression.new(1) )
+          compiler = Risc::MethodCompiler.create_method(:Integer,:div10 ).init_method
+          me = compiler.add_known( :self )
+          tmp = compiler.add_known( :self )
+          q = compiler.add_known( :self )
+          const = compiler.use_reg :Integer , 1
+          compiler.add_load_constant( s, 1 , const )
           # int tmp = self >> 1
           compiler.add_code Risc.op( s , ">>" , tmp , const)
           # int q = self >> 2

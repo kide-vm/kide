@@ -24,7 +24,7 @@ HERE
       super
     end
 
-    def test_if
+    def pest_if
         #show_ticks # get output of what is
         check_chain [Branch, Label, LoadConstant, SlotToReg, RegToSlot,
              LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,

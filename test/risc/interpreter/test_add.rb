@@ -16,7 +16,7 @@ HERE
       super
     end
 
-    def test_chain
+    def pest_chain
       #show_ticks # get output of what is
       check_chain [Branch, Label, LoadConstant, SlotToReg, RegToSlot,
              LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,
@@ -25,18 +25,18 @@ HERE
              NilClass]
     end
 
-    def test_get
+    def pest_get
       assert_equal SlotToReg , ticks(4).class
       assert @interpreter.get_register( :r2 )
       assert  Integer , @interpreter.get_register( :r2 ).class
     end
-    def test_transfer
+    def pest_transfer
       transfer = ticks 19
       assert_equal RiscTransfer ,  transfer.class
       assert_equal @interpreter.get_register(transfer.to) , @interpreter.get_register(transfer.from)
     end
 
-    def test_call
+    def pest_call
       ret = ticks(18)
       assert_equal FunctionReturn ,  ret.class
 
@@ -45,7 +45,7 @@ HERE
 
       assert_equal Label , link.class
     end
-    def test_adding
+    def pest_adding
       done_op = ticks(12)
       assert_equal OperatorInstruction ,  done_op.class
       left = @interpreter.get_register(done_op.left)

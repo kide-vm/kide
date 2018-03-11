@@ -39,7 +39,7 @@ module Vool
       methods.each do |method|
         code = Passes::MethodCompiler.new(method).get_code
         typed_method = method.create_parfait_method(clazz.instance_type)
-        Vm::MethodCompiler.new( typed_method ).init_method.process( code )
+        Risc::MethodCompiler.new( typed_method ).init_method.process( code )
       end
     end
 
