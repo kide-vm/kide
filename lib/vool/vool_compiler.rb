@@ -8,5 +8,9 @@ module Vool
       statements.create_objects
       statements
     end
+    def self.ruby_to_mom(source)
+      statements = elf.ruby_to_vool(source)
+      statements.to_mom
+    end
   end
 end

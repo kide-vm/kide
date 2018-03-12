@@ -10,7 +10,7 @@ module Mom
       @statements = statements
     end
 
-    def flatten
+    def flatten(options = {})
       cond_label = Label.new( "cond_label_#{object_id}")
       head = cond_label
       head.append hoisted.flatten

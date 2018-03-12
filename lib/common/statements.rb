@@ -31,5 +31,8 @@ module Common
       @statements.each { |s| s.collect(arr) }
       super
     end
+    def add_array(a)
+      @statements += a
+    end
   end
 end

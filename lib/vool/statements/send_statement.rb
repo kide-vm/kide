@@ -77,7 +77,8 @@ module Vool
       # if cached_type != current_type
       #   cached_type = current_type
       #   cached_method = current_type.resolve_method(method.name)
-      if_true = [*build_type_cache_update , *build_method_cache_update(in_method)]
+      if_true = Mom::Statements.new(build_type_cache_update)
+      if_true.add_array build_method_cache_update(in_method)
       #@if_true.to_mom( in_method ) #find and assign
       [Mom::IfStatement.new( build_condition , if_true )]
     end
