@@ -22,7 +22,7 @@ module MomCompile
   include CompilerHelper
 
   def compile_first_method input
-    lst = Vool::VoolCompiler.compile as_test_main( input )
+    lst = Vool::VoolCompiler.ruby_to_vool as_test_main( input )
     assert_equal Parfait::Class , lst.clazz.class , input
     @method = lst.clazz.get_method(:main)
     assert_equal Parfait::VoolMethod , @method.class

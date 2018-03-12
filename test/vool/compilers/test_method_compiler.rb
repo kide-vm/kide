@@ -9,7 +9,7 @@ module Vool
     end
 
     def create_method
-      VoolCompiler.compile in_Test("def meth; @ivar ;end")
+      VoolCompiler.ruby_to_vool in_Test("def meth; @ivar ;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       test.get_method(:meth)
     end
@@ -38,27 +38,27 @@ module Vool
 
 
     def test_creates_method_statement_in_class
-      clazz = VoolCompiler.compile in_Test("def meth; @ivar ;end")
+      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar ;end")
       assert_equal MethodStatement , clazz.body.statements.first.class
     end
 
     def test_parfait_class_creation
-      clazz = VoolCompiler.compile in_Test("def meth; @ivar ;end")
+      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar ;end")
       assert_equal Parfait::Class , clazz.body.statements.first.clazz.class
     end
 
     def test_method_statement_has_class
-      clazz = VoolCompiler.compile in_Test("def meth; @ivar ;end")
+      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar ;end")
       assert clazz.body.statements.first.clazz
     end
 
     def test_method_statement_has_class_in_main
-      clazz = VoolCompiler.compile as_main("def meth; @ivar ;end")
+      clazz = VoolCompiler.ruby_to_vool as_main("def meth; @ivar ;end")
       assert clazz.body.statements.first.clazz
     end
 
     def test_method_has_one_local
-      VoolCompiler.compile in_Test("def meth; local = 5 ;end")
+      VoolCompiler.ruby_to_vool in_Test("def meth; local = 5 ;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.get_method(:meth)
       assert_equal 2 , method.locals_type.instance_length

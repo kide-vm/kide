@@ -5,7 +5,7 @@ module Vool
     class TestLocalCollect < MiniTest::Test
 
       def compile(input)
-        lst = VoolCompiler.compile( input )
+        lst = VoolCompiler.ruby_to_vool( input )
         vars = []
         lst.collect([]).each do |node|
           node.add_local(vars)
