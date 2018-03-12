@@ -23,7 +23,7 @@ module Mom
       assert_equal 7 , @stats.length
     end
     def test_array
-      check_array [SlotMove,TruthCheck,Label,MessageSetup,SimpleCall,ArgumentTransfer,Label], @stats
+      check_array [SlotMove,TruthCheck,Label,MessageSetup,ArgumentTransfer,SimpleCall,Label], @stats
     end
   end
 end
