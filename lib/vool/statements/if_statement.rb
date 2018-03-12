@@ -2,7 +2,7 @@ require_relative "hoister"
 module Vool
   class IfStatement < Statement
     include Hoister
-    
+
     attr_reader :condition , :if_true , :if_false
 
     def initialize( cond , if_true , if_false = nil)
@@ -14,7 +14,7 @@ module Vool
 
     def to_mom( method )
       if_true =   @if_true.to_mom( method )
-      if_false =  @if_false.to_mom( method )
+      if_false =  @if_false ? @if_false.to_mom( method ) : nil
       condition , hoisted  = hoist_condition( method )
       cond = Mom::TruthCheck.new(condition.to_mom(method))
       check = Mom::IfStatement.new(  cond , if_true , if_false )
@@ -25,7 +25,7 @@ module Vool
 
     def collect(arr)
       @if_true.collect(arr)
-      @if_false.collect(arr)
+      @if_false.collect(arr) if @if_false
       super
     end
 
