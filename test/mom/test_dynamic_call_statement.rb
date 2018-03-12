@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Mom
-  class TestCall < MiniTest::Test
+  class TestDynamicCall < MiniTest::Test
     include MomCompile
 
     def setup
