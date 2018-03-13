@@ -54,12 +54,12 @@ module Vool
 end
 
 
+require_relative "statements/assign_statement"
 require_relative "statements/array_statement"
 require_relative "statements/basic_values"
 require_relative "statements/class_statement"
 require_relative "statements/hash_statement"
 require_relative "statements/if_statement"
-require_relative "statements/ivar_statement"
 require_relative "statements/logical_statement"
 require_relative "statements/local_statement"
 require_relative "statements/method_statement"
