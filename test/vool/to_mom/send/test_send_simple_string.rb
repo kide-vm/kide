@@ -12,7 +12,7 @@ module Vool
       @first = @stats.first
     end
     def receiver
-      [StringStatement , "5"]
+      [Mom::StringConstant , "5"]
     end
 
     def test_args_one_move
@@ -20,7 +20,7 @@ module Vool
       assert_equal :arguments,    @stats[1].arguments[0].left.slots[1]
     end
     def test_args_one_str
-      assert_equal IntegerStatement,    @stats[1].arguments[0].right.class
+      assert_equal Mom::IntegerConstant,    @stats[1].arguments[0].right.class
       assert_equal 1,    @stats[1].arguments[0].right.value
     end
   end

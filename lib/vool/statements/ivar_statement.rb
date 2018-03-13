@@ -18,7 +18,7 @@ module Vool
     end
 
     def to_mom( method )
-      @value.slot_class.new([:message , :self , @name] , @value)
+      @value.slot_class.new([:message , :self , @name] , @value.to_mom(method))
     end
 
   end

@@ -31,7 +31,7 @@ module Vool
       assert @method.first.right
     end
     def test_slot_assigns_int
-      assert_equal IntegerStatement ,  @method.first.right.class
+      assert_equal Mom::IntegerConstant ,  @method.first.right.class
     end
   end
 end

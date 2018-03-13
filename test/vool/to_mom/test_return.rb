@@ -34,7 +34,7 @@ module Vool
       assert @stats.first.right
     end
     def test_slot_assigns_int
-      assert_equal IntegerStatement ,  @stats.first.right.class
+      assert_equal Mom::IntegerConstant ,  @stats.first.right.class
     end
   end
   class TestReturnSendMom < MiniTest::Test
@@ -42,7 +42,7 @@ module Vool
 
     def setup
       Risc.machine.boot
-      @stats = compile_first_method( "return foo").first
+      @stats = compile_first_method( "return 5.mod4").first
     end
 
     def test_two_instructions_are_returned

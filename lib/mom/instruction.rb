@@ -19,6 +19,7 @@ module Mom
   end
 end
 
+require_relative "basic_values"
 require_relative "simple_call"
 require_relative "dynamic_call"
 require_relative "truth_check"

@@ -16,7 +16,7 @@ module Vool
     end
 
     def test_receiver
-      assert_equal SelfStatement,  @stats[1].receiver.right.class
+      assert_equal Mom::SlotDefinition,  @stats[1].receiver.right.class
     end
 
     def test_arg_one

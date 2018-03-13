@@ -30,7 +30,8 @@ module Mom
     def initialize(left , right)
       left = SlotDefinition.new(left.shift , left) if left.is_a? Array
       @left , @right = left , right
-      raise "right not SlotDefinition, #{left}" unless left.is_a? SlotDefinition
+      raise "left not SlotDefinition, #{left}" unless left.is_a? SlotDefinition
+#      raise "right not Mom, #{right.to_rxf}" unless right.class.name.include?("Mom")
     end
   end
 
@@ -44,7 +45,7 @@ module Mom
 
     def initialize(left , right)
       super
-      raise "right not constant, #{right}" unless right.is_a? Vool::ConstantStatement
+      raise "right not constant, #{right}" unless right.is_a? Mom::Constant
     end
 
   end

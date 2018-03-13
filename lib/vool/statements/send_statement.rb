@@ -43,11 +43,11 @@ module Vool
 
     def message_setup(in_method)
       setup  = [Mom::MessageSetup.new(in_method)]
-      receiver = @receiver.slot_class.new([:message , :next_message , :receiver] , @receiver)
+      receiver = @receiver.slot_class.new([:message , :next_message , :receiver] , @receiver.to_mom(in_method))
       arg_target = [:message , :next_message , :arguments]
       args = []
       @arguments.each_with_index do |arg , index|
-        args << arg.slot_class.new( arg_target + [index] , arg)
+        args << arg.slot_class.new( arg_target + [index] , arg.to_mom(in_method))
       end
       setup << Mom::ArgumentTransfer.new( receiver , args )
     end

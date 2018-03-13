@@ -11,11 +11,11 @@ module Vool
       super
     end
 
-    # To return form a method in mom instructions we need to do three things:
+    # To return form a method in mom instructions we need to do two things:
     # - store the given return value, this is a SlotMove / SlotConstant
     # - activate return sequence (reinstantiate old message and jump to return address)
     def to_mom( method )
-      move = @return_value.slot_class.new( [:message , :return_value] , @return_value)
+      move = @return_value.slot_class.new( [:message , :return_value] , @return_value.to_mom(method))
       Mom::Statements.new [move , Mom::ReturnSequence.new]
     end
 

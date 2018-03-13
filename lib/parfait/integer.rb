@@ -1,11 +1,10 @@
 
 # Integer class for representing maths on Integers
-# Integers are Values (not Objects),
+# Integers are Objects, spcifically DataObjects
 # - they have fixed value
 # - they are immutable
-# you can *not* assign instance variables or methods
-
-# TODO how this idea works with Numeric ?
+# (both by implementation, not design.
+# Ie it would be possible to change the value, we just don't support that)
 
 module Parfait
   class Integer

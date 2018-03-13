@@ -12,14 +12,14 @@ module Vool
     end
 
     def receiver
-      [IntegerStatement , 5]
+      [Mom::IntegerConstant , 5]
     end
     def test_args_two_move
       assert_equal :next_message, @stats[1].arguments[1].left.slots[0]
       assert_equal :arguments,    @stats[1].arguments[1].left.slots[1]
     end
     def test_args_two_str
-      assert_equal IntegerStatement,    @stats[1].arguments[1].right.class
+      assert_equal Mom::IntegerConstant,    @stats[1].arguments[1].right.class
       assert_equal 2,    @stats[1].arguments[1].right.value
     end
   end

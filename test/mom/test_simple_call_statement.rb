@@ -13,8 +13,8 @@ module Mom
     def test_if_compiles
       assert_equal  @stats.last.class , SimpleCall , @stats
     end
-    def test_length
-      assert_equal 3 , @stats.length
+    def test_method_name
+      assert_equal  @stats.last.method.name , :mod4 , @stats.last.to_rxf
     end
     def test_array
       check_array [MessageSetup,ArgumentTransfer,SimpleCall] , @stats

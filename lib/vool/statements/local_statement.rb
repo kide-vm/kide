@@ -12,7 +12,7 @@ module Vool
       else
         type = :frame
       end
-      @value.slot_class.new(Mom::SlotDefinition.new(:message , [type , @name]) , @value)
+      @value.slot_class.new(Mom::SlotDefinition.new(:message , [type , @name]) , @value.to_mom(method))
     end
   end
 

@@ -9,8 +9,8 @@ module Vool
       statements
     end
     def self.ruby_to_mom(source)
-      statements = elf.ruby_to_vool(source)
-      statements.to_mom
+      statements = self.ruby_to_vool(source)
+      statements.to_mom(nil)
     end
   end
 end

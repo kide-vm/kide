@@ -12,7 +12,7 @@ module Vool
       @first = @stats.first
     end
     def receiver
-      [IntegerStatement , 5]
+      [Mom::IntegerConstant , 5]
     end
     def test_call_has_right_method
       assert_equal :mod4,  @stats[2].method.name

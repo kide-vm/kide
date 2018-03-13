@@ -15,6 +15,9 @@ module Vool
     def initialize(value)
       @value = value
     end
+    def to_mom(method)
+      return Mom::IntegerConstant.new(@value)
+    end
     def ct_type
       Parfait.object_space.get_class_by_name(:Integer).instance_type
     end
@@ -45,9 +48,11 @@ module Vool
   end
   class SelfStatement < Statement
     attr_reader :clazz
-
     def set_class(clazz)
       @clazz = clazz
+    end
+    def to_mom(in_method)
+      Mom::SlotDefinition.new(:message , [:self])
     end
     def ct_type
       @clazz.instance_type
@@ -59,6 +64,9 @@ module Vool
     attr_reader :value
     def initialize(value)
       @value = value
+    end
+    def to_mom(method)
+      return Mom::StringConstant.new(@value)
     end
     def ct_type
       Parfait.object_space.get_class_by_name(:Word).instance_type

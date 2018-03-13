@@ -16,7 +16,7 @@ module Mom
       assert_equal 1 , @stats.length
     end
     def test_assigns_class
-      assert_equal Vool::IntegerStatement , @stats.right.class , @stats.inspect
+      assert_equal Mom::IntegerConstant , @stats.right.class , @stats.inspect
     end
     def test_assigns_value
       assert_equal 5 , @stats.right.value , @stats.inspect
@@ -49,7 +49,7 @@ module Mom
       assert_equal 1 , @stats.length
     end
     def test_assigns_class
-      assert_equal Vool::InstanceVariable , @stats.right.class , @stats.inspect
+      assert_equal Mom::SlotDefinition , @stats.right.class , @stats.inspect
     end
   end
 end
