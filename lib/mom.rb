@@ -1,6 +1,6 @@
 # The *essential* step from vool to risc, is the one from a language to a machine. From statements
 # that hang in the air, to an instruction set.
-# 
+#
 # ### Tree based:  So almost 1-1 from vool
 #
 # ### Use object memory :  object to object transfer + no registers
@@ -14,4 +14,5 @@
 module Mom
 end
 
-require_relative "mom/instruction.rb"
+require_relative "mom/instruction/instruction.rb"
+require_relative "mom/statement/statement.rb"

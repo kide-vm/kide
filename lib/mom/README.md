@@ -62,7 +62,7 @@ To make the transition even easier, it is done in two steps.
 
 ## 1. Everything but control structures
 
-So we go from language to machine as the first step, in terms of memory instructions.
+wSo we go from language to machine as the first step, in terms of memory instructions.
 Memory gets moved around between the main machine objects (frames and messages).
 But control structures stay "intact", so we stay at tree structure
 
@@ -77,4 +77,4 @@ After this, it is quite trivial to translate to risc, as it mostly expands instr
 
 I hope that in the future this simple 2 stage pipeline will expand into more steps.
 This is the ideal layer to do code analysis and meaningful optimisations, as one can still
-understand what is going on in higher terms. 
+understand what is going on in higher terms.

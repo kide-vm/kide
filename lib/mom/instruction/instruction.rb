@@ -17,7 +17,7 @@ module Mom
       @name = name
     end
     def to_risc(compiler)
-      Risc::Label.new(self,name) 
+      Risc::Label.new(self,name)
     end
   end
 end
@@ -32,4 +32,3 @@ require_relative "slot_load"
 require_relative "return_sequence"
 require_relative "message_setup"
 require_relative "argument_transfer"
-require_relative "statement"
