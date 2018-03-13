@@ -16,12 +16,12 @@ module Vool
     end
 
     def test_compile_class_one
-      itest = compile_in_test "def meth; @ivar; end"
+      itest = compile_in_test "def meth; @ivar = 5; end"
       assert itest.instance_type.names.include?(:ivar) , itest.instance_type.names.inspect
     end
 
     def test_compile_class_two
-      itest = compile_in_test "def meth; @ivar; end;def meth2(arg); @trivar = 5; end"
+      itest = compile_in_test "def meth; @ivar = 5; end;def meth2(arg); @trivar = 5; end"
       assert itest.instance_type.names.include?(:trivar) , itest.instance_type.names.inspect
     end
 
@@ -33,7 +33,7 @@ module Vool
     end
 
     def test_class_body_is_scope
-      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar ;end")
+      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5 ;end")
       assert_equal ScopeStatement , clazz.body.class
     end
 

@@ -18,5 +18,10 @@ module Mom
     def initialize(condition)
       @condition  = condition
     end
+
+    def to_risc(compiler)
+      Risc::Label.new(self,"nosense")
+    end
+
   end
 end

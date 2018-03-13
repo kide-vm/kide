@@ -16,6 +16,11 @@ module Mom
     def initialize(method)
         @method = method
     end
+
+    def to_risc(compiler)
+      Risc::Label.new(self,method.name) 
+    end
+
   end
 
 

@@ -33,6 +33,11 @@ module Mom
       raise "left not SlotDefinition, #{left}" unless left.is_a? SlotDefinition
 #      raise "right not Mom, #{right.to_rxf}" unless right.class.name.include?("Mom")
     end
+
+    def to_risc(compiler)
+      Risc::Label.new(self,"nosense")
+    end
+
   end
 
   # A SlotConstant moves a constant into a known Slot.
@@ -52,6 +57,9 @@ module Mom
 
   #SlotMove is a SlotLoad where the right side is a slot, just like the left.
   class SlotMove < SlotLoad
+    def to_risc(compiler)
+
+    end
   end
 
   class SlotDefinition

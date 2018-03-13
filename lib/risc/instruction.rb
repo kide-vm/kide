@@ -18,7 +18,7 @@ module Risc
       @source = source
       @next = nekst
       return unless source
-      raise "Source must be string or ast node, not #{source.class}" unless source.is_a?(String) or source.is_a?(Vm::Code)
+      raise "Source must be string or ast node, not #{source.class}" unless source.is_a?(String) or source.is_a?(Mom::Instruction)
     end
     attr_reader :source
 

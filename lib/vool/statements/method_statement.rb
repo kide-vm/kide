@@ -33,14 +33,10 @@ module Vool
       locals_type = make_locals
       method = Parfait::VoolMethod.new(name , args_type , locals_type , body )
       @clazz.add_method( method )
-    end
-
-    def compile_methods(clazz , methods)
-      methods.each do |method|
-        code = Passes::MethodCompiler.new(method).get_code
-        typed_method = method.create_parfait_method(clazz.instance_type)
-        Risc::MethodCompiler.new( typed_method ).init_method.process( code )
-      end
+      typed_method = method.create_parfait_method(clazz.instance_type)
+      compiler = Risc::MethodCompiler.new( typed_method ).init_method
+      head = @body.to_mom( method ).flatten
+      head.to_risc(compiler)
     end
 
     private

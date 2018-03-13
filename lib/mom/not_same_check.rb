@@ -12,5 +12,9 @@ module Mom
     def initialize(left, right)
       @left , @right  = left , right
     end
+
+    def to_risc(compiler)
+      Risc::Label.new(self,"nosense") 
+    end
   end
 end

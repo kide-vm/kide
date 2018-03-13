@@ -1,5 +1,6 @@
 module Mom
   class Statement
+    include Common::List
     # flattening will change the structure from a tree to a linked list (and use
     # nekst to do so)
     def flatten(options = {})
@@ -18,6 +19,12 @@ module Mom
       flat
     end
 
+    def initialize(arr)
+      super(arr)
+      arr.each {|s|
+        raise "Not a Statement #{s}" unless s.is_a?( Statement) or s.is_a?(Instruction)
+      }
+    end
   end
 
 end

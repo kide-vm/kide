@@ -9,7 +9,7 @@ module Vool
     end
 
     def create_method
-      VoolCompiler.ruby_to_vool in_Test("def meth; @ivar ;end")
+      VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       test.get_method(:meth)
     end
@@ -17,7 +17,7 @@ module Vool
     def test_method_has_source
       method = create_method
       assert_equal ScopeStatement ,  method.source.class
-      assert_equal InstanceVariable ,  method.source.statements.first.class
+      assert_equal IvarAssignment ,  method.source.statements.first.class
     end
 
     def test_method_has_no_locals
@@ -36,24 +36,23 @@ module Vool
       assert_equal Parfait::VoolMethod , method.class
     end
 
-
     def test_creates_method_statement_in_class
-      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar ;end")
+      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5 ;end")
       assert_equal MethodStatement , clazz.body.statements.first.class
     end
 
     def test_parfait_class_creation
-      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar ;end")
+      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
       assert_equal Parfait::Class , clazz.body.statements.first.clazz.class
     end
 
     def test_method_statement_has_class
-      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar ;end")
+      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
       assert clazz.body.statements.first.clazz
     end
 
     def test_method_statement_has_class_in_main
-      clazz = VoolCompiler.ruby_to_vool as_main("def meth; @ivar ;end")
+      clazz = VoolCompiler.ruby_to_vool as_main("def meth; @ivar = 5;end")
       assert clazz.body.statements.first.clazz
     end
 

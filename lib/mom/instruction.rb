@@ -16,6 +16,9 @@ module Mom
     def initialize(name)
       @name = name
     end
+    def to_risc(compiler)
+      Risc::Label.new(self,name) 
+    end
   end
 end
 
