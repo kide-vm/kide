@@ -5,12 +5,12 @@ class String
 end
 
 
-require "risc/padding"
-require "risc/positioned"
+require_relative "risc/padding"
+require_relative "risc/positioned"
 
 require "parfait"
-require "risc/machine"
-require "risc/method_compiler"
+require_relative "risc/machine"
+require_relative "risc/method_compiler"
 
 class Fixnum
   def fits_u8?
@@ -19,6 +19,7 @@ class Fixnum
 end
 
 
-require "risc/instruction"
-require "risc/register_value"
-require "risc/assembler"
+require_relative "risc/instruction"
+require_relative "risc/register_value"
+require_relative "risc/assembler"
+require_relative "risc/builtin/space"

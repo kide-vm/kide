@@ -1,6 +1,4 @@
 require "parser/ruby22"
-require "logging"
-require "elf/object_writer"
 require "ast"
 
 AST::Node.class_eval do
@@ -10,10 +8,13 @@ AST::Node.class_eval do
 end
 
 require "rx-file"
-require "risc"
-require "risc/builtin/space"
-require "arm/arm_machine"
-require "arm/translator"
-require "common"
-require "vool"
-require "mom"
+
+require_relative "logging"
+require_relative "elf/object_writer"
+require_relative "risc"
+require_relative "arm/arm_machine"
+require_relative "arm/translator"
+require_relative "common/list"
+require_relative "common/statements"
+require_relative "vool/vool_compiler"
+require_relative "mom/mom"

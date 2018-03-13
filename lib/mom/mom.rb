@@ -14,5 +14,5 @@
 module Mom
 end
 
-require_relative "mom/instruction/instruction.rb"
-require_relative "mom/statement/statement.rb"
+require_relative "instruction/instruction.rb"
+require_relative "statement/statement.rb"
