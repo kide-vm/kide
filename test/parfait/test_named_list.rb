@@ -5,7 +5,7 @@ class TestNamedLists < MiniTest::Test
   def setup
     Risc.machine.boot
     @space = Parfait.object_space
-    @named_list = @space.first_message.locals
+    @named_list = @space.first_message.frame
     @type = @named_list.get_type
   end
 

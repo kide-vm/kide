@@ -21,7 +21,7 @@ module Parfait
 
   class TypedMethod < Object
 
-    attr_reader :name , :instructions , :for_type ,:arguments , :locals , :binary
+    attr_reader :name , :instructions , :for_type ,:arguments , :frame , :binary
 
     # not part of the parfait model, hence ruby accessor
     attr_accessor :source
@@ -35,7 +35,7 @@ module Parfait
       @name = name
       @binary = BinaryCode.new 0
       @arguments = arguments
-      @locals = Parfait.object_space.get_class_by_name( :NamedList ).instance_type
+      @frame = Parfait.object_space.get_class_by_name( :NamedList ).instance_type
     end
 
     def set_instructions(inst)
@@ -67,26 +67,26 @@ module Parfait
     # determine if method has a local variable or tmp (anonymous local) by given name
     def has_local( name )
       raise "has_local #{name}.#{name.class}" unless name.is_a? Symbol
-      index = locals.variable_index( name )
+      index = frame.variable_index( name )
       index ? (index - 1) : index
     end
 
     def add_local( name , type )
       index = has_local name
       return index if index
-      @locals = @locals.add_instance_variable(name,type)
+      @frame = @frame.add_instance_variable(name,type)
     end
 
-    def locals_length
+    def frame_length
       locals.instance_length - 1
     end
 
     def locals_name( index )
-      locals.names.get(index + 1)
+      frame.names.get(index + 1)
     end
 
     def locals_type( index )
-      locals.types.get(index + 1)
+      frame.types.get(index + 1)
     end
 
     def sof_reference_name

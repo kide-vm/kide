@@ -56,8 +56,8 @@ class TestMethod < MiniTest::Test
   end
 
   def test_local1
-    assert_equal 2 , @method.locals_length , @method.locals.inspect
-    assert_equal Symbol , @method.locals.names.first.class
+    assert_equal 2 , @method.frame_length , @method.frame.inspect
+    assert_equal Symbol , @method.frame.names.first.class
     assert_equal :local_bar , @method.locals_name(1)
   end
 
@@ -68,7 +68,7 @@ class TestMethod < MiniTest::Test
 
   def test_add_local
     @method.add_local(:foo2 , :Object)
-    assert_equal 3 , @method.locals_length
+    assert_equal 3 , @method.frame_length
     assert_equal :foo2 , @method.locals_name(3)
     assert_equal :Object , @method.locals_type(3)
   end

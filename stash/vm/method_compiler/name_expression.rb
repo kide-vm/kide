@@ -30,7 +30,7 @@ module Vm
         index = @method.has_local( name )
         raise "must define local '#{name}' before using it" unless index
         named_list = use_reg :NamedList
-        add_slot_to_reg("#{name} load locals" , :message , :locals , named_list )
+        add_slot_to_reg("#{name} load locals" , :message , :frame , named_list )
         ret = use_reg @method.locals_type( index )
         add_slot_to_reg("#{name} load from locals" , named_list , index + 1, ret )
         return ret

@@ -50,11 +50,11 @@ module Risc
       @current = @method.set_instructions( Risc.label(source, name))
 
       # add the type of the locals to the existing NamedList instance
-      locals_reg = use_reg(:Type , method.locals )
+      frame_reg = use_reg(:Type , method.frame )
       list_reg = use_reg(:NamedList )
-      add_load_constant("#{name} load locals type", method.locals , locals_reg)
-      add_slot_to_reg( "#{name} get locals from method" , :message , :locals , list_reg )
-      add_reg_to_slot( "#{name} store locals type in locals" , locals_reg , list_reg , 1  )
+      add_load_constant("#{name} load frame type", method.frame , frame_reg)
+      add_slot_to_reg( "#{name} get frame from method" , :message , :frame , list_reg )
+      add_reg_to_slot( "#{name} store frame type in frame" , frame_reg , list_reg , 1  )
 
       enter = @current # this is where method body goes
       add_label( source, "return #{name}")
@@ -89,9 +89,19 @@ module Risc
       @current = c
     end
 
-    # add an instruction after the current (insertion point)
+    # convert the given mom instruction to_risc and then add it (see add_code)
+    # continue down the instruction chain unti depleted
+    # (adding moves the insertion point so the whole mom chain is added as a risc chain)
+    def add_mom( instruction )
+      while( instruction )
+        risc = instruction.to_risc( self )
+        add_code(risc)
+        instruction = instruction.next
+      end
+    end
+    # add a risc instruction after the current (insertion point)
     # the added instruction will become the new insertion point
-    def add_code instruction
+    def add_code( instruction )
       raise instruction.to_s unless  instruction.is_a?(Risc::Instruction)
       raise instruction.to_s if( instruction.class.name.split("::").first == "Arm")
       @current.insert(instruction) #insert after current
@@ -99,6 +109,8 @@ module Risc
       self
     end
 
+    # for computationally building code (ie writing assembler) these short cuts
+    # help to instantiate risc instructions and add them immediately
     [:label, :reg_to_slot , :slot_to_reg , :load_constant, :function_return ,
       :transfer , :reg_to_slot , :byte_to_reg , :reg_to_byte].each do |method|
       define_method("add_#{method}".to_sym) do |*args|
@@ -120,13 +132,13 @@ module Risc
 
     def copy( reg , source )
       copied = use_reg reg.type
-      add_code Reister.transfer source , reg , copied
+      add_code Register.transfer( source , reg , copied )
       copied
     end
 
     # releasing a register (accuired by use_reg) makes it available for use again
     # thus avoiding possibly using too many registers
-    def release_reg reg
+    def release_reg( reg )
       last = @regs.pop
       raise "released register in wrong order, expect #{last} but was #{reg}" if reg != last
     end

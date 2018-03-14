@@ -22,7 +22,7 @@ module Parfait
       assert_equal Message ,  @mess.next_message.class
     end
     def test_locals
-      assert_equal NamedList , @mess.locals.class
+      assert_equal NamedList , @mess.frame.class
     end
     def test_arguments
       assert_equal NamedList , @mess.arguments.class

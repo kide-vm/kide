@@ -95,7 +95,7 @@ class TestSpace < MiniTest::Test
     all = []
     while mess
       all << mess
-      assert mess.locals
+      assert mess.frame
       mess = mess.next_message
     end
     assert_equal all.length , all.uniq.length

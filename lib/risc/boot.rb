@@ -125,7 +125,7 @@ module Risc
     def type_names
        {  :Word => {:char_length => :Integer} ,
           :List => {:indexed_length => :Integer} ,
-          :Message => { :next_message => :Message, :receiver => :Object, :locals => :NamedList ,
+          :Message => { :next_message => :Message, :receiver => :Object, :frame => :NamedList ,
                         :return_address => :Integer, :return_value => :Integer,
                         :caller => :Message , :name => :Word , :arguments => :NamedList },
           :Integer => {},
@@ -140,7 +140,7 @@ module Risc
                       :super_class_name => :Word , :instance_names => :List },
           :Dictionary => {:keys => :List , :values => :List  } ,
           :TypedMethod => {:name => :Word, :source => :Object, :instructions => :Object, :binary => :Object,
-                      :arguments => :Type , :for_type => :Type, :locals => :Type } ,
+                      :arguments => :Type , :for_type => :Type, :frame => :Type } ,
         }
     end
 
