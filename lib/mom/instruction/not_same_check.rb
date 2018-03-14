@@ -13,8 +13,8 @@ module Mom
       @left , @right  = left , right
     end
 
-    def to_risc(compiler)
-      Risc::Label.new(self,"NotSameCheck") 
+    def to_risc(context)
+      Risc::Label.new(self,"NotSameCheck")
     end
   end
 end

@@ -23,6 +23,10 @@ module Mom
     def initialize( receiver,arguments )
       @receiver , @arguments = receiver , arguments
     end
+
+    def to_risc(context)
+      Risc::Label.new(self,"ArgumentTransfer")
+    end
   end
 
 

@@ -9,10 +9,14 @@ module Mom
   #
   class SimpleCall < Instruction
     attr_reader :method
-    
+
     def initialize(method)
       @method = method
     end
+    def to_risc(context)
+      Risc::Label.new(self,"SimpleCall")
+    end
+
   end
 
 end

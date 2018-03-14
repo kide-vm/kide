@@ -19,6 +19,10 @@ module Mom
   # set of lower level instructions.
   #
   class ReturnSequence < Instruction
+    def to_risc(context)
+      Risc::Label.new(self,"ReturnSequence")
+    end
+
   end
 
 end

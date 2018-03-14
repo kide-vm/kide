@@ -18,7 +18,7 @@ module Mom
     end
 
     def to_risc(compiler)
-      Risc::Label.new(self,method.name) 
+      Risc::Label.new(self,"MethodSetup") 
     end
 
   end

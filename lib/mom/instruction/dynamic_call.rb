@@ -19,6 +19,10 @@ module Mom
       @cached_type = type
       @cached_method = method
     end
+
+    def to_risc(context)
+      Risc::Label.new(self,"DynamicCall")
+    end
   end
 
 end
