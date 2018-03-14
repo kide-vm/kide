@@ -52,7 +52,7 @@ module Vool
       @clazz = clazz
     end
     def to_mom(in_method)
-      Mom::SlotDefinition.new(:message , [:self])
+      Mom::SlotDefinition.new(:message , [:receiver])
     end
     def ct_type
       @clazz.instance_type

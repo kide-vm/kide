@@ -4,7 +4,7 @@ module Risc
     module CompileHelper
 
       def self_and_int_arg(compiler , source)
-        me = compiler.add_known(  :self )
+        me = compiler.add_known(  :receiver )
         int_arg = load_int_arg_at(compiler , source , 1 )
         return me , int_arg
       end

@@ -21,7 +21,7 @@ module Vool
   class InstanceVariable < Statement
     include Named
     def to_mom(method)
-      Mom::SlotDefinition.new(:message , [ :self , @name] )
+      Mom::SlotDefinition.new(:message , [ :receiver , @name] )
     end
     # used to collect type information
     def add_ivar( array )

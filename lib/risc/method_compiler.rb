@@ -66,7 +66,7 @@ module Risc
 
     def add_known(name)
       case name
-      when :self
+      when :receiver
         ret = use_reg @type
         add_slot_to_reg(" load self" , :message , :receiver , ret )
         return ret

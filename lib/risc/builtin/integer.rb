@@ -18,9 +18,9 @@ module Risc
         def div10 context
           s = "div_10"
           compiler = Risc::MethodCompiler.create_method(:Integer,:div10 ).init_method
-          me = compiler.add_known( :self )
-          tmp = compiler.add_known( :self )
-          q = compiler.add_known( :self )
+          me = compiler.add_known( :receiver )
+          tmp = compiler.add_known( :receiver )
+          q = compiler.add_known( :receiver )
           const = compiler.use_reg :Integer , 1
           compiler.add_load_constant( s, 1 , const )
           # int tmp = self >> 1

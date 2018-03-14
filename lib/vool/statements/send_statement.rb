@@ -93,16 +93,16 @@ module Vool
     private
     def build_condition
       cached_type = Mom::SlotDefinition.new(@dynamic , [:cached_type])
-      current_type = Mom::SlotDefinition.new(:message , [:self , :type])
+      current_type = Mom::SlotDefinition.new(:message , [:receiver , :type])
       Mom::NotSameCheck.new(cached_type , current_type)
     end
     def build_type_cache_update
-      [Mom::SlotMove.new([@dynamic, :cached_type] , [:self , :type])]
+      [Mom::SlotMove.new([@dynamic, :cached_type] , [:receiver , :type])]
     end
     def build_method_cache_update(in_method)
       receiver = StringStatement.new(@name)
       resolve = SendStatement.new(:resolve_method , receiver , [SelfStatement.new])
-      move_method = Mom::SlotMove.new([@dynamic, :cached_method] , [:self , :return])
+      move_method = Mom::SlotMove.new([@dynamic, :cached_method] , [:receiver , :return])
       resolve.to_mom(in_method) << move_method
     end
   end

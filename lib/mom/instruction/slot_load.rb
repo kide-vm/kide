@@ -21,7 +21,7 @@ module Mom
   #        The first element is either a known type name (Capitalized symbol of the class name) ,
   #        or the symbol :message
   #        And subsequent symbols must be instance variables on the previous type.
-  #        Examples:  [:message , :self] or [:Space : :next_message]
+  #        Examples:  [:message , :receiver] or [:Space : :next_message]
   #
   # @right: depends on the derived Class
   #

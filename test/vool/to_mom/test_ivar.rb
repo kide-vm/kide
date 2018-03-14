@@ -22,7 +22,7 @@ module Vool
       assert_equal :message , @method.first.left.known_object
     end
     def test_slot_gets_self
-      assert_equal :self , @method.first.left.slots[0]
+      assert_equal :receiver , @method.first.left.slots[0]
     end
     def test_slot_assigns_to_local
       assert_equal :a , @method.first.left.slots[-1]
