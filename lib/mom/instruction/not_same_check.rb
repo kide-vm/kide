@@ -14,7 +14,7 @@ module Mom
     end
 
     def to_risc(compiler)
-      Risc::Label.new(self,"nosense") 
+      Risc::Label.new(self,"NotSameCheck") 
     end
   end
 end

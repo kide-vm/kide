@@ -20,7 +20,7 @@ module Mom
     end
 
     def to_risc(compiler)
-      Risc::Label.new(self,"nosense")
+      Risc::Label.new(self,"TruthCheck")
     end
 
   end
