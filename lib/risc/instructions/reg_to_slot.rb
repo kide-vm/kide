@@ -16,8 +16,8 @@ module Risc
   # Produce a RegToSlot instruction.
   # From and to are registers or symbols that can be transformed to a register by resolve_to_register
   # index resolves with resolve_to_index.
-  def self.reg_to_slot source , from , to , index
-    from = resolve_to_register from
+  def self.reg_to_slot( source , from_reg , to , index )
+    from = resolve_to_register from_reg
     index = resolve_to_index( to , index)
     to = resolve_to_register to
     RegToSlot.new( source, from , to , index)

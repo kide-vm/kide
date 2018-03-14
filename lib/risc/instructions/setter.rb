@@ -14,8 +14,9 @@ module Risc
 
     # If you had a c array and index offset
     # the instruction would do array[index] = register
-    # So Setter means the register (first argument) moves to the slot (array and index)
-    def initialize source , register , array , index
+    # The arguments are in the order that makes sense for the Instruction name
+    # So RegToSlot means the register (first argument) moves to the slot (array and index)  
+    def initialize( source , register , array , index )
       super(source)
       @register = register
       @array = array

@@ -6,8 +6,8 @@ module Risc
   #
   # Getter has a
   # - an array where the data comes from
-  # - and (array) index
-  # - Risc that the data is moved to
+  # - an (array) index
+  # - Register that the data is moved to
 
   # Getter and Setter api follow the pattern from -> to
 
@@ -17,7 +17,7 @@ module Risc
     # the instruction would do register = array[index]
     # The arguments are in the order that makes sense for the Instruction name
     # So SlotToReg means the slot (array and index) moves to the register (last argument)
-    def initialize source , array , index , register
+    def initialize( source , array , index , register )
       super(source)
       @array = array
       @index = index
