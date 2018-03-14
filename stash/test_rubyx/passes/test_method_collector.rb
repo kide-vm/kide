@@ -31,7 +31,7 @@ module Rubyx
 
       def test_one_local
         method = parse_collect("def meth2(arg1); foo = 2 ;end").first
-        assert method.locals_type.variable_index(:foo) , method.locals_type.inspect
+        assert method.frame_type.variable_index(:foo) , method.frame_type.inspect
       end
 
     end

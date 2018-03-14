@@ -22,7 +22,7 @@ module Vool
 
     def test_method_has_no_locals
       method = create_method
-      assert_equal 1 , method.locals_type.instance_length
+      assert_equal 1 , method.frame_type.instance_length
     end
 
     def test_method_has_no_args
@@ -60,7 +60,7 @@ module Vool
       VoolCompiler.ruby_to_vool in_Test("def meth; local = 5 ;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.get_method(:meth)
-      assert_equal 2 , method.locals_type.instance_length
+      assert_equal 2 , method.frame_type.instance_length
     end
 
   end

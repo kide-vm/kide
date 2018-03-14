@@ -78,14 +78,14 @@ module Parfait
     end
 
     def frame_length
-      locals.instance_length - 1
+      frame.instance_length - 1
     end
 
     def locals_name( index )
       frame.names.get(index + 1)
     end
 
-    def locals_type( index )
+    def frame_type( index )
       frame.types.get(index + 1)
     end
 

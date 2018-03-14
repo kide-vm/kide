@@ -15,8 +15,8 @@ module Rubyx
       def on_def(statement)
         name , args , body = *statement
         args_type = make_type(args)
-        locals_type = make_locals(body)
-        @methods << Vool::VoolMethod.new(name , args_type , locals_type , body )
+        frame_type = make_locals(body)
+        @methods << Vool::VoolMethod.new(name , args_type , frame_type , body )
       end
 
       private

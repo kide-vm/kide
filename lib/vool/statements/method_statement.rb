@@ -30,8 +30,8 @@ module Vool
 
     def create_objects
       args_type = make_type
-      locals_type = make_locals
-      method = Parfait::VoolMethod.new(name , args_type , locals_type , body )
+      frame_type = make_frame
+      method = Parfait::VoolMethod.new(name , args_type , frame_type , body )
       @clazz.add_method( method )
       typed_method = method.create_parfait_method(clazz.instance_type)
       compiler = Risc::MethodCompiler.new( typed_method ).init_method
@@ -47,7 +47,7 @@ module Vool
       Parfait::NamedList.type_for( type_hash )
     end
 
-    def make_locals
+    def make_frame
       type_hash = {}
       vars = []
       @body.collect([]).each { |node| node.add_local(vars) }

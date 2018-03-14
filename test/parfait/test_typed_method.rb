@@ -70,7 +70,7 @@ class TestMethod < MiniTest::Test
     @method.add_local(:foo2 , :Object)
     assert_equal 3 , @method.frame_length
     assert_equal :foo2 , @method.locals_name(3)
-    assert_equal :Object , @method.locals_type(3)
+    assert_equal :Object , @method.frame_type(3)
   end
 
   def test_get_locals_name1
@@ -78,18 +78,18 @@ class TestMethod < MiniTest::Test
     assert_equal 1 , index
     assert_equal :local_bar , @method.locals_name(index)
   end
-  def test_get_locals_type1
+  def test_get_frame_type1
     index = @method.has_local(:local_bar)
-    assert_equal :Integer , @method.locals_type(index)
+    assert_equal :Integer , @method.frame_type(index)
   end
   def test_get_locals_name2
     index = @method.has_local(:local_foo)
     assert_equal 2 , index
     assert_equal :local_foo , @method.locals_name(index)
   end
-  def test_get_locals_type2
+  def test_get_frame_type2
     index = @method.has_local(:local_bar)
-    assert_equal :Integer , @method.locals_type(index)
+    assert_equal :Integer , @method.frame_type(index)
   end
 
 end

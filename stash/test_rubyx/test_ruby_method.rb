@@ -44,7 +44,7 @@ module Rubyx
 
     def test_method_has_no_locals
       method = create_method
-      assert_equal 1 , method.locals_type.instance_length
+      assert_equal 1 , method.frame_type.instance_length
     end
 
     def test_method_has_args
@@ -54,7 +54,7 @@ module Rubyx
 
     def test_method_has_locals
       method = create_method_local
-      assert_equal 2 , method.locals_type.instance_length
+      assert_equal 2 , method.frame_type.instance_length
     end
 
     def test_method_create_tmp
@@ -65,7 +65,7 @@ module Rubyx
     def test_method_add_tmp
       method = create_method_local
       method.create_tmp
-      assert_equal 3 , method.locals_type.instance_length
+      assert_equal 3 , method.frame_type.instance_length
     end
 
   end
