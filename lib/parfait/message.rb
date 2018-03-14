@@ -3,9 +3,10 @@
 # Message and the Message is activated (by swapping it into the machine).
 
 # Part of the housekeeping (see attributes) makes messages a double linked list (next_message and
-#  caller) , and maybe surprisingly this means that we can create all messages at runtime
+# caller) , and maybe surprisingly this means that we can create all messages at compile-time
 # and link them up and never have to touch that list again.
-# All the args and receiver data changes, but the list of messages stays constant.
+# All the args and receiver data changes, but the list of messages stays constant
+#  (a pleasant stupor while we ignore closures and longer extended frames ).
 
 module Parfait
   class Message < Object
@@ -21,7 +22,7 @@ module Parfait
 
     def initialize next_m
       @next_message = next_m
-      @locals = NamedList.new()
+      @frame = NamedList.new()
       @arguments = NamedList.new()
       super()
     end
