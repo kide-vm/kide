@@ -48,7 +48,7 @@ module Risc
     # instruction along to the given ones's next.
     # ie insert into the linked list that the instructions form
     def insert instruction
-      instruction.set_next @next
+      instruction.last.set_next @next
       @next = instruction
     end
 
