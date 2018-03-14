@@ -34,7 +34,7 @@ module Risc
     end
 
     def preamble
-      [Label, SlotToReg , LoadConstant, RegToSlot, LoadConstant,RegToSlot, LoadConstant, SlotToReg, SlotToReg ]
+      [Label, LoadConstant, SlotToReg, RegToSlot ]
     end
     def postamble
       [ Label, FunctionReturn]
@@ -57,19 +57,20 @@ module Risc
       index = 0
       all = instruction.to_arr
       full_expect = preamble + expect + postamble
-      full_expect =  expect
+      #full_expect =  expect
       begin
         should = full_expect[index]
-        return "No instruction at #{index}" unless should
+        return "No instruction at #{index}\n#{should(all)}" unless should
         return "Expected at #{index+1}\n#{should(all)}" unless instruction.class == should
+        puts instruction.to_s
         index += 1
         instruction = instruction.next
       end while( instruction )
       nil
     end
     def should( all )
-      #preamble.each {all.shift}
-      #postamble.each {all.pop}
+      preamble.each {all.shift}
+      postamble.each {all.pop}
       str = all.to_s.gsub("Risc::","")
       ret = ""
       str.split(",").each_slice(6).each do |line|

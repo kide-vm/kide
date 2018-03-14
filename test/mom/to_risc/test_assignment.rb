@@ -5,7 +5,18 @@ module Risc
   class TestAssignStatement < MiniTest::Test
     include Statements
 
-    def test_assign_op
+    def test_assign_local_assign
+      Parfait.object_space.get_main.add_local(:r , :Integer)
+
+      @input = "r = 5"
+
+      @expect = [LoadConstant, RegToSlot]
+
+      assert_nil msg = check_nil , msg
+    end
+
+
+    def pest_assign_op
       Parfait.object_space.get_main.add_local(:r , :Integer)
 
       @input    = "r = 10.mod4"
@@ -15,9 +26,9 @@ module Risc
     end
 
     def pest_assign_ivar_notpresent
-      @input =s(:statements, s(:i_assignment, s(:ivar, :r), s(:int, 5)))
-      @expect =  []
-      assert_raises{ check_nil }
+      @input = "@r = 5"
+      @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
+      assert_nil msg = check_nil , msg
     end
 
     def pest_assign_ivar
@@ -27,16 +38,6 @@ module Risc
 
       @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg ,
                  RegToSlot, Label, FunctionReturn]
-      assert_nil msg = check_nil , msg
-    end
-
-    def pest_assign_local_assign
-      Parfait.object_space.get_main.add_local(:r , :Integer)
-
-      @input = s(:statements, s(:l_assignment, s(:local, :r), s(:int, 5)))
-
-      @expect = [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg ,
-               RegToSlot, Label, FunctionReturn]
       assert_nil msg = check_nil , msg
     end
 

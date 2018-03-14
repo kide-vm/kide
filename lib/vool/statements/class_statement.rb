@@ -24,6 +24,12 @@ module Vool
     end
 
     def create_objects
+      create_class_object
+      body.collect([]).each {|node| node.set_class(@clazz)  }
+      body.create_objects
+    end
+
+    def create_class_object
       @clazz = Parfait.object_space.get_class_by_name(@name )
       if(@clazz)
         #FIXME super class check with "sup"
@@ -36,9 +42,6 @@ module Vool
         vars.each { |var| ivar_hash[var] = :Object }
         @clazz.set_instance_type( Parfait::Type.for_hash( @clazz ,  ivar_hash ) )
       end
-      body.collect([]).each {|node| node.set_class(@clazz)  }
-      body.create_objects
     end
-
   end
 end
