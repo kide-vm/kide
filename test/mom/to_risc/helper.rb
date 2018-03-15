@@ -41,9 +41,7 @@ module Risc
     end
     def check_nil
       assert @expect , "No output given"
-
       Vool::VoolCompiler.ruby_to_vool "class Space; def main(arg);#{@input};end;end"
-
       produced = Parfait.object_space.get_main.instructions
       compare_instructions produced , @expect
     end

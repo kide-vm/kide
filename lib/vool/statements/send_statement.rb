@@ -66,10 +66,6 @@ module Vool
       Mom::Statements.new( cache_check(in_method) + call_cached_method(in_method) )
     end
 
-    def flatten
-      raise "flat"
-    end
-
     # check that current type is the cached type
     # if not, change and find method for the type (simple_call to resolve_method)
     # conceptually easy in ruby, but we have to compile that "easy" ruby

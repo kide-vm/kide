@@ -31,11 +31,8 @@ module Mom
       left = SlotDefinition.new(left.shift , left) if left.is_a? Array
       @left , @right = left , right
       raise "left not SlotDefinition, #{left}" unless left.is_a? SlotDefinition
-      raise "right not Mom, #{right.to_rxf}" unless right.class.name.include?("Mom")
     end
   end
-
-
 
   class SlotDefinition
     attr_reader :known_object , :slots

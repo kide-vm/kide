@@ -15,8 +15,10 @@ module Vool
     # - store the given return value, this is a SlotMove / SlotConstant
     # - activate return sequence (reinstantiate old message and jump to return address)
     def to_mom( method )
-      move = @return_value.slot_class.new( [:message , :return_value] , @return_value.to_mom(method))
-      Mom::Statements.new [move , Mom::ReturnSequence.new]
+      statements = @return_value.to_mom(method)
+      statements << @return_value.slot_class.new( [:message , :return_value] , @return_value.slot_definition )
+      statements << Mom::ReturnSequence.new
+      return statements
     end
 
   end

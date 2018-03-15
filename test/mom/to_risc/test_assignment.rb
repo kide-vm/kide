@@ -5,22 +5,16 @@ module Risc
   class TestAssignStatement < MiniTest::Test
     include Statements
 
-    def test_assign_local_assign
+    def pest_assign_local_assign
       Parfait.object_space.get_main.add_local(:r , :Integer)
-
       @input = "r = 5"
-
       @expect = [LoadConstant, RegToSlot]
-
       assert_nil msg = check_nil , msg
     end
 
-
     def pest_assign_op
       Parfait.object_space.get_main.add_local(:r , :Integer)
-
       @input    = "r = 10.mod4"
-
       @expect = [Label, LoadConstant, SlotToReg, RegToSlot, Label, FunctionReturn]
       assert_nil msg = check_nil , msg
     end
