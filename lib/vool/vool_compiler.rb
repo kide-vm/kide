@@ -5,6 +5,7 @@ module Vool
 
     def self.ruby_to_vool( ruby_source )
       statements = RubyCompiler.compile( ruby_source )
+      statements = statements.normalize(nil)
       statements.create_objects
       statements
     end

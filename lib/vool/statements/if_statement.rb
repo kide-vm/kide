@@ -13,7 +13,7 @@ module Vool
     end
 
     def normalize(method)
-      cond , rest = *normalize_name(@condition)
+      cond , rest = *normalize_name(@condition, method)
       fals = @if_false ? @if_false.normalize(method) : nil
       me = IfStatement.new(cond , @if_true.normalize(method), fals)
       return me unless rest

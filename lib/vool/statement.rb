@@ -27,7 +27,7 @@ module Vool
 
     # after creation vool normalizes to ensure valid syntax and simplify
     # also throw errors if violation
-    def normalize
+    def normalize(method)
       return self
     end
 

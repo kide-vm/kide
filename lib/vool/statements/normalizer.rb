@@ -6,10 +6,10 @@ module Vool
     #
     # eg  if( @var % 5) is not normalized
     # but if(tmp_123) is with tmp_123 = @var % 5 hoited above the if
-    def normalize_name( method )
-      return [@condition] if @condition.is_a?(Named)
+    def normalize_name( condition , method )
+      return [condition] if condition.is_a?(Named)
       local = method.create_tmp
-      assign = LocalAssignment.new( local , @condition)
+      assign = LocalAssignment.new( local , condition)
       [LocalVariable.new(local) , assign]
     end
   end
