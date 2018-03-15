@@ -51,10 +51,10 @@ module Vool
       head
     end
 
-    def collect(arr)
-      @if_true.collect(arr)
-      @if_false.collect(arr) if @if_false
-      super
+    def each(&block)
+      block.call(condition)
+      @if_true.each(&block)
+      @if_false.each(&block) if @if_false
     end
 
     def simplify_condition

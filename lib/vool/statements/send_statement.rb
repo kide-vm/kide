@@ -60,7 +60,7 @@ module Vool
       type = @receiver.ct_type
       called_method = type.resolve_method(@name)
       raise "No method #{@name} for #{type}" unless called_method
-      Mom::Statements.new( message_setup(in_method) << Mom::SimpleCall.new( called_method) )
+      message_setup(in_method) << Mom::SimpleCall.new( called_method)
     end
 
     # this breaks cleanly into two parts:

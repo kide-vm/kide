@@ -9,7 +9,6 @@ module Common
       @next = nekst
       nekst
     end
-    alias :<< :set_next
 
     # during translation we replace one by one
     def replace_next( nekst )
@@ -44,6 +43,7 @@ module Common
     def append( code )
       last.set_next code
     end
+    alias :<< :append
 
     def length( labels = [] )
       ret = 1
