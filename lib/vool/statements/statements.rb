@@ -50,8 +50,14 @@ module Vool
       @statements.each{|a| a.each(&block)}
     end
 
+    def normalize
+      Statements.new(@statements.collect{|s| s.normalize})
+    end
   end
 
   class ScopeStatement < Statements
+    def normalize
+      ScopeStatement.new(@statements.collect{|s| s.normalize})
+    end
   end
 end

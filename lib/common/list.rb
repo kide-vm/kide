@@ -42,6 +42,7 @@ module Common
     # so append the given code to the linked list at the end
     def append( code )
       last.set_next code
+      self
     end
     alias :<< :append
 
