@@ -22,5 +22,8 @@ module Vool
       assert_equal Mom::IntegerConstant,    @stats[1].arguments[1].right.class
       assert_equal 2,    @stats[1].arguments[1].right.value
     end
+    def test_array
+      check_array [MessageSetup,ArgumentTransfer,SimpleCall] , @stats
+    end
   end
 end

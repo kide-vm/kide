@@ -6,7 +6,7 @@ module Vool
 
     def setup
       Risc.machine.boot
-      @stats = compile_first_method( "arg.mod4").first
+      @stats = compile_first_method_flat( "a = 5; a.mod4")
       @first, @second , @third ,@fourth= @stats[0],@stats[1],@stats[2],@stats[3]
     end
 
@@ -48,6 +48,10 @@ module Vool
 
     def test_call_third
       assert_equal Mom::DynamicCall ,  @fourth.class , @fourth.to_rxf
+    end
+
+    def test_array
+      check_array [SlotConstant,NotSameCheck,Label,SlotMove,MessageSetup,ArgumentTransfer,SimpleCall,SlotMove,Label,MessageSetup,ArgumentTransfer,DynamicCall] , @stats
     end
 
   end

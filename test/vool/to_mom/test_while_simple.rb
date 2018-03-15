@@ -26,5 +26,8 @@ module Vool
     def test_nothing_hoisted
       assert_nil @first.hoisted , @stats
     end
+    def test_array
+      check_array [Label,SlotMove,TruthCheck,Label] , @stats
+    end
   end
 end
