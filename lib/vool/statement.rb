@@ -31,10 +31,6 @@ module Vool
       raise self.class.name
     end
 
-    def each()
-      yield self
-    end
-
     def to_mom( _ )
       # temporary warning to find unimplemented kids
       raise "Not implemented for #{self}"

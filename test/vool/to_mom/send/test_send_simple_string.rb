@@ -8,8 +8,7 @@ module Vool
 
     def setup
       Risc.machine.boot
-      @stats = compile_first_method( "'5'.get_internal_byte(1)").first
-      @first = @stats.first
+      @stats = compile_first_method( "'5'.get_internal_byte(1)")
     end
     def receiver
       [Mom::StringConstant , "5"]

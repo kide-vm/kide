@@ -5,10 +5,10 @@ module Vool
       assert Array != @stats.class , @stats
     end
     def test_class_compiles
-      assert_equal Mom::MessageSetup , @stats.first.class , @stats
+      assert_equal Mom::MessageSetup , @stats.class , @stats
     end
     def test_two_instructions_are_returned
-      assert_equal 3 ,  @stats.length
+      assert_equal 3 ,  @stats.length , @stats.to_rxf
     end
     def test_receiver_move_class
       assert_equal Mom::ArgumentTransfer,  @stats[1].class

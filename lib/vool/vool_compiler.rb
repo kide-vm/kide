@@ -6,7 +6,7 @@ module Vool
     def self.ruby_to_vool( ruby_source )
       statements = RubyCompiler.compile( ruby_source )
       statements = statements.normalize
-      #statements.create_objects
+      statements.create_objects
       statements
     end
     def self.ruby_to_mom(source)

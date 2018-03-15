@@ -14,19 +14,17 @@ module Vool
     # compilation to the next layer, mom
     # context coming in for class is nil, also for methods, henceafter a method is passed down
     def to_mom( _ )
-      methods = @body.statements.collect { |meth|  meth.to_mom( nil ) }
-      Mom::Statements.new(methods)
+      @body.to_mom(nil)
     end
 
-    def each()
-      @body.collect(arr)
-      super
+    def each(&block)
+      block.call(self)
+      @body.each(&block)
     end
 
     def create_objects
       create_class_object
-      body.collect([]).each {|node| node.set_class(@clazz)  }
-      body.create_objects
+      self.each {|node| node.create_objects(@clazz) if node.is_a?(MethodStatement)  }
     end
 
     def create_class_object
@@ -36,10 +34,11 @@ module Vool
         #existing class, don't overwrite type (parfait only?)
       else
         @clazz = Parfait.object_space.create_class(@name , @super_class_name )
-        vars = []
-        @body.collect([]).each { |node| node.add_ivar(vars) }
         ivar_hash = {}
-        vars.each { |var| ivar_hash[var] = :Object }
+        self.each do |node|
+          next unless node.is_a?(InstanceVariable) or node.is_a?(IvarAssignment)
+          ivar_hash[node.name] = :Object
+        end
         @clazz.set_instance_type( Parfait::Type.for_hash( @clazz ,  ivar_hash ) )
       end
     end

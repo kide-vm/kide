@@ -23,7 +23,7 @@ module MomCompile
 
   def compile_first_method input
     lst = Vool::VoolCompiler.ruby_to_vool as_test_main( input )
-    assert_equal Parfait::Class , lst.clazz.class , input
+    assert_equal Parfait::Class , lst.clazz.class , lst
     @method = lst.clazz.get_method(:main)
     assert_equal Parfait::VoolMethod , @method.class
     res = lst.to_mom( nil )

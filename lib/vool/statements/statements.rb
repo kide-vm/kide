@@ -12,6 +12,11 @@ module Vool
       @statements.each{ |s| s.create_objects }
     end
 
+    def each(&block)
+      block.call(self)
+      @statements.each{|a| a.each(block)}
+    end
+
   end
 
   class ScopeStatement < Statements

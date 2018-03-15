@@ -18,12 +18,16 @@ module Vool
       @dynamic = nil
     end
 
-    def collect(arr)
-      @receiver.collect(arr)
+    def normalize
+      SendStatement.new(@name, @receiver , @arguments)
+    end
+
+    def each(&block)
+      block.call(self)
+      block.call(@receiver)
       @arguments.each do |arg|
-        arg.collect(arr)
+        block.call(arg)
       end
-      super
     end
 
     # A Send breaks down to 2 steps:

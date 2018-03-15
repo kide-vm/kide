@@ -16,16 +16,18 @@ module Vool
       @body.to_mom(method)
     end
 
-    def collect(arr)
-      @body.collect(arr)
-      super
+    def each(&block)
+      block.call(self)
+      @body.each(&block)
     end
 
     def normalize
       MethodStatement.new( @name , @args , @body.normalize)
     end
 
-    def create_objects
+    def create_objects(clazz)
+      @clazz = clazz
+      raise "no class" unless clazz
       args_type = make_type
       frame_type = make_frame
       method = Parfait::VoolMethod.new(name , args_type , frame_type , body )
@@ -46,9 +48,10 @@ module Vool
 
     def make_frame
       type_hash = {}
-      vars = []
-      @body.each([]).each { |node| node.add_local(vars) }
-      vars.each { |var| type_hash[var] = :Object }
+      @body.each do |node|
+        next unless node.is_a?(LocalVariable) or node.is_a?(LocalAssignment)
+        type_hash[node.name] = :Object
+      end
       Parfait::NamedList.type_for( type_hash )
     end
 

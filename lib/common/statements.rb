@@ -28,10 +28,6 @@ module Common
       @statements << o
       self
     end
-    def collect(arr)
-      @statements.each { |s| s.collect(arr) }
-      super
-    end
     def add_array(a)
       @statements += a
     end
