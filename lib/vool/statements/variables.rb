@@ -4,11 +4,13 @@ module Vool
     def initialize name
       @name = name
     end
+    def each(&block)
+    end
   end
 
   class LocalVariable < Expression
     include Named
-    def to_mom(method)
+    def slot_definition(method)
       if method.args_type.variable_index(@name)
         type = :arguments
       else
@@ -20,7 +22,7 @@ module Vool
 
   class InstanceVariable < Expression
     include Named
-    def to_mom(method)
+    def slot_definition(method)
       Mom::SlotDefinition.new(:message , [ :receiver , @name] )
     end
     # used to collect type information

@@ -1,9 +1,10 @@
 module Vool
 
   class LocalAssignment < Assignment
-    # used to collect frame information
-    def add_local( array )
-      array << @name
+
+    def normalize
+      super
+      return LocalAssignment.new(@name , @value)
     end
 
     def to_mom( method )
@@ -12,9 +13,9 @@ module Vool
       else
         type = :frame
       end
-      statements = @value.to_mom(method)
-      statements << @value.slot_class.new([:message , type , @name] , @value.slot_definition)
-      return statements
+      to = Mom::SlotDefinition.new(:message ,[ type , @name])
+      from = @value.slot_definition(method)
+      return chain_assign( Mom::SlotLoad.new(to,from) , method)
     end
   end
 

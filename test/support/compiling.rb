@@ -28,7 +28,7 @@ module MomCompile
     assert_equal Parfait::VoolMethod , @method.class
     res = lst.to_mom( nil )
     #puts "#{res.class}"
-    res.first
+    res
   end
 
   def compile_first_method_flat(input)

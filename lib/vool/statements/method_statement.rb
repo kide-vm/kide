@@ -4,7 +4,7 @@ module Vool
 
     def initialize( name , args , body , clazz = nil)
       @name , @args , @body = name , args , body
-      @body = ScopeStatement.new([]) unless body
+      raise "no bod" unless body
       @clazz = clazz
     end
 
@@ -34,7 +34,7 @@ module Vool
       @clazz.add_method( method )
       typed_method = method.create_parfait_method(clazz.instance_type)
       compiler = Risc::MethodCompiler.new( typed_method ).init_method
-      head = @body.to_mom( method ).flatten
+      head = @body.to_mom( method )
       compiler.add_mom(head)
     end
 

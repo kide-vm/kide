@@ -7,29 +7,28 @@ module Vool
     def setup
       Risc.machine.boot
       @stats = compile_first_method( "local = 5")
-      @first = @stats.first
     end
 
     def test_class_compiles
-      assert_equal Mom::SlotConstant , @first.class , @stats
+      assert_equal Mom::SlotLoad , @stats.class , @stats
     end
     def test_slot_is_set
-      assert @first.left
+      assert @stats.left
     end
     def test_slot_starts_at_message
-      assert_equal :message , @first.left.known_object
+      assert_equal :message , @stats.left.known_object
     end
     def test_slot_gets_self
-      assert_equal :frame , @first.left.slots[0]
+      assert_equal :frame , @stats.left.slots[0]
     end
     def test_slot_assigns_to_local
-      assert_equal :local , @first.left.slots[-1]
+      assert_equal :local , @stats.left.slots[-1]
     end
     def test_slot_assigns_something
-      assert @stats.first.right
+      assert @stats.right
     end
     def test_slot_assigns_int
-      assert_equal Mom::IntegerConstant ,  @first.right.class
+      assert_equal Mom::IntegerConstant ,  @stats.right.class
     end
   end
 
@@ -41,7 +40,7 @@ module Vool
       @stats = compile_first_method( "local = @a")
     end
     def test_class_compiles
-      assert_equal Mom::SlotMove , @stats.first.class , @stats
+      assert_equal Mom::SlotLoad , @stats.class , @stats
     end
   end
 
@@ -52,23 +51,22 @@ module Vool
     def setup
       Risc.machine.boot
       @stats = compile_first_method( "arg = 5")
-      @first = @stats.first
     end
 
     def test_class_compiles
-      assert_equal Mom::SlotConstant , @first.class , @stats
+      assert_equal Mom::SlotLoad , @stats.class , @stats
     end
     def test_slot_is_set
-      assert @first.left
+      assert @stats.left
     end
     def test_slot_starts_at_message
-      assert_equal :message , @first.left.known_object
+      assert_equal :message , @stats.left.known_object
     end
     def test_slot_gets_self
-      assert_equal :arguments , @first.left.slots[0]
+      assert_equal :arguments , @stats.left.slots[0]
     end
     def test_slot_assigns_to_local
-      assert_equal :arg , @first.left.slots[-1]
+      assert_equal :arg , @stats.left.slots[-1]
     end
   end
 
@@ -79,11 +77,13 @@ module Vool
     end
     def test_assigns_const
       @stats = compile_first_method( "@a = 5")
-      assert_equal Mom::SlotConstant , @stats.first.class , @stats
+      assert_equal Mom::SlotLoad , @stats.class , @stats
+      assert_equal Mom::IntegerConstant , @stats.right.class , @stats
     end
     def test_assigns_move
       @stats = compile_first_method( "@a = arg")
-      assert_equal Mom::SlotMove , @stats.first.class , @stats
+      assert_equal Mom::SlotLoad , @stats.class , @stats
+      assert_equal Mom::SlotDefinition , @stats.right.class , @stats
     end
   end
 

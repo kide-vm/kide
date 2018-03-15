@@ -47,6 +47,15 @@ module Vool
     def normalize
       raise "should not be normalized #{self}"
     end
+    def to_mom(method)
+      raise "should not be momed #{self}"
+    end
+
+    # for loading into a lot, return the "slot_definition" that can be passed to
+    # SlotLoad.
+    def slot_definition(method)
+      raise "not iplemented in #{self}"
+    end
 
   end
 

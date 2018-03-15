@@ -30,6 +30,26 @@ module Vool
       check
     end
 
+    def flatten(options = {})
+      true_label = Label.new( "true_label_#{object_id}")
+      false_label = Label.new( "false_label_#{object_id}")
+      merge_label = Label.new( "merge_label_#{object_id}")
+      first = condition.flatten( true_label: true_label , false_label: false_label)
+      if hoisted
+        head = hoisted.flatten
+        head.append first
+      else
+        head = first
+      end
+      head.append true_label
+      head.append if_true.flatten( merge_label: merge_label)
+      if( if_false)
+        head.append false_label
+        head.append if_false.flatten( merge_label: merge_label)
+      end
+      head.append merge_label
+      head
+    end
 
     def collect(arr)
       @if_true.collect(arr)

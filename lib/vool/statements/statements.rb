@@ -4,8 +4,12 @@ module Vool
 
     # create machine instructions
     def to_mom( method )
-      all = @statements.collect { |statement| statement.to_mom( method ) }
-      Mom::Statements.new(all)
+      raise "Empty list ? #{statements.length}" unless @statements[0]
+      flat = @statements.shift.to_mom(method)
+      while( nekst = @statements.shift )
+        flat.append nekst.to_mom(method)
+      end
+      flat
     end
 
     def create_objects

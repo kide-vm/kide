@@ -1,13 +1,6 @@
 module Vool
-  class Statement
-    def slot_class
-      Mom::SlotMove
-    end
-  end
   class Constant < Expression
-    def slot_class
-      Mom::SlotConstant
-    end
+
   end
 
   class IntegerConstant < Constant
@@ -15,11 +8,14 @@ module Vool
     def initialize(value)
       @value = value
     end
-    def to_mom(method)
+    def slot_definition(method)
       return Mom::IntegerConstant.new(@value)
     end
     def ct_type
       Parfait.object_space.get_class_by_name(:Integer).instance_type
+    end
+    #gobble it up
+    def each(&block)
     end
   end
   class FloatConstant < Constant
@@ -63,7 +59,7 @@ module Vool
     def initialize(value)
       @value = value
     end
-    def to_mom(method)
+    def slot_definition(method)
       return Mom::StringConstant.new(@value)
     end
     def ct_type

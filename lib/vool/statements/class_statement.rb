@@ -5,7 +5,6 @@ module Vool
 
     def initialize( name , supe , body)
       @name , @super_class_name , @body = name , supe , body
-      @body = ScopeStatement.new([]) unless body
     end
 
     def normalize
