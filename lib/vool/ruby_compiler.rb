@@ -38,31 +38,31 @@ module Vool
 
     #basic Values
     def on_self exp
-      SelfStatement.new
+      SelfExpression.new
     end
 
     def on_nil expression
-      NilStatement.new
+      NilConstant.new
     end
 
     def on_int expression
-      IntegerStatement.new(expression.children.first)
+      IntegerConstant.new(expression.children.first)
     end
 
     def on_float expression
-      FloatStatement.new(expression.children.first)
+      FloatConstant.new(expression.children.first)
     end
 
     def on_true expression
-      TrueStatement.new
+      TrueConstant.new
     end
 
     def on_false expression
-      FalseStatement.new
+      FalseConstant.new
     end
 
     def on_str expression
-      StringStatement.new(expression.children.first)
+      StringConstant.new(expression.children.first)
     end
     alias  :on_string :on_str
 
@@ -72,7 +72,7 @@ module Vool
     alias  :on_xstr :on_dstr
 
     def on_sym expression
-      SymbolStatement.new(expression.children.first)
+      SymbolConstant.new(expression.children.first)
     end
     alias  :on_string :on_str
 
@@ -151,7 +151,7 @@ module Vool
 
     def on_send statement
       kids = statement.children.dup
-      receiver = process(kids.shift) || SelfStatement.new
+      receiver = process(kids.shift) || SelfExpression.new
       name = kids.shift
       arguments = process_all(kids)
       SendStatement.new( name , receiver , arguments )
@@ -167,14 +167,14 @@ module Vool
 
     # this is a call to super without args (z = zero arity)
     def on_zsuper exp
-      SendStatement.new( nil , SuperStatement.new , nil)
+      SendStatement.new( nil , SuperExpression.new , nil)
     end
 
     # this is a call to super with args and
     # same name as current method, which is set later
     def on_super( statement )
       arguments = process_all(statement.children)
-      SendStatement.new( nil , SuperStatement.new , arguments)
+      SendStatement.new( nil , SuperExpression.new , arguments)
     end
 
     def on_assignment statement

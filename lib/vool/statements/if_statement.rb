@@ -1,7 +1,7 @@
-require_relative "hoister"
+require_relative "normalizer"
 module Vool
   class IfStatement < Statement
-    include Hoister
+    include Normalizer
 
     attr_reader :condition , :if_true , :if_false
 
@@ -10,6 +10,14 @@ module Vool
       @if_true = if_true
       @if_false = if_false
       simplify_condition
+    end
+
+    def normalize(method)
+      cond , rest = *normalize_name(@condition)
+      fals = @if_false ? @if_false.normalize(method) : nil
+      me = IfStatement.new(cond , @if_true.normalize(method), fals)
+      return me unless rest
+      rest << me
     end
 
     def to_mom( method )

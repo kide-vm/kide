@@ -6,7 +6,7 @@ module Vool
     end
   end
 
-  class LocalVariable < Statement
+  class LocalVariable < Expression
     include Named
     def to_mom(method)
       if method.args_type.variable_index(@name)
@@ -18,7 +18,7 @@ module Vool
     end
   end
 
-  class InstanceVariable < Statement
+  class InstanceVariable < Expression
     include Named
     def to_mom(method)
       Mom::SlotDefinition.new(:message , [ :receiver , @name] )
@@ -29,11 +29,11 @@ module Vool
     end
   end
 
-  class ClassVariable < Statement
+  class ClassVariable < Expression
     include Named
   end
 
-  class ModuleName < Statement
+  class ModuleName < Expression
     include Named
   end
 end

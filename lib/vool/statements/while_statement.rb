@@ -1,14 +1,21 @@
-require_relative "hoister"
+require_relative "normalizer"
 
 module Vool
   class WhileStatement < Statement
-    include Hoister
+    include Normalizer
     attr_reader :condition , :statements
 
     def initialize( condition , statements )
       @condition = condition
       @statements = statements
       simplify_condition
+    end
+
+    def normalize(method)
+      cond , rest = *normalize_name(@condition)
+      me = WhileStatement.new(cond , @statements.normalize(method))
+      return me unless rest
+      rest << me
     end
 
     def to_mom( method )

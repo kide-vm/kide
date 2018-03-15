@@ -4,13 +4,13 @@ module Vool
       Mom::SlotMove
     end
   end
-  class ConstantStatement < Statement
+  class Constant < Expression
     def slot_class
       Mom::SlotConstant
     end
   end
 
-  class IntegerStatement < ConstantStatement
+  class IntegerConstant < Constant
     attr_reader :value
     def initialize(value)
       @value = value
@@ -22,7 +22,7 @@ module Vool
       Parfait.object_space.get_class_by_name(:Integer).instance_type
     end
   end
-  class FloatStatement < ConstantStatement
+  class FloatConstant < Constant
     attr_reader :value
     def initialize(value)
       @value = value
@@ -31,22 +31,22 @@ module Vool
       true
     end
   end
-  class TrueStatement < ConstantStatement
+  class TrueConstant < Constant
     def ct_type
       Parfait.object_space.get_class_by_name(:True).instance_type
     end
   end
-  class FalseStatement < ConstantStatement
+  class FalseConstant < Constant
     def ct_type
       Parfait.object_space.get_class_by_name(:False).instance_type
     end
   end
-  class NilStatement < ConstantStatement
+  class NilConstant < Constant
     def ct_type
       Parfait.object_space.get_class_by_name(:Nil).instance_type
     end
   end
-  class SelfStatement < Statement
+  class SelfExpression < Expression
     attr_reader :clazz
     def set_class(clazz)
       @clazz = clazz
@@ -58,9 +58,9 @@ module Vool
       @clazz.instance_type
     end
   end
-  class SuperStatement < Statement
+  class SuperExpression < Statement
   end
-  class StringStatement < ConstantStatement
+  class StringConstant < Constant
     attr_reader :value
     def initialize(value)
       @value = value
@@ -72,7 +72,7 @@ module Vool
       Parfait.object_space.get_class_by_name(:Word).instance_type
     end
   end
-  class SymbolStatement < StringStatement
+  class SymbolConstant < StringConstant
     def ct_type
       Parfait.object_space.get_class_by_name(:Word).instance_type
     end

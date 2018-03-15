@@ -5,6 +5,14 @@ module Vool
     def initialize(name , value )
       @name , @value = name , value
     end
+
+    def normalize()
+      raise "not named left #{name}" unless @name.is_a?(Named)
+      raise "unsupported right #{value}" unless @name.is_a?(Named) or
+              @name.is_a?(SendStatement) or @name.is_a?(Constant)
+      self
+    end
+
     def collect(arr)
       @value.collect(arr)
       super

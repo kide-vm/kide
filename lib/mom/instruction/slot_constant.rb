@@ -4,7 +4,7 @@ module Mom
   # the a is an instance variable on the current frame, and the frame is an instance
   # of the current message, so the effect is something like message.frame.a = 5
   # @left:  See SlotLoad, an array of symbols
-  # @right: A Constant from parse, ie an instance of classes in basc_value, like TrueStatement
+  # @right: A Constant from parse, ie an instance of classes in basc_value, like TrueConstant
   class SlotConstant < SlotLoad
 
     def initialize(left , right)

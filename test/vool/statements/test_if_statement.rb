@@ -16,7 +16,7 @@ module Vool
     end
     def test_if_basic_branches
       lst = RubyCompiler.compile( basic_if )
-      assert_equal TrueStatement , lst.if_true.class
+      assert_equal TrueConstant , lst.if_true.class
       assert_nil lst.if_false
     end
 
@@ -29,12 +29,12 @@ module Vool
     end
     def test_if_double_cond
       lst = RubyCompiler.compile( double_if )
-      assert_equal FalseStatement , lst.condition.class
+      assert_equal FalseConstant , lst.condition.class
     end
     def test_if_double_branches
       lst = RubyCompiler.compile( double_if )
-      assert_equal TrueStatement , lst.if_true.class
-      assert_equal FalseStatement, lst.if_false.class
+      assert_equal TrueConstant , lst.if_true.class
+      assert_equal FalseConstant, lst.if_false.class
     end
 
     def reverse_if
@@ -46,11 +46,11 @@ module Vool
     end
     def test_if_reverse_cond
       lst = RubyCompiler.compile( reverse_if )
-      assert_equal FalseStatement , lst.condition.class
+      assert_equal FalseConstant , lst.condition.class
     end
     def test_if_reverse_branches
       lst = RubyCompiler.compile( reverse_if )
-      assert_equal TrueStatement , lst.if_true.class
+      assert_equal TrueConstant , lst.if_true.class
       assert_nil lst.if_false
     end
 
@@ -63,12 +63,12 @@ module Vool
     end
     def test_if_reverse_cond
       lst = RubyCompiler.compile( reverse_unless )
-      assert_equal FalseStatement , lst.condition.class
+      assert_equal FalseConstant , lst.condition.class
     end
     def test_if_reverse_branches
       lst = RubyCompiler.compile( reverse_unless )
       assert_nil  lst.if_true
-      assert_equal TrueStatement ,lst.if_false.class
+      assert_equal TrueConstant ,lst.if_false.class
     end
 
     def ternary
@@ -80,12 +80,12 @@ module Vool
     end
     def test_if_ternary_cond
       lst = RubyCompiler.compile( ternary )
-      assert_equal FalseStatement , lst.condition.class
+      assert_equal FalseConstant , lst.condition.class
     end
     def test_if_ternary_branches
       lst = RubyCompiler.compile( ternary )
-      assert_equal TrueStatement , lst.if_true.class
-      assert_equal FalseStatement, lst.if_false.class
+      assert_equal TrueConstant , lst.if_true.class
+      assert_equal FalseConstant, lst.if_false.class
     end
   end
 end

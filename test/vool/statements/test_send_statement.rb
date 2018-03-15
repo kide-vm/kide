@@ -13,7 +13,7 @@ module Vool
     end
     def test_simple_receiver
       lst = RubyCompiler.compile( "foo")
-      assert_equal SelfStatement , lst.receiver.class
+      assert_equal SelfExpression , lst.receiver.class
     end
     def test_simple_args
       lst = RubyCompiler.compile( "foo")
@@ -30,7 +30,7 @@ module Vool
     end
     def test_one_arg_receiver
       lst = RubyCompiler.compile( "bar(1)")
-      assert_equal SelfStatement , lst.receiver.class
+      assert_equal SelfExpression , lst.receiver.class
     end
     def test_one_arg_args
       lst = RubyCompiler.compile( "bar(1)")
@@ -39,7 +39,7 @@ module Vool
 
     def test_super0_receiver
       lst = RubyCompiler.compile( "super")
-      assert_equal SuperStatement , lst.receiver.class
+      assert_equal SuperExpression , lst.receiver.class
     end
     def test_super0
       lst = RubyCompiler.compile( "super")
@@ -48,7 +48,7 @@ module Vool
 
     def test_super_receiver
       lst = RubyCompiler.compile( "super(1)")
-      assert_equal SuperStatement , lst.receiver.class
+      assert_equal SuperExpression , lst.receiver.class
     end
     def test_super_args
       lst = RubyCompiler.compile( "super(1)")

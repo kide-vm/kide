@@ -37,7 +37,7 @@ module Vool
     def test_compile_two_methods
       lst = RubyCompiler.compile( in_Test("false; true;") )
       assert_equal ScopeStatement , lst.body.class
-      assert_equal TrueStatement , lst.body.statements[1].class
+      assert_equal TrueConstant , lst.body.statements[1].class
     end
 
   end

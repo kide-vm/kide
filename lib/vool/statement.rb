@@ -10,6 +10,9 @@
 # Also, Vool is a typed tree, not abstract, so  there is a base class Statement
 #            and all it's derivation that make up the syntax tree
 #
+# Also Vool has expression and statements and simple syntax. So returns must be explicit
+# not everthing is just assignable, ifs can only test simple expressions etc (wip)
+#
 # This allows us to write compilers or passes of the compiler(s) as functions on the
 # classes.
 #
@@ -22,6 +25,13 @@ module Vool
   #
   class Statement
 
+    # after creation vool normalizes to ensure valid syntax and simplify
+    # also throw errors if violation
+    def normalize
+      return self
+    end
+
+    # flatten tree to array
     def collect(arr)
       arr << self
     end
@@ -51,6 +61,10 @@ module Vool
     def set_class( clazz )
     end
   end
+
+  class Expression
+  end
+
 end
 
 
@@ -61,7 +75,7 @@ require_relative "statements/class_statement"
 require_relative "statements/hash_statement"
 require_relative "statements/if_statement"
 require_relative "statements/logical_statement"
-require_relative "statements/local_statement"
+require_relative "statements/local_assignment"
 require_relative "statements/method_statement"
 require_relative "statements/return_statement"
 require_relative "statements/statements"
