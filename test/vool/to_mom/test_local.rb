@@ -14,7 +14,7 @@ module Vool
       assert Array != @stats.class , @stats
     end
     def test_class_compiles
-      assert_equal Mom::SlotConstant , @first.class , @stats
+      assert_equal Mom::SlotLoad , @first.class , @stats
     end
     def test_slot_is_set
       assert @first.left

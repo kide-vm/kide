@@ -32,7 +32,7 @@ module Vool
     end
   end
 
-  #otherwise as above, but assigning instance, so should get a SlotMove
+  #otherwise as above, but assigning instance, so should get a SlotLoad
   class TestAssignMomInstanceToLocal < MiniTest::Test
     include MomCompile
     def setup

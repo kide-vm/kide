@@ -27,7 +27,7 @@ module Vool
       assert_nil @first.hoisted , @stats
     end
     def test_array
-      check_array [SlotMove,TruthCheck,Label,MessageSetup,ArgumentTransfer,SimpleCall,Label], @stats
+      check_array [SlotLoad,TruthCheck,Label,MessageSetup,ArgumentTransfer,SimpleCall,Label], @stats
     end
   end
 end

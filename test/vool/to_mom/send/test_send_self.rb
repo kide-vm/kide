@@ -20,7 +20,7 @@ module Vool
     end
 
     def test_arg_one
-      assert_equal Mom::SlotConstant,  @stats[1].arguments[0].class
+      assert_equal Mom::SlotLoad,  @stats[1].arguments[0].class
     end
     def test_call_two
       assert_equal Mom::SimpleCall,  @stats[2].class
