@@ -7,9 +7,9 @@ module Vool
     end
 
     def normalize()
-      raise "not named left #{name}" unless @name.is_a?(Named)
-      raise "unsupported right #{value}" unless @name.is_a?(Named) or
-              @name.is_a?(SendStatement) or @name.is_a?(Constant)
+      raise "not named left #{name.class}" unless @name.is_a?(Symbol)
+      raise "unsupported right #{value}" unless @value.is_a?(Named) or
+              @value.is_a?(SendStatement) or @value.is_a?(Constant)
       self
     end
 

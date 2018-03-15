@@ -5,12 +5,12 @@ module Vool
 
     def initialize( name , supe , body)
       @name , @super_class_name , @body = name , supe , body
-      unless( body.is_a?(ScopeStatement))
-        @body = ScopeStatement.new([])
-        @body.statements << body if body
-      end
+      @body = ScopeStatement.new([]) unless body
     end
 
+    def normalize
+      ClassStatement.new(@name , @super_class_name, @body.normalize )
+    end
     # compilation to the next layer, mom
     # context coming in for class is nil, also for methods, henceafter a method is passed down
     def to_mom( _ )
@@ -18,7 +18,7 @@ module Vool
       Mom::Statements.new(methods)
     end
 
-    def collect(arr)
+    def each()
       @body.collect(arr)
       super
     end

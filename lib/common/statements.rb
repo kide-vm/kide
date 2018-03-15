@@ -26,6 +26,7 @@ module Common
     end
     def <<(o)
       @statements << o
+      self
     end
     def collect(arr)
       @statements.each { |s| s.collect(arr) }

@@ -48,10 +48,8 @@ module Vool
   end
   class SelfExpression < Expression
     attr_reader :clazz
-    def set_class(clazz)
-      @clazz = clazz
-    end
     def to_mom(in_method)
+      @clazz = in_method.clazz
       Mom::SlotDefinition.new(:message , [:receiver])
     end
     def ct_type

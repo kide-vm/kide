@@ -2,13 +2,10 @@ module Vool
   class MethodStatement < Statement
     attr_reader :name, :args , :body , :clazz
 
-    def initialize( name , args , body)
+    def initialize( name , args , body , clazz = nil)
       @name , @args , @body = name , args , body
-      unless( body.is_a?(ScopeStatement))
-        @body = ScopeStatement.new([])
-        @body.statements << body if body
-      end
-
+      @body = ScopeStatement.new([]) unless body
+      @clazz = clazz
     end
 
     # compile to mom instructions. methods themselves do no result in instructions (yet)
@@ -24,8 +21,8 @@ module Vool
       super
     end
 
-    def set_class(clazz)
-      @clazz = clazz
+    def normalize
+      MethodStatement.new( @name , @args , @body.normalize)
     end
 
     def create_objects
@@ -50,7 +47,7 @@ module Vool
     def make_frame
       type_hash = {}
       vars = []
-      @body.collect([]).each { |node| node.add_local(vars) }
+      @body.each([]).each { |node| node.add_local(vars) }
       vars.each { |var| type_hash[var] = :Object }
       Parfait::NamedList.type_for( type_hash )
     end

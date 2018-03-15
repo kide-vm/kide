@@ -12,10 +12,10 @@ module Vool
       simplify_condition
     end
 
-    def normalize(method)
-      cond , rest = *normalize_name(@condition, method)
-      fals = @if_false ? @if_false.normalize(method) : nil
-      me = IfStatement.new(cond , @if_true.normalize(method), fals)
+    def normalize
+      cond , rest = *normalize_name(@condition)
+      fals = @if_false ? @if_false.normalize : nil
+      me = IfStatement.new(cond , @if_true.normalize, fals)
       return me unless rest
       rest << me
     end

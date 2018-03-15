@@ -30,9 +30,8 @@ module Vool
     include CompilerHelper
 
     def test_compile_one_method
-      lst = RubyCompiler.compile( in_Test("@ivar") )
-      assert_equal ScopeStatement , lst.body.class
-      assert_equal InstanceVariable , lst.body.statements.first.class
+      lst = RubyCompiler.compile( in_Test("@ivar = 4") )
+      assert_equal IvarAssignment , lst.body.class
     end
     def test_compile_two_methods
       lst = RubyCompiler.compile( in_Test("false; true;") )

@@ -27,13 +27,12 @@ module Vool
 
     # after creation vool normalizes to ensure valid syntax and simplify
     # also throw errors if violation
-    def normalize(method)
-      return self
+    def normalize()
+      raise self.class.name
     end
 
-    # flatten tree to array
-    def collect(arr)
-      arr << self
+    def each()
+      yield self
     end
 
     def to_mom( _ )
@@ -44,25 +43,15 @@ module Vool
     def ct_type
       nil
     end
-    # create corresponding parfait objects, ie classes, types, methods
-    # mainly implemented by class/method statement
-    def create_objects
-    end
 
-    # used to collect type information
-    def add_ivar( array )
-    end
-
-    # used to collect frame information
-    def add_local( array )
-    end
-
-    # used for method creation
-    def set_class( clazz )
-    end
   end
 
   class Expression
+
+    def normalize
+      raise "should not be normalized #{self}"
+    end
+
   end
 
 end
