@@ -27,5 +27,8 @@ module Vool
     def test_call_has_method
       assert_equal Parfait::TypedMethod,  @ins.next(3).method.class
     end
+    def test_array
+      check_array [Mom::MessageSetup,Mom::SlotLoad,Mom::ArgumentTransfer,Mom::SimpleCall] , @ins
+    end
   end
 end

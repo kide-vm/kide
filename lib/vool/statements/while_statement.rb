@@ -11,7 +11,7 @@ module Vool
     end
 
     def normalize
-      cond , rest = *normalize_name(@condition.normalize)
+      cond , rest = *normalize_name(@condition)
       me = WhileStatement.new(cond , @body.normalize)
       return me unless rest
       rest << me
