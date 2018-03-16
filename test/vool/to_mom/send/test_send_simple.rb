@@ -8,14 +8,13 @@ module Vool
 
     def setup
       Risc.machine.boot
-      @stats = compile_first_method( "5.mod4").first
-      @first = @stats.first
+      @ins = compile_first_method( "5.mod4")
     end
     def receiver
       [Mom::IntegerConstant , 5]
     end
     def test_call_has_right_method
-      assert_equal :mod4,  @stats[2].method.name
+      assert_equal :mod4,  @ins.next(3).method.name
     end
 
   end

@@ -36,13 +36,13 @@ module Vool
       raise "Not implemented for #{self}"
     end
 
-    def ct_type
-      nil
-    end
-
   end
 
   class Expression
+
+    def ct_type
+      nil
+    end
 
     def normalize
       raise "should not be normalized #{self}"

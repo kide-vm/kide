@@ -38,6 +38,7 @@ module Vool
     #        in a not so distant future, temporary variables will have to be created
     #        and complex statements hoisted to assign to them. pps: same as in conditions
     def to_mom( in_method )
+      @receiver = SelfExpression.new(in_method.for_class.instance_type) if @receiver.is_a?(SelfExpression)
       if(@receiver.ct_type)
         simple_call(in_method)
       else
@@ -67,7 +68,7 @@ module Vool
     # - check the cached type and if neccessary update
     # - call the cached method
     def cached_call(in_method)
-      Mom::Statements.new( cache_check(in_method) + call_cached_method(in_method) )
+      cache_check(in_method) << call_cached_method(in_method)
     end
 
     # check that current type is the cached type
@@ -77,10 +78,9 @@ module Vool
       # if cached_type != current_type
       #   cached_type = current_type
       #   cached_method = current_type.resolve_method(method.name)
-      if_true = Mom::Statements.new(build_type_cache_update)
-      if_true.add_array build_method_cache_update(in_method)
-      #@if_true.to_mom( in_method ) #find and assign
-      [Mom::IfStatement.new( build_condition , if_true )]
+      check = build_condition
+      check << build_type_cache_update
+      check << build_method_cache_update(in_method)
     end
 
     # this may look like a simple_call, but the difference is that we don't know
@@ -97,12 +97,12 @@ module Vool
       Mom::NotSameCheck.new(cached_type , current_type)
     end
     def build_type_cache_update
-      [Mom::SlotMove.new([@dynamic, :cached_type] , [:receiver , :type])]
+      Mom::SlotLoad.new([@dynamic, :cached_type] , [:receiver , :type])
     end
     def build_method_cache_update(in_method)
       receiver = StringConstant.new(@name)
       resolve = SendStatement.new(:resolve_method , receiver , [SelfExpression.new])
-      move_method = Mom::SlotMove.new([@dynamic, :cached_method] , [:receiver , :return])
+      move_method = Mom::SlotLoad.new([@dynamic, :cached_method] , [:receiver , :return])
       resolve.to_mom(in_method) << move_method
     end
   end

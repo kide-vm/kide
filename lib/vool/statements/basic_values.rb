@@ -43,13 +43,16 @@ module Vool
     end
   end
   class SelfExpression < Expression
-    attr_reader :clazz
+    attr_reader :my_type
+    def initialize(type = nil)
+      @my_type = type
+    end
     def to_mom(in_method)
       @clazz = in_method.clazz
       Mom::SlotDefinition.new(:message , [:receiver])
     end
     def ct_type
-      @clazz.instance_type
+      @my_type
     end
   end
   class SuperExpression < Statement

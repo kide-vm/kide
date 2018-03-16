@@ -27,9 +27,6 @@ module Vool
       @statements << o
       self
     end
-    def add_array(a)
-      @statements += a
-    end
 
     # create machine instructions
     def to_mom( method )

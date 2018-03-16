@@ -10,10 +10,11 @@ module Vool
     def normalize
       ClassStatement.new(@name , @super_class_name, @body.normalize )
     end
+
     # compilation to the next layer, mom
     # context coming in for class is nil, also for methods, henceafter a method is passed down
     def to_mom( _ )
-      @body.to_mom(nil)
+      @body.to_mom()
     end
 
     def each(&block)
