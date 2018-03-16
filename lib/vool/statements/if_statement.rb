@@ -9,7 +9,6 @@ module Vool
       @condition = cond
       @if_true = if_true
       @if_false = if_false
-      simplify_condition
     end
 
     def normalize
@@ -18,36 +17,23 @@ module Vool
       me = IfStatement.new(cond , @if_true.normalize, fals)
       return me unless rest
       rest << me
+      rest
     end
 
     def to_mom( method )
-      if_true =   @if_true.to_mom( method )
-      if_false =  @if_false ? @if_false.to_mom( method ) : nil
-      condition , hoisted  = hoist_condition( method )
-      cond = Mom::TruthCheck.new(condition.to_mom(method))
-      check = Mom::IfStatement.new(  cond , if_true , if_false )
-      check.hoisted = hoisted.to_mom(method) if hoisted
-      check
-    end
+      true_label  = Mom::Label.new( "true_label_#{object_id}")
+      false_label = Mom::Label.new( "false_label_#{object_id}")
+      merge_label = Mom::Label.new( "merge_label_#{object_id}")
 
-    def flatten(options = {})
-      true_label = Label.new( "true_label_#{object_id}")
-      false_label = Label.new( "false_label_#{object_id}")
-      merge_label = Label.new( "merge_label_#{object_id}")
-      first = condition.flatten( true_label: true_label , false_label: false_label)
-      if hoisted
-        head = hoisted.flatten
-        head.append first
-      else
-        head = first
+      head = Mom::TruthCheck.new(condition.slot_definition(method) , false_label)
+      head << true_label
+      head << if_true.to_mom(method)
+      head << Mom::Jump.new(merge_label) if if_false
+      head << false_label
+      if if_false
+        head << if_false.to_mom(method)
+        head << merge_label
       end
-      head.append true_label
-      head.append if_true.flatten( merge_label: merge_label)
-      if( if_false)
-        head.append false_label
-        head.append if_false.flatten( merge_label: merge_label)
-      end
-      head.append merge_label
       head
     end
 
@@ -55,11 +41,6 @@ module Vool
       block.call(condition)
       @if_true.each(&block)
       @if_false.each(&block) if @if_false
-    end
-
-    def simplify_condition
-      return unless @condition.is_a?(ScopeStatement)
-      @condition = @condition.first if @condition.single?
     end
 
     def has_false?

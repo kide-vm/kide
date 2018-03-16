@@ -2,13 +2,13 @@
 require_relative "helper"
 
 module Vool
-  class TestSimpleIfMom < MiniTest::Test
+  class TestIfNoElse < MiniTest::Test
     include MomCompile
     include Mom
 
     def setup
       Risc.machine.boot
-      @ins = compile_first_method( "if(@a) ; 5.mod4 ; else; 4.mod4 ; end")
+      @ins = compile_first_method( "if(@a) ; 5.mod4 ; end")
     end
 
     def test_condition_compiles_to_check
@@ -24,7 +24,7 @@ module Vool
       assert_equal Label , @ins.last.class , @ins
     end
     def test_array
-      check_array [TruthCheck,Label,MessageSetup,SlotLoad,ArgumentTransfer,SimpleCall,Jump,Label,MessageSetup,SlotLoad,ArgumentTransfer,SimpleCall,Label], @ins
+      check_array [TruthCheck,Label,MessageSetup,SlotLoad,ArgumentTransfer,SimpleCall,Label], @ins
     end
   end
 end
