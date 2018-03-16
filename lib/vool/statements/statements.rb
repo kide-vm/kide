@@ -28,7 +28,7 @@ module Vool
       self
     end
 
-    # create machine instructions
+    # create mom instructions
     def to_mom( method )
       raise "Empty list ? #{statements.length}" unless @statements[0]
       flat = @statements.shift.to_mom(method)
@@ -48,13 +48,21 @@ module Vool
     end
 
     def normalize
-      Statements.new(@statements.collect{|s| s.normalize})
+      if( single? )
+        first.normalize
+      else
+        Statements.new(@statements.collect{|s| s.normalize})
+      end
     end
   end
 
   class ScopeStatement < Statements
     def normalize
-      ScopeStatement.new(@statements.collect{|s| s.normalize})
+      if( single? )
+        first.normalize
+      else
+        ScopeStatement.new(@statements.collect{|s| s.normalize})
+      end
     end
   end
 end

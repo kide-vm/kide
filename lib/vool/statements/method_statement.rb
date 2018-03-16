@@ -4,7 +4,7 @@ module Vool
 
     def initialize( name , args , body , clazz = nil)
       @name , @args , @body = name , args , body
-      raise "no bod" unless body
+      raise "no bod" unless @body
       @clazz = clazz
     end
 

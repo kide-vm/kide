@@ -49,8 +49,8 @@ module Vool
     def initialize(type = nil)
       @my_type = type
     end
-    def to_mom(in_method)
-      @clazz = in_method.clazz
+    def slot_definition(in_method)
+      @my_type = in_method.for_type
       Mom::SlotDefinition.new(:message , [:receiver])
     end
     def ct_type

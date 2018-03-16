@@ -14,9 +14,7 @@ module Vool
 
     def chain_assign(assign , method)
       return assign unless @value.is_a?(SendStatement)
-      first = @value.to_mom(method)
-      first.next = assign
-      return first
+      @value.to_mom(method) << assign
     end
 
     def each(&block)

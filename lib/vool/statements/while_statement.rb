@@ -3,49 +3,34 @@ require_relative "normalizer"
 module Vool
   class WhileStatement < Statement
     include Normalizer
-    attr_reader :condition , :statements
+    attr_reader :condition , :body
 
-    def initialize( condition , statements )
+    def initialize( condition , body )
       @condition = condition
-      @statements = statements
-      simplify_condition
+      @body = body
     end
 
-    def normalize(method)
-      cond , rest = *normalize_name(@condition)
-      me = WhileStatement.new(cond , @statements.normalize(method))
+    def normalize
+      cond , rest = *normalize_name(@condition.normalize)
+      me = WhileStatement.new(cond , @body.normalize)
       return me unless rest
       rest << me
+      rest
     end
 
     def to_mom( method )
-      statements =   @statements.to_mom( method )
-      condition , hoisted  = hoist_condition( method )
-      cond = Mom::TruthCheck.new(condition.to_mom(method))
-      check = Mom::WhileStatement.new(  cond , statements  )
-      check.hoisted = hoisted.to_mom(method) if hoisted
-      check
+      merge_label = Mom::Label.new( "merge_label_#{object_id}")
+      cond_label = Mom::Label.new( "cond_label_#{object_id}")
+      cond_label << Mom::TruthCheck.new(condition.slot_definition(method) , merge_label)
+      cond_label << @body.to_mom(method)
+      cond_label << Mom::Jump.new(cond_label)
+      cond_label << merge_label
     end
 
-    def flatten(options = {})
-      merge_label = Label.new( "merge_label_#{object_id}")
-      cond_label = Label.new( "cond_label_#{object_id}")
-      @nekst = cond_label
-      @nekst.append(hoisted.flatten) if hoisted
-      @nekst.append condition.flatten( true_label: cond_label , false_label: merge_label)
-      @nekst.append merge_label
-      @nekst
-    end
-
-    def simplify_condition
-      return unless @condition.is_a?(ScopeStatement)
-      @condition = @condition.first if @condition.single?
-    end
-
-    def collect(arr)
-      @condition.collect(arr)
-      @statements.collect(arr)
-      super
+    def each(&block)
+      block.call(self)
+      @condition.each(&block)
+      @body.each(&block)
     end
 
   end

@@ -46,6 +46,12 @@ module Vool
       end
     end
 
+    # When used as right hand side, this tells what data to move to get the result into
+    # a varaible. It is (off course) the return value of the message
+    def slot_definition(in_method)
+      Mom::SlotDefinition.new(:message ,[ :return_value])
+    end
+
     def message_setup(in_method)
       setup  = Mom::MessageSetup.new(in_method) <<
         Mom::SlotLoad.new([:message , :next_message , :receiver] , @receiver.slot_definition(in_method))

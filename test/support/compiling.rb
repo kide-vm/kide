@@ -22,11 +22,13 @@ module MomCompile
   include CompilerHelper
 
   def compile_first_method input
-    lst = Vool::VoolCompiler.ruby_to_vool as_test_main( input )
-    assert_equal Parfait::Class , lst.clazz.class , lst
-    @method = lst.clazz.get_method(:main)
+    # works a lot like Vool.ruby_to_vool
+    statements = Vool::RubyCompiler.compile as_test_main( input )
+    statements = statements.normalize
+    res = statements.create_objects
+    assert_equal Parfait::Class , statements.clazz.class , statements
+    @method = statements.clazz.get_method(:main)
     assert_equal Parfait::VoolMethod , @method.class
-    res = lst.create_objects
     #puts "#{res.class}"
     res
   end
