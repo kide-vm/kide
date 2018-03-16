@@ -1,6 +1,8 @@
 module Vool
   class Constant < Expression
-
+    #gobble it up
+    def each(&block)
+    end
   end
 
   class IntegerConstant < Constant

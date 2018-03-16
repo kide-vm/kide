@@ -34,7 +34,7 @@ module Vool
 
     def test_class_body_is_scope
       clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5 ;end")
-      assert_equal ScopeStatement , clazz.body.class
+      assert_equal MethodStatement , clazz.body.class
     end
 
     def test_creates_class_without_deriviation

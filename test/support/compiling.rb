@@ -26,7 +26,7 @@ module MomCompile
     assert_equal Parfait::Class , lst.clazz.class , lst
     @method = lst.clazz.get_method(:main)
     assert_equal Parfait::VoolMethod , @method.class
-    res = lst.to_mom( nil )
+    res = lst.create_objects
     #puts "#{res.class}"
     res
   end

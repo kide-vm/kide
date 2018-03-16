@@ -8,12 +8,10 @@ module Vool
       @clazz = clazz
     end
 
-    # compile to mom instructions. methods themselves do no result in instructions (yet)
-    # instead the resulting instruction tree is saved into the method object that
-    #  represents the method
+    # there is no mom equivalent for a method definition, only a vool/parfait one
+    # Only the source of gets momed, this should never be called
     def to_mom( _ )
-      method = @clazz.get_method( @name )
-      @body.to_mom(method)
+      raise "should not be called (call create_objects)"
     end
 
     def each(&block)
@@ -33,9 +31,10 @@ module Vool
       method = Parfait::VoolMethod.new(name , args_type , frame_type , body )
       @clazz.add_method( method )
       typed_method = method.create_parfait_method(clazz.instance_type)
+      head = @body.to_mom( typed_method )
       compiler = Risc::MethodCompiler.new( typed_method ).init_method
-      head = @body.to_mom( method )
       compiler.add_mom(head)
+      head # return for testing
     end
 
     private

@@ -8,23 +8,24 @@ module Vool
     end
 
     def normalize
-      ClassStatement.new(@name , @super_class_name, @body.normalize )
+      ClassStatement.new(@name , @super_class_name, @body&.normalize )
     end
 
-    # compilation to the next layer, mom
-    # context coming in for class is nil, also for methods, henceafter a method is passed down
+    # there is no mom equivalent for a class, this should never be called
     def to_mom( _ )
-      @body.to_mom()
+      raise "should not be called (call create_objects)"
     end
 
     def each(&block)
       block.call(self)
-      @body.each(&block)
+      @body.each(&block) if @body
     end
 
     def create_objects
       create_class_object
-      self.each {|node| node.create_objects(@clazz) if node.is_a?(MethodStatement)  }
+      mom = nil #return mom for test purpose
+      self.each {|node| mom = node.create_objects(@clazz) if node.is_a?(MethodStatement)  }
+      mom
     end
 
     def create_class_object

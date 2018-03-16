@@ -8,7 +8,7 @@ module Vool
     end
 
     def to_mom( method )
-      if method.args_type.variable_index(@name)
+      if method.arguments.variable_index(@name)
         type = :arguments
       else
         type = :frame

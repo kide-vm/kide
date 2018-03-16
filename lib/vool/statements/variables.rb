@@ -11,7 +11,7 @@ module Vool
   class LocalVariable < Expression
     include Named
     def slot_definition(method)
-      if method.args_type.variable_index(@name)
+      if method.arguments.variable_index(@name)
         type = :arguments
       else
         type = :frame

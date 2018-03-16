@@ -38,7 +38,7 @@ module Vool
     #        in a not so distant future, temporary variables will have to be created
     #        and complex statements hoisted to assign to them. pps: same as in conditions
     def to_mom( in_method )
-      @receiver = SelfExpression.new(in_method.for_class.instance_type) if @receiver.is_a?(SelfExpression)
+      @receiver = SelfExpression.new(in_method.for_type) if @receiver.is_a?(SelfExpression)
       if(@receiver.ct_type)
         simple_call(in_method)
       else
