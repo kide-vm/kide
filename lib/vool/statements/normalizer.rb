@@ -10,7 +10,7 @@ module Vool
       if( condition.is_a?(ScopeStatement) and condition.single?)
         condition = condition.first
       end
-      return [condition] if condition.is_a?(Named)
+      return [condition] if condition.respond_to?(:slot_definition)
       condition = condition.normalize
       local = "tmp_#{object_id}"
       assign = Statements.new [LocalAssignment.new( local , condition)]

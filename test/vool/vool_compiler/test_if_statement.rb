@@ -9,9 +9,8 @@ module Vool
         "if(10 < 12) ; a = true ; end"
       end
       def test_if_basic_hoist
-        lst = compile_main( basic_if )
-        assert_equal Statements , lst.class
-        assert_equal IfStatement , lst.statements[1].class
+        lst = RubyCompiler.compile( basic_if )
+        assert_equal IfStatement , lst.class
       end
       def pest_if_basic_cond
         lst = RubyCompiler.compile( basic_if )
