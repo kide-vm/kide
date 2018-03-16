@@ -21,8 +21,7 @@ module Vool
     end
 
     def test_compile_class_body
-      assert_equal 0 , @lst.body.length
-      assert_equal ScopeStatement , @lst.body.class
+      assert_nil @lst.body
     end
 
   end

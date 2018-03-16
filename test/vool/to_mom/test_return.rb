@@ -47,8 +47,11 @@ module Vool
       @ins = compile_first_method( "return 5.mod4")
     end
 
+    def test_return_is_last
+      assert_equal ReturnSequence , @ins.last.class
+    end
     def test_array
-      check_array [SlotLoad,ReturnSequence] , @ins
+      check_array [MessageSetup,SlotLoad,ArgumentTransfer,SimpleCall,SlotLoad,SlotLoad,ReturnSequence] , @ins
     end
   end
 end

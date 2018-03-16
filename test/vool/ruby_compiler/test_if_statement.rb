@@ -12,7 +12,7 @@ module Vool
     end
     def test_if_basic_cond
       lst = RubyCompiler.compile( basic_if )
-      assert_equal SendStatement , lst.condition.class
+      assert_equal ScopeStatement , lst.condition.class
     end
     def test_if_basic_branches
       lst = RubyCompiler.compile( basic_if )
@@ -29,7 +29,7 @@ module Vool
     end
     def test_if_double_cond
       lst = RubyCompiler.compile( double_if )
-      assert_equal FalseConstant , lst.condition.class
+      assert_equal ScopeStatement , lst.condition.class
     end
     def test_if_double_branches
       lst = RubyCompiler.compile( double_if )
@@ -63,7 +63,7 @@ module Vool
     end
     def test_if_reverse_cond
       lst = RubyCompiler.compile( reverse_unless )
-      assert_equal FalseConstant , lst.condition.class
+      assert_equal ScopeStatement , lst.condition.class
     end
     def test_if_reverse_branches
       lst = RubyCompiler.compile( reverse_unless )

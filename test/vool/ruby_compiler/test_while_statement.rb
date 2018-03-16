@@ -12,11 +12,11 @@ module Vool
     end
     def test_while_basic_cond
       lst = RubyCompiler.compile( basic_while )
-      assert_equal SendStatement , lst.condition.class
+      assert_equal ScopeStatement , lst.condition.class
     end
     def test_while_basic_branches
       lst = RubyCompiler.compile( basic_while )
-      assert_equal TrueConstant , lst.statements.class
+      assert_equal TrueConstant , lst.body.class
     end
 
     def reverse_while
@@ -28,11 +28,11 @@ module Vool
     end
     def test_while_reverse_cond
       lst = RubyCompiler.compile( reverse_while )
-      assert_equal FalseConstant , lst.condition.class
+      assert_equal ScopeStatement , lst.condition.class
     end
     def test_while_reverse_branches
       lst = RubyCompiler.compile( reverse_while )
-      assert_equal TrueConstant , lst.statements.class
+      assert_equal TrueConstant , lst.body.class
     end
 
   end

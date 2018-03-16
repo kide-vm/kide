@@ -32,9 +32,9 @@ module Vool
       assert_equal LocalAssignment , lst.body.class
     end
     def test_body_is_scope_zero_statement
-      input = "def tryout(arg1, arg2) ;  ; end "
+      input = "def tryout(arg1, arg2) ; arg1 = arg2 ; end "
       lst = RubyCompiler.compile( input )
-      assert_equal ScopeStatement , lst.body.class
+      assert_equal LocalAssignment , lst.body.class
     end
   end
 end
