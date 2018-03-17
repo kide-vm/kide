@@ -14,8 +14,9 @@ module Vool
     end
     def test_type_update
       load =  @ins.next(2)
-      assert_equal :receiver , load.right.known_object , load
-      assert_equal :type , load.right.slots[0] , load
+      assert_equal :message , load.right.known_object , load
+      assert_equal :receiver , load.right.slots[0] , load
+      assert_equal :type , load.right.slots[1] , load
     end
     def test_check_resolve_call
       assert_equal SimpleCall , @ins.next(6).class , @ins

@@ -28,26 +28,38 @@ module Mom
     def initialize(left , right)
       left = SlotDefinition.new(left.shift , left) if left.is_a? Array
       right = SlotDefinition.new(right.shift , right) if right.is_a? Array
-      raise "right not Mom, #{right.to_s}" unless right.is_a?( SlotDefinition )or right.is_a? Mom::Constant
+      raise "right not Mom, #{right.to_s}" unless right.is_a?( SlotDefinition )#or right.is_a? Mom::Constant
       @left , @right = left , right
     end
 
     def to_risc(compiler)
-      reg = compiler.use_reg( @right.ct_type)
-      const  = Risc.load_constant(self, @right , reg)
-      const << Risc.reg_to_slot(self, reg , @left.known_object, @left.slots.first)
-      compiler.release_reg(reg)
+      type = @right.respond_to?(:ct_type) ? @right.ct_type : :int
+      right = compiler.use_reg( type )
+      case @right.known_object
+      when Constant
+        const  = Risc.load_constant(self, @right , right)
+      when Symbol
+        const = Risc::SlotToReg.new( self , Risc.message_reg ,
+                              Risc.resolve_to_index(:message , @right.slots[0]), right)
+        puts "more slots #{@right.slots}" if @right.slots.length > 1
+      else
+        raise "We have a #{@right} #{@right.known_object}"
+      end
+      case @left.known_object
+      when Symbol
+        left = Risc.message_reg
+        left_index = Risc.resolve_to_index(@left.known_object , @left.slots.first)
+      when Parfait::CacheEntry
+        left = compiler.use_reg( :int )
+        left_index = Risc.resolve_to_index(:cache_entry , @left.slots.first)
+      else
+        raise "We have left #{@left.known_object}"
+      end
+      const << Risc.reg_to_slot(self, right , left, left_index)
+      compiler.release_reg(left) unless @left.known_object.is_a?(Symbol)
+      compiler.release_reg(right)
       return const
     end
-
-    def to_risc_move(context)
-      reg = context.use_reg(:int)#( @right.ct_type)
-      const  = Risc.load_constant(self, @right , reg)
-#      const.set_next Risc.reg_to_slot(self, reg , @left.known_object, @left.slots.first)
-#      context.release_reg(reg)
-      return const
-    end
-
 
   end
 
@@ -61,6 +73,7 @@ module Mom
     def initialize( object , slots)
       @known_object , @slots = object , slots
       slot = [slot] unless slot.is_a?(Array)
+      raise "Not known #{slots}" unless object
     end
   end
 end
