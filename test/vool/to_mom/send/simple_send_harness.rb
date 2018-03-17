@@ -18,8 +18,8 @@ module Vool
     end
     def test_receiver
       type , value = receiver
-      assert_equal type,  @ins.next.right.class
-      assert_equal value,  @ins.next.right.value
+      assert_equal type,  @ins.next.right.known_object.class
+      assert_equal value,  @ins.next.right.known_object.value
     end
     def test_call_is
         assert_equal Mom::SimpleCall,  @ins.next(3).class

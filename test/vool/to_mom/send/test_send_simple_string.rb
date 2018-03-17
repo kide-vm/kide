@@ -19,8 +19,8 @@ module Vool
       assert_equal :arguments,    @ins.next.next.arguments[0].left.slots[1]
     end
     def test_args_one_str
-      assert_equal Mom::IntegerConstant,    @ins.next.next.arguments[0].right.class
-      assert_equal 1,    @ins.next.next.arguments[0].right.value
+      assert_equal Mom::IntegerConstant,    @ins.next.next.arguments[0].right.known_object.class
+      assert_equal 1,    @ins.next.next.arguments[0].right.known_object.value
     end
     def test_array
       check_array [Mom::MessageSetup,Mom::SlotLoad,Mom::ArgumentTransfer,Mom::SimpleCall] , @ins

@@ -28,7 +28,7 @@ module Vool
       assert @stats.right
     end
     def test_slot_assigns_int
-      assert_equal Mom::IntegerConstant ,  @stats.right.class
+      assert_equal Mom::IntegerConstant ,  @stats.right.known_object.class
     end
   end
 
@@ -78,7 +78,7 @@ module Vool
     def test_assigns_const
       @stats = compile_first_method( "@a = 5")
       assert_equal Mom::SlotLoad , @stats.class , @stats
-      assert_equal Mom::IntegerConstant , @stats.right.class , @stats
+      assert_equal Mom::IntegerConstant , @stats.right.known_object.class , @stats
     end
     def test_assigns_move
       @stats = compile_first_method( "@a = arg")

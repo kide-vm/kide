@@ -32,7 +32,7 @@ module Vool
       assert @inst.right
     end
     def test_slot_assigns_int
-      assert_equal Mom::IntegerConstant ,  @inst.right.class
+      assert_equal Mom::IntegerConstant ,  @inst.right.known_object.class
     end
     def test_array
       check_array [SlotLoad,ReturnSequence] , @ins
