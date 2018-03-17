@@ -12,12 +12,10 @@ module Mom
   # See vool send statement
   #
   class DynamicCall < Instruction
-    attr :cached_type
-    attr :cached_method
+    attr :cache_entry
 
     def initialize(type = nil, method = nil)
-      @cached_type = type
-      @cached_method = method
+      @cache_entry = Parfait::CacheEntry.new(type, method)
     end
 
     def to_risc(context)

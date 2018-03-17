@@ -139,6 +139,7 @@ module Risc
           :Class => {:instance_methods => :List, :instance_type => :Type, :name => :Word,
                       :super_class_name => :Word , :instance_names => :List },
           :Dictionary => {:keys => :List , :values => :List  } ,
+          :CacheEntry => {:cached_type => :Type , :cached_method => :TypedMethod  } ,
           :TypedMethod => {:name => :Word, :source => :Object, :instructions => :Object, :binary => :Object,
                       :arguments => :Type , :for_type => :Type, :frame => :Type } ,
         }
