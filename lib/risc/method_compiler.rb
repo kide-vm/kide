@@ -94,8 +94,8 @@ module Risc
     # (adding moves the insertion point so the whole mom chain is added as a risc chain)
     def add_mom( instruction )
       raise "whats this a #{instruction}" unless instruction.is_a?(Mom::Instruction)
-      return
       while( instruction )
+        #puts "adding #{instruction.to_s}:#{instruction.next.to_s}"
         risc = instruction.to_risc( self )
         add_code(risc)
         instruction = instruction.next
@@ -104,7 +104,7 @@ module Risc
     # add a risc instruction after the current (insertion point)
     # the added instruction will become the new insertion point
     def add_code( instruction )
-      raise instruction.to_s unless  instruction.is_a?(Risc::Instruction)
+      raise "Not an instruction:#{instruction.to_s}" unless  instruction.is_a?(Risc::Instruction)
       raise instruction.to_s if( instruction.class.name.split("::").first == "Arm")
       @current.insert(instruction) #insert after current
       @current = instruction

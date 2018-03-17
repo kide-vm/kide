@@ -32,11 +32,11 @@ module Mom
       @left , @right = left , right
     end
 
-    def to_risc_load(context)
-      reg = context.use_reg( @right.ct_type)
+    def to_risc(compiler)
+      reg = compiler.use_reg( @right.ct_type)
       const  = Risc.load_constant(self, @right , reg)
-      const.set_next Risc.reg_to_slot(self, reg , @left.known_object, @left.slots.first)
-      context.release_reg(reg)
+      const << Risc.reg_to_slot(self, reg , @left.known_object, @left.slots.first)
+      compiler.release_reg(reg)
       return const
     end
 

@@ -21,11 +21,18 @@ module Risc
       class_type = Parfait.object_space.get_class_by_name(:Space).instance_type
       class_type.send(:private_add_instance_variable, name , type)
     end
-
-    def check_nil
+    def produce_body
+      produced = produce_instructions
+      preamble.each{ produced = produced.next }
+      produced
+    end
+    def produce_instructions
       assert @expect , "No output given"
       Vool::VoolCompiler.ruby_to_vool "class Space; def main(arg);#{@input};end;end"
-      produced = Parfait.object_space.get_main.instructions
+      Parfait.object_space.get_main.instructions
+    end
+    def check_nil
+      produced = produce_instructions
       compare_instructions produced , @expect
     end
     def check_return
@@ -33,7 +40,9 @@ module Risc
       raise was if was
       Parfait.object_space.get_main.instructions
     end
-
+    def real_index(index)
+      index - preamble.length + 1
+    end
     def compare_instructions( instruction , expect )
       index = 0
       all = instruction.to_arr
@@ -42,8 +51,8 @@ module Risc
       begin
         should = full_expect[index]
         return "No instruction at #{index}\n#{should(all)}" unless should
-        return "Expected at #{index+1}\n#{should(all)}" unless instruction.class == should
-        #puts instruction.to_s
+        return "Expected at #{real_index(index)}\n#{should(all)} was #{instruction.to_s}" unless instruction.class == should
+        #puts instruction.to_s if (index > preamble.length) and (index + postamble.length <= full_expect.length)
         index += 1
         instruction = instruction.next
       end while( instruction )
