@@ -15,7 +15,7 @@ module Vool
     def initialize(name , receiver , arguments )
       @name , @receiver , @arguments = name , receiver , arguments
       @arguments ||= []
-      @dynamic = nil
+      @dynamic = Mom::DynamicCall.new()
     end
 
     def normalize
@@ -92,23 +92,22 @@ module Vool
     # this may look like a simple_call, but the difference is that we don't know
     # the method until run-time. Alas the setup is the same
     def call_cached_method(in_method)
-      @dynamic = Mom::DynamicCall.new()
       message_setup(in_method) << @dynamic
     end
 
     private
     def build_condition
-      cached_type = Mom::SlotDefinition.new(@dynamic , [:cached_type])
+      cached_type = Mom::SlotDefinition.new(@dynamic.cache_entry , [:cached_type])
       current_type = Mom::SlotDefinition.new(:message , [:receiver , :type])
       Mom::NotSameCheck.new(cached_type , current_type)
     end
     def build_type_cache_update
-      Mom::SlotLoad.new([@dynamic, :cached_type] , [:receiver , :type])
+      Mom::SlotLoad.new([@dynamic.cache_entry, :cached_type] , [:message , :receiver , :type])
     end
     def build_method_cache_update(in_method)
       receiver = StringConstant.new(@name)
       resolve = SendStatement.new(:resolve_method , receiver , [SelfExpression.new])
-      move_method = Mom::SlotLoad.new([@dynamic, :cached_method] , [:receiver , :return])
+      move_method = Mom::SlotLoad.new([@dynamic.cache_entry, :cached_method] , [:message ,:receiver , :return])
       resolve.to_mom(in_method) << move_method
     end
   end
