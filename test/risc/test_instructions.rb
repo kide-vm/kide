@@ -36,6 +36,11 @@ module Risc
       @instruction.insert @branch
       assert_equal @branch, @instruction.last
     end
+    def test_insert_two
+      @branch << @label
+      @instruction.insert @branch
+      assert_equal @label , @instruction.last
+    end
     def test_append_not_empty
       @instruction.append @branch
       @instruction.append @label

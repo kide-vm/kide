@@ -1,18 +1,26 @@
+require "common/list"
+
 module Risc
 
-  # the register machine has at least 8 registers, named r0-r5 , :lr and :pc (for historical reasons)
-  # we can load and store their contents and
-  # access (get/set) memory at a constant offset from a register
-  # while the vm works with objects, the register machine has registers,
-  #             but we keep the names for better understanding, r4/5 are temporary/scratch
-  # there is no direct memory access, only through registers
-  # constants can/must be loaded into registers before use
+  # the register machine has at least 8 registers, named r0-r5 , :lr and :pc
+  # (for historical reasons , r for register, pc for ProgramCounter ie next instruction address
+  # and lr means LinkRegister, ie the location where to return to when in a function)
+  #
+  # We can load and store their contents, move data between them and
+  #   access (get/set) memory at a constant offset from a register
+  # While Mom works with objects, the register machine has registers,
+  #             but we keep the names for better understanding, r2-5 are temporary/scratch
+  # There is no direct memory access, only through registers
+  # Constants can/must be loaded into registers before use
 
-  # Instructions form a graph.
-  # Linear instructions form a linked list
+  # At compile time, Instructions form a linked list (:next attribute is the link)
+  # At run time Instructions are traversesed as a graph
+  #
   # Branches fan out, Labels collect
   # Labels are the only valid branch targets
+  #
   class Instruction
+    include Common::List
 
     def initialize source , nekst = nil
       @source = source
@@ -22,55 +30,7 @@ module Risc
     end
     attr_reader :source
 
-    # set the next instruction (also aliased as <<)
-    # throw an error if that is set, use insert for that use case
-    # return the instruction, so chaining works as one wants (not backwards)
-    def set_next nekst
-      raise "Next already set #{@next}" if @next
-      @next = nekst
-      nekst
-    end
-    alias :<< :set_next
-
-    # during translation we replace one by one
-    def replace_next nekst
-      old = @next
-      @next = nekst
-      @next.append old.next if old
-    end
-
-    # get the next instruction (without arg given )
-    # when given an interger, advance along the line that many time and return.
-    def next( amount = 1)
-      (amount == 1) ? @next : @next.next(amount-1)
-    end
-    # set the give instruction as the next, while moving any existing
-    # instruction along to the given ones's next.
-    # ie insert into the linked list that the instructions form
-    def insert instruction
-      instruction.last.set_next @next
-      @next = instruction
-    end
-
-    # return last set instruction. ie follow the linked list until it stops
-    def last
-      code = self
-      code = code.next while( code.next )
-      return code
-    end
-
-    # set next for the last (see last)
-    # so append the given code to the linked list at the end
-    def append code
-      last.set_next code
-    end
-
-    def length labels = []
-      ret = 1
-      ret += self.next.length( labels ) if self.next
-      ret
-    end
-
+    #TODO check if this is used. Maybe build an each for instructions
     def to_arr labels = []
       ret  = [self.class]
       ret += self.next.to_arr(labels) if self.next

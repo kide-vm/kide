@@ -11,6 +11,9 @@ module Common
     end
 
     # during translation we replace one by one
+    # TODO avoid this by building a new list
+    #      Make arm instruction not derive from risc (which is weird anyway)
+    #      and include the List into it, translate in same way we go from mom->risc
     def replace_next( nekst )
       old = @next
       @next = nekst
@@ -26,9 +29,10 @@ module Common
     # set the give instruction as the next, while moving any existing
     # instruction along to the given ones's next.
     # ie insert into the linked list that the instructions form
+    # but allowing the instruction to be a list too (ie more than one)
     def insert( instruction )
-      instruction.set_next @next
-      @next = instruction
+      instruction.last.set_next @next
+      @next = instruction.last
     end
 
     # return last set instruction. ie follow the linked list until it stops
