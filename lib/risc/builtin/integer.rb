@@ -4,20 +4,21 @@ module Risc
     module Integer
       module ClassMethods
         include AST::Sexp
+        include CompileHelper
 
         def mod4 context
-          compiler = Risc::MethodCompiler.create_method(:Integer,:mod4 ).init_method
+          compiler = compiler_for(:Integer,:mod4 ,{})
           return compiler.method
         end
         def putint context
-          compiler = Risc::MethodCompiler.create_method(:Integer,:putint ).init_method
+          compiler = compiler_for(:Integer,:putint ,{})
           return compiler.method
         end
 
 
         def div10 context
           s = "div_10"
-          compiler = Risc::MethodCompiler.create_method(:Integer,:div10 ).init_method
+          compiler = compiler_for(:Integer,:div10 ,{})
           me = compiler.add_known( :receiver )
           tmp = compiler.add_known( :receiver )
           q = compiler.add_known( :receiver )

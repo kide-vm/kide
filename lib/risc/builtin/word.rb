@@ -1,5 +1,3 @@
-require_relative "compile_helper"
-
 module Risc
   module Builtin
     module Word
@@ -7,7 +5,7 @@ module Risc
         include CompileHelper
 
         def putstring context
-          compiler = Risc::MethodCompiler.create_method(:Word , :putstring ).init_method
+          compiler = compiler_for(:Word , :putstring ,{})
           compiler.add_slot_to_reg( "putstring" , :message , :receiver , :new_message )
           index = Parfait::Word.get_length_index
           reg = RiscValue.new(:r2 , :Integer)
@@ -19,7 +17,7 @@ module Risc
         # self[index] basically. Index is the first arg > 0
         # return (and word sized int) is stored in return_value
         def get_internal_byte context
-          compiler = compiler_for(:Word , :get_internal_byte)
+          compiler = compiler_for(:Word , :get_internal_byte , {at: :Integer})
           source = "get_internal_byte"
           me , index = self_and_int_arg(compiler,source)
           # reduce me to me[index]
@@ -33,7 +31,7 @@ module Risc
         # value the second
         # no return
         def set_internal_byte context
-          compiler = compiler_for(:Word, :set_internal_byte , {:value => :Integer} )
+          compiler = compiler_for(:Word, :set_internal_byte , {at: :Integer , :value => :Integer} )
           args = compiler.method.arguments
           len = args.instance_length
           raise "Compiler arg number mismatch, method=#{args} " if  len != 3
@@ -46,7 +44,7 @@ module Risc
         end
 
         # resolve the method name of self, on the given object
-        # may seem wrong way around at first sight, but we know the type of string And
+        # may seem wrong way around at first sight, but we know the type of string. And
         # thus resolving this method happens at compile time, whereas any method on an
         # unknown self (the object given) needs resolving and that is just what we are doing
         #  ( ie the snake bites it's tail)
@@ -56,7 +54,7 @@ module Risc
           compiler = compiler_for(:Word, :resolve_method , {:value => :Object} )
           args = compiler.method.arguments
           len = args.instance_length
-          raise "Compiler arg number mismatch, method=#{args} " if  len != 3
+          raise "Compiler arg number mismatch, method=#{args} " if  len != 2
           return compiler.method
         end
 

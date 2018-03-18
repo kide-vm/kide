@@ -22,10 +22,10 @@ module Risc
 
     # create the method, do some checks and set it as the current method to be added to
     # class_name and method_name are pretty clear, args are given as a ruby array
-    def self.create_method( class_name , method_name , args = {})
+    def self.create_method( class_name , method_name , args , frame )
       raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
       clazz = Parfait.object_space.get_class_by_name! class_name
-      create_method_for( clazz.instance_type , method_name , args)
+      create_method_for( clazz.instance_type , method_name , args , frame)
     end
 
     # create a method for the given type ( Parfait type object)
@@ -33,11 +33,11 @@ module Risc
     # args a hash that will be converted to a type
     # the created method is set as the current and the given type too
     # return the compiler (for chaining)
-    def self.create_method_for( type , method_name , args )
+    def self.create_method_for( type , method_name , args , frame)
       raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
-      raise "Args must be Hash #{args}" unless args.is_a?(Hash)
+      raise "Args must be Type #{args}" unless args.is_a?(Parfait::Type)
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
-      method = type.create_method( method_name , args)
+      method = type.create_method( method_name , args , frame)
       self.new(method)
     end
 

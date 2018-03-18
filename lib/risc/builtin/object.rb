@@ -1,5 +1,3 @@
-require_relative "compile_helper"
-
 module Risc
   module Builtin
     class Object
@@ -10,7 +8,7 @@ module Risc
         # return is stored in return_value
         # (this method returns a new method off course, like all builtin)
         def get_internal_word context
-          compiler = compiler_for(:Object , :get_internal_word )
+          compiler = compiler_for(:Object , :get_internal_word ,{at: :Integer})
           source = "get_internal_word"
           me , index = self_and_int_arg(compiler,source)
           # reduce me to me[index]
@@ -23,7 +21,7 @@ module Risc
         # self[index] = val basically. Index is the first arg , value the second
         # no return
         def set_internal_word context
-          compiler = compiler_for(:Object , :set_internal_word , {:value => :Object} )
+          compiler = compiler_for(:Object , :set_internal_word , {at: :Integer, :value => :Object} )
           source = "set_internal_word"
           me , index = self_and_int_arg(compiler,source)
           value = load_int_arg_at(compiler,source , 2)

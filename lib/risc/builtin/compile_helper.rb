@@ -9,9 +9,10 @@ module Risc
         return me , int_arg
       end
 
-      def compiler_for( type , method_name , extra_args = {})
-        args = {:index => :Integer}.merge( extra_args )
-        Risc::MethodCompiler.create_method(type , method_name , args ).init_method
+      def compiler_for( type , method_name , arguments , locals = {})
+        frame = Parfait::NamedList.type_for( locals ) #TODO fix locals passing/ using in builtin
+        args = Parfait::NamedList.type_for( arguments )
+        Risc::MethodCompiler.create_method(type , method_name , args, frame ).init_method
       end
 
       # Load the value

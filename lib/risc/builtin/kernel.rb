@@ -2,11 +2,13 @@ module Risc
   module Builtin
     module Kernel
       module ClassMethods
+        include CompileHelper
         # this is the really really first place the machine starts (apart from the jump here)
         # it isn't really a function, ie it is jumped to (not called), exits and may not return
         # so it is responsible for initial setup
         def __init__ context
-          compiler = Risc::MethodCompiler.create_method(:Kernel,:__init__ )
+          compiler = Risc::MethodCompiler.create_method(:Kernel,:__init__ ,
+                            Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
           new_start = Risc.label("__init__ start" , "__init__" )
           compiler.method.set_instructions( new_start)
           compiler.set_current new_start
@@ -29,7 +31,7 @@ module Risc
         end
 
         def exit context
-          compiler = Risc::MethodCompiler.create_method(:Kernel,:exit ).init_method
+          compiler = compiler_for(:Kernel,:exit ,{})
           emit_syscall( compiler , :exit )
           return compiler.method
         end
