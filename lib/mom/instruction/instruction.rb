@@ -7,10 +7,6 @@ module Mom
     def to_risc(m)
       Risc::Label.new(self.class.name, self.class.name + "_todo")
     end
-    # implement flatten as noop to avoid condition
-    def flatten( options = {} )
-      return self
-    end
   end
 
   # A label with a name

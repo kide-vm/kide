@@ -7,7 +7,7 @@ module Vool
 
     def setup
       Risc.machine.boot
-      @ins = compile_first_method_flat( "a = 5; a.mod4")
+      @ins = compile_first_method( "a = 5; a.mod4")
     end
     def test_check_type
       assert_equal NotSameCheck , @ins.next.class , @ins

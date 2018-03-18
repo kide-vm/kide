@@ -21,8 +21,9 @@ end
 module MomCompile
   include CompilerHelper
 
-  def compile_first_method input
+  def compile_first_method( input )
     # works a lot like Vool.ruby_to_vool
+    # but here we return the intermediate mom instructions that are otherwise not available
     statements = Vool::RubyCompiler.compile as_test_main( input )
     statements = statements.normalize
     res = statements.create_objects
@@ -31,10 +32,6 @@ module MomCompile
     assert_equal Parfait::VoolMethod , @method.class
     #puts "#{res.class}"
     res
-  end
-
-  def compile_first_method_flat(input)
-    compile_first_method(input).flatten
   end
 
   def check_array( should , is )
