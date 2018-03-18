@@ -5,9 +5,8 @@ class TestMethod < MiniTest::Test
   def setup
     obj = Parfait.object_space.get_class_by_name(:Object).instance_type
     args = Parfait::Type.for_hash( obj.object_class , { bar: :Integer , foo: :Type})
-    @method = ::Parfait::TypedMethod.new obj , :meth , args
-    @method.add_local :local_bar , :Integer
-    @method.add_local :local_foo , :Type
+    frame = Parfait::Type.for_hash( obj.object_class , { local_bar: :Integer , local_foo: :Type})
+    @method = Parfait::TypedMethod.new( obj , :meth , args , frame)
   end
 
   def test_method_name

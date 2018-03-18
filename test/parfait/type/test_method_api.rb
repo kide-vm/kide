@@ -9,9 +9,12 @@ class TestMethodApi < MiniTest::Test
     @try_type = @try_class.instance_type
   end
 
+  def empty_frame
+    Parfait::Type.for_hash( @try_class , { })
+  end
   def foo_method( for_class = :Try)
     args = Parfait::Type.for_hash( @try_class , { bar: :Integer})
-    ::Parfait::TypedMethod.new @space.get_class_by_name(for_class).instance_type , :foo , args
+    ::Parfait::TypedMethod.new( @space.get_class_by_name(for_class).instance_type , :foo , args,empty_frame)
   end
   def add_foo_to( clazz = :Try )
     foo = foo_method( clazz )
@@ -42,7 +45,7 @@ class TestMethodApi < MiniTest::Test
   end
   def test_create_method
     args = Parfait::Type.for_hash( @try_class , { bar: :Integer})
-    @try_type.create_method :bar, args
+    @try_type.create_method :bar, args , empty_frame
     assert @try_type.method_names.inspect.include?("bar")
   end
   def test_method_get
