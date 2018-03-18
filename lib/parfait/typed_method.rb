@@ -13,7 +13,7 @@
 #                 Instructions derive from class Instruction and form a linked list
 # - binary:  The binary (jumpable) code that the instructions get assembled into
 # - arguments: A type object describing the arguments (name+types) to be passed
-# - locals:  A type object describing the local variables that the method has
+# - frame:  A type object describing the local variables that the method has
 # - for_type:  The Type the Method is for
 
 

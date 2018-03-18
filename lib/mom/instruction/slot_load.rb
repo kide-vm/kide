@@ -8,7 +8,7 @@ module Mom
   #
   # The Slot on the left hand side is always a SlotDefinition.
   # The only known object (*) for the left side is the current message, which is a bit like
-  # the oo version of a PC (program Counter)
+  # the oo version of a Stack (Stack Register, Frame Pointer, ..)
   # (* off course all class objects are global, and so they are allowed too)
   #
   # A maybe not immediately obvious corrolar of this design is the total absence of
@@ -39,9 +39,14 @@ module Mom
       when Constant
         const  = Risc.load_constant(self, @right , right)
       when Symbol
-        const = Risc::SlotToReg.new( self , Risc.message_reg ,
+        const = Risc::SlotToReg.new( self , Risc.resolve_to_register(@right.known_object) ,
                               Risc.resolve_to_index(:message , @right.slots[0]), right)
-        puts "more slots #{@right.slots}" if @right.slots.length > 1
+        if @right.slots.length > 1
+          # desctructively replace the existing value to be loaded if more slots
+          index = resolve_to_index(@right.slots[0] , @right.slots[1] ,compiler)
+          const << Risc::SlotToReg.new( self , right ,index, right)
+          raise "more slots not implemented #{@right.slots}" if @right.slots.length > 2
+        end
       else
         raise "We have a #{@right} #{@right.known_object}"
       end
@@ -61,6 +66,21 @@ module Mom
       return const
     end
 
+    def resolve_to_index(object , variable_name ,compiler)
+      case object
+      when :frame
+        type = compiler.method.frame
+      when :arguments
+        type = compiler.method.arguments
+      when :receiver
+        type = compiler.method.for_type
+      else
+        raise "Not implemented/found object #{object}"
+      end
+      index = type.variable_index(variable_name)
+      raise "Index not found for #{variable_name} in #{object} of type #{type}" unless index
+      return index
+    end
   end
 
   class SlotDefinition
