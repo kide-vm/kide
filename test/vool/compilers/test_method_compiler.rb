@@ -50,16 +50,28 @@ module Vool
       assert_equal Parfait::Class , clazz.body.clazz.class
     end
 
-    def test_method_statement_has_class_in_main
-      clazz = VoolCompiler.ruby_to_vool in_Space("def meth; @ivar = 5;end")
-      assert clazz.body.clazz
+    def test_typed_method_instance_type
+      VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5; @ibar = 4;end")
+      test = Parfait.object_space.get_class_by_name(:Test)
+      method = test.instance_type.get_method(:meth)
+      assert_equal 2, method.for_type.variable_index(:ivar)
+      assert_equal 3, method.for_type.variable_index(:ibar)
     end
 
-    def test_method_has_one_local
-      VoolCompiler.ruby_to_vool in_Test("def meth; local = 5 ;end")
+    def test_vool_method_has_one_local
+      VoolCompiler.ruby_to_vool in_Test("def meth; local = 5 ; a = 6;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.get_method(:meth)
-      assert_equal 2 , method.frame_type.instance_length
+      assert_equal 3 , method.frame_type.instance_length
+      assert_equal 2 , method.frame_type.variable_index(:local)
+    end
+
+    def test_typed_method_has_one_local
+      VoolCompiler.ruby_to_vool in_Test("def meth; local = 5 ; a = 6;end")
+      test = Parfait.object_space.get_class_by_name(:Test)
+      method = test.instance_type.get_method(:meth)
+      assert_equal 3 , method.frame.instance_length
+      assert_equal 2 , method.frame.variable_index(:local)
     end
 
   end

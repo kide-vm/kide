@@ -28,7 +28,7 @@ module Parfait
 
     def create_parfait_method( type )
       raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
-      type.create_method( @name , @args_type )#FIXME, @frame_type)
+      type.create_method( @name , @args_type , @frame_type)
     end
 
     def create_tmp

@@ -74,14 +74,18 @@ module Parfait
       names
     end
 
-    def create_method( method_name , arguments )
+    def create_method( method_name , arguments , frame)
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
       #puts "Self: #{self.class} clazz: #{clazz.name}"
       found = get_method( method_name )
+      #TODO check types and then what ?
       return found if found
-      arg_type = arguments
-      arg_type = NamedList.type_for( arguments ) if arguments.is_a?(Hash)
-      add_method TypedMethod.new( self , method_name , arg_type )
+      if arguments.is_a?(Hash)
+        raise "May want to get rid of this way"
+        arguments = NamedList.type_for( arguments )
+      end
+      raise "frame must be a type, not:#{frame}" unless frame.is_a?(Type)
+      add_method TypedMethod.new( self , method_name , arguments , frame )
     end
 
     def add_method( method )

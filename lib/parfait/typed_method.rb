@@ -26,16 +26,17 @@ module Parfait
     # not part of the parfait model, hence ruby accessor
     attr_accessor :source
 
-    def initialize( type , name , arguments )
+    def initialize( type , name , arguments , frame)
       super()
       raise "No class #{name}" unless type
       raise "For type, not class #{type}" unless type.is_a?(Type)
       raise "Wrong argument type, expect Type not #{arguments.class}" unless arguments.is_a? Type
+      raise "Wrong frame type, expect Type not #{frame.class}" unless frame.is_a? Type
       @for_type = type
       @name = name
       @binary = BinaryCode.new 0
       @arguments = arguments
-      @frame = Parfait.object_space.get_class_by_name( :NamedList ).instance_type
+      @frame = frame
     end
 
     def set_instructions(inst)
