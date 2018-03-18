@@ -15,6 +15,11 @@ module Vool
       lst = RubyCompiler.compile( "foo = 5")
       assert_equal LocalAssignment , lst.class
     end
+    def test_local_ivar
+      lst = RubyCompiler.compile( "foo = @iv")
+      assert_equal LocalAssignment , lst.class
+      assert_equal InstanceVariable , lst.value.class
+    end
 
   end
 end
