@@ -15,7 +15,7 @@ module Arm
   class ArmMachine
 
     # conditions specify all the possibilities for branches. Branches are b + condition
-    # Example:  beq means brach if equal.
+    # Example:  beq means branch if equal.
     # :al means always, so bal is an unconditional branch (but b() also works)
     CONDITIONS = [:al ,:eq ,:ne ,:lt ,:le ,:ge,:gt ,:cs ,:mi ,:hi ,:cc ,:pl,:ls ,:vc ,:vs]
 

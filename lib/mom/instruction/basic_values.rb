@@ -25,17 +25,17 @@ module Mom
   end
   class TrueConstant < Constant
     def ct_type
-      Parfait.object_space.get_class_by_name(:True).instance_type
+      Parfait.object_space.get_class_by_name(:TrueClass).instance_type
     end
   end
   class FalseConstant < Constant
     def ct_type
-      Parfait.object_space.get_class_by_name(:False).instance_type
+      Parfait.object_space.get_class_by_name(:FalseClass).instance_type
     end
   end
   class NilConstant < Constant
     def ct_type
-      Parfait.object_space.get_class_by_name(:Nil).instance_type
+      Parfait.object_space.get_class_by_name(:NilClass).instance_type
     end
   end
   class StringConstant < Constant

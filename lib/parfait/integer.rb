@@ -1,6 +1,6 @@
 
 # Integer class for representing maths on Integers
-# Integers are Objects, spcifically DataObjects
+# Integers are Objects, specifically DataObjects
 # - they have fixed value
 # - they are immutable
 # (both by implementation, not design.
@@ -20,5 +20,13 @@ module Parfait
     # :to_int, :real?, :integer?, :zero?, :nonzero?, :floor, :ceil, :round, :truncate, :step, :numerator, :denominator,
     # :quo, :to_c, :real, :imaginary, :imag, :abs2, :arg, :angle, :phase, :rectangular, :rect, :polar, :conjugate, :conj,
     # :>, :>=, :<, :<=, :between?
+  end
+
+  # adding other base classes in here for now:
+  class FalseClass
+  end
+  class TrusClass
+  end
+  class NilClass
   end
 end
