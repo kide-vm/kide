@@ -28,8 +28,9 @@ module Risc
     end
     def produce_instructions
       assert @expect , "No output given"
-      Vool::VoolCompiler.ruby_to_vool "class Space; def main(arg);#{@input};end;end"
-      Parfait.object_space.get_main.instructions
+      Vool::VoolCompiler.ruby_to_vool "class Test; def main(arg);#{@input};end;end"
+      test = Parfait.object_space.get_class_by_name :Test
+      test.instance_type.get_method( :main).instructions
     end
     def check_nil
       produced = produce_instructions
@@ -38,7 +39,8 @@ module Risc
     def check_return
       was = check_nil
       raise was if was
-      Parfait.object_space.get_main.instructions
+      test = Parfait.object_space.get_class_by_name :Test
+      test.instance_type.get_method :main
     end
     def real_index(index)
       index - preamble.length
