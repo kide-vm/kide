@@ -1,4 +1,3 @@
-require_relative '../helper'
 require "risc/interpreter"
 require "parser/ruby22"
 require "yaml"
