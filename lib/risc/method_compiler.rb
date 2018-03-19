@@ -107,7 +107,7 @@ module Risc
       raise "Not an instruction:#{instruction.to_s}" unless  instruction.is_a?(Risc::Instruction)
       raise instruction.to_s if( instruction.class.name.split("::").first == "Arm")
       @current.insert(instruction) #insert after current
-      @current = instruction
+      @current = instruction.last
       self
     end
 

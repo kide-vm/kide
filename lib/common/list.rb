@@ -32,7 +32,7 @@ module Common
     # but allowing the instruction to be a list too (ie more than one)
     def insert( instruction )
       instruction.last.set_next @next
-      @next = instruction.last
+      @next = instruction
     end
 
     # return last set instruction. ie follow the linked list until it stops

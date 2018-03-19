@@ -41,7 +41,7 @@ module Risc
       Parfait.object_space.get_main.instructions
     end
     def real_index(index)
-      index - preamble.length + 1
+      index - preamble.length
     end
     def compare_instructions( instruction , expect )
       index = 0
@@ -50,7 +50,7 @@ module Risc
       #full_expect =  expect
       begin
         should = full_expect[index]
-        return "No instruction at #{index}\n#{should(all)}" unless should
+        return "No instruction at #{real_index(index)}\n#{should(all)}" unless should
         return "Expected at #{real_index(index)}\n#{should(all)} was #{instruction.to_s}" unless instruction.class == should
         #puts instruction.to_s if (index > preamble.length) and (index + postamble.length <= full_expect.length)
         index += 1
