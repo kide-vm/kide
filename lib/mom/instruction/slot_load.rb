@@ -54,6 +54,14 @@ module Mom
       when Symbol
         left = Risc.message_reg
         left_index = Risc.resolve_to_index(@left.known_object , @left.slots.first)
+        if @left.slots.length > 1
+          # swap the existing target (with a new reg) and update the index
+          new_left = compiler.use_reg( type )
+          const << Risc::SlotToReg.new( self , left ,left_index, new_left)
+          left = new_left
+          left_index = resolve_to_index(@left.slots[0] , @left.slots[1] ,compiler)
+          raise "more slots not implemented #{@left.slots}" if @left.slots.length > 2
+        end
       when Parfait::CacheEntry
         left = compiler.use_reg( :int )
         left_index = Risc.resolve_to_index(:cache_entry , @left.slots.first)
@@ -61,8 +69,7 @@ module Mom
         raise "We have left #{@left.known_object}"
       end
       const << Risc.reg_to_slot(self, right , left, left_index)
-      compiler.release_reg(left) unless @left.known_object.is_a?(Symbol)
-      compiler.release_reg(right)
+      compiler.reset_regs
       return const
     end
 
@@ -70,6 +77,8 @@ module Mom
       case object
       when :frame
         type = compiler.method.frame
+      when :message , :next_message
+        type = Parfait.object_space.get_class_by_name(:Message).instance_type
       when :arguments
         type = compiler.method.arguments
       when :receiver
@@ -89,7 +98,7 @@ module Mom
     #        The first element is either a known type name (Capitalized symbol of the class name) ,
     #        or the symbol :message
     #        And subsequent symbols must be instance variables on the previous type.
-    #        Examples:  [:message , :receiver] or [:Space : :next_message]
+    #        Examples:  [:message , :receiver] or [:Space , :next_message]
     def initialize( object , slots)
       @known_object , @slots = object , slots
       slot = [slot] unless slot.is_a?(Array)

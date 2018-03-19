@@ -7,7 +7,8 @@ module Risc
     def setup
       super
       @input = "@ivar = 5 ; r = @ivar"
-      @expect = [LoadConstant, RegToSlot, SlotToReg, SlotToReg, RegToSlot]
+      @expect = [LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg ,
+                 RegToSlot]
     end
     def test_local_assign_instructions
       assert_nil msg = check_nil , msg
@@ -20,7 +21,7 @@ module Risc
 
     def test_slot_move
       produced = produce_body
-      assert_equal produced.next.register , produced.register
+      assert_equal produced.next(2).register , produced.register
     end
 
   end
