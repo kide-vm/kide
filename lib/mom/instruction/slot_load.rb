@@ -21,7 +21,7 @@ module Mom
   # @left: A SlotDefinition, or an array that can be passed to the constructor of the
   #        SlotDefinition (see there)
   #
-  # @right: Either a SlotDefinition or a Constant
+  # @right: A SlotDefinition with slots or a Mom::Constant
   #
   class SlotLoad < Instruction
     attr_reader :left , :right
@@ -33,33 +33,17 @@ module Mom
     end
 
     def to_risc(compiler)
-      type = @right.respond_to?(:ct_type) ? @right.ct_type : :int
-      right = compiler.use_reg( type )
-      case @right.known_object
-      when Constant
-        const  = Risc.load_constant(self, @right , right)
-      when Symbol
-        const = Risc::SlotToReg.new( self , Risc.resolve_to_register(@right.known_object) ,
-                              Risc.resolve_to_index(:message , @right.slots[0]), right)
-        if @right.slots.length > 1
-          # desctructively replace the existing value to be loaded if more slots
-          index = resolve_to_index(@right.slots[0] , @right.slots[1] ,compiler)
-          const << Risc::SlotToReg.new( self , right ,index, right)
-          raise "more slots not implemented #{@right.slots}" if @right.slots.length > 2
-        end
-      else
-        raise "We have a #{@right} #{@right.known_object}"
-      end
+      const = @right.to_register(compiler , self)
       case @left.known_object
       when Symbol
         left = Risc.message_reg
         left_index = Risc.resolve_to_index(@left.known_object , @left.slots.first)
         if @left.slots.length > 1
           # swap the existing target (with a new reg) and update the index
-          new_left = compiler.use_reg( type )
+          new_left = compiler.use_reg( :int )
           const << Risc::SlotToReg.new( self , left ,left_index, new_left)
           left = new_left
-          left_index = resolve_to_index(@left.slots[0] , @left.slots[1] ,compiler)
+          left_index = SlotLoad.resolve_to_index(@left.slots[0] , @left.slots[1] ,compiler)
           raise "more slots not implemented #{@left.slots}" if @left.slots.length > 2
         end
       when Parfait::CacheEntry
@@ -68,12 +52,12 @@ module Mom
       else
         raise "We have left #{@left.known_object}"
       end
-      const << Risc.reg_to_slot(self, right , left, left_index)
+      const << Risc.reg_to_slot(self, const.register , left, left_index)
       compiler.reset_regs
       return const
     end
 
-    def resolve_to_index(object , variable_name ,compiler)
+    def self.resolve_to_index(object , variable_name ,compiler)
       case object
       when :frame
         type = compiler.method.frame
@@ -103,6 +87,27 @@ module Mom
       @known_object , @slots = object , slots
       slot = [slot] unless slot.is_a?(Array)
       raise "Not known #{slots}" unless object
+    end
+
+    def to_register(compiler, instruction)
+      type = self.known_object.respond_to?(:ct_type) ? self.known_object.ct_type : :int
+      right = compiler.use_reg( type )
+      case self.known_object
+      when Constant
+        const  = Risc.load_constant(instruction, self , right)
+      when Symbol
+        const = Risc::SlotToReg.new( instruction , Risc.resolve_to_register(self.known_object) ,
+                              Risc.resolve_to_index(:message , self.slots[0]), right)
+        if self.slots.length > 1
+          # desctructively replace the existing value to be loaded if more slots
+          index = SlotLoad.resolve_to_index(self.slots[0] , self.slots[1] ,compiler)
+          const << Risc::SlotToReg.new( instruction , right ,index, right)
+          raise "more slots not implemented #{self.slots}" if self.slots.length > 2
+        end
+      else
+        raise "We have a #{self} #{self.known_object}"
+      end
+      const
     end
   end
 end
