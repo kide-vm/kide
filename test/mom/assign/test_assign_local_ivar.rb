@@ -1,13 +1,14 @@
-require_relative 'helper'
+require_relative '../helper'
 
 module Risc
-  class TestAssignLocalConst < MiniTest::Test
+  class TestAssignLocalIvar < MiniTest::Test
     include Statements
 
     def setup
       super
-      @input = "r = 5"
-      @expect = [LoadConstant,SlotToReg, RegToSlot]
+      @input = "@ivar = 5 ; r = @ivar"
+      @expect = [LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg ,
+                 RegToSlot]
     end
     def test_local_assign_instructions
       assert_nil msg = check_nil , msg
