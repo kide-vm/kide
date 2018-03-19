@@ -1,11 +1,12 @@
 module Risc
 
-
-  # a branch must branch to a block.
+  # A branch must branch to a label.
+  # Different Branches (derived classes) use different registers, the base
+  # just stores the Label
   class Branch < Instruction
-    def initialize source , to
+    def initialize( source , label )
       super(source)
-      @label = to
+      @label = label
     end
     attr_reader :label
 
@@ -14,7 +15,7 @@ module Risc
     end
     alias :inspect :to_s
 
-    def length labels = []
+    def length( labels = [])
       ret = super(labels)
       ret += self.label.length(labels) if self.label
       ret
@@ -34,24 +35,31 @@ module Risc
     end
 
     # labels have the same position as their next
-    def set_position position , labels = []
+    def set_position( position , labels = [])
       set_position self.label.set_position( position , labels ) if self.label
       super(position,labels)
     end
 
-    def assemble_all io , labels = []
+    def assemble_all( io , labels = [])
       self.assemble(io)
       self.label.assemble_all(io,labels) if self.label
       self.next.assemble_all(io, labels) if self.next
     end
 
-    def each_label labels =[] , &block
+    def each_label( labels =[] , &block)
       super
       self.label.each_label(labels , &block) if self.label
     end
 
   end
 
+  # branch if two registers contain same value
+  class IsSame < Branch
+    attr_reader :left , :right
+    def initialize(source , left , right , label)
+      super(source , label)
+    end
+  end
   class IsZero < Branch
   end
 
