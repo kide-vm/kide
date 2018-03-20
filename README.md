@@ -5,33 +5,106 @@
 # RubyX
 
 RubyX is about native code generation in and of ruby.
+In other words, compiling ruby to binary, in ruby.
 
 X can be read as 10 times faster, or a decade away, depending on mindset.
 
-The current (fourth) rewrite adds a typed intermediate representation layer (bit like c,
-but not as a language). The idea is to compile ruby to that typed representation.
+The current (fourth) rewrite adds aims at clarifying the roles of the different layers
+of the system, see below. The overhaul is almost done.
 
-We use whitequarks parser to parse ruby.
-
-Processing is roughly: Ruby --> Vm --> Risc --> Arm --> binary .
+Processing goes through layers: Ruby --> Vool --> Mom --> Risc --> Arm --> binary .
 
 
-## Done
 
-Some things that are finished, look below for current status / work
+## Layers
 
-### Typed representation
+### Ruby
 
-The fully typed syntax representation and compiler to the Risc level is done.
-It is remodeled after  last years system language, which proved the concept and
-surprised with speed.
+Ruby is input layer, we use whitequarks parser to parse ruby and transform it to
+Vool.
 
-Completely object oriented, including calling convention. Not much slower than c.
+### Vool
 
-### A runtime: Parfait
+Vool is a Virtual Object Oriented Language. Virtual in that is has no own syntax. But
+it has semantics, and those are substantially simpler than ruby.
 
-In a dynamic system the distinction between compile-time and run-time is blurs. But a minimum
-of support is needed to get the system up, and that is [Parfait](http://ruby-x.org/soml/parfait.html)
+Vool is Ruby without the fluff. No unless, no reverse if/while, no splats. Just simple
+oo. (Without this level the step down to the next layer was just too big)
+
+Also Vool has a typed syntax tree, unlike the AST from the parser gem. This is easier when
+writing conversion code: the code goes with the specific class (more oo than the visitor
+pattern, imho)
+
+### Mom
+
+The Minimal Object Machine layer is the first machine layer. This means it has instructions
+rather than statements. Instructions (in all machine layers) are a linked list.
+
+Mom has no concept of memory yet, only objects. Data is transferred directly from object
+to object with one of Mom's main instructions, the SlotLoad.
+
+Mainly Mom is an easy to understand step on the way down. A mix of oo and machine. In
+practise it means that the amount of instructions that need to be generated in vool
+is much smaller (easier to understand) and the mapping down to risc is quite straightforward.
+
+### RISC
+
+The risc cpu architecture approach was a simplification of the cpu instruction set to a
+minimum. Arm, our main target is a risc architecture, and the next level down.
+
+The Risc layer here abstract the Arm in a minimal and independent way. It does not model
+any real RISC cpu instruction set, but rather implements what is needed to for rubyx.
+
+Instructions are derived from a base class, so the instruction set is extensible. This
+way aditional functionality may be added by external code.
+
+Risc knows memory and has a small set of registers. It allows memory to register transfer
+and back and inter register transfer. But has no memory to memory transfer like Mom.
+
+### Arm
+
+There is a minimal Arm assembler that transforms Risc instructions to Arm instructions.
+This is mostly a one to one mapping, though it does introduce the quirks that ARM has
+and that were left out of the Risc layer.
+
+### Elf
+
+Arm instructions assemble themselves into binary code. A minimal Elf implementation is
+able to create executable binaries from the assembled code and Parfait objects.
+
+### Parfait
+
+Generating code (by descending above layers) is only half the story in an oo system.
+The other half is classes, types, constant objects and a minimal run-time. This is
+what is Parfait is.
+
+## Types and classes, static vs dynamic
+
+Classes in dynamic languages are open. They can change at any time, meaning you can add/remove
+methods and use any instance variable. This is the reason dynamic languages are interpreted.
+
+For Types to make any sense, they have to be static, immutable.
+
+Some people have equated Classes with Types, this is a basic mistake in dynamic languages.
+
+In rubyx a Type implements a Class (at a certain time of that classes lifetime). It
+defines the methods and instance variables available. This is key to generating
+efficient code that uses type information to access instance variables.
+
+When a class changes, say a new method is added that uses a new instance variable, a
+**new** Type is generated to describe the class at that point. **New** code is generated
+for this new Type.
+
+In essence the Class always **has a** current Type and **many** Types implement (different
+versions of) a Class.
+
+All Objects have a Type (as their first member). The Type points to the Class that the
+object has in oo terms.
+
+Classes are defined by ruby code, but the methods of a Type (that are executed) are defined
+by Mom and Risc only.
+
+## Other
 
 ### Interpreter
 
@@ -46,9 +119,7 @@ what is going on, and in finding bugs.
 
 ## Status
 
-Most work on the statically typed layer should be done (and produces working binaries!).
-
-Next up: compiling ruby and typing it :-)
+Just finishing the rewrite (above architecture) and about to get to binaries again.
 
 ### Stary sky
 
