@@ -29,7 +29,7 @@ module Vool
 
     def each(&block)
       block.call(self)
-      @condition.each(&block)
+      block.call(@condition)
       @body.each(&block)
     end
 

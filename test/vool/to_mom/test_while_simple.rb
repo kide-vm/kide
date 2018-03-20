@@ -11,9 +11,6 @@ module Vool
       @ins = compile_first_method( "while(@a) ; 5.mod4 ; end")
     end
 
-    def test_compiles_not_array
-      assert Array != @ins.class , @ins
-    end
     def test_compiles_as_while
       assert_equal Label , @ins.class , @ins
     end
