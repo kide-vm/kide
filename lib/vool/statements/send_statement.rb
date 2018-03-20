@@ -18,6 +18,13 @@ module Vool
     end
 
     def normalize
+      #TODO normalize arguments. In first stage args must be variables or hoisted (like while/if)
+      #   later sends ok, but then they must execute
+      #   (currently we only use the args as slot_definition so they are not "momed")
+      @arguments.each_with_index do |arg , index |
+        raise "arg #{index} does not provide slot definition #{arg}" unless arg.respond_to?(:slot_definition)
+        raise "Sends not implemented yet at #{index}:#{arg}" if arg.is_a?(SendStatement)
+      end
       SendStatement.new(@name, @receiver , @arguments)
     end
 
@@ -57,14 +64,14 @@ module Vool
     end
 
     def message_setup(in_method)
-      setup  = Mom::MessageSetup.new(in_method) <<
-        Mom::SlotLoad.new([:message , :next_message , :receiver] , @receiver.slot_definition(in_method))
+      setup  = Mom::MessageSetup.new(in_method)
+      mom_receive = @receiver.slot_definition(in_method)
       arg_target = [:message , :next_message , :arguments]
       args = []
       @arguments.each_with_index do |arg , index|
         args << Mom::SlotLoad.new( arg_target + [index] , arg.slot_definition(in_method))
       end
-      setup << Mom::ArgumentTransfer.new( receiver , args )
+      setup << Mom::ArgumentTransfer.new( mom_receive , args )
     end
 
     def simple_call(in_method)
