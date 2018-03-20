@@ -51,7 +51,11 @@ module MomCompile
       res << is.class.name.split("::").last
       is = is.next
     end
-    "[#{res.join(',')}]"
+    ret = ""
+    res.to_s.split(",").each_slice(6).each do |line|
+      ret += "                   " + line.join(",") + " ,\n"
+    end
+    ret.gsub('"' , '')
   end
 
 end

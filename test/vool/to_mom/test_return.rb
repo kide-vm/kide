@@ -51,7 +51,7 @@ module Vool
       assert_equal ReturnSequence , @ins.last.class
     end
     def test_array
-      check_array [MessageSetup,SlotLoad,ArgumentTransfer,SimpleCall,SlotLoad,SlotLoad,ReturnSequence] , @ins
+      check_array [MessageSetup,ArgumentTransfer,SimpleCall,SlotLoad,SlotLoad,ReturnSequence] , @ins
     end
   end
 end

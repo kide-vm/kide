@@ -19,14 +19,14 @@ module Vool
       assert_equal :type , load.right.slots[1] , load
     end
     def test_check_resolve_call
-      assert_equal SimpleCall , @ins.next(6).class , @ins
+      assert_equal SimpleCall , @ins.next(5).class , @ins
     end
     def test_dynamic_call_last
       assert_equal DynamicCall ,  @ins.last.class , @ins
     end
 
     def test_array
-      check_array [SlotLoad,NotSameCheck,SlotLoad,MessageSetup,SlotLoad,ArgumentTransfer,SimpleCall,SlotLoad,MessageSetup,SlotLoad,ArgumentTransfer,DynamicCall] , @ins
+      check_array [SlotLoad,NotSameCheck,SlotLoad,MessageSetup,ArgumentTransfer,SimpleCall,SlotLoad,MessageSetup,ArgumentTransfer,DynamicCall] , @ins
     end
 
   end

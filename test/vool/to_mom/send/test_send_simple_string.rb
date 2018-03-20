@@ -15,15 +15,12 @@ module Vool
     end
 
     def test_args_one_move
-      assert_equal :next_message, @ins.next.next.arguments[0].left.slots[0]
-      assert_equal :arguments,    @ins.next.next.arguments[0].left.slots[1]
+      assert_equal :next_message, @ins.next.arguments[0].left.slots[0]
+      assert_equal :arguments,    @ins.next.arguments[0].left.slots[1]
     end
     def test_args_one_str
-      assert_equal Mom::IntegerConstant,    @ins.next.next.arguments[0].right.known_object.class
-      assert_equal 1,    @ins.next.next.arguments[0].right.known_object.value
-    end
-    def test_array
-      check_array [Mom::MessageSetup,Mom::SlotLoad,Mom::ArgumentTransfer,Mom::SimpleCall] , @ins
+      assert_equal Mom::IntegerConstant,    @ins.next.arguments[0].right.known_object.class
+      assert_equal 1,    @ins.next.arguments[0].right.known_object.value
     end
   end
 end

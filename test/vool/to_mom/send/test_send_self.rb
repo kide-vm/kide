@@ -14,22 +14,20 @@ module Vool
     def setup
       do_setup("self.get_internal_word(0)")
     end
-
     def test_receiver
-      assert_equal SlotDefinition,  @ins.next.right.class
+      assert_equal SlotDefinition,  @ins.next.receiver.class
     end
-
     def test_arg_one
-      assert_equal SlotLoad,  @ins.next(2).arguments[0].class
+      assert_equal SlotLoad,  @ins.next(1).arguments[0].class
     end
     def test_call_two
-      assert_equal SimpleCall,  @ins.next(3).class
+      assert_equal SimpleCall,  @ins.next(2).class
     end
     def test_call_has_method
-      assert_equal Parfait::TypedMethod,  @ins.next(3).method.class
+      assert_equal Parfait::TypedMethod,  @ins.next(2).method.class
     end
     def test_call_has_right_method
-      assert_equal :get_internal_word,  @ins.next(3).method.name
+      assert_equal :get_internal_word,  @ins.next(2).method.name
     end
   end
   class TestSendSelfImplicitMom < TestSendSelfMom

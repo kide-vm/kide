@@ -14,7 +14,7 @@ module Vool
       [Mom::IntegerConstant , 5]
     end
     def test_call_has_right_method
-      assert_equal :mod4,  @ins.next(3).method.name
+      assert_equal :mod4,  @ins.next(2).method.name
     end
 
   end

@@ -24,7 +24,7 @@ module Vool
       assert_equal Label , @ins.last.class , @ins
     end
     def test_array
-      check_array [TruthCheck,Label,MessageSetup,SlotLoad,ArgumentTransfer,SimpleCall,Label], @ins
+      check_array [TruthCheck,Label,MessageSetup,ArgumentTransfer,SimpleCall,Label], @ins
     end
   end
 end

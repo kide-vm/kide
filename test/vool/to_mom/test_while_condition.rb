@@ -12,16 +12,16 @@ module Vool
     end
 
     def test_condition_compiles_to_check
-      assert_equal TruthCheck , @ins.next(6).class
+      assert_equal TruthCheck , @ins.next(5).class
     end
     def test_condition_is_slot
-      assert_equal SlotDefinition , @ins.next(6).condition.class , @ins
+      assert_equal SlotDefinition , @ins.next(5).condition.class , @ins
     end
     def test_hoisetd
       assert_equal MessageSetup , @ins.class
     end
     def test_array
-      check_array [MessageSetup,SlotLoad,ArgumentTransfer,SimpleCall,SlotLoad,Label,TruthCheck,MessageSetup,SlotLoad,ArgumentTransfer,SimpleCall,Jump,Label] , @ins
+      check_array [MessageSetup,ArgumentTransfer,SimpleCall,SlotLoad,Label,TruthCheck,MessageSetup,ArgumentTransfer,SimpleCall,Jump,Label] , @ins
     end
 
   end

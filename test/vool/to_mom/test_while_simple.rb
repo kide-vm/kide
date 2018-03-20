@@ -21,7 +21,7 @@ module Vool
       assert_equal SlotDefinition , @ins.next.condition.class , @ins
     end
     def test_array
-      check_array [Label,TruthCheck,MessageSetup,SlotLoad,ArgumentTransfer,SimpleCall,Jump,Label] , @ins
+      check_array [Label,TruthCheck,MessageSetup,ArgumentTransfer,SimpleCall,Jump,Label] , @ins
     end
   end
 end
