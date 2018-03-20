@@ -20,6 +20,9 @@ module Mom
       false_load = SlotDefinition.new( FalseConstant.new , nil ).to_register(compiler,self)
       left << false_load
       left << Risc::IsSame.new(self , left.register , false_load.register , false_label)
+      nil_load = SlotDefinition.new( NilConstant.new , nil ).to_register(compiler,self)
+      left << nil_load
+      left << Risc::IsSame.new(self , left.register , nil_load.register , false_label)
       left
     end
 
