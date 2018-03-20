@@ -1,7 +1,6 @@
 # Code Style and Conventions
 
-Just  few things that have become important enough to write down. Apart from what is written here
-standard blah applies (ie RoboCop/Reek stuff).
+Just  few things that have become important enough to write down. Apart from what is written here standard blah applies (ie RoboCop/Reek stuff).
 
 ## Formatting
 
@@ -11,13 +10,9 @@ While the days of 80 are over, too big steps seems difficult. I've settled on 10
 
 ### Brackets
 
-While ruby allows the ommision of brackets even with arguments, i try to avoid that because
-of readablity. There may be an exception for an assignment, a single call with a single arg.
+While ruby allows the omission of brackets even with arguments, i try to avoid that because
+of readability. There may be an exception for an assignment, a single call with a single arg.
 Brackets without arguments look funny though.
-
-### Hash
-
-I still prefer 1.9 => style , it makes the association more obvious.
 
 ## Code style
 

@@ -47,16 +47,16 @@ Mainly Mom is an easy to understand step on the way down. A mix of oo and machin
 practise it means that the amount of instructions that need to be generated in vool
 is much smaller (easier to understand) and the mapping down to risc is quite straightforward.
 
-### RISC
+### Risc
 
 The risc cpu architecture approach was a simplification of the cpu instruction set to a
 minimum. Arm, our main target is a risc architecture, and the next level down.
 
-The Risc layer here abstract the Arm in a minimal and independent way. It does not model
-any real RISC cpu instruction set, but rather implements what is needed to for rubyx.
+The Risc layer here abstracts the Arm in a minimal and independent way. It does not model
+any real RISC cpu instruction set, but rather implements what is needed for rubyx.
 
 Instructions are derived from a base class, so the instruction set is extensible. This
-way aditional functionality may be added by external code.
+way additional functionality may be added by external code.
 
 Risc knows memory and has a small set of registers. It allows memory to register transfer
 and back and inter register transfer. But has no memory to memory transfer like Mom.
@@ -98,8 +98,8 @@ for this new Type.
 In essence the Class always **has a** current Type and **many** Types implement (different
 versions of) a Class.
 
-All Objects have a Type (as their first member). The Type points to the Class that the
-object has in oo terms.
+All Objects have a Type, as their first member (also integers!). The Type points to the
+Class that the object has in oo terms.
 
 Classes are defined by ruby code, but the methods of a Type (that are executed) are defined
 by Mom and Risc only.
@@ -109,13 +109,13 @@ by Mom and Risc only.
 ### Interpreter
 
 After doing some debugging on the generated binaries i opted to write an interpreter for the
-risc layer. That way test runs on the interpreter reveal most issues.
+risc layer. That way tests run on the interpreter reveal most issues.
 
 ### Debugger
 
 And after the interpreter was done, i wrote a [visual debugger](https://github.com/ruby-x/rubyx-debugger).
-It is a simple opal application that nevertheless has proven great help both in figuring out
-what is going on, and in finding bugs.
+It is a simple opal application that nevertheless has proven a great help, both in figuring
+out what is going on, and in finding bugs.
 
 ## Status
 
@@ -138,12 +138,11 @@ Iterate:
 12. Other languages, python at least, maybe others
 13. translation of the vm instructions to another vm, say js
 
-And generally optimize and work towards that perfect world (we never seem to be able to attain).
+And generally optimise and work towards that perfect world (we never seem to be able to attain).
 
 
 
-Contributing to rubyx
------------------------
+## Contributing to rubyx
 
 Probably best to talk to me, if it's not a typo or so.
 
@@ -153,5 +152,6 @@ Fork and create a branch before sending pulls.
 
 == Copyright
 
-Copyright (c) 2014/5 Torsten Ruger.
+Copyright (c) 2014-8 Torsten Ruger.
+
 See LICENSE.txt for further details.
