@@ -45,7 +45,14 @@ module Mom
           const << Risc::SlotToReg.new( self , left ,left_index, new_left)
           left = new_left
           left_index = SlotLoad.resolve_to_index(left_slots[0] , left_slots[1] ,compiler)
-          raise "more slots not implemented #{left_slots}" if left_slots.length > 2
+          if left_slots.length > 2
+            #same again, once more updating target
+            new_left = compiler.use_reg( :int )
+            const << Risc::SlotToReg.new( self , left ,left_index, new_left)
+            left = new_left
+            left_index = SlotLoad.resolve_to_index(left_slots[1] , left_slots[2] ,compiler)
+          end
+          raise "more slots not implemented #{left_slots}" if left_slots.length > 3
         end
       when Parfait::CacheEntry
         left = compiler.use_reg( :int )
@@ -59,6 +66,7 @@ module Mom
     end
 
     def self.resolve_to_index(object , variable_name ,compiler)
+      return variable_name if variable_name.is_a?(Integer)
       case object
       when :frame
         type = compiler.method.frame
