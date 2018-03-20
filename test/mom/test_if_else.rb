@@ -8,7 +8,7 @@ module Risc
       super
       @input = "if(@a) ; arg = 5 ; else; arg = 6; end"
       @expect = [SlotToReg, SlotToReg, LoadConstant, IsSame, LoadConstant, IsSame ,
-                 Label, LoadConstant, SlotToReg, RegToSlot, Label, Label ,
+                 Label, LoadConstant, SlotToReg, RegToSlot, Unconditional, Label ,
                  LoadConstant, SlotToReg, RegToSlot, Label]
     end
 
@@ -45,7 +45,7 @@ module Risc
 
     def test_true_jump # should jumpp to merge label
       produced = produce_body
-      assert_equal "Jump" , produced.next(10).name
+      assert produced.next(10).label.name.start_with?("merge_label")
     end
   end
 end

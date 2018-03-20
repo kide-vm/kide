@@ -60,6 +60,11 @@ module Risc
       super(source , label)
     end
   end
+
+  class Unconditional < Branch
+
+  end
+
   class IsZero < Branch
   end
 

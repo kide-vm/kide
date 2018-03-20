@@ -21,7 +21,7 @@ module Mom
     # The argument that is passed is a MethodCompiler, which has the method and some
     # state about registers used. (also provides helpers to generate risc instructions)
     def to_risc(compiler)
-      raise Risc::Label.new(self.class.name, self.class.name + "_todo")
+      raise self.class.name + "_todo"
     end
   end
 

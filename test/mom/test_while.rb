@@ -8,7 +8,7 @@ module Risc
       super
       @input = "while(@a) ; arg = 5 end"
       @expect = [Label, SlotToReg, SlotToReg, LoadConstant, IsSame, LoadConstant ,
-                 IsSame, LoadConstant, SlotToReg, RegToSlot, Label, Label]
+                 IsSame, LoadConstant, SlotToReg, RegToSlot, Unconditional, Label]
     end
 
     def test_while_instructions
@@ -37,9 +37,9 @@ module Risc
       assert produced.next(11).name.start_with?("merge_label")
     end
 
-    def test_true_jump # should jumpp to merge label
+    def test_back_jump # should jump back to condition label
       produced = produce_body
-      assert_equal "Jump" , produced.next(10).name
+      assert_equal produced , produced.next(10).label
     end
   end
 end
