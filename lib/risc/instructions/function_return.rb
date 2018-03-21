@@ -1,22 +1,21 @@
 module Risc
 
   # return from a function call
-  # register and index specify where the return address is stored
+  # register specifes where the return address is stored
 
   class FunctionReturn < Instruction
-    def initialize( source , register , index)
+    def initialize( source , register )
       super(source)
       @register = register
-      @index = index
     end
-    attr_reader :register , :index
+    attr_reader :register
 
     def to_s
-      "FunctionReturn: #{register} [#{index}]"
+      "FunctionReturn: #{register} "
     end
   end
 
-  def self.function_return( source , register , index)
-    FunctionReturn.new( source , register , index)
+  def self.function_return( source , register )
+    FunctionReturn.new( source , register )
   end
 end
