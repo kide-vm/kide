@@ -102,7 +102,7 @@ module Mom
       type = known_object.respond_to?(:ct_type) ? known_object.ct_type : :int
       right = compiler.use_reg( type )
       case known_object
-      when Constant
+      when Constant , Parfait::Object
         const  = Risc.load_constant(instruction, self , right)
       when Symbol
         const = Risc::SlotToReg.new( instruction , Risc.resolve_to_register(known_object) ,

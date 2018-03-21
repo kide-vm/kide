@@ -7,8 +7,9 @@ module Risc
     def setup
       super
       @input = "r = 5.mod4"
-      @expect = [Label, LoadConstant, SlotToReg, RegToSlot, Label, SlotToReg ,
-                 SlotToReg, RegToSlot]
+      @expect = [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg ,
+                 RegToSlot, LoadConstant, SlotToReg, SlotToReg, RegToSlot, LoadConstant ,
+                 SlotToReg, RegToSlot, Label, SlotToReg, SlotToReg, RegToSlot]
     end
     def test_local_assign_instructions
       assert_nil msg = check_nil , msg
