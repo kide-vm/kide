@@ -9,12 +9,18 @@ module Mom
   class NotSameCheck < Check
     attr_reader :left , :right
 
-    def initialize(left, right)
+    def initialize(left, right , label)
+      super(label)
       @left , @right  = left , right
     end
 
-    def to_risc(context)
-      Risc::Label.new(self,"NotSameCheck")
+    # basically move both left and right values into register and issue a
+    # risc comparison
+    def to_risc(compiler)
+      l_val = left.to_register(compiler, self)
+      r_val = right.to_register(compiler, self)
+      check = Risc::NotSame.new(self, l_val.register, r_val.register, false_jump.to_risc(compiler))
+      l_val << r_val << check
     end
   end
 end

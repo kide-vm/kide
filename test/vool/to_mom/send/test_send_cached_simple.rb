@@ -26,7 +26,8 @@ module Vool
     end
 
     def test_array
-      check_array [SlotLoad,NotSameCheck,SlotLoad,MessageSetup,ArgumentTransfer,SimpleCall,SlotLoad,MessageSetup,ArgumentTransfer,DynamicCall] , @ins
+      check_array [SlotLoad, NotSameCheck, SlotLoad, MessageSetup, ArgumentTransfer, SimpleCall ,
+                    SlotLoad, Label, MessageSetup, ArgumentTransfer, DynamicCall] , @ins
     end
 
   end

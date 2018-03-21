@@ -95,9 +95,11 @@ module Vool
       # if cached_type != current_type
       #   cached_type = current_type
       #   cached_method = current_type.resolve_method(method.name)
-      check = build_condition
+      ok = Mom::Label.new("cache_ok")
+      check = build_condition(ok)
       check << build_type_cache_update
       check << build_method_cache_update(in_method)
+      check << ok
     end
 
     # this may look like a simple_call, but the difference is that we don't know
@@ -107,10 +109,10 @@ module Vool
     end
 
     private
-    def build_condition
+    def build_condition(ok_label)
       cached_type = Mom::SlotDefinition.new(dynamic_call.cache_entry , [:cached_type])
       current_type = Mom::SlotDefinition.new(:message , [:receiver , :type])
-      Mom::NotSameCheck.new(cached_type , current_type)
+      Mom::NotSameCheck.new(cached_type , current_type, ok_label)
     end
     def build_type_cache_update
       Mom::SlotLoad.new([dynamic_call.cache_entry, :cached_type] , [:message , :receiver , :type])
