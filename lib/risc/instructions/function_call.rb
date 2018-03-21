@@ -4,19 +4,20 @@ module Risc
   # assembly takes care of the rest (ie getting the address)
 
   class FunctionCall < Instruction
-    def initialize( source , method )
+    def initialize( source , method , register)
       super(source)
       @method = method
+      @register = register
     end
-    attr_reader :method
+    attr_reader :method , :register
 
     def to_s
       "FunctionCall: #{method.name}"
     end
   end
 
-  def self.function_call( source , method )
-    Risc::FunctionCall.new( source , method )
+  def self.function_call( source , method , register)
+    Risc::FunctionCall.new( source , method , register)
   end
 
   def self.issue_call( compiler , callee )

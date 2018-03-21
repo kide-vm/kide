@@ -24,7 +24,7 @@ module Mom
       return_label = Risc::Label.new(self,"continue")
       load =  SlotLoad.new([:message,:next_message,:return_address],[return_label])
       moves = load.to_risc(compiler)
-      moves << Risc::FunctionCall.new(self, reg)
+      moves << Risc::FunctionCall.new(self, method ,reg)
       moves << return_label
     end
 
