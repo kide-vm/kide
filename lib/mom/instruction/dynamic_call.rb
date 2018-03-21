@@ -18,8 +18,18 @@ module Mom
       @cache_entry = Parfait::CacheEntry.new(type, method)
     end
 
-    def to_risc(context)
-      Risc::Label.new(self,"DynamicCall")
+    # One could almost think that one can resolve this to a Risc::FunctionCall
+    #  (which btw resolves to a simple jump), alas, the FunctionCall, like all other
+    # jumping, resolves the address at compile time.
+    #
+    # Instead we need a DynamicJump instruction that explicitly takes a register as
+    # a target (not a label)
+    def to_risc(compiler)
+      reg = compiler.use_reg( :int )
+      call =  Risc.load_constant( self , @cache_entry , reg )
+      method_index = Risc.resolve_to_index(:cache_entry , :cached_method)
+      call << Risc::SlotToReg.new( self , reg ,method_index, reg)
+      call << Risc::DynamicJump.new(self, reg )
     end
   end
 
