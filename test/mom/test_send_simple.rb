@@ -21,6 +21,10 @@ module Risc
       assert_equal FunctionCall , produced.next(19).class
       assert_equal :mod4 , produced.next(19).method.name
     end
+    def test_check_continue
+      produced = produce_body
+      assert produced.next(20).name.start_with?("continue_")
+    end
     def test_load_label
       produced = produce_body
       assert_equal Label , produced.next(14).constant.known_object.class

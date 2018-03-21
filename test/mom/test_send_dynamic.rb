@@ -32,7 +32,7 @@ module Risc
     def test_cache_check
       produced = produce_body
       assert_equal NotSame , produced.next(3).class
-      assert produced.next(34) , produced.next(3).label
+      assert_equal produced.next(34) , produced.next(3).label
     end
     def test_check_resolve
       produced = produce_body
