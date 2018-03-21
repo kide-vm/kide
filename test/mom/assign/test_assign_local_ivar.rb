@@ -16,7 +16,7 @@ module Risc
 
     def test_constant_load
       produced = produce_body
-      assert_equal 5 , produced.constant.known_object.value
+      assert_equal 5 , produced.constant.value
     end
 
     def test_slot_move

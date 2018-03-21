@@ -27,11 +27,11 @@ module Risc
     end
     def test_load_label
       produced = produce_body
-      assert_equal Label , produced.next(14).constant.known_object.class
+      assert_equal Label , produced.next(14).constant.class
     end
     def test_load_5
       produced = produce_body
-      assert_equal 5 , produced.next(11).constant.known_object.value
+      assert_equal 5 , produced.next(11).constant.value
     end
     def test_call_reg_setup
       produced = produce_body

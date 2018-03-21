@@ -9,6 +9,7 @@ module Risc
       super(source)
       @register = register
       @constant = constant
+      raise "Not Constant #{constant}" if constant.is_a?(Mom::SlotDefinition)
     end
     attr_accessor :register , :constant
 

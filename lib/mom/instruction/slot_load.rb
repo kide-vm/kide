@@ -103,7 +103,7 @@ module Mom
       right = compiler.use_reg( type )
       case known_object
       when Constant , Parfait::Object , Risc::Label
-        const  = Risc.load_constant(instruction, self , right)
+        const  = Risc.load_constant(instruction, known_object , right)
       when Symbol
         const = Risc::SlotToReg.new( instruction , Risc.resolve_to_register(known_object) ,
                               Risc.resolve_to_index(:message , slots[0]), right)
