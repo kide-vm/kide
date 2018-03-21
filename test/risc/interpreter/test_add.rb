@@ -21,7 +21,7 @@ HERE
       check_chain [Branch, Label, LoadConstant, SlotToReg, RegToSlot,
              LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,
              LoadConstant, OperatorInstruction, RegToSlot, LoadConstant, SlotToReg,
-             RegToSlot, Label, FunctionReturn, RiscTransfer, Syscall,
+             RegToSlot, Label, FunctionReturn, Transfer, Syscall,
              NilClass]
     end
 
@@ -32,7 +32,7 @@ HERE
     end
     def pest_transfer
       transfer = ticks 19
-      assert_equal RiscTransfer ,  transfer.class
+      assert_equal Transfer ,  transfer.class
       assert_equal @interpreter.get_register(transfer.to) , @interpreter.get_register(transfer.from)
     end
 

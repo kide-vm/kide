@@ -30,12 +30,12 @@ HERE
              LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,
              LoadConstant, OperatorInstruction, IsZero, SlotToReg, LoadConstant,
              RegToSlot, LoadConstant, RegToSlot, LoadConstant, SlotToReg,
-             RegToSlot, LoadConstant, RegToSlot, RiscTransfer, FunctionCall,
+             RegToSlot, LoadConstant, RegToSlot, Transfer, FunctionCall,
              Label, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, RiscTransfer, Syscall, RiscTransfer, RiscTransfer,
-             RegToSlot, Label, FunctionReturn, RiscTransfer, SlotToReg,
+             SlotToReg, Transfer, Syscall, Transfer, Transfer,
+             RegToSlot, Label, FunctionReturn, Transfer, SlotToReg,
              SlotToReg, Branch, Label, LoadConstant, SlotToReg,
-             RegToSlot, Label, FunctionReturn, RiscTransfer, Syscall,
+             RegToSlot, Label, FunctionReturn, Transfer, Syscall,
              NilClass]
     end
   end

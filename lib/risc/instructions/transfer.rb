@@ -1,6 +1,6 @@
 module Risc
 
-  # transfer the constents of one register to another.
+  # Transfer the constents of one register to another.
   # possibly called move in some cpus
 
   # There are other instructions to move data from / to memory, namely SlotToReg and RegToSlot
@@ -10,13 +10,13 @@ module Risc
   # Also it is used for moving temorary data
   #
 
-  class RiscTransfer < Instruction
+  class Transfer < Instruction
     # initialize with from and to registers.
     # First argument from
     # second argument to
     #
     # Note: this may be reversed from some assembler notations (also arm)
-    def initialize source , from , to
+    def initialize( source , from , to )
       super(source)
       @from = from
       @to = to
@@ -26,10 +26,10 @@ module Risc
     attr_reader :from, :to
 
     def to_s
-      "RiscTransfer: #{from} -> #{to}"
+      "Transfer: #{from} -> #{to}"
     end
   end
   def self.transfer( source , from , to)
-    RiscTransfer.new( source , from , to)
+    Transfer.new( source , from , to)
   end
 end

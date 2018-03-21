@@ -21,7 +21,7 @@ HERE
       check_chain [Branch, Label, LoadConstant, SlotToReg, RegToSlot,
              LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,
              LoadConstant, OperatorInstruction, RegToSlot, LoadConstant, SlotToReg,
-             RegToSlot, Label, FunctionReturn, RiscTransfer, Syscall,
+             RegToSlot, Label, FunctionReturn, Transfer, Syscall,
              NilClass]
       check_return 0
     end

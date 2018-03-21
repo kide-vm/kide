@@ -31,7 +31,7 @@ module Arm
       ArmMachine.str( :lr ,  code.register , arm_index(code) )
     end
 
-    def translate_RiscTransfer( code )
+    def translate_Transfer( code )
       # Risc machine convention is from => to
       # But arm has the receiver/result as the first
       ArmMachine.mov( code.to , code.from)

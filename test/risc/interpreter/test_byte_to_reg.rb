@@ -26,11 +26,11 @@ HERE
              LoadConstant, RegToSlot, LoadConstant, RegToSlot, LoadConstant,
              SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
              LoadConstant, SlotToReg, RegToSlot, LoadConstant, RegToSlot,
-             RiscTransfer, FunctionCall, Label, LoadConstant, SlotToReg,
+             Transfer, FunctionCall, Label, LoadConstant, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, RegToByte, Label, FunctionReturn, RiscTransfer,
+             SlotToReg, RegToByte, Label, FunctionReturn, Transfer,
              SlotToReg, SlotToReg, LoadConstant, SlotToReg, RegToSlot,
-             Label, FunctionReturn, RiscTransfer, Syscall, NilClass]
+             Label, FunctionReturn, Transfer, Syscall, NilClass]
     end
 
     def pest_branch

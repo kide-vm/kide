@@ -21,12 +21,12 @@ HERE
       check_chain [Branch, Label, LoadConstant, SlotToReg, RegToSlot,
              LoadConstant, RegToSlot, FunctionCall, Label, SlotToReg,
              LoadConstant, RegToSlot, LoadConstant, RegToSlot, LoadConstant,
-             SlotToReg, RegToSlot, LoadConstant, RegToSlot, RiscTransfer,
+             SlotToReg, RegToSlot, LoadConstant, RegToSlot, Transfer,
              FunctionCall, Label, LoadConstant, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, RiscTransfer, Syscall, RiscTransfer,
-             RiscTransfer, RegToSlot, Label, FunctionReturn, RiscTransfer,
+             SlotToReg, SlotToReg, Transfer, Syscall, Transfer,
+             Transfer, RegToSlot, Label, FunctionReturn, Transfer,
              SlotToReg, SlotToReg, LoadConstant, SlotToReg, RegToSlot,
-             Label, FunctionReturn, RiscTransfer, Syscall, NilClass]
+             Label, FunctionReturn, Transfer, Syscall, NilClass]
     end
 
     def pest_branch

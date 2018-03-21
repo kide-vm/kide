@@ -184,7 +184,7 @@ module Risc
       true
     end
 
-    def execute_RiscTransfer
+    def execute_Transfer
       value = get_register @instruction.from
       set_register @instruction.to , value
       true

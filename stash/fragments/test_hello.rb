@@ -22,11 +22,11 @@ module Rubyx
              LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,
              SlotToReg, RegToSlot, SlotToReg, LoadConstant, RegToSlot,
              LoadConstant, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             LoadConstant, RegToSlot, RiscTransfer, FunctionCall, Label,
+             LoadConstant, RegToSlot, Transfer, FunctionCall, Label,
              LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RiscTransfer, Syscall, RiscTransfer, RiscTransfer, RegToSlot,
-             Label, FunctionReturn, RiscTransfer, SlotToReg, SlotToReg,
-             Label, FunctionReturn, RiscTransfer, Syscall, NilClass]
+             Transfer, Syscall, Transfer, Transfer, RegToSlot,
+             Label, FunctionReturn, Transfer, SlotToReg, SlotToReg,
+             Label, FunctionReturn, Transfer, Syscall, NilClass]
     end
 
     def test_overflow

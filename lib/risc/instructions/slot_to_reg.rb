@@ -7,7 +7,7 @@ module Risc
   # This is because that is what cpu's can do. In programming terms this would be accessing
   #  an element in an array, in the case of SlotToReg setting the value in the array.
 
-  # btw: to move data between registers, use RiscTransfer
+  # btw: to move data between registers, use Transfer
 
   class SlotToReg < Getter
 
