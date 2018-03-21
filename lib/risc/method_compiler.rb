@@ -48,19 +48,7 @@ module Risc
       source = "_init_method"
       name = "#{method.for_type.name}.#{method.name}"
       @current = @method.set_instructions( Risc.label(source, name))
-
-      # add the type of the locals to the existing NamedList instance
-      frame_reg = use_reg(:Type , method.frame )
-      list_reg = use_reg(:NamedList )
-      add_load_constant("#{name} load frame type", method.frame , frame_reg)
-      add_slot_to_reg( "#{name} get frame from method" , :message , :frame , list_reg )
-      add_reg_to_slot( "#{name} store frame type in frame" , frame_reg , list_reg , 1  )
-
-      enter = @current # this is where method body goes
-      add_label( source, "return #{name}")
-      #load the return address into pc, affecting return. (other cpus have commands for this, but not arm)
-      add_function_return( source , Risc.message_reg , Risc.resolve_to_index(:message , :return_address) )
-      @current = enter
+      @current << Risc.label( source, "unreachable")
       self
     end
 

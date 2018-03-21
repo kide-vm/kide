@@ -128,7 +128,7 @@ module Risc
         #puts "assemble #{method.source.instructions}"
         method.instructions.assemble_all( stream )
       rescue => e
-        log.debug "Assembly error #{method.name}\n#{Sof.write(method.instructions).to_s[0...2000]}"
+        log.debug "Assembly error #{method.name}\n#{method.to_rxf.to_s[0...2000]}"
         raise e
       end
       write_binary_method_to_stream( method, stream)

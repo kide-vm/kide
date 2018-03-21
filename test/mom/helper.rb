@@ -11,10 +11,10 @@ module Risc
     end
 
     def preamble
-      [Label, LoadConstant, SlotToReg, RegToSlot ]
+      [Label ]
     end
     def postamble
-      [ Label, FunctionReturn]
+      [ Label]
     end
     # test hack to in place change object type
     def add_space_field(name,type)

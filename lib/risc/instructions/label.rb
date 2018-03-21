@@ -45,13 +45,13 @@ module Risc
     end
 
     def assemble_all io , labels = []
-      return if labels.include?(self)
+      return if labels.include?(self) or self.next.nil?
       labels << self
       self.next.assemble_all(io,labels)
     end
 
     def total_byte_length labels = []
-      return 0 if labels.include?(self)
+      return 0 if labels.include?(self) or self.next.nil?
       labels << self
       ret = self.next.total_byte_length(labels)
       #puts "#{self.class.name} return #{ret}"
@@ -63,7 +63,7 @@ module Risc
       return position if labels.include?(self)
       labels << self
       super(position , labels)
-      self.next.set_position(position,labels)
+      self.next.set_position(position,labels) if self.next
     end
 
     # shame we need this, just for logging
