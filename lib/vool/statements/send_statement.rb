@@ -95,7 +95,7 @@ module Vool
       # if cached_type != current_type
       #   cached_type = current_type
       #   cached_method = current_type.resolve_method(method.name)
-      ok = Mom::Label.new("cache_ok")
+      ok = Mom::Label.new("cache_ok_#{self.object_id}")
       check = build_condition(ok)
       check << build_type_cache_update
       check << build_method_cache_update(in_method)
