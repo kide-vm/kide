@@ -9,8 +9,8 @@ module Risc
       @input = "r = 5.mod4"
       @expect = [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg ,
                  RegToSlot, LoadConstant, SlotToReg, SlotToReg, RegToSlot, LoadConstant ,
-                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, FunctionCall ,
-                 Label, SlotToReg, SlotToReg, RegToSlot]
+                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg ,
+                 LoadConstant, FunctionCall, Label, SlotToReg, SlotToReg, RegToSlot]
     end
     def test_local_assign_instructions
       assert_nil msg = check_nil , msg

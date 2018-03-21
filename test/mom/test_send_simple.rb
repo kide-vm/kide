@@ -10,7 +10,7 @@ module Risc
       @expect = [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg ,
                  RegToSlot, LoadConstant, SlotToReg, SlotToReg, RegToSlot, LoadConstant ,
                  SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg ,
-                 FunctionCall, Label]
+                 LoadConstant, FunctionCall, Label]
     end
 
     def test_send_instructions
@@ -18,8 +18,8 @@ module Risc
     end
     def test_function_call
       produced = produce_body
-      assert_equal FunctionCall , produced.next(18).class
-      assert_equal :mod4 , produced.next(18).method.name
+      assert_equal FunctionCall , produced.next(19).class
+      assert_equal :mod4 , produced.next(19).method.name
     end
     def test_load_label
       produced = produce_body
@@ -29,24 +29,10 @@ module Risc
       produced = produce_body
       assert_equal 5 , produced.next(11).constant.known_object.value
     end
-
-    def est_call_reg_setup
+    def test_call_reg_setup
       produced = produce_body
-      assert_equal produced.next(16).register , produced.next(17).register
+      assert_equal produced.next(18).register , produced.next(19).register
     end
-    def pest_nil_load
-      produced = produce_body
-      assert_equal Mom::NilConstant , produced.next(4).constant.known_object.class
-    end
-    def pest_nil_check
-      produced = produce_body
-      assert_equal produced.next(10) , produced.next(5).label
-    end
-
-    def pest_true_label
-      produced = produce_body
-      assert produced.next(6).name.start_with?("true_label")
-    end
-
+    #TODO check the message setup, type and frame moves
   end
 end

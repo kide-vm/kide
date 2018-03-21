@@ -20,12 +20,13 @@ module Mom
     # For returning, we add a label after the call, and load it's address into the
     # return_address of the next_message, for the ReturnSequence to pick it up.
     def to_risc(compiler)
-      reg = compiler.use_reg(:int)
+      jump_address = compiler.use_reg(:int)
       return_label = Risc::Label.new(self,"continue")
       save_return =  SlotLoad.new([:message,:next_message,:return_address],[return_label])
       moves = save_return.to_risc(compiler)
       moves << Risc.slot_to_reg(self, :message , :next_message , Risc.message_reg)
-      moves << Risc::FunctionCall.new(self, method ,reg)
+      moves << Risc.load_constant(self , method.binary , jump_address)
+      moves << Risc::FunctionCall.new(self, method ,jump_address)
       moves << return_label
     end
 
