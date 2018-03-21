@@ -8,7 +8,7 @@ module Vool
 
     def setup
       Risc.machine.boot
-      @ins = compile_first_method( "while(@a) ; 5.mod4 ; end")
+      @ins = compile_first_method( "while(@a) ; @a = 5 ; end")
     end
 
     def test_compiles_as_while
@@ -21,7 +21,7 @@ module Vool
       assert_equal SlotDefinition , @ins.next.condition.class , @ins
     end
     def test_array
-      check_array [Label,TruthCheck,MessageSetup,ArgumentTransfer,SimpleCall,Jump,Label] , @ins
+      check_array [Label, TruthCheck, SlotLoad, Jump, Label], @ins
     end
   end
 end

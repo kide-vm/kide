@@ -8,7 +8,7 @@ module Vool
 
     def setup
       Risc.machine.boot
-      @ins = compile_first_method( "if(@a == 5) ; 5.mod4 ; else; 4.mod4 ; end")
+      @ins = compile_first_method( "if(5.mod4) ; @a = 6 ; else; @a = 5 ; end")
     end
 
     def test_condition
