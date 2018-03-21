@@ -12,19 +12,18 @@ module Vool
     end
 
     def test_condition
-      assert_equal TruthCheck , @ins.next(11).class
+      assert_equal TruthCheck , @ins.next(4).class
     end
     def test_condition_is_slot
-      assert_equal SlotDefinition , @ins.next(11).condition.class , @ins
+      assert_equal SlotDefinition , @ins.next(4).condition.class , @ins
     end
     def test_hoisted_dynamic_call
-      assert_equal DynamicCall , @ins.next(9).class
+      assert_equal SimpleCall , @ins.next(2).class
+      assert_equal :mod4 , @ins.next(2).method.name
     end
     def test_array
-      check_array [NotSameCheck, SlotLoad, MessageSetup, ArgumentTransfer, SimpleCall, SlotLoad ,
-                    Label, MessageSetup, ArgumentTransfer, DynamicCall, SlotLoad, TruthCheck ,
-                    Label, MessageSetup, ArgumentTransfer, SimpleCall, Jump, Label ,
-                    MessageSetup, ArgumentTransfer, SimpleCall, Label] , @ins
+      check_array [MessageSetup, ArgumentTransfer, SimpleCall, SlotLoad, TruthCheck, Label ,
+                    SlotLoad, Jump, Label, SlotLoad, Label] , @ins
     end
 
   end
