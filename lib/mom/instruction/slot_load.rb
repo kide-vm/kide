@@ -109,14 +109,14 @@ module Mom
       when Symbol
         const = Risc::SlotToReg.new( instruction , Risc.resolve_to_register(known_object) ,
                               Risc.resolve_to_index(:message , slots[0]), right)
-        if slots.length > 1
-          # desctructively replace the existing value to be loaded if more slots
-          index = SlotLoad.resolve_to_index(slots[0] , slots[1] ,compiler)
-          const << Risc::SlotToReg.new( instruction , right ,index, right)
-          raise "more slots not implemented #{slots}" if slots.length > 2
-        end
       else
         raise "We have a #{self} #{known_object}"
+      end
+      if slots.length > 1
+        # desctructively replace the existing value to be loaded if more slots
+        index = SlotLoad.resolve_to_index(slots[0] , slots[1] ,compiler)
+        const << Risc::SlotToReg.new( instruction , right ,index, right)
+        raise "more slots not implemented #{slots}" if slots.length > 2
       end
       const
     end
