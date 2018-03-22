@@ -9,7 +9,7 @@ module Risc
     def setup
       Risc.machine.boot
       do_clean_compile
-      #FIXME Vm.compile_ast( @input )
+      Vool::VoolCompiler.ruby_to_vool( @string_input )
       Collector.collect_space
       @interpreter = Interpreter.new
       @interpreter.start Risc.machine.init

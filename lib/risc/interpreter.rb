@@ -17,7 +17,7 @@ module Risc
     # fire events for changed pc and register contents
     include Eventable
     include Logging
-    log_level :info
+    log_level :debug
 
     attr_reader :instruction     # current instruction or pc
     attr_reader :clock    # current instruction or pc

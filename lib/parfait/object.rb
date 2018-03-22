@@ -65,7 +65,7 @@ module Parfait
     # private
     def set_type(type)
       # puts "Type was set for #{self.class}"
-      raise "not type #{type.class}" unless type.is_a?(Type)
+      raise "not type #{type.class} in #{self}" unless type.is_a?(Type)
       @type = type
     end
 

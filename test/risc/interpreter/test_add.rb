@@ -7,22 +7,23 @@ module Risc
     def setup
       @string_input = <<HERE
   class Space
-    int main()
-      return 5 + 7
+    def main(arg)
+      return 5.mod4
     end
   end
 HERE
-      @input =  s(:statements, s(:return, s(:operator_value, :+, s(:int, 5), s(:int, 7))))
       super
     end
 
-    def pest_chain
+    def test_chain
       #show_ticks # get output of what is
       check_chain [Branch, Label, LoadConstant, SlotToReg, RegToSlot,
              LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,
-             LoadConstant, OperatorInstruction, RegToSlot, LoadConstant, SlotToReg,
-             RegToSlot, Label, FunctionReturn, Transfer, Syscall,
-             NilClass]
+             SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg,
+             SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg,
+             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
+             LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant,
+             FunctionCall, Label, Label, NilClass]
     end
 
     def pest_get
