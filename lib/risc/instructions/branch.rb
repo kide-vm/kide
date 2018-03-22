@@ -11,7 +11,7 @@ module Risc
     attr_reader :label
 
     def to_s
-      "#{self.class.name.split("::").last}: #{label ? label.name : ''}"
+      class_source "#{label ? label.name : '(no label)'}"
     end
     alias :inspect :to_s
 

@@ -14,7 +14,7 @@ module Risc
     attr_accessor :register , :constant
 
     def to_s
-      "LoadConstant: #{register} <- #{constant_str}"
+      class_source "#{register} <- #{constant_str}"
     end
 
     private

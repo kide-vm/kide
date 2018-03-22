@@ -11,7 +11,7 @@ module Risc
     attr_reader :register
 
     def to_s
-      "FunctionReturn: #{register} "
+      class_source "#{register} "
     end
   end
 

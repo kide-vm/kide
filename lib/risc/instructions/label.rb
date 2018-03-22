@@ -15,7 +15,7 @@ module Risc
     attr_reader :name
 
     def to_s
-      "Label: #{@name} (#{self.next.class.name.split("::").last})"
+      class_source "#{@name} (next: #{self.next.class.name.split("::").last})"
     end
 
     def sof_reference_name

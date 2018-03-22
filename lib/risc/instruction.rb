@@ -26,7 +26,7 @@ module Risc
       @source = source
       @next = nekst
       return unless source
-      raise "Source must be string or ast node, not #{source.class}" unless source.is_a?(String) or source.is_a?(Mom::Instruction)
+      raise "Source must be string or Instruction, not #{source.class}" unless source.is_a?(String) or source.is_a?(Mom::Instruction)
     end
     attr_reader :source
 
@@ -72,6 +72,14 @@ module Risc
       self.next.each_label(labels , &block) if self.next
     end
 
+    def class_source( derived)
+      "#{self.class.name.split("::").last}: #{derived} #{source_mini}"
+    end
+    def source_mini
+      return "(no source)" unless source
+      return "(from: #{source[0..15]})" if source.is_a?(String)
+      "(from: #{source.class.name.split("::").last})"
+    end
   end
 
 end

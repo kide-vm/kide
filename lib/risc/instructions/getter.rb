@@ -30,7 +30,7 @@ module Risc
     attr_accessor :array , :index , :register
 
     def to_s
-      "#{self.class.name.split("::").last}: #{array}[#{index}] -> #{register}"
+      class_source "#{array}[#{index}] -> #{register}"
     end
 
   end

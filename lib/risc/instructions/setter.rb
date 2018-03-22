@@ -15,7 +15,7 @@ module Risc
     # If you had a c array and index offset
     # the instruction would do array[index] = register
     # The arguments are in the order that makes sense for the Instruction name
-    # So RegToSlot means the register (first argument) moves to the slot (array and index)  
+    # So RegToSlot means the register (first argument) moves to the slot (array and index)
     def initialize( source , register , array , index )
       super(source)
       @register = register
@@ -29,7 +29,7 @@ module Risc
     attr_accessor :register , :array , :index
 
     def to_s
-      "#{self.class.name.split("::").last}: #{register} -> #{array}[#{index}]"
+      class_source "#{register} -> #{array}[#{index}]"
     end
 
   end

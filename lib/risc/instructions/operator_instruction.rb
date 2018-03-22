@@ -10,7 +10,7 @@ module Risc
     attr_reader :operator, :left , :right
 
     def to_s
-      "OperatorInstruction: #{left} #{operator} #{right}"
+      class_source "#{left} #{operator} #{right}"
     end
 
   end

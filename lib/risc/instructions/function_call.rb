@@ -12,7 +12,7 @@ module Risc
     attr_reader :method , :register
 
     def to_s
-      "FunctionCall: #{method.name}"
+      class_source method.name
     end
   end
 

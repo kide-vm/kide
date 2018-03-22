@@ -12,11 +12,12 @@ module Risc
     def initialize source ,name
       super(source)
       @name = name
+      raise "must have name" unless name
     end
     attr_reader :name
 
     def to_s
-      "Syscall: #{name}"
+      class_source name
     end
 
   end

@@ -26,7 +26,7 @@ module Risc
     attr_reader :from, :to
 
     def to_s
-      "Transfer: #{from} -> #{to}"
+      class_source "#{from} -> #{to}"
     end
   end
   def self.transfer( source , from , to)
