@@ -20,7 +20,7 @@ module Mom
   #
   class ReturnSequence < Instruction
     def to_risc(compiler)
-      return_move = SlotLoad.new( [:message ,:return_value] , [:message , :next_message, :return_value])
+      return_move = SlotLoad.new( [:message ,:return_value] , [:message , :next_message, :return_value],self)
       moves = return_move.to_risc(compiler)
       caller_reg = compiler.use_reg(:int)
       return_reg = compiler.use_reg(:int)

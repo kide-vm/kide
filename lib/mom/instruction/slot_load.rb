@@ -22,18 +22,20 @@ module Mom
   #        SlotDefinition (see there)
   #
   # @right: A SlotDefinition with slots or a Mom::Constant
-  #
+  # original_source: optinally another mom instrucion that wil be passed down to created
+  #   risc instructions. (Because SlotLoad is often used internally in mom)
   class SlotLoad < Instruction
-    attr_reader :left , :right
-    def initialize(left , right)
+    attr_reader :left , :right , :original_source
+    def initialize(left , right, original_source = nil)
       @left , @right = left , right
       @left = SlotDefinition.new(@left.shift , @left) if @left.is_a? Array
       @right = SlotDefinition.new(@right.shift , @right) if @right.is_a? Array
       raise "right not Mom, #{@right.to_s}" unless @right.is_a?( SlotDefinition )
+      @original_source = original_source || self
     end
 
     def to_risc(compiler)
-      const = @right.to_register(compiler , self)
+      const = @right.to_register(compiler , original_source)
       left_slots = @left.slots
       case @left.known_object
       when Symbol
@@ -42,13 +44,13 @@ module Mom
         if left_slots.length > 1
           # swap the existing target (with a new reg) and update the index
           new_left = compiler.use_reg( :int )
-          const << Risc::SlotToReg.new( self , left ,left_index, new_left)
+          const << Risc::SlotToReg.new( original_source , left ,left_index, new_left)
           left = new_left
           left_index = SlotLoad.resolve_to_index(left_slots[0] , left_slots[1] ,compiler)
           if left_slots.length > 2
             #same again, once more updating target
             new_left = compiler.use_reg( :int )
-            const << Risc::SlotToReg.new( self , left ,left_index, new_left)
+            const << Risc::SlotToReg.new( original_source , left ,left_index, new_left)
             left = new_left
             left_index = SlotLoad.resolve_to_index(left_slots[1] , left_slots[2] ,compiler)
           end
@@ -60,7 +62,7 @@ module Mom
       else
         raise "We have left #{@left.known_object}"
       end
-      const << Risc.reg_to_slot(self, const.register , left, left_index)
+      const << Risc.reg_to_slot(original_source, const.register , left, left_index)
       compiler.reset_regs
       return const
     end

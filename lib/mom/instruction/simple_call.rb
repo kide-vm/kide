@@ -22,7 +22,7 @@ module Mom
     def to_risc(compiler)
       jump_address = compiler.use_reg(:int)
       return_label = Risc::Label.new(self,"continue_#{object_id}")
-      save_return =  SlotLoad.new([:message,:next_message,:return_address],[return_label])
+      save_return =  SlotLoad.new([:message,:next_message,:return_address],[return_label],self)
       moves = save_return.to_risc(compiler)
       moves << Risc.slot_to_reg(self, :message , :next_message , Risc.message_reg)
       moves << Risc.load_constant(self , method.binary , jump_address)

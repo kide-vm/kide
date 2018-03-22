@@ -24,11 +24,11 @@ module Mom
     # Move method name, frame and arguemnt types from the method to the neext_message
     # Assumes the message is ready, see class description
     def to_risc(compiler)
-      name_move = SlotLoad.new( [:message , :next_message,:name] , [method , :name])
+      name_move = SlotLoad.new( [:message , :next_message,:name] , [method , :name],self)
       moves = name_move.to_risc(compiler)
-      args_move = SlotLoad.new( [:message , :next_message, :arguments,:type] , [method , :arguments, :type])
+      args_move = SlotLoad.new( [:message , :next_message, :arguments,:type] , [method , :arguments, :type],self)
       moves << args_move.to_risc(compiler)
-      type_move = SlotLoad.new( [:message , :next_message, :frame,:type] , [method , :frame,:type])
+      type_move = SlotLoad.new( [:message , :next_message, :frame,:type] , [method , :frame,:type],self)
       moves << type_move.to_risc(compiler)
     end
 

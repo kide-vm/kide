@@ -29,7 +29,7 @@ module Mom
     end
 
     def to_risc(compiler)
-      transfer = SlotLoad.new([:message , :next_message , :receiver] , @receiver).to_risc(compiler)
+      transfer = SlotLoad.new([:message , :next_message , :receiver] , @receiver, self).to_risc(compiler)
       compiler.reset_regs
       @arguments.each do |arg|
         transfer << arg.to_risc(compiler)
