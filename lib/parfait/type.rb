@@ -77,15 +77,16 @@ module Parfait
     def create_method( method_name , arguments , frame)
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a?(Symbol)
       #puts "Self: #{self.class} clazz: #{clazz.name}"
-      found = get_method( method_name )
-      #TODO check types and then what ?
-      return found if found
-      if arguments.is_a?(Hash)
-        raise "May want to get rid of this way"
-        arguments = NamedList.type_for( arguments )
-      end
       raise "frame must be a type, not:#{frame}" unless frame.is_a?(Type)
-      add_method TypedMethod.new( self , method_name , arguments , frame )
+      found = get_method( method_name )
+      if found
+        puts "redefining method #{method_name}" #TODO, this surely must get more complicated
+        raise "attempt to redifine method for different type " unless self == found.for_type
+        found.init(arguments , frame)
+        return found
+      else
+        add_method TypedMethod.new( self , method_name , arguments , frame )
+      end
     end
 
     def add_method( method )

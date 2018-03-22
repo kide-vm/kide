@@ -30,10 +30,14 @@ module Parfait
       super()
       raise "No class #{name}" unless type
       raise "For type, not class #{type}" unless type.is_a?(Type)
-      raise "Wrong argument type, expect Type not #{arguments.class}" unless arguments.is_a? Type
-      raise "Wrong frame type, expect Type not #{frame.class}" unless frame.is_a? Type
       @for_type = type
       @name = name
+      init(arguments, frame)
+    end
+
+    def init(arguments, frame)
+      raise "Wrong argument type, expect Type not #{arguments.class}" unless arguments.is_a? Type
+      raise "Wrong frame type, expect Type not #{frame.class}" unless frame.is_a? Type
       @binary = BinaryCode.new 0
       @arguments = arguments
       @frame = frame
