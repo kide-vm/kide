@@ -19,11 +19,12 @@ HERE
       #show_ticks # get output of what is
       check_chain [Branch, Label, LoadConstant, SlotToReg, RegToSlot,
              LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant,
-             FunctionCall, Label, Label, NilClass]
+             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
+             SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
+             LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             RegToSlot, SlotToReg, LoadConstant, FunctionCall, Label,
+             Label, NilClass]
     end
 
     def pest_get

@@ -78,6 +78,8 @@ module Mom
         type = compiler.method.arguments
       when :receiver
         type = compiler.method.for_type
+      when Parfait::Object
+        type = Parfait.object_space.get_class_by_name( object.class.name.split("::").last.to_sym).instance_type
       else
         raise "Not implemented/found object #{object}"
       end
@@ -98,6 +100,7 @@ module Mom
       @known_object , @slots = object , slots
       slot = [slot] unless slot.is_a?(Array)
       raise "Not known #{slots}" unless object
+      raise "No slots #{object}" unless slots
     end
 
     def to_register(compiler, instruction)
@@ -106,6 +109,11 @@ module Mom
       case known_object
       when Constant , Parfait::Object , Risc::Label
         const  = Risc.load_constant(instruction, known_object , right)
+        if slots.length > 0
+          # desctructively replace the existing value to be loaded if more slots
+          index = SlotLoad.resolve_to_index(known_object , slots[0] ,compiler)
+          const << Risc::SlotToReg.new( instruction , right ,index, right)
+        end
       when Symbol
         const = Risc::SlotToReg.new( instruction , Risc.resolve_to_register(known_object) ,
                               Risc.resolve_to_index(:message , slots[0]), right)

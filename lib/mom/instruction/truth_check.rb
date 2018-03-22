@@ -17,10 +17,10 @@ module Mom
     def to_risc(compiler)
       false_label = @false_jump.to_risc(compiler)
       left = @condition.to_register(compiler,self)
-      false_load = SlotDefinition.new( FalseConstant.new , nil ).to_register(compiler,self)
+      false_load = SlotDefinition.new( FalseConstant.new , [] ).to_register(compiler,self)
       left << false_load
       left << Risc::IsSame.new(self , left.register , false_load.register , false_label)
-      nil_load = SlotDefinition.new( NilConstant.new , nil ).to_register(compiler,self)
+      nil_load = SlotDefinition.new( NilConstant.new , [] ).to_register(compiler,self)
       left << nil_load
       left << Risc::IsSame.new(self , left.register , nil_load.register , false_label)
       left

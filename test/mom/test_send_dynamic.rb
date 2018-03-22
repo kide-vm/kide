@@ -7,15 +7,17 @@ module Risc
     def setup
       super
       @input = "@a.mod4"
-      @expect = [LoadConstant, SlotToReg, SlotToReg, NotSame, SlotToReg, SlotToReg ,
-                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg ,
+      @expect = [LoadConstant, SlotToReg, SlotToReg, SlotToReg, NotSame, SlotToReg ,
                  SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg, RegToSlot ,
+                 LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot ,
+                 LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot ,
                  LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg ,
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant ,
                  FunctionCall, Label, SlotToReg, RegToSlot, Label, LoadConstant ,
-                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg, RegToSlot ,
-                 LoadConstant, SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg ,
-                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, DynamicJump]
+                 SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg ,
+                 SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg ,
+                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg ,
+                 RegToSlot, LoadConstant, SlotToReg, DynamicJump]
     end
 
     def test_send_instructions
@@ -23,21 +25,22 @@ module Risc
     end
     def test_function_call
       produced = produce_body
-      assert_equal DynamicJump , produced.next(52).class
+      assert_equal DynamicJump , produced.next(63).class
     end
     def test_load_address
       produced = produce_body
-      assert_equal Parfait::CacheEntry , produced.next(50).constant.class
+      assert_equal LoadConstant , produced.next(61).class
+      assert_equal Parfait::CacheEntry , produced.next(61).constant.class
     end
     def test_cache_check
       produced = produce_body
-      assert_equal NotSame , produced.next(3).class
-      assert_equal produced.next(34) , produced.next(3).label
+      assert_equal NotSame , produced.next(4).class
+      assert_equal produced.next(40) , produced.next(4).label
     end
     def test_check_resolve
       produced = produce_body
-      assert_equal FunctionCall , produced.next(30).class
-      assert_equal :resolve_method ,produced.next(30).method.name
+      assert_equal FunctionCall , produced.next(36).class
+      assert_equal :resolve_method ,produced.next(36).method.name
     end
   end
 end
