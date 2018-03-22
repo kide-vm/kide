@@ -39,7 +39,7 @@ module Risc
       #puts message(objekt , depth)
       #puts "ADD #{objekt.inspect}, #{objekt.name}" if objekt.is_a? Parfait::TypedMethod
       unless objekt.is_a?( Parfait::Object) or objekt.is_a?( Symbol) or objekt.is_a?( Risc::Label)
-        raise "adding non parfait #{objekt.class}"
+        raise "adding non parfait #{objekt.class}:#{objekt}"
       end
       #raise "Method #{objekt.name}" if objekt.is_a? Parfait::TypedMethod
       @objects[objekt.object_id] = objekt

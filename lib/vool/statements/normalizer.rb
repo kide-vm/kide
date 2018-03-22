@@ -14,7 +14,7 @@ module Vool
       end
       return [condition] if condition.is_a?(Named) or condition.is_a?(Constant)
       condition = condition.normalize
-      local = "tmp_#{object_id}"
+      local = "tmp_#{object_id}".to_sym
       assign = Statements.new [LocalAssignment.new( local , condition)]
       [LocalVariable.new(local) , assign]
     end
