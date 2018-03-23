@@ -28,7 +28,7 @@ module Risc
     attr_reader :flags  # somewhat like the lags on a cpu, hash  sym => bool (zero .. . )
 
     #start in state :stopped and set registers to unknown
-    def initialize
+    def initialize()
       @state = :stopped
       @stdout = ""
       @registers = {}
@@ -40,21 +40,21 @@ module Risc
       end
     end
 
-    def start instruction
+    def start( instruction )
       initialize
       set_state(:running)
       set_instruction instruction
     end
 
-    def set_state state
+    def set_state( state )
       old = @state
       return if state == old
       @state = state
       trigger(:state_changed , old , state )
     end
 
-    def set_instruction i
-      return if @instruction == i
+    def set_instruction( i )
+      raise "set to same instruction #{i}" if @instruction == i
       old = @instruction
       @instruction = i
       trigger(:instruction_changed, old , i)
@@ -67,7 +67,7 @@ module Risc
       @registers[reg]
     end
 
-    def set_register reg , val
+    def set_register( reg , val )
       old = get_register( reg ) # also ensures format
       if val.is_a? Fixnum
         @flags[:zero] = (val == 0)
@@ -90,6 +90,7 @@ module Risc
       name = @instruction.class.name.split("::").last
       log.debug "#{@clock.to_s}: #{@instruction.to_s}"
       fetch = send "execute_#{name}"
+      log.debug register_dump
       return unless fetch
       set_instruction @instruction.next
     end
@@ -133,9 +134,12 @@ module Risc
       else
         index = get_register(@instruction.index)
       end
-      if object.is_a?(Symbol)
+      case object
+      when Symbol
         raise "Must convert symbol to word:#{object}" unless( index == 2 )
         value = object.to_s.length
+      when nil
+        raise "error #{@instruction} retrieves nil"
       else
         value = object.get_internal_word( index )
       end
@@ -196,8 +200,8 @@ module Risc
     end
 
     def execute_FunctionReturn
-      object = get_register( @instruction.register )
-      link = object.get_internal_word( @instruction.index )
+      link = get_register( @instruction.register )
+      log.debug "Return to #{link}"
       @instruction = link
       # we jump back to the call instruction. so it is as if the call never happened and we continue
       true
@@ -271,6 +275,19 @@ module Risc
       else
         raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
       end
+    end
+
+    def register_dump
+      (0..7).collect do |reg|
+        value = @registers["r#{reg}".to_sym]
+        str = "#{reg}-" +
+        case value
+        when String
+          value[0..10]
+        else
+          value.class.name.split("::").last
+        end
+      end.join("|")
     end
   end
 end
