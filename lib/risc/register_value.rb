@@ -45,9 +45,9 @@ module Risc
     end
 
     #helper method to calculate with register symbols
-    def next_reg_use type , value = nil
+    def next_reg_use( type , value = nil )
       int = @symbol[1,3].to_i
-      raise "No more registers #{self}" if int > 12
+      raise "No more registers #{self}" if int > 8
       sym = "r#{int + 1}".to_sym
       RiscValue.new( sym , type, value)
     end
@@ -75,7 +75,7 @@ module Risc
   # The first scratch register. There is a next_reg_use to get a next and next.
   # Current thinking is that scratch is schatch between instructions
   def self.tmp_reg( type , value = nil)
-    RiscValue.new :r2 , type , value
+    RiscValue.new :r1 , type , value
   end
 
   # The first arg is a class name (possibly lowercase) and the second an instance variable name.

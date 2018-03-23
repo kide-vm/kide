@@ -72,7 +72,7 @@ module Mom
       case object
       when :frame
         type = compiler.method.frame
-      when :message , :next_message
+      when :message , :next_message , :caller
         type = Parfait.object_space.get_class_by_name(:Message).instance_type
       when :arguments
         type = compiler.method.arguments
