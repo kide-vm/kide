@@ -9,9 +9,9 @@ module Risc
       end
     end
 
-    def check_return( val )
+    def get_return
       assert_equal Parfait::Message , @interpreter.get_register(:r0).class
-      assert_equal val , @interpreter.get_register(:r0).return_value
+      @interpreter.get_register(:r0).return_value
     end
 
     def ticks( num )

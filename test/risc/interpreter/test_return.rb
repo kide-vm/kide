@@ -11,46 +11,37 @@ module Risc
 
     def test_chain
       #show_ticks # get output of what is
-      check_chain [Branch, Label, LoadConstant, SlotToReg, RegToSlot,
-             LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,
-             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             Transfer]
+      check_chain [Branch, Label, LoadConstant, SlotToReg, SlotToReg,
+             RegToSlot, LoadConstant, RegToSlot, FunctionCall, Label,
+             LoadConstant, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, FunctionReturn, Transfer, Syscall,
+             NilClass]
+      assert_equal 5 , get_return.value
     end
 
     def test_call_main
-      call_ins = ticks(8)
+      call_ins = ticks(9)
       assert_equal FunctionCall , call_ins.class
       assert  :main , call_ins.method.name
     end
     def test_load_5
-      load_ins = ticks 10
+      load_ins = ticks 11
       assert_equal LoadConstant ,  load_ins.class
-      assert_equal 5 , @interpreter.get_register(load_ins.register).value 
+      assert_equal 5 , @interpreter.get_register(load_ins.register).value
     end
-
-    def pest_call
+    def test_transfer
+      transfer = ticks(19)
+      assert_equal Transfer ,  transfer.class
+    end
+    def test_sys
+      sys = ticks(20)
+      assert_equal Syscall ,  sys.class
+    end
+    def test_return
       ret = ticks(18)
       assert_equal FunctionReturn ,  ret.class
-
-      object = @interpreter.get_register( ret.register )
-      link = object.get_internal_word( ret.index )
-
+      link = @interpreter.get_register( ret.register )
       assert_equal Label , link.class
-    end
-    def pest_adding
-      done_op = ticks(12)
-      assert_equal OperatorInstruction ,  done_op.class
-      left = @interpreter.get_register(done_op.left)
-      rr = done_op.right
-      right = @interpreter.get_register(rr)
-      assert_equal Fixnum , left.class
-      assert_equal Fixnum , right.class
-      assert_equal 7 , right
-      assert_equal 12 , left
-      done_tr = ticks(1)
-      assert_equal RegToSlot ,  done_tr.class
-      result = @interpreter.get_register(done_op.left)
-      assert_equal result , 12
     end
   end
 end
