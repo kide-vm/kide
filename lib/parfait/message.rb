@@ -20,7 +20,7 @@ module Parfait
     attr_reader   :return_address, :return_value
     attr_reader   :caller , :name , :arguments
 
-    def initialize next_m
+    def initialize( next_m )
       @next_message = next_m
       @frame = NamedList.new()
       @arguments = NamedList.new()

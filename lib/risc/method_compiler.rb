@@ -103,7 +103,7 @@ module Risc
 
     # for computationally building code (ie writing assembler) these short cuts
     # help to instantiate risc instructions and add them immediately
-    [:label, :reg_to_slot , :slot_to_reg , :load_constant, :function_return ,
+    [:label, :reg_to_slot , :slot_to_reg , :load_constant, :function_return , :function_call,
       :transfer , :reg_to_slot , :byte_to_reg , :reg_to_byte].each do |method|
       define_method("add_#{method}".to_sym) do |*args|
         add_code Risc.send( method , *args )

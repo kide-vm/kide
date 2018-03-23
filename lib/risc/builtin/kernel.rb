@@ -11,20 +11,23 @@ module Risc
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
           new_start = Risc.label("__init__ start" , "__init__" )
           compiler.method.set_instructions( new_start)
-          compiler.set_current new_start
+          compiler.set_current( new_start )  #thus abandoning standard method setup
 
           space = Parfait.object_space
           space_reg = compiler.use_reg(:Space) #Set up the Space as self upon init
           compiler.add_load_constant("__init__ load Space", space , space_reg)
           message_ind = Risc.resolve_to_index( :space , :first_message )
+          #load the first_message (instance of space)
           compiler.add_slot_to_reg( "__init__ load 1st message" , space_reg , message_ind , :message)
+          # but use it's next message, so main can return normally
+          compiler.add_slot_to_reg( "__init__ load 2nd message" , :message , :next_message , :message)
           compiler.add_reg_to_slot( "__init__ store Space in message", space_reg , :message , :receiver)
           #fixme: should add arg type here, as done in call_site (which this sort of is)
           exit_label = Risc.label("_exit_label for __init__" , "#{compiler.type.object_class.name}.#{compiler.method.name}" )
           ret_tmp = compiler.use_reg(:Label)
           compiler.add_load_constant("__init__ load return", exit_label , ret_tmp)
           compiler.add_reg_to_slot("__init__ store return", ret_tmp , :message , :return_address)
-          compiler.add_code Risc.function_call( "__init__ issue call" ,  Parfait.object_space.get_main , ret_tmp)
+          compiler.add_function_call( "__init__ issue call" ,  Parfait.object_space.get_main , ret_tmp)
           compiler.add_code exit_label
           emit_syscall( compiler , :exit )
           return compiler.method

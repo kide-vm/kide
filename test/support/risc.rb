@@ -9,12 +9,12 @@ module Risc
       end
     end
 
-    def check_return val
+    def check_return( val )
       assert_equal Parfait::Message , @interpreter.get_register(:r0).class
       assert_equal val , @interpreter.get_register(:r0).return_value
     end
 
-    def ticks num
+    def ticks( num )
       last = nil
       num.times do
         last = @interpreter.instruction
