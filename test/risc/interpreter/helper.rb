@@ -5,6 +5,7 @@ module Risc
   module Ticker
     include AST::Sexp
     include InterpreterHelpers
+    include CompilerHelper
 
     def setup
       Risc.machine.boot

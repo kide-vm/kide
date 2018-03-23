@@ -5,7 +5,7 @@ module Risc
     include Ticker
 
     def setup
-      @string_input = as_main "return 5.mod4"
+      @string_input = as_main("return 5")
       super
     end
 
@@ -13,23 +13,19 @@ module Risc
       #show_ticks # get output of what is
       check_chain [Branch, Label, LoadConstant, SlotToReg, RegToSlot,
              LoadConstant, RegToSlot, FunctionCall, Label, LoadConstant,
-             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-             SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-             RegToSlot, SlotToReg, LoadConstant, FunctionCall, Label,
-             Label, NilClass]
+             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             Transfer]
     end
 
-    def pest_get
-      assert_equal SlotToReg , ticks(4).class
-      assert @interpreter.get_register( :r2 )
-      assert  Integer , @interpreter.get_register( :r2 ).class
+    def test_call_main
+      call_ins = ticks(8)
+      assert_equal FunctionCall , call_ins.class
+      assert  :main , call_ins.method.name
     end
-    def pest_transfer
-      transfer = ticks 19
-      assert_equal Transfer ,  transfer.class
-      assert_equal @interpreter.get_register(transfer.to) , @interpreter.get_register(transfer.from)
+    def test_load_5
+      load_ins = ticks 10
+      assert_equal LoadConstant ,  load_ins.class
+      assert_equal 5 , @interpreter.get_register(load_ins.register).value 
     end
 
     def pest_call
