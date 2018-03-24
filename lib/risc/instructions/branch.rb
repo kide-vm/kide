@@ -67,14 +67,6 @@ module Risc
     attr_reader :register
   end
 
-  # branch if two registers contain same value
-  class IsSame < Branch
-    attr_reader :left , :right
-    def initialize(source , left , right , label)
-      super(source , label)
-    end
-  end
-
   class Unconditional < Branch
 
   end

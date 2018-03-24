@@ -7,8 +7,9 @@ module Risc
     def setup
       super
       @input = "if(@a) ; arg = 5 ; end"
-      @expect = [SlotToReg, SlotToReg, LoadConstant, IsSame, LoadConstant, IsSame ,
-                 Label, LoadConstant, SlotToReg, RegToSlot, Label]
+      @expect = [SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsNotZero ,
+                 LoadConstant, OperatorInstruction, IsNotZero, Label, LoadConstant ,
+                 SlotToReg, RegToSlot, Label]
     end
 
     def test_if_instructions
@@ -19,22 +20,31 @@ module Risc
       produced = produce_body
       assert_equal Mom::FalseConstant , produced.next(2).constant.class
     end
+    def test_isnotzero
+      produced = produce_body
+      assert_equal IsNotZero , produced.next(4).class
+      assert produced.next(4).label.name.start_with?("false_label")
+    end
+    def test_false_label
+      produced = produce_body
+      assert_equal Label , produced.next(12).class
+    end
     def test_false_check
       produced = produce_body
-      assert_equal produced.next(10) , produced.next(3).label
+      assert_equal produced.next(12) , produced.next(4).label
     end
     def test_nil_load
       produced = produce_body
-      assert_equal Mom::NilConstant , produced.next(4).constant.class
+      assert_equal Mom::NilConstant , produced.next(5).constant.class
     end
     def test_nil_check
       produced = produce_body
-      assert_equal produced.next(10) , produced.next(5).label
+      assert_equal Label , produced.next(4).label.class
+      assert_equal produced.next(12) , produced.next(4).label
     end
-
     def test_true_label
       produced = produce_body
-      assert produced.next(6).name.start_with?("true_label")
+      assert produced.next(8).name.start_with?("true_label")
     end
 
   end
