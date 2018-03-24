@@ -11,17 +11,20 @@ module Risc
 
     def test_chain
       #show_ticks # get output of what is
-      check_chain [Branch, Label, LoadConstant, SlotToReg, SlotToReg,
-             RegToSlot, LoadConstant, RegToSlot, FunctionCall, Label,
-             LoadConstant, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
+      check_chain [Branch, Label, LoadConstant, SlotToReg, LoadConstant,
+             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
              SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, RegToSlot, LoadConstant, RegToSlot, FunctionCall,
+             Label, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
              LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-             RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, RegToSlot, SlotToReg, LoadConstant, FunctionCall,
-             Label, Label, NilClass]
+             RegToSlot, LoadConstant, SlotToReg, SlotToReg, SlotToReg,
+             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
+             LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant,
+             FunctionCall, Label, Label, NilClass]
     end
 
-    def pest_get
+    def test_get
       assert_equal SlotToReg , ticks(4).class
       assert @interpreter.get_register( :r2 )
       assert  Integer , @interpreter.get_register( :r2 ).class

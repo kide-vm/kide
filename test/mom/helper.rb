@@ -65,7 +65,7 @@ module Risc
       postamble.each {all.pop}
       str = all.to_s.gsub("Risc::","")
       ret = ""
-      str.split(",").each_slice(6).each do |line|
+      str.split(",").each_slice(5).each do |line|
         ret += "                " + line.join(",") + " ,\n"
       end
       ret

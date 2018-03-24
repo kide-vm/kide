@@ -7,18 +7,21 @@ module Risc
     def setup
       super
       @input = "return @a.mod4"
-      @expect = [LoadConstant, SlotToReg, SlotToReg, SlotToReg, NotSame, SlotToReg ,
-                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg, RegToSlot ,
-                 LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot ,
-                 LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot ,
-                 LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg ,
-                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant ,
-                 FunctionCall, Label, SlotToReg, RegToSlot, Label, LoadConstant ,
-                 SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg ,
-                 SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg ,
-                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg ,
-                 RegToSlot, LoadConstant, SlotToReg, DynamicJump, SlotToReg, SlotToReg ,
-                 RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg ,
+      @expect = [LoadConstant, SlotToReg, SlotToReg, SlotToReg, OperatorInstruction ,
+                 IsZero, SlotToReg, SlotToReg, LoadConstant, RegToSlot ,
+                 LoadConstant, SlotToReg, SlotToReg, RegToSlot, LoadConstant ,
+                 SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot ,
+                 LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg ,
+                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg ,
+                 SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg ,
+                 RegToSlot, SlotToReg, LoadConstant, FunctionCall, Label ,
+                 SlotToReg, LoadConstant, RegToSlot, Label, LoadConstant ,
+                 SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg ,
+                 SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant ,
+                 SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot ,
+                 SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant ,
+                 SlotToReg, DynamicJump, SlotToReg, SlotToReg, RegToSlot ,
+                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg ,
                  RegToSlot, SlotToReg, SlotToReg, FunctionReturn]
     end
 
@@ -27,11 +30,11 @@ module Risc
     end
     def test_function_return
       produced = produce_body
-      assert_equal FunctionReturn , produced.next(75).class
+      assert_equal FunctionReturn , produced.next(78).class
     end
     def test_cache_check
       produced = produce_body
-      assert_equal NotSame , produced.next(4).class
+      assert_equal IsZero , produced.next(5).class
     end
   end
 end
