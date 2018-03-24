@@ -109,7 +109,7 @@ module Risc
     def execute_IsZero
        @flags[:zero] ?  execute_Branch : true
     end
-    def execute_IsNotzero
+    def execute_IsNotZero
        @flags[:zero] ? true : execute_Branch
     end
     def execute_IsPlus
@@ -255,23 +255,23 @@ module Risc
     end
 
     def handle_operator(left, right)
-      case @instruction.operator.to_s
-      when "+"
+      left = left.object_id unless left.is_a?(Integer)
+      right = right.object_id unless right.is_a?(Integer)
+      case @instruction.operator
+      when :+
         return left + right
-      when "-"
+      when :-
         return left - right
-      when ">>"
+      when :>>
         return left / (2**right)
-      when "<<"
+      when :<<
         return left * (2**right)
-      when "*"
+      when :*
         return left * right
-      when "&"
+      when :&
         return left & right
-      when "|"
+      when :|
         return left | right
-      when "=="
-        return (left == right) ? 1 : 0
       else
         raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
       end
