@@ -16,7 +16,7 @@ module Risc
         end
 
 
-        def div10 context
+        def div10( context )
           s = "div_10"
           compiler = compiler_for(:Integer,:div10 ,{})
           me = compiler.add_known( :receiver )
@@ -68,6 +68,7 @@ module Risc
           # return q + tmp
           compiler.add_code Risc.op( s , "+" , q , tmp )
           compiler.add_reg_to_slot( s , q , :message , :return_value)
+          compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
       end
