@@ -75,14 +75,6 @@ module Risc
     end
   end
 
-  # branch if two registers contain different values
-  class NotSame < Branch
-    attr_reader :left , :right
-    def initialize(source , left , right , label)
-      super(source , label)
-    end
-  end
-
   class Unconditional < Branch
 
   end
@@ -90,7 +82,7 @@ module Risc
   class IsZero < Branch
   end
 
-  class IsNotzero < Branch
+  class IsNotZero < Branch
   end
 
   class IsMinus < Branch
