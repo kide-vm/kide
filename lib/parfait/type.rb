@@ -80,7 +80,7 @@ module Parfait
       raise "frame must be a type, not:#{frame}" unless frame.is_a?(Type)
       found = get_method( method_name )
       if found
-        puts "redefining method #{method_name}" #TODO, this surely must get more complicated
+        #puts "redefining method #{method_name}" #TODO, this surely must get more complicated
         raise "attempt to redifine method for different type " unless self == found.for_type
         found.init(arguments , frame)
         return found

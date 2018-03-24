@@ -122,7 +122,7 @@ module Risc
     def execute_LoadConstant
       to = @instruction.register
       value = @instruction.constant
-      #value = value.object_id unless value.is_a?(Fixnum)
+      value = value.value if value.is_a?(Mom::Constant)
       set_register( to , value )
       true
     end
