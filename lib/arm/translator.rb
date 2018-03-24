@@ -72,7 +72,7 @@ module Arm
     end
 
     def translate_FunctionReturn code
-      ArmMachine.ldr( :pc ,  code.register , arm_index(code) )
+      ArmMachine.mov( :pc ,  code.register)
     end
 
     def translate_LoadConstant code
