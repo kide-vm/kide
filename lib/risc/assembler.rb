@@ -34,18 +34,27 @@ module Risc
       @objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::TypedMethod
         log.debug "CODE1 #{objekt.name}"
+        # create binary for assembly
+        objekt.create_binary if objekt.is_a? Parfait::TypedMethod
         binary = objekt.binary
         Positioned.set_position(binary,at)
         objekt.instructions.set_position( at + 12) # BinaryCode header
-        len = objekt.instructions.total_byte_length
-        log.debug "CODE2 #{objekt.name} at #{Positioned.position(binary)} len: #{len}"
-        binary.set_length(len , 0)
+        len = 4 * 14
         at += binary.padded_length
+        nekst = binary.next
+        while(nekst)
+          Positioned.set_position(nekst , at)
+          at += binary.padded_length
+          nekst = nekst.next
+          len += 4 * 16
+          #puts "LENGTH #{len}"
+        end
+        log.debug "CODE2 #{objekt.name} at #{Positioned.position(binary)} len: #{len}"
       end
       at
     end
 
-    def assemble_objects( at)
+    def assemble_objects( at )
       at +=  8 # thats the padding
       # want to have the objects first in the executable
       @objects.each do | id , objekt|
@@ -148,7 +157,7 @@ module Risc
       binary = method.binary
       total_byte_length = method.instructions.total_byte_length
       log.debug "Assembled code #{method.name} with length #{length}"
-      raise "length error #{binary.char_length} != #{total_byte_length}" if binary.char_length != total_byte_length
+      raise "length error #{binary.char_length} != #{total_byte_length}" if binary.char_length <= total_byte_length
       raise "length error #{length} != #{total_byte_length}" if total_byte_length != length
     end
 

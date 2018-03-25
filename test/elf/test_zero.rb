@@ -16,7 +16,7 @@ class TestZeroCode < MiniTest::Test
     name == :main or name == :__init__
   end
 
-  def test_empty_translate
+  def pest_empty_translate
     assert_equal 2 , @space.collect_methods.length
     @machine.translate_arm
     writer = Elf::ObjectWriter.new(@machine , @objects )

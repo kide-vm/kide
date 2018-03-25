@@ -38,13 +38,17 @@ module Parfait
     def init(arguments, frame)
       raise "Wrong argument type, expect Type not #{arguments.class}" unless arguments.is_a? Type
       raise "Wrong frame type, expect Type not #{frame.class}" unless frame.is_a? Type
-      @binary = BinaryCode.new 0
       @arguments = arguments
       @frame = frame
     end
 
     def set_instructions(inst)
       @instructions = inst
+    end
+
+    def create_binary
+      total = @instructions.total_byte_length / 4 + 1
+      @binary = BinaryCode.new( total )
     end
 
     # determine whether this method has an argument by the name
