@@ -42,6 +42,10 @@ module Risc
       raise "Abstract called on #{self}"
     end
 
+    def to_cpu( translator )
+      translator.translate( self )
+    end
+
     def assemble_all io , labels = []
       self.assemble(io)
       self.next.assemble_all(io, labels) if self.next

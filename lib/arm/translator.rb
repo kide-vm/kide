@@ -10,9 +10,8 @@ module Arm
       self.send( "translate_#{class_name}".to_sym , instruction)
     end
 
-    # don't replace labels
     def translate_Label( code )
-      nil
+      Risc::Label.new( code.source , code.name )
     end
 
     # arm indexes are
@@ -68,7 +67,7 @@ module Arm
     end
 
     def translate_FunctionCall code
-      ArmMachine.b( code.method.instructions )
+      ArmMachine.b( code.method.risc_instructions )
     end
 
     def translate_FunctionReturn code

@@ -14,6 +14,10 @@ module Risc
     end
     attr_reader :name
 
+    def to_cpu(translator)
+      @cpu_label ||= super
+    end
+
     def to_s
       class_source "#{@name} (next: #{self.next.class.name.split("::").last})"
     end
