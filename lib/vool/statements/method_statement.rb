@@ -32,7 +32,7 @@ module Vool
       @clazz.add_method( method )
       typed_method = method.create_parfait_method(clazz.instance_type)
       head = @body.to_mom( typed_method )
-      compiler = Risc::MethodCompiler.new( typed_method ).init_method
+      compiler = Risc::MethodCompiler.new( typed_method )
       compiler.add_mom(head)
       head # return for testing
     end

@@ -9,10 +9,6 @@ module Risc
         def __init__ context
           compiler = Risc::MethodCompiler.create_method(:Kernel,:__init__ ,
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
-          new_start = Risc.label("__init__ start" , "__init__" )
-          compiler.method.set_instructions( new_start)
-          compiler.set_current( new_start )  #thus abandoning standard method setup
-
           space = Parfait.object_space
           space_reg = compiler.use_reg(:Space) #Set up the Space as self upon init
           compiler.add_load_constant("__init__ load Space", space , space_reg)

@@ -16,7 +16,7 @@ module Risc
         @method = method
         @type = method.for_type
       end
-      @current = @method.instructions
+      @current = @method.risc_instructions
     end
     attr_reader :type , :method
 
@@ -39,17 +39,6 @@ module Risc
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
       method = type.create_method( method_name , args , frame)
       self.new(method)
-    end
-
-    # add method entry and exit code. Mainly save_return for the enter and
-    # message shuffle and FunctionReturn for the return
-    # return self for chaining
-    def init_method
-      source = "_init_method"
-      name = "#{method.for_type.name}.#{method.name}"
-      @current = @method.set_instructions( Risc.label(source, name))
-      @current << Risc.label( source, "unreachable")
-      self
     end
 
     def add_known(name)
