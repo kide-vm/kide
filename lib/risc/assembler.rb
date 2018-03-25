@@ -23,8 +23,8 @@ module Risc
     def assemble
       at = 0
       #need the initial jump at 0 and then functions
-      @machine.init.set_position( 0)
-      at = @machine.init.byte_length
+      @machine.cpu_init.set_position( 0)
+      at = @machine.cpu_init.byte_length
       at = assemble_objects( at )
       # and then everything code
       asseble_code_from(  at )
@@ -38,7 +38,7 @@ module Risc
         objekt.create_binary if objekt.is_a? Parfait::TypedMethod
         binary = objekt.binary
         Positioned.set_position(binary,at)
-        objekt.instructions.set_position( at + 12) # BinaryCode header
+        objekt.risc_instructions.set_position( at + 12) # BinaryCode header
         len = 4 * 14
         at += binary.padded_length
         nekst = binary.next
@@ -58,7 +58,7 @@ module Risc
       at +=  8 # thats the padding
       # want to have the objects first in the executable
       @objects.each do | id , objekt|
-        next if objekt.is_a? Risc::Label # will get assembled as method.instructions
+        next if objekt.is_a? Risc::Label # will get assembled as method.risc_instructions
         next if objekt.is_a? Parfait::BinaryCode
         Positioned.set_position(objekt,at)
         at += objekt.padded_length
@@ -132,10 +132,10 @@ module Risc
     # and then plonk that binary data into the method.code array
     def assemble_binary_method method
       stream = StringIO.new
-      #puts "Method #{method.source.instructions.to_ac}"
+      #puts "Method #{method.source.risc_instructions.to_ac}"
       begin
-        #puts "assemble #{method.source.instructions}"
-        method.instructions.assemble_all( stream )
+        #puts "assemble #{method.source.risc_instructions}"
+        method.risc_instructions.assemble_all( stream )
       rescue => e
         log.debug "Assembly error #{method.name}\n#{method.to_rxf.to_s[0...2000]}"
         raise e
@@ -155,7 +155,7 @@ module Risc
       stream.rewind
       length = stream.length
       binary = method.binary
-      total_byte_length = method.instructions.total_byte_length
+      total_byte_length = method.risc_instructions.total_byte_length
       log.debug "Assembled code #{method.name} with length #{length}"
       raise "length error #{binary.char_length} != #{total_byte_length}" if binary.char_length <= total_byte_length
       raise "length error #{length} != #{total_byte_length}" if total_byte_length != length

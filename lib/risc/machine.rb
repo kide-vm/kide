@@ -20,39 +20,28 @@ module Risc
       @booted = false
       @constants = []
     end
-    attr_reader  :constants , :init  , :booted
+    attr_reader  :constants , :risc_init , :cpu_init  , :booted
 
     # idea being that later method missing could catch translate_xxx and translate to target xxx
     # now we just instantiate ArmTranslater and pass instructions
     def translate_arm
       methods = Parfait.object_space.collect_methods
       translate_methods( methods )
-      label = @init.next
-      @init = Arm::Translator.new.translate( @init )
-      @init.append label
+      @cpu_init = Arm::Translator.new.translate( @risc_init )
     end
 
     def translate_methods(methods)
       translator = Arm::Translator.new
       methods.each do |method|
         log.debug "Translate method #{method.name}"
-        instruction = method.instructions
-        while instruction.next
-          nekst = instruction.next
-          t = translator.translate(nekst) # returning nil means no replace
-          if t
-            nekst = t.last
-            instruction.replace_next(t)
-          end
-          instruction = nekst
-        end
+        method.translate_cpu(translator)
       end
     end
 
     def boot
       initialize
       boot_parfait!
-      @init =  Branch.new( "__initial_branch__" , Parfait.object_space.get_init.instructions )
+      @risc_init = Branch.new( "__initial_branch__" , Parfait.object_space.get_init.risc_instructions )
       @booted = true
       self
     end
@@ -65,15 +54,6 @@ module Risc
       @machine = Machine.new
     end
     @machine
-  end
-
-end
-
-Parfait::TypedMethod.class_eval do
-  # for testing we need to reuse the main function (or do we?)
-  # so remove the code that is there
-  def clear_source
-    self.source.send :initialize , self
   end
 
 end

@@ -13,7 +13,7 @@ module Risc
       Vool::VoolCompiler.ruby_to_vool( @string_input )
       Collector.collect_space
       @interpreter = Interpreter.new
-      @interpreter.start Risc.machine.init
+      @interpreter.start Risc.machine.risc_init
     end
 
     # must be after boot, but before main compile, to define method
