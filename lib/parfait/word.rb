@@ -12,14 +12,14 @@ module Parfait
   # So all indexes are offset by one in the implementation
   # Object length is measured in non-type cells though
 
-  class Word < Object
+  class Word < Data8
     attr_reader :char_length
 
     #semi "indexed" methods for interpreter
     def self.get_length_index
       2 # 2 is the amount of attributes, type and char_length. the offset after which chars start
     end
-    def self.get_indexed i
+    def self.get_indexed( i )
       i + get_length_index * 4
     end
     # initialize with length. For now we try to keep all non-parfait (including String) out
@@ -28,23 +28,10 @@ module Parfait
     def initialize len
       super()
       @char_length = 0
-      @memory = []
       raise "Must init with int, not #{len.class}" unless len.kind_of? Fixnum
       raise "Must init with positive, not #{len}" if len < 0
       set_length( len , 32 ) unless len == 0 #32 beeing ascii space
       #puts "type #{self.get_type} #{self.object_id.to_s(16)}"
-    end
-
-    # 1 -based index
-    def get_internal_word(index)
-      @memory[index]
-    end
-
-    # 1 -based index
-    def set_internal_word(index , value)
-      raise "Word[#{index}] = nil" if( value.nil? )
-      @memory[index] = value
-      value
     end
 
 
@@ -100,13 +87,13 @@ module Parfait
     # character must be an integer, as is the index
     # the index starts at one, but may be negative to count from the end
     # indexes out of range will raise an error
-    def set_char at , char
+    def set_char( at , char )
       raise "char not fixnum #{char.class}" unless char.kind_of? Fixnum
       index = range_correct_index(at)
       set_internal_byte( index , char)
     end
 
-    def set_internal_byte index , char
+    def set_internal_byte( index , char )
       word_index = (index) / 4
       rest = ((index) % 4)
       shifted =  char << (rest * 8)
@@ -128,7 +115,7 @@ module Parfait
     # the index starts at one, but may be negative to count from the end
     # indexes out of range will raise an error
     #the return "character" is an integer
-    def get_char at
+    def get_char( at )
       index = range_correct_index(at)
       get_internal_byte(index)
     end

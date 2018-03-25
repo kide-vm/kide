@@ -7,7 +7,7 @@
 # Ie it would be possible to change the value, we just don't support that)
 
 module Parfait
-  class Integer
+  class Integer < Data2
 
     # :integer?, :odd?, :even?, :upto, :downto, :times, :succ, :next, :pred, :chr, :ord, :to_i, :to_int, :floor,
     # :ceil, :truncate, :round, :gcd, :lcm, :gcdlcm, :numerator, :denominator, :to_r, :rationalize,

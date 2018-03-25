@@ -116,7 +116,8 @@ module Risc
 
     # superclasses other than default object
     def  super_class_names
-       { Object: :Kernel , Kernel: :Value , Integer: :Value , BinaryCode: :Word }
+       { Object: :Kernel , Kernel: :Value , BinaryCode: :Word ,
+         Data2: :DataObject ,Data8: :DataObject , Integer: :Data2, Word: :Data8}
     end
 
     # the function really just returns a constant (just avoiding the constant)
@@ -129,12 +130,15 @@ module Risc
                      return_address: :Integer, return_value: :Integer,
                      caller: :Message ,        name: :Word ,     arguments: :NamedList },
           Integer: {},
+          DataObject: {},
+          Data2: {},
+          Data8: {},
           TrueClass: {},
           FalseClass: {},
           NilClass: {},
           Object: {},
           Kernel: {}, #fix, kernel is a class, but should be a module
-          BinaryCode: {char_length: :Integer} ,
+          BinaryCode: {next: :BinaryCode} ,
           Space: {classes: :Dictionary , types: :Dictionary ,
                   first_message: :Message , single_true: :TrueClass,
                   single_false: :FalseClass , single_nil: :NilClass},
