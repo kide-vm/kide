@@ -47,7 +47,7 @@ module Mom
       Parfait.object_space.get_class_by_name(:Word).instance_type
     end
   end
-  class SymbolConstant < String
+  class SymbolConstant < Constant
     def ct_type
       Parfait.object_space.get_class_by_name(:Word).instance_type
     end

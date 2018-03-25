@@ -110,43 +110,44 @@ module Risc
         type = types[name]
         clazz = classes[name]
         type.set_object_class( clazz )
-        type.init_lists({:type => :Type }.merge(ivars))
+        type.init_lists({type: :Type }.merge(ivars))
       end
     end
 
     # superclasses other than default object
     def  super_class_names
-       { :Object => :Kernel , :Kernel => :Value , :Integer => :Value , :BinaryCode => :Word }
+       { Object: :Kernel , Kernel: :Value , Integer: :Value , BinaryCode: :Word }
     end
 
     # the function really just returns a constant (just avoiding the constant)
     # unfortuantely that constant condenses every detail about the system, class names
     # and all instance variable names. Really have to find a better way
     def type_names
-       {  :Word => {:char_length => :Integer} ,
-          :List => {:indexed_length => :Integer} ,
-          :Message => { :next_message => :Message, :receiver => :Object, :frame => :NamedList ,
-                        :return_address => :Integer, :return_value => :Integer,
-                        :caller => :Message , :name => :Word , :arguments => :NamedList },
-          :Integer => {},
-          :TrueClass => {},
-          :FalseClass => {},
-          :NilClass => {},
-          :Object => {},
-          :Kernel => {}, #fix, kernel is a class, but should be a module
-          :BinaryCode => {:char_length => :Integer} ,
-          :Space => {:classes => :Dictionary , :types => :Dictionary ,
-                     :first_message => :Message , single_true: :TrueClass,
-                     single_false: :FalseClass , single_nil: :NilClass},
-          :NamedList => {},
-          :Type => {:names => :List , :types => :List  ,
-                    :object_class => :Class, :methods => :List } ,
-          :Class => {:instance_methods => :List, :instance_type => :Type, :name => :Word,
-                      :super_class_name => :Word , :instance_names => :List },
-          :Dictionary => {:keys => :List , :values => :List  } ,
-          :CacheEntry => {:cached_type => :Type , :cached_method => :TypedMethod  } ,
-          :TypedMethod => {:name => :Word, :source => :Object, :instructions => :Object, :binary => :Object,
-                      :arguments => :Type , :for_type => :Type, :frame => :Type } ,
+       {  Word: {char_length: :Integer} ,
+          List: {indexed_length: :Integer} ,
+          Message: { next_message: :Message,   receiver: :Object, frame: :NamedList ,
+                     return_address: :Integer, return_value: :Integer,
+                     caller: :Message ,        name: :Word ,     arguments: :NamedList },
+          Integer: {},
+          TrueClass: {},
+          FalseClass: {},
+          NilClass: {},
+          Object: {},
+          Kernel: {}, #fix, kernel is a class, but should be a module
+          BinaryCode: {char_length: :Integer} ,
+          Space: {classes: :Dictionary , types: :Dictionary ,
+                  first_message: :Message , single_true: :TrueClass,
+                  single_false: :FalseClass , single_nil: :NilClass},
+          NamedList: {},
+          Type: {names: :List , types: :List  ,
+                 object_class: :Class, methods: :List } ,
+          Class: {instance_methods: :List, instance_type: :Type, name: :Word,
+                      super_class_name: :Word , instance_names: :List },
+          Dictionary: {keys: :List , values: :List  } ,
+          CacheEntry: {cached_type: :Type , cached_method: :TypedMethod  } ,
+          TypedMethod: {name: :Word, source: :Object, instructions: :Object,
+                        binary: :BinaryCode, arguments: :Type , for_type: :Type,
+                        frame: :Type } ,
         }
     end
 
