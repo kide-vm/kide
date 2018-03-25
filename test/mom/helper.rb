@@ -30,7 +30,7 @@ module Risc
       assert @expect , "No output given"
       Vool::VoolCompiler.ruby_to_vool "class Test; def main(arg);#{@input};end;end"
       test = Parfait.object_space.get_class_by_name :Test
-      test.instance_type.get_method( :main).instructions
+      test.instance_type.get_method( :main).risc_instructions
     end
     def check_nil
       produced = produce_instructions

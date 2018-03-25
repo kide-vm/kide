@@ -15,7 +15,7 @@ module Parfait
   end
 
   # TODO Must get rid of the setter (move the boot process ?)
-  def self.set_object_space space
+  def self.set_object_space( space )
     @@object_space = space
   end
 
@@ -31,7 +31,7 @@ module Parfait
 
     class Space < Object
 
-    def initialize(classes )
+    def initialize( classes )
       @classes = classes
       @types = Dictionary.new
       message = Message.new(nil)
@@ -54,7 +54,7 @@ module Parfait
       end
     end
 
-    def add_type(type)
+    def add_type( type )
       hash = type.hash
       raise "upps #{hash} #{hash.class}" unless hash.is_a?(Fixnum)
       was = @types[hash]

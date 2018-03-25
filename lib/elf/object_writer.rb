@@ -26,7 +26,7 @@ module Elf
       # for debug add labels for labels
       Parfait.object_space.each_type do |type|
         type.methods.each do |f|
-          f.instructions.each_label do |label|
+          f.risc_instructions.each_label do |label|
             add_symbol "#{type.name}::#{f.name}:#{label.name}" , Positioned.position(label)
           end
         end

@@ -21,7 +21,8 @@ module Parfait
 
   class TypedMethod < Object
 
-    attr_reader :name , :instructions , :for_type ,:arguments , :frame , :binary
+    attr_reader :name , :risc_instructions , :for_type , :cpu_instructions
+    attr_reader :arguments , :frame , :binary
 
     # not part of the parfait model, hence ruby accessor
     attr_accessor :source
@@ -35,19 +36,32 @@ module Parfait
       init(arguments, frame)
     end
 
+    # (re) init with given args and frame types
+    # also set first risc_instruction to a label
     def init(arguments, frame)
       raise "Wrong argument type, expect Type not #{arguments.class}" unless arguments.is_a? Type
       raise "Wrong frame type, expect Type not #{frame.class}" unless frame.is_a? Type
       @arguments = arguments
       @frame = frame
+      source = "_init_method"
+      name = "#{@for_type.name}.#{@name}"
+      @risc_instructions = Risc.label(source, name)
+      @risc_instructions << Risc.label( source, "unreachable")
     end
 
-    def set_instructions(inst)
-      @instructions = inst
+    def translate_cpu(translator)
+      @cpu_instructions = translator.translate(@risc_instructions)
+      nekst = @risc_instructions.next
+      while(nekst)
+        cpu = nekst.to_cpu(translator) # returning nil means no replace
+        @cpu_instructions << cpu if cpu
+        nekst = nekst.next
+      end
+      @cpu_instructions
     end
 
     def create_binary
-      total = @instructions.total_byte_length / 4 + 1
+      total = @cpu_instructions.total_byte_length / 4 + 1
       @binary = BinaryCode.new( total )
     end
 

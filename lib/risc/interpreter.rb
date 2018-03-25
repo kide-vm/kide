@@ -43,7 +43,7 @@ module Risc
     def start( instruction )
       initialize
       set_state(:running)
-      set_instruction instruction
+      set_instruction( instruction )
     end
 
     def set_state( state )
@@ -54,7 +54,7 @@ module Risc
     end
 
     def set_instruction( i )
-      raise "set to same instruction #{i}" if @instruction == i
+      raise "set to same instruction #{i}:#{i.class}" if @instruction == i
       old = @instruction
       @instruction = i
       trigger(:instruction_changed, old , i)
@@ -195,7 +195,7 @@ module Risc
     end
 
     def execute_FunctionCall
-      set_instruction @instruction.method.instructions
+      set_instruction @instruction.method.risc_instructions
       false
     end
 
