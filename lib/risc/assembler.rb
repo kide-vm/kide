@@ -38,7 +38,7 @@ module Risc
         objekt.create_binary if objekt.is_a? Parfait::TypedMethod
         binary = objekt.binary
         Positioned.set_position(binary,at)
-        objekt.risc_instructions.set_position( at + 12) # BinaryCode header
+        objekt.cpu_instructions.set_position( at + 12) # BinaryCode header
         len = 4 * 14
         at += binary.padded_length
         nekst = binary.next

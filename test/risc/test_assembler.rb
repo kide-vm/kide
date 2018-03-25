@@ -14,10 +14,9 @@ module Risc
       @assembler = Assembler.new(@machine , Collector.collect_space)
       assert @machine.translate_arm
     end
-
     def test_write_fails
       @assembler = Assembler.new(@machine , {})
-      assert_raises{ @assembler.assemble} #must translate first
+      assert_raises{ @assembler.write_as_string} #must translate first
     end
     def test_assemble_no_objects
       @assembler = Assembler.new(@machine , {})
