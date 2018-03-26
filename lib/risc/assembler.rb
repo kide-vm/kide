@@ -29,6 +29,21 @@ module Risc
       position_code_from( at )
     end
 
+    def position_objects( at )
+      at +=  8 # thats the padding
+      # want to have the objects first in the executable
+      @objects.each do | id , objekt|
+        if objekt.is_a? Risc::Label # will get assembled as method.cpu_instructions
+          Positioned.set_position(objekt,at)
+          next
+        end
+        next if objekt.is_a? Parfait::BinaryCode
+        Positioned.set_position(objekt,at)
+        at += objekt.padded_length
+      end
+      at
+    end
+
     def position_code_from( at )
       @objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::TypedMethod
@@ -49,21 +64,6 @@ module Risc
           #puts "LENGTH #{len}"
         end
         log.debug "CODE2 #{objekt.name} at #{Positioned.position(binary)} len: #{len}"
-      end
-      at
-    end
-
-    def position_objects( at )
-      at +=  8 # thats the padding
-      # want to have the objects first in the executable
-      @objects.each do | id , objekt|
-        if objekt.is_a? Risc::Label # will get assembled as method.cpu_instructions
-          Positioned.set_position(objekt,at)
-          next
-        end
-        next if objekt.is_a? Parfait::BinaryCode
-        Positioned.set_position(objekt,at)
-        at += objekt.padded_length
       end
       at
     end
