@@ -14,7 +14,8 @@ module Parfait
       if total_size > self.data_length
         @next = BinaryCode.new(total_size - data_length) #one for the jump
       end
-      puts "Init with #{total_size} for #{object_id}"
+      #puts "Init with #{total_size} for #{object_id}"
+      (1..(data_length+1)).each{ |index| set_word(index , 0) }
     end
     def to_s
       "BinaryCode #{}"
@@ -24,6 +25,22 @@ module Parfait
     end
     def byte_length
       4*data_length
+    end
+    def set_word(index , word)
+      raise "invalid index #{index}" if index < 1
+      if index > data_length + 1
+        raise "invalid index #{index}" unless @next
+        @next.set_word( index - data_length , word)
+      end
+      set_internal_word(index + 2 , word)
+    end
+    def get_word(index)
+      raise "invalid index #{index}" if index < 1
+      if index > data_length + 1
+        raise "invalid index #{index}" unless @next
+        return @next.get_word( index - data_length)
+      end
+      get_internal_word(index + 2)
     end
     def set_char(index , char)
       if index >= byte_length

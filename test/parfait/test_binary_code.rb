@@ -51,5 +51,18 @@ module Parfait
       @code = BinaryCode.new(16)
       assert @code.set_char(56 , 1)
     end
+    def test_nilled
+      assert_equal 0 , @code.get_word(1)
+      assert_equal 0 , @code.get_word(14)
+    end
+    def test_get_set_self
+      @code.set_word(10,1)
+      assert_equal 1 , @code.get_word(10)
+    end
+    def test_get_set_next
+      @code = BinaryCode.new(20)
+      @code.set_word(20,1)
+      assert_equal 1 , @code.get_word(20)
+    end
   end
 end
