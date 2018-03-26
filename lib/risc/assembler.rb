@@ -160,7 +160,7 @@ module Risc
       binary = method.binary
       total_byte_length = method.cpu_instructions.total_byte_length
       log.debug "Assembled code #{method.name} with length #{length}"
-      raise "length error #{binary.char_length} != #{total_byte_length}" if binary.char_length <= total_byte_length
+      raise "length error #{binary.total_byte_length} != #{total_byte_length}" if binary.total_byte_length <= total_byte_length
       raise "length error #{length} != #{total_byte_length}" if total_byte_length != length
     end
 

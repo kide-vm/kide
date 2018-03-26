@@ -46,7 +46,7 @@ module Risc
       translator.translate( self )
     end
 
-    def assemble_all io , labels = []
+    def assemble_all( io , labels = [] )
       self.assemble(io)
       self.next.assemble_all(io, labels) if self.next
     end
@@ -55,7 +55,7 @@ module Risc
       raise "Abstract called on #{self}"
     end
 
-    def total_byte_length labels = []
+    def total_byte_length( labels = [])
       ret = self.byte_length
       ret += self.next.total_byte_length(labels) if self.next
       #puts "#{self.class.name} return #{ret}"

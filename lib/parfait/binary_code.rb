@@ -12,15 +12,15 @@ module Parfait
     def initialize(total_size)
       super()
       if total_size > self.data_length
-        @next = BinaryCode.new(total_size - data_length - 1) #one for the jump
+        @next = BinaryCode.new(total_size - data_length) #one for the jump
       end
-      #puts "Init with #{total_size} for #{object_id}"
+      puts "Init with #{total_size} for #{object_id}"
     end
     def to_s
       "BinaryCode #{}"
     end
     def data_length
-      14
+      13
     end
     def byte_length
       4*data_length
@@ -36,7 +36,7 @@ module Parfait
       set_internal_word(word_index , char)
     end
     def total_byte_length(start = 0 )
-      start += 4*14
+      start += self.byte_length
       return start unless self.next
       self.next.total_byte_length(start)
     end

@@ -24,10 +24,14 @@ module Parfait
       assert_nil @code.next
     end
     def test_data_length
-      assert_equal 14 , @code.data_length
+      assert_equal 13 , @code.data_length
     end
     def test_byte_length
-      assert_equal 14*4 , @code.byte_length
+      assert_equal 13*4 , @code.byte_length
+    end
+    def test_total_byte_length
+      @code = BinaryCode.new(16)
+      assert_equal 13*4*2 , @code.total_byte_length
     end
     def test_next_not_nil
       @code = BinaryCode.new(16)
@@ -37,11 +41,11 @@ module Parfait
     def test_set_char1
       assert @code.set_char(1 , 1)
     end
-    def test_set_char55
-      assert @code.set_char(55 , 1)
+    def test_set_char51
+      assert @code.set_char(51 , 1)
     end
-    def test_set_char56_raises
-      assert_raises {@code.set_char(56 , 1)}
+    def test_set_char52_raises
+      assert_raises {@code.set_char(52 , 1)}
     end
     def test_set_char56_double
       @code = BinaryCode.new(16)
