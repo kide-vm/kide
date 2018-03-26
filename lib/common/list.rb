@@ -50,10 +50,15 @@ module Common
     end
     alias :<< :append
 
-    def length( labels = [] )
-      ret = 1
-      ret += self.next.length( labels ) if self.next
+    def length
+      ret = 0
+      self.each { ret += 1}
       ret
+    end
+
+    def each(&block)
+      block.call(self)
+      @next.each(&block) if @next
     end
 
   end

@@ -15,42 +15,6 @@ module Risc
     end
     alias :inspect :to_s
 
-    def length( labels = [])
-      ret = super(labels)
-      ret += self.label.length(labels) if self.label
-      ret
-    end
-
-    def to_arr( labels = [] )
-      ret = super(labels)
-      ret += self.label.to_arr(labels) if self.label
-      ret
-    end
-
-    def total_byte_length labels = []
-      ret = super(labels)
-      ret += self.label.total_byte_length(labels) if self.label
-      #puts "#{self.class.name} return #{ret}"
-      ret
-    end
-
-    # labels have the same position as their next
-    def set_position( position , labels = [])
-      set_position self.label.set_position( position , labels ) if self.label
-      super(position,labels)
-    end
-
-    def assemble_all( io , labels = [])
-      self.assemble(io)
-      self.label.assemble_all(io,labels) if self.label
-      self.next.assemble_all(io, labels) if self.next
-    end
-
-    def each_label( labels =[] , &block)
-      super
-      self.label.each_label(labels , &block) if self.label
-    end
-
   end
 
   # dynamic version of an Unconditional branch that jumps to the contents

@@ -31,43 +31,13 @@ module Risc
       @name.split(".").length == 2
     end
 
-    def to_arr labels = []
-      return [] if labels.include?(self)
-      labels << self
-      super
-    end
-
-    def length labels = []
-      return 0 if labels.include?(self)
-      labels << self
-      ret = 1
-      ret += self.next.length(labels) if self.next
-      ret
-    end
-
     def assemble io
     end
 
-    def assemble_all io , labels = []
-      return if labels.include?(self) or self.next.nil?
-      labels << self
-      self.next.assemble_all(io,labels)
-    end
-
-    def total_byte_length labels = []
-      return 0 if labels.include?(self) or self.next.nil?
-      labels << self
-      ret = self.next.total_byte_length(labels)
-      #puts "#{self.class.name} return #{ret}"
-      ret
-    end
-
     # labels have the same position as their next
-    def set_position position , labels = []
-      return position if labels.include?(self)
-      labels << self
-      super(position , labels)
-      self.next.set_position(position,labels) if self.next
+    def set_position( position )
+      super(position)
+      self.next.set_position(position) if self.next
     end
 
     # shame we need this, just for logging
@@ -75,12 +45,6 @@ module Risc
       0
     end
 
-    def each_label labels =[] , &block
-      return if labels.include?(self)
-      labels << self
-      block.yield(self)
-      super
-    end
   end
 
   def self.label( source , name , nekst = nil)

@@ -14,7 +14,7 @@ module Risc
       return unless add_object( object , depth )
       # probably should make labels or even instructions derive from Parfait::Object, but . .
       if object.is_a? Risc::Label
-        object.each_label { |l| self.add_object(l ,depth)}
+        object.each { |l| self.add_object(l ,depth) if l.is_a? Risc::Label}
       end
       return unless object.respond_to? :has_type?
       type = object.get_type

@@ -30,10 +30,9 @@ module Risc
     end
     attr_reader :source
 
-    #TODO check if this is used. Maybe build an each for instructions
-    def to_arr labels = []
-      ret  = [self.class]
-      ret += self.next.to_arr(labels) if self.next
+    def to_arr
+      ret  = []
+      self.each {|ins| ret << ins}
       ret
     end
 
@@ -46,34 +45,29 @@ module Risc
       translator.translate( self )
     end
 
-    def assemble_all( io , labels = [] )
+    def assemble_all( io )
       self.assemble(io)
-      self.next.assemble_all(io, labels) if self.next
+      self.next.assemble_all(io) if self.next
     end
 
     def assemble io
       raise "Abstract called on #{self}"
     end
 
-    def total_byte_length( labels = [])
-      ret = self.byte_length
-      ret += self.next.total_byte_length(labels) if self.next
-      #puts "#{self.class.name} return #{ret}"
+    def total_byte_length
+      ret = 0
+      self.each{|ins| ret += ins.byte_length}
       ret
     end
 
-    def set_position position , labels = []
+    def set_position( position )
       Positioned.set_position(self,position)
       position += byte_length
       if self.next
-        self.next.set_position(position , labels)
+        self.next.set_position( position )
       else
         position
       end
-    end
-
-    def each_label labels =[] , &block
-      self.next.each_label(labels , &block) if self.next
     end
 
     def class_source( derived)
