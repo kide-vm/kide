@@ -1,4 +1,6 @@
 module Arm
+  # A translator is cpu specific and translates from risc instructions to a given
+  # cpu. This one transltes to Arm Instructions.  
   class Translator
 
     # translator should translate from register instructio set to it's own (arm eg)

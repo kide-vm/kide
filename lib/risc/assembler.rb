@@ -50,7 +50,6 @@ module Risc
         next unless method.is_a? Parfait::TypedMethod
         log.debug "CODE1 #{method.name}"
         # create binary for assembly
-        method.create_binary
         binary = method.binary
         Positioned.set_position(binary,at)
         method.cpu_instructions.set_position( at + 12) # BinaryCode header

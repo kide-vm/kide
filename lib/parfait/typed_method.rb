@@ -57,12 +57,9 @@ module Parfait
         @cpu_instructions << cpu if cpu
         nekst = nekst.next
       end
-      @cpu_instructions
-    end
-
-    def create_binary
       total = @cpu_instructions.total_byte_length / 4 + 1
       @binary = BinaryCode.new( total )
+      @cpu_instructions
     end
 
     # determine whether this method has an argument by the name
