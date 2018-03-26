@@ -9,9 +9,7 @@ module Arm
   # swi (SoftWareInterrupt) or system call is how we call the kernel.
   # in Arm the register layout is different and so we have to place the syscall code into register 7
   # Riscs 0-6 hold the call values as for a normal c call
-  class CallInstruction < Risc::Branch
-    include Constants
-    include Attributed
+  class CallInstruction < Instruction
 
     def initialize(first, attributes)
       super(nil, nil)

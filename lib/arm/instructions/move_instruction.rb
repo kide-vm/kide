@@ -1,9 +1,7 @@
 module Arm
-  class MoveInstruction < Risc::Instruction
-    include Constants
-    include Attributed
+  class MoveInstruction < Instruction
 
-    def initialize to , from , options = {}
+    def initialize( to , from , options = {})
       super(nil)
       @attributes = options
       if( from.is_a?(Symbol) and Risc::RiscValue.look_like_reg(from) )

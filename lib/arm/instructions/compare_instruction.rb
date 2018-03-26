@@ -1,7 +1,5 @@
 module Arm
-  class CompareInstruction < Risc::Instruction
-    include Constants
-    include Attributed
+  class CompareInstruction < Instruction
 
     def initialize(left , right , attributes)
       super(nil)

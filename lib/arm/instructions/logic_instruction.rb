@@ -1,7 +1,5 @@
 module Arm
-  class LogicInstruction < Risc::Instruction
-    include Constants
-    include Attributed
+  class LogicInstruction < Instruction
 
     #  result = left op right   #or constant loading
     #
@@ -62,7 +60,7 @@ module Arm
 
     # Arm can't load any large (over 1024) numbers, or larger with fancy shifting,
     # but then the lower bits must be 0's. Especially in constant loading random large numbers
-    # happen, and so they are split into two instructions. An exection is thrown, that triggers
+    # happen, and so they are split into two instructions. An exeption is thrown, that triggers
     # some position handling and an @extra add instruction generated.
     def handle_numeric(right)
       if (right.fits_u8?)

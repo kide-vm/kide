@@ -38,6 +38,7 @@ module Arm
 end
 
 require_relative "constants"
+require_relative "instructions/instruction"
 require_relative "instructions/call_instruction"
 require_relative "instructions/compare_instruction"
 require_relative "instructions/logic_instruction"

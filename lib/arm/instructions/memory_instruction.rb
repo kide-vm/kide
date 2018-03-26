@@ -2,9 +2,7 @@ module Arm
   # ADDRESSING MODE 2
   # Implemented: immediate offset with offset=0
 
-  class MemoryInstruction < Risc::Instruction
-    include Constants
-    include Attributed
+  class MemoryInstruction < Instruction
 
     def initialize result , left , right = nil , attributes = {}
       super(nil)
@@ -46,7 +44,7 @@ module Arm
       # but gnu as produces same output for auto_inc or not, so that seems broken
       # luckily auto_inc is not used and even if it clobbers unused reg in soml, but still
 
-      val = shift(val , 0 ) 
+      val = shift(val , 0 )
       val |= shift(reg_code(arg) ,  16)
       val |= shift(i ,              25)
       write_val(val, io)
