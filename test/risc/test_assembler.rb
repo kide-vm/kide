@@ -33,10 +33,10 @@ module Risc
       assert @machine.translate_arm
       assert @assembler.assemble
     end
-    def pest_write_space
+    def test_write_space
       @assembler = Assembler.new(@machine , Collector.collect_space)
       assert @machine.translate_arm
-      assert @assembler.write_as_string
+      #assert @assembler.write_as_string
     end
   end
 end

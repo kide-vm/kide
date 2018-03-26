@@ -58,7 +58,10 @@ module Risc
       at +=  8 # thats the padding
       # want to have the objects first in the executable
       @objects.each do | id , objekt|
-        next if objekt.is_a? Risc::Label # will get assembled as method.risc_instructions
+        if objekt.is_a? Risc::Label # will get assembled as method.cpu_instructions
+          Positioned.set_position(objekt,at)
+          next
+        end
         next if objekt.is_a? Parfait::BinaryCode
         Positioned.set_position(objekt,at)
         at += objekt.padded_length
@@ -132,10 +135,10 @@ module Risc
     # and then plonk that binary data into the method.code array
     def assemble_binary_method method
       stream = StringIO.new
-      #puts "Method #{method.source.risc_instructions.to_ac}"
+      #puts "Method #{method.source.cpu_instructions.to_ac}"
       begin
-        #puts "assemble #{method.source.risc_instructions}"
-        method.risc_instructions.assemble_all( stream )
+        #puts "assemble #{method.source.cpu_instructions}"
+        method.cpu_instructions.assemble_all( stream )
       rescue => e
         log.debug "Assembly error #{method.name}\n#{method.to_rxf.to_s[0...2000]}"
         raise e
@@ -155,7 +158,7 @@ module Risc
       stream.rewind
       length = stream.length
       binary = method.binary
-      total_byte_length = method.risc_instructions.total_byte_length
+      total_byte_length = method.cpu_instructions.total_byte_length
       log.debug "Assembled code #{method.name} with length #{length}"
       raise "length error #{binary.char_length} != #{total_byte_length}" if binary.char_length <= total_byte_length
       raise "length error #{length} != #{total_byte_length}" if total_byte_length != length
