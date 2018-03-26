@@ -7,12 +7,8 @@ module Risc
       @machine = Risc.machine.boot
     end
 
-    def test_collect_all_types
-      objects = Risc::Collector.collect_space
-      objects.each do |id, objekt|
-        next unless objekt.is_a?( Parfait::Type )
-        assert Parfait.object_space.get_type_for( objekt.hash ) , objekt.hash
-      end
+    def test_co
+
     end
   end
 end
