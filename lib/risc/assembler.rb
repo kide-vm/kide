@@ -33,26 +33,27 @@ module Risc
       at +=  8 # thats the padding
       # want to have the objects first in the executable
       @objects.each do | id , objekt|
-        if objekt.is_a? Risc::Label # will get assembled as method.cpu_instructions
+        case objekt
+        when Risc::Label # will get assembled as method.cpu_instructions
           Positioned.set_position(objekt,at)
-          next
+        when Parfait::BinaryCode
+        else
+          Positioned.set_position(objekt,at)
+          at += objekt.padded_length
         end
-        next if objekt.is_a? Parfait::BinaryCode
-        Positioned.set_position(objekt,at)
-        at += objekt.padded_length
       end
       at
     end
 
     def position_code_from( at )
-      @objects.each do |id , objekt|
-        next unless objekt.is_a? Parfait::TypedMethod
-        log.debug "CODE1 #{objekt.name}"
+      @objects.each do |id , method|
+        next unless method.is_a? Parfait::TypedMethod
+        log.debug "CODE1 #{method.name}"
         # create binary for assembly
-        objekt.create_binary if objekt.is_a? Parfait::TypedMethod
-        binary = objekt.binary
+        method.create_binary
+        binary = method.binary
         Positioned.set_position(binary,at)
-        objekt.cpu_instructions.set_position( at + 12) # BinaryCode header
+        method.cpu_instructions.set_position( at + 12) # BinaryCode header
         len = 4 * 14
         at += binary.padded_length
         nekst = binary.next
@@ -63,7 +64,7 @@ module Risc
           len += 4 * 16
           #puts "LENGTH #{len}"
         end
-        log.debug "CODE2 #{objekt.name} at #{Positioned.position(binary)} len: #{len}"
+        log.debug "CODE2 #{method.name} at #{Positioned.position(binary)} len: #{len}"
       end
       at
     end
@@ -74,7 +75,7 @@ module Risc
       write_debug
       write_create_binary
       write_objects
-      write_method
+      write_code
       log.debug "Assembled #{stream_position} bytes"
       return @stream.string
     end
@@ -111,7 +112,7 @@ module Risc
       end
     end
 
-    def write_method
+    def write_code
       # then write the methods to file
       @objects.each do |id, objekt|
         next unless objekt.is_a? Parfait::BinaryCode
@@ -121,7 +122,7 @@ module Risc
 
     # assemble the MethodSource into a stringio
     # and then plonk that binary data into the method.code array
-    def assemble_binary_method method
+    def assemble_binary_method( method )
       stream = StringIO.new
       #puts "Method #{method.source.cpu_instructions.to_ac}"
       begin

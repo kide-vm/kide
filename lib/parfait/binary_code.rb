@@ -12,14 +12,15 @@ module Parfait
     def initialize(total_size)
       super()
       if total_size > self.data_length
-        @next = BinaryCode.new(total_size - data_length) #one for the jump
+        @next = BinaryCode.new(total_size - data_length)
       end
-      #puts "Init with #{total_size} for #{object_id}"
+      puts "Init with #{total_size} for #{object_id}"
       (1..(data_length+1)).each{ |index| set_word(index , 0) }
     end
     def to_s
       "BinaryCode #{}"
     end
+    #16 - 2 -1 , two instance varaibles and one for the jump
     def data_length
       13
     end

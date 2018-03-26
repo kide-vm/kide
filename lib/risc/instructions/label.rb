@@ -31,6 +31,10 @@ module Risc
       @name.split(".").length == 2
     end
 
+    def assemble_all( io )
+      self.each {|ins| ins.assemble(io)}
+    end
+
     def assemble io
     end
 

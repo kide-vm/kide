@@ -36,22 +36,8 @@ module Risc
       ret
     end
 
-    # derived classes must provide a byte_length
-    def byte_length
-      raise "Abstract called on #{self}"
-    end
-
     def to_cpu( translator )
       translator.translate( self )
-    end
-
-    def assemble_all( io )
-      self.assemble(io)
-      self.next.assemble_all(io) if self.next
-    end
-
-    def assemble io
-      raise "Abstract called on #{self}"
     end
 
     def total_byte_length
