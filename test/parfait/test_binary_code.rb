@@ -49,7 +49,7 @@ module Parfait
     end
     def test_set_char56_double
       @code = BinaryCode.new(16)
-      assert @code.set_char(56 , 1)
+      assert @code.set_char(56 , 120)
     end
     def test_nilled
       assert_equal 0 , @code.get_word(1)
