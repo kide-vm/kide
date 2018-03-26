@@ -20,9 +20,9 @@ module Risc
   # Labels are the only valid branch targets
   #
   class Instruction
-    include Common::List
+    include Util::List
 
-    def initialize source , nekst = nil
+    def initialize( source , nekst = nil )
       @source = source
       @next = nekst
       return unless source
@@ -38,22 +38,6 @@ module Risc
 
     def to_cpu( translator )
       translator.translate( self )
-    end
-
-    def total_byte_length
-      ret = 0
-      self.each{|ins| ret += ins.byte_length}
-      ret
-    end
-
-    def set_position( position )
-      Positioned.set_position(self,position)
-      position += byte_length
-      if self.next
-        self.next.set_position( position )
-      else
-        position
-      end
     end
 
     def class_source( derived)

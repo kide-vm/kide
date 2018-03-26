@@ -6,12 +6,12 @@ module Mom
   # Mom::Instructions are created by the Vool level as an intermediate step
   # towards the next level down, the Risc level.
   # Mom and Risc are both abstract machines (ie have instructions), so both
-  # share the linked list functionality (In Common::List)
+  # share the linked list functionality (In Util::List)
   #
   # To convert a Mom instruction to it's Risc equivalent to_risc is called
   #
   class Instruction
-    include Common::List
+    include Util::List
 
     # to_risc, like the name says, converts the instruction to it's Risc equivalent.
     # The Risc machine is basically a simple register machine (kind of arm).

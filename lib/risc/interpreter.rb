@@ -14,7 +14,7 @@ module Risc
   #
   class Interpreter
     # fire events for changed pc and register contents
-    include Eventable
+    include Util::Eventable
     include Logging
     log_level :info
 

@@ -38,9 +38,15 @@ module Risc
     def assemble io
     end
 
+    def total_byte_length
+      ret = 0
+      self.each{|ins| ret += ins.byte_length}
+      ret
+    end
+
     # labels have the same position as their next
     def set_position( position )
-      super(position)
+      Positioned.set_position(self,position)
       self.next.set_position(position) if self.next
     end
 
