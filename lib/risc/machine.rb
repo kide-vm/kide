@@ -22,16 +22,22 @@ module Risc
     end
     attr_reader  :constants , :risc_init , :cpu_init  , :booted
 
-    # idea being that later method missing could catch translate_xxx and translate to target xxx
-    # now we just instantiate ArmTranslater and pass instructions
+    # translate to arm, ie instantiate an arm translator and pass it to translate
+    #
+    # currently we have no machanism to translate to other cpu's (nor such translators)
+    # but the mechanism is ready
     def translate_arm
-      methods = Parfait.object_space.collect_methods
-      translate_methods( methods )
-      @cpu_init = Arm::Translator.new.translate( @risc_init )
+      translate(Arm::Translator.new)
     end
 
-    def translate_methods(methods)
-      translator = Arm::Translator.new
+    # translate the methods to whatever cpu the translator translates to
+    def translate( translator )
+      methods = Parfait.object_space.collect_methods
+      translate_methods( methods , translator )
+      @cpu_init = translator.translate( @risc_init )
+    end
+
+    def translate_methods(methods , translator)
       methods.each do |method|
         log.debug "Translate method #{method.name}"
         method.translate_cpu(translator)
