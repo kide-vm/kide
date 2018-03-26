@@ -21,14 +21,15 @@ module Risc
   end
 
   def self.issue_call( compiler , callee )
-    return_label = Risc.label("_return_label #{callee.name}" , "#{compiler.type.object_class.name}.#{compiler.method.name}" )
+    callee_name = callee.name
+    return_label = Risc.label("_return_label #{callee_name}" , "#{compiler.type.object_class.name}.#{compiler.method.name}" )
     ret_tmp = compiler.use_reg(:Label)
-    compiler.add_load_constant("#{callee.name} load ret", return_label , ret_tmp)
-    compiler.add_reg_to_slot("#{callee.name} store ret", ret_tmp , :new_message , :return_address)
-    compiler.add_transfer("#{callee.name} move new message", Risc.new_message_reg , Risc.message_reg )
-    compiler.add_code Risc.function_call( "#{callee.name} call" , callee )
+    compiler.add_load_constant("#{callee_name} load ret", return_label , ret_tmp)
+    compiler.add_reg_to_slot("#{callee_name} store ret", ret_tmp , :new_message , :return_address)
+    compiler.add_transfer("#{callee_name} move new message", Risc.new_message_reg , Risc.message_reg )
+    compiler.add_function_call( "#{callee_name} call" , callee )
     compiler.add_code return_label
-    compiler.add_transfer("#{callee.name} remove new message", Risc.message_reg , Risc.new_message_reg )
-    compiler.add_slot_to_reg("#{callee.name} restore message" , :new_message , :caller , :message )
+    compiler.add_transfer("#{callee_name} remove new message", Risc.message_reg , Risc.new_message_reg )
+    compiler.add_slot_to_reg("#{callee_name} restore message" , :new_message , :caller , :message )
   end
 end

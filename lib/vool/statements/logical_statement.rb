@@ -8,11 +8,5 @@ module Vool
       @name , @left , @right = name , left , right
     end
 
-    def collect(arr)
-      @receiver.collect(arr)
-      @arguments.collect(arr)
-      super
-    end
-
   end
 end
