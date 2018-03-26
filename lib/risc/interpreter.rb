@@ -1,5 +1,4 @@
-
-require_relative "eventable"
+require "util/eventable"
 
 module Risc
 

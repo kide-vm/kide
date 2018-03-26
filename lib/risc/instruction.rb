@@ -1,4 +1,4 @@
-require "common/list"
+require "util/list"
 
 module Risc
 
