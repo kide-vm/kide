@@ -10,7 +10,7 @@ module Risc
 
   class Assembler
     include Logging
-    log_level :info
+    log_level :debug
 
     MARKER = 0xA51AF00D
 
@@ -21,16 +21,15 @@ module Risc
     end
 
     def assemble
-      at = 0
       #need the initial jump at 0 and then functions
-      @machine.cpu_init.set_position( 0)
+      @machine.cpu_init.set_position( 0 )
       at = @machine.cpu_init.byte_length
-      at = assemble_objects( at )
+      at = position_objects( at )
       # and then everything code
-      asseble_code_from(  at )
+      position_code_from( at )
     end
 
-    def asseble_code_from( at )
+    def position_code_from( at )
       @objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::TypedMethod
         log.debug "CODE1 #{objekt.name}"
@@ -54,7 +53,7 @@ module Risc
       at
     end
 
-    def assemble_objects( at )
+    def position_objects( at )
       at +=  8 # thats the padding
       # want to have the objects first in the executable
       @objects.each do | id , objekt|
@@ -69,30 +68,19 @@ module Risc
       at
     end
 
+    # objects must be written in same order as positioned / assembled
     def write_as_string
-      # must be same order as assemble
-      begin
-        return try_write
-      rescue LinkException
-        # knowing that we fix the problem, we hope to get away with retry.
-        retry
-      end
-    end
-
-    # private method to implement write_as_string. May throw link Exception in which
-    # case we try again. Once.
-    def try_write
       assemble
-      try_write_debug
-      try_write_create_binary
-      try_write_objects
-      try_write_method
+      write_debug
+      write_create_binary
+      write_objects
+      write_method
       log.debug "Assembled #{stream_position} bytes"
       return @stream.string
     end
 
     # debugging loop accesses all positions to force an error if it's not set
-    def try_write_debug
+    def write_debug
       all = @objects.values.sort{|a,b| Positioned.position(a) <=> Positioned.position(b)}
       all.each do |objekt|
         next if objekt.is_a?(Risc::Label)
@@ -101,7 +89,7 @@ module Risc
       end
     end
 
-    def try_write_create_binary
+    def write_create_binary
       # first we need to create the binary code for the methods
       @objects.each do |id , objekt|
         next unless objekt.is_a? Parfait::TypedMethod
@@ -114,7 +102,7 @@ module Risc
       end
     end
 
-    def try_write_objects
+    def write_objects
       #  then the objects , not code yet
       @objects.each do | id, objekt|
         next if objekt.is_a? Parfait::BinaryCode
@@ -123,7 +111,7 @@ module Risc
       end
     end
 
-    def try_write_method
+    def write_method
       # then write the methods to file
       @objects.each do |id, objekt|
         next unless objekt.is_a? Parfait::BinaryCode
@@ -218,7 +206,7 @@ module Risc
 
     def write_object_variables(object)
       @stream.write_signed_int_32( MARKER  )
-      written = 0 # compensate for the "secrect" marker
+      written = 0 # compensate for the "secret" marker
       object.get_instance_variables.each do |var|
         inst = object.get_instance_variable(var)
         #puts "Nil for #{object.class}.#{var}" unless inst
