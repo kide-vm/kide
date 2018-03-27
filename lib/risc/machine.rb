@@ -12,7 +12,6 @@ module Risc
   #
 
   class Machine
-    include Collector
     include Logging
     log_level :info
 
@@ -20,13 +19,15 @@ module Risc
       @booted = false
       @constants = []
     end
-    attr_reader  :constants , :risc_init , :cpu_init  , :booted
+    attr_reader  :constants , :risc_init , :cpu_init
+    attr_reader  :booted , :translated
 
     # translate to arm, ie instantiate an arm translator and pass it to translate
     #
     # currently we have no machanism to translate to other cpu's (nor such translators)
     # but the mechanism is ready
     def translate_arm
+      @translated = true
       translate(Arm::Translator.new)
     end
 
@@ -44,8 +45,57 @@ module Risc
       end
     end
 
+    # machine keeps a list of all objects. this is lazily created with a collector
+    def objects
+      @objects ||= Collector.collect_space
+    end
+
+    def position_all
+      translate_arm unless @translated
+      #need the initial jump at 0 and then functions
+      cpu_init.set_position( 0 )
+      at = cpu_init.byte_length
+      at = position_objects( at )
+      # and then everything code
+      position_code_from( at )
+    end
+
+    def position_objects( at )
+      at +=  8 # thats the padding
+      # want to have the objects first in the executable
+      objects.each do | id , objekt|
+        case objekt
+        when Parfait::BinaryCode
+        when Risc::Label
+        else
+          Positioned.set_position(objekt,at)
+          at += objekt.padded_length
+        end
+      end
+      at
+    end
+
+    def position_code_from( at )
+      objects.each do |id , method|
+        next unless method.is_a? Parfait::TypedMethod
+        log.debug "CODE1 #{method.name}:#{at}"
+        method.cpu_instructions.set_position( at + 12) # BinaryCode header
+        before = at
+        nekst = method.binary
+        while(nekst)
+          Positioned.set_position(nekst , at)
+          at += nekst.padded_length
+          nekst = nekst.next
+          #puts "LENGTH #{len}"
+        end
+        log.debug "CODE2 #{method.name}:#{at} len: #{at - before}"
+      end
+      at
+    end
+
     def boot
       initialize
+      @objects = nil
       boot_parfait!
       @risc_init = Branch.new( "__initial_branch__" , Parfait.object_space.get_init.risc_instructions )
       @booted = true

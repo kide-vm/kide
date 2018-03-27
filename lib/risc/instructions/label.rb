@@ -54,7 +54,7 @@ module Risc
     def byte_length
       0
     end
-
+    alias :padded_length  :byte_length
   end
 
   def self.label( source , name , nekst = nil)

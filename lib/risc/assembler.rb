@@ -20,57 +20,8 @@ module Risc
       @load_at = 0x8054 # this is linux/arm
     end
 
-    def assemble
-      #need the initial jump at 0 and then functions
-      @machine.cpu_init.set_position( 0 )
-      at = @machine.cpu_init.byte_length
-      at = position_objects( at )
-      # and then everything code
-      position_code_from( at )
-    end
-
-    def position_objects( at )
-      at +=  8 # thats the padding
-      # want to have the objects first in the executable
-      @objects.each do | id , objekt|
-        case objekt
-        when Risc::Label # will get assembled as method.cpu_instructions
-          Positioned.set_position(objekt,at)
-        when Parfait::BinaryCode
-        else
-          Positioned.set_position(objekt,at)
-          at += objekt.padded_length
-        end
-      end
-      at
-    end
-
-    def position_code_from( at )
-      @objects.each do |id , method|
-        next unless method.is_a? Parfait::TypedMethod
-        log.debug "CODE1 #{method.name}"
-        # create binary for assembly
-        binary = method.binary
-        Positioned.set_position(binary,at)
-        method.cpu_instructions.set_position( at + 12) # BinaryCode header
-        len = 4 * 14
-        at += binary.padded_length
-        nekst = binary.next
-        while(nekst)
-          Positioned.set_position(nekst , at)
-          at += binary.padded_length
-          nekst = nekst.next
-          len += 4 * 16
-          #puts "LENGTH #{len}"
-        end
-        log.debug "CODE2 #{method.name} at #{Positioned.position(binary)} len: #{len}"
-      end
-      at
-    end
-
     # objects must be written in same order as positioned / assembled
     def write_as_string
-      assemble
       write_debug
       write_create_binary
       write_objects
