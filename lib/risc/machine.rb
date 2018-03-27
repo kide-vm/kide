@@ -1,4 +1,5 @@
 require_relative "collector"
+require_relative "binary_writer"
 
 module Risc
   # The Risc Machine is an abstraction of the register level. This is seperate from the
@@ -91,6 +92,15 @@ module Risc
         log.debug "CODE2 #{method.name}:#{at} len: #{at - before}"
       end
       at
+    end
+
+    def create_binary
+      objects.each do |id , method|
+        next unless method.is_a? Parfait::TypedMethod
+        puts "CODE1 #{method.name}:#{}"
+        writer = BinaryWriter.new(method.binary)
+        writer.assemble(method.cpu_instructions)
+      end
     end
 
     def boot

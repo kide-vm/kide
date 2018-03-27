@@ -28,8 +28,9 @@ module Risc
       assert @assembler.assemble
     end
     def test_write_space
-      @assembler = Assembler.new(@machine , Collector.collect_space)
       assert @machine.translate_arm
+      assert @machine.position_all
+      @assembler = Assembler.new(@machine , Collector.collect_space)
       #assert @assembler.write_as_string
     end
   end
