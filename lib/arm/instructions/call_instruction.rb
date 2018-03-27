@@ -60,20 +60,20 @@ module Arm
 
     def write_call(arg,io)
       raise "else not Attributed arg =\n#{arg.to_s[0..1000]}: #{inspect[0..1000]}" unless (arg.is_a?(Numeric))
-      jmp_val = arg >> 2
-      packed = [jmp_val].pack('l')
-      # signed 32-bit, condense to 24-bit
-      # TODO add check that the value fits into 24 bits
-      io << packed[0,3]
-      io.write_unsigned_int_8 op_bit_code | (COND_CODES[@attributes[:condition_code]] << 4)
+      val = (arg >> 2) & 0xFFFFFF
+      raise "too big #{val}" if (val & 0xFFFFFFFF000000) != 0
+      val |= shift(op_bit_code ,  24)
+      val |= shift(COND_CODES[@attributes[:condition_code]] ,  28)
+      io.write_unsigned_int_32( val )
     end
 
     def handle_swi(io)
       arg = @first
       raise "expected literal not #{arg} #{inspect}" unless (arg.is_a?(Numeric))
-      packed = [arg].pack('L')[0,3]
-      io << packed
-      io.write_unsigned_int_8 0b1111 | (COND_CODES[@attributes[:condition_code]] << 4)
+      val = arg & 0xFFFFFF
+      val |= shift(0b1111 ,  24)
+      val |= shift(COND_CODES[@attributes[:condition_code]] ,  28)
+      io.write_unsigned_int_32 val
     end
 
     def to_s
