@@ -96,6 +96,7 @@ module Risc
     def boot
       initialize
       @objects = nil
+      @translated = false
       boot_parfait!
       @risc_init = Branch.new( "__initial_branch__" , Parfait.object_space.get_init.risc_instructions )
       @booted = true

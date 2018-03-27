@@ -12,10 +12,6 @@ module Risc
     def self.keep( object , depth )
       return if object.nil?
       return unless add_object( object , depth )
-      # probably should make labels or even instructions derive from Parfait::Object, but . .
-      if object.is_a? Risc::Label
-        object.each { |l| self.add_object(l ,depth) if l.is_a? Risc::Label}
-      end
       return unless object.respond_to? :has_type?
       type = object.get_type
       keep(type  , depth + 1)
@@ -36,9 +32,10 @@ module Risc
     def self.add_object( objekt , depth)
       return false if @objects[objekt.object_id]
       return true if objekt.is_a? Fixnum
+      return true if objekt.is_a?( Risc::Label)
       #puts message(objekt , depth)
       #puts "ADD #{objekt.inspect}, #{objekt.name}" if objekt.is_a? Parfait::TypedMethod
-      unless objekt.is_a?( Parfait::Object) or objekt.is_a?( Symbol) or objekt.is_a?( Risc::Label)
+      unless objekt.is_a?( Parfait::Object) or objekt.is_a?( Symbol)
         raise "adding non parfait #{objekt.class}:#{objekt}"
       end
       #raise "Method #{objekt.name}" if objekt.is_a? Parfait::TypedMethod

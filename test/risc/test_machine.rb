@@ -10,14 +10,20 @@ module Risc
     def test_objects
       objects = @machine.objects
       assert_equal Hash , objects.class
-      assert 400 < objects.length
+      assert 350 < objects.length
     end
 
-    def test_position
+    def test_position_length
       @machine.position_all
       objects = @machine.objects
       assert_equal Hash , objects.class
-      assert 400 < objects.length
+      assert 350 < objects.length
+    end
+    def test_has_positions
+      @machine.position_all
+      @machine.objects.each do |id,obj|
+        assert Positioned.position(obj)
+      end
     end
   end
 end
