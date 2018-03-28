@@ -47,11 +47,11 @@ module Arm
         # but because of the arm "theoretical" 3- stage pipeline,
         # we have to subtract 2 words (fetch/decode)
         arg =  Positioned.position(@first) - Positioned.position(self) - 8
-      when Parfait::TypedMethod
+      when Parfait::BinaryCode
         # But, for methods, this happens to be the size of the object header,
         # so there it balances out, but not blocks
         # have to use the code, not the mthod object for methods
-        arg = arg.binary.position - self.position
+        arg = Positioned.position(@first) - Positioned.position(self)
       else
         arg = @first
       end

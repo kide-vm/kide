@@ -29,13 +29,11 @@ module Risc
         all << ins
       end
     end
-    def test_no_risc
+    def test_no_risc #by assembling, risc doesnt have assemble method
       @machine.position_all
       @machine.objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
-        next unless method.name == :__init__
         method.cpu_instructions.each do |ins|
-          puts "INS #{ins}:#{}"
           begin
             ins.assemble(DevNull.new)
           rescue LinkException

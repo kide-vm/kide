@@ -15,6 +15,14 @@ module Arm
       code = @machine.call(	-4 ,{} )#this jumps to the next instruction
       assert_code code , :call, [0xff,0xff,0xff,0xeb] #ea ff ff fe
     end
+    def test_method_call
+      Risc.machine.boot
+      bin = Parfait::BinaryCode.new(1)
+      Positioned.set_position(bin , 0x20)
+      code = @machine.call(	bin ,{} )#this jumps to the next instruction
+      Positioned.set_position(code , 0)
+      assert_code code , :call, [0x08,0x0,0x0,0xeb]
+    end
     def test_swi
       code = @machine.swi( 0x05 )
       assert_code code , :swi , [0x05,0x00,0x00,0xef]#ef 00 00 05
