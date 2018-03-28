@@ -1,6 +1,6 @@
 module Arm
   # A translator is cpu specific and translates from risc instructions to a given
-  # cpu. This one transltes to Arm Instructions.  
+  # cpu. This one transltes to Arm Instructions.
   class Translator
 
     # translator should translate from register instructio set to it's own (arm eg)
@@ -60,24 +60,25 @@ module Arm
         args
     end
 
-    def translate_ByteToReg code
+    def translate_ByteToReg( code )
       ArmMachine.ldrb( *byte_args_for(code) )
     end
 
-    def translate_RegToByte code
+    def translate_RegToByte( code )
       ArmMachine.strb( *byte_args_for(code) )
     end
 
-    def translate_FunctionCall code
-      ArmMachine.b( code.method.risc_instructions )
+    def translate_FunctionCall( code )
+      ArmMachine.b( code.method.binary )
     end
 
     def translate_FunctionReturn code
-      ArmMachine.mov( :pc ,  code.register)
+      ArmMachine.mov( :pc , code.register)
     end
 
-    def translate_LoadConstant code
+    def translate_LoadConstant( code )
       constant = code.constant
+      constant = constant.to_cpu(self) if constant.is_a?(Risc::Label)
       if constant.is_a?(Parfait::Object) or constant.is_a?(Symbol) or constant.is_a?(Risc::Label)
         return ArmMachine.add( code.register , constant )
       else
@@ -113,40 +114,40 @@ module Arm
     #
     # The only target for a call is a Block, so we just need to get the address for the code
     # and branch to it.
-    def translate_Branch code
-      ArmMachine.b( code.label )
+    def translate_Branch( code )
+      ArmMachine.b( code.label.to_cpu(self) )
     end
 
-    def translate_IsPlus code
-      ArmMachine.bpl( code.label)
+    def translate_IsPlus( code )
+      ArmMachine.bpl( code.label.to_cpu(self) )
     end
 
-    def translate_IsMinus code
-      ArmMachine.bmi( code.label)
+    def translate_IsMinus( code )
+      ArmMachine.bmi( code.label.to_cpu(self) )
     end
 
-    def translate_IsZero code
-      ArmMachine.beq( code.label)
+    def translate_IsZero( code )
+      ArmMachine.beq( code.label.to_cpu(self) )
     end
 
-    def translate_IsOverflow code
-      ArmMachine.bvs( code.label)
+    def translate_IsOverflow( code )
+      ArmMachine.bvs( code.label.to_cpu(self))
     end
 
-    def translate_Syscall code
+    def translate_Syscall( code )
       call_codes = { :putstring => 4 , :exit => 1    }
       int_code = call_codes[code.name]
       raise "Not implemented syscall, #{code.name}" unless int_code
       send( code.name , int_code )
     end
 
-    def putstring int_code
+    def putstring( int_code )
       codes = ArmMachine.add( :r1 ,  :r1 , 12 ) # adjust for object header
       codes.append ArmMachine.mov( :r0 ,  1 )  # write to stdout == 1
       syscall(int_code , codes )
     end
 
-    def exit int_code
+    def exit( int_code )
       codes =  ArmMachine.ldr( :r0 ,  :r0 , arm_index(Risc.resolve_to_index(:Message , :return_value)) )
       syscall int_code , codes
     end

@@ -29,9 +29,7 @@ module Risc
         all << ins
       end
     end
-
     def test_no_risc
-      @machine.translate_arm
       @machine.position_all
       @machine.objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
@@ -46,5 +44,6 @@ module Risc
         end
       end
     end
+
   end
 end
