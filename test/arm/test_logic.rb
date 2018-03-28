@@ -80,15 +80,24 @@ module Arm
       code = @machine.add	 :r1 , :r1, 0x220
       assert_code code , :add , [0x22,0x1e,0x91,0xe2] #e2 91 1e 22
     end
+    def test_too_big_add
+      code = @machine.add	 :r1 , :r1, 0x222
+      begin # add 0x02 (first instruction) and then 0x220 shifted
+        assert_code code , :add , [0x02,0x1c,0x91,0xe2,  0x22,0x10,0x91,0xe2] #e2 91 1e 22
+      rescue Risc::LinkException
+        retry
+      end
+    end
 
-    def label pos = 0x22
+    def label pos = 0x22 + 8
       l  = Risc.label("some" , "Label")
       l.set_position   pos
       l
     end
 
-    def pest_move_object
+    def test_move_object
       code = @machine.add( :r1 , label)
+      code.set_position(0)
       assert_code code , :add , [0x22,0x10,0x9f,0xe2] #e2 9f 10 22
     end
 
