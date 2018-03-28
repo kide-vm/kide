@@ -97,7 +97,7 @@ module Risc
     def create_binary
       objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
-        puts "CODE1 #{method.name}:#{}"
+        puts "Binary for #{method.name}:#{}"
         writer = BinaryWriter.new(method.binary)
         writer.assemble(method.cpu_instructions)
       end

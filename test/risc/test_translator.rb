@@ -1,5 +1,8 @@
 require_relative "../helper"
 
+class DevNull
+  def write_unsigned_int_32( _ );end
+end
 module Risc
   class TestTranslator < MiniTest::Test
 
@@ -14,8 +17,34 @@ module Risc
     end
 
     def test_translate_space
-      @assembler = Assembler.new(@machine , Collector.collect_space)
       assert @machine.translate_arm
+    end
+
+    def test_no_loops_in_chain
+      @machine.position_all
+      init = Parfait.object_space.get_init
+      all = []
+      init.cpu_instructions.each do |ins|
+        assert !all.include?(ins)
+        all << ins
+      end
+    end
+
+    def test_no_risc
+      @machine.translate_arm
+      @machine.position_all
+      @machine.objects.each do |id , method|
+        next unless method.is_a? Parfait::TypedMethod
+        next unless method.name == :__init__
+        method.cpu_instructions.each do |ins|
+          puts "INS #{ins}:#{}"
+          begin
+            ins.assemble(DevNull.new)
+          rescue LinkException
+            ins.assemble(DevNull.new)
+          end
+        end
+      end
     end
   end
 end

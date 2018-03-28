@@ -1,7 +1,7 @@
 require_relative "../helper"
 
 module Risc
-  class TestMachine < MiniTest::Test
+  class TestMachineObjects < MiniTest::Test
 
     def setup
       @machine = Risc.machine.boot
@@ -11,20 +11,18 @@ module Risc
       assert_equal Hash , objects.class
       assert 350 < objects.length
     end
-    def test_position_length
+  end
+  class TestMachinePositions < MiniTest::Test
+    def setup
+      @machine = Risc.machine.boot
       @machine.position_all
-      objects = @machine.objects
-      assert_equal Hash , objects.class
-      assert 350 < objects.length
     end
     def test_has_positions
-      @machine.position_all
       @machine.objects.each do |id,obj|
         assert Positioned.position(obj)
       end
     end
     def test_binary
-      @machine.position_all
       @machine.create_binary
     end
   end
