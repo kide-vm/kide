@@ -24,7 +24,7 @@ module Risc
     end
 
     def test_binary
-#      @machine.create_binary
+      @machine.create_binary
     end
   end
 end

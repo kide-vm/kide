@@ -21,7 +21,6 @@ module Risc
           instruction.assemble(self)
         end
         instruction = instruction.next
-        puts "Next #{instruction.to_s}"
       end
     end
 
