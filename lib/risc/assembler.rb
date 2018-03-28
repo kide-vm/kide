@@ -1,6 +1,4 @@
 module Risc
-  class LinkException < Exception
-  end
   # Assemble the object machine into a binary.
   # Assemble first to get positions, then write
 
