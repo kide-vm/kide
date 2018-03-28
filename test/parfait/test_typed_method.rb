@@ -3,6 +3,7 @@ require_relative "../helper"
 class TestMethod < MiniTest::Test
 
   def setup
+    Risc.machine.boot
     obj = Parfait.object_space.get_class_by_name(:Object).instance_type
     args = Parfait::Type.for_hash( obj.object_class , { bar: :Integer , foo: :Type})
     frame = Parfait::Type.for_hash( obj.object_class , { local_bar: :Integer , local_foo: :Type})
@@ -90,5 +91,7 @@ class TestMethod < MiniTest::Test
     index = @method.has_local(:local_bar)
     assert_equal :Integer , @method.frame_type(index)
   end
-
+  def test_created_with_binary
+    assert @method.binary
+  end
 end

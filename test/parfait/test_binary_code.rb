@@ -64,5 +64,10 @@ module Parfait
       @code.set_word(20,1)
       assert_equal 1 , @code.get_word(20)
     end
+    def test_extend
+      @code.extend_to(20)
+      assert @code.next
+      assert_nil @code.next.next
+    end
   end
 end

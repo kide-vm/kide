@@ -43,6 +43,7 @@ module Parfait
       raise "Wrong frame type, expect Type not #{frame.class}" unless frame.is_a? Type
       @arguments = arguments
       @frame = frame
+      @binary = BinaryCode.new(0)
       source = "_init_method"
       name = "#{@for_type.name}.#{@name}"
       @risc_instructions = Risc.label(source, name)
@@ -58,7 +59,7 @@ module Parfait
         nekst = nekst.next
       end
       total = @cpu_instructions.total_byte_length / 4 + 1
-      @binary = BinaryCode.new( total )
+      @binary.extend_to( total )
       @cpu_instructions
     end
 

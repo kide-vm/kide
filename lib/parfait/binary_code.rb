@@ -11,11 +11,14 @@ module Parfait
 
     def initialize(total_size)
       super()
+      extend_to(total_size)
+      #puts "Init with #{total_size} for #{object_id}"
+      (1..(data_length+1)).each{ |index| set_word(index , 0) }
+    end
+    def extend_to(total_size)
       if total_size > self.data_length
         @next = BinaryCode.new(total_size - data_length)
       end
-      #puts "Init with #{total_size} for #{object_id}"
-      (1..(data_length+1)).each{ |index| set_word(index , 0) }
     end
     def to_s
       "BinaryCode #{}"
