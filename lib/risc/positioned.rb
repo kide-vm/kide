@@ -10,7 +10,7 @@ module Positioned
     pos = self.positions[object]
     if pos == nil
       str = "position accessed but not set, "
-      str += "#{object.object_id.to_s(16)}\n"
+      str += "0x#{object.object_id.to_s(16)}\n"
       str += "for #{object.class} byte_length #{object.byte_length if object.respond_to?(:byte_length)} for #{object.inspect[0...100]}"
       raise str
     end

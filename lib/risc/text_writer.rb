@@ -1,12 +1,13 @@
 module Risc
-  # Assemble the object machine into a binary.
-  # Assemble first to get positions, then write
+  # To create a binary, we need a so called Text element. Bad name for what is the code
+  #
+  # Binary code is already created by the Machine (by translating risc to arm to binary)
+  #
+  # This class serves to write all the objects of the machine (wich also contain the code)
+  # into one stream or binary text object. This is then written to an ELF text section.
+  #
 
-  # The assemble function determines the length of an object and then actually
-  #  writes the bytes they are pretty much dependant. In an earlier version they were
-  #  functions on the objects, but now it has gone to a visitor pattern.
-
-  class Assembler
+  class TextWriter
     include Logging
     log_level :info
 
@@ -18,7 +19,10 @@ module Risc
       @load_at = 0x8054 # this is linux/arm
     end
 
-    # objects must be written in same order as positioned / assembled
+    # objects must be written in same order as positioned by the machine, namely
+    # - intial jump
+    # - all objects
+    # - all BinaryCode
     def write_as_string
       @stream = StringIO.new
       write_any(@machine.binary_init)
@@ -29,15 +33,15 @@ module Risc
       return @stream.string
     end
 
-    # debugging loop accesses all positions to force an error if it's not set
+    # debugging loop to write out positions (in debug)
     def write_debug
-      all = @objects.values.sort{|a,b| Positioned.position(a) <=> Positioned.position(b)}
-      all.each do |objekt|
+      @objects.each do |id , objekt|
         next if objekt.is_a?(Risc::Label)
         log.debug "Linked #{objekt.class}:0x#{objekt.object_id.to_s(16)} at 0x#{Positioned.position(objekt).to_s(16)} / 0x#{objekt.padded_length.to_s(16)}"
       end
     end
 
+    # Write all the objects
     def write_objects
       #  then the objects , not code yet
       @objects.each do | id, objekt|
@@ -60,6 +64,7 @@ module Risc
       end
     end
 
+    # Write any object just logs a bit and passes to write_any_out
     def write_any( obj )
       write_any_log( obj ,  "Write")
       if @stream.length != Positioned.position(obj)
@@ -74,6 +79,8 @@ module Risc
       log.debug "#{at} #{obj.class}:0x#{obj.object_id.to_s(16)} at stream 0x#{stream_position.to_s(16)} pos:0x#{Positioned.position(obj).to_s(16)} , len:0x#{obj.padded_length.to_s(16)}"
     end
 
+    # Most objects are the same and get passed to write_object
+    # But Strings and BinaryCode write out binary, so they have different methods (for now)
     def write_any_out(obj)
       case obj
       when Parfait::Word, Symbol
@@ -84,6 +91,7 @@ module Risc
         write_object obj
       end
     end
+
     # write type of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def write_object( object )
@@ -179,7 +187,7 @@ module Risc
     end
 
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
-    def pad_after length
+    def pad_after( length )
       before = stream_position
       pad = Padding.padding_for(length) - 4  # four is for the MARKER we write
       pad.times do
@@ -195,5 +203,5 @@ module Risc
     end
   end
 
-  RxFile::Volotile.add(Assembler , [:objects])
+  RxFile::Volotile.add(TextWriter , [:objects])
 end

@@ -9,7 +9,7 @@ FeatureEnvy:
     - "Vool::Compiler"
     - "Vool::RubyCompiler"
     - "Risc::Interpreter"
-    - "Risc::Assembler"
+    - "Risc::TextWriter"
     - "Arm::Translator"
     - "Vm::ToCode"
 TooManyMethods:
@@ -17,7 +17,7 @@ TooManyMethods:
     - "Vool::Compiler"
     - "Vool::RubyCompiler"
     - "Risc::Interpreter"
-    - "Risc::Assembler"
+    - "Risc::TextWriter"
     - "Arm::Translator"
     - "Vm::ToCode"
 UtilityFunction:
@@ -25,14 +25,14 @@ UtilityFunction:
     - "Vool::Compiler"
     - "Vool::RubyCompiler"
     - "Risc::Interpreter"
-    - "Risc::Assembler"
+    - "Risc::TextWriter"
     - "Arm::Translator"
     - "Vm::ToCode"
 UncommunicativeMethodName:
   exclude:
     - "Vool::Compiler"
     - "Vool::RubyCompiler"
-    - "Risc::Assembler"
+    - "Risc::TextWriter"
     - "Risc::Interpreter"
     - "Arm::Translator"
     - "Vm::ToCode"
