@@ -21,12 +21,7 @@ module Risc
     # objects must be written in same order as positioned / assembled
     def write_as_string
       @stream = StringIO.new
-      Positioned.set_position(@machine.cpu_init.first , 0)
-      puts ":#{Positioned.position(@machine.cpu_init.first)}:"
-      @machine.cpu_init.assemble( @stream )
-      8.times do
-        @stream.write_unsigned_int_8(0)
-      end
+      write_any(@machine.binary_init)
       write_debug
       write_objects
       write_code
@@ -69,7 +64,7 @@ module Risc
     def write_any( obj )
       write_any_log( obj ,  "Write")
       if @stream.length != Positioned.position(obj)
-        raise "Write #{obj.class}:0x#{obj.object_id.to_s(16)} at #{stream_position} not #{Positioned.position(obj)}"
+        raise "Write #{obj.class}:0x#{obj.object_id.to_s(16)} at 0x#{stream_position.to_s(16)} not 0x#{Positioned.position(obj).to_s(16)}"
       end
       write_any_out(obj)
       write_any_log( obj ,  "Wrote")
@@ -81,8 +76,11 @@ module Risc
     end
 
     def write_any_out(obj)
-      if obj.is_a?(Parfait::Word) or obj.is_a?(Symbol)
+      case obj
+      when Parfait::Word, Symbol
         write_String obj
+      when Parfait::BinaryCode
+        write_BinaryCode obj
       else
         write_object obj
       end
@@ -102,7 +100,8 @@ module Risc
 
     def write_object_check(object)
       log.debug "Write object #{object.class} #{object.inspect[0..100]}"
-      unless @objects.has_key? object.object_id
+      #Only initially created codes are collected. Binary_init and method "tails" not
+      if !@objects.has_key?(object.object_id) and !object.is_a?(Parfait::BinaryCode)
         log.debug "Object at 0x#{Positioned.position(object).to_s(16)}:#{object.get_type()}"
         raise "Object(0x#{object.object_id.to_s(16)}) not linked #{object.inspect}"
       end
@@ -132,8 +131,14 @@ module Risc
       written
     end
 
-    def write_BinaryCode code
-        write_String code
+    def write_BinaryCode( code )
+      @stream.write_signed_int_32( MARKER  )
+      write_ref_for( code.get_type )
+      write_ref_for( code.next )
+      code.each_word do |word|
+        @stream.write_unsigned_int_32( word || 0 )
+      end
+      log.debug "Code16 witten stream 0x#{@stream.length.to_s(16)}"
     end
 
     def write_String( string )

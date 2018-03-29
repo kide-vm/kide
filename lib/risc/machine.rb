@@ -20,7 +20,7 @@ module Risc
       @booted = false
       @constants = []
     end
-    attr_reader  :constants , :risc_init , :cpu_init
+    attr_reader  :constants , :risc_init , :cpu_init , :binary_init
     attr_reader  :booted , :translated
 
     # translate to arm, ie instantiate an arm translator and pass it to translate
@@ -37,6 +37,7 @@ module Risc
       methods = Parfait.object_space.collect_methods
       translate_methods( methods , translator )
       @cpu_init = translator.translate( @risc_init )
+      @binary_init = Parfait::BinaryCode.new(1)
     end
 
     def translate_methods(methods , translator)
@@ -55,8 +56,9 @@ module Risc
       translate_arm unless @translated
       #need the initial jump at 0 and then functions
       cpu_init.set_position( 0 )
-      at = cpu_init.byte_length
-      at = position_objects( at )
+      Positioned.set_position(cpu_init.first , 0)
+      Positioned.set_position(binary_init,0)
+      at = position_objects( binary_init.padded_length )
       # and then everything code
       position_code_from( at )
     end
@@ -101,6 +103,7 @@ module Risc
         writer = BinaryWriter.new(method.binary)
         writer.assemble(method.cpu_instructions)
       end
+      BinaryWriter.new(binary_init).assemble(cpu_init)
     end
 
     def boot
