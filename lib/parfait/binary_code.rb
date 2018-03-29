@@ -23,6 +23,13 @@ module Parfait
     def to_s
       "BinaryCode #{}"
     end
+    def each_word
+      index = 1
+      while( index <= 14)
+        yield get_internal_word(index)
+        index += 1
+      end
+    end
     #16 - 2 -1 , two instance varaibles and one for the jump
     def data_length
       13

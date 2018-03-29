@@ -69,5 +69,10 @@ module Parfait
       assert @code.next
       assert_nil @code.next.next
     end
+    def test_each
+      len = 0
+      @code.each_word{ len += 1}
+      assert_equal 14 , len
+    end
   end
 end
