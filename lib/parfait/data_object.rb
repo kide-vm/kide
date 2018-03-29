@@ -49,7 +49,7 @@ module Parfait
       1
     end
     def padded_length
-      2
+      2 * 4
     end
   end
 
@@ -58,7 +58,7 @@ module Parfait
       7
     end
     def padded_length
-      8
+      8 * 4
     end
   end
   class Data16 < DataObject
@@ -66,7 +66,7 @@ module Parfait
       15
     end
     def padded_length
-      16
+      16 * 4
     end
   end
 end

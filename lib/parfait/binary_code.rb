@@ -25,7 +25,7 @@ module Parfait
     end
     def each_word
       index = 1
-      while( index <= 14)
+      while( index < 14)
         yield get_internal_word(index)
         index += 1
       end

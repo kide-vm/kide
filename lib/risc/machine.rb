@@ -32,7 +32,9 @@ module Risc
       translate(Arm::Translator.new)
     end
 
-    # translate the methods to whatever cpu the translator translates to
+    # translate code to whatever cpu the translator translates to
+    # this means translating the initial jump (cpu_init into binary_init)
+    # and then translating all methods
     def translate( translator )
       methods = Parfait.object_space.collect_methods
       translate_methods( methods , translator )
@@ -40,6 +42,7 @@ module Risc
       @binary_init = Parfait::BinaryCode.new(1)
     end
 
+    # go through all methods and translate them to cpu, given the translator
     def translate_methods(methods , translator)
       methods.each do |method|
         log.debug "Translate method #{method.name}"
@@ -52,6 +55,15 @@ module Risc
       @objects ||= Collector.collect_space
     end
 
+    # To create binaries, objects (and labels) need to have a position
+    # (so objects can be loaded and branches know where to jump)
+    #
+    # Position in the order
+    # - initial jump
+    # - all object
+    # - all code
+    # As code length amy change during assembly, this way at least the objects stay
+    # in place and we don't have to deal with chaning loading code
     def position_all
       translate_arm unless @translated
       #need the initial jump at 0 and then functions
@@ -63,43 +75,44 @@ module Risc
       position_code_from( at )
     end
 
+    # go through everything that is not code (BinaryCode) and set position
+    # padded_length is what determines an objects (byte) length
     def position_objects( at )
-      at +=  8 # thats the padding
       # want to have the objects first in the executable
       objects.each do | id , objekt|
-        case objekt
-        when Parfait::BinaryCode
-        when Risc::Label
-        else
-          Positioned.set_position(objekt,at)
-          at += objekt.padded_length
-        end
+        next if objekt.is_a?( Parfait::BinaryCode) or objekt.is_a?( Risc::Label )
+        Positioned.set_position(objekt,at)
+        at += objekt.padded_length
       end
       at
     end
 
+    # Position all BinaryCode.
+    #
+    # So that all code from one method is layed out linearly (for debuggin)
+    # we go through methods, and then through all codes from the method
     def position_code_from( at )
       objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
         log.debug "CODE1 #{method.name}:#{at}"
-        method.cpu_instructions.set_position( at + 12) # BinaryCode header
+        method.cpu_instructions.set_position( at )
         before = at
         nekst = method.binary
         while(nekst)
           Positioned.set_position(nekst , at)
           at += nekst.padded_length
           nekst = nekst.next
-          #puts "LENGTH #{len}"
         end
         log.debug "CODE2 #{method.name}:#{at} len: #{at - before}"
       end
       at
     end
 
+    # Create Binary code for all methods and the initial jump
+    # BinaryWriter handles the writing from instructions into BinaryCode objects
     def create_binary
       objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
-        #puts "Binary for #{method.name}:#{}"
         writer = BinaryWriter.new(method.binary)
         writer.assemble(method.cpu_instructions)
       end

@@ -6,10 +6,10 @@ module Risc
     def setup
       @machine = Risc.machine.boot
     end
-    def est_init
+    def test_init
       @assembler = Assembler.new(@machine)
     end
-    def est_write_fails
+    def test_write_fails
       @assembler = Assembler.new(@machine)
       assert_raises{ @assembler.write_as_string} #must translate first
     end

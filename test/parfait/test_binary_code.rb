@@ -72,7 +72,7 @@ module Parfait
     def test_each
       len = 0
       @code.each_word{ len += 1}
-      assert_equal 14 , len
+      assert_equal 13 , len
     end
   end
 end

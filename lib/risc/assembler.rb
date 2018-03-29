@@ -8,7 +8,7 @@ module Risc
 
   class Assembler
     include Logging
-    log_level :debug
+    log_level :info
 
     MARKER = 0xA51AF00D
 
@@ -35,7 +35,6 @@ module Risc
       all.each do |objekt|
         next if objekt.is_a?(Risc::Label)
         log.debug "Linked #{objekt.class}:0x#{objekt.object_id.to_s(16)} at 0x#{Positioned.position(objekt).to_s(16)} / 0x#{objekt.padded_length.to_s(16)}"
-        Positioned.position(objekt)
       end
     end
 
