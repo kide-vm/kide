@@ -10,7 +10,8 @@ module Arm
   # in Arm the register layout is different and so we have to place the syscall code into register 7
   # Riscs 0-6 hold the call values as for a normal c call
   class CallInstruction < Instruction
-
+    attr_reader :first
+    
     def initialize(first, attributes)
       super(nil, nil)
       @attributes = attributes

@@ -12,19 +12,25 @@ module Risc
 
     MARKER = 0xA51AF00D
 
-    def initialize( machine , objects)
+    def initialize( machine)
       @machine = machine
-      @objects = objects
+      @objects = machine.objects
       @load_at = 0x8054 # this is linux/arm
     end
 
     # objects must be written in same order as positioned / assembled
     def write_as_string
+      @stream = StringIO.new
+      Positioned.set_position(@machine.cpu_init.first , 0)
+      puts ":#{Positioned.position(@machine.cpu_init.first)}:"
+      @machine.cpu_init.assemble( @stream )
+      8.times do
+        @stream.write_unsigned_int_8(0)
+      end
       write_debug
-      write_create_binary
       write_objects
       write_code
-      log.debug "Assembled #{stream_position} bytes"
+      log.debug "Assembled 0x#{stream_position.to_s(16)} bytes"
       return @stream.string
     end
 
@@ -33,21 +39,8 @@ module Risc
       all = @objects.values.sort{|a,b| Positioned.position(a) <=> Positioned.position(b)}
       all.each do |objekt|
         next if objekt.is_a?(Risc::Label)
-        log.debug "Linked #{objekt.class}(#{objekt.object_id}) at #{Positioned.position(objekt)} / #{objekt.padded_length}"
+        log.debug "Linked #{objekt.class}:0x#{objekt.object_id.to_s(16)} at 0x#{Positioned.position(objekt).to_s(16)} / 0x#{objekt.padded_length.to_s(16)}"
         Positioned.position(objekt)
-      end
-    end
-
-    def write_create_binary
-      # first we need to create the binary code for the methods
-      @objects.each do |id , objekt|
-        next unless objekt.is_a? Parfait::TypedMethod
-        assemble_binary_method(objekt)
-      end
-      @stream = StringIO.new
-      @machine.init.assemble( @stream )
-      8.times do
-        @stream.write_unsigned_int_8(0)
       end
     end
 
@@ -60,51 +53,23 @@ module Risc
       end
     end
 
+    # Write the BinaryCode objects of all methods to stream.
+    # Really like any other object, it's just about the ordering
     def write_code
-      # then write the methods to file
-      @objects.each do |id, objekt|
-        next unless objekt.is_a? Parfait::BinaryCode
-        write_any( objekt )
+      @objects.each do |id, method|
+        next unless method.is_a? Parfait::TypedMethod
+        binary = method.binary
+        while(binary) do
+          write_any( binary )
+          binary = binary.next
+        end
       end
     end
 
-    # assemble the MethodSource into a stringio
-    # and then plonk that binary data into the method.code array
-    def assemble_binary_method( method )
-      stream = StringIO.new
-      #puts "Method #{method.source.cpu_instructions.to_ac}"
-      begin
-        #puts "assemble #{method.source.cpu_instructions}"
-        method.cpu_instructions.assemble_all( stream )
-      rescue => e
-        log.debug "Assembly error #{method.name}\n#{method.to_rxf.to_s[0...2000]}"
-        raise e
-      end
-      write_binary_method_to_stream( method, stream)
-    end
-
-    def write_binary_method_to_stream(method, stream)
-      write_binary_method_checks(method,stream)
-      index = 1
-      stream.each_byte do |b|
-        method.binary.set_char(index , b )
-        index = index + 1
-      end
-    end
-    def write_binary_method_checks(method,stream)
-      stream.rewind
-      length = stream.length
-      binary = method.binary
-      total_byte_length = method.cpu_instructions.total_byte_length
-      log.debug "Assembled code #{method.name} with length #{length}"
-      raise "length error #{binary.total_byte_length} != #{total_byte_length}" if binary.total_byte_length <= total_byte_length
-      raise "length error #{length} != #{total_byte_length}" if total_byte_length != length
-    end
-
-    def write_any obj
+    def write_any( obj )
       write_any_log( obj ,  "Write")
       if @stream.length != Positioned.position(obj)
-        raise "Write #{obj.class} #{obj.object_id} at #{stream_position} not #{Positioned.position(obj)}"
+        raise "Write #{obj.class}:0x#{obj.object_id.to_s(16)} at #{stream_position} not #{Positioned.position(obj)}"
       end
       write_any_out(obj)
       write_any_log( obj ,  "Wrote")
@@ -112,7 +77,7 @@ module Risc
     end
 
     def write_any_log( obj , at)
-      log.debug "#{at} #{obj.class}(#{obj.object_id}) at stream #{stream_position} pos:#{Positioned.position(obj)} , len:#{obj.padded_length}"
+      log.debug "#{at} #{obj.class}:0x#{obj.object_id.to_s(16)} at stream 0x#{stream_position.to_s(16)} pos:0x#{Positioned.position(obj).to_s(16)} , len:0x#{obj.padded_length.to_s(16)}"
     end
 
     def write_any_out(obj)
@@ -127,18 +92,19 @@ module Risc
     def write_object( object )
       write_object_check(object)
       obj_written = write_object_variables(object)
-      log.debug "instances=#{object.get_instance_variables.inspect} mem_len=#{object.padded_length}"
+      log.debug "instances=#{object.get_instance_variables.inspect} mem_len=0x#{object.padded_length.to_s(16)}"
       indexed_written = write_object_indexed(object)
       log.debug "type #{obj_written} , total #{obj_written + indexed_written} (array #{indexed_written})"
-      log.debug "Len = #{object.get_length} , inst = #{object.get_type.instance_length}" if object.is_a? Parfait::Type
+      log.debug "Len = 0x#{object.get_length.to_s(16)} , inst =0x#{object.get_type.instance_length.to_s(16)}" if object.is_a? Parfait::Type
       pad_after( obj_written + indexed_written  )
       Positioned.position(object)
     end
 
     def write_object_check(object)
-      log.debug "Write object #{object.class} #{object.inspect}"
+      log.debug "Write object #{object.class} #{object.inspect[0..100]}"
       unless @objects.has_key? object.object_id
-        raise "Object(#{object.object_id}) not linked #{object.inspect}"
+        log.debug "Object at 0x#{Positioned.position(object).to_s(16)}:#{object.get_type()}"
+        raise "Object(0x#{object.object_id.to_s(16)}) not linked #{object.inspect}"
       end
     end
 
@@ -159,6 +125,7 @@ module Risc
       object.get_instance_variables.each do |var|
         inst = object.get_instance_variable(var)
         #puts "Nil for #{object.class}.#{var}" unless inst
+        inst = nil if [:cpu_instructions , :risc_instructions].include?(var)
         write_ref_for(inst)
         written += 4
       end
@@ -175,7 +142,7 @@ module Risc
         raise "length mismatch #{str.length} != #{string.char_length}" if str.length != string.char_length
       end
       str = string.to_s if string.is_a? Symbol
-      log.debug "#{string.class} is #{string} at #{Positioned.position(string)} length #{string.length}"
+      log.debug "#{string.class} is #{string} at 0x#{Positioned.position(string).to_s(16)} length 0x#{string.length.to_s(16)}"
       write_checked_string(string , str)
     end
 
@@ -185,7 +152,7 @@ module Risc
       @stream.write_signed_int_32( str.length  ) #int
       @stream.write str
       pad_after(str.length + 8 ) # type , length   *4 == 12
-      log.debug "String (#{string.length}) stream #{@stream.length}"
+      log.debug "String (0x#{string.length.to_s(16)}) stream 0x#{@stream.length.to_s(16)}"
     end
 
     def write_Symbol(sym)
@@ -215,7 +182,7 @@ module Risc
         @stream.write_unsigned_int_8(0)
       end
       after = stream_position
-      log.debug "padded #{length} with #{pad} stream #{before}/#{after}"
+      log.debug "padded 0x#{length.to_s(16)} with 0x#{pad.to_s(16)} stream #{before.to_s(16)}/#{after.to_s(16)}"
     end
 
     # return the stream length as hex
