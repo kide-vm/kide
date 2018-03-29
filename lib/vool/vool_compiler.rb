@@ -13,5 +13,10 @@ module Vool
       statements = self.ruby_to_vool(source)
       statements.to_mom(nil)
     end
+    def self.ruby_to_binary(source)
+      machine = Risc.machine.boot
+      self.ruby_to_vool(source)
+      machine.position_all
+    end
   end
 end

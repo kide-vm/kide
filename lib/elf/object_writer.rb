@@ -7,9 +7,8 @@ require_relative 'string_table_section'
 module Elf
 
   class ObjectWriter
-    def initialize( machine , objects )
+    def initialize( machine )
       @machine = machine
-      @objects = objects
       target = Elf::Constants::TARGET_ARM
       @object = Elf::ObjectFile.new(target)
       sym_strtab = Elf::StringTableSection.new(".strtab")
@@ -20,19 +19,20 @@ module Elf
       @text = Elf::TextSection.new(".text")
       @object.add_section @text
 
-      assembler = Risc::TextWriter.new(@machine , @objects)
+      assembler = Risc::TextWriter.new(@machine)
       set_text assembler.write_as_string
 
       # for debug add labels for labels
       Parfait.object_space.each_type do |type|
         type.methods.each do |f|
-          f.risc_instructions.each_label do |label|
+          f.cpu_instructions.each do |label|
+            next unless label.is_a?(Risc::Label)
             add_symbol "#{type.name}::#{f.name}:#{label.name}" , Positioned.position(label)
           end
         end
       end
 
-      @objects.each do |id,slot|
+      @machine.objects.each do |id,slot|
         next if slot.is_a?(Parfait::BinaryCode)
         if( slot.respond_to? :sof_reference_name )
           label = "#{slot.sof_reference_name}"

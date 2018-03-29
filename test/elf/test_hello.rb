@@ -1,20 +1,15 @@
 require_relative "../helper"
 
 class HelloTest < MiniTest::Test
-  include AST::Sexp
 
   def check
-    machine = Risc.machine.boot
-    Vm.compile_ast( @input )
-    objects = Risc::Collector.collect_space
-    machine.translate_arm
-    writer = Elf::ObjectWriter.new(machine , objects )
+    Vool::VoolCompiler.ruby_to_binary( "class Space;def main(arg);#{@input};end;end" )
+    writer = Elf::ObjectWriter.new(Risc.machine)
     writer.save "test/hello.o"
   end
 
-  def pest_string_put
-    @input = s(:statements, s(:return, s(:call, :putstring, s(:arguments),
-                  s(:receiver, s(:string, "Hello again\\n")))))
+  def test_string_put
+    @input = "'Hello'.putstring"
     check
   end
 end
