@@ -86,7 +86,7 @@ module Arm
       end
     end
 
-    def translate_OperatorInstruction code
+    def translate_OperatorInstruction( code )
       left = code.left
       right = code.right
       case code.operator.to_s

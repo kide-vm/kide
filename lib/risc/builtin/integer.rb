@@ -15,7 +15,20 @@ module Risc
           return compiler.method
         end
 
+        def +( context )
+          source = "plus"
+          compiler = compiler_for(:Integer,:+ ,{other: :int})
+          me , other = self_and_int_arg(compiler,source)
+          # reduce me and other to integers
+          compiler.add_slot_to_reg( source , me , 1 , me)
+          compiler.add_slot_to_reg( source , other , 1 , other)
+          compiler.add_code Risc.op( source , :+ , me , other)
+          #TODO must get an Integer and put the value there then return the integer (object not value)
+          # and put it back into the return value
+          compiler.add_reg_to_slot( source , me , :message , :return_value)
+          return compiler.method
 
+        end
         def div10( context )
           s = "div_10"
           compiler = compiler_for(:Integer,:div10 ,{})

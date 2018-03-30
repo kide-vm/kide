@@ -150,7 +150,7 @@ module Risc
           Dictionary: {keys: :List , values: :List  } ,
           CacheEntry: {cached_type: :Type , cached_method: :TypedMethod  } ,
           TypedMethod: {name: :Word, source: :Object, risc_instructions: :Object,
-                        cpu_instructions: :Object, binary: :BinaryCode, 
+                        cpu_instructions: :Object, binary: :BinaryCode,
                         arguments: :Type , for_type: :Type, frame: :Type } ,
         }
     end
@@ -183,7 +183,7 @@ module Risc
       end
 
       obj = space.get_class_by_name(:Integer)
-      [ :putint, :mod4, :div10].each do |f|   #mod4 is just a forward declaration
+      [ :putint, :mod4, :div10, :+].each do |f|   #mod4 is just a forward declaration
         obj.instance_type.add_method Builtin::Integer.send(f , nil)
       end
     end
