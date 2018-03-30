@@ -52,8 +52,8 @@ module Risc
       #full_expect =  expect
       begin
         should = full_expect[index]
-        return "No instruction at #{real_index(index)}\n#{should(all)}" unless should
-        return "Expected at #{real_index(index)}\n#{should(all)} was #{instruction.to_s}" unless instruction.class == should
+        return "No instruction at #{real_index(index)}\n#{should(all)[0..100]}" unless should
+        return "Expected at #{real_index(index)}\n#{should(all)} was #{instruction.to_s[0..100]}" unless instruction.class == should
         #puts instruction.to_s if (index > preamble.length) and (index + postamble.length <= full_expect.length)
         index += 1
         instruction = instruction.next
@@ -63,10 +63,11 @@ module Risc
     def should( all )
       preamble.each {all.shift}
       postamble.each {all.pop}
-      str = all.to_s.gsub("Risc::","")
+      str = all.collect{|i| i.class.name}.join(", ").gsub("Risc::","")
+      str = "[#{str}]"
       ret = ""
       str.split(",").each_slice(5).each do |line|
-        ret += "                " + line.join(",") + " ,\n"
+        ret += "                " + line.join(",") + ",\n"
       end
       ret
     end
