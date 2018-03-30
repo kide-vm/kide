@@ -18,26 +18,27 @@ module Risc
     def test_send_instructions
       assert_nil msg = check_nil , msg
     end
-    def pest_function_call
-      produced = produce_body
-      assert_equal FunctionCall , produced.next(24).class
-      assert_equal :mod4 , produced.next(24).method.name
-    end
-    def pest_check_continue
-      produced = produce_body
-      assert produced.next(25).name.start_with?("continue_")
-    end
-    def pest_load_label
-      produced = produce_body
-      assert_equal Label , produced.next(19).constant.class
-    end
-    def pest_load_5
+    def test_load_5
       produced = produce_body
       assert_equal 5 , produced.next(16).constant.value
     end
-    def pest_call_reg_setup
+    def test_load_label
       produced = produce_body
-      assert_equal produced.next(23).register , produced.next(24).register
+      assert_equal LoadConstant , produced.next(23).class
+      assert_equal Label , produced.next(23).constant.class
+    end
+    def test_function_call
+      produced = produce_body
+      assert_equal FunctionCall , produced.next(28).class
+      assert_equal :get_internal_word , produced.next(28).method.name
+    end
+    def test_call_reg_setup
+      produced = produce_body
+      assert_equal produced.next(27).register , produced.next(28).register
+    end
+    def test_check_continue
+      produced = produce_body
+      assert produced.next(29).name.start_with?("continue_")
     end
     #TODO check the message setup, type and frame moves
   end
