@@ -42,9 +42,6 @@ module Risc
       test = Parfait.object_space.get_class_by_name :Test
       test.instance_type.get_method :main
     end
-    def real_index(index)
-      index - preamble.length
-    end
     def compare_instructions( instruction , expect )
       index = 0
       all = instruction.to_arr
@@ -52,9 +49,9 @@ module Risc
       #full_expect =  expect
       begin
         should = full_expect[index]
-        return "No instruction at #{real_index(index)}\n#{should(all)[0..100]}" unless should
-        return "Expected at #{real_index(index)}\n#{should(all)} was #{instruction.to_s[0..100]}" unless instruction.class == should
-        #puts instruction.to_s if (index > preamble.length) and (index + postamble.length <= full_expect.length)
+        return "No instruction at #{index-1}\n#{should(all)[0..100]}" unless should
+        return "Expected at #{index-1}\n#{should(all)} was #{instruction.to_s[0..100]}" unless instruction.class == should
+        #puts "#{index-1}:#{instruction.to_s}" if (index > preamble.length) and (index + postamble.length <= full_expect.length)
         index += 1
         instruction = instruction.next
       end while( instruction )
