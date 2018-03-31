@@ -20,8 +20,8 @@ module Risc
           compiler = compiler_for(:Integer,:+ ,{other: :Integer})
           me , other = self_and_int_arg(compiler,source + "1")
           # reduce me and other to integers
-          compiler.add_slot_to_reg( source + "2" , me , 2 , me)
-          compiler.add_slot_to_reg( source + "3", other , 2 , other)
+          compiler.add_slot_to_reg( source + "2" , me , Parfait::Integer.integer_index , me)
+          compiler.add_slot_to_reg( source + "3", other , Parfait::Integer.integer_index , other)
           compiler.add_code Risc.op( source + "4", :+ , me , other)
           #TODO must get an Integer and put the value there then return the integer (object not value)
           # and put it back into the return value
