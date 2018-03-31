@@ -7,15 +7,18 @@
 # Ie it would be possible to change the value, we just don't support that)
 
 module Parfait
-  class Integer < Data2
+  class Integer < Data4
 
-    #FIXME: this is "just" for compilation
-    def initialize(value)
+    def initialize(value , next_i = nil)
       super()
       @value = value
+      @next_i = next_i
     end
-    attr_reader :value
+    attr_reader :next_i, :value
 
+    def self.integer_index
+      3 # 1 type, 2 next_i
+    end
     # :integer?, :odd?, :even?, :upto, :downto, :times, :succ, :next, :pred, :chr, :ord, :to_i, :to_int, :floor,
     # :ceil, :truncate, :round, :gcd, :lcm, :gcdlcm, :numerator, :denominator, :to_r, :rationalize,
     # :singleton_method_added, :coerce, :i, :+@, :-@, :fdiv, :div, :divmod, :%, :modulo, :remainder, :abs, :magnitude,
@@ -30,19 +33,19 @@ module Parfait
   end
 
   # adding other base classes in here for now:
-  class FalseClass < Data2
+  class FalseClass < Data4
     #FIXME: this is "just" for compilation
     def initialize
       super
     end
   end
-  class TrueClass < Data2
+  class TrueClass < Data4
     #FIXME: this is "just" for compilation
     def initialize
       super
     end
   end
-  class NilClass < Data2
+  class NilClass < Data4
     #FIXME: this is "just" for compilation
     def initialize
       super

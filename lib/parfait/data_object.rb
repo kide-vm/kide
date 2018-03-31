@@ -13,8 +13,8 @@
 # logical and math operation that are bundled into the OperatorInstruction.
 #
 # For safe access the access code needs to know the length of the data, which is
-# encoded in the class/type name. Ie An Integer derives from Data2, which is 2 long
-# (minus one for the type, so exactly the one word for the integer)
+# encoded in the class/type name. Ie An Integer derives from Data4, which is 4 long
+# ( one for the type, one for the next, one word for the integer and currently still a marker)
 #
 # DataObjects still have a type, and so can have objects before the data starts
 #
@@ -44,9 +44,9 @@ module Parfait
     end
   end
 
-  class Data2 < DataObject
+  class Data4 < DataObject
     def data_length
-      1
+      3
     end
     def padded_length
       2 * 4

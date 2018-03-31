@@ -87,7 +87,7 @@ module Risc
         write_String obj
       when Parfait::BinaryCode
         write_BinaryCode obj
-      when Parfait::Data2
+      when Parfait::Data4
         write_data2 obj
       else
         write_object obj
@@ -143,7 +143,7 @@ module Risc
     def write_data2( code )
       @stream.write_signed_int_32( MARKER  )
       write_ref_for( code.get_type )
-      log.debug "Data2 witten stream 0x#{@stream.length.to_s(16)}"
+      log.debug "Data4 witten stream 0x#{@stream.length.to_s(16)}"
     end
 
     def write_BinaryCode( code )
