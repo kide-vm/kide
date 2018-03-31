@@ -25,7 +25,7 @@ module Risc
     def test_load_arg_const
       produced = produce_body
       assert_equal LoadConstant , produced.next(19).class
-      assert_equal Mom::IntegerConstant , produced.next(19).constant.class
+      assert_equal Parfait::Integer , produced.next(19).constant.class
       assert_equal 1 , produced.next(19).constant.value
     end
     def test_load_next_m

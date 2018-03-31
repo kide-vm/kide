@@ -29,16 +29,25 @@ module Mom
     end
   end
   class TrueConstant < Constant
+    def to_parfait(compiler)
+      Parfait.object_space.true_object
+    end
     def ct_type
       Parfait.object_space.get_class_by_name(:TrueClass).instance_type
     end
   end
   class FalseConstant < Constant
+    def to_parfait(compiler)
+      Parfait.object_space.false_object
+    end
     def ct_type
       Parfait.object_space.get_class_by_name(:FalseClass).instance_type
     end
   end
   class NilConstant < Constant
+    def to_parfait(compiler)
+      Parfait.object_space.nil_object
+    end
     def ct_type
       Parfait.object_space.get_class_by_name(:NilClass).instance_type
     end
@@ -47,6 +56,11 @@ module Mom
     attr_reader :value
     def initialize(value)
       @value = value
+    end
+    def to_parfait(compiler)
+      value = Parfait.new_word(@value)
+      compiler.add_constant(value)
+      value
     end
     def ct_type
       Parfait.object_space.get_class_by_name(:Word).instance_type

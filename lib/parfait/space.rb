@@ -44,9 +44,13 @@ module Parfait
       @classes.each do |name , cl|
         add_type(cl.instance_type)
       end
+      @true_object = Parfait::TrueClass.new
+      @false_object = Parfait::FalseClass.new
+      @nil_object = Parfait::NilClass.new
     end
 
-    attr_reader  :classes , :first_message
+    attr_reader  :classes , :first_message , :first_integer
+    attr_reader  :true_object , :false_object , :nil_object
 
     def each_type
       @types.values.each do |type|

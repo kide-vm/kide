@@ -140,8 +140,9 @@ module Risc
           Kernel: {}, #fix, kernel is a class, but should be a module
           BinaryCode: {next: :BinaryCode} ,
           Space: {classes: :Dictionary , types: :Dictionary ,
-                  first_message: :Message , single_true: :TrueClass,
-                  single_false: :FalseClass , single_nil: :NilClass},
+                  first_message: :Message , first_integer: :Integer ,
+                  true_object: :TrueClass,
+                  false_object: :FalseClass , nil_object: :NilClass},
           NamedList: {},
           Type: {names: :List , types: :List  ,
                  object_class: :Class, methods: :List } ,

@@ -14,7 +14,14 @@ class TestSpace < MiniTest::Test
   def test_booted
     assert_equal true , @machine.booted
   end
-
+  def test_space_length
+    assert_equal 8 , @space.get_type.instance_length , @space.get_type.inspect
+  end
+  def test_singletons
+    assert @space.true_object , "No truth"
+    assert @space.false_object , "No lies"
+    assert @space.nil_object , "No nothing"
+  end
   def test_methods_booted
     word = @space.get_class_by_name(:Word).instance_type
     assert_equal 4 , word.method_names.get_length
@@ -145,7 +152,7 @@ class TestSpace < MiniTest::Test
       assert_equal 0 , type.methods.get_length , "name #{type.name}"
     end
   end
-  def ttest_no_methods_in_classes
+  def test_no_methods_in_classes
     test_remove_methods
     @space.classes.each do |name , cl|
       assert_equal 0 , cl.instance_type.methods.get_length , "name #{cl.name}"

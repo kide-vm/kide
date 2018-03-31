@@ -19,7 +19,7 @@ module Risc
 
     def test_false_load
       produced = produce_body
-      assert_equal Mom::FalseConstant , produced.next(2).constant.class
+      assert_equal Parfait::FalseClass , produced.next(2).constant.class
     end
     def test_false_check
       produced = produce_body
@@ -27,7 +27,7 @@ module Risc
     end
     def test_nil_load
       produced = produce_body
-      assert_equal Mom::NilConstant , produced.next(5).constant.class
+      assert_equal Parfait::NilClass , produced.next(5).constant.class
     end
     def test_nil_check
       produced = produce_body

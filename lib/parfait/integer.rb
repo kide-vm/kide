@@ -29,10 +29,19 @@ module Parfait
   end
 
   # adding other base classes in here for now:
-  class FalseClass
+  class FalseClass < Data2
+    #FIXME: this is "just" for compilation
+    def initialize
+    end
   end
-  class TrusClass
+  class TrueClass < Data2
+    #FIXME: this is "just" for compilation
+    def initialize
+    end
   end
-  class NilClass
+  class NilClass < Data2
+    #FIXME: this is "just" for compilation
+    def initialize
+    end
   end
 end
