@@ -55,6 +55,11 @@ module Risc
       @objects ||= Collector.collect_space
     end
 
+    # add a constant (which get created during compilatio and need to be linked)
+    def add_constant(const)
+      raise "Must be Parfait #{const}" unless const.is_a?(Parfait::Object) 
+      @constants << const
+    end
     # To create binaries, objects (and labels) need to have a position
     # (so objects can be loaded and branches know where to jump)
     #

@@ -11,6 +11,12 @@ module Risc
       assert_equal Hash , objects.class
       assert 350 < objects.length
     end
+    def test_constant_fail
+      assert_raises {@machine.add_constant( 1 )}
+    end
+    def test_constant
+      assert @machine.add_constant( Parfait::Integer.new(5) )
+    end
   end
   class TestMachinePositions < MiniTest::Test
     def setup

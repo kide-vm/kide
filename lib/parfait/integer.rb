@@ -9,6 +9,12 @@
 module Parfait
   class Integer < Data2
 
+    #FIXME: this is "just" for compilation
+    def initialize(value)
+      @value = value
+    end
+    attr_reader :value
+
     # :integer?, :odd?, :even?, :upto, :downto, :times, :succ, :next, :pred, :chr, :ord, :to_i, :to_int, :floor,
     # :ceil, :truncate, :round, :gcd, :lcm, :gcdlcm, :numerator, :denominator, :to_r, :rationalize,
     # :singleton_method_added, :coerce, :i, :+@, :-@, :fdiv, :div, :divmod, :%, :modulo, :remainder, :abs, :magnitude,

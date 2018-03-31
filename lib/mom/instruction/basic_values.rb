@@ -10,6 +10,11 @@ module Mom
     def initialize(value)
       @value = value
     end
+    def to_parfait(compiler)
+      value = Parfait::Integer.new(@value)
+      compiler.add_constant(value)
+      value
+    end
     def ct_type
       Parfait.object_space.get_class_by_name(:Integer).instance_type
     end

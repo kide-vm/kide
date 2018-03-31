@@ -108,7 +108,11 @@ module Mom
       type = known_object.respond_to?(:ct_type) ? known_object.ct_type : :int
       right = compiler.use_reg( type )
       case known_object
-      when Constant , Parfait::Object , Risc::Label
+      when Constant
+        parfait = known_object.to_parfait(compiler)
+        const  = Risc.load_constant(instruction, parfait , right)
+        raise "Can't have slots into Constants" if slots.length > 0
+      when Parfait::Object , Risc::Label
         const  = Risc.load_constant(instruction, known_object , right)
         if slots.length > 0
           # desctructively replace the existing value to be loaded if more slots
