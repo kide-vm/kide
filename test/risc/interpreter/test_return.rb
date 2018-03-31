@@ -19,7 +19,7 @@ module Risc
              Label, LoadConstant, RegToSlot, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, FunctionReturn, Transfer,
              Syscall, NilClass]
-      assert_equal 5 , get_return
+      assert_equal 5 , get_return.value
     end
 
     def test_call_main
@@ -35,7 +35,7 @@ module Risc
     def test_load_5
       load_ins = ticks 27
       assert_equal LoadConstant ,  load_ins.class
-      assert_equal 5 , @interpreter.get_register(load_ins.register)
+      assert_equal 5 , @interpreter.get_register(load_ins.register).value
     end
     def test_transfer
       transfer = ticks(35)

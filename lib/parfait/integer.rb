@@ -11,6 +11,7 @@ module Parfait
 
     #FIXME: this is "just" for compilation
     def initialize(value)
+      super()
       @value = value
     end
     attr_reader :value
@@ -32,16 +33,19 @@ module Parfait
   class FalseClass < Data2
     #FIXME: this is "just" for compilation
     def initialize
+      super
     end
   end
   class TrueClass < Data2
     #FIXME: this is "just" for compilation
     def initialize
+      super
     end
   end
   class NilClass < Data2
     #FIXME: this is "just" for compilation
     def initialize
+      super
     end
   end
 end

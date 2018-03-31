@@ -20,7 +20,7 @@ module Risc
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
              SlotToReg, SlotToReg, FunctionReturn, Transfer, Syscall,
              NilClass]
-      assert_equal 15 , get_return
+      assert_equal 15 , get_return.value
     end
 
     def test_call_main
@@ -31,7 +31,8 @@ module Risc
     def test_load_15
       load_ins = ticks 27
       assert_equal LoadConstant ,  load_ins.class
-      assert_equal 15 , @interpreter.get_register(load_ins.register)
+      assert_equal Parfait::Integer , @interpreter.get_register(load_ins.register).class
+      assert_equal 15 , @interpreter.get_register(load_ins.register).value
     end
     def test_transfer
       transfer = ticks(39)
