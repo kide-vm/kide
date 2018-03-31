@@ -129,7 +129,7 @@ module Risc
           Message: { next_message: :Message,   receiver: :Object, frame: :NamedList ,
                      return_address: :Integer, return_value: :Integer,
                      caller: :Message ,        name: :Word ,     arguments: :NamedList },
-          Integer: {next_i: :Integer},
+          Integer: {next_integer: :Integer},
           DataObject: {},
           Data4: {},
           Data8: {},
@@ -140,7 +140,7 @@ module Risc
           Kernel: {}, #fix, kernel is a class, but should be a module
           BinaryCode: {next: :BinaryCode} ,
           Space: {classes: :Dictionary , types: :Dictionary ,
-                  first_message: :Message , first_integer: :Integer ,
+                  first_message: :Message , next_integer: :Integer ,
                   true_object: :TrueClass,
                   false_object: :FalseClass , nil_object: :NilClass},
           NamedList: {},

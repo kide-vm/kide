@@ -9,7 +9,7 @@ module Risc
       super
     end
 
-    def est_add
+    def test_add
       #show_ticks # get output of what is
       check_chain [Branch, Label, LoadConstant, SlotToReg, LoadConstant,
              SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
@@ -23,10 +23,11 @@ module Risc
              LoadConstant, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
              SlotToReg, RegToSlot, SlotToReg, LoadConstant, FunctionCall,
              Label, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, OperatorInstruction, RegToSlot, Label, NilClass]
-      assert_equal 10 , get_return
+             SlotToReg, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg,
+             RegToSlot, RegToSlot, RegToSlot, Label, NilClass]
+       assert_equal Parfait::Integer , get_return.class
+#       assert_equal 10 , get_return.value
     end
-
     def test_load_5
       lod = ticks( 46 )
       assert_equal LoadConstant , lod.class

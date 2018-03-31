@@ -35,6 +35,7 @@ module Parfait
       @classes = classes
       @types = Dictionary.new
       message = Message.new(nil)
+      100.times { @next_integer = Integer.new(0,@next_integer) }
       50.times do
         @first_message = Message.new message
         #puts "INIT caller #{message.object_id} to #{@first_message.object_id}"
@@ -49,7 +50,7 @@ module Parfait
       @nil_object = Parfait::NilClass.new
     end
 
-    attr_reader  :classes , :first_message , :first_integer
+    attr_reader  :classes , :first_message , :next_integer
     attr_reader  :true_object , :false_object , :nil_object
 
     def each_type

@@ -23,9 +23,9 @@ module Risc
           compiler.add_slot_to_reg( source + "2" , me , Parfait::Integer.integer_index , me)
           compiler.add_slot_to_reg( source + "3", other , Parfait::Integer.integer_index , other)
           compiler.add_code Risc.op( source + "4", :+ , me , other)
-          #TODO must get an Integer and put the value there then return the integer (object not value)
-          # and put it back into the return value
-          compiler.add_reg_to_slot( source + "5" , me , :message , :return_value)
+          compiler.add_new_int(other)
+          compiler.add_reg_to_slot( source + "5" , me , other , Parfait::Integer.integer_index)
+          compiler.add_reg_to_slot( source + "5" , other , :message , :return_value)
           return compiler.method
 
         end

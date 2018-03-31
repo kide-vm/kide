@@ -132,6 +132,18 @@ module Risc
       @regs.clear
     end
 
+    # grab an integer from space and stick it in the register.
+    def add_new_int( register )
+      source = "add_new_int "
+      space = use_reg(:Space)
+      int = use_reg(:Integer)
+      space_i = Risc.resolve_to_index(:Space, :next_integer)
+      add_load_constant( source + "space" , Parfait.object_space , space  )
+      add_slot_to_reg( source + "next_i1" , space , space_i , register)
+      add_slot_to_reg( source + "next_i2" , register , Risc.resolve_to_index(:Integer, :next_integer) , int)
+      add_reg_to_slot( source + "store link" , int , space , space_i  )
+      # store 2nd next_i to spce next_i
+    end
     def add_constant(const)
       Risc.machine.add_constant(const)
     end

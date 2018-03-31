@@ -12,9 +12,9 @@ module Parfait
     def initialize(value , next_i = nil)
       super()
       @value = value
-      @next_i = next_i
+      @next_integer = next_i
     end
-    attr_reader :next_i, :value
+    attr_reader :next_integer, :value
 
     def self.integer_index
       3 # 1 type, 2 next_i
