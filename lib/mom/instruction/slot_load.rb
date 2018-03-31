@@ -43,13 +43,13 @@ module Mom
         left_index = Risc.resolve_to_index(@left.known_object , left_slots.first)
         if left_slots.length > 1
           # swap the existing target (with a new reg) and update the index
-          new_left = compiler.use_reg( :int )
+          new_left = compiler.use_reg( :Object )
           const << Risc::SlotToReg.new( original_source , left ,left_index, new_left)
           left = new_left
           left_index = SlotLoad.resolve_to_index(left_slots[0] , left_slots[1] ,compiler)
           if left_slots.length > 2
             #same again, once more updating target
-            new_left = compiler.use_reg( :int )
+            new_left = compiler.use_reg( :Object )
             const << Risc::SlotToReg.new( original_source , left ,left_index, new_left)
             left = new_left
             left_index = SlotLoad.resolve_to_index(left_slots[1] , left_slots[2] ,compiler)
@@ -57,7 +57,7 @@ module Mom
           raise "more slots not implemented #{left_slots}" if left_slots.length > 3
         end
       when Parfait::CacheEntry
-        left = compiler.use_reg( :int )
+        left = compiler.use_reg( :Object )
         const << Risc.load_constant(original_source, @left.known_object , left)
         left_index = Risc.resolve_to_index(:cache_entry , left_slots.first)
       else
@@ -105,7 +105,7 @@ module Mom
     end
 
     def to_register(compiler, instruction)
-      type = known_object.respond_to?(:ct_type) ? known_object.ct_type : :int
+      type = known_object.respond_to?(:ct_type) ? known_object.ct_type : :Object
       right = compiler.use_reg( type )
       case known_object
       when Constant

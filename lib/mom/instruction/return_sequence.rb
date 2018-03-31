@@ -22,7 +22,7 @@ module Mom
     def to_risc(compiler)
       return_move = SlotLoad.new( [:message , :caller,:return_value] , [:message , :return_value],self)
       moves = return_move.to_risc(compiler)
-      return_address = compiler.use_reg(:int)
+      return_address = compiler.use_reg(:Object)
       compiler.reset_regs
       caller_index = Risc.resolve_to_index(:message , :caller)
       return_index = Risc.resolve_to_index(:message , :return_address)

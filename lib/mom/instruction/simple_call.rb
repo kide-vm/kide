@@ -20,7 +20,7 @@ module Mom
     # For returning, we add a label after the call, and load it's address into the
     # return_address of the next_message, for the ReturnSequence to pick it up.
     def to_risc(compiler)
-      jump_address = compiler.use_reg(:int)
+      jump_address = compiler.use_reg(:Object)
       return_label = Risc::Label.new(self,"continue_#{object_id}")
       save_return =  SlotLoad.new([:message,:next_message,:return_address],[return_label],self)
       moves = save_return.to_risc(compiler)

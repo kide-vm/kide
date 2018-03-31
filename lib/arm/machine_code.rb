@@ -44,7 +44,7 @@ module Arm
     end
 
 
-    # the number (a Risc::integer) is (itself) divided by 10, ie overwritten by the result
+    # the number (a Risc::Integer) is (itself) divided by 10, ie overwritten by the result
     #  and the remainder is overwritten (ie an out argument)
     # not really a function, more a macro,
     def div10( function, number , remainder )

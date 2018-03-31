@@ -17,7 +17,7 @@ module Risc
 
         def +( context )
           source = "plus"
-          compiler = compiler_for(:Integer,:+ ,{other: :int})
+          compiler = compiler_for(:Integer,:+ ,{other: :Integer})
           me , other = self_and_int_arg(compiler,source + "1")
           # reduce me and other to integers
           compiler.add_slot_to_reg( source + "2" , me , 2 , me)
