@@ -20,7 +20,7 @@ module Risc
     private
     def constant_str
       case @constant
-      when String , Symbol , Fixnum , Integer
+      when String , Symbol
         @constant.to_s
       else
         if( @constant.respond_to? :sof_reference_name )

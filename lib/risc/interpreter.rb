@@ -125,6 +125,7 @@ module Risc
       set_register( to , value )
       true
     end
+    alias :execute_LoadData :execute_LoadConstant
 
     def execute_SlotToReg
       object = get_register( @instruction.array )

@@ -31,7 +31,7 @@ module Risc
       assert_equal 9 , sl.index
       assert_equal :r3 , sl.register.symbol
     end
-    def test_slot2 #load arg from args
+    def est_slot2 #load arg from args
       sl = ticks( 48 )
       assert_equal SlotToReg , sl.class
       assert_equal :r2 , sl.array.symbol #load from message

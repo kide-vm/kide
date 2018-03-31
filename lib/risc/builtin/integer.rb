@@ -20,8 +20,8 @@ module Risc
           compiler = compiler_for(:Integer,:+ ,{other: :int})
           me , other = self_and_int_arg(compiler,source + "1")
           # reduce me and other to integers
-          compiler.add_slot_to_reg( source + "2" , me , 1 , me)
-          compiler.add_slot_to_reg( source + "3", other , 1 , other)
+          compiler.add_slot_to_reg( source + "2" , me , 2 , me)
+          compiler.add_slot_to_reg( source + "3", other , 2 , other)
           compiler.add_code Risc.op( source + "4", :+ , me , other)
           #TODO must get an Integer and put the value there then return the integer (object not value)
           # and put it back into the return value
@@ -36,47 +36,47 @@ module Risc
           tmp = compiler.add_known( :receiver )
           q = compiler.add_known( :receiver )
           const = compiler.use_reg :Integer , 1
-          compiler.add_load_constant( s, 1 , const )
+          compiler.add_load_data( s, 1 , const )
           # int tmp = self >> 1
           compiler.add_code Risc.op( s , :>> , tmp , const)
           # int q = self >> 2
-          compiler.add_load_constant( s , 2 , const)
+          compiler.add_load_data( s , 2 , const)
           compiler.add_code Risc.op( s , :>> , q , const)
           # q = q + tmp
           compiler.add_code Risc.op( s , :+ , q , tmp )
           # tmp = q >> 4
-          compiler.add_load_constant( s , 4 , const)
+          compiler.add_load_data( s , 4 , const)
           compiler.add_transfer( s, q , tmp)
           compiler.add_code Risc.op( s , :>> , tmp , const)
           # q = q + tmp
           compiler.add_code Risc.op( s , :+ , q , tmp )
           # tmp = q >> 8
-          compiler.add_load_constant( s , 8 , const)
+          compiler.add_load_data( s , 8 , const)
           compiler.add_transfer( s, q , tmp)
           compiler.add_code Risc.op( s , :>> , tmp , const)
           # q = q + tmp
           compiler.add_code Risc.op( s , :+ , q , tmp )
           # tmp = q >> 16
-          compiler.add_load_constant( s , 16 , const)
+          compiler.add_load_data( s , 16 , const)
           compiler.add_transfer( s, q , tmp)
           compiler.add_code Risc.op( s , :>> , tmp , const)
           # q = q + tmp
           compiler.add_code Risc.op( s , :+ , q , tmp )
           # q = q >> 3
-          compiler.add_load_constant( s , 3 , const)
+          compiler.add_load_data( s , 3 , const)
           compiler.add_code Risc.op( s , :>> , q , const)
           # tmp = q * 10
-          compiler.add_load_constant( s , 10 , const)
+          compiler.add_load_data( s , 10 , const)
           compiler.add_transfer( s, q , tmp)
           compiler.add_code Risc.op( s , :* , tmp , const)
           # tmp = self - tmp
           compiler.add_code Risc.op( s , :- , me , tmp )
           compiler.add_transfer( s , me , tmp)
           # tmp = tmp + 6
-          compiler.add_load_constant( s , 6 , const)
+          compiler.add_load_data( s , 6 , const)
           compiler.add_code Risc.op( s , :+ , tmp , const )
           # tmp = tmp >> 4
-          compiler.add_load_constant( s , 4 , const)
+          compiler.add_load_data( s , 4 , const)
           compiler.add_code Risc.op( s , :>> , tmp , const )
           # return q + tmp
           compiler.add_code Risc.op( s , :+ , q , tmp )

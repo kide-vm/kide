@@ -79,11 +79,11 @@ module Arm
     def translate_LoadConstant( code )
       constant = code.constant
       constant = constant.to_cpu(self) if constant.is_a?(Risc::Label)
-      if constant.is_a?(Parfait::Object) or constant.is_a?(Symbol) or constant.is_a?(Risc::Label)
-        return ArmMachine.add( code.register , constant )
-      else
-        return ArmMachine.mov( code.register ,  constant )
-      end
+      return ArmMachine.add( code.register , constant )
+    end
+
+    def translate_LoadData( code )
+      return ArmMachine.mov( code.register ,  code.constant )
     end
 
     def translate_OperatorInstruction( code )

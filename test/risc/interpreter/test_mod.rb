@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Risc
-  class InterpreterAdd < MiniTest::Test
+  class InterpreterMod < MiniTest::Test
     include Ticker
 
     def setup
