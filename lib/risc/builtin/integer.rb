@@ -29,13 +29,16 @@ module Risc
 
         end
         def div10( context )
-          s = "div_10"
+          s = "div_10 "
           compiler = compiler_for(:Integer,:div10 ,{})
           me = compiler.add_known( :receiver )
           tmp = compiler.add_known( :receiver )
           q = compiler.add_known( :receiver )
-          const = compiler.use_reg :Integer , 1
-          compiler.add_load_data( s, 1 , const )
+          compiler.reduce_int( s , me )
+          compiler.reduce_int( s , tmp )
+          compiler.reduce_int( s , q )
+          const = compiler.use_reg :fixnum , 1
+          compiler.add_load_data( s , 1 , const )
           # int tmp = self >> 1
           compiler.add_code Risc.op( s , :>> , tmp , const)
           # int q = self >> 2
@@ -80,10 +83,9 @@ module Risc
           # return q + tmp
           compiler.add_code Risc.op( s , :+ , q , tmp )
 
-#          compiler.add_new_int(me , other)
-#          compiler.add_reg_to_slot( source + "5" , other , :message , :return_value)
+          compiler.add_new_int(q , tmp)
+          compiler.add_reg_to_slot( s , tmp , :message , :return_value)
 
-          compiler.add_reg_to_slot( s , q , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end

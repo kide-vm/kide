@@ -5,7 +5,7 @@ module Risc
     include Ticker
 
     def setup
-      @string_input = as_main("return 15.div10")
+      @string_input = as_main("return 25.div10")
       super
     end
 
@@ -22,19 +22,20 @@ module Risc
              SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
              LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant,
              FunctionCall, Label, SlotToReg, SlotToReg, SlotToReg,
-             LoadData, OperatorInstruction, LoadData, OperatorInstruction, OperatorInstruction,
-             LoadData, Transfer, OperatorInstruction, OperatorInstruction, LoadData,
-             Transfer, OperatorInstruction, OperatorInstruction, LoadData, Transfer,
-             OperatorInstruction, OperatorInstruction, LoadData, OperatorInstruction, LoadData,
-             Transfer, OperatorInstruction, OperatorInstruction, Transfer, LoadData,
-             OperatorInstruction, LoadData, OperatorInstruction, OperatorInstruction, RegToSlot,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             FunctionReturn, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, SlotToReg, SlotToReg, LoadData, OperatorInstruction,
+             LoadData, OperatorInstruction, OperatorInstruction, LoadData, Transfer,
+             OperatorInstruction, OperatorInstruction, LoadData, Transfer, OperatorInstruction,
+             OperatorInstruction, LoadData, Transfer, OperatorInstruction, OperatorInstruction,
+             LoadData, OperatorInstruction, LoadData, Transfer, OperatorInstruction,
+             OperatorInstruction, Transfer, LoadData, OperatorInstruction, LoadData,
+             OperatorInstruction, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg,
+             RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, FunctionReturn, Transfer, Syscall,
-             NilClass]
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             FunctionReturn, Transfer, Syscall, NilClass]
        assert_equal Parfait::Integer , get_return.class
-       #assert_equal 1 , get_return
+       assert_equal 2 , get_return.value
     end
 
     def test_call_main
@@ -42,22 +43,21 @@ module Risc
       assert_equal FunctionCall , call_ins.class
       assert  :main , call_ins.method.name
     end
-    def test_load_15
+    def test_load_25
       load_ins = ticks 43
       assert_equal LoadConstant ,  load_ins.class
-      assert_equal 15 , @interpreter.get_register(load_ins.register).value
+      assert_equal 25 , @interpreter.get_register(load_ins.register).value
     end
-    def test_sys
-      sys = ticks(105)
-      assert_equal Syscall ,  sys.class
-      assert_equal :exit ,  sys.name
-    end
-
     def test_return
-      ret = ticks(91)
+      ret = ticks(99)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
       assert_equal Label , link.class
+    end
+    def test_sys
+      sys = ticks(113)
+      assert_equal Syscall ,  sys.class
+      assert_equal :exit ,  sys.name
     end
   end
 end

@@ -165,6 +165,9 @@ module Risc
       return int_arg
     end
 
-
+    # assumed Integer in given register is replaced by the fixnum that it is holding
+    def reduce_int( source , register )
+      add_slot_to_reg( source + "int -> fix" , register , Parfait::Integer.integer_index , register)
+    end
   end
 end
