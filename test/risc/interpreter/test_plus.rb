@@ -5,7 +5,7 @@ module Risc
     include Ticker
 
     def setup
-      @string_input = as_main("a = 5 + 5;return a")
+      @string_input = as_main("return 5 + 5")
       super
     end
 

@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Risc
-  class InterpreterReturnCall < MiniTest::Test
+  class InterpreterDiv10 < MiniTest::Test
     include Ticker
 
     def setup
@@ -33,7 +33,8 @@ module Risc
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
              SlotToReg, SlotToReg, FunctionReturn, Transfer, Syscall,
              NilClass]
-      #assert_equal 1 , get_return
+       assert_equal Parfait::Integer , get_return.class
+       #assert_equal 1 , get_return
     end
 
     def test_call_main
