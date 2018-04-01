@@ -3,7 +3,6 @@ require "risc/interpreter"
 
 module Risc
   module Ticker
-    include AST::Sexp
     include InterpreterHelpers
     include CompilerHelper
 
