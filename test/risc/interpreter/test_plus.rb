@@ -26,7 +26,7 @@ module Risc
              SlotToReg, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg,
              RegToSlot, RegToSlot, RegToSlot, Label, NilClass]
        assert_equal Parfait::Integer , get_return.class
-#       assert_equal 10 , get_return.value
+       assert_equal 10 , get_return.value
     end
     def test_load_5
       lod = ticks( 46 )
@@ -69,6 +69,35 @@ module Risc
       assert_equal :r2 , op.right.symbol
       assert_equal 5 , @interpreter.get_register(:r2)
       assert_equal 10 , @interpreter.get_register(:r1)
+    end
+    def test_load_int_space
+      cons = ticks(63)
+      assert_equal LoadConstant , cons.class
+      assert_equal Parfait::Space , cons.constant.class
+      assert_equal :r3 , cons.register.symbol
+    end
+    def test_load_int_next_space
+      sl = ticks(64)
+      assert_equal SlotToReg , sl.class
+      assert_equal :r3 , sl.array.symbol #load from space
+      assert_equal 5 , sl.index
+      assert_equal :r2 , sl.register.symbol
+      assert_equal Parfait::Integer , @interpreter.get_register(:r2).class
+    end
+    def test_load_int_next_int
+      sl = ticks(65)
+      assert_equal SlotToReg , sl.class
+      assert_equal :r2 , sl.array.symbol #load from next_int
+      assert_equal 2 , sl.index
+      assert_equal :r4 , sl.register.symbol
+      assert_equal Parfait::Integer , @interpreter.get_register(:r4).class
+    end
+    def test_load_int_next_int2
+      sl = ticks(66)
+      assert_equal RegToSlot , sl.class
+      assert_equal :r3 , sl.array.symbol #store to space
+      assert_equal  5 , sl.index
+      assert_equal :r4 , sl.register.symbol
     end
   end
 end
