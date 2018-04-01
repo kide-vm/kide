@@ -23,6 +23,9 @@ module Risc
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
+        def *( context )
+          operator_method( "mult" , :*)
+        end
         def +( context )
           operator_method( "plus" , :+)
         end

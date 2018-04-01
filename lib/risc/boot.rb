@@ -184,7 +184,7 @@ module Risc
       end
 
       obj = space.get_class_by_name(:Integer)
-      [ :putint, :mod4, :div10, :+ , :-].each do |f|   #mod4 is just a forward declaration
+      [ :putint, :mod4, :div10, :+ , :- , :*].each do |f|   #mod4 is just a forward declaration
         obj.instance_type.add_method Builtin::Integer.send(f , nil)
       end
     end
