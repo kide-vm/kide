@@ -15,12 +15,13 @@ module Risc
           compiler.add_slot_to_reg( source , me , index , me)
           # and put it back into the return value
           compiler.add_reg_to_slot( source , me , :message , :return_value)
+          compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
 
         # self[index] = val basically. Index is the first arg , value the second
         # no return
-        def set_internal_word context
+        def set_internal_word( context )
           compiler = compiler_for(:Object , :set_internal_word , {at: :Integer, :value => :Object} )
           source = "set_internal_word"
           me , index = compiler.self_and_int_arg(source)
@@ -28,6 +29,7 @@ module Risc
 
           # do the set
           compiler.add_reg_to_slot( source , value , me , index)
+          compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
 

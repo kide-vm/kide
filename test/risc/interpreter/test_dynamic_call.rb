@@ -24,8 +24,14 @@ module Risc
              SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
              LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
              SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             SlotToReg, LoadConstant, FunctionCall, Label, Label,
-             NilClass]
+             SlotToReg, LoadConstant, FunctionCall, Label, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
+             SlotToReg, LoadConstant, RegToSlot, Label, LoadConstant,
+             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
+             SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
+             SlotToReg]
       #assert_equal 1 , get_return
     end
 

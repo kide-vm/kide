@@ -20,6 +20,7 @@ module Risc
         end
         def putint(context)
           compiler = compiler_for(:Integer,:putint ,{})
+          compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
 
