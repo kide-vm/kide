@@ -22,17 +22,6 @@ class TestSpace < MiniTest::Test
     assert @space.false_object , "No lies"
     assert @space.nil_object , "No nothing"
   end
-  def test_integer_first
-    assert @space.next_integer
-  end
-  def test_integer_20
-    int = @space.next_integer
-    20.times do
-      assert int
-      assert_equal Parfait::Integer , int.class
-      int = int.next_integer
-    end
-  end
   def test_methods_booted
     word = @space.get_class_by_name(:Word).instance_type
     assert_equal 4 , word.method_names.get_length

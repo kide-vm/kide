@@ -11,19 +11,18 @@ module Parfait
 
     def initialize(value , next_i = nil)
       super()
-      @value = value
       @next_integer = next_i
+      set_internal_word(Integer.integer_index, value)
     end
-    attr_reader :next_integer, :value
+    attr_reader :next_integer
 
+    def value
+      get_internal_word(Integer.integer_index)
+    end
     def self.integer_index
       3 # 1 type, 2 next_i
     end
 
-    def get_internal_word( index )
-      return super(index) unless index == Integer.integer_index
-      return @value
-    end
     # :integer?, :odd?, :even?, :upto, :downto, :times, :succ, :next, :pred, :chr, :ord, :to_i, :to_int, :floor,
     # :ceil, :truncate, :round, :gcd, :lcm, :gcdlcm, :numerator, :denominator, :to_r, :rationalize,
     # :singleton_method_added, :coerce, :i, :+@, :-@, :fdiv, :div, :divmod, :%, :modulo, :remainder, :abs, :magnitude,
