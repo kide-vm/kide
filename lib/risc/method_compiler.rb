@@ -134,8 +134,8 @@ module Risc
 
     # move a machine int from register "from" to a Parfait::Integer in register "to"
     # have to grab an integer from space and stick it in the "to" register first.
-    def add_new_int( from, to )
-      source = "add_new_int "
+    def add_new_int( source , from, to )
+      source += "add_new_int "
       space = use_reg(:Space)
       int = use_reg(:Integer)
       space_i = Risc.resolve_to_index(:Space, :next_integer)

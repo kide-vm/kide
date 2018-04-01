@@ -34,7 +34,7 @@ class TestSpace < MiniTest::Test
 
   def test_integer
     int = Parfait.object_space.get_class_by_name :Integer
-    assert_equal 4, int.instance_type.method_names.get_length
+    assert_equal 5, int.instance_type.method_names.get_length
   end
 
   def test_classes_class

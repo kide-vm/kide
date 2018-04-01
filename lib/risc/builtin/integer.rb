@@ -13,7 +13,7 @@ module Risc
           two = compiler.use_reg :fixnum , 2
           compiler.add_load_data( source , 2 , two )
           compiler.add_code Risc.op( source , :>> , me , two)
-          compiler.add_new_int(me , two)
+          compiler.add_new_int(source,me , two)
           compiler.add_reg_to_slot( source , two , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
@@ -23,16 +23,20 @@ module Risc
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
-
         def +( context )
-          source = "plus"
-          compiler = compiler_for(:Integer,:+ ,{other: :Integer})
-          me , other = compiler.self_and_int_arg(source + "1")
-          compiler.reduce_int( source + "2", me )
-          compiler.reduce_int( source + "3", other )
-          compiler.add_code Risc.op( source + "4", :+ , me , other)
-          compiler.add_new_int(me , other)
-          compiler.add_reg_to_slot( source + "5" , other , :message , :return_value)
+          operator_method( "plus" , :+)
+        end
+        def -( context )
+          operator_method( "minus" , :-)
+        end
+        def operator_method(op_name , op_sym )
+          compiler = compiler_for(:Integer, op_sym ,{other: :Integer})
+          me , other = compiler.self_and_int_arg(op_name + "load receiver and arg")
+          compiler.reduce_int( op_name + " fix me", me )
+          compiler.reduce_int( op_name + " fix arg", other )
+          compiler.add_code Risc.op( op_name + " operator", op_sym , me , other)
+          compiler.add_new_int(op_name + " new int", me , other)
+          compiler.add_reg_to_slot( op_name + "save ret" , other , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
@@ -92,7 +96,7 @@ module Risc
           # return q + tmp
           compiler.add_code Risc.op( s , :+ , q , tmp )
 
-          compiler.add_new_int(q , tmp)
+          compiler.add_new_int(s,q , tmp)
           compiler.add_reg_to_slot( s , tmp , :message , :return_value)
 
           compiler.add_mom( Mom::ReturnSequence.new)
