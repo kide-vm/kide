@@ -56,14 +56,16 @@ module Risc
 
         def restore_message(compiler)
           r8 = RiscValue.new( :r8 , :Message)
-          return_tmp = Risc.tmp_reg :Integer
+          return_tmp = compiler.use_reg :fixnum
           source = "_restore_message"
           # get the sys return out of the way
           compiler.add_transfer(source, Risc.message_reg , return_tmp )
-          # load the stored message into the base RiscMachine
+          # load the stored message into the base register
           compiler.add_transfer(source, r8 , Risc.message_reg )
+          int = compiler.use_reg(:Integer)
+          compiler.add_new_int(source , return_tmp , int )
           # save the return value into the message
-          compiler.add_reg_to_slot( source , return_tmp , :message , :return_value )
+          compiler.add_reg_to_slot( source , int , :message , :return_value )
         end
       end
       extend ClassMethods
