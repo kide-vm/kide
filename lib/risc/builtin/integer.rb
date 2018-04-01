@@ -3,14 +3,22 @@ module Risc
   module Builtin
     module Integer
       module ClassMethods
-        include AST::Sexp
         include CompileHelper
 
-        def mod4 context
+        def mod4(context)
+          source = "mod4"
           compiler = compiler_for(:Integer,:mod4 ,{})
+          me = compiler.add_known( :receiver )
+          compiler.reduce_int( source , me )
+          two = compiler.use_reg :fixnum , 2
+          compiler.add_load_data( source , 2 , two )
+          compiler.add_code Risc.op( source , :>> , me , two)
+          compiler.add_new_int(me , two)
+          compiler.add_reg_to_slot( source , two , :message , :return_value)
+          compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
-        def putint context
+        def putint(context)
           compiler = compiler_for(:Integer,:putint ,{})
           return compiler.method
         end
@@ -19,7 +27,6 @@ module Risc
           source = "plus"
           compiler = compiler_for(:Integer,:+ ,{other: :Integer})
           me , other = compiler.self_and_int_arg(source + "1")
-          # reduce me and other to integers
           compiler.reduce_int( source + "2", me )
           compiler.reduce_int( source + "3", other )
           compiler.add_code Risc.op( source + "4", :+ , me , other)
@@ -31,6 +38,7 @@ module Risc
         def div10( context )
           s = "div_10 "
           compiler = compiler_for(:Integer,:div10 ,{})
+          #FIX: this could load receiver once, reduce and then transfer twice
           me = compiler.add_known( :receiver )
           tmp = compiler.add_known( :receiver )
           q = compiler.add_known( :receiver )

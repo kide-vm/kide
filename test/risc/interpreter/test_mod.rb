@@ -5,7 +5,7 @@ module Risc
     include Ticker
 
     def setup
-      @string_input = as_main "return 5.mod4"
+      @string_input = as_main "return 9.mod4"
       super
     end
 
@@ -21,43 +21,36 @@ module Risc
              RegToSlot, LoadConstant, SlotToReg, SlotToReg, SlotToReg,
              SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
              LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant,
-             FunctionCall, Label, Label, NilClass]
+             FunctionCall, Label, SlotToReg, SlotToReg, LoadData,
+             OperatorInstruction, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+             RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
+             Transfer, Syscall, NilClass]
+       assert_equal Parfait::Integer , get_return.class
+       assert_equal 2 , get_return.value
     end
 
-    def test_get
-      assert_equal SlotToReg , ticks(4).class
-      assert @interpreter.get_register( :r2 )
-      assert  Integer , @interpreter.get_register( :r2 ).class
+    def test_load
+      lod = ticks(43)
+      assert_equal LoadConstant , lod.class
+      assert_equal 9 , lod.constant.value
     end
-    def pest_transfer
-      transfer = ticks 19
-      assert_equal Transfer ,  transfer.class
-      assert_equal @interpreter.get_register(transfer.to) , @interpreter.get_register(transfer.from)
+    def test_fix # reduce self to fix
+      sl = ticks(54)
+      assert_equal SlotToReg , sl.class
+      assert_equal :r1 , sl.array.symbol
+      assert_equal 3 , sl.index
+      assert_equal :r1 , sl.register.symbol
+      assert_equal 9 , @interpreter.get_register(:r1)
     end
 
-    def pest_call
-      ret = ticks(18)
-      assert_equal FunctionReturn ,  ret.class
-
-      object = @interpreter.get_register( ret.register )
-      link = object.get_internal_word( ret.index )
-
-      assert_equal Label , link.class
+    def test_sys
+      sys = ticks(82)
+      assert_equal Syscall ,  sys.class
+      assert_equal :exit ,  sys.name
     end
-    def pest_adding
-      done_op = ticks(12)
-      assert_equal OperatorInstruction ,  done_op.class
-      left = @interpreter.get_register(done_op.left)
-      rr = done_op.right
-      right = @interpreter.get_register(rr)
-      assert_equal Fixnum , left.class
-      assert_equal Fixnum , right.class
-      assert_equal 7 , right
-      assert_equal 12 , left
-      done_tr = ticks(1)
-      assert_equal RegToSlot ,  done_tr.class
-      result = @interpreter.get_register(done_op.left)
-      assert_equal result , 12
-    end
+
   end
 end
