@@ -5,7 +5,7 @@ module Risc
     include Ticker
 
     def setup
-      @string_input = as_main("'Hello'.set_internal_byte(1,75)")
+      @string_input = as_main("return 'Hello'.set_internal_byte(1,75)")
       super
     end
 
@@ -26,7 +26,9 @@ module Risc
              SlotToReg, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
              SlotToReg, SlotToReg, RegToByte, RegToSlot, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
-             Label, NilClass]
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, FunctionReturn, Transfer, Syscall, NilClass]
        assert_equal Parfait::Word , get_return.class
        assert_equal "Kello" , get_return.to_string
     end
@@ -36,8 +38,8 @@ module Risc
       assert_equal "K".ord ,  @interpreter.get_register(done.register)
     end
     def test_exit
-      done = ticks(77)
-      assert_equal NilClass ,  done.class
+      done = ticks(89)
+      assert_equal Syscall ,  done.class
     end
 
   end

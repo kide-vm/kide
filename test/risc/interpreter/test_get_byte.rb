@@ -3,12 +3,11 @@ require_relative "helper"
 module Risc
   class InterpretGetByte < MiniTest::Test
     include Ticker
-
+    
     def setup
-        @string_input = as_main("'Hello'.get_internal_byte(1)")
+        @string_input = as_main("return 'Hello'.get_internal_byte(1)")
       super
     end
-
     def test_chain
       #show_ticks # get output of what is
       check_chain [Branch, Label, LoadConstant, SlotToReg, LoadConstant,
@@ -25,13 +24,16 @@ module Risc
              Label, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
              ByteToReg, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
              RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, FunctionReturn, Label, NilClass]
+             SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
+             Transfer, Syscall, NilClass]
        assert_equal Parfait::Integer , get_return.class
        assert_equal "H".ord , get_return.value
     end
     def test_exit
-      done = ticks(75)
-      assert_equal NilClass ,  done.class
+      done = ticks(87)
+      assert_equal Syscall ,  done.class
     end
 
     def test_byte_to_reg
