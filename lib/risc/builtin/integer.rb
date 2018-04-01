@@ -18,7 +18,7 @@ module Risc
         def +( context )
           source = "plus"
           compiler = compiler_for(:Integer,:+ ,{other: :Integer})
-          me , other = self_and_int_arg(compiler,source + "1")
+          me , other = compiler.self_and_int_arg(source + "1")
           # reduce me and other to integers
           compiler.add_slot_to_reg( source + "2" , me , Parfait::Integer.integer_index , me)
           compiler.add_slot_to_reg( source + "3", other , Parfait::Integer.integer_index , other)
@@ -80,8 +80,8 @@ module Risc
           # return q + tmp
           compiler.add_code Risc.op( s , :+ , q , tmp )
 
-          compiler.add_new_int(me , other)
-          compiler.add_reg_to_slot( source + "5" , other , :message , :return_value)
+#          compiler.add_new_int(me , other)
+#          compiler.add_reg_to_slot( source + "5" , other , :message , :return_value)
 
           compiler.add_reg_to_slot( s , q , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)

@@ -140,7 +140,7 @@ module Risc
       int = use_reg(:Integer)
       space_i = Risc.resolve_to_index(:Space, :next_integer)
       add_load_constant( source + "space" , Parfait.object_space , space  )
-      add_slot_to_reg( source + "next_i1" , space , space_i , register)
+      add_slot_to_reg( source + "next_i1" , space , space_i , to)
       add_slot_to_reg( source + "next_i2" , to , Risc.resolve_to_index(:Integer, :next_integer) , int)
       add_reg_to_slot( source + "store link" , int , space , space_i  )
       add_reg_to_slot( source + "store value" , from , to , Parfait::Integer.integer_index)
@@ -148,5 +148,23 @@ module Risc
     def add_constant(const)
       Risc.machine.add_constant(const)
     end
+
+    # load receiver and the first argument (int)
+    # return both registers
+    def self_and_int_arg( source )
+      me = add_known( :receiver )
+      int_arg = load_int_arg_at(source , 1 )
+      return me , int_arg
+    end
+
+    # Load the first argument, assumed to be integer
+    def load_int_arg_at( source , at)
+      int_arg = use_reg :Integer
+      add_slot_to_reg(source , :message , :arguments , int_arg )
+      add_slot_to_reg(source , int_arg , at + 1, int_arg ) #1 for type
+      return int_arg
+    end
+
+
   end
 end

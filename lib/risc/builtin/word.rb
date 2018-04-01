@@ -19,7 +19,7 @@ module Risc
         def get_internal_byte context
           compiler = compiler_for(:Word , :get_internal_byte , {at: :Integer})
           source = "get_internal_byte"
-          me , index = self_and_int_arg(compiler,source)
+          me , index = compiler.self_and_int_arg(source)
           # reduce me to me[index]
           compiler.add_byte_to_reg( source , me , index , me)
           # and put it back into the return value
@@ -36,8 +36,8 @@ module Risc
           len = args.instance_length
           raise "Compiler arg number mismatch, method=#{args} " if  len != 3
           source = "set_internal_byte"
-          me , index = self_and_int_arg(compiler,source)
-          value = load_int_arg_at(compiler , source , 2 )
+          me , index = compiler.self_and_int_arg(source)
+          value = compiler.load_int_arg_at(source , 2 )
           # do the set
           compiler.add_reg_to_byte( source , value , me , index)
           return compiler.method

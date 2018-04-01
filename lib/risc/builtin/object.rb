@@ -7,10 +7,10 @@ module Risc
         # self[index] basically. Index is the first arg
         # return is stored in return_value
         # (this method returns a new method off course, like all builtin)
-        def get_internal_word context
+        def get_internal_word( context )
           compiler = compiler_for(:Object , :get_internal_word ,{at: :Integer})
           source = "get_internal_word"
-          me , index = self_and_int_arg(compiler,source)
+          me , index = compiler.self_and_int_arg(source)
           # reduce me to me[index]
           compiler.add_slot_to_reg( source , me , index , me)
           # and put it back into the return value
@@ -23,8 +23,8 @@ module Risc
         def set_internal_word context
           compiler = compiler_for(:Object , :set_internal_word , {at: :Integer, :value => :Object} )
           source = "set_internal_word"
-          me , index = self_and_int_arg(compiler,source)
-          value = load_int_arg_at(compiler,source , 2)
+          me , index = compiler.self_and_int_arg(source)
+          value = compiler.load_int_arg_at(source , 2)
 
           # do the set
           compiler.add_reg_to_slot( source , value , me , index)
