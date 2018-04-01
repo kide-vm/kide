@@ -74,5 +74,16 @@ module Parfait
       @code.each_word{ len += 1}
       assert_equal 13 , len
     end
+    def test_set_word
+      assert_equal 1 , @code.set_word(1 , 1)
+    end
+    def test_get_word
+      @code.set_word(1 , 1)
+      assert_equal 1, @code.get_word(1)
+    end
+    def test_get_internal_word
+      @code.set_word(1 , 1)
+      assert_equal 1, @code.get_internal_word(@code.data_start + 1)
+    end
   end
 end
