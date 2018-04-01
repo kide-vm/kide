@@ -21,10 +21,12 @@ module Risc
           compiler = compiler_for(:Word , :get_internal_byte , {at: :Integer})
           source = "get_internal_byte"
           me , index = compiler.self_and_int_arg(source)
+          compiler.reduce_int( source + " fix arg", index )
           # reduce me to me[index]
           compiler.add_byte_to_reg( source , me , index , me)
+          compiler.add_new_int(source, me , index)
           # and put it back into the return value
-          compiler.add_reg_to_slot( source , me , :message , :return_value)
+          compiler.add_reg_to_slot( source , index , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
