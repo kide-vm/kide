@@ -31,17 +31,16 @@ module Risc
 
         # self[index] = val basically. Index is the first arg ( >0),
         # value the second
-        # no return
-        def set_internal_byte( context)
+        # return self
+        def set_internal_byte( context )
           compiler = compiler_for(:Word, :set_internal_byte , {at: :Integer , :value => :Integer} )
-          args = compiler.method.arguments
-          len = args.instance_length
-          raise "Compiler arg number mismatch, method=#{args} " if  len != 3
           source = "set_internal_byte"
           me , index = compiler.self_and_int_arg(source)
           value = compiler.load_int_arg_at(source , 2 )
-          # do the set
+          compiler.reduce_int( source + " fix me", value )
+          compiler.reduce_int( source + " fix arg", index )
           compiler.add_reg_to_byte( source , value , me , index)
+          compiler.add_reg_to_slot( source , me , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
