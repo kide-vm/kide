@@ -24,7 +24,11 @@ module Risc
              SlotToReg, RegToSlot, SlotToReg, LoadConstant, FunctionCall,
              Label, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
              SlotToReg, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg,
-             RegToSlot, RegToSlot, RegToSlot, Label, NilClass]
+             RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             FunctionReturn, Transfer, Syscall, NilClass]
        assert_equal Parfait::Integer , get_return.class
        assert_equal 10 , get_return.value
     end
@@ -98,6 +102,11 @@ module Risc
       assert_equal :r3 , sl.array.symbol #store to space
       assert_equal  5 , sl.index
       assert_equal :r4 , sl.register.symbol
+    end
+    def test_sys
+      sys = ticks(88)
+      assert_equal Syscall ,  sys.class
+      assert_equal :exit ,  sys.name
     end
   end
 end

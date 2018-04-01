@@ -20,13 +20,13 @@ module Risc
           compiler = compiler_for(:Integer,:+ ,{other: :Integer})
           me , other = compiler.self_and_int_arg(source + "1")
           # reduce me and other to integers
-          compiler.add_slot_to_reg( source + "2" , me , Parfait::Integer.integer_index , me)
-          compiler.add_slot_to_reg( source + "3", other , Parfait::Integer.integer_index , other)
+          compiler.reduce_int( source + "2", me )
+          compiler.reduce_int( source + "3", other )
           compiler.add_code Risc.op( source + "4", :+ , me , other)
           compiler.add_new_int(me , other)
           compiler.add_reg_to_slot( source + "5" , other , :message , :return_value)
+          compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
-
         end
         def div10( context )
           s = "div_10 "
