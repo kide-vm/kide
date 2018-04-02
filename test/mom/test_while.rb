@@ -9,7 +9,7 @@ module Risc
       @input = "while(@a) ; arg = 5 end"
       @expect = [Label, SlotToReg, SlotToReg, LoadConstant, OperatorInstruction ,
                  IsNotZero, LoadConstant, OperatorInstruction, IsNotZero, LoadConstant ,
-                 SlotToReg, RegToSlot, Unconditional, Label]
+                 SlotToReg, RegToSlot, Branch, Label]
     end
 
     def test_while_instructions
