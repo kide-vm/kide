@@ -15,25 +15,25 @@ module Risc
              SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
              SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
              SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, RegToSlot, LoadConstant, RegToSlot, FunctionCall,
-             Label, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
+             SlotToReg, LoadConstant, RegToSlot, LoadConstant, RegToSlot,
+             FunctionCall, Label, LoadConstant, SlotToReg, SlotToReg,
              RegToSlot, LoadConstant, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, RegToSlot, SlotToReg, LoadConstant, FunctionCall,
-             Label, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg,
-             RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg,
+             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             RegToSlot, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+             LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant,
+             FunctionCall, Label, SlotToReg, SlotToReg, SlotToReg,
+             SlotToReg, SlotToReg, OperatorInstruction, LoadConstant, SlotToReg,
+             SlotToReg, RegToSlot, RegToSlot, RegToSlot, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             FunctionReturn, Transfer, Syscall, NilClass]
+             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, FunctionReturn, Transfer, Syscall, NilClass]
        assert_equal Parfait::Integer , get_return.class
        assert_equal 0 , get_return.value
     end
     def test_op
-      op = ticks(62)
+      op = ticks(63)
       assert_equal OperatorInstruction , op.class
       assert_equal :r1 , op.left.symbol
       assert_equal :r2 , op.right.symbol
@@ -41,7 +41,7 @@ module Risc
       assert_equal 0 , @interpreter.get_register(:r1)
     end
     def test_overflow
-      ticks( 62 )
+      ticks( 63 )
       assert @interpreter.flags[:overflow]
     end
     def test_zero

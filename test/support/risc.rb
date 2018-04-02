@@ -39,9 +39,8 @@ module Risc
         puts e.backtrace
       end
       str = classes.to_s.gsub("Risc::","")
-      str.split(",").each_slice(5).each do |line|
-        puts "            " + line.join(",") + ","
-      end
+      all = str.split(",").each_slice(5).collect {|line| "            " + line.join(",")}
+      puts all.join(",\n")
       puts "length = #{classes.length}"
       exit(1)
     end

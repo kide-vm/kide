@@ -21,7 +21,7 @@ module Risc
 
     def test_state_change
       @interpreter.register_event :state_changed , self
-      ticks 88
+      ticks 89
       assert @state_events[:state_changed]
       assert_equal 2 ,  @state_events[:state_changed].length
       assert_equal :running,  @state_events[:state_changed][0]
@@ -30,8 +30,8 @@ module Risc
 
     def test_instruction_events
       @interpreter.register_event :instruction_changed , self
-      ticks 88
-      assert_equal 88 ,  @instruction_events.length
+      ticks 89
+      assert_equal 89 ,  @instruction_events.length
       @interpreter.unregister_event :instruction_changed , self
     end
 
@@ -41,20 +41,20 @@ module Risc
              SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
              SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
              SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, RegToSlot, LoadConstant, RegToSlot, FunctionCall,
-             Label, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
+             SlotToReg, LoadConstant, RegToSlot, LoadConstant, RegToSlot,
+             FunctionCall, Label, LoadConstant, SlotToReg, SlotToReg,
              RegToSlot, LoadConstant, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, RegToSlot, SlotToReg, LoadConstant, FunctionCall,
-             Label, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg,
-             RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg,
+             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             RegToSlot, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+             LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant,
+             FunctionCall, Label, SlotToReg, SlotToReg, SlotToReg,
+             SlotToReg, SlotToReg, OperatorInstruction, LoadConstant, SlotToReg,
+             SlotToReg, RegToSlot, RegToSlot, RegToSlot, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             FunctionReturn, Transfer, Syscall, NilClass]
+             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, FunctionReturn, Transfer, Syscall, NilClass]
       assert_equal Parfait::Integer , get_return.class
       assert_equal 12 , get_return.value
     end

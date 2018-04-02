@@ -15,30 +15,30 @@ module Risc
              SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
              SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
              SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, RegToSlot, LoadConstant, RegToSlot, FunctionCall,
-             Label, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
+             SlotToReg, LoadConstant, RegToSlot, LoadConstant, RegToSlot,
+             FunctionCall, Label, LoadConstant, SlotToReg, SlotToReg,
              RegToSlot, LoadConstant, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant,
-             FunctionCall, Label, SlotToReg, SlotToReg, LoadData,
-             OperatorInstruction, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
-             RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
-             Transfer, Syscall, NilClass]
+             SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg,
+             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
+             LoadConstant, FunctionCall, Label, SlotToReg, SlotToReg,
+             LoadData, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg,
+             RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             FunctionReturn, Transfer, Syscall, NilClass]
        assert_equal Parfait::Integer , get_return.class
        assert_equal 2 , get_return.value
     end
 
     def test_load
-      lod = ticks(43)
+      lod = ticks(44)
       assert_equal LoadConstant , lod.class
       assert_equal 9 , lod.constant.value
     end
     def test_fix # reduce self to fix
-      sl = ticks(54)
+      sl = ticks(55)
       assert_equal SlotToReg , sl.class
       assert_equal :r1 , sl.array.symbol
       assert_equal 3 , sl.index
@@ -47,7 +47,7 @@ module Risc
     end
 
     def test_sys
-      sys = ticks(82)
+      sys = ticks(83)
       assert_equal Syscall ,  sys.class
       assert_equal :exit ,  sys.name
     end

@@ -15,33 +15,35 @@ module Risc
              SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
              SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
              SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, RegToSlot, LoadConstant, RegToSlot, FunctionCall,
-             Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, SlotToReg, SlotToReg, OperatorInstruction, IsZero,
-             SlotToReg, SlotToReg, LoadConstant, RegToSlot, LoadConstant,
-             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-             SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
+             SlotToReg, LoadConstant, RegToSlot, LoadConstant, RegToSlot,
+             FunctionCall, Label, LoadConstant, SlotToReg, RegToSlot,
+             LoadConstant, SlotToReg, SlotToReg, SlotToReg, OperatorInstruction,
+             IsZero, SlotToReg, SlotToReg, LoadConstant, RegToSlot,
+             LoadConstant, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
              SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             SlotToReg, LoadConstant, FunctionCall, Label, SlotToReg,
-             SlotToReg, SlotToReg, SlotToReg, Label, LoadConstant,
-             SlotToReg, OperatorInstruction, IsZero, Label, Transfer,
-             Syscall, NilClass]
+             LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
+             RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             RegToSlot, SlotToReg, LoadConstant, FunctionCall, Label,
+             SlotToReg, SlotToReg, SlotToReg, SlotToReg, Label,
+             LoadConstant, SlotToReg, OperatorInstruction, IsZero, SlotToReg,
+             OperatorInstruction, IsNotZero, Label, SlotToReg, Branch,
+             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
+             Label, Transfer, Syscall, NilClass]
       #assert_equal 1 , get_return
     end
 
-    def test_call_main
+    def est_call_main
       call_ins = ticks(25)
       assert_equal FunctionCall , call_ins.class
       assert_equal  :main , call_ins.method.name
     end
-    def test_call_resolve
+    def est_call_resolve
       call_ins = ticks(68)
       assert_equal FunctionCall , call_ins.class
       assert_equal  :resolve_method , call_ins.method.name
     end
-    def test_label
+    def est_label
       call_ins = ticks(69)
       assert_equal Label , call_ins.class
       assert_equal  "Word_Type.resolve_method" , call_ins.name
