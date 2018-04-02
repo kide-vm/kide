@@ -31,13 +31,13 @@ module Risc
           return compiler.method
         end
 
-        def exit context
+        def exit( context )
           compiler = compiler_for(:Kernel,:exit ,{})
           emit_syscall( compiler , :exit )
           return compiler.method
         end
 
-        def emit_syscall compiler , name
+        def emit_syscall( compiler , name )
           save_message( compiler )
           compiler.add_code Syscall.new("emit_syscall(#{name})", name )
           restore_message(compiler)

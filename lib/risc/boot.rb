@@ -170,7 +170,7 @@ module Risc
       space_class.instance_type.add_method Builtin::Space.send(:main, nil)
 
       obj = space.get_class_by_name(:Object)
-      [ :get_internal_word , :set_internal_word ].each do |f|
+      [ :get_internal_word , :set_internal_word , :_method_missing].each do |f|
         obj.instance_type.add_method Builtin::Object.send(f , nil)
       end
       obj = space.get_class_by_name(:Kernel)

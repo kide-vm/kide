@@ -43,12 +43,6 @@ class TestMethodApi < MiniTest::Test
        @try_type.remove_method(:foo)
     end
   end
-  def test_remove_method_missing
-#    assert @try_type.get_method( :method_missing)
-    assert_raises RuntimeError do
-       @try_type.remove_method(:method_missing)
-    end
-  end
   def test_create_method
     args = Parfait::Type.for_hash( @try_class , { bar: :Integer})
     @try_type.create_method :bar, args , empty_frame

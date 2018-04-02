@@ -33,6 +33,13 @@ module Risc
           return compiler.method
         end
 
+        # every object needs a method missing.
+        # Even if it's just this one, sys_exit (later raise)
+        def _method_missing( context )
+          compiler = compiler_for(:Object,:method_missing ,{})
+          Risc::Builtin::Kernel.emit_syscall( compiler , :exit )
+          return compiler.method
+        end
       end
       extend ClassMethods
     end

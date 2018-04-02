@@ -106,7 +106,6 @@ module Parfait
     end
 
     def remove_method( method_name )
-      raise "May not remove method_missing" if method_name == :method_missing
       raise "No such method #{method_name} in #{self.name}" unless @methods
       if( @methods.name == method_name)
         @methods = @methods.next_method
@@ -126,7 +125,6 @@ module Parfait
 
     def get_method( fname )
       raise "get_method #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
-      #if we had a hash this would be easier.  Detect or find would help too
       return nil unless @methods
       @methods.each_method do |m|
         return m if(m.name == fname )
