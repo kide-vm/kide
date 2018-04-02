@@ -56,8 +56,44 @@ module Risc
         # parsed.
         def resolve_method( context)
           compiler = compiler_for(:Word, :resolve_method , {:value => :Type} )
+          source = "resolve_method "
+          me = compiler.add_known( :receiver )
+          type_arg = compiler.use_reg( :Type )
+          method = compiler.use_reg( :TypedMethod )
+          method_name = compiler.use_reg( :Word )
+          space = compiler.use_reg( :Space )
+          methods_index = Risc.resolve_to_index(:type , :methods)
+          next_index = Risc.resolve_to_index(:typed_method , :next_method)
+          name_index = Risc.resolve_to_index(:typed_method , :name)
+          binary_index = Risc.resolve_to_index(:typed_method , :binary)
+          nil_index = Risc.resolve_to_index(:space , :nil_object)
+          while_start = Risc.label( source , source + "while_start_#{object_id}")
+          exit_label = Risc.label( source , source + "exit_label_#{object_id}")
+          false_label = Risc.label( source , source + "fal_label_#{object_id}")
 
+          compiler.add_slot_to_reg(source + "retrieve args" , :message , :arguments , type_arg )
+          compiler.add_slot_to_reg(source + "retrieve arg 1", type_arg , 1 + 1, type_arg ) #1 for type
+          compiler.add_slot_to_reg(source + "get methods from type", type_arg , methods_index, method )
+          compiler.add_code while_start
+          compiler.add_load_constant(source + "load space" , Parfait.object_space , space )
+          compiler.add_slot_to_reg(source + "get nil object", space , nil_index, space )
+          compiler.add_op(source + "if method is nil", :- , space , method )
+          compiler.add_code Risc::IsZero.new(source + "jump if nil" , exit_label)
+
+          compiler.add_slot_to_reg(source + "get name from method" , method , name_index, method_name )
+          compiler.add_op(source + " compare name with me", :- , method_name , me )
+          compiler.add_code Risc::IsNotZero.new(source + "jump if not same" , false_label)
+
+          compiler.add_slot_to_reg(source + "get binary from method" , method , binary_index, method )
+          compiler.add_reg_to_slot(source +  "save binary to return", method , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
+
+          compiler.add_code false_label
+          compiler.add_slot_to_reg(source + "get next method" , method , next_index, method )
+          compiler.add_code Risc::Branch.new(source + "back to while", while_start)
+
+          compiler.add_code exit_label
+          Risc::Builtin::Object.emit_syscall( compiler , :exit )
           return compiler.method
         end
 
