@@ -41,7 +41,7 @@ module Parfait
     end
 
     # get the method and if not found, try superclasses. raise error if not found
-    def resolve_method m_name
+    def resolve_method( m_name )
       raise "resolve_method #{m_name}.#{m_name.class}" unless m_name.is_a?(Symbol)
       method = get_instance_method(m_name)
       return method if method

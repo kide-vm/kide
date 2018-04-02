@@ -8,7 +8,7 @@ class TestSpace < MiniTest::Test
   end
 
   def classes
-    [:Kernel,:Word,:List,:Message,:NamedList,:Type,:Object,:Class,:Dictionary,:TypedMethod , :Integer]
+    [:Word,:List,:Message,:NamedList,:Type,:Object,:Class,:Dictionary,:TypedMethod , :Integer]
   end
 
   def test_booted

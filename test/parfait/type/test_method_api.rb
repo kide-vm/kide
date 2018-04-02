@@ -77,6 +77,6 @@ class TestMethodApi < MiniTest::Test
     assert_equal :foo , @try_class.instance_type.get_method( :foo ).name
   end
   def test_resolve_fail
-    assert_nil  object_type.resolve_method( :foo )
+    assert_nil object_type.resolve_method( :foo )
   end
 end

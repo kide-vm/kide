@@ -29,7 +29,7 @@ module Parfait
   # While data ususally would live in a .data section, we may also "inline" it into the code
   # in an oo system all data is represented as objects
 
-    class Space < Object
+  class Space < Object
 
     def initialize( classes )
       @classes = classes
@@ -83,13 +83,13 @@ module Parfait
     end
 
     def get_main
-      kernel = get_class_by_name :Space
-      kernel.instance_type.get_method :main
+      space = get_class_by_name :Space
+      space.instance_type.get_method :main
     end
 
     def get_init
-      kernel = get_class_by_name :Kernel
-      kernel.instance_type.get_method :__init__
+      object = get_class_by_name :Object
+      object.instance_type.get_method :__init__
     end
 
     # get a class by name (symbol)

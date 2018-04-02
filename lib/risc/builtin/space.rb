@@ -24,5 +24,4 @@ end
 
 require_relative "integer"
 require_relative "object"
-require_relative "kernel"
 require_relative "word"

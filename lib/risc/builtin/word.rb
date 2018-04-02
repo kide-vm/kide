@@ -10,7 +10,7 @@ module Risc
           index = Parfait::Word.get_length_index
           reg = RiscValue.new(:r2 , :Integer)
           compiler.add_slot_to_reg( "putstring" , :new_message , index , reg )
-          Kernel.emit_syscall( compiler , :putstring )
+          Risc::Builtin::Object.emit_syscall( compiler , :putstring )
           compiler.add_mom( Mom::ReturnSequence.new)
           compiler.method
         end

@@ -116,8 +116,9 @@ module Risc
 
     # superclasses other than default object
     def  super_class_names
-       { Object: :Kernel , Kernel: :Value , BinaryCode: :Word ,
-         Data4: :DataObject ,Data8: :DataObject , Integer: :Data4, Word: :Data8}
+       { Data4: :DataObject , Data8: :DataObject ,Data16: :DataObject ,
+         BinaryCode: :Data16 , Integer: :Data4, Word: :Data8 ,
+         Object: :BasicObject}
     end
 
     # the function really just returns a constant (just avoiding the constant)
@@ -137,7 +138,6 @@ module Risc
           FalseClass: {},
           NilClass: {},
           Object: {},
-          Kernel: {}, #fix, kernel is a class, but should be a module
           BinaryCode: {next: :BinaryCode} ,
           Space: {classes: :Dictionary , types: :Dictionary ,
                   first_message: :Message , next_integer: :Integer ,
@@ -170,13 +170,9 @@ module Risc
       space_class.instance_type.add_method Builtin::Space.send(:main, nil)
 
       obj = space.get_class_by_name(:Object)
-      [ :get_internal_word , :set_internal_word , :_method_missing].each do |f|
+      [ :get_internal_word , :set_internal_word , :_method_missing,
+        :exit , :__init__].each do |f|
         obj.instance_type.add_method Builtin::Object.send(f , nil)
-      end
-      obj = space.get_class_by_name(:Kernel)
-      # create __init__ main first, __init__ calls it
-      [:exit , :__init__ ].each do |f|
-        obj.instance_type.add_method Builtin::Kernel.send(f , nil)
       end
 
       obj = space.get_class_by_name(:Word)
