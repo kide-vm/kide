@@ -1,6 +1,6 @@
-# A simple event registering/triggering module to mix into classes.
-# Events are stored in the `@events` ivar.
 module Util
+  # A simple event registering/triggering module to mix into classes.
+  # Events are stored in the `@events` ivar.
   module Eventable
 
     # Risc a handler for the given event name.
