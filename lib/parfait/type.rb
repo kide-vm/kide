@@ -52,7 +52,7 @@ module Parfait
     # this part of the init is seperate because at boot time we can not use normal new
     # new is overloaded to grab the type from space, and before boot, that is not set up
     def init_lists(hash)
-      @methods = List.new
+      @methods = nil
       @names = List.new
       @types = List.new
       raise "No type Type in #{hash}" unless hash[:type]
@@ -68,7 +68,8 @@ module Parfait
 
     def method_names
       names = List.new
-      @methods.each do |method|
+      return names unless @methods
+      @methods.each_method do |method|
         names.push method.name
       end
       names
@@ -95,25 +96,39 @@ module Parfait
       if self.is_a?(Class) and (method.for_type != self)
         raise "Adding to wrong class, should be #{method.for_class}"
       end
-      found = get_method( method.name )
-      if found
-        @methods.delete(found)
+      if get_method( method.name )
+        remove_method(method.name)
       end
-      @methods.push method
+      method.set_next( @methods )
+      @methods = method
       #puts "#{self.name} add #{method.name}"
       method
     end
 
     def remove_method( method_name )
-      found = get_method( method_name )
-      raise "No such method #{method_name} in #{self.name}" unless found
-      @methods.delete(found)
+      raise "May not remove method_missing" if method_name == :method_missing
+      raise "No such method #{method_name} in #{self.name}" unless @methods
+      if( @methods.name == method_name)
+        @methods = @methods.next_method
+        return true
+      end
+      method = @methods
+      while(method && method.next_method)
+        if( method.next_method.name == method_name)
+          method.set_next( method.next_method.next_method )
+          return true
+        else
+          method = method.next_method
+        end
+      end
+      raise "No such method #{method_name} in #{self.name}"
     end
 
     def get_method( fname )
       raise "get_method #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
       #if we had a hash this would be easier.  Detect or find would help too
-      @methods.each do |m|
+      return nil unless @methods
+      @methods.each_method do |m|
         return m if(m.name == fname )
       end
       nil
@@ -131,6 +146,13 @@ module Parfait
       sup = object_class.super_class
       return nil unless sup
       sup.instance_type.resolve_method(fname)
+    end
+
+    def methods_length
+      return 0 unless @methods
+      len = 0
+      @methods.each_method { len += 1}
+      return len
     end
 
     def == other
@@ -195,6 +217,10 @@ module Parfait
       end
     end
 
+    def each_method(&block)
+      return unless @methods
+      @methods.each_method(&block)
+    end
     def to_hash
       hash = {}
       each do |name , type|

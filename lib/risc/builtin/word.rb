@@ -55,10 +55,8 @@ module Risc
         # This method is just a placeholder until boot is over and the real method is
         # parsed.
         def resolve_method( context)
-          compiler = compiler_for(:Word, :resolve_method , {:value => :Object} )
-          args = compiler.method.arguments
-          len = args.instance_length
-          raise "Compiler arg number mismatch, method=#{args} " if  len != 2
+          compiler = compiler_for(:Word, :resolve_method , {:value => :Type} )
+
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end

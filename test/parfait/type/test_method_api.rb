@@ -25,22 +25,28 @@ class TestMethodApi < MiniTest::Test
     @space.get_class_by_name(:Object).instance_type
   end
   def test_new_methods
-    assert_equal @try_type.method_names.class, @try_type.methods.class
-    assert_equal @try_type.method_names.get_length , @try_type.methods.get_length
+    assert_equal Parfait::List , @try_type.method_names.class
+    assert_equal @try_type.method_names.get_length , @try_type.methods_length
   end
   def test_add_method
-    before = @try_type.methods.get_length
+    before = @try_type.methods_length
     add_foo_to
-    assert_equal 1 , @try_type.methods.get_length - before
+    assert_equal 1 , @try_type.methods_length - before
     assert @try_type.method_names.inspect.include?(":foo")
   end
   def test_remove_method
     add_foo_to
-    assert_equal true , @try_type.remove_method(:foo)
+    assert @try_type.remove_method(:foo)
   end
   def test_remove_not_there
     assert_raises RuntimeError do
        @try_type.remove_method(:foo)
+    end
+  end
+  def test_remove_method_missing
+#    assert @try_type.get_method( :method_missing)
+    assert_raises RuntimeError do
+       @try_type.remove_method(:method_missing)
     end
   end
   def test_create_method

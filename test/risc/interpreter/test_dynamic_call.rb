@@ -50,6 +50,10 @@ module Risc
       assert_equal Label , call_ins.class
       assert_equal  "Word_Type.resolve_method" , call_ins.name
     end
+    def est_dyn
+      cal = ticks(102)
+      assert_equal DynamicJump ,  cal.class
+    end
     #should end in exit, but doesn't, becasue resolve never returns
     def ttest_sys
       sys = ticks(20)

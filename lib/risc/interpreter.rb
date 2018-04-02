@@ -99,6 +99,11 @@ module Risc
       true
     end
     # Instruction interpretation starts here
+    def execute_DynamicJump
+      label =  get_register(@instruction.register)
+      puts "Jump to :#{label}:"
+      set_instruction label
+    end
     def execute_Branch
       label = @instruction.label
       set_instruction label

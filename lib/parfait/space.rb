@@ -75,7 +75,7 @@ module Parfait
     def collect_methods
       methods = []
       each_type do | type |
-        type.methods.each do |meth|
+        type.each_method do |meth|
           methods << meth
         end
       end

@@ -149,13 +149,13 @@ class TestSpace < MiniTest::Test
   def test_no_methods_in_types
     test_remove_methods
     @space.each_type do |type|
-      assert_equal 0 , type.methods.get_length , "name #{type.name}"
+      assert_equal 0 , type.methods_length , "name #{type.name}"
     end
   end
   def test_no_methods_in_classes
     test_remove_methods
     @space.classes.each do |name , cl|
-      assert_equal 0 , cl.instance_type.methods.get_length , "name #{cl.name}"
+      assert_equal 0 , cl.instance_type.methods_length , "name #{cl.name}"
     end
   end
 

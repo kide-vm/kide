@@ -22,7 +22,7 @@ module Parfait
   class TypedMethod < Object
 
     attr_reader :name , :risc_instructions , :for_type , :cpu_instructions
-    attr_reader :arguments , :frame , :binary
+    attr_reader :arguments , :frame , :binary , :next_method
 
     # not part of the parfait model, hence ruby accessor
     attr_accessor :source
@@ -118,5 +118,12 @@ module Parfait
       "#{@for_type.object_class.name}:#{name}(#{arguments.inspect})"
     end
 
+    def each_method( &block )
+      block.call( self )
+      next_method.each_method( &block ) if next_method
+    end
+    def set_next( method )
+      @next_method = method
+    end
   end
 end

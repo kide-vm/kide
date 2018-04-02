@@ -145,14 +145,15 @@ module Risc
                   false_object: :FalseClass , nil_object: :NilClass},
           NamedList: {},
           Type: {names: :List , types: :List  ,
-                 object_class: :Class, methods: :List } ,
+                 object_class: :Class, methods: :TypedMethod } ,
           Class: {instance_methods: :List, instance_type: :Type, name: :Word,
                       super_class_name: :Word , instance_names: :List },
           Dictionary: {keys: :List , values: :List  } ,
           CacheEntry: {cached_type: :Type , cached_method: :TypedMethod  } ,
           TypedMethod: {name: :Word, source: :Object, risc_instructions: :Object,
                         cpu_instructions: :Object, binary: :BinaryCode,
-                        arguments: :Type , for_type: :Type, frame: :Type } ,
+                        arguments: :Type , for_type: :Type, frame: :Type ,
+                        next_method: :TypedMethod} ,
         }
     end
 
