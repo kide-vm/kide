@@ -79,6 +79,7 @@ module Risc
       end
       return if old === val
       reg = reg.symbol if reg.is_a? Risc::RiscValue
+      val = Parfait.object_space.nil_object if( val == nil) #because that's what real code has
       @registers[reg] = val
       trigger(:register_changed, reg ,  old , val)
     end

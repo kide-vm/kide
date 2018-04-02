@@ -130,6 +130,10 @@ module Arm
       ArmMachine.beq( code.label.to_cpu(self) )
     end
 
+    def translate_IsNotZero( code )
+      ArmMachine.bne( code.label.to_cpu(self) )
+    end
+
     def translate_IsOverflow( code )
       ArmMachine.bvs( code.label.to_cpu(self))
     end
