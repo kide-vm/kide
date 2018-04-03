@@ -34,7 +34,7 @@ module Parfait
     def get_internal_word(index)
       name = get_type().name_at(index)
       return nil unless name
-      eval "@#{name}"
+      instance_variable_get("@#{name}".to_sym)
     end
 
     # 1 -based index
@@ -43,7 +43,7 @@ module Parfait
       raise "not type #{@type.class}" unless @type.is_a?(Type)
       name = @type.name_at(index)
       raise "object type has no name at index #{index} " unless name
-      eval "@#{name} = value"
+      instance_variable_set("@#{name}".to_sym, value)
       value
     end
 
@@ -116,7 +116,7 @@ module Parfait
     end
 
     # name comes in as a ruby @var name
-    def instance_variable_get name
+    def instance_variable_ged name
       var = get_instance_variable name.to_s[1 .. -1].to_sym
       #puts "getting #{name}  #{var}"
       var

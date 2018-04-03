@@ -5,7 +5,7 @@ class TypeHash < MiniTest::Test
   def setup
     Risc.machine.boot
     @space = Parfait.object_space
-    @types = @space.instance_variable_get("@types")
+    @types = @space.instance_variable_ged("@types")
     @first = @types.values.first
   end
 

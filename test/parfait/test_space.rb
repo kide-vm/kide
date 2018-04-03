@@ -45,7 +45,7 @@ class TestSpace < MiniTest::Test
   end
 
   def test_types
-    assert  @space.instance_variable_get("@types").is_a? Parfait::Dictionary
+    assert  @space.instance_variable_ged("@types").is_a? Parfait::Dictionary
   end
 
   def test_types_each
@@ -55,7 +55,7 @@ class TestSpace < MiniTest::Test
   end
 
   def test_types_hashes
-    types = @space.instance_variable_get("@types")
+    types = @space.instance_variable_ged("@types")
     types.each do |has , type|
       assert has.is_a?(Fixnum) , has.inspect
     end
