@@ -1,4 +1,5 @@
 require_relative "../helper"
+require "util/eventable"
 require "risc/interpreter"
 
 module Risc

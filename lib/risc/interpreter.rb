@@ -1,5 +1,3 @@
-require "util/eventable"
-
 module Risc
 
   # An interpreter for the register level. As the register machine is a simple model,
@@ -18,24 +16,18 @@ module Risc
     include Logging
     log_level :info
 
-    attr_reader :instruction     # current instruction or pc
-    attr_reader :clock    # current instruction or pc
-
+    attr_reader :instruction , :clock    # current instruction or pc
     attr_reader :registers     # the registers, 16 (a hash, sym -> contents)
-    attr_reader :stdout     # collect the output
-    attr_reader :state # running etc
-    attr_reader :flags  # somewhat like the lags on a cpu, hash  sym => bool (zero .. . )
+    attr_reader :stdout,  :state , :flags  # somewhat like the lags on a cpu, hash  sym => bool (zero .. . )
 
     #start in state :stopped and set registers to unknown
     def initialize()
-      @state = :stopped
-      @stdout = ""
+      @stdout , @clock , @state = "", 0 , :stopped
       @registers = {}
       @flags = {  :zero => false , :plus => false ,
                   :minus => false , :overflow => false }
-      @clock = 0
-      (0...12).each do |r|
-        set_register "r#{r}".to_sym , "r#{r}:unknown"
+      (0...12).each do |reg|
+        set_register "r#{reg}".to_sym , "r#{reg}:unknown"
       end
     end
 
@@ -52,12 +44,12 @@ module Risc
       trigger(:state_changed , old , state )
     end
 
-    def set_instruction( i )
-      raise "set to same instruction #{i}:#{i.class}" if @instruction == i
+    def set_instruction( instruction )
+      raise "set to same instruction #{instruction}:#{instruction.class}" if @instruction == instruction
       old = @instruction
-      @instruction = i
-      trigger(:instruction_changed, old , i)
-      set_state( :exited) unless i
+      @instruction = instruction
+      trigger(:instruction_changed, old , instruction)
+      set_state( :exited) unless instruction
     end
 
     def get_register( reg )
@@ -79,7 +71,7 @@ module Risc
       end
       return if old === val
       reg = reg.symbol if reg.is_a? Risc::RiscValue
-      val = Parfait.object_space.nil_object if( val == nil) #because that's what real code has
+      val = Parfait.object_space.nil_object if val.nil? #because that's what real code has
       @registers[reg] = val
       trigger(:register_changed, reg ,  old , val)
     end
@@ -264,19 +256,19 @@ module Risc
       right = right.object_id unless right.is_a?(Integer)
       case @instruction.operator
       when :+
-        return left + right
+        left + right
       when :-
-        return left - right
+        left - right
       when :>>
-        return left / (2**right)
+        left / (2**right)
       when :<<
-        return left * (2**right)
+        left * (2**right)
       when :*
-        return left * right
+        left * right
       when :&
-        return left & right
+        left & right
       when :|
-        return left | right
+        left | right
       else
         raise "unimplemented  '#{@instruction.operator}' #{@instruction}"
       end
@@ -285,7 +277,7 @@ module Risc
     def register_dump
       (0..7).collect do |reg|
         value = @registers["r#{reg}".to_sym]
-        str = "#{reg}-" +
+        "#{reg}-" +
         case value
         when String
           value[0..10]
