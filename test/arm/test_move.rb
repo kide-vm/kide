@@ -24,10 +24,11 @@ module Arm
       code = @machine.mov  :r0,  0x222  # is not 8 bit and can't be rotated by the arm system in one instruction
       code.set_position(0)
       begin  # mov 512(0x200) = e3 a0 0c 02    add 34(0x22) = e2 90 00 22
-        assert_code code , :mov , [ 0x02,0x0c,0xb0,0xe3 , 0x22,0x00,0x90,0xe2]
+        assert_code code , :mov , [ 0x02,0x0c,0xb0,0xe3]
       rescue Risc::LinkException
         retry
       end
+      assert_code code.next , :add , [ 0x22,0x00,0x90,0xe2]
     end
     def test_mvn
       code = @machine.mvn  :r1,  5

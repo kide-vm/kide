@@ -28,7 +28,7 @@ module Arm
     # know where the other object is, and that position is only set after code positions have been
     # determined (in link) and so see below in assemble
     def byte_length
-      @extra ? 8 : 4
+      4
     end
 
     # don't overwrite instance variables, to make assembly repeatable
@@ -55,8 +55,6 @@ module Arm
       val |= instruction_code
       val |= condition_code
       io.write_unsigned_int_32 val
-      # by now we have the extra add so assemble that
-      @extra.assemble(io) if(@extra) #puts "Assemble extra at #{val.to_s(16)}"
     end
 
     def instuction_class
@@ -70,12 +68,15 @@ module Arm
       raise "No negatives implemented #{right} " if right < 0
       unless @extra
         @extra = 1      # puts "RELINK M at #{self.position.to_s(16)}"
+        extra = ArmMachine.add( to , to , 0 ) #noop that we change below
+        extra.set_next(@next)
+        @next = extra
         raise ::Risc::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
       end
       # now we can do the actual breaking of instruction, by splitting the operand
       operand = calculate_u8_with_rr( right & 0xFFFFFF00 )
       raise "no fit for #{right}" unless operand
-      @extra = ArmMachine.add( to , to , (right & 0xFF) )
+      @next.set_value(right & 0xFF )
       operand
     end
   end

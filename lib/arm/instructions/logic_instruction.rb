@@ -47,7 +47,6 @@ module Arm
       val |= instruction_code
       val |= condition_code
       io.write_unsigned_int_32 val
-      assemble_extra(io)
     end
 
     def result
@@ -71,15 +70,22 @@ module Arm
         unless @extra
           @extra = 1
           #puts "RELINK L at #{self.position.to_s(16)}"
+          extra = ArmMachine.send( opcode ,  result , result , 0 ) #noop
+          extra.set_next( @next )
+          @next = extra
           raise ::Risc::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
         end
         # now we can do the actual breaking of instruction, by splitting the operand
         operand = calculate_u8_with_rr( right & 0xFFFFFF00 )
         raise "no fit for #{right}" unless operand
         # use sub for sub and add for add, ie same as opcode
-        @extra = ArmMachine.send( opcode ,  result , result , (right & 0xFF) )
+        @next.set_value(right & 0xFF )
       end
       return operand
+    end
+
+    def set_value(val)
+      @right = val
     end
 
     # don't overwrite instance variables, to make assembly repeatable
@@ -99,20 +105,6 @@ module Arm
       else
         return @left , @right
       end
-    end
-
-    # by now we have the extra add so assemble that
-    def assemble_extra(io)
-      return unless @extra
-      if(@extra == 1) # unles things have changed and then we add a noop (to keep the length same)
-        @extra = ArmMachine.mov( :r1 , :r1  )
-      end
-      @extra.assemble(io)
-      #puts "Assemble extra at #{val.to_s(16)}"
-    end
-
-    def byte_length
-      @extra ? 8 : 4
     end
 
     def to_s

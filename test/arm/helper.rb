@@ -12,7 +12,7 @@ module Arm
 
     # code is what the generator spits out, at least one instruction worth (.first)
     # the op code is wat was witten as assembler in the first place and the binary result
-    def assert_code code , op , should
+    def assert_code( code , op , should )
       assert_equal op ,  code.opcode
       io = StringIO.new
       code.assemble(io)
