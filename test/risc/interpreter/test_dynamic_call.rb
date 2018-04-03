@@ -23,31 +23,39 @@ module Risc
              SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
              LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
              RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-             RegToSlot, SlotToReg, LoadConstant, FunctionCall, Label,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, Label,
-             LoadConstant, SlotToReg, OperatorInstruction, IsZero, SlotToReg,
-             OperatorInstruction, IsNotZero, Label, SlotToReg, Branch,
+             SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
+             SlotToReg, RegToSlot, SlotToReg, LoadConstant, FunctionCall,
+             Label, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
              Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
              Label, Transfer, Syscall, NilClass]
       #assert_equal 1 , get_return
     end
 
-    def est_call_main
-      call_ins = ticks(25)
+    def test_call_main
+      call_ins = ticks(26)
       assert_equal FunctionCall , call_ins.class
       assert_equal  :main , call_ins.method.name
     end
-    def est_call_resolve
-      call_ins = ticks(68)
+    def test_call_resolve
+      call_ins = ticks(70)
       assert_equal FunctionCall , call_ins.class
       assert_equal  :resolve_method , call_ins.method.name
     end
-    def est_label
-      call_ins = ticks(69)
+    def test_label
+      call_ins = ticks(71)
       assert_equal Label , call_ins.class
       assert_equal  "Word_Type.resolve_method" , call_ins.name
     end
+    def test_arg_15_to_resolve
+      sl = ticks( 74 )
+      assert_equal SlotToReg , sl.class
+      assert_equal :r2 , sl.array.symbol #load from message
+      assert_equal 2 , sl.index
+      assert_equal :r2 , sl.register.symbol
+      assert_equal Parfait::Integer, @interpreter.get_register( :r2 ).class
+      assert_equal 15, @interpreter.get_register( :r2 ).value
+    end
+
     def est_dyn
       cal = ticks(102)
       assert_equal DynamicJump ,  cal.class

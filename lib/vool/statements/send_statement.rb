@@ -119,7 +119,7 @@ module Vool
     end
     def build_method_cache_update(in_method)
       receiver = SymbolConstant.new(@name)
-      resolve = SendStatement.new(:resolve_method , receiver , [SelfExpression.new])
+      resolve = SendStatement.new(:resolve_method , receiver , [@receiver])
       move_method = Mom::SlotLoad.new([dynamic_call.cache_entry, :cached_method] , [:message , :return_value])
       resolve.to_mom(in_method) << move_method
     end

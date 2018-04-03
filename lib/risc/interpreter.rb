@@ -149,7 +149,6 @@ module Risc
       else
         value = object.get_internal_word( index )
       end
-      #value = value.object_id unless value.is_a? Fixnum
       set_register( @instruction.register , value )
       true
     end
