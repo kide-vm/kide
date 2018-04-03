@@ -62,11 +62,8 @@ module Risc
       postamble.each {all.pop}
       str = all.collect{|i| i.class.name}.join(", ").gsub("Risc::","")
       str = "[#{str}]"
-      ret = ""
-      str.split(",").each_slice(5).each do |line|
-        ret += "                " + line.join(",") + ",\n"
-      end
-      ret
+      all = str.split(",").each_slice(5).collect { |line| "                " + line.join(",")} 
+      all.join(",\n")
     end
   end
 end
