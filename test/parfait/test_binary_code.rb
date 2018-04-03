@@ -69,6 +69,17 @@ module Parfait
       assert @code.next
       assert_nil @code.next.next
     end
+    def test_auto_extend #extend by seting word
+      assert_nil @code.next
+      @code.set_word(20 , 1)
+      assert @code.next
+    end
+    def test_extend_extended
+      @code.extend_to(20)
+      @code.extend_to(30)
+      assert @code.next.next
+      assert_nil @code.next.next.next
+    end
     def test_each
       len = 0
       @code.each_word{ len += 1}

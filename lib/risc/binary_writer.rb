@@ -15,12 +15,15 @@ module Risc
     # LinkException may be thrown, possibly several times
     # So repeat until it works
     def assemble( instruction )
-      ok = false
-      until(ok)
+      not_ok = 1
+      while(not_ok)
         begin
+          #puts "Not ok #{not_ok}"
+          #FIXME really need to reposition here, so jumps go right
           assemble_all(instruction)
-          ok = true
+          not_ok = false
         rescue LinkException
+          not_ok += 1
         end
       end
     end

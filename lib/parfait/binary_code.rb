@@ -17,7 +17,8 @@ module Parfait
     end
     def extend_to(total_size)
       if total_size > self.data_length
-        @next = BinaryCode.new(total_size - data_length)
+        @next = BinaryCode.new(1) unless @next
+        @next.extend_to(total_size - data_length)
       end
     end
     def to_s
@@ -40,7 +41,8 @@ module Parfait
     def set_word(index , word)
       raise "invalid index #{index}" if index < 1
       if index > data_length + 1
-        raise "invalid index #{index}" unless @next
+        #raise "invalid index #{index}" unless @next
+        extend_to( index )
         @next.set_word( index - data_length , word)
       end
       set_internal_word(index + 2 , word)
