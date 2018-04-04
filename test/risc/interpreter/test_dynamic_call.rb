@@ -10,24 +10,19 @@ module Risc
     end
 
     def test_chain
-      #show_ticks # get output of what is
-      check_chain [Branch, Label, LoadConstant, SlotToReg, LoadConstant,
+      #show_main_ticks # get output of what is
+      check_main_chain [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
+             SlotToReg, SlotToReg, SlotToReg, OperatorInstruction, IsZero,
+             SlotToReg, SlotToReg, LoadConstant, RegToSlot, LoadConstant,
              SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
              SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
              SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, LoadConstant, RegToSlot, LoadConstant, RegToSlot,
-             FunctionCall, Label, LoadConstant, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, SlotToReg, SlotToReg, OperatorInstruction,
-             IsZero, SlotToReg, SlotToReg, LoadConstant, RegToSlot,
-             LoadConstant, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-             RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, RegToSlot, SlotToReg, LoadConstant, FunctionCall,
-             Label, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
-             Label, Transfer, Syscall, NilClass]
+             LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             RegToSlot, SlotToReg, LoadConstant, FunctionCall, Label,
+             SlotToReg, SlotToReg, SlotToReg, SlotToReg, Label,
+             LoadConstant, SlotToReg, OperatorInstruction, IsZero, Label,
+             Transfer, Syscall, NilClass]
       #assert_equal 1 , get_return
     end
 
@@ -37,17 +32,17 @@ module Risc
       assert_equal  :main , call_ins.method.name
     end
     def test_call_resolve
-      call_ins = ticks(70)
+      call_ins = main_ticks(44)
       assert_equal FunctionCall , call_ins.class
       assert_equal  :resolve_method , call_ins.method.name
     end
     def test_label
-      call_ins = ticks(71)
+      call_ins = main_ticks(45)
       assert_equal Label , call_ins.class
       assert_equal  "Word_Type.resolve_method" , call_ins.name
     end
     def test_arg_15_to_resolve
-      sl = ticks( 74 )
+      sl = main_ticks( 48 )
       assert_equal SlotToReg , sl.class
       assert_equal :r2 , sl.array.symbol #load from message
       assert_equal 2 , sl.index
@@ -57,7 +52,7 @@ module Risc
     end
 
     def est_dyn
-      cal = ticks(102)
+      cal = main_ticks(76)
       assert_equal DynamicJump ,  cal.class
     end
     #should end in exit, but doesn't, becasue resolve never returns

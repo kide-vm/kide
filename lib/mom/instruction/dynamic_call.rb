@@ -25,6 +25,7 @@ module Mom
     # Instead we need a DynamicJump instruction that explicitly takes a register as
     # a target (not a label)
     def to_risc(compiler)
+      compiler.add_constant( @cache_entry )
       reg = compiler.use_reg( :Object )
       call =  Risc.load_constant( self , @cache_entry , reg )
       method_index = Risc.resolve_to_index(:cache_entry , :cached_method)
