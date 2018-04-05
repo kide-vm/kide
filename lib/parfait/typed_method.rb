@@ -22,27 +22,27 @@ module Parfait
   class TypedMethod < Object
 
     attr_reader :name , :risc_instructions , :for_type , :cpu_instructions
-    attr_reader :arguments , :frame , :binary , :next_method
+    attr_reader :arguments_type , :frame_type , :binary , :next_method
 
     # not part of the parfait model, hence ruby accessor
     attr_accessor :source
 
-    def initialize( type , name , arguments , frame)
+    def initialize( type , name , arguments_type , frame_type)
       super()
       raise "No class #{name}" unless type
       raise "For type, not class #{type}" unless type.is_a?(Type)
       @for_type = type
       @name = name
-      init(arguments, frame)
+      init(arguments_type, frame_type)
     end
 
     # (re) init with given args and frame types
     # also set first risc_instruction to a label
-    def init(arguments, frame)
-      raise "Wrong argument type, expect Type not #{arguments.class}" unless arguments.is_a? Type
-      raise "Wrong frame type, expect Type not #{frame.class}" unless frame.is_a? Type
-      @arguments = arguments
-      @frame = frame
+    def init(arguments_type, frame_type)
+      raise "Wrong argument type, expect Type not #{arguments_type.class}" unless arguments_type.is_a? Type
+      raise "Wrong frame type, expect Type not #{frame_type.class}" unless frame_type.is_a? Type
+      @arguments_type = arguments_type
+      @frame_type = frame_type
       @binary = BinaryCode.new(0)
       source = "_init_method"
       name = "#{@for_type.name}.#{@name}"
@@ -66,48 +66,48 @@ module Parfait
     # determine whether this method has an argument by the name
     def has_argument( name )
       raise "has_argument #{name}.#{name.class}" unless name.is_a? Symbol
-      index = arguments.variable_index( name )
+      index = arguments_type.variable_index( name )
       index ? (index - 1) : index
     end
 
     def add_argument(name , type)
-      @arguments = @arguments.add_instance_variable(name,type)
+      @arguments_type = @arguments_type.add_instance_variable(name,type)
     end
 
     def arguments_length
-      arguments.instance_length - 1
+      arguments_type.instance_length - 1
     end
 
     def argument_name( index )
-      arguments.names.get(index + 1)
+      arguments_type.names.get(index + 1)
     end
-    def arguments_type( index )
-      arguments.types.get(index + 1)
+    def argument_type( index )
+      arguments_type.types.get(index + 1)
     end
 
     # determine if method has a local variable or tmp (anonymous local) by given name
     def has_local( name )
       raise "has_local #{name}.#{name.class}" unless name.is_a? Symbol
-      index = frame.variable_index( name )
+      index = frame_type.variable_index( name )
       index ? (index - 1) : index
     end
 
     def add_local( name , type )
       index = has_local name
       return index if index
-      @frame = @frame.add_instance_variable(name,type)
+      @frame_type = @frame_type.add_instance_variable(name,type)
     end
 
     def frame_length
-      frame.instance_length - 1
+      frame_type.instance_length - 1
     end
 
     def locals_name( index )
-      frame.names.get(index + 1)
+      frame_type.names.get(index + 1)
     end
 
-    def frame_type( index )
-      frame.types.get(index + 1)
+    def locals_type( index )
+      frame_type.types.get(index + 1)
     end
 
     def sof_reference_name
@@ -115,7 +115,7 @@ module Parfait
     end
 
     def inspect
-      "#{@for_type.object_class.name}:#{name}(#{arguments.inspect})"
+      "#{@for_type.object_class.name}:#{name}(#{arguments_type.inspect})"
     end
 
     def each_method( &block )

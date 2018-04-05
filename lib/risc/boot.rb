@@ -152,7 +152,7 @@ module Risc
           CacheEntry: {cached_type: :Type , cached_method: :TypedMethod  } ,
           TypedMethod: {name: :Word, source: :Object, risc_instructions: :Object,
                         cpu_instructions: :Object, binary: :BinaryCode,
-                        arguments: :Type , for_type: :Type, frame: :Type ,
+                        arguments_type: :Type , for_type: :Type, frame_type: :Type ,
                         next_method: :TypedMethod} ,
         }
     end

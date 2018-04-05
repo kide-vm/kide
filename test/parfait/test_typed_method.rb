@@ -19,8 +19,8 @@ class TestMethod < MiniTest::Test
   end
 
   def test_arg1
-    assert_equal 2 , @method.arguments_length , @method.arguments.inspect
-    assert_equal Symbol , @method.arguments.names.first.class
+    assert_equal 2 , @method.arguments_length , @method.arguments_type.inspect
+    assert_equal Symbol , @method.arguments_type.names.first.class
     assert_equal :bar , @method.argument_name(1)
   end
 
@@ -33,7 +33,7 @@ class TestMethod < MiniTest::Test
     @method.add_argument(:foo2 , :Object)
     assert_equal 3 , @method.arguments_length
     assert_equal :foo2 , @method.argument_name(3)
-    assert_equal :Object , @method.arguments_type(3)
+    assert_equal :Object , @method.argument_type(3)
   end
 
   def test_get_arg_name1
@@ -43,7 +43,7 @@ class TestMethod < MiniTest::Test
   end
   def test_get_arg_type1
     index = @method.has_argument(:bar)
-    assert_equal :Integer , @method.arguments_type(index)
+    assert_equal :Integer , @method.argument_type(index)
   end
   def test_get_arg_name2
     index = @method.has_argument(:foo)
@@ -52,12 +52,12 @@ class TestMethod < MiniTest::Test
   end
   def test_get_arg_type2
     index = @method.has_argument(:foo)
-    assert_equal :Type , @method.arguments_type(index)
+    assert_equal :Type , @method.argument_type(index)
   end
 
   def test_local1
-    assert_equal 2 , @method.frame_length , @method.frame.inspect
-    assert_equal Symbol , @method.frame.names.first.class
+    assert_equal 2 , @method.frame_length , @method.frame_type.inspect
+    assert_equal Symbol , @method.frame_type.names.first.class
     assert_equal :local_bar , @method.locals_name(1)
   end
 
@@ -70,7 +70,7 @@ class TestMethod < MiniTest::Test
     @method.add_local(:foo2 , :Object)
     assert_equal 3 , @method.frame_length
     assert_equal :foo2 , @method.locals_name(3)
-    assert_equal :Object , @method.frame_type(3)
+    assert_equal :Object , @method.locals_type(3)
   end
 
   def test_get_locals_name1
@@ -80,7 +80,7 @@ class TestMethod < MiniTest::Test
   end
   def test_get_frame_type1
     index = @method.has_local(:local_bar)
-    assert_equal :Integer , @method.frame_type(index)
+    assert_equal :Integer , @method.locals_type(index)
   end
   def test_get_locals_name2
     index = @method.has_local(:local_foo)
@@ -89,7 +89,7 @@ class TestMethod < MiniTest::Test
   end
   def test_get_frame_type2
     index = @method.has_local(:local_bar)
-    assert_equal :Integer , @method.frame_type(index)
+    assert_equal :Integer , @method.locals_type(index)
   end
   def test_created_with_binary
     assert @method.binary

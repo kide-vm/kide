@@ -72,11 +72,11 @@ module Mom
       return variable_name if variable_name.is_a?(Integer)
       case object
       when :frame
-        type = compiler.method.frame
+        type = compiler.method.frame_type
       when :message , :next_message , :caller
         type = Parfait.object_space.get_class_by_name(:Message).instance_type
       when :arguments
-        type = compiler.method.arguments
+        type = compiler.method.arguments_type
       when :receiver
         type = compiler.method.for_type
       when Parfait::Object
