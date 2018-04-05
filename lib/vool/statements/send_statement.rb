@@ -63,8 +63,8 @@ module Vool
       Mom::SlotDefinition.new(:message ,[ :return_value])
     end
 
-    def message_setup(in_method)
-      setup  = Mom::MessageSetup.new(in_method)
+    def message_setup(in_method,called_method)
+      setup  = Mom::MessageSetup.new( called_method )
       mom_receive = @receiver.slot_definition(in_method)
       arg_target = [:message , :next_message , :arguments]
       args = []
@@ -78,7 +78,7 @@ module Vool
       type = @receiver.ct_type
       called_method = type.resolve_method(@name)
       raise "No method #{@name} for #{type}" unless called_method
-      message_setup(in_method) << Mom::SimpleCall.new( called_method)
+      message_setup(in_method,called_method) << Mom::SimpleCall.new(called_method)
     end
 
     # this breaks cleanly into two parts:
@@ -92,20 +92,17 @@ module Vool
     # if not, change and find method for the type (simple_call to resolve_method)
     # conceptually easy in ruby, but we have to compile that "easy" ruby
     def cache_check(in_method)
-      # if cached_type != current_type
-      #   cached_type = current_type
-      #   cached_method = current_type.resolve_method(method.name)
       ok = Mom::Label.new("cache_ok_#{self.object_id}")
-      check = build_condition(ok)
-      check << build_type_cache_update
-      check << build_method_cache_update(in_method)
+      check = build_condition(ok)      # if cached_type != current_type
+      check << build_type_cache_update #   cached_type = current_type
+      check << build_method_cache_update(in_method)# cached_method = current_type.resolve_method(method.name)
       check << ok
     end
 
-    # this may look like a simple_call, but the difference is that we don't know
-    # the method until run-time. Alas the setup is the same
+    # to call the method (that we know now to be in the cache), we move the method
+    # to reg1, do the setup (very similar to static) and call
     def call_cached_method(in_method)
-      message_setup(in_method) << dynamic_call
+      message_setup(in_method,dynamic_call.cache_entry) << dynamic_call
     end
 
     private
