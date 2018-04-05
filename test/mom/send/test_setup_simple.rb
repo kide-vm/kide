@@ -8,9 +8,10 @@ module Risc
     def setup
       super
       @input = "5.mod4"
-      @expect = [LoadConstant, LoadConstant, SlotToReg, SlotToReg, LoadConstant,
-                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-                 SlotToReg, LoadConstant, FunctionCall, Label]
+      @expect = [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
+                 SlotToReg, RegToSlot, SlotToReg, LoadConstant, FunctionCall,
+                 Label]
       @produced = produce_body
     end
 
@@ -33,6 +34,14 @@ module Risc
     def test_load_next_message
       sl = @produced.next( 3 )
       assert_slot_to_reg( sl , :r2 ,  2 ,  :r4 )
+    end
+    def test_store_next_message
+      sl = @produced.next( 4 )
+      assert_reg_to_slot( sl , :r4  ,  :r3 ,  4 )
+    end
+    def test_store_current_message
+      sl = @produced.next( 5 )
+      assert_reg_to_slot( sl , :r2  ,  :r0 ,  2 )
     end
 
   end

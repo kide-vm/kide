@@ -55,7 +55,7 @@ module Mom
 
     # get the next message from space and unlink it there
     # also put it into next_message of current message
-    # use given message regster
+    # use given message register
     # return instructions to do this
     def get_message_to( compiler , message)
       space = compiler.use_reg(:Space)
@@ -63,6 +63,8 @@ module Mom
       risc << Risc.slot_to_reg(source + "get next message" , space , :first_message , message)
       next_message = compiler.use_reg( :Message )
       risc << Risc.slot_to_reg(source + "get next message" , message , :next_message , next_message)
+      risc << Risc.reg_to_slot(source + "store next message" , next_message , space , :first_message)
+      risc << Risc.reg_to_slot(source + "store message in current" , message , :message , :next_message)
     end
   end
 
