@@ -46,13 +46,13 @@ module Mom
           new_left = compiler.use_reg( :Object )
           const << Risc::SlotToReg.new( original_source , left ,left_index, new_left)
           left = new_left
-          left_index = SlotLoad.resolve_to_index(left_slots[0] , left_slots[1] ,compiler)
+          left_index = Risc.resolve_to_index(left_slots[0] , left_slots[1] ,compiler)
           if left_slots.length > 2
             #same again, once more updating target
             new_left = compiler.use_reg( :Object )
             const << Risc::SlotToReg.new( original_source , left ,left_index, new_left)
             left = new_left
-            left_index = SlotLoad.resolve_to_index(left_slots[1] , left_slots[2] ,compiler)
+            left_index = Risc.resolve_to_index(left_slots[1] , left_slots[2] ,compiler)
           end
           raise "more slots not implemented #{left_slots}" if left_slots.length > 3
         end
@@ -66,27 +66,6 @@ module Mom
       const << Risc.reg_to_slot(original_source, const.register , left, left_index)
       compiler.reset_regs
       return const
-    end
-
-    def self.resolve_to_index(object , variable_name ,compiler)
-      return variable_name if variable_name.is_a?(Integer)
-      case object
-      when :frame
-        type = compiler.method.frame_type
-      when :message , :next_message , :caller
-        type = Parfait.object_space.get_class_by_name(:Message).instance_type
-      when :arguments
-        type = compiler.method.arguments_type
-      when :receiver
-        type = compiler.method.for_type
-      when Parfait::Object
-        type = Parfait.object_space.get_class_by_name( object.class.name.split("::").last.to_sym).instance_type
-      else
-        raise "Not implemented/found object #{object}"
-      end
-      index = type.variable_index(variable_name)
-      raise "Index not found for #{variable_name} in #{object} of type #{type}" unless index
-      return index
     end
   end
 
@@ -116,7 +95,7 @@ module Mom
         const  = Risc.load_constant(instruction, known_object , right)
         if slots.length > 0
           # desctructively replace the existing value to be loaded if more slots
-          index = SlotLoad.resolve_to_index(known_object , slots[0] ,compiler)
+          index = Risc.resolve_to_index(known_object , slots[0] ,compiler)
           const << Risc::SlotToReg.new( instruction , right ,index, right)
         end
       when Symbol
@@ -127,7 +106,7 @@ module Mom
       end
       if slots.length > 1
         # desctructively replace the existing value to be loaded if more slots
-        index = SlotLoad.resolve_to_index(slots[0] , slots[1] ,compiler)
+        index = Risc.resolve_to_index(slots[0] , slots[1] ,compiler)
         const << Risc::SlotToReg.new( instruction , right ,index, right)
         raise "more slots not implemented #{slots}" if slots.length > 2
       end

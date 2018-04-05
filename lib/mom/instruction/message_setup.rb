@@ -43,10 +43,14 @@ module Mom
       return risc
     end
     private
+    def source
+      "method setup "
+    end
+
     # get the method from method_source into the given register
-    # return instruction that do this
+    # return instructions to do this
     def move_method_to(compiler, register)
-      Risc.load_constant("message setup move method" , @method_source ,register)
+      Risc.load_constant(source + " move method" , @method_source ,register)
     end
 
     # get the next message from space and unlink it there
@@ -54,7 +58,11 @@ module Mom
     # use given message regster
     # return instructions to do this
     def get_message_to( compiler , message)
-      Risc.load_constant("message setup move method" , @method_source ,message)
+      space = compiler.use_reg(:Space)
+      risc = Risc.load_constant("message setup move method" , Parfait.object_space ,space)
+      risc << Risc.slot_to_reg(source + "get next message" , space , :first_message , message)
+      next_message = compiler.use_reg( :Message )
+      risc << Risc.slot_to_reg(source + "get next message" , message , :next_message , next_message)
     end
   end
 

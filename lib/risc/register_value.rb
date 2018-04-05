@@ -82,14 +82,31 @@ module Risc
   # By looking up the class and the type for that class, we can resolve the instance
   # variable name to an index.
   # The class can be mapped to a register, and so we get a memory address (reg+index)
-  def self.resolve_to_index( clazz_name , instance_name )
-    return instance_name unless instance_name.is_a? Symbol
-    real_name = clazz_name.to_s.split('_').collect{|p|p.capitalize}.join.to_sym
-    clazz = Parfait.object_space.get_class_by_name(real_name)
-    raise "Class name not given #{real_name} #{clazz_name} #{instance_name}" unless clazz
-    index = clazz.instance_type.variable_index( instance_name )
-    raise "Instance name=#{instance_name} not found on #{real_name}:#{clazz.instance_type}" unless index.is_a?(Numeric)
-    return index #  the type word is at index 0, but type is a list and starts at 1 == type
+  # Third arg, compiler, is only needed to resolve receiver/arguments/frame
+  def self.resolve_to_index(object , variable_name ,compiler = nil)
+    return variable_name if variable_name.is_a?(Integer) or variable_name.is_a?(RiscValue)
+    object = object.type if object.is_a?(RiscValue)
+    case object
+    when :frame
+      type = compiler.method.frame_type
+    when :message , :next_message , :caller
+      type = Parfait.object_space.get_class_by_name(:Message).instance_type
+    when :arguments
+      type = compiler.method.arguments_type
+    when :receiver
+      type = compiler.method.for_type
+    when Parfait::Object
+      type = Parfait.object_space.get_class_by_name( object.class.name.split("::").last.to_sym).instance_type
+    when Symbol
+      clazz = Parfait.object_space.get_class_by_name(object)
+      raise "Not implemented/found object #{object}:#{object.class}" unless clazz
+      type = clazz.instance_type
+    else
+      raise "Not implemented/found object #{object}:#{object.class}"
+    end
+    index = type.variable_index(variable_name)
+    raise "Index not found for #{variable_name} in #{object} of type #{type}" unless index
+    return index
   end
 
   # if a symbol is given, it may be the message or the new_message.

@@ -25,4 +25,7 @@ guard :minitest do   # with Minitest::Unit
   watch(%r{^lib/vool/statements/send_statement.rb}) {
     [ Dir["test/vool/to_mom/send/test_*.rb"] , "test/vool/statements/test_send_statement.rb"] }
 
+  #message setup
+  watch(%r{^lib/mom/instruction/message_setup.rb}) { Dir["test/mom/send/test_setup*.rb"] }
+
 end

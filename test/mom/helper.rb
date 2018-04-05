@@ -1,9 +1,7 @@
 require_relative '../helper'
 
 module Risc
-
   module Statements
-    include AST::Sexp
     include CleanCompile
 
     def setup
@@ -62,7 +60,7 @@ module Risc
       postamble.each {all.pop}
       str = all.collect{|i| i.class.name}.join(", ").gsub("Risc::","")
       str = "[#{str}]"
-      all = str.split(",").each_slice(5).collect { |line| "                " + line.join(",")} 
+      all = str.split(",").each_slice(5).collect { |line| "                " + line.join(",")}
       all.join(",\n")
     end
   end

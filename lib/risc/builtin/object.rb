@@ -48,7 +48,7 @@ module Risc
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
           space_reg = compiler.use_reg(:Space) #Set up the Space as self upon init
           compiler.add_load_constant("__init__ load Space", Parfait.object_space , space_reg)
-          message_ind = Risc.resolve_to_index( :space , :first_message )
+          message_ind = Risc.resolve_to_index( :Space , :first_message )
           #load the first_message (instance of space)
           compiler.add_slot_to_reg( "__init__ load 1st message" , space_reg , message_ind , :message)
           compiler.add_mom( Mom::MessageSetup.new(Parfait.object_space.get_main))
