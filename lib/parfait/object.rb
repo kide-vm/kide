@@ -42,7 +42,8 @@ module Parfait
       return set_type(value) if( index == 1)
       raise "not type #{@type.class}" unless @type.is_a?(Type)
       name = @type.name_at(index)
-      raise "object type has no name at index #{index} " unless name
+      #return value unless name
+      raise "object type (#{type}) has no name at index #{index} " unless name
       instance_variable_set("@#{name}".to_sym, value)
       value
     end

@@ -14,6 +14,8 @@ module Risc
       raise "unsuported operator :#{operator}:" unless [:+, :-, :>>, :<<, :*, :&, :|, :==].include?(operator)
       @left = left
       @right = right
+      raise "Not register #{left}" unless RiscValue.look_like_reg(left)
+      raise "Not register #{right}" unless RiscValue.look_like_reg(right)
     end
     attr_reader :operator, :left , :right
 

@@ -13,6 +13,7 @@ module Risc
       @register = register
       @constant = constant
       raise "Not Integer #{constant}" unless constant.is_a?(Integer)
+      raise "Not register #{register}" unless RiscValue.look_like_reg(register)
     end
     attr_accessor :register , :constant
 
