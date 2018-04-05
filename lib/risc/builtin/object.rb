@@ -51,7 +51,7 @@ module Risc
           message_ind = Risc.resolve_to_index( :space , :first_message )
           #load the first_message (instance of space)
           compiler.add_slot_to_reg( "__init__ load 1st message" , space_reg , message_ind , :message)
-          compiler.add_mom( Mom::MessageSetup.new(compiler.method))
+          compiler.add_mom( Mom::MessageSetup.new(Parfait.object_space.get_main))
           # but use it's next message, so main can return normally
           compiler.add_slot_to_reg( "__init__ load 2nd message" , :message , :next_message , :message)
           compiler.add_load_constant("__init__ load Space", Parfait.object_space , space_reg)
