@@ -40,7 +40,8 @@ module Mom
     end
 
     # get the next message from space and unlink it there
-    # also put it into next_message of current message
+    # also put it into next_message of current message (and reverse)
+    # set name and type data in the message, from the method loaded
     def build_message_data( builder )
       builder.build do
         space << Parfait.object_space

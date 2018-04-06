@@ -9,14 +9,19 @@ module Risc
       compiler = Risc::MethodCompiler.new( init )
       @builder = Builder.new(compiler)
     end
-    def test_register_alloc_space
+    def test_alloc_space
       reg = @builder.space
       assert_equal RiscValue , reg.class
       assert_equal :Space , reg.type
     end
-    def test_register_alloc_message
-      reg = @builder.message
+    def test_next_message
+      reg = @builder.next_message
       assert_equal :r1 , reg.symbol
+      assert_equal :Message , reg.type
+    end
+    def test_message
+      reg = @builder.message
+      assert_equal :r0 , reg.symbol
       assert_equal :Message , reg.type
     end
     def test_returns_built
@@ -47,6 +52,12 @@ module Risc
       r1 = RiscValue.new(:r1 , :Space)
       built = @builder.build{ space << r1 ; space << r1}
       assert_equal built.to.symbol , built.next.to.symbol
+    end
+    def test_uses_message_as_message
+      r1 = RiscValue.new(:r1 , :Space)
+      built = @builder.build{ message[:receiver] << r1}
+      assert_equal RegToSlot , built.class
+      assert_equal :r0 , built.array.symbol
     end
   end
 

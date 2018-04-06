@@ -13,8 +13,12 @@ module Risc
       super if args.length != 1
       name = args[0]
       return @names[name] if @names.has_key?(name)
-      type = Risc.resolve_type(name , @compiler) #checking
-      reg = @compiler.use_reg( type.object_class.name )
+      if name == :message
+        reg = Risc.message_reg
+      else
+        type = Risc.resolve_type(name , @compiler) #checking
+        reg = @compiler.use_reg( type.object_class.name )
+      end
       @names[name] = reg
       reg.builder = self
       reg
