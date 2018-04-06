@@ -27,10 +27,10 @@ module Mom
     # Move method name, frame and arguemnt types from the method to the next_message
     # Get the message from Space and link it.
     def to_risc(compiler)
-      method = compiler.use_reg( :TypedMethod )
-      risc = move_method_to(compiler , method)
-      message = compiler.use_reg( :Message )
-      risc << get_message_to(compiler , message)
+      builder = Risc::Builder.new(compiler)
+      from = method_source
+      risc = builder.build { typed_method << from }
+      get_message_to(builder)
 
       # move name args frame
       # this time using Risc instructions (create helpers?)
@@ -57,9 +57,9 @@ module Mom
     # also put it into next_message of current message
     # use given message register
     # return instructions to do this
-    def get_message_to( compiler , message)
-      Risc.build(compiler) do
-        space << Parfait.object_space
+    def get_message_to( builder )
+      builder.build do
+#        space << Parfait.object_space
         #message << space[:first_message]
         #risc << Risc.slot_to_reg(source + "get next message" , space , :first_message , message)
       end

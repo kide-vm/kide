@@ -44,5 +44,12 @@ module Risc
       assert_equal @r0 , instr.register
       assert_equal 4 , instr.index
     end
+    def test_reg_to_slot
+      instr = @r0 >> @r1[:first_message]
+      assert_equal RegToSlot , instr.class
+      assert_equal @r1 , instr.array
+      assert_equal @r0 , instr.register
+      assert_equal 4 , instr.index
+    end
   end
 end

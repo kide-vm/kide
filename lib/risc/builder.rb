@@ -10,9 +10,8 @@ module Risc
 
     def method_missing(*args)
       super if args.length != 1
-      name = args[0].to_s.capitalize.to_sym
-      Risc.resolve_type(name , @compiler) #checking
-      reg = @compiler.use_reg( name )
+      type = Risc.resolve_type(args[0] , @compiler) #checking
+      reg = @compiler.use_reg( type.object_class.name )
       reg.builder = self
       reg
     end
@@ -54,6 +53,8 @@ module Risc
   def self.resolve_type( object , compiler )
     object = object.type if object.is_a?(RiscValue)
     case object
+    when :typed_method
+      type = Parfait.object_space.get_class_by_name( :TypedMethod ).instance_type
     when :frame
       type = compiler.method.frame_type
     when :message , :next_message , :caller
@@ -65,6 +66,8 @@ module Risc
     when Parfait::Object
       type = Parfait.object_space.get_class_by_name( object.class.name.split("::").last.to_sym).instance_type
     when Symbol
+#      object = object.to_s.split('_').map(&:capitalize).join.to_sym
+      object = :Space if object == :space
       clazz = Parfait.object_space.get_class_by_name(object)
       raise "Not implemented/found object #{object}:#{object.class}" unless clazz
       type = clazz.instance_type

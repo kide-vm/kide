@@ -64,8 +64,6 @@ module Risc
     # - an RValue, which gets procuced by the [] below
     def <<( load )
       case load
-      when RValue
-        raise "not yet"
       when Parfait::Object
         ins = Risc.load_constant("#{load.class} to #{self.type}" , load , self)
       when RiscValue
@@ -77,6 +75,14 @@ module Risc
       return ins
     end
 
+    # create a RegToSlot instruction
+    # right hand must be an RValue
+    def >>( slot )
+      raise "not RValue #{slot}" unless slot.is_a?(RValue)
+      reg_to_slot = Risc.reg_to_slot("#{self.type} -> #{slot.register.type}[#{slot.index}]" , self, slot.register, slot.index)
+      builder.add_instruction(reg_to_slot) if builder
+      reg_to_slot
+    end
     # just capture the values in an intermediary object (RValue)
     # The RValue then gets used in a RegToSlot ot SlotToReg, where
     # the values are unpacked to call Risc.reg_to_slot or Risc.slot_to_reg

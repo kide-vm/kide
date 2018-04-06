@@ -1,19 +1,13 @@
 require_relative "../helper"
 
 module Risc
-  class TestBuilder < MiniTest::Test
+  class TestBuilderBoot #< MiniTest::Test
 
     def setup
       Risc.machine.boot
       init = Parfait.object_space.get_init
       compiler = Risc::MethodCompiler.new( init )
       @builder = Builder.new(compiler)
-    end
-    def test_has_build
-      assert_nil @builder.build{ }
-    end
-    def test_has_attribute
-      assert_nil @builder.built
     end
     def test_register_alloc_space
       reg = @builder.space
@@ -40,6 +34,19 @@ module Risc
       built = @builder.build{ space[:first_message] >> r2 }
       assert_equal SlotToReg , built.class
       assert_equal :r1 , built.array.symbol
+    end
+  end
+
+  class TestBuilderNoBoot < MiniTest::Test
+
+    def setup
+      @builder = Builder.new(nil)
+    end
+    def test_has_build
+      assert_nil @builder.build{ }
+    end
+    def test_has_attribute
+      assert_nil @builder.built
     end
   end
 end
