@@ -28,12 +28,19 @@ module Mom
     # Get the message from Space and link it.
     def to_risc(compiler)
       builder = Risc::Builder.new(compiler)
+      build_with(builder)
+    end
+
+    # directly called by to_risc
+    # but also used directly in __init
+    def build_with(builder)
       from = method_source
       risc = builder.build { typed_method << from }
       build_message_data(builder)
-      compiler.reset_regs
+      builder.compiler.reset_regs
       return risc
     end
+
     private
     def source
       "method setup "

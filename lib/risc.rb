@@ -6,11 +6,6 @@ class String
     self[0].capitalize + self[1..-1]
   end
 end
-class Symbol
-  def camelize
-    self.to_s.camelize.to_sym
-  end
-end
 
 
 # The RiscMachine, is an abstract machine with registers. Think of it as an arm machine with

@@ -79,6 +79,7 @@ module Risc
         instruction = instruction.next
       end
     end
+    
     # add a risc instruction after the current (insertion point)
     # the added instruction will become the new insertion point
     def add_code( instruction )
