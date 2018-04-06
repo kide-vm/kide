@@ -58,6 +58,10 @@ module Mom
     # use given message register
     # return instructions to do this
     def get_message_to( compiler , message)
+      Risc.build(compiler) do
+        space << Parfait.object_space
+      end
+
       space = compiler.use_reg(:Space)
       risc = Risc.load_constant("message setup move method" , Parfait.object_space ,space)
       risc << Risc.slot_to_reg(source + "get next message" , space , :first_message , message)
