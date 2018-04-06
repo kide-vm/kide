@@ -12,13 +12,34 @@ module Risc
     def test_has_build
       assert_nil @builder.build{ }
     end
-    def test_has_build_and_returns_built
+    def test_has_attribute
+      assert_nil @builder.built
+    end
+    def test_register_alloc_space
+      reg = @builder.space
+      assert_equal RiscValue , reg.class
+      assert_equal :Space , reg.type
+    end
+    def test_register_alloc_message
+      reg = @builder.message
+      assert_equal :r1 , reg.symbol
+      assert_equal :Message , reg.type
+    end
+    def test_returns_built
       r1 = RiscValue.new(:r1 , :Space)
       built = @builder.build{ space << r1 }
       assert_equal Transfer , built.class
     end
-    def test_has_attribute
-      assert_nil @builder.built
+    def test_returns_two
+      r1 = RiscValue.new(:r1 , :Space)
+      built = @builder.build{ space << r1 ; space << r1}
+      assert_equal Transfer , built.next.class
+    end
+    def test_returns_slot
+      r2 = RiscValue.new(:r2 , :Message)
+      built = @builder.build{ space[:first_message] >> r2 }
+      assert_equal SlotToReg , built.class
+      assert_equal :r1 , built.array.symbol
     end
   end
 end

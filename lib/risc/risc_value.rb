@@ -8,12 +8,10 @@ module Risc
 
     attr_accessor :builder
 
-    def initialize( r , type , value = nil)
-      raise "wrong type for register init #{r}" unless r.is_a? Symbol
-      raise "double r #{r}" if r.to_s[0,1] == "rr"
-      raise "not reg #{r}" unless self.class.look_like_reg r
+    def initialize( reg , type , value = nil)
+      raise "not reg #{reg}" unless self.class.look_like_reg( reg )
       @type = type
-      @symbol = r
+      @symbol = reg
       @value = value
     end
 
@@ -65,7 +63,6 @@ module Risc
     # - another RiscValue, resulting in a Transfer instruction
     # - an RValue, which gets procuced by the [] below
     def <<( load )
-      puts "LOAD #{load}"
       case load
       when RValue
         raise "not yet"
@@ -84,16 +81,25 @@ module Risc
     # The RValue then gets used in a RegToSlot ot SlotToReg, where
     # the values are unpacked to call Risc.reg_to_slot or Risc.slot_to_reg
     def []( index )
-      RValue.new( self , index)
+      RValue.new( self , index , builder)
     end
   end
 
   # Just a struct, see comment for [] of RiscValue
   #
   class RValue
-    attr_reader :register , :index
-    def initialize(register, index)
-      @register , @index = register , index
+    attr_reader :register , :index , :builder
+    def initialize(register, index , builder)
+      @register , @index , @builder = register , index , builder
+    end
+
+    # fullfil the objects purpose by creating a SlotToReg instruction from
+    # itself (the slot) and the register given
+    def >>( reg )
+      raise "not reg #{reg}" unless reg.is_a?(RiscValue)
+      slot = Risc.slot_to_reg("#{register.type}[#{index}] -> #{reg.type}" , @register , @index , reg)
+      builder.add_instruction(slot) if builder
+      slot
     end
   end
 

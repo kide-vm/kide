@@ -14,11 +14,9 @@ module Risc
       @r0 = RiscValue.new(:r0 , :Message)
       @r1 = RiscValue.new(:r1 , :Space)
     end
-
     def test_r0
       assert_equal :r0 , @r0.symbol
     end
-
     def test_load_space
       move = @r0 << Parfait.object_space
       assert_equal LoadConstant , move.class
@@ -39,6 +37,12 @@ module Risc
       assert_equal :first_message , message.index
       assert_equal @r0 , message.register
     end
-    #message << space[:first_message]
+    def test_slot_to_reg
+      instr = @r1[:first_message] >> @r0
+      assert_equal SlotToReg , instr.class
+      assert_equal @r1 , instr.array
+      assert_equal @r0 , instr.register
+      assert_equal 4 , instr.index
+    end
   end
 end

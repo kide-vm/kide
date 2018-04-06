@@ -11,10 +11,9 @@ module Risc
     def method_missing(*args)
       super if args.length != 1
       name = args[0].to_s.capitalize.to_sym
-      type = Risc.resolve_type(name , @compiler)
-      reg = @compiler.use_reg( type )
+      Risc.resolve_type(name , @compiler) #checking
+      reg = @compiler.use_reg( name )
       reg.builder = self
-      puts reg
       reg
     end
     def build(&block)
