@@ -1,6 +1,14 @@
 class String
   def camelize
-    self.split("_").collect( &:capitalize ).join
+    self.split("_").collect{|str| str.capitalize_first }.join
+  end
+  def capitalize_first
+    self[0].capitalize + self[1..-1]
+  end
+end
+class Symbol
+  def camelize
+    self.to_s.camelize.to_sym
   end
 end
 
