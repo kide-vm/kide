@@ -22,15 +22,12 @@ module Risc
       return built
     end
     def add_instruction(ins)
-      if(built)
-        built << ins
+      if(@built)
+        @built << ins
       else
         @built = ins
       end
     end
-  end
-
-  class RValue
   end
 
   def self.build(compiler, &block)

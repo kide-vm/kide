@@ -33,5 +33,12 @@ module Risc
       @r0 << @r1
       assert_equal Transfer , builder.built.class
     end
+    def test_index_op
+      message = @r0[:first_message]
+      assert_equal RValue , message.class
+      assert_equal :first_message , message.index
+      assert_equal @r0 , message.register
+    end
+    #message << space[:first_message]
   end
 end

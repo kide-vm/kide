@@ -58,6 +58,12 @@ module Risc
       @symbol
     end
 
+    # can't overload "=" , so use shift for it.
+    # move the right side to the left. Left (this) is a RiscValue
+    # right value may be
+    # - constant (Parfait object) , resulting in a LoadConstant
+    # - another RiscValue, resulting in a Transfer instruction
+    # - an RValue, which gets procuced by the [] below
     def <<( load )
       puts "LOAD #{load}"
       case load
@@ -72,6 +78,22 @@ module Risc
       end
       builder.add_instruction(ins) if builder
       return ins
+    end
+
+    # just capture the values in an intermediary object (RValue)
+    # The RValue then gets used in a RegToSlot ot SlotToReg, where
+    # the values are unpacked to call Risc.reg_to_slot or Risc.slot_to_reg
+    def []( index )
+      RValue.new( self , index)
+    end
+  end
+
+  # Just a struct, see comment for [] of RiscValue
+  #
+  class RValue
+    attr_reader :register , :index
+    def initialize(register, index)
+      @register , @index = register , index
     end
   end
 
