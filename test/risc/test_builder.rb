@@ -1,7 +1,7 @@
 require_relative "../helper"
 
 module Risc
-  class TestBuilderBoot #< MiniTest::Test
+  class TestBuilderBoot < MiniTest::Test
 
     def setup
       Risc.machine.boot
@@ -34,6 +34,11 @@ module Risc
       built = @builder.build{ space[:first_message] >> r2 }
       assert_equal SlotToReg , built.class
       assert_equal :r1 , built.array.symbol
+    end
+    def test_reuses_names
+      r1 = RiscValue.new(:r1 , :Space)
+      built = @builder.build{ space << r1 ; space << r1}
+      assert_equal built.to.symbol , built.next.to.symbol
     end
   end
 

@@ -29,8 +29,7 @@ module Util
     def last
       code = self
       while( code.next )
-        puts "code #{code.class} #{code}"
-        raise "UUPS #{code.class}:#{code}" if code == code.next
+        raise "Circular list #{code.class}:#{code}" if code == code.next
         code = code.next
       end
       return code

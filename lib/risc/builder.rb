@@ -6,15 +6,20 @@ module Risc
 
     def initialize(compiler)
       @compiler = compiler
+      @names = {}
     end
 
     def method_missing(*args)
       super if args.length != 1
-      type = Risc.resolve_type(args[0] , @compiler) #checking
+      name = args[0]
+      return @names[name] if @names.has_key?(name)
+      type = Risc.resolve_type(name , @compiler) #checking
       reg = @compiler.use_reg( type.object_class.name )
+      @names[name] = reg
       reg.builder = self
       reg
     end
+    
     def build(&block)
       instance_eval(&block)
       return built
@@ -66,8 +71,7 @@ module Risc
     when Parfait::Object
       type = Parfait.object_space.get_class_by_name( object.class.name.split("::").last.to_sym).instance_type
     when Symbol
-#      object = object.to_s.split('_').map(&:capitalize).join.to_sym
-      object = :Space if object == :space
+      object = object.camelize
       clazz = Parfait.object_space.get_class_by_name(object)
       raise "Not implemented/found object #{object}:#{object.class}" unless clazz
       type = clazz.instance_type
