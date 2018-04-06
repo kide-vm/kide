@@ -15,11 +15,11 @@ module Risc
              SlotToReg , RegToSlot, SlotToReg, SlotToReg, RegToSlot,
              SlotToReg, SlotToReg, FunctionReturn, Transfer, Syscall,
              NilClass]
-      #assert_equal 15 , get_return.value
+      assert_equal 15 , get_return.value
     end
 
     def test_call_main
-      call_ins = ticks(24)
+      call_ins = ticks(main_at)
       assert_equal FunctionCall , call_ins.class
       assert  :main , call_ins.method.name
     end

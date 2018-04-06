@@ -19,7 +19,7 @@ module Risc
     # how many instruction up until the main starts, ie
     # ticks(main_at) will be the label for main
     def main_at
-      24
+      25
     end
 
     def get_return

@@ -18,7 +18,7 @@ module Risc
     end
 
     def test_call_main
-      call_ins = ticks(26)
+      call_ins = ticks(main_at)
       assert_equal FunctionCall , call_ins.class
       assert  :main , call_ins.method.name
     end

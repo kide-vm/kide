@@ -7,12 +7,13 @@ module Risc
     def setup
       super
       @input = "return 5.mod4"
-      @expect = [LoadConstant, SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg ,
-                 SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg ,
-                 SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg ,
-                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant ,
-                 FunctionCall, Label, SlotToReg, SlotToReg, RegToSlot, SlotToReg ,
-                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg ,
+      @expect = [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
+                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+                 RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
+                 LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+                 RegToSlot, SlotToReg, LoadConstant, FunctionCall, Label,
+                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+                 RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
                  SlotToReg, FunctionReturn]
     end
 
@@ -21,12 +22,12 @@ module Risc
     end
     def test_function_return
       produced = produce_body
-      assert_equal FunctionReturn , produced.next(37).class
+      assert_equal FunctionReturn , produced.next(36).class
     end
     def test_load_5
       produced = produce_body
-      assert_equal LoadConstant , produced.next(16).class
-      assert_equal 5 , produced.next(16).constant.value
+      assert_equal LoadConstant , produced.next(15).class
+      assert_equal 5 , produced.next(15).constant.value
     end
   end
 end
