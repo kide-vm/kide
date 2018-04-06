@@ -54,13 +54,6 @@ module Risc
       assert_equal @label , @instruction.next
       assert_nil  @instruction.next(2)
     end
-    def test_replace
-      @instruction.append @branch
-      @instruction.replace_next @label
-      assert_equal @label, @instruction.last
-      assert_equal @label, @instruction.next
-      assert_equal 2 , @instruction.length , @instruction.to_arr
-    end
     def test_label_is_method
       label = Label.new("test" , "Object.test")
       assert label.is_method

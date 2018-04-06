@@ -10,16 +10,6 @@ module Util
       nekst
     end
 
-    # during translation we replace one by one
-    # TODO avoid this by building a new list
-    #      Make arm instruction not derive from risc (which is weird anyway)
-    #      and include the List into it, translate in same way we go from mom->risc
-    def replace_next( nekst )
-      old = @next
-      @next = nekst
-      @next.append old.next if old
-    end
-
     # get the next instruction (without arg given )
     # when given an interger, advance along the line that many time and return.
     def next( amount = 1)
@@ -38,7 +28,11 @@ module Util
     # return last set instruction. ie follow the linked list until it stops
     def last
       code = self
-      code = code.next while( code.next )
+      while( code.next )
+        puts "code #{code.class} #{code}"
+        raise "UUPS #{code.class}:#{code}" if code == code.next
+        code = code.next
+      end
       return code
     end
 
