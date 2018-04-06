@@ -47,20 +47,14 @@ module Mom
       "method setup "
     end
 
-    # get the method from method_source into the given register
-    # return instructions to do this
-    def move_method_to(compiler, register)
-      Risc.load_constant(source + " move method" , @method_source ,register)
-    end
-
     # get the next message from space and unlink it there
     # also put it into next_message of current message
     # use given message register
     # return instructions to do this
     def get_message_to( builder )
       builder.build do
-#        space << Parfait.object_space
-        #message << space[:first_message]
+        space << Parfait.object_space
+        space[:first_message] >> next_message
         #risc << Risc.slot_to_reg(source + "get next message" , space , :first_message , message)
       end
     end

@@ -70,8 +70,8 @@ module Vool
       VoolCompiler.ruby_to_vool in_Test("def meth; local = 5 ; a = 6;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.instance_type.get_method(:meth)
-      assert_equal 3 , method.frame.instance_length
-      assert_equal 2 , method.frame.variable_index(:local)
+      assert_equal 3 , method.frame_type.instance_length
+      assert_equal 2 , method.frame_type.variable_index(:local)
     end
 
   end
