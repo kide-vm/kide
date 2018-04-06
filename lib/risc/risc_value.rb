@@ -68,6 +68,8 @@ module Risc
         ins = Risc.load_constant("#{load.class} to #{self.type}" , load , self)
       when RiscValue
         ins = Risc.transfer("#{load.type} to #{self.type}" , load , self)
+      when RValue
+        load >> self
       else
         raise "not implemented"
       end

@@ -54,8 +54,7 @@ module Mom
     def get_message_to( builder )
       builder.build do
         space << Parfait.object_space
-        space[:first_message] >> next_message
-        #risc << Risc.slot_to_reg(source + "get next message" , space , :first_message , message)
+        next_message << space[:first_message]
       end
     end
     def nnop
