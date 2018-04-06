@@ -30,16 +30,8 @@ module Mom
       builder = Risc::Builder.new(compiler)
       from = method_source
       risc = builder.build { typed_method << from }
-      get_message_to(builder)
-
-      # move name args frame
-      # this time using Risc instructions (create helpers?)
-      name_move = SlotLoad.new( [:message , :next_message,:name] , [method_source , :name],self)
-      moves = name_move.to_risc(compiler)
-      args_move = SlotLoad.new( [:message , :next_message, :arguments, :type] , [method_source , :arguments_type],self)
-      moves << args_move.to_risc(compiler)
-      type_move = SlotLoad.new( [:message , :next_message, :frame, :type] , [method_source , :frame_type],self)
-      moves << type_move.to_risc(compiler)
+      build_message_data(builder)
+      compiler.reset_regs
       return risc
     end
     private
@@ -49,24 +41,28 @@ module Mom
 
     # get the next message from space and unlink it there
     # also put it into next_message of current message
-    # use given message register
-    # return instructions to do this
-    def get_message_to( builder )
+    def build_message_data( builder )
       builder.build do
         space << Parfait.object_space
         next_message << space[:first_message]
+        message[:next_message] << next_message
+        next_message[:caller] << message
+
+        named_list << next_message[:arguments]
+        type << typed_method[:arguments_type]
+        named_list[:type] << type
+
+        named_list << next_message[:frame]
+        type << typed_method[:arguments_type]
+        named_list[:type] << type
+
+        name << typed_method[:arguments_type]
+        named_list[:type] << name
+
+        #store next.next back into space
+        next_message << next_message[:next_message]
+        space[:first_message] << next_message
       end
     end
-    def nnop
-      space = compiler.use_reg(:Space)
-      risc = Risc.load_constant("message setup move method" , Parfait.object_space ,space)
-      risc << Risc.slot_to_reg(source + "get next message" , space , :first_message , message)
-      next_message = compiler.use_reg( :Message )
-      risc << Risc.slot_to_reg(source + "get next message" , message , :next_message , next_message)
-      risc << Risc.reg_to_slot(source + "store next message" , next_message , space , :first_message)
-      risc << Risc.reg_to_slot(source + "store message in current" , message , :message , :next_message)
-    end
   end
-
-
 end

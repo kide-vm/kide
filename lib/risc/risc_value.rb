@@ -61,15 +61,15 @@ module Risc
     # right value may be
     # - constant (Parfait object) , resulting in a LoadConstant
     # - another RiscValue, resulting in a Transfer instruction
-    # - an RValue, which gets procuced by the [] below
-    def <<( load )
-      case load
+    # - an RValue, resulting in an SlotToReg
+    def <<( right )
+      case right
       when Parfait::Object
-        ins = Risc.load_constant("#{load.class} to #{self.type}" , load , self)
+        ins = Risc.load_constant("#{right.class} to #{self.type}" , right , self)
       when RiscValue
-        ins = Risc.transfer("#{load.type} to #{self.type}" , load , self)
+        ins = Risc.transfer("#{right.type} to #{self.type}" , right , self)
       when RValue
-        load >> self
+        ins = Risc.slot_to_reg("#{right.register.type}[#{right.index}] -> #{self.type}" , right.register , right.index , self)
       else
         raise "not implemented"
       end
@@ -77,14 +77,6 @@ module Risc
       return ins
     end
 
-    # create a RegToSlot instruction
-    # right hand must be an RValue
-    def >>( slot )
-      raise "not RValue #{slot}" unless slot.is_a?(RValue)
-      reg_to_slot = Risc.reg_to_slot("#{self.type} -> #{slot.register.type}[#{slot.index}]" , self, slot.register, slot.index)
-      builder.add_instruction(reg_to_slot) if builder
-      reg_to_slot
-    end
     # just capture the values in an intermediary object (RValue)
     # The RValue then gets used in a RegToSlot ot SlotToReg, where
     # the values are unpacked to call Risc.reg_to_slot or Risc.slot_to_reg
@@ -101,14 +93,15 @@ module Risc
       @register , @index , @builder = register , index , builder
     end
 
-    # fullfil the objects purpose by creating a SlotToReg instruction from
+    # fullfil the objects purpose by creating a RegToSlot instruction from
     # itself (the slot) and the register given
-    def >>( reg )
+    def <<( reg )
       raise "not reg #{reg}" unless reg.is_a?(RiscValue)
-      slot = Risc.slot_to_reg("#{register.type}[#{index}] -> #{reg.type}" , @register , @index , reg)
-      builder.add_instruction(slot) if builder
-      slot
+      reg_to_slot = Risc.reg_to_slot("#{reg.type} -> #{register.type}[#{index}]" , reg , register, index)
+      builder.add_instruction(reg_to_slot) if builder
+      reg_to_slot
     end
+
   end
 
   # The register we use to store the current message object is :r0

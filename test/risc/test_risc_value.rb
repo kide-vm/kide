@@ -38,14 +38,14 @@ module Risc
       assert_equal @r0 , message.register
     end
     def test_slot_to_reg
-      instr = @r1[:first_message] >> @r0
+      instr = @r0 << @r1[:first_message]
       assert_equal SlotToReg , instr.class
       assert_equal @r1 , instr.array
       assert_equal @r0 , instr.register
       assert_equal 4 , instr.index
     end
     def test_reg_to_slot
-      instr = @r0 >> @r1[:first_message]
+      instr = @r1[:first_message] << @r0
       assert_equal RegToSlot , instr.class
       assert_equal @r1 , instr.array
       assert_equal @r0 , instr.register

@@ -19,7 +19,7 @@ module Risc
       reg.builder = self
       reg
     end
-    
+
     def build(&block)
       instance_eval(&block)
       return built
@@ -58,8 +58,8 @@ module Risc
   def self.resolve_type( object , compiler )
     object = object.type if object.is_a?(RiscValue)
     case object
-    when :typed_method
-      type = Parfait.object_space.get_class_by_name( :TypedMethod ).instance_type
+    when :name
+      type = Parfait.object_space.get_class_by_name( :Word ).instance_type
     when :frame
       type = compiler.method.frame_type
     when :message , :next_message , :caller

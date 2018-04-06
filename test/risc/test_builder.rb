@@ -31,12 +31,14 @@ module Risc
     end
     def test_returns_slot
       r2 = RiscValue.new(:r2 , :Message)
-      built = @builder.build{ space[:first_message] >> r2 }
+      r2.builder = @builder
+      built = @builder.build{ r2 << space[:first_message] }
       assert_equal SlotToReg , built.class
       assert_equal :r1 , built.array.symbol
     end
     def test_returns_slot_reverse
       r2 = RiscValue.new(:r2 , :Message)
+      r2.builder = @builder
       built = @builder.build{ r2 << space[:first_message] }
       assert_equal SlotToReg , built.class
       assert_equal :r1 , built.array.symbol
