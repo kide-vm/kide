@@ -49,18 +49,20 @@ module Mom
         message[:next_message] << next_message
         next_message[:caller] << message
 
+        type << typed_method[:arguments_type]
         named_list << next_message[:arguments]
-        type << typed_method[:arguments_type]
         named_list[:type] << type
 
+        type << typed_method[:frame_type]
         named_list << next_message[:frame]
-        type << typed_method[:arguments_type]
         named_list[:type] << type
 
-        name << typed_method[:arguments_type]
-        named_list[:type] << name
+        name << typed_method[:name]
+        next_message[:name] << name
 
         #store next.next back into space
+        #FIXME in a multithreaded future this should be done soon after getting
+        #   the first_message, using lock free compare and swap. Now saving regs
         next_message << next_message[:next_message]
         space[:first_message] << next_message
       end
