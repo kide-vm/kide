@@ -2,6 +2,8 @@ module Risc
 
   class Builder
 
+    attr_reader :built
+
     def initialize(compiler)
       @compiler = compiler
     end
@@ -11,15 +13,28 @@ module Risc
       name = args[0].to_s.capitalize.to_sym
       type = Risc.resolve_type(name , @compiler)
       reg = @compiler.use_reg( type )
+      reg.builder = self
       puts reg
       reg
+    end
+    def build(&block)
+      instance_eval(&block)
+      return built
+    end
+    def add_instruction(ins)
+      if(built)
+        built << ins
+      else
+        @built = ins
+      end
     end
   end
 
   class RValue
   end
+
   def self.build(compiler, &block)
-    Builder.new(compiler).instance_eval( &block )
+    Builder.new(compiler).build( &block )
   end
 
   # if a symbol is given, it may be the message or the new_message.

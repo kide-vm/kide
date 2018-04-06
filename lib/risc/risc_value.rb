@@ -4,9 +4,11 @@ module Risc
 
   class RiscValue
 
-    attr_accessor :symbol , :type , :value
+    attr_reader :symbol , :type , :value
 
-    def initialize r , type , value = nil
+    attr_accessor :builder
+
+    def initialize( r , type , value = nil)
       raise "wrong type for register init #{r}" unless r.is_a? Symbol
       raise "double r #{r}" if r.to_s[0,1] == "rr"
       raise "not reg #{r}" unless self.class.look_like_reg r
@@ -62,10 +64,14 @@ module Risc
       when RValue
         raise "not yet"
       when Parfait::Object
-        Risc.load_constant("#{load.class} to #{self.type}" , load , self)
+        ins = Risc.load_constant("#{load.class} to #{self.type}" , load , self)
+      when RiscValue
+        ins = Risc.transfer("#{load.type} to #{self.type}" , load , self)
       else
         raise "not implemented"
       end
+      builder.add_instruction(ins) if builder
+      return ins
     end
   end
 
