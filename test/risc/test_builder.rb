@@ -9,6 +9,12 @@ module Risc
       compiler = Risc::MethodCompiler.new( init )
       @builder = Builder.new(compiler)
     end
+    def test_has_build
+      assert @builder.respond_to?(:build)
+    end
+    def test_has_attribute
+      assert_nil @builder.built
+    end
     def test_alloc_space
       reg = @builder.space
       assert_equal RiscValue , reg.class
@@ -58,19 +64,6 @@ module Risc
       built = @builder.build{ message[:receiver] << r1}
       assert_equal RegToSlot , built.class
       assert_equal :r0 , built.array.symbol
-    end
-  end
-
-  class TestBuilderNoBoot < MiniTest::Test
-
-    def setup
-      @builder = Builder.new(nil)
-    end
-    def test_has_build
-      assert_nil @builder.build{ }
-    end
-    def test_has_attribute
-      assert_nil @builder.built
     end
   end
 end

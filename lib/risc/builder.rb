@@ -25,9 +25,16 @@ module Risc
     end
 
     def build(&block)
+      @built = nil
       instance_eval(&block)
-      return built
+      return @built
     end
+
+    def build_and_add(&block)
+      risc = build(&block)
+      @compiler.add_code(risc)
+    end
+    
     def add_instruction(ins)
       if(@built)
         @built << ins

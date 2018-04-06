@@ -36,7 +36,7 @@ module Mom
     def build_with(builder)
       from = method_source
       risc = builder.build { typed_method << from }
-      build_message_data(builder)
+      risc << build_message_data(builder)
       builder.compiler.reset_regs
       return risc
     end
