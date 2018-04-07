@@ -20,12 +20,15 @@ module Risc
       return @names[name] if @names.has_key?(name)
       if name == :message
         reg = Risc.message_reg
+        reg.builder = self
+      elsif name.to_s.index("label")
+        reg = Risc.label( name.to_s , "#{name}_#{object_id}")
       else
         type = Risc.resolve_type(name , @compiler) #checking
         reg = @compiler.use_reg( type.object_class.name )
+        reg.builder = self
       end
       @names[name] = reg
-      reg.builder = self
       reg
     end
 

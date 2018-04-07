@@ -58,10 +58,6 @@ module Risc
           compiler = compiler_for(:Word, :resolve_method , {:value => :Type} )
           source = "resolve_method "
 
-          while_start = Risc.label( source , source + "while_start_#{object_id}")
-          exit_label = Risc.label( source , source + "exit_label_#{object_id}")
-          false_label = Risc.label( source , source + "fal_label_#{object_id}")
-
           compiler.build do
             word << message[ :receiver ]
 
@@ -69,7 +65,7 @@ module Risc
             type << type[2]
             type << type[:type]
             typed_method << type[:methods]
-            add while_start
+            add while_start_label
             space << Parfait.object_space
             space << space[:nil_object]
 
@@ -87,7 +83,7 @@ module Risc
 
             add false_label
             typed_method << typed_method[:next_method]
-            add Risc::Branch.new(source + "back to while", while_start)
+            add Risc::Branch.new(source + "back to while", while_start_label)
 
             add exit_label
           end

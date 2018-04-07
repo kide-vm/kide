@@ -64,5 +64,15 @@ module Risc
       assert_equal RegToSlot , built.class
       assert_equal :r0 , built.array.symbol
     end
+    def test_label
+      label = @builder.exit_label
+      assert_equal Label , label.class
+      assert label.name.index("exit")
+    end
+    def test_two_label
+      label1 = @builder.exit_label
+      label2 = @builder.exit_label
+      assert_equal label1 , label2
+    end
   end
 end
