@@ -69,11 +69,11 @@ module Risc
             space << Parfait.object_space
             space << space[:nil_object]
 
-            add Risc.op(source + "if method is nil", :- , space , typed_method )
+            space - typed_method
             if_zero exit_label
 
             name << typed_method[:name]
-            add Risc.op(source + " compare name with me", :- , name , word )
+            name - word
             if_not_zero false_label
 
             typed_method << typed_method[:binary]

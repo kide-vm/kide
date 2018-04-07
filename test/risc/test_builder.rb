@@ -90,5 +90,11 @@ module Risc
       assert_equal Branch , ret.class
       assert_equal @label , ret.label
     end
+    def test_minus
+      op = @builder.build {space - typed_method}
+      assert_equal OperatorInstruction , op.class
+      assert_equal :- , op.operator
+      assert_equal :Space , op.left.type
+    end
   end
 end

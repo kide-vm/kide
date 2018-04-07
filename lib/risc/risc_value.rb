@@ -77,6 +77,13 @@ module Risc
       return ins
     end
 
+    def -( right )
+      raise "operators only on registers, not #{right.class}" unless right.is_a? RiscValue
+      op = Risc.op("#{self.type} - #{right.type}", :- , self , right )
+      builder.add(op) if builder
+      op
+    end
+    
     # just capture the values in an intermediary object (RValue)
     # The RValue then gets used in a RegToSlot ot SlotToReg, where
     # the values are unpacked to call Risc.reg_to_slot or Risc.slot_to_reg
