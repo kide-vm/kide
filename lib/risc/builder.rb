@@ -55,7 +55,7 @@ module Risc
       return risc
     end
 
-    def add_instruction(ins)
+    def add(ins)
       if(@built)
         @built << ins
       else

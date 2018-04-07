@@ -1,6 +1,6 @@
 module Mom
 
-  # SlotLoad is an abstract base class for moving data into a slot
+  # SlotLoad is for moving data into a slot, either from another slot, or constant
   # A Slot is basically an instance variable, but it must be of known type
   #
   # The value loaded (the right hand side) can be a constant (Mom::Constant) or come from

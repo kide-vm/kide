@@ -2,7 +2,7 @@ require_relative "../helper"
 
 class FakeBuilder
   attr_reader :built
-  def add_instruction(ins)
+  def add(ins)
     @built = ins
   end
 end

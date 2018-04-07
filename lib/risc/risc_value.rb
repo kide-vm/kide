@@ -73,7 +73,7 @@ module Risc
       else
         raise "not implemented"
       end
-      builder.add_instruction(ins) if builder
+      builder.add(ins) if builder
       return ins
     end
 
@@ -98,7 +98,7 @@ module Risc
     def <<( reg )
       raise "not reg #{reg}" unless reg.is_a?(RiscValue)
       reg_to_slot = Risc.reg_to_slot("#{reg.type} -> #{register.type}[#{index}]" , reg , register, index)
-      builder.add_instruction(reg_to_slot) if builder
+      builder.add(reg_to_slot) if builder
       reg_to_slot
     end
 

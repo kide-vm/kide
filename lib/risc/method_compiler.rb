@@ -173,7 +173,7 @@ module Risc
 
     # Build with builder (see there), adding the created instructions
     def build(&block)
-      builder.build_and_return(&block)
+      builder.build(&block)
     end
 
     # return a new builder that uses this compiler
