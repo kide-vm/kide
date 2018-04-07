@@ -14,15 +14,15 @@ module Risc
       check_main_chain [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
              SlotToReg, SlotToReg, SlotToReg, OperatorInstruction, IsZero,
              SlotToReg, SlotToReg, LoadConstant, RegToSlot, LoadConstant,
-             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-             SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-             RegToSlot, SlotToReg, LoadConstant, FunctionCall, Label,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, Label,
-             LoadConstant, SlotToReg, OperatorInstruction, IsZero, Label,
-             Transfer, Syscall, NilClass]
+             LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, RegToSlot, SlotToReg, RegToSlot, LoadConstant,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
+             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
+             SlotToReg, LoadConstant, FunctionCall, Label, SlotToReg,
+             SlotToReg, SlotToReg, SlotToReg, Label, LoadConstant,
+             SlotToReg, OperatorInstruction, IsZero, Label, Transfer,
+             Syscall, NilClass]
       #assert_equal 1 , get_return
     end
 
@@ -32,17 +32,17 @@ module Risc
       assert_equal  :main , call_ins.method.name
     end
     def test_call_resolve
-      call_ins = main_ticks(44)
+      call_ins = main_ticks(43)
       assert_equal FunctionCall , call_ins.class
       assert_equal  :resolve_method , call_ins.method.name
     end
     def test_label
-      call_ins = main_ticks(45)
+      call_ins = main_ticks(44)
       assert_equal Label , call_ins.class
       assert_equal  "Word_Type.resolve_method" , call_ins.name
     end
     def test_arg_15_to_resolve
-      sl = main_ticks( 48 )
+      sl = main_ticks( 47 )
       assert_equal SlotToReg , sl.class
       assert_equal :r2 , sl.array.symbol #load from message
       assert_equal 2 , sl.index
