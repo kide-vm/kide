@@ -6,8 +6,7 @@ module Risc
     def setup
       Risc.machine.boot
       init = Parfait.object_space.get_init
-      compiler = Risc::MethodCompiler.new( init )
-      @builder = Builder.new(compiler)
+      @builder = Risc::MethodCompiler.new( init ).builder
     end
     def test_has_build
       assert @builder.respond_to?(:build)

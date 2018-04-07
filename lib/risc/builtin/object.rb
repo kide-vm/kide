@@ -47,7 +47,7 @@ module Risc
           compiler = Risc::MethodCompiler.create_method(:Object,:__init__ ,
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
           builder = Risc::Builder.new(compiler)
-          builder.build_and_add do
+          builder.build do
             space << Parfait.object_space
             message << space[:first_message]
             next_message << message[:next_message]
@@ -57,7 +57,7 @@ module Risc
           risc = Mom::MessageSetup.new(Parfait.object_space.get_main).build_with( builder )
           compiler.add_code(risc)
 
-          builder.build_and_add do
+          builder.build do
             message << message[:next_message]
             message[:receiver] << space
           end

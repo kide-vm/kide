@@ -4,11 +4,16 @@ module Risc
 
     attr_reader :built , :compiler
 
+    # pass a compiler, to which instruction are added (usually)
+    # call build or build_and_return with a block
     def initialize(compiler)
       @compiler = compiler
       @names = {}
     end
 
+    # make the magic: convert incoming names into registers that have the
+    # type set according to the name (using resolve_type)
+    # anmes are stored, so subsequent calls use the same register
     def method_missing(*args)
       super if args.length != 1
       name = args[0]
@@ -24,17 +29,32 @@ module Risc
       reg
     end
 
+    # build code using dsl (see __init__ or MessageSetup for examples)
+    # names (that ruby would resolve to a variable/method) are converted
+    # to registers. << means assignment and [] is supported both on
+    # L and R values (but only one at a time). R values may also be constants.
+    # Basically this allows to create LoadConstant, RegToSlot, SlotToReg and
+    # Transfer instructions with extremely readable code.
+    # example:
+    #  space << Parfait.object_space # load constant
+    #  message[:receiver] << space  #make current message (r0) receiver the space
+    #
+    # build result is available as built, but also gets added to compiler
     def build(&block)
-      @built = nil
-      instance_eval(&block)
-      return @built
+      risc = build_and_return(&block)
+      @compiler.add_code(risc)
+      risc
     end
 
-    def build_and_add(&block)
-      risc = build(&block)
-      @compiler.add_code(risc)
+    # version of build that does not add to compiler, just returns the code
+    def build_and_return(&block)
+      @built = nil
+      instance_eval(&block)
+      risc = @built
+      @built = nil
+      return risc
     end
-    
+
     def add_instruction(ins)
       if(@built)
         @built << ins
@@ -42,10 +62,6 @@ module Risc
         @built = ins
       end
     end
-  end
-
-  def self.build(compiler, &block)
-    Builder.new(compiler).build( &block )
   end
 
   # if a symbol is given, it may be the message or the new_message.
