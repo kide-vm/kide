@@ -251,9 +251,26 @@ module Risc
       true
     end
 
+    def make_op_arg(arg)
+      case arg
+      when Integer
+          arg
+      when Parfait::Word
+        arg.to_string.to_sym.object_id
+      when String
+        arg.to_sym.object_id
+      when Symbol
+        arg.object_id
+      when Parfait::Object
+        arg.object_id
+      else
+        raise "Op arg #{arg}:#{arg.class}"
+      end
+    end
+
     def handle_operator(left, right)
-      left = left.object_id unless left.is_a?(Integer)
-      right = right.object_id unless right.is_a?(Integer)
+      left = make_op_arg(left)
+      right = make_op_arg(right)
       case @instruction.operator
       when :+
         left + right
