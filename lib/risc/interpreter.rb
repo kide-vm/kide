@@ -258,7 +258,11 @@ module Risc
       when :+
         left + right
       when :-
-        left - right
+        if( left.is_a?(String) or right.is_a?(String))
+          left == right ? 0 : 1       #for opal, and exception
+        else
+          left - right
+        end
       when :>>
         left / (2**right)
       when :<<
