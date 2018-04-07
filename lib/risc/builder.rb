@@ -32,6 +32,16 @@ module Risc
       reg
     end
 
+    def if_zero( label )
+      add Risc::IsZero.new("jump if zero" , label)
+    end
+    def if_not_zero( label )
+      add Risc::IsNotZero.new("jump if not zero" , label)
+    end
+    def branch( label )
+      add Risc::Branch.new("jump to" , label)
+    end
+
     # build code using dsl (see __init__ or MessageSetup for examples)
     # names (that ruby would resolve to a variable/method) are converted
     # to registers. << means assignment and [] is supported both on

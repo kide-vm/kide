@@ -70,11 +70,11 @@ module Risc
             space << space[:nil_object]
 
             add Risc.op(source + "if method is nil", :- , space , typed_method )
-            add Risc::IsZero.new(source + "jump if nil" , exit_label)
+            if_zero exit_label
 
             name << typed_method[:name]
             add Risc.op(source + " compare name with me", :- , name , word )
-            add Risc::IsNotZero.new(source + "jump if not same" , false_label)
+            if_not_zero false_label
 
             typed_method << typed_method[:binary]
             message[:return_value] << typed_method
@@ -83,7 +83,7 @@ module Risc
 
             add false_label
             typed_method << typed_method[:next_method]
-            add Risc::Branch.new(source + "back to while", while_start_label)
+            branch  while_start_label
 
             add exit_label
           end

@@ -6,6 +6,7 @@ module Risc
     def setup
       Risc.machine.boot
       init = Parfait.object_space.get_init
+      @label = Risc::Label.new("source","name")
       @builder = Risc::MethodCompiler.new( init ).builder
     end
     def test_has_build
@@ -73,6 +74,21 @@ module Risc
       label1 = @builder.exit_label
       label2 = @builder.exit_label
       assert_equal label1 , label2
+    end
+    def test_if_zero
+      ret = @builder.if_zero @label
+      assert_equal IsZero , ret.class
+      assert_equal @label , ret.label
+    end
+    def test_if_not_zero
+      ret = @builder.if_not_zero @label
+      assert_equal IsNotZero , ret.class
+      assert_equal @label , ret.label
+    end
+    def test_branch
+      ret = @builder.branch @label
+      assert_equal Branch , ret.class
+      assert_equal @label , ret.label
     end
   end
 end
