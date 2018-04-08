@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Risc
-  class TestReturnDynamic < MiniTest::Test
+  class TestReturnDynamic #< MiniTest::Test
     include Statements
 
     def setup

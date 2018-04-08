@@ -61,5 +61,8 @@ module Risc
     def test_label_is_not_method
       assert ! @label.is_method
     end
+    def test_insert_self
+      assert_raises {@label.insert(@label)}
+    end
   end
 end

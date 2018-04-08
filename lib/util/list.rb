@@ -21,6 +21,7 @@ module Util
     # ie insert into the linked list that the instructions form
     # but allowing the instruction to be a list too (ie more than one)
     def insert( instruction )
+      raise "circular insert #{instruction}" if instruction == self
       instruction.last.set_next @next
       @next = instruction
     end

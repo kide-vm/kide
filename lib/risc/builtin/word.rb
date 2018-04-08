@@ -6,11 +6,12 @@ module Risc
 
         def putstring( context)
           compiler = compiler_for(:Word , :putstring ,{})
-          compiler.add_slot_to_reg( "putstring" , :message , :receiver , :new_message )
+          builder = compiler.builder(true)
+          builder.add_slot_to_reg( "putstring" , :message , :receiver , :new_message )
           index = Parfait::Word.get_length_index
           reg = RiscValue.new(:r2 , :Integer)
-          compiler.add_slot_to_reg( "putstring" , :new_message , index , reg )
-          Risc::Builtin::Object.emit_syscall( compiler , :putstring )
+          builder.add_slot_to_reg( "putstring" , :new_message , index , reg )
+          Risc::Builtin::Object.emit_syscall( builder , :putstring )
           compiler.add_mom( Mom::ReturnSequence.new)
           compiler.method
         end
@@ -20,13 +21,14 @@ module Risc
         def get_internal_byte( context)
           compiler = compiler_for(:Word , :get_internal_byte , {at: :Integer})
           source = "get_internal_byte"
-          me , index = compiler.self_and_int_arg(source)
-          compiler.reduce_int( source + " fix arg", index )
+          builder = compiler.builder(true)
+          me , index = builder.self_and_int_arg(source)
+          builder.reduce_int( source + " fix arg", index )
           # reduce me to me[index]
-          compiler.add_byte_to_reg( source , me , index , me)
-          compiler.add_new_int(source, me , index)
+          builder.add_byte_to_reg( source , me , index , me)
+          builder.add_new_int(source, me , index)
           # and put it back into the return value
-          compiler.add_reg_to_slot( source , index , :message , :return_value)
+          builder.add_reg_to_slot( source , index , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
@@ -37,57 +39,14 @@ module Risc
         def set_internal_byte( context )
           compiler = compiler_for(:Word, :set_internal_byte , {at: :Integer , :value => :Integer} )
           source = "set_internal_byte"
-          me , index = compiler.self_and_int_arg(source)
-          value = compiler.load_int_arg_at(source , 2 )
-          compiler.reduce_int( source + " fix me", value )
-          compiler.reduce_int( source + " fix arg", index )
-          compiler.add_reg_to_byte( source , value , me , index)
-          compiler.add_reg_to_slot( source , me , :message , :return_value)
+          builder = compiler.builder(true)
+          me , index = builder.self_and_int_arg(source)
+          value = builder.load_int_arg_at(source , 2 )
+          builder.reduce_int( source + " fix me", value )
+          builder.reduce_int( source + " fix arg", index )
+          builder.add_reg_to_byte( source , value , me , index)
+          builder.add_reg_to_slot( source , me , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
-          return compiler.method
-        end
-
-        # resolve the method name of self, on the given object
-        # may seem wrong way around at first sight, but we know the type of string. And
-        # thus resolving this method happens at compile time, whereas any method on an
-        # unknown self (the object given) needs resolving and that is just what we are doing
-        #  ( ie the snake bites it's tail)
-        # This method is just a placeholder until boot is over and the real method is
-        # parsed.
-        def resolve_method( context)
-          compiler = compiler_for(:Word, :resolve_method , {:value => :Type} )
-          source = "resolve_method "
-
-          compiler.build do
-            word << message[ :receiver ]
-
-            type << message[:arguments]
-            type << type[2]
-            type << type[:type]
-            typed_method << type[:methods]
-            add while_start_label
-            space << Parfait.object_space
-            space << space[:nil_object]
-
-            space - typed_method
-            if_zero exit_label
-
-            name << typed_method[:name]
-            name - word
-            if_not_zero false_label
-
-            typed_method << typed_method[:binary]
-            message[:return_value] << typed_method
-
-            add Mom::ReturnSequence.new.to_risc(compiler)
-
-            add false_label
-            typed_method << typed_method[:next_method]
-            branch  while_start_label
-
-            add exit_label
-          end
-          Risc::Builtin::Object.emit_syscall( compiler , :exit )
           return compiler.method
         end
 
