@@ -47,7 +47,7 @@ module Risc
     #helper method to calculate with register symbols
     def next_reg_use( type , value = nil )
       int = @symbol[1,3].to_i
-      raise "No more registers #{self}" if int > 8
+      raise "No more registers #{self}" if int > 11
       sym = "r#{int + 1}".to_sym
       RiscValue.new( sym , type, value)
     end
@@ -64,14 +64,14 @@ module Risc
     # - an RValue, resulting in an SlotToReg
     def <<( right )
       case right
-      when Parfait::Object
+      when Parfait::Object , Symbol
         ins = Risc.load_constant("#{right.class} to #{self.type}" , right , self)
       when RiscValue
         ins = Risc.transfer("#{right.type} to #{self.type}" , right , self)
       when RValue
         ins = Risc.slot_to_reg("#{right.register.type}[#{right.index}] -> #{self.type}" , right.register , right.index , self)
       else
-        raise "not implemented"
+        raise "not implemented for #{right.class}:#{right}"
       end
       builder.add_code(ins) if builder
       return ins

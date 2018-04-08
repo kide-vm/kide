@@ -47,7 +47,7 @@ module Risc
       classes = []
       tick = 1
       begin
-        while true and (classes.length < 200)
+        while true and (classes.length < 300)
           cl = ticks(1).class
           tick += 1
           classes << cl

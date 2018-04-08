@@ -50,6 +50,7 @@ module Risc
         #puts "adding mom #{instruction.to_s}:#{instruction.next.to_s}"
         risc = instruction.to_risc( self )
         add_code(risc)
+        reset_regs
         #puts "adding risc #{risc.to_s}:#{risc.next.to_s}"
         instruction = instruction.next
       end

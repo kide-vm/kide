@@ -71,6 +71,7 @@ module Risc
             add_function_call( "__init__ issue call" ,  Parfait.object_space.get_main , ret_tmp)
             add_code exit_label
           end
+          compiler.reset_regs
           emit_syscall( builder , :exit )
           return compiler.method
         end
