@@ -27,17 +27,17 @@ module Mom
     # Move method name, frame and arguemnt types from the method to the next_message
     # Get the message from Space and link it.
     def to_risc(compiler)
-      build_with(compiler.builder)
+      build_with(compiler.builder(false))
     end
 
     # directly called by to_risc
     # but also used directly in __init
     def build_with(builder)
       from = method_source
-      risc = builder.build_and_return { typed_method << from }
-      risc << build_message_data(builder)
+      builder.build { typed_method << from }
+      build_message_data(builder)
       builder.compiler.reset_regs
-      return risc
+      return builder.built
     end
 
     private
@@ -49,7 +49,7 @@ module Mom
     # also put it into next_message of current message (and reverse)
     # set name and type data in the message, from the method loaded
     def build_message_data( builder )
-      builder.build_and_return do
+      builder.build do
         space << Parfait.object_space
         next_message << space[:first_message]
         message[:next_message] << next_message

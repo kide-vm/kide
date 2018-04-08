@@ -29,13 +29,10 @@ module Risc
              IsZero, SlotToReg, OperatorInstruction, IsNotZero, Label,
              SlotToReg, Branch, Label, LoadConstant, SlotToReg,
              OperatorInstruction, IsZero, SlotToReg, OperatorInstruction, IsNotZero,
-             Label, SlotToReg, Branch, Label, LoadConstant,
-             SlotToReg, OperatorInstruction, IsZero, SlotToReg, OperatorInstruction,
-             IsNotZero, Label, SlotToReg, Branch, Label,
-             LoadConstant, SlotToReg, OperatorInstruction, IsZero, SlotToReg,
-             OperatorInstruction, IsNotZero, Label, SlotToReg, Branch,
-             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
-             Label, Transfer, Syscall, NilClass]
+             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, FunctionReturn, SlotToReg, LoadConstant, RegToSlot,
+             Label, LoadConstant, LoadConstant, SlotToReg, RegToSlot,
+             RegToSlot, SlotToReg, SlotToReg]
       #assert_equal 1 , get_return
     end
 

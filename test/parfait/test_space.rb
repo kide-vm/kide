@@ -24,7 +24,7 @@ class TestSpace < MiniTest::Test
   end
   def test_methods_booted
     word = @space.get_class_by_name(:Word).instance_type
-    assert_equal 4 , word.method_names.get_length
+    assert_equal 3 , word.method_names.get_length
     assert word.get_method(:putstring) , "no putstring"
   end
 

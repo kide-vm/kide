@@ -176,7 +176,7 @@ module Risc
       end
 
       obj = space.get_class_by_name(:Word)
-      [:putstring , :get_internal_byte , :set_internal_byte , :resolve_method].each do |f|
+      [:putstring , :get_internal_byte , :set_internal_byte ].each do |f|
         obj.instance_type.add_method Builtin::Word.send(f , nil)
       end
 

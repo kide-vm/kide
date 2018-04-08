@@ -94,8 +94,8 @@ module Vool
     def cache_check(in_method)
       ok = Mom::Label.new("cache_ok_#{self.object_id}")
       check = build_condition(ok)      # if cached_type != current_type
-      check << build_type_cache_update #   cached_type = current_type
-      check << build_method_cache_update(in_method)# cached_method = current_type.resolve_method(method.name)
+      check << Mom::SlotLoad.new([dynamic_call.cache_entry, :cached_type] , [:message , :receiver , :type])
+      check << Mom::ResolveMethod.new( @name , dynamic_call.cache_entry )
       check << ok
     end
 
@@ -110,15 +110,6 @@ module Vool
       cached_type = Mom::SlotDefinition.new(dynamic_call.cache_entry , [:cached_type])
       current_type = Mom::SlotDefinition.new(:message , [:receiver , :type])
       Mom::NotSameCheck.new(cached_type , current_type, ok_label)
-    end
-    def build_type_cache_update
-      Mom::SlotLoad.new([dynamic_call.cache_entry, :cached_type] , [:message , :receiver , :type])
-    end
-    def build_method_cache_update(in_method)
-      receiver = SymbolConstant.new(@name)
-      resolve = SendStatement.new(:resolve_method , receiver , [@receiver])
-      move_method = Mom::SlotLoad.new([dynamic_call.cache_entry, :cached_method] , [:message , :return_value])
-      resolve.to_mom(in_method) << move_method
     end
   end
 end
