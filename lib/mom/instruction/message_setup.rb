@@ -27,12 +27,24 @@ module Mom
     # Move method name, frame and arguemnt types from the method to the next_message
     # Get the message from Space and link it.
     def to_risc(compiler)
-      build_with(compiler.builder(false))
+      builder = compiler.builder(false)
+      build_with(builder)
     end
 
     # directly called by to_risc
     # but also used directly in __init
     def build_with(builder)
+      case from = method_source
+      when Parfait::TypedMethod
+        builder.build { typed_method << from }
+      when Parfait::CacheEntry
+        builder.build do
+          cache_entry << from
+          typed_method << cache_entry[:cached_method]
+        end
+      else
+        raise "unknown source #{method_source}"
+      end
       build_message_data(builder)
       return builder.built
     end
@@ -46,9 +58,7 @@ module Mom
     # also put it into next_message of current message (and reverse)
     # set name and type data in the message, from the method loaded
     def build_message_data( builder )
-      from = method_source
       builder.build do
-        typed_method << from
         space << Parfait.object_space
         next_message << space[:first_message]
         message[:next_message] << next_message

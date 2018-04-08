@@ -12,14 +12,34 @@ module Risc
     def test_chain
       #show_main_ticks # get output of what is
       check_main_chain [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, SlotToReg, SlotToReg, OperatorInstruction, IsZero,
-             SlotToReg, SlotToReg, LoadConstant, RegToSlot, LoadConstant,
-             LoadConstant, SlotToReg, SlotToReg, Label, LoadConstant,
-             SlotToReg, OperatorInstruction, IsZero, SlotToReg, OperatorInstruction,
-             IsZero, SlotToReg, Branch, Label, LoadConstant,
-             SlotToReg, OperatorInstruction, IsZero, Label, Transfer,
-             Syscall, NilClass]
-      #assert_equal 1 , get_return
+             SlotToReg, SlotToReg, SlotToReg, SlotToReg, OperatorInstruction,
+             IsZero, SlotToReg, SlotToReg, SlotToReg, LoadConstant,
+             RegToSlot, LoadConstant, LoadConstant, SlotToReg, SlotToReg,
+             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
+             SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
+             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
+             SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
+             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
+             SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
+             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
+             SlotToReg, OperatorInstruction, IsZero, Label, RegToSlot,
+             Label, LoadConstant, SlotToReg, LoadConstant, SlotToReg,
+             RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
+             RegToSlot, LoadConstant, SlotToReg, DynamicJump, Label,
+             SlotToReg, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
+             SlotToReg, LoadData, OperatorInstruction, LoadData, OperatorInstruction,
+             OperatorInstruction, LoadData, Transfer, OperatorInstruction, OperatorInstruction,
+             LoadData, Transfer, OperatorInstruction, OperatorInstruction, LoadData,
+             Transfer, OperatorInstruction, OperatorInstruction, LoadData, OperatorInstruction,
+             LoadData, Transfer, OperatorInstruction, OperatorInstruction, Transfer,
+             LoadData, OperatorInstruction, LoadData, OperatorInstruction, OperatorInstruction,
+             LoadConstant, SlotToReg, SlotToReg, RegToSlot, RegToSlot,
+             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, FunctionReturn, Transfer, Syscall, NilClass]
+       assert_equal Parfait::Integer , get_return.class
+       #assert_equal 1 , get_return.value
     end
 
     def test_call_main
