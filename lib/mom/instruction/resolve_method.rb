@@ -20,46 +20,47 @@ module Mom
       @cache_entry = cache_entry
     end
 
-    # resolve the method name of self, on the given object
-    # may seem wrong way around at first sight, but we know the type of string. And
-    # thus resolving this method happens at compile time, whereas any method on an
-    # unknown self (the object given) needs resolving and that is just what we are doing
-    #  ( ie the snake bites it's tail)
-    # This method is just a placeholder until boot is over and the real method is
-    # parsed.
+
+    # When the method is resolved, a cache_entry is used to hold the result.
+    # That cache_entry (holding type and method) is checked before, and
+    # needs to be updated by this instruction.
+    #
+    # We use the type stored in the cache_entry to check the methods if any of it's
+    # names are the same as the given @name
+    #
+    # currently a fail results in sys exit
     def to_risc( compiler )
-      name = @name
-      cache_entry = @cache_entry
-      return Risc.label("hi" , "there")
+      name_ = @name
+      cache_entry_ = @cache_entry
       builder = compiler.builder(false)
       builder.build do
-        word << name
+        word << name_
+        cache_entry << cache_entry_
 
-        type << cache_entry
-        type << type[:cached_type]
+        type << cache_entry[:cached_type]
         typed_method << type[:methods]
 
-        add while_start_label
+        add_code while_start_label
+
         space << Parfait.object_space
         space << space[:nil_object]
-
         space - typed_method
         if_zero exit_label
 
         name << typed_method[:name]
         name - word
 
-        if_not_zero false_label
-        message[:return_value] << typed_method
-        add Mom::ReturnSequence.new.to_risc(compiler)
+        if_zero ok_label
 
-        add false_label
         typed_method << typed_method[:next_method]
         branch  while_start_label
 
-        add exit_label
+        add_code exit_label
+        Risc::Builtin::Object.emit_syscall( builder , :exit )
+
+        add_code ok_label
+        cache_entry[:cached_method] << typed_method
       end
-      Risc::Builtin::Object.emit_syscall( builder , :exit )
       return builder.built
     end
 

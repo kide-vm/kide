@@ -33,10 +33,7 @@ module Mom
     # directly called by to_risc
     # but also used directly in __init
     def build_with(builder)
-      from = method_source
-      builder.build { typed_method << from }
       build_message_data(builder)
-      builder.compiler.reset_regs
       return builder.built
     end
 
@@ -49,7 +46,9 @@ module Mom
     # also put it into next_message of current message (and reverse)
     # set name and type data in the message, from the method loaded
     def build_message_data( builder )
+      from = method_source
       builder.build do
+        typed_method << from
         space << Parfait.object_space
         next_message << space[:first_message]
         message[:next_message] << next_message

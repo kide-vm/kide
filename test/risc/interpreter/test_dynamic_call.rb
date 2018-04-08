@@ -14,25 +14,11 @@ module Risc
       check_main_chain [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
              SlotToReg, SlotToReg, SlotToReg, OperatorInstruction, IsZero,
              SlotToReg, SlotToReg, LoadConstant, RegToSlot, LoadConstant,
-             LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, RegToSlot, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             SlotToReg, LoadConstant, FunctionCall, Label, SlotToReg,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, Label,
-             LoadConstant, SlotToReg, OperatorInstruction, IsZero, SlotToReg,
-             OperatorInstruction, IsNotZero, Label, SlotToReg, Branch,
-             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
-             SlotToReg, OperatorInstruction, IsNotZero, Label, SlotToReg,
-             Branch, Label, LoadConstant, SlotToReg, OperatorInstruction,
-             IsZero, SlotToReg, OperatorInstruction, IsNotZero, Label,
-             SlotToReg, Branch, Label, LoadConstant, SlotToReg,
-             OperatorInstruction, IsZero, SlotToReg, OperatorInstruction, IsNotZero,
-             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, FunctionReturn, SlotToReg, LoadConstant, RegToSlot,
-             Label, LoadConstant, LoadConstant, SlotToReg, RegToSlot,
-             RegToSlot, SlotToReg, SlotToReg]
+             LoadConstant, SlotToReg, SlotToReg, Label, LoadConstant,
+             SlotToReg, OperatorInstruction, IsZero, SlotToReg, OperatorInstruction,
+             IsZero, SlotToReg, Branch, Label, LoadConstant,
+             SlotToReg, OperatorInstruction, IsZero, Label, Transfer,
+             Syscall, NilClass]
       #assert_equal 1 , get_return
     end
 
@@ -41,24 +27,10 @@ module Risc
       assert_equal FunctionCall , call_ins.class
       assert_equal  :main , call_ins.method.name
     end
-    def test_call_resolve
-      call_ins = main_ticks(43)
-      assert_equal FunctionCall , call_ins.class
-      assert_equal  :resolve_method , call_ins.method.name
-    end
-    def test_label
-      call_ins = main_ticks(44)
-      assert_equal Label , call_ins.class
-      assert_equal  "Word_Type.resolve_method" , call_ins.name
-    end
-    def test_arg_15_to_resolve
-      sl = main_ticks( 47 )
-      assert_equal SlotToReg , sl.class
-      assert_equal :r2 , sl.array.symbol #load from message
-      assert_equal 2 , sl.index
-      assert_equal :r2 , sl.register.symbol
-      assert_equal Parfait::Integer, @interpreter.get_register( :r2 ).class
-      assert_equal 15, @interpreter.get_register( :r2 ).value
+    def test_load_entry
+      call_ins = main_ticks(5)
+      assert_equal LoadConstant , call_ins.class
+      assert_equal  Parfait::CacheEntry , call_ins.constant.class
     end
 
     def est_dyn

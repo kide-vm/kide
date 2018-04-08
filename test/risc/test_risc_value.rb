@@ -21,6 +21,10 @@ module Risc
       move = @r0 << Parfait.object_space
       assert_equal LoadConstant , move.class
     end
+    def test_load_symbol
+      move = @r1 << :puts
+      assert_equal LoadConstant , move.class
+    end
     def test_transfer
       transfer = @r0 << @r1
       assert_equal Transfer , transfer.class
