@@ -93,8 +93,8 @@ module Vool
     # conceptually easy in ruby, but we have to compile that "easy" ruby
     def cache_check(in_method)
       ok = Mom::Label.new("cache_ok_#{self.object_id}")
-      check = build_condition(ok)      # if cached_type != current_type
-      check << Mom::SlotLoad.new([dynamic_call.cache_entry, :cached_type] , [:message , :receiver , :type])
+      check = build_condition(ok, in_method)      # if cached_type != current_type
+      check << Mom::SlotLoad.new([dynamic_call.cache_entry, :cached_type] , receiver_type_definition(in_method))
       check << Mom::ResolveMethod.new( @name , dynamic_call.cache_entry )
       check << ok
     end
@@ -106,9 +106,14 @@ module Vool
     end
 
     private
-    def build_condition(ok_label)
+    def receiver_type_definition(in_method)
+      defi = @receiver.slot_definition(in_method)
+      defi.slots << :type
+      defi
+    end
+    def build_condition(ok_label, in_method)
       cached_type = Mom::SlotDefinition.new(dynamic_call.cache_entry , [:cached_type])
-      current_type = Mom::SlotDefinition.new(:message , [:receiver , :type])
+      current_type = receiver_type_definition(in_method)
       Mom::NotSameCheck.new(cached_type , current_type, ok_label)
     end
   end

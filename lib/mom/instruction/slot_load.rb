@@ -108,7 +108,10 @@ module Mom
         # desctructively replace the existing value to be loaded if more slots
         index = Risc.resolve_to_index(slots[0] , slots[1] ,compiler)
         const << Risc::SlotToReg.new( instruction , right ,index, right)
-        raise "more slots not implemented #{slots}" if slots.length > 2
+        if slots.length > 2
+          raise "3 slots only for type #{slots}" unless slots[2] == :type
+          const << Risc::SlotToReg.new( instruction , right , 1, right)
+        end
       end
       const
     end
