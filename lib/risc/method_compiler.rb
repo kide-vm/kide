@@ -41,31 +41,6 @@ module Risc
       self.new(method)
     end
 
-    def add_known(name)
-      case name
-      when :receiver
-        ret = use_reg @type
-        add_slot_to_reg(" load self" , :message , :receiver , ret )
-        return ret
-      when :space
-        space = Parfait.object_space
-        reg = use_reg :Space , space
-        add_load_constant( "load space", space , reg )
-        return reg
-      when :message
-        reg = use_reg :Message
-        add_transfer( "load message", Risc.message_reg , reg )
-        return reg
-      else
-        raise "Unknow expression #{name}"
-      end
-    end
-
-    # set the insertion point (where code is added with add_code)
-    def set_current c
-      @current = c
-    end
-
     # convert the given mom instruction to_risc and then add it (see add_code)
     # continue down the instruction chain unti depleted
     # (adding moves the insertion point so the whole mom chain is added as a risc chain)
@@ -80,6 +55,10 @@ module Risc
       end
     end
 
+    def add_constant(const)
+      Risc.machine.add_constant(const)
+    end
+
     # add a risc instruction after the current (insertion point)
     # the added instruction will become the new insertion point
     def add_code( instruction )
@@ -89,16 +68,6 @@ module Risc
       @current.insert(instruction) #insert after current
       @current = new_current
       self
-    end
-
-    # for computationally building code (ie writing assembler) these short cuts
-    # help to instantiate risc instructions and add them immediately
-    [:label, :reg_to_slot , :slot_to_reg , :load_constant, :load_data,
-      :function_return , :function_call, :op ,
-      :transfer , :reg_to_slot , :byte_to_reg , :reg_to_byte].each do |method|
-      define_method("add_#{method}".to_sym) do |*args|
-        add_code Risc.send( method , *args )
-      end
     end
 
     # require a (temporary) register. code must give this back with release_reg
@@ -133,52 +102,15 @@ module Risc
       @regs.clear
     end
 
-    # move a machine int from register "from" to a Parfait::Integer in register "to"
-    # have to grab an integer from space and stick it in the "to" register first.
-    def add_new_int( source , from, to )
-      source += "add_new_int "
-      space = use_reg(:Space)
-      int = use_reg(:Integer)
-      space_i = Risc.resolve_to_index(:Space, :next_integer)
-      add_load_constant( source + "space" , Parfait.object_space , space  )
-      add_slot_to_reg( source + "next_i1" , space , space_i , to)
-      add_slot_to_reg( source + "next_i2" , to , Risc.resolve_to_index(:Integer, :next_integer) , int)
-      add_reg_to_slot( source + "store link" , int , space , space_i  )
-      add_reg_to_slot( source + "store value" , from , to , Parfait::Integer.integer_index)
-    end
-    def add_constant(const)
-      Risc.machine.add_constant(const)
-    end
-
-    # load receiver and the first argument (int)
-    # return both registers
-    def self_and_int_arg( source )
-      me = add_known( :receiver )
-      int_arg = load_int_arg_at(source , 1 )
-      return me , int_arg
-    end
-
-    # Load the first argument, assumed to be integer
-    def load_int_arg_at( source , at)
-      int_arg = use_reg :Integer
-      add_slot_to_reg(source , :message , :arguments , int_arg )
-      add_slot_to_reg(source , int_arg , at + 1, int_arg ) #1 for type
-      return int_arg
-    end
-
-    # assumed Integer in given register is replaced by the fixnum that it is holding
-    def reduce_int( source , register )
-      add_slot_to_reg( source + "int -> fix" , register , Parfait::Integer.integer_index , register)
-    end
-
     # Build with builder (see there), adding the created instructions
     def build(&block)
       builder.build(&block)
     end
 
     # return a new builder that uses this compiler
-    def builder
-      Builder.new(self)
+    # must specify weather to add code automatically to compiler
+    def builder( auto_add )
+      Builder.new(self , auto_add)
     end
   end
 end

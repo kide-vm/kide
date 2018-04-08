@@ -1,13 +1,13 @@
 require_relative "../helper"
 
 module Risc
-  class TestBuilderBoot < MiniTest::Test
+  class TestBuilderFalse < MiniTest::Test
 
     def setup
       Risc.machine.boot
       init = Parfait.object_space.get_init
+      @builder = Risc::MethodCompiler.new( init ).builder(false)
       @label = Risc::Label.new("source","name")
-      @builder = Risc::MethodCompiler.new( init ).builder
     end
     def test_has_build
       assert @builder.respond_to?(:build)
@@ -96,5 +96,19 @@ module Risc
       assert_equal :- , op.operator
       assert_equal :Space , op.left.type
     end
+  end
+  class TestBuilderTrue < MiniTest::Test
+
+    def setup
+      Risc.machine.boot
+      @init = Parfait.object_space.get_init
+      @builder = Risc::MethodCompiler.new( @init ).builder(true)
+    end
+    def test_inserts_built
+      r1 = RiscValue.new(:r1 , :Space)
+      @builder.build{ space << r1 }
+      assert_equal Transfer , @init.risc_instructions.next.class , @init.risc_instructions.next
+    end
+
   end
 end

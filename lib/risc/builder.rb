@@ -1,13 +1,21 @@
 module Risc
 
+  # A Builder is used to generate code, either by using it's api, or dsl
+  #
+  # The code that is generated can be added to the comiled method, ie to the compiler.
+  # This is used to generate the builtin methods.
+  # Or the code can be stored up and returned. This is used in Mom::to_risc methods
   class Builder
 
     attr_reader :built , :compiler
 
     # pass a compiler, to which instruction are added (usually)
-    # call build or build_and_return with a block
-    def initialize(compiler)
+    # second arg determines weather instructions are added (default true)
+    # call build with a block to build
+    def initialize(compiler, auto_add)
       @compiler = compiler
+      @auto_add = auto_add
+      @built = nil
       @names = {}
     end
 
@@ -33,13 +41,13 @@ module Risc
     end
 
     def if_zero( label )
-      add Risc::IsZero.new("jump if zero" , label)
+      add_code Risc::IsZero.new("jump if zero" , label)
     end
     def if_not_zero( label )
-      add Risc::IsNotZero.new("jump if not zero" , label)
+      add_code Risc::IsNotZero.new("jump if not zero" , label)
     end
     def branch( label )
-      add Risc::Branch.new("jump to" , label)
+      add_code Risc::Branch.new("jump to" , label)
     end
 
     # build code using dsl (see __init__ or MessageSetup for examples)
@@ -52,29 +60,90 @@ module Risc
     #  space << Parfait.object_space # load constant
     #  message[:receiver] << space  #make current message (r0) receiver the space
     #
-    # build result is available as built, but also gets added to compiler
+    # build result is available as built, but also gets added to compiler, if the
+    # builder is created with default args
     def build(&block)
-      risc = build_and_return(&block)
-      @compiler.add_code(risc)
-      risc
-    end
-
-    # version of build that does not add to compiler, just returns the code
-    def build_and_return(&block)
-      @built = nil
       instance_eval(&block)
-      risc = @built
-      @built = nil
-      return risc
+      @built
     end
 
-    def add(ins)
+    # adding code to the builder either stores it in the built variable
+    # or adds it straight to the compiler.
+    # Depending on wether auto_add was given in construction.
+    def add_code(ins)
+      return @compiler.add_code(ins) if @auto_add
       if(@built)
         @built << ins
       else
         @built = ins
       end
     end
+
+    # move a machine int from register "from" to a Parfait::Integer in register "to"
+    # have to grab an integer from space and stick it in the "to" register first.
+    def add_new_int( source , from, to )
+      source += "add_new_int "
+      space = compiler.use_reg(:Space)
+      int = compiler.use_reg(:Integer)
+      space_i = Risc.resolve_to_index(:Space, :next_integer)
+      add_load_constant( source + "space" , Parfait.object_space , space  )
+      add_slot_to_reg( source + "next_i1" , space , space_i , to)
+      add_slot_to_reg( source + "next_i2" , to , Risc.resolve_to_index(:Integer, :next_integer) , int)
+      add_reg_to_slot( source + "store link" , int , space , space_i  )
+      add_reg_to_slot( source + "store value" , from , to , Parfait::Integer.integer_index)
+    end
+
+    # load receiver and the first argument (int)
+    # return both registers
+    def self_and_int_arg( source )
+      me = add_known( :receiver )
+      int_arg = load_int_arg_at(source , 1 )
+      return me , int_arg
+    end
+
+    # Load the first argument, assumed to be integer
+    def load_int_arg_at( source , at)
+      int_arg = compiler.use_reg :Integer
+      add_slot_to_reg(source , :message , :arguments , int_arg )
+      add_slot_to_reg(source , int_arg , at + 1, int_arg ) #1 for type
+      return int_arg
+    end
+
+    # assumed Integer in given register is replaced by the fixnum that it is holding
+    def reduce_int( source , register )
+      add_slot_to_reg( source + "int -> fix" , register , Parfait::Integer.integer_index , register)
+    end
+
+    # for computationally building code (ie writing assembler) these short cuts
+    # help to instantiate risc instructions and add them immediately
+    [:label, :reg_to_slot , :slot_to_reg , :load_constant, :load_data,
+      :function_return , :function_call, :op ,
+      :transfer , :reg_to_slot , :byte_to_reg , :reg_to_byte].each do |method|
+      define_method("add_#{method}".to_sym) do |*args|
+        add_code Risc.send( method , *args )
+      end
+    end
+
+    def add_known(name)
+      case name
+      when :receiver
+        ret = compiler.use_reg compiler.type
+        add_slot_to_reg(" load self" , :message , :receiver , ret )
+        return ret
+      when :space
+        space = Parfait.object_space
+        reg = compiler.use_reg :Space , space
+        add_load_constant( "load space", space , reg )
+        return reg
+      when :message
+        reg = compiler.use_reg :Message
+        add_transfer( "load message", Risc.message_reg , reg )
+        return reg
+      else
+        raise "Unknow expression #{name}"
+      end
+    end
+
   end
 
   # if a symbol is given, it may be the message or the new_message.
