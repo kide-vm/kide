@@ -5,7 +5,7 @@ module Risc
     include Ticker
 
     def setup
-      @string_input = as_main("a = 15 ; return a.div10")
+      @string_input = as_main("a = 5 ; return a.mod4")
       super
     end
 
@@ -22,24 +22,23 @@ module Risc
              Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
              SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
              Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
+             SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
+             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
              SlotToReg, OperatorInstruction, IsZero, Label, RegToSlot,
              Label, LoadConstant, SlotToReg, LoadConstant, SlotToReg,
              RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
-             RegToSlot, LoadConstant, SlotToReg, DynamicJump, Label,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, LoadData, OperatorInstruction, LoadData, OperatorInstruction,
-             OperatorInstruction, LoadData, Transfer, OperatorInstruction, OperatorInstruction,
-             LoadData, Transfer, OperatorInstruction, OperatorInstruction, LoadData,
-             Transfer, OperatorInstruction, OperatorInstruction, LoadData, OperatorInstruction,
-             LoadData, Transfer, OperatorInstruction, OperatorInstruction, Transfer,
-             LoadData, OperatorInstruction, LoadData, OperatorInstruction, OperatorInstruction,
-             LoadConstant, SlotToReg, SlotToReg, RegToSlot, RegToSlot,
+             RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
+             LoadConstant, SlotToReg, DynamicJump, Label, SlotToReg,
+             SlotToReg, LoadData, OperatorInstruction, LoadConstant, SlotToReg,
+             SlotToReg, RegToSlot, RegToSlot, RegToSlot, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg, FunctionReturn, Transfer, Syscall, NilClass]
        assert_equal Parfait::Integer , get_return.class
-       #assert_equal 1 , get_return.value
+       assert_equal 1 , get_return.value
     end
 
     def test_call_main
@@ -53,17 +52,17 @@ module Risc
       assert_equal  Parfait::CacheEntry , call_ins.constant.class
     end
 
-    def est_dyn
-      cal = main_ticks(76)
+    def test_dyn
+      cal = main_ticks(98)
       assert_equal DynamicJump ,  cal.class
     end
     #should end in exit, but doesn't, becasue resolve never returns
-    def ttest_sys
-      sys = ticks(20)
+    def test_sys
+      sys = main_ticks(129)
       assert_equal Syscall ,  sys.class
     end
-    def ttest_return
-      ret = ticks(18)
+    def test_return
+      ret = main_ticks(127)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
       assert_equal Label , link.class

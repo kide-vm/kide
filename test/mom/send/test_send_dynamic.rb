@@ -19,7 +19,8 @@ module Risc
                  RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
                  SlotToReg, RegToSlot, SlotToReg, RegToSlot, SlotToReg,
                  RegToSlot, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-                 LoadConstant, SlotToReg, DynamicJump]
+                 LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant,
+                 SlotToReg, DynamicJump, Label]
     end
 
     def test_send_instructions
@@ -37,7 +38,7 @@ module Risc
     end
     def test_function_call
       produced = produce_body
-      assert_equal DynamicJump , produced.next(62).class
+      assert_equal DynamicJump , produced.next(66).class
     end
     def test_cache_check
       produced = produce_body

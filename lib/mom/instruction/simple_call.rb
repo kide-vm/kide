@@ -25,8 +25,10 @@ module Mom
       save_return =  SlotLoad.new([:message,:next_message,:return_address],[return_label],self)
       moves = save_return.to_risc(compiler)
       moves << Risc.slot_to_reg(self, :message , :next_message , Risc.message_reg)
+
       moves << Risc.load_constant(self , method.binary , jump_address)
       moves << Risc::FunctionCall.new(self, method ,jump_address)
+
       moves << return_label
     end
 
