@@ -180,7 +180,7 @@ module Risc
     when Parfait::Object
       type = Parfait.object_space.get_class_by_name( object.class.name.split("::").last.to_sym).instance_type
     when Symbol
-      object = object.to_s.camelize.to_sym
+      object = object.to_s.camelise.to_sym
       clazz = Parfait.object_space.get_class_by_name(object)
       raise "Not implemented/found object #{object}:#{object.class}" unless clazz
       type = clazz.instance_type

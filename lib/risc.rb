@@ -1,5 +1,5 @@
 class String
-  def camelize
+  def camelise
     self.split("_").collect{|str| str.capitalize_first }.join
   end
   def capitalize_first
