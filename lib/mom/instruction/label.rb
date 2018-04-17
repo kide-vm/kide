@@ -14,6 +14,10 @@ module Mom
       @name = name
     end
 
+    def to_s
+      "Label: #{name}"
+    end
+
     # A Mom::Label converts one2one to a Risc::Label. So in a way it could not be more
     # simple.
     # Alas, since almost by definition several roads lead to this label, all those

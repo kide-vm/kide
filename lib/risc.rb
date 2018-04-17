@@ -6,7 +6,11 @@ class String
     self[0].capitalize + self[1..-1]
   end
 end
-
+class Class
+  def short_name
+    self.name.split("::").last
+  end
+end
 
 # The RiscMachine, is an abstract machine with registers. Think of it as an arm machine with
 # normal instruction names. It is not however an abstraction of existing hardware, but only

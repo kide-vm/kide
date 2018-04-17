@@ -31,6 +31,9 @@ module Mom
       moves << Risc::FunctionReturn.new(self, return_address)
     end
 
+    def to_s
+      "ReturnSequence"
+    end
   end
 
 end

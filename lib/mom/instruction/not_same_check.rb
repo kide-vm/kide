@@ -16,6 +16,10 @@ module Mom
       @left , @right  = left , right
     end
 
+    def to_s
+      "NotSameCheck: #{left}:#{right}"
+    end
+
     # basically move both left and right values into register
     # subtract them and see if IsZero comparison
     def to_risc(compiler)

@@ -28,6 +28,9 @@ module Mom
       @arguments.each{|a| raise "args not SlotLoad #{a}" unless a.is_a?(SlotLoad)}
     end
 
+    def to_s
+      "ArgumentTransfer " + ([@receiver] + @arguments).join(",")
+    end
     def to_risc(compiler)
       transfer = SlotLoad.new([:message , :next_message , :receiver] , @receiver, self).to_risc(compiler)
       compiler.reset_regs

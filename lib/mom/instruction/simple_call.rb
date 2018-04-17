@@ -14,6 +14,9 @@ module Mom
       @method = method
     end
 
+    def to_s
+      "SimpleCall #{@method.name}"
+    end
     # To call the method, we determine the jumpable address (method.binary), move that
     # into a register and issue a FunctionCall
     #

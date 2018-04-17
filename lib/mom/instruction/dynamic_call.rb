@@ -18,6 +18,12 @@ module Mom
       @cache_entry = Parfait::CacheEntry.new(type, method)
     end
 
+    def to_s
+      str = "DynamicCall "
+      str += cache_entry.cached_method&.name if cache_entry
+      str
+    end
+
     # One could almost think that one can resolve this to a Risc::FunctionCall
     #  (which btw resolves to a simple jump), alas, the FunctionCall, like all other
     # jumping, resolves the address at compile time.

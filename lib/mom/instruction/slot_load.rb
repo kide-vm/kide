@@ -34,6 +34,10 @@ module Mom
       @original_source = original_source || self
     end
 
+    def to_s
+      "SlotLoad #{right} -> #{left}"
+    end
+
     def to_risc(compiler)
       const = @right.to_register(compiler , original_source)
       left_slots = @left.slots
@@ -83,6 +87,23 @@ module Mom
       raise "No slots #{object}" unless slots
     end
 
+    def to_s
+      names = [known_name] + @slots
+      "[#{names.join(',')}]"
+    end
+
+    def known_name
+      case known_object
+      when Constant , Parfait::Object
+        known_object.class.short_name
+      when Risc::Label
+        known_object.to_s
+      when Symbol
+        known_object
+      else
+        "unknown"
+      end
+    end
     def to_register(compiler, instruction)
       type = known_object.respond_to?(:ct_type) ? known_object.ct_type : :Object
       right = compiler.use_reg( type )
