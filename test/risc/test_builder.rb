@@ -6,7 +6,7 @@ module Risc
     def setup
       Risc.machine.boot
       init = Parfait.object_space.get_init
-      @builder = Risc::MethodCompiler.new( init ).builder(false)
+      @builder = Risc::MethodCompiler.new( init ).builder(false , init)
       @label = Risc::Label.new("source","name")
     end
     def test_has_build
@@ -102,7 +102,7 @@ module Risc
     def setup
       Risc.machine.boot
       @init = Parfait.object_space.get_init
-      @builder = Risc::MethodCompiler.new( @init ).builder(true)
+      @builder = Risc::MethodCompiler.new( @init ).builder(true, @init)
     end
     def test_inserts_built
       r1 = RiscValue.new(:r1 , :Space)

@@ -8,7 +8,7 @@ module Risc
         def mod4(context)
           source = "mod4"
           compiler = compiler_for(:Integer,:mod4 ,{})
-          builder = compiler.builder(true)
+          builder = compiler.builder(true, compiler.method)
           me = builder.add_known( :receiver )
           builder.reduce_int( source , me )
           two = compiler.use_reg :fixnum , 2
@@ -35,7 +35,7 @@ module Risc
         end
         def operator_method(op_name , op_sym )
           compiler = compiler_for(:Integer, op_sym ,{other: :Integer})
-          builder = compiler.builder(true)
+          builder = compiler.builder(true, compiler.method)
           me , other = builder.self_and_int_arg(op_name + "load receiver and arg")
           builder.reduce_int( op_name + " fix me", me )
           builder.reduce_int( op_name + " fix arg", other )
@@ -48,7 +48,7 @@ module Risc
         def div10( context )
           s = "div_10 "
           compiler = compiler_for(:Integer,:div10 ,{})
-          builder = compiler.builder(true)
+          builder = compiler.builder(true, compiler.method)
           #FIX: this could load receiver once, reduce and then transfer twice
           me = builder.add_known( :receiver )
           tmp = builder.add_known( :receiver )

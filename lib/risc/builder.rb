@@ -12,10 +12,12 @@ module Risc
     # pass a compiler, to which instruction are added (usually)
     # second arg determines weather instructions are added (default true)
     # call build with a block to build
-    def initialize(compiler, auto_add)
+    def initialize(compiler, auto_add , for_source)
       @compiler = compiler
       @auto_add = auto_add
       @built = nil
+      @source = for_source
+      @source_used = false
       @names = {}
     end
 

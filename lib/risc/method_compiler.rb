@@ -110,8 +110,9 @@ module Risc
 
     # return a new builder that uses this compiler
     # must specify weather to add code automatically to compiler
-    def builder( auto_add )
-      Builder.new(self , auto_add)
+    # second arg is the source for which to build, either method or mom::instruction
+    def builder( auto_add , source)
+      Builder.new(self , auto_add , source)
     end
   end
 end

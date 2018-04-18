@@ -9,7 +9,7 @@ module Risc
         # (this method returns a new method off course, like all builtin)
         def get_internal_word( context )
           compiler = compiler_for(:Object , :get_internal_word ,{at: :Integer})
-          builder = compiler.builder(true)
+          builder = compiler.builder(true, compiler.method)
           source = "get_internal_word"
           me , index = builder.self_and_int_arg(source)
           # reduce me to me[index]
@@ -25,7 +25,7 @@ module Risc
         def set_internal_word( context )
           compiler = compiler_for(:Object , :set_internal_word , {at: :Integer, :value => :Object} )
           source = "set_internal_word"
-          builder = compiler.builder(true)
+          builder = compiler.builder(true, compiler.method)
           me , index = builder.self_and_int_arg(source)
           value = builder.load_int_arg_at(source , 2)
 
@@ -39,7 +39,7 @@ module Risc
         # Even if it's just this one, sys_exit (later raise)
         def _method_missing( context )
           compiler = compiler_for(:Object,:method_missing ,{})
-          emit_syscall( compiler.builder(true) , :exit )
+          emit_syscall( compiler.builder(true, compiler.method) , :exit )
           return compiler.method
         end
         # this is the really really first place the machine starts (apart from the jump here)
@@ -48,7 +48,7 @@ module Risc
         def __init__ context
           compiler = Risc::MethodCompiler.create_method(:Object,:__init__ ,
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
-          builder = compiler.builder(true)
+          builder = compiler.builder(true, compiler.method)
           builder.build do
             space << Parfait.object_space
             message << space[:first_message]
@@ -78,7 +78,7 @@ module Risc
 
         def exit( context )
           compiler = compiler_for(:Object,:exit ,{})
-          emit_syscall( compiler.builder(true) , :exit )
+          emit_syscall( compiler.builder(true, compiler.method) , :exit )
           return compiler.method
         end
 

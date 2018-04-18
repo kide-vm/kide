@@ -32,7 +32,7 @@ module Mom
     def to_risc( compiler )
       name_ = @name
       cache_entry_ = @cache_entry
-      builder = compiler.builder(false)
+      builder = compiler.builder(false, self)
       builder.build do
         word << name_
         cache_entry << cache_entry_
