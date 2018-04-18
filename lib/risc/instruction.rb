@@ -26,7 +26,8 @@ module Risc
       @source = source
       @next = nekst
       return unless source
-      raise "Source must be string or Instruction, not #{source.class}" unless source.is_a?(String) or source.is_a?(Mom::Instruction)
+      raise "Source must be string or Instruction, not #{source.class}" unless source.is_a?(String) or
+                source.is_a?(Mom::Instruction) or source.is_a?(Parfait::TypedMethod)
     end
     attr_reader :source
 

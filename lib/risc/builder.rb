@@ -32,7 +32,8 @@ module Risc
         reg = Risc.message_reg
         reg.builder = self
       elsif name.to_s.index("label")
-        reg = Risc.label( name.to_s , "#{name}_#{object_id}")
+        reg = Risc.label( @source , "#{name}_#{object_id}")
+        @source_used = true
       else
         type = Risc.resolve_type(name , @compiler) #checking
         reg = @compiler.use_reg( type.object_class.name )
@@ -43,13 +44,16 @@ module Risc
     end
 
     def if_zero( label )
-      add_code Risc::IsZero.new("jump if zero" , label)
+      @source_used = true
+      add_code Risc::IsZero.new(@source , label)
     end
     def if_not_zero( label )
-      add_code Risc::IsNotZero.new("jump if not zero" , label)
+      @source_used = true
+      add_code Risc::IsNotZero.new(@source , label)
     end
     def branch( label )
-      add_code Risc::Branch.new("jump to" , label)
+      @source_used = true
+      add_code Risc::Branch.new(@source, label)
     end
 
     # build code using dsl (see __init__ or MessageSetup for examples)
@@ -122,6 +126,10 @@ module Risc
       :function_return , :function_call, :op ,
       :transfer , :reg_to_slot , :byte_to_reg , :reg_to_byte].each do |method|
       define_method("add_#{method}".to_sym) do |*args|
+        if not @source_used
+          args[0] = @source
+          @source_used = true
+        end
         add_code Risc.send( method , *args )
       end
     end
