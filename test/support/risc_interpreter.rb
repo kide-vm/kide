@@ -1,6 +1,23 @@
+require "util/eventable"
+require "risc/interpreter"
+require_relative "compiling"
+
 module Risc
-  # relies on @interpreter instance to be set up during setup
-  module InterpreterHelpers
+  module Ticker
+    include CompilerHelper
+
+    def setup
+      Risc.machine.boot
+      do_clean_compile
+      Vool::VoolCompiler.ruby_to_vool( @string_input )
+      Collector.collect_space
+      @interpreter = Interpreter.new
+      @interpreter.start Risc.machine.risc_init
+    end
+
+    # must be after boot, but before main compile, to define method
+    def do_clean_compile
+    end
 
     # check the given array of instructions is what the interpreter actually does
     # possible second argument ignores the given amount, usually up until main
