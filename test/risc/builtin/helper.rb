@@ -5,8 +5,6 @@ module Risc
     class BuiltinTest < MiniTest::Test
       include Ticker
       def setup
-        @string_input = as_main(main)
-        super
       end
     end
   end

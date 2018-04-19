@@ -14,6 +14,7 @@ module Risc
       @interpreter = Interpreter.new
       @interpreter.start Risc.machine.risc_init
     end
+    alias :do_setup :setup 
 
     # must be after boot, but before main compile, to define method
     def do_clean_compile
@@ -77,7 +78,13 @@ module Risc
       end
       classes
     end
-    alias :run_all  :all_classes
+
+    # do the setup, compile and run the input to the end
+    def run_all(input)
+      @string_input = as_main(input)
+      do_setup
+      all_classes
+    end
     # for chaning the tests quickly output all instructions that are executed
     def show_ticks
       classes = all_classes
