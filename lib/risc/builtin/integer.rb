@@ -24,24 +24,15 @@ module Risc
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
-        def *( context )
-          operator_method( "mult" , :*)
-        end
-        def +( context )
-          operator_method( "plus" , :+)
-        end
-        def -( context )
-          operator_method( "minus" , :-)
-        end
-        def operator_method(op_name , op_sym )
+        def operator_method( op_sym )
           compiler = compiler_for(:Integer, op_sym ,{other: :Integer})
           builder = compiler.builder(true, compiler.method)
-          me , other = builder.self_and_int_arg(op_name + "load receiver and arg")
-          builder.reduce_int( op_name + " fix me", me )
-          builder.reduce_int( op_name + " fix arg", other )
-          builder.add_code Risc.op( op_name + " operator", op_sym , me , other)
-          builder.add_new_int(op_name + " new int", me , other)
-          builder.add_reg_to_slot( op_name + "save ret" , other , :message , :return_value)
+          me , other = builder.self_and_int_arg(op_sym.to_s + "load receiver and arg")
+          builder.reduce_int( op_sym.to_s + " fix me", me )
+          builder.reduce_int( op_sym.to_s + " fix arg", other )
+          builder.add_code Risc.op( op_sym.to_s + " operator", op_sym , me , other)
+          builder.add_new_int(op_sym.to_s + " new int", me , other)
+          builder.add_reg_to_slot( op_sym.to_s + "save ret" , other , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end

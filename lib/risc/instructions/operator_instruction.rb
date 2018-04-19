@@ -1,5 +1,8 @@
 module Risc
 
+  def self.operators
+    [:+, :-, :>>, :<<, :*, :&, :|]
+  end
   # Destructive operator instructions on the two registers given
   #
   # left = left OP right
@@ -11,7 +14,7 @@ module Risc
     def initialize( source , operator , left , right )
       super(source)
       @operator = operator
-      raise "unsuported operator :#{operator}:" unless [:+, :-, :>>, :<<, :*, :&, :|, :==].include?(operator)
+      raise "unsuported operator :#{operator}:" unless Risc.operators.include?(operator)
       @left = left
       @right = right
       raise "Not register #{left}" unless RiscValue.look_like_reg(left)

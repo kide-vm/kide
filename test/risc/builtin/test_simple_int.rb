@@ -29,6 +29,10 @@ module Risc
         run_all "4 * 4"
         assert_equal 16 , get_return.value
       end
+      def test_smaller
+        run_all "4 < 5"
+        assert_equal 16 , get_return.value
+      end
     end
   end
 end

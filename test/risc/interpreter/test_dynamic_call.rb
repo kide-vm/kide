@@ -11,16 +11,10 @@ module Risc
 
     def test_chain
       #show_main_ticks # get output of what is
-      check_main_chain [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
+      check_main_chain  [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
              SlotToReg, SlotToReg, SlotToReg, SlotToReg, OperatorInstruction,
              IsZero, SlotToReg, SlotToReg, SlotToReg, LoadConstant,
              RegToSlot, LoadConstant, LoadConstant, SlotToReg, SlotToReg,
-             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
-             SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
-             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
-             SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
-             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
-             SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
              Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
              SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
              Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
@@ -53,16 +47,16 @@ module Risc
     end
 
     def test_dyn
-      cal = main_ticks(98)
+      cal = main_ticks(68)
       assert_equal DynamicJump ,  cal.class
     end
     #should end in exit, but doesn't, becasue resolve never returns
     def test_sys
-      sys = main_ticks(129)
+      sys = main_ticks(99)
       assert_equal Syscall ,  sys.class
     end
     def test_return
-      ret = main_ticks(127)
+      ret = main_ticks(97)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
       assert_equal Label , link.class
