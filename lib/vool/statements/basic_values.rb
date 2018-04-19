@@ -33,15 +33,24 @@ module Vool
     def ct_type
       Parfait.object_space.get_class_by_name(:True).instance_type
     end
+    def slot_definition(method)
+      return Mom::SlotDefinition.new(Parfait.object_space.true_object , [])
+    end
   end
   class FalseConstant < Constant
     def ct_type
       Parfait.object_space.get_class_by_name(:False).instance_type
     end
+    def slot_definition(method)
+      return Mom::SlotDefinition.new(Parfait.object_space.false_object , [])
+    end
   end
   class NilConstant < Constant
     def ct_type
       Parfait.object_space.get_class_by_name(:Nil).instance_type
+    end
+    def slot_definition(method)
+      return Mom::SlotDefinition.new(Parfait.object_space.nil_object , [])
     end
   end
   class SelfExpression < Expression

@@ -1,12 +1,12 @@
 require_relative '../helper'
 
 module Risc
-  class TestAssignLocalConst < MiniTest::Test
+  class TestAssignLocalFalse < MiniTest::Test
     include Statements
 
     def setup
       super
-      @input = "r = 5"
+      @input = "r = false"
       @expect = [LoadConstant,SlotToReg, RegToSlot]
     end
     def test_local_assign_instructions
@@ -15,7 +15,7 @@ module Risc
 
     def test_constant_load
       produced = produce_body
-      assert_equal 5 , produced.constant.value
+      assert_equal Parfait::FalseClass , produced.constant.class
     end
 
     def test_frame_load
