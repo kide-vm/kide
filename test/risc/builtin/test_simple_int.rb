@@ -31,7 +31,7 @@ module Risc
       end
       def test_smaller
         run_all "4 < 5"
-        assert_equal 16 , get_return.value
+        assert_equal Parfait::TrueClass , get_return.class
       end
     end
   end

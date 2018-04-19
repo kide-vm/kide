@@ -184,7 +184,7 @@ module Risc
       Risc.operators.each do |op|
         obj.instance_type.add_method Builtin::Integer.operator_method(op)
       end
-      [:putint, :div4, :div10].each do |f|   #div4 is just a forward declaration
+      [:putint, :div4, :div10 , :<].each do |f|   #div4 is just a forward declaration
         obj.instance_type.add_method Builtin::Integer.send(f , nil)
       end
     end

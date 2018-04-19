@@ -19,6 +19,25 @@ module Risc
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
+        def <( context )
+          compiler = compiler_for(:Integer, :< ,{other: :Integer})
+          builder = compiler.builder(true, compiler.method)
+          me , other = builder.self_and_int_arg("< load receiver and arg")
+          false_label = Risc.label(compiler.method , "false_label_#{builder.object_id}")
+          merge_label = Risc.label(compiler.method , "merge_label_#{builder.object_id}")
+          builder.reduce_int( "< fix me", me )
+          builder.reduce_int( "< fix arg", other )
+          builder.add_code Risc.op( "< operator", :- , me , other)
+          builder.add_code Risc::IsPlus.new( "< if", false_label)
+          builder.add_load_constant("< new int", Parfait.object_space.true_object , other)
+          builder.add_code Risc::Branch.new("jump over false", merge_label)
+          builder.add_code false_label
+          builder.add_load_constant("< new int", Parfait.object_space.false_object , other)
+          builder.add_code merge_label
+          builder.add_reg_to_slot( "< save ret" , other , :message , :return_value)
+          compiler.add_mom( Mom::ReturnSequence.new)
+          return compiler.method
+        end
         def putint(context)
           compiler = compiler_for(:Integer,:putint ,{})
           compiler.add_mom( Mom::ReturnSequence.new)
