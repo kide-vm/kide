@@ -7,9 +7,9 @@ module Risc
     def setup
       super
       @input = "if(@a) ; arg = 5 ; else; arg = 6; end"
-      @expect = [SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsNotZero ,
-                 LoadConstant, OperatorInstruction, IsNotZero, Label, LoadConstant ,
-                 SlotToReg, RegToSlot, Branch, Label, LoadConstant ,
+      @expect = [SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsZero,
+                 LoadConstant, OperatorInstruction, IsZero, Label, LoadConstant,
+                 SlotToReg, RegToSlot, Branch, Label, LoadConstant,
                  SlotToReg, RegToSlot, Label]
     end
 

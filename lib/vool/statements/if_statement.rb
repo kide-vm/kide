@@ -21,6 +21,20 @@ module Vool
     end
 
     def to_mom( method )
+      if_false ? full_if(method) : simple_if(method)
+    end
+
+    def simple_if(method)
+      true_label  = Mom::Label.new( "true_label_#{object_id}")
+      merge_label = Mom::Label.new( "merge_label_#{object_id}")
+
+      head = Mom::TruthCheck.new(condition.slot_definition(method) , merge_label)
+      head << true_label
+      head << if_true.to_mom(method)
+      head << merge_label
+    end
+
+    def full_if(method)
       true_label  = Mom::Label.new( "true_label_#{object_id}")
       false_label = Mom::Label.new( "false_label_#{object_id}")
       merge_label = Mom::Label.new( "merge_label_#{object_id}")
@@ -28,13 +42,10 @@ module Vool
       head = Mom::TruthCheck.new(condition.slot_definition(method) , false_label)
       head << true_label
       head << if_true.to_mom(method)
-      head << Mom::Jump.new(merge_label) if if_false
+      head << Mom::Jump.new(merge_label)
       head << false_label
-      if if_false
-        head << if_false.to_mom(method)
-        head << merge_label
-      end
-      head
+      head << if_false.to_mom(method)
+      head << merge_label
     end
 
     def each(&block)

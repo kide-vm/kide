@@ -7,8 +7,8 @@ module Risc
     def setup
       super
       @input = "while(@a) ; arg = 5 end"
-      @expect = [Label, SlotToReg, SlotToReg, LoadConstant, OperatorInstruction ,
-                 IsNotZero, LoadConstant, OperatorInstruction, IsNotZero, LoadConstant ,
+      @expect = [Label, SlotToReg, SlotToReg, LoadConstant, OperatorInstruction,
+                 IsZero, LoadConstant, OperatorInstruction, IsZero, LoadConstant,
                  SlotToReg, RegToSlot, Branch, Label]
     end
 

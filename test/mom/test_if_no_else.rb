@@ -7,8 +7,8 @@ module Risc
     def setup
       super
       @input = "if(@a) ; arg = 5 ; end"
-      @expect = [SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsNotZero ,
-                 LoadConstant, OperatorInstruction, IsNotZero, Label, LoadConstant ,
+      @expect = [SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsZero,
+                 LoadConstant, OperatorInstruction, IsZero, Label, LoadConstant,
                  SlotToReg, RegToSlot, Label]
     end
 
@@ -22,8 +22,9 @@ module Risc
     end
     def test_isnotzero
       produced = produce_body
-      assert_equal IsNotZero , produced.next(4).class
-      assert produced.next(4).label.name.start_with?("false_label")
+      check = produced.next(4)
+      assert_equal IsZero , check.class
+      assert check.label.name.start_with?("merge_label") , check.label.name
     end
     def test_false_label
       produced = produce_body
