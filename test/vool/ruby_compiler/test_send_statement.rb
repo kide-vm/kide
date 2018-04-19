@@ -66,7 +66,7 @@ module Vool
     end
 
     def test_int_receiver
-      sent = RubyCompiler.compile( "5.mod4")
+      sent = RubyCompiler.compile( "5.div4")
       assert_equal Parfait::Type , sent.receiver.ct_type.class
       assert_equal "Integer_Type" , sent.receiver.ct_type.name
     end

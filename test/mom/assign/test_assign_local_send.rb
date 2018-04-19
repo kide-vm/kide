@@ -6,7 +6,7 @@ module Risc
 
     def setup
       super
-      @input = "r = 5.mod4"
+      @input = "r = 5.div4"
       @expect = [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
                  SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
                  RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,

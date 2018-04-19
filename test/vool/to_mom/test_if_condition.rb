@@ -8,7 +8,7 @@ module Vool
 
     def setup
       Risc.machine.boot
-      @ins = compile_first_method( "if(5.mod4) ; @a = 6 ; else; @a = 5 ; end")
+      @ins = compile_first_method( "if(5.div4) ; @a = 6 ; else; @a = 5 ; end")
     end
 
     def test_condition
@@ -19,7 +19,7 @@ module Vool
     end
     def test_hoisted_dynamic_call
       assert_equal SimpleCall , @ins.next(2).class
-      assert_equal :mod4 , @ins.next(2).method.name
+      assert_equal :div4 , @ins.next(2).method.name
     end
     def test_array
       check_array [MessageSetup, ArgumentTransfer, SimpleCall, SlotLoad, TruthCheck, Label ,

@@ -44,7 +44,7 @@ module Vool
 
     def setup
       Risc.machine.boot
-      @ins = compile_first_method( "return 5.mod4")
+      @ins = compile_first_method( "return 5.div4")
     end
 
     def test_return_is_last

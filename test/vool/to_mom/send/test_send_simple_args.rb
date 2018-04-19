@@ -8,7 +8,7 @@ module Vool
 
     def setup
       Risc.machine.boot
-      @ins = compile_first_method( "5.mod4(1,2)")
+      @ins = compile_first_method( "5.div4(1,2)")
     end
 
     def receiver

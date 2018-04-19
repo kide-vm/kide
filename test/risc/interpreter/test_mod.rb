@@ -5,7 +5,7 @@ module Risc
     include Ticker
 
     def setup
-      @string_input = as_main "return 9.mod4"
+      @string_input = as_main "return 9.div4"
       super
     end
 

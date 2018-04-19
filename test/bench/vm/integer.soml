@@ -54,7 +54,7 @@ class Integer < Value
     return self
   end
 
-  int mod4()
+  int div4()
     return self & 3
   end
 

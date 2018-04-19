@@ -3,28 +3,28 @@ require_relative 'helper'
 class TestPutiRT < MiniTest::Test
   include ParfaitTests
 
-  def test_mod4_2
-    @main = "return 2.mod4()"
+  def test_div4_2
+    @main = "return 2.div4()"
     check 2 % 4
   end
-  def test_mod4_3
-    @main = "return 3.mod4()"
+  def test_div4_3
+    @main = "return 3.div4()"
     check 3 % 4
   end
-  def test_mod4_4
-    @main = "return 4.mod4()"
+  def test_div4_4
+    @main = "return 4.div4()"
     check 4 % 4
   end
-  def test_mod4_5
-    @main = "return 5.mod4()"
+  def test_div4_5
+    @main = "return 5.div4()"
     check 5 % 4
   end
-  def test_mod4_12
-    @main = "return 12.mod4()"
+  def test_div4_12
+    @main = "return 12.div4()"
     check 12 % 4
   end
-  def test_mod4_10
-    @main = "return 10.mod4()"
+  def test_div4_10
+    @main = "return 10.div4()"
     check 10 % 4
   end
 

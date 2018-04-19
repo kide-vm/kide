@@ -8,7 +8,7 @@ module Vool
 
     def setup
       Risc.machine.boot
-      @ins = compile_first_method( "while(5.mod4) ; 5.mod4 ; end")
+      @ins = compile_first_method( "while(5.div4) ; 5.div4 ; end")
     end
 
     def test_condition_compiles_to_check

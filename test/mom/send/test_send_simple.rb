@@ -6,7 +6,7 @@ module Risc
 
     def setup
       super
-      @input = "5.mod4"
+      @input = "5.div4"
       @expect = [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
                  SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
                  RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
@@ -32,7 +32,7 @@ module Risc
     def test_function_call
       produced = produce_body
       assert_equal FunctionCall , produced.next(23).class
-      assert_equal :mod4 , produced.next(23).method.name
+      assert_equal :div4 , produced.next(23).method.name
     end
     def test_check_continue
       produced = produce_body

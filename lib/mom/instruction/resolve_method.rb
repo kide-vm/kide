@@ -20,6 +20,9 @@ module Mom
       @cache_entry = cache_entry
     end
 
+    def to_s
+      "ResolveMethod #{name}"
+    end
 
     # When the method is resolved, a cache_entry is used to hold the result.
     # That cache_entry (holding type and method) is checked before, and

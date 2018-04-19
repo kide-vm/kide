@@ -44,10 +44,9 @@ module Parfait
       @arguments_type = arguments_type
       @frame_type = frame_type
       @binary = BinaryCode.new(0)
-      source = "_init_method"
       name = "#{@for_type.name}.#{@name}"
-      @risc_instructions = Risc.label(source, name)
-      @risc_instructions << Risc.label( source, "unreachable")
+      @risc_instructions = Risc.label(self, name)
+      @risc_instructions << Risc.label( self, "unreachable")
     end
 
     def translate_cpu(translator)

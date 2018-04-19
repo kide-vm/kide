@@ -7,7 +7,7 @@ module Risc
 
     def setup
       super
-      @input = "5.mod4"
+      @input = "5.div4"
       @expect = [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
                  SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
                  RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
@@ -22,7 +22,7 @@ module Risc
     def test_load_method
       method = @produced
       assert_load( method, Parfait::TypedMethod ,:r1)
-      assert_equal :mod4 , method.constant.name
+      assert_equal :div4 , method.constant.name
     end
     def test_load_space
       space = @produced.next(1)

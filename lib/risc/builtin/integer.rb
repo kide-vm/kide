@@ -5,9 +5,9 @@ module Risc
       module ClassMethods
         include CompileHelper
 
-        def mod4(context)
-          source = "mod4"
-          compiler = compiler_for(:Integer,:mod4 ,{})
+        def div4(context)
+          source = "div4"
+          compiler = compiler_for(:Integer,:div4 ,{})
           builder = compiler.builder(true, compiler.method)
           me = builder.add_known( :receiver )
           builder.reduce_int( source , me )
