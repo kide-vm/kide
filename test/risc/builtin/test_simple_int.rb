@@ -29,9 +29,21 @@ module Risc
         run_all "4 * 4"
         assert_equal 16 , get_return.value
       end
-      def test_smaller
+      def test_smaller_true
         run_all "4 < 5"
         assert_equal Parfait::TrueClass , get_return.class
+      end
+      def test_smaller_false
+        run_all "6 < 5"
+        assert_equal Parfait::FalseClass , get_return.class
+      end
+      def test_larger_true
+        run_all "5 > 4"
+        assert_equal Parfait::TrueClass , get_return.class
+      end
+      def test_larger_false
+        run_all "5 > 6"
+        assert_equal Parfait::FalseClass , get_return.class
       end
     end
   end
