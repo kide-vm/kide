@@ -77,7 +77,7 @@ module Risc
       end
       classes
     end
-
+    alias :run_all  :all_classes
     # for chaning the tests quickly output all instructions that are executed
     def show_ticks
       classes = all_classes
