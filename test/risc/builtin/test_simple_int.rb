@@ -17,6 +17,14 @@ module Risc
         run_all "5 - 15"
         assert_equal -10 , get_return.value
       end
+      def test_rshift
+        run_all "#{2**8} >> 3"
+        assert_equal 2**5 , get_return.value
+      end
+      def test_lshift
+        run_all "#{2**8} << 3"
+        assert_equal 2**11 , get_return.value
+      end
       def test_div10
         run_all "45.div10"
         assert_equal 4 , get_return.value

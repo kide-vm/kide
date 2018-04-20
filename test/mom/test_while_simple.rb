@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Risc
-  class TestWhile < MiniTest::Test
+  class TestWhileSimple < MiniTest::Test
     include Statements
 
     def setup
