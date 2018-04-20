@@ -14,6 +14,10 @@ module Mom
       raise "condition must be slot_definition #{condition}" unless condition.is_a?(SlotDefinition)
     end
 
+    def to_s
+      "TruthCheck #{@condition} -> #{false_jump}"
+    end
+
     def to_risc(compiler)
       false_label = @false_jump.to_risc(compiler)
       left = @condition.to_register(compiler,self)
