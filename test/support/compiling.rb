@@ -52,7 +52,7 @@ module MomCompile
       is = is.next
     end
     ret = ""
-    res.to_s.split(",").each_slice(6).each do |line|
+    res.to_s.split(",").each_slice(5).each do |line|
       ret += "                   " + line.join(",") + " ,\n"
     end
     ret.gsub('"' , '')

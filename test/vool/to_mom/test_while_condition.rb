@@ -18,10 +18,19 @@ module Vool
       assert_equal SlotDefinition , @ins.next(5).condition.class , @ins
     end
     def test_hoisetd
-      assert_equal MessageSetup , @ins.class
+      jump = @ins.next(9)
+      assert_kind_of Jump , jump
+      assert jump.label.name.start_with?("cond_label") , jump.label.name
+    end
+    def test_label
+      label = @ins
+      assert_equal Label , label.class
+      assert label.name.start_with?("cond_label") , label.name
     end
     def test_array
-      check_array [MessageSetup,ArgumentTransfer,SimpleCall,SlotLoad,Label,TruthCheck,MessageSetup,ArgumentTransfer,SimpleCall,Jump,Label] , @ins
+      check_array [Label, MessageSetup, ArgumentTransfer, SimpleCall, SlotLoad ,
+                    TruthCheck, MessageSetup, ArgumentTransfer, SimpleCall, Jump ,
+                    Label] , @ins
     end
 
   end
