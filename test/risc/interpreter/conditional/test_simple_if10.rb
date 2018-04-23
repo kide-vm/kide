@@ -1,4 +1,4 @@
-require_relative "helper"
+require_relative "../helper"
 
 module Risc
   class InterpreterSimpleIf10 < MiniTest::Test

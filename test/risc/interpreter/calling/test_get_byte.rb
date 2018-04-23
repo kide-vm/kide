@@ -1,22 +1,22 @@
-require_relative "helper"
+require_relative "../helper"
 
 module Risc
-  class InterpreterMod < MiniTest::Test
+  class InterpretGetByte < MiniTest::Test
     include Ticker
 
     def setup
-      @string_input = as_main "return 9.div4"
+        @string_input = as_main("return 'Hello'.get_internal_byte(1)")
       super
     end
-
     def test_chain
       #show_main_ticks # get output of what is
       check_main_chain [Label, LoadConstant, LoadConstant, SlotToReg, RegToSlot,
              RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, RegToSlot, SlotToReg,
              RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, RegToSlot, SlotToReg, LoadConstant, FunctionCall,
-             Label, SlotToReg, SlotToReg, LoadData, OperatorInstruction,
+             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             RegToSlot, SlotToReg, LoadConstant, FunctionCall, Label,
+             SlotToReg, SlotToReg, SlotToReg, SlotToReg, ByteToReg,
              LoadConstant, SlotToReg, SlotToReg, RegToSlot, RegToSlot,
              RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg, FunctionReturn, SlotToReg, SlotToReg, RegToSlot,
@@ -24,27 +24,17 @@ module Risc
              RegToSlot, SlotToReg, SlotToReg, FunctionReturn, Transfer,
              Syscall, NilClass]
        assert_equal Parfait::Integer , get_return.class
-       assert_equal 2 , get_return.value
+       assert_equal "H".ord , get_return.value
+    end
+    def test_exit
+      done = main_ticks(61)
+      assert_equal Syscall ,  done.class
     end
 
-    def test_load
-      lod = main_ticks(17)
-      assert_equal LoadConstant , lod.class
-      assert_equal 9 , lod.constant.value
-    end
-    def test_fix # reduce self to fix
-      sl = main_ticks(28)
-      assert_equal SlotToReg , sl.class
-      assert_equal :r1 , sl.array.symbol
-      assert_equal 3 , sl.index
-      assert_equal :r1 , sl.register.symbol
-      assert_equal 9 , @interpreter.get_register(:r1)
-    end
-
-    def test_sys
-      sys = main_ticks(56)
-      assert_equal Syscall ,  sys.class
-      assert_equal :exit ,  sys.name
+    def test_byte_to_reg
+      done = main_ticks(35)
+      assert_equal ByteToReg ,  done.class
+      assert_equal "H".ord ,  @interpreter.get_register(done.register)
     end
 
   end
