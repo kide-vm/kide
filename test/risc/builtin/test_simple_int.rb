@@ -45,12 +45,20 @@ module Risc
         run_input "6 < 5"
         assert_equal Parfait::FalseClass , get_return.class
       end
+      def test_smaller_false_same
+        run_input "5 < 5"
+        assert_equal Parfait::FalseClass , get_return.class
+      end
       def test_larger_true
         run_input "5 > 4"
         assert_equal Parfait::TrueClass , get_return.class
       end
       def test_larger_false
         run_input "5 > 6"
+        assert_equal Parfait::FalseClass , get_return.class
+      end
+      def test_larger_false_same
+        run_input "5 > 5"
         assert_equal Parfait::FalseClass , get_return.class
       end
     end
