@@ -14,7 +14,7 @@ module Risc
       @interpreter = Interpreter.new
       @interpreter.start Risc.machine.risc_init
     end
-    alias :do_setup :setup 
+    alias :do_setup :setup
 
     # must be after boot, but before main compile, to define method
     def do_clean_compile
@@ -61,11 +61,11 @@ module Risc
     end
 
     # collect the classes of all executed istructions
-    def all_classes
+    def all_classes(max = 300)
       classes = []
       tick = 1
       begin
-        while true and (classes.length < 300)
+        while true and (classes.length < max)
           cl = ticks(1).class
           tick += 1
           classes << cl
@@ -80,11 +80,15 @@ module Risc
     end
 
     # do the setup, compile and run the input to the end
-    def run_all(input)
+    def run_input(input)
       @string_input = as_main(input)
       do_setup
-      all_classes
+      run_all
     end
+    def run_all
+      @interpreter.tick while(@interpreter.instruction)
+    end
+
     # for chaning the tests quickly output all instructions that are executed
     def show_ticks
       classes = all_classes
