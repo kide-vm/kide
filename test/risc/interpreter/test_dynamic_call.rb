@@ -22,6 +22,10 @@ module Risc
              Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
              SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
              Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
+             SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
+             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
+             SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
+             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
              SlotToReg, OperatorInstruction, IsZero, Label, RegToSlot,
              Label, LoadConstant, SlotToReg, LoadConstant, SlotToReg,
              RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
@@ -51,19 +55,18 @@ module Risc
     end
 
     def test_dyn
-      cal = main_ticks(88)
+      cal = main_ticks(108)
       assert_equal DynamicJump ,  cal.class
     end
-    #should end in exit, but doesn't, becasue resolve never returns
-    def test_sys
-      sys = main_ticks(119)
-      assert_equal Syscall ,  sys.class
-    end
     def test_return
-      ret = main_ticks(117)
+      ret = main_ticks(137)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
       assert_equal Label , link.class
+    end
+    def test_sys
+      sys = main_ticks(139)
+      assert_equal Syscall ,  sys.class
     end
   end
 end
