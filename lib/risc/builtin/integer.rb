@@ -25,6 +25,12 @@ module Risc
         def <( context )
           comparison( :< )
         end
+        def <=( context )
+          comparison( :<= )
+        end
+        def >=( context )
+          comparison( :>= )
+        end
         def comparison( operator  )
           compiler = compiler_for(:Integer, operator ,{other: :Integer})
           builder = compiler.builder(true, compiler.method)
@@ -33,12 +39,14 @@ module Risc
           merge_label = Risc.label(compiler.method , "merge_label_#{builder.object_id}")
           builder.reduce_int( "#{operator} fix me", me )
           builder.reduce_int( "#{operator} fix arg", other )
-          if(operator == :<)
+          if(operator.to_s.start_with?('<') )
             me , other = other , me
           end
           builder.add_code Risc.op( "#{operator} operator", :- , me , other)
           builder.add_code IsMinus.new( "#{operator} if", false_label)
-          builder.add_code IsZero.new( "#{operator} if", false_label)
+          if(operator.to_s.length == 1)
+            builder.add_code IsZero.new( "#{operator} if", false_label)
+          end
           builder.add_load_constant("#{operator} new int", Parfait.object_space.true_object , other)
           builder.add_code Risc::Branch.new("jump over false", merge_label)
           builder.add_code false_label
