@@ -18,10 +18,10 @@ HERE
       assert_equal Parfait::Integer , get_return.class
       assert_equal 10 , get_return.value
     end
-    def pest_ruby_subs
+    def test_ruby_subs
       run_input <<HERE
         b = 10
-        while( b > 0 )
+        while( b >= 1 )
           b = b - 1
         end
         return b
@@ -31,7 +31,7 @@ HERE
     end
     def test_ruby_adds_fibo
       run_input <<HERE
-        n=12
+        n = 6
         a = 0
         b = 1
         i = 1
@@ -44,7 +44,7 @@ HERE
       	return result
 HERE
       assert_equal Parfait::Integer , get_return.class
-      assert_equal 144 , get_return.value
+      assert_equal 8 , get_return.value
     end
   end
 end
