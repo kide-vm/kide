@@ -1,11 +1,11 @@
 require_relative "../helper"
 
 module Risc
-  class InterpreterSmallerIf < MiniTest::Test
+  class InterpreterIfGreater < MiniTest::Test
     include Ticker
 
     def setup
-      @string_input = as_main 'if( 5 < 5 ); return "then";else;return "else";end'
+      @string_input = as_main 'if( 5 > 5 ); return "then";else;return "else";end'
       super
     end
 
