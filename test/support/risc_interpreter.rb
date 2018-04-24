@@ -80,7 +80,7 @@ module Risc
     end
 
     # do the setup, compile and run the input to the end
-    def run_input(input)
+    def run_main(input)
       @string_input = as_main(input)
       do_setup
       run_all
