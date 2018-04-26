@@ -1,9 +1,7 @@
 require_relative '../helper'
 
 module Mains
-  class TestPuts < MiniTest::Test
-    include Risc::Ticker
-    def setup;end
+  class TestPuts < MainsTest
 
     def test_say_hi
       hi = "Hello there"

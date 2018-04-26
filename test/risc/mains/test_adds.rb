@@ -1,9 +1,7 @@
-require_relative '../helper'
+require_relative 'helper'
 
 module Mains
-  class TestAdds < MiniTest::Test
-    include Risc::Ticker
-    def setup;end
+  class TestAdds < MainsTest
 
     def test_ruby_adds
       run_main <<HERE
