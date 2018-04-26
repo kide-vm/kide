@@ -79,9 +79,16 @@ module Risc
       classes
     end
 
-    # do the setup, compile and run the input to the end
+    # do the setup, compile and run the input (a main) to the end
     def run_main(input)
       @string_input = as_main(input)
+      do_setup
+      run_all
+    end
+
+    # wrap the input in Space (main is assumed to be part of it)
+    def run_space(input)
+      @string_input = in_Space(input)
       do_setup
       run_all
     end
