@@ -1,14 +1,11 @@
-require_relative "../helper"
-require_relative "simple_send_harness"
+require_relative "helper"
 
 module Vool
   class TestSendSimpleArgsMom < MiniTest::Test
-    include MomCompile
     include SimpleSendHarness
 
-    def setup
-      Risc.machine.boot
-      @ins = compile_first_method( "5.div4(1,2)")
+    def send_method
+      "5.div4(1,2)"
     end
 
     def receiver

@@ -1,6 +1,15 @@
+require_relative "../helper"
+
 module Vool
   # relies on @ins and receiver_type method
   module SimpleSendHarness
+    include MomCompile
+
+    def setup
+      Risc.machine.boot
+      @ins = compile_first_method( send_method )
+    end
+
     def test_compiles_not_array
       assert Array != @ins.class , @ins
     end

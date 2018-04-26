@@ -1,18 +1,12 @@
-require_relative "../helper"
-require_relative "simple_send_harness"
+require_relative "helper"
 
 module Vool
   class TestSendSelfMom < MiniTest::Test
-    include MomCompile
     include SimpleSendHarness
     include Mom
 
-    def do_setup(str)
-      Risc.machine.boot
-      @ins = compile_first_method( str)
-    end
-    def setup
-      do_setup("self.get_internal_word(0)")
+    def send_method
+      "self.get_internal_word(0)"
     end
     def test_receiver
       assert_equal SlotDefinition,  @ins.next.receiver.class
@@ -32,8 +26,8 @@ module Vool
   end
   class TestSendSelfImplicitMom < TestSendSelfMom
 
-    def setup
-      do_setup( "get_internal_word(0)")
+    def send_method
+      "get_internal_word(0)"
     end
   end
 end
