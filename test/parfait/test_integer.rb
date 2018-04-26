@@ -1,10 +1,10 @@
-require_relative "../helper"
+require_relative "helper"
 
 module Parfait
-  class TestInteger < MiniTest::Test
+  class TestInteger < ParfaitTest
 
     def setup
-      Risc.machine.boot
+      super
       @int = Integer.new(10)
     end
 

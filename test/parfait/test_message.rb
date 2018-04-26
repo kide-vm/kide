@@ -1,11 +1,10 @@
-require_relative "../helper"
+require_relative "helper"
 
 module Parfait
-  class TestMessage < MiniTest::Test
+  class TestMessage < ParfaitTest
 
     def setup
-      Risc.machine.boot
-      @space = Parfait.object_space
+      super
       @mess = @space.first_message
     end
     def test_length

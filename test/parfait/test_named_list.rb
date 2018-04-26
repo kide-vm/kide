@@ -1,11 +1,10 @@
-require_relative "../helper"
+require_relative "helper"
 
 module Parfait
-  class TestNamedLists < MiniTest::Test
+  class TestNamedLists < ParfaitTest
 
     def setup
-      Risc.machine.boot
-      @space = Parfait.object_space
+      super
       @named_list = @space.first_message.frame
       @type = @named_list.get_type
     end

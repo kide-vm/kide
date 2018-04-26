@@ -1,10 +1,10 @@
-require_relative "../helper"
+require_relative "helper"
 
 module Parfait
-  class TestBinaryCode < MiniTest::Test
+  class TestBinaryCode < ParfaitTest
 
     def setup
-      Risc.machine.boot
+      super
       @code = BinaryCode.new(10)
     end
 
