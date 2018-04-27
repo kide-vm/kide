@@ -30,6 +30,18 @@ module Vool
       def test_assigned
         assert_equal SendStatement , @stm.first.value.class
       end
+      def test_length
+        assert_equal 2 , @stm.length
+      end
+      def test_last_class
+        assert_equal SendStatement , @stm.last.class
+      end
+      def test_last_arg
+        assert_equal LocalVariable , @stm.last.arguments.first.class
+      end
+      def test_last_send
+        assert_equal :foo , @stm.last.name
+      end
     end
   end
 end

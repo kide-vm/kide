@@ -20,7 +20,7 @@ module Vool
     def normalize
       statements = Statements.new([])
       arguments = []
-      @arguments.dup.each_with_index do |arg , index |
+      @arguments.each_with_index do |arg , index |
         normalize_arg(arg , arguments , statements)
       end
       if statements.empty?
@@ -30,6 +30,7 @@ module Vool
         return statements
       end
     end
+
     def normalize_arg(arg , arguments , statements)
       if arg.respond_to?(:slot_definition) and !arg.is_a?(SendStatement)
         arguments << arg
@@ -37,7 +38,7 @@ module Vool
       end
       assign = LocalAssignment.new( "tmp_#{arg.object_id}".to_sym, arg)
       statements << assign
-      arguments << assign.name
+      arguments << LocalVariable.new(assign.name)
     end
 
     def to_s
