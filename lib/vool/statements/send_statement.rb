@@ -18,16 +18,31 @@ module Vool
     end
 
     def normalize
-      #TODO normalize arguments. In first stage args must be variables or hoisted (like while/if)
-      #   later sends ok, but then they must execute
-      #   (currently we only use the args as slot_definition so they are not "momed")
-      @arguments.each_with_index do |arg , index |
-        raise "arg #{index} does not provide slot definition #{arg}" unless arg.respond_to?(:slot_definition)
-        raise "Sends not implemented yet at #{index}:#{arg}" if arg.is_a?(SendStatement)
+      statements = Statements.new([])
+      arguments = []
+      @arguments.dup.each_with_index do |arg , index |
+        normalize_arg(arg , arguments , statements)
       end
-      SendStatement.new(@name, @receiver , @arguments)
+      if statements.empty?
+        return SendStatement.new(@name, @receiver , @arguments)
+      else
+        statements << SendStatement.new(@name, @receiver , arguments)
+        return statements
+      end
+    end
+    def normalize_arg(arg , arguments , statements)
+      if arg.respond_to?(:slot_definition) and !arg.is_a?(SendStatement)
+        arguments << arg
+        return
+      end
+      assign = LocalAssignment.new( "tmp_#{arg.object_id}".to_sym, arg)
+      statements << assign
+      arguments << assign.name
     end
 
+    def to_s
+      "#{receiver}.#{name}(#{arguments.join(',')})"
+    end
     def each(&block)
       block.call(self)
       block.call(@receiver)
@@ -44,10 +59,6 @@ module Vool
     # A Send breaks down to 2 steps:
     # - Setting up the next message, with receiver, arguments, and (importantly) return address
     # - a CachedCall , or a SimpleCall, depending on wether the receiver type can be determined
-    #
-    # FIXME: we now presume direct (assignable) values for the arguments and receiver.
-    #        in a not so distant future, temporary variables will have to be created
-    #        and complex statements hoisted to assign to them. pps: same as in conditions
     def to_mom( in_method )
       @receiver = SelfExpression.new(in_method.for_type) if @receiver.is_a?(SelfExpression)
       if(@receiver.ct_type)

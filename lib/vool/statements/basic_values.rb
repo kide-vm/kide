@@ -16,7 +16,9 @@ module Vool
     def ct_type
       Parfait.object_space.get_class_by_name(:Integer).instance_type
     end
-    #gobble it up
+    def to_s
+      value.to_s
+    end
     def each(&block)
     end
   end
@@ -64,6 +66,9 @@ module Vool
     end
     def ct_type
       @my_type
+    end
+    def to_s
+      "self"
     end
   end
   class SuperExpression < Statement
