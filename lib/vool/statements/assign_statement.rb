@@ -7,9 +7,28 @@ module Vool
     end
 
     def normalize()
-      raise "not named left #{name.class}" unless @name.is_a?(Symbol)
-      raise "unsupported right #{value}" unless @value.is_a?(Named) or
-              @value.is_a?(SendStatement) or @value.is_a?(Constant)
+      raise "not named left #{name.class}" unless name.is_a?(Symbol)
+      case value
+      when Named , Constant
+        return copy
+      when SendStatement
+        return normalize_send
+      else
+        raise "unsupported right #{value}"
+      end
+    end
+
+    def copy(value = nil)
+      value ||= @value
+      self.class.new(name,value)
+    end
+
+    def normalize_send
+      statements = value.normalize()
+      return copy( statements ) if statements.is_a?(SendStatement)
+      assign = statements.statements.pop
+      statements << copy(assign)
+      statements
     end
 
     def chain_assign(assign , method)

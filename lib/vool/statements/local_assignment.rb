@@ -2,11 +2,6 @@ module Vool
 
   class LocalAssignment < Assignment
 
-    def normalize
-      super
-      return LocalAssignment.new(@name , @value)
-    end
-
     def to_mom( method )
       if method.arguments_type.variable_index(@name)
         type = :arguments

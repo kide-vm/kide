@@ -3,7 +3,26 @@ require_relative 'helper'
 module Methods
   class TestFibo < MethodsTest
 
-    def est_ruby_adds
+    def test_count_down
+      run_space <<HERE
+      def down( n )
+        if( n <  2 )
+          return n
+        else
+          a = down(n - 1)
+          return a
+        end
+      end
+
+      def main(arg)
+        return down(8)
+      end
+HERE
+      assert_equal Parfait::Integer , get_return.class
+      assert_equal 1 , get_return.value
+    end
+
+    def est_fibo
       run_space <<HERE
       def fibo_r( n )
         if( n <  2 )
