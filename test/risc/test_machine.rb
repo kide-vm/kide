@@ -28,9 +28,18 @@ module Risc
         assert Positioned.position(obj)
       end
     end
-
-    def test_binary
+  end
+  class TestMachineInit < MiniTest::Test
+    def setup
+      @machine = Risc.machine.boot
+      @machine.position_all
       @machine.create_binary
+    end
+    def test_has_binary
+      assert_equal Parfait::BinaryCode , @machine.binary_init.class
+    end
+    def test_has_jump
+      assert_equal "1" ,  @machine.binary_init.get_word(1).to_s(16)
     end
   end
 end

@@ -57,7 +57,7 @@ module Risc
 
     # add a constant (which get created during compilatio and need to be linked)
     def add_constant(const)
-      raise "Must be Parfait #{const}" unless const.is_a?(Parfait::Object) 
+      raise "Must be Parfait #{const}" unless const.is_a?(Parfait::Object)
       @constants << const
     end
     # To create binaries, objects (and labels) need to have a position

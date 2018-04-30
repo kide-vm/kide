@@ -24,13 +24,6 @@ module Arm
       raise "index error 0" if index == 0
       index * 4
     end
-    # Arm stores the return address in a register (not on the stack)
-    # The register is called link , or lr for short .
-    # Maybe because it provides the "link" back to the caller
-    # the vm defines a register for the location, so we store it there.
-    def translate_SaveReturn( code )
-      ArmMachine.str( :lr ,  code.register , arm_index(code) )
-    end
 
     def translate_Transfer( code )
       # Risc machine convention is from => to
