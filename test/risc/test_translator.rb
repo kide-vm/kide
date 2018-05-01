@@ -13,7 +13,7 @@ module Risc
 
     def test_translate_label
       label = Parfait.object_space.get_main.risc_instructions
-      assert @translator.translate(label) , label
+      assert_equal "Space_Type.main" ,label.to_cpu(@translator).name , label
     end
 
     def test_translate_space

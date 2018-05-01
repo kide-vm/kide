@@ -17,14 +17,14 @@ class TestZeroCode < MiniTest::Test
   end
 
   def pest_empty_translate
-    assert_equal 2 , @space.collect_methods.length
+    assert_equal 2 , @space.get_all_methods.length
     @machine.translate_arm
     writer = Elf::ObjectWriter.new(@machine , @objects )
     writer.save "test/zero.o"
   end
 
   def test_methods_match_objects
-    assert_equal 2 , @space.collect_methods.length
+    assert_equal 2 , @space.get_all_methods.length
     @objects.each do |id , objekt|
       next unless objekt.is_a? Parfait::TypedMethod
       assert keeper(objekt.name) ,  "CODE1 #{objekt.name}"

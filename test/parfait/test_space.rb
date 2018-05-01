@@ -140,7 +140,7 @@ module Parfait
           type.remove_method(method)
         end
       end
-      assert_equal 0 , @space.collect_methods.length
+      assert_equal 0 , @space.get_all_methods.length
     end
     def test_no_methods_in_types
       test_remove_methods

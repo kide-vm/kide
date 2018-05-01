@@ -72,7 +72,7 @@ module Parfait
     end
 
     # all methods form all types
-    def collect_methods
+    def get_all_methods
       methods = []
       each_type do | type |
         type.each_method do |meth|
