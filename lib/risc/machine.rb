@@ -79,14 +79,15 @@ module Risc
       cpu_init.set_position( 0 )
       #Positioned.set_position(cpu_init.first , 0)
       Positioned.set_position(binary_init,0)
-      at = position_objects( binary_init.padded_length )
+      @code_start = position_objects( binary_init.padded_length )
       # and then everything code
-      position_code_from( at )
+      position_code
     end
 
     # go through everything that is not code (BinaryCode) and set position
     # padded_length is what determines an objects (byte) length
-    def position_objects( at )
+    # return final position that is stored in code_start
+    def position_objects(at)
       # want to have the objects first in the executable
       objects.each do | id , objekt|
         next if objekt.is_a?( Parfait::BinaryCode) or objekt.is_a?( Risc::Label )
@@ -98,9 +99,13 @@ module Risc
 
     # Position all BinaryCode.
     #
-    # So that all code from one method is layed out linearly (for debuggin)
+    # So that all code from one method is layed out linearly (for debugging)
     # we go through methods, and then through all codes from the method
-    def position_code_from( at )
+    #
+    # start at @code_start. The method is called until
+    # assembly stops throwing errors
+    def position_code
+      at = @code_start
       objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
         log.debug "POS1 #{method.name}:#{at.to_s(16)}"
@@ -119,16 +124,32 @@ module Risc
 
     # Create Binary code for all methods and the initial jump
     # BinaryWriter handles the writing from instructions into BinaryCode objects
+    #
+    # current (poor) design throws an exception when the assembly can't fit
+    # constant loads into one instruction.
+    #
     def create_binary
+      not_ok = 1
+      while(not_ok)
+        begin
+          return do_create_binary
+        rescue LinkException
+          not_ok += 1
+          puts "relink no #{not_ok}"
+          position_code
+        end
+      end
+    end
+
+    # have to retry until it works. Unfortunately (FIXME) jumps can go be both
+    # directions, and so already assembled codes get wrong by moving/ inserting
+    # instructions. And we end up assmebling all code again :-(
+    def do_create_binary
       objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
         writer = BinaryWriter.new(method.binary)
         writer.assemble(method.cpu_instructions)
       end
-      puts "CPU init"
-      puts cpu_init.first.inspect[0...130]
-      puts Parfait.object_space.get_init.risc_instructions.inspect[0...130]
-      puts Parfait.object_space.get_init.cpu_instructions.inspect[0...130]
       BinaryWriter.new(binary_init).assemble(cpu_init)
     end
 

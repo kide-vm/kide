@@ -9,7 +9,7 @@ module Risc
 
   class TextWriter
     include Logging
-    log_level :debug
+    log_level :info
 
     MARKER = 0xBAD4C0DE
 
@@ -109,7 +109,7 @@ module Risc
     def write_object_check(object)
       log.debug "Write object #{object.class} #{object.inspect[0..100]}"
       #Only initially created codes are collected. Binary_init and method "tails" not
-      if !@objects.has_key?(object.object_id) and !object.is_a?(Parfait::BinaryCode)
+      if !@machine.objects.has_key?(object.object_id) and !object.is_a?(Parfait::BinaryCode)
         log.debug "Object at 0x#{Positioned.position(object).to_s(16)}:#{object.get_type()}"
         raise "Object(0x#{object.object_id.to_s(16)}) not linked #{object.inspect}"
       end

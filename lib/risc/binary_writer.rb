@@ -11,26 +11,9 @@ module Risc
       @code = code
     end
 
-    # write into the given BinaryCode instance
-    # LinkException may be thrown, possibly several times
-    # So repeat until it works
-    def assemble( instruction )
-      not_ok = 1
-      while(not_ok)
-        begin
-          #puts "Not ok #{not_ok}"
-          #FIXME really need to reposition here, so jumps go right
-          assemble_all(instruction)
-          not_ok = false
-        rescue LinkException
-          not_ok += 1
-        end
-      end
-    end
-
     # Go through and assemble all instructions.
     # Assembly may cause LinkException, which is caught by caller
-    def assemble_all( instruction )
+    def assemble( instruction )
       @index = 1
       while(instruction)
         instruction.assemble(self)
