@@ -15,8 +15,7 @@ module Risc
 
     def initialize( machine)
       @machine = machine
-      @objects = machine.objects
-      @load_at = 0x8054 # this is linux/arm
+      @load_at = 0x10054 # this is linux/arm
     end
 
     # objects must be written in same order as positioned by the machine, namely
@@ -35,7 +34,7 @@ module Risc
 
     # debugging loop to write out positions (in debug)
     def write_debug
-      @objects.each do |id , objekt|
+      @machine.objects.each do |id , objekt|
         next if objekt.is_a?(Risc::Label)
         log.debug "Linked #{objekt.class}:0x#{objekt.object_id.to_s(16)} at 0x#{Positioned.position(objekt).to_s(16)} / 0x#{objekt.padded_length.to_s(16)}"
       end
@@ -44,7 +43,7 @@ module Risc
     # Write all the objects
     def write_objects
       #  then the objects , not code yet
-      @objects.each do | id, objekt|
+      @machine.objects.each do | id, objekt|
         next if objekt.is_a? Parfait::BinaryCode
         next if objekt.is_a? Risc::Label # ignore
         write_any( objekt )
@@ -54,7 +53,7 @@ module Risc
     # Write the BinaryCode objects of all methods to stream.
     # Really like any other object, it's just about the ordering
     def write_code
-      @objects.each do |id, method|
+      @machine.objects.each do |id, method|
         next unless method.is_a? Parfait::TypedMethod
         binary = method.binary
         while(binary) do
@@ -155,7 +154,7 @@ module Risc
       write_ref_for( code.next )
       write_ref_for( code.get_type )
       @stream.write_signed_int_32( MARKER  )
-      log.debug "Code16 witten stream 0x#{@stream.length.to_s(16)}"
+      log.debug "Init witten stream 0x#{@stream.length.to_s(16)}"
     end
 
     def write_BinaryCode( code )

@@ -25,8 +25,8 @@ module Vool
     end
 
     def simple_if(method)
-      true_label  = Mom::Label.new( "true_label_#{object_id}")
-      merge_label = Mom::Label.new( "merge_label_#{object_id}")
+      true_label  = Mom::Label.new( "true_label_#{object_id.to_s(16)}")
+      merge_label = Mom::Label.new( "merge_label_#{object_id.to_s(16)}")
 
       head = Mom::TruthCheck.new(condition.slot_definition(method) , merge_label)
       head << true_label
@@ -35,9 +35,9 @@ module Vool
     end
 
     def full_if(method)
-      true_label  = Mom::Label.new( "true_label_#{object_id}")
-      false_label = Mom::Label.new( "false_label_#{object_id}")
-      merge_label = Mom::Label.new( "merge_label_#{object_id}")
+      true_label  = Mom::Label.new( "true_label_#{object_id.to_s(16)}")
+      false_label = Mom::Label.new( "false_label_#{object_id.to_s(16)}")
+      merge_label = Mom::Label.new( "merge_label_#{object_id.to_s(16)}")
 
       head = Mom::TruthCheck.new(condition.slot_definition(method) , false_label)
       head << true_label

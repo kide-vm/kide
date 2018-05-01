@@ -17,8 +17,8 @@ module Vool
     end
 
     def to_mom( method )
-      merge_label = Mom::Label.new( "merge_label_#{object_id}")
-      cond_label = Mom::Label.new( "cond_label_#{object_id}")
+      merge_label = Mom::Label.new( "merge_label_#{object_id.to_s(16)}")
+      cond_label = Mom::Label.new( "cond_label_#{object_id.to_s(16)}")
       codes = cond_label
       codes << @hoisted.to_mom(method) if @hoisted
       codes << Mom::TruthCheck.new(condition.slot_definition(method) , merge_label)
