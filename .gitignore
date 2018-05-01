@@ -41,3 +41,6 @@ pkg
 log
 tmp
 a.out
+
+#pi related files, like kernel an qemu
+pi
