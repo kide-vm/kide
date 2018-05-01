@@ -18,6 +18,7 @@ module Risc
 
     def initialize
       @booted = false
+      @risc_init = nil
       @constants = []
     end
     attr_reader  :constants , :cpu_init , :binary_init
@@ -135,7 +136,6 @@ module Risc
           return do_create_binary
         rescue LinkException
           not_ok += 1
-          puts "relink no #{not_ok}"
           position_code
         end
       end

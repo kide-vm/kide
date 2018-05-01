@@ -39,7 +39,7 @@ module Risc
       assert_equal Parfait::BinaryCode , @machine.binary_init.class
     end
     def test_has_jump
-      assert_equal "1" ,  @machine.binary_init.get_word(1).to_s(16)
+      assert_equal "ea0011f4" ,  @machine.binary_init.get_word(1).to_s(16)
     end
   end
 end
