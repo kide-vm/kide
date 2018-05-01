@@ -20,7 +20,7 @@ module Risc
       @booted = false
       @constants = []
     end
-    attr_reader  :constants , :risc_init , :cpu_init , :binary_init
+    attr_reader  :constants , :cpu_init , :binary_init
     attr_reader  :booted , :translated
 
     # translate to arm, ie instantiate an arm translator and pass it to translate
@@ -36,9 +36,9 @@ module Risc
     # this means translating the initial jump (cpu_init into binary_init)
     # and then translating all methods
     def translate( translator )
-      methods = Parfait.object_space.collect_methods
+      methods = Parfait.object_space.get_all_methods
       translate_methods( methods , translator )
-      @cpu_init = translator.translate( @risc_init )
+      @cpu_init = risc_init.to_cpu(translator)
       @binary_init = Parfait::BinaryCode.new(1)
     end
 
@@ -55,6 +55,10 @@ module Risc
       @objects ||= Collector.collect_space
     end
 
+    # lazy init risc_init
+    def risc_init
+      @risc_init ||= Branch.new( "__initial_branch__" , Parfait.object_space.get_init.risc_instructions )
+    end
     # add a constant (which get created during compilatio and need to be linked)
     def add_constant(const)
       raise "Must be Parfait #{const}" unless const.is_a?(Parfait::Object)
@@ -73,7 +77,7 @@ module Risc
       translate_arm unless @translated
       #need the initial jump at 0 and then functions
       cpu_init.set_position( 0 )
-      Positioned.set_position(cpu_init.first , 0)
+      #Positioned.set_position(cpu_init.first , 0)
       Positioned.set_position(binary_init,0)
       at = position_objects( binary_init.padded_length )
       # and then everything code
@@ -99,7 +103,7 @@ module Risc
     def position_code_from( at )
       objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
-        log.debug "CODE1 #{method.name}:#{at}"
+        log.debug "POS1 #{method.name}:#{at.to_s(16)}"
         method.cpu_instructions.set_position( at )
         before = at
         nekst = method.binary
@@ -108,7 +112,7 @@ module Risc
           at += nekst.padded_length
           nekst = nekst.next
         end
-        log.debug "CODE2 #{method.name}:#{at} len: #{at - before}"
+        log.debug "POS2 #{method.name}:#{at.to_s(16)} len: #{(at - before).to_s(16)}"
       end
       at
     end
@@ -121,6 +125,10 @@ module Risc
         writer = BinaryWriter.new(method.binary)
         writer.assemble(method.cpu_instructions)
       end
+      puts "CPU init"
+      puts cpu_init.first.inspect[0...130]
+      puts Parfait.object_space.get_init.risc_instructions.inspect[0...130]
+      puts Parfait.object_space.get_init.cpu_instructions.inspect[0...130]
       BinaryWriter.new(binary_init).assemble(cpu_init)
     end
 
@@ -129,7 +137,6 @@ module Risc
       @objects = nil
       @translated = false
       boot_parfait!
-      @risc_init = Branch.new( "__initial_branch__" , Parfait.object_space.get_init.risc_instructions )
       @booted = true
       self
     end

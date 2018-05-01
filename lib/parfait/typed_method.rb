@@ -50,7 +50,7 @@ module Parfait
     end
 
     def translate_cpu(translator)
-      @cpu_instructions = translator.translate(@risc_instructions)
+      @cpu_instructions = @risc_instructions.to_cpu(translator)
       nekst = @risc_instructions.next
       while(nekst)
         cpu = nekst.to_cpu(translator) # returning nil means no replace

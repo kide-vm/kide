@@ -9,8 +9,6 @@ module Elf
   class ObjectWriter
     def initialize( machine )
       @machine = machine
-      @machine.position_all
-      @machine.create_binary
       target = Elf::Constants::TARGET_ARM
       @object = Elf::ObjectFile.new(target)
       sym_strtab = Elf::StringTableSection.new(".strtab")

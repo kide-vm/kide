@@ -17,6 +17,7 @@ module Vool
       machine = Risc.machine.boot
       self.ruby_to_vool(source)
       machine.position_all
+      machine.create_binary
     end
   end
 end
