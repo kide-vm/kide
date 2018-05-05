@@ -17,6 +17,23 @@ module Risc
   class Position
     @positions = {}
 
+    attr_reader :at
+
+    def initialize( at )
+      @at = at
+      raise "not int #{self}-#{at}" unless @at.is_a?(Integer)
+    end
+
+    def +(offset)
+      @at + offset
+    end
+    def -(offset)
+      @at - offset
+    end
+    def to_s
+      @at.to_s(16)
+    end
+
     def self.positions
       @positions
     end
@@ -33,15 +50,14 @@ module Risc
     end
 
     def self.set_position( object , pos )
-      raise "Position must be number not :#{pos}:" unless pos.is_a?(Numeric)
       # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
       # in measures (of 32)
       #puts "Setting #{pos} for #{self.class}"
       old = Position.positions[object]
-      if old != nil and ((old - pos).abs > 10000)
-        raise "position set again #{pos}!=#{old} for #{object}"
+      if old != nil and ((old - pos).abs > 1000)
+        raise "position set too far off #{pos}!=#{old} for #{object}"
       end
-      self.positions[object] = pos
+      self.positions[object] = Position.new( pos )
     end
   end
 end

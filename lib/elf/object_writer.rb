@@ -37,12 +37,12 @@ module Elf
         if( slot.respond_to? :sof_reference_name )
           label = "#{slot.sof_reference_name}"
         else
-          label = "#{slot.class.name}::#{Position.position(slot).to_s(16)}"
+          label = "#{slot.class.name}::#{Risc::Position.position(slot).to_s(16)}"
         end
         label += "=#{slot}" if slot.is_a?(Symbol) or slot.is_a?(String)
-        add_symbol label , Position.position(slot)
+        add_symbol label , Risc::Position.position(slot)
         if slot.is_a?(Parfait::TypedMethod)
-          add_symbol slot.name.to_s , Position.position(slot.binary)
+          add_symbol slot.name.to_s , Risc::Position.position(slot.binary)
         end
       end
     end
