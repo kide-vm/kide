@@ -22,7 +22,7 @@ module Arm
     end
 
     def set_position( position , count )
-      Positioned.set_position(self,position)
+      Risc::Position.set_position(self,position)
       position += byte_length
       if self.next
         count += 1 #assumes 4 byte instructions, as does the whole setup

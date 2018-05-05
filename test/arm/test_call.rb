@@ -18,9 +18,9 @@ module Arm
     def test_method_call
       Risc.machine.boot
       bin = Parfait::BinaryCode.new(1)
-      Positioned.set_position(bin , 0x20)
+      Risc::Position.set_position(bin , 0x20)
       code = @machine.call(	bin ,{} )#this jumps to the next instruction
-      Positioned.set_position(code , 0)
+      Risc::Position.set_position(code , 0)
       assert_code code , :call, [0x09,0x0,0x0,0xeb]
     end
     def test_swi

@@ -41,7 +41,7 @@ module Risc
     def write_debug
       @machine.objects.each do |id , objekt|
         next if objekt.is_a?(Risc::Label)
-        log.debug "Linked #{objekt.class}:0x#{objekt.object_id.to_s(16)} at 0x#{Positioned.position(objekt).to_s(16)} / 0x#{objekt.padded_length.to_s(16)}"
+        log.debug "Linked #{objekt.class}:0x#{objekt.object_id.to_s(16)} at 0x#{Position.position(objekt).to_s(16)} / 0x#{objekt.padded_length.to_s(16)}"
       end
     end
 
@@ -71,16 +71,16 @@ module Risc
     # Write any object just logs a bit and passes to write_any_out
     def write_any( obj )
       write_any_log( obj ,  "Write")
-      if @stream.length != Positioned.position(obj)
-        raise "Write #{obj.class}:0x#{obj.object_id.to_s(16)} at 0x#{stream_position.to_s(16)} not 0x#{Positioned.position(obj).to_s(16)}"
+      if @stream.length != Position.position(obj)
+        raise "Write #{obj.class}:0x#{obj.object_id.to_s(16)} at 0x#{stream_position.to_s(16)} not 0x#{Position.position(obj).to_s(16)}"
       end
       write_any_out(obj)
       write_any_log( obj ,  "Wrote")
-      Positioned.position(obj)
+      Position.position(obj)
     end
 
     def write_any_log( obj , at)
-      log.debug "#{at} #{obj.class}:0x#{obj.object_id.to_s(16)} at stream 0x#{stream_position.to_s(16)} pos:0x#{Positioned.position(obj).to_s(16)} , len:0x#{obj.padded_length.to_s(16)}"
+      log.debug "#{at} #{obj.class}:0x#{obj.object_id.to_s(16)} at stream 0x#{stream_position.to_s(16)} pos:0x#{Position.position(obj).to_s(16)} , len:0x#{obj.padded_length.to_s(16)}"
     end
 
     # Most objects are the same and get passed to write_object
@@ -108,14 +108,14 @@ module Risc
       log.debug "type #{obj_written} , total #{obj_written + indexed_written} (array #{indexed_written})"
       log.debug "Len = 0x#{object.get_length.to_s(16)} , inst =0x#{object.get_type.instance_length.to_s(16)}" if object.is_a? Parfait::Type
       pad_after( obj_written + indexed_written  )
-      Positioned.position(object)
+      Position.position(object)
     end
 
     def write_object_check(object)
       log.debug "Write object #{object.class} #{object.inspect[0..100]}"
       #Only initially created codes are collected. Binary_init and method "tails" not
       if !@machine.objects.has_key?(object.object_id) and !object.is_a?(Parfait::BinaryCode)
-        log.debug "Object at 0x#{Positioned.position(object).to_s(16)}:#{object.get_type()}"
+        log.debug "Object at 0x#{Position.position(object).to_s(16)}:#{object.get_type()}"
         raise "Object(0x#{object.object_id.to_s(16)}) not linked #{object.inspect}"
       end
     end
@@ -178,7 +178,7 @@ module Risc
         raise "length mismatch #{str.length} != #{string.char_length}" if str.length != string.char_length
       end
       str = string.to_s if string.is_a? Symbol
-      log.debug "#{string.class} is #{string} at 0x#{Positioned.position(string).to_s(16)} length 0x#{string.length.to_s(16)}"
+      log.debug "#{string.class} is #{string} at 0x#{Position.position(string).to_s(16)} length 0x#{string.length.to_s(16)}"
       write_checked_string(string , str)
     end
 
@@ -206,7 +206,7 @@ module Risc
       when Fixnum
         @stream.write_signed_int_32(object)
       else
-        @stream.write_signed_int_32(Positioned.position(object) + @load_at)
+        @stream.write_signed_int_32(Position.position(object) + @load_at)
       end
     end
 

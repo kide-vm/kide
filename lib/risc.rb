@@ -20,7 +20,7 @@ module Risc
 end
 
 require_relative "risc/padding"
-require_relative "risc/positioned"
+require_relative "risc/position"
 
 require "parfait"
 require_relative "risc/machine"
