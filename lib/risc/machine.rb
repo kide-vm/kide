@@ -114,7 +114,7 @@ module Risc
         before = at
         nekst = method.binary
         while(nekst)
-          Position.set_position(nekst , at)
+          Position.set_position(nekst , at , method)
           at += nekst.padded_length
           nekst = nekst.next
         end

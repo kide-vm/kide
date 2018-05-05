@@ -25,6 +25,10 @@ module Risc
       pos = Position.set_position(self , 5)
       assert_equal 5 , pos.at
     end
+    def test_set_instr
+      pos = Position.set_position( Risc::Label.new("hi","ho") , 0)
+      assert_equal IPosition , pos.class
+    end
     def tet_tos
       assert_equal "0x10" , Position.set_position(self).to_s
     end

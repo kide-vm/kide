@@ -35,7 +35,13 @@ module Risc
     def to_s
       "0x#{@at.to_s(16)}"
     end
-
+    def reset_to(pos)
+      if((at - pos).abs > 1000)
+        raise "position set too far off #{pos}!=#{at} for #{object}:#{object.class}"
+      end
+      @at = pos
+      self
+    end
     def self.positions
       @positions
     end
@@ -51,15 +57,40 @@ module Risc
       pos
     end
 
-    def self.set_position( object , pos )
+    def self.set_position( object , pos , extra = nil)
       # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
       # in measures (of 32)
       #puts "Setting #{pos} for #{self.class}"
       old = Position.positions[object]
-      if old != nil and ((old - pos).abs > 1000)
-        raise "position set too far off #{pos}!=#{old} for #{object}:#{object.class}"
+      return old.reset_to(pos) if old != nil
+      self.positions[object] = for_at( object , pos , extra)
+    end
+
+    def self.for_at(object , at , extra)
+      case object
+      when Parfait::BinaryCode
+        BPosition.new(object,at , extra)
+      when Arm::Instruction , Risc::Label
+        IPosition.new(object,at)
+      else
+        Position.new(at)
       end
-      self.positions[object] = Position.new( pos )
+    end
+  end
+  # handle event propagation
+  class IPosition < Position
+    attr_reader :instruction
+    def initialize(instruction, pos)
+      super(pos)
+      @instruction = instruction
+    end
+  end
+  class BPosition < Position
+    attr_reader :code , :method
+    def initialize(code, pos , method)
+      super(pos)
+      @code = code
+      @method = method
     end
   end
 end
