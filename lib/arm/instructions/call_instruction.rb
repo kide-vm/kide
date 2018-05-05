@@ -11,7 +11,7 @@ module Arm
   # Riscs 0-6 hold the call values as for a normal c call
   class CallInstruction < Instruction
     attr_reader :first
-    
+
     def initialize(first, attributes)
       super(nil, nil)
       @attributes = attributes
@@ -51,8 +51,8 @@ module Arm
       when Parfait::BinaryCode
         # But, for methods, this happens to be the size of the object header,
         # so there it balances out, but not blocks
-        # have to use the code, not the mthod object for methods
-        arg = Positioned.position(@first) - Positioned.position(self)
+        # have to use the code, not the method object for methods
+        arg = Positioned.position(@first) - Positioned.position(self) + 4
       else
         arg = @first
       end

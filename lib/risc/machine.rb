@@ -14,7 +14,7 @@ module Risc
 
   class Machine
     include Logging
-    log_level :info
+    log_level :debug
 
     def initialize
       @booted = false
@@ -77,9 +77,8 @@ module Risc
     def position_all
       translate_arm unless @translated
       #need the initial jump at 0 and then functions
-      cpu_init.set_position( 0 )
-      #Positioned.set_position(cpu_init.first , 0)
       Positioned.set_position(binary_init,0)
+      cpu_init.set_position( 12 ,0)
       @code_start = position_objects( binary_init.padded_length )
       # and then everything code
       position_code
@@ -93,7 +92,9 @@ module Risc
       objects.each do | id , objekt|
         next if objekt.is_a?( Parfait::BinaryCode) or objekt.is_a?( Risc::Label )
         Positioned.set_position(objekt,at)
+        before = at
         at += objekt.padded_length
+        log.debug "Object #{objekt.class}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
       end
       at
     end
@@ -109,8 +110,7 @@ module Risc
       at = @code_start
       objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
-        log.debug "POS1 #{method.name}:#{at.to_s(16)}"
-        method.cpu_instructions.set_position( at )
+        method.cpu_instructions.set_position( at + 12)
         before = at
         nekst = method.binary
         while(nekst)
@@ -118,7 +118,8 @@ module Risc
           at += nekst.padded_length
           nekst = nekst.next
         end
-        log.debug "POS2 #{method.name}:#{at.to_s(16)} len: #{(at - before).to_s(16)}"
+        log.debug "Method #{method.name}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
+        log.debug "Instructions #{method.cpu_instructions.object_id.to_s(16)}:#{(before+12).to_s(16)}"
       end
       at
     end
@@ -136,6 +137,7 @@ module Risc
           return do_create_binary
         rescue LinkException
           not_ok += 1
+          log.debug "Relink #{not_ok}"
           position_code
         end
       end
@@ -150,6 +152,7 @@ module Risc
         writer = BinaryWriter.new(method.binary)
         writer.assemble(method.cpu_instructions)
       end
+      log.debug "BinaryInit #{cpu_init.first.object_id.to_s(16)}"
       BinaryWriter.new(binary_init).assemble(cpu_init)
     end
 

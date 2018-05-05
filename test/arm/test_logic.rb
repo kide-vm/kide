@@ -99,7 +99,7 @@ module Arm
 
     def test_move_object
       code = @machine.add( :r1 , label)
-      code.set_position(0)
+      code.set_position(0,0)
       assert_code code , :add , [0x22,0x10,0x9f,0xe2] #e2 9f 10 22
     end
 

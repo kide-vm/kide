@@ -6,6 +6,11 @@ module Risc
   # This class serves to write all the objects of the machine (wich also contain the code)
   # into one stream or binary text object. This is then written to an ELF text section.
   #
+  # A word about positions: The c world has a thing called position independent code, and
+  # baically we follw that idea. Code (ie jumps and constant loads) are all relative.
+  # But we have pointers. In C the linker takes care of bending those, we have to
+  # do that ourselves, in write_ref. That's why we need the load adddess and basically
+  # we just add it to pointers.
 
   class TextWriter
     include Logging

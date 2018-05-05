@@ -21,11 +21,16 @@ module Arm
       ret
     end
 
-    def set_position( position )
+    def set_position( position , count )
       Positioned.set_position(self,position)
       position += byte_length
       if self.next
-        self.next.set_position( position )
+        count += 1 #assumes 4 byte instructions, as does the whole setup
+        if( 0 == count % 12) # 12 is the amount of instructions that fit into a BinaryCode
+          count = 0
+          position += 12 # 12=3*4 , 3 for marker,type,next words to jump over
+        end
+        self.next.set_position( position , count )
       else
         position
       end

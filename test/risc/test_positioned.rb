@@ -37,6 +37,6 @@ class TestPositioned < MiniTest::Test
 
   def test_pos_arm
     mov = Arm::ArmMachine.mov  :r1,  128
-    mov.set_position(0)
+    mov.set_position(0,0)
   end
 end
