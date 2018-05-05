@@ -25,13 +25,15 @@ module Risc
     end
 
     def +(offset)
+      offset = offset.at if offset.is_a?(Position)
       @at + offset
     end
     def -(offset)
+      offset = offset.at if offset.is_a?(Position)
       @at - offset
     end
     def to_s
-      @at.to_s(16)
+      "0x#{@at.to_s(16)}"
     end
 
     def self.positions
@@ -55,7 +57,7 @@ module Risc
       #puts "Setting #{pos} for #{self.class}"
       old = Position.positions[object]
       if old != nil and ((old - pos).abs > 1000)
-        raise "position set too far off #{pos}!=#{old} for #{object}"
+        raise "position set too far off #{pos}!=#{old} for #{object}:#{object.class}"
       end
       self.positions[object] = Position.new( pos )
     end

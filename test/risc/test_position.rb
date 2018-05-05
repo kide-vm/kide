@@ -17,9 +17,16 @@ module Risc
       res = Position.new(5) - 1
       assert_equal 4 , res
     end
+    def test_sub_pos
+      res = Position.new(5) - Position.new(1)
+      assert_equal 4 , res
+    end
     def test_set
       pos = Position.set_position(self , 5)
       assert_equal 5 , pos.at
+    end
+    def tet_tos
+      assert_equal "0x10" , Position.set_position(self).to_s
     end
     def test_reset_ok
       pos = Position.set_position(self , 5)

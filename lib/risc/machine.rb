@@ -14,7 +14,7 @@ module Risc
 
   class Machine
     include Logging
-    log_level :debug
+    log_level :info
 
     def initialize
       @booted = false
@@ -158,6 +158,7 @@ module Risc
 
     def boot
       initialize
+      Position.positions.clear
       @objects = nil
       @translated = false
       boot_parfait!

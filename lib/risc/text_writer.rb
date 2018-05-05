@@ -41,7 +41,7 @@ module Risc
     def write_debug
       @machine.objects.each do |id , objekt|
         next if objekt.is_a?(Risc::Label)
-        log.debug "Linked #{objekt.class}:0x#{objekt.object_id.to_s(16)} at 0x#{Position.position(objekt).to_s(16)} / 0x#{objekt.padded_length.to_s(16)}"
+        log.debug "Linked #{objekt.class}:0x#{objekt.object_id.to_s(16)} at #{Position.position(objekt)} / 0x#{objekt.padded_length.to_s(16)}"
       end
     end
 
@@ -71,8 +71,8 @@ module Risc
     # Write any object just logs a bit and passes to write_any_out
     def write_any( obj )
       write_any_log( obj ,  "Write")
-      if @stream.length != Position.position(obj)
-        raise "Write #{obj.class}:0x#{obj.object_id.to_s(16)} at 0x#{stream_position.to_s(16)} not 0x#{Position.position(obj).to_s(16)}"
+      if @stream.length != Position.position(obj).at
+        raise "Write #{obj.class}:0x#{obj.object_id.to_s(16)} at 0x#{stream_position.to_s(16)} not #{Position.position(obj)}"
       end
       write_any_out(obj)
       write_any_log( obj ,  "Wrote")
@@ -80,7 +80,7 @@ module Risc
     end
 
     def write_any_log( obj , at)
-      log.debug "#{at} #{obj.class}:0x#{obj.object_id.to_s(16)} at stream 0x#{stream_position.to_s(16)} pos:0x#{Position.position(obj).to_s(16)} , len:0x#{obj.padded_length.to_s(16)}"
+      log.debug "#{at} #{obj.class}:0x#{obj.object_id.to_s(16)} at stream #{stream_position} pos:#{Position.position(obj)} , len:0x#{obj.padded_length.to_s(16)}"
     end
 
     # Most objects are the same and get passed to write_object
@@ -178,7 +178,7 @@ module Risc
         raise "length mismatch #{str.length} != #{string.char_length}" if str.length != string.char_length
       end
       str = string.to_s if string.is_a? Symbol
-      log.debug "#{string.class} is #{string} at 0x#{Position.position(string).to_s(16)} length 0x#{string.length.to_s(16)}"
+      log.debug "#{string.class} is #{string} at 0x#{Position.position(string)} length 0x#{string.length.to_s(16)}"
       write_checked_string(string , str)
     end
 
