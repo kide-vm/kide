@@ -82,11 +82,9 @@ module Arm
     end
     def test_too_big_add
       code = @machine.add	 :r1 , :r1, 0x222
-      begin # add 0x02 (first instruction) and then 0x220 shifted
-        assert_code code , :add , [0x02,0x1c,0x91,0xe2] #e2 91 1e 02
-      rescue Risc::LinkException
-        retry
-      end
+      code.set_position(0,0)
+      # add 0x02 (first instruction) and then 0x220 shifted
+      assert_code code , :add , [0x02,0x1c,0x91,0xe2] #e2 91 1e 02
       # added extra instruction to add "extra"
       assert_code code.next , :add , [0x22,0x10,0x91,0xe2] #e2 91 10 22
     end

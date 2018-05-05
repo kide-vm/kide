@@ -21,6 +21,11 @@ module Arm
       ret
     end
 
+    def insert(instruction)
+      super
+      @next.set_position( Risc::Position.position(self) + self.byte_length , 0) #FIXME
+    end
+
     def set_position( position , count )
       Risc::Position.set_position(self,position)
       position += byte_length

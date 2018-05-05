@@ -65,13 +65,11 @@ module Arm
       if (op_with_rot = calculate_u8_with_rr(right))
         return op_with_rot
       end
-      raise "No negatives implemented #{right} " if right < 0
+      raise "Negatives not implemented #{right} " if right < 0
       unless @extra
-        @extra = 1      # puts "RELINK M at #{self.position.to_s(16)}"
-        extra = ArmMachine.add( to , to , 0 ) #noop that we change below
-        extra.set_next(@next)
-        @next = extra
-        raise ::Risc::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
+        puts "RELINK M at #{Risc::Position.position(self)}"
+        @extra = 1
+        insert ArmMachine.add( to , to , 0 ) #noop that we change below
       end
       # now we can do the actual breaking of instruction, by splitting the operand
       operand = calculate_u8_with_rr( right & 0xFFFFFF00 )

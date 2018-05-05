@@ -69,16 +69,13 @@ module Arm
       else
         unless @extra
           @extra = 1
-          #puts "RELINK L at #{self.position.to_s(16)}"
-          extra = ArmMachine.send( opcode ,  result , result , 0 ) #noop
-          extra.set_next( @next )
-          @next = extra
-          raise ::Risc::LinkException.new("cannot fit numeric literal argument in operand #{right.inspect}")
+          # puts "RELINK L at #{Risc::Position.position(self)}"
+          # use sub for sub and add for add, ie same as opcode
+          insert ArmMachine.send( opcode ,  result , result , 0 ) #noop
         end
         # now we can do the actual breaking of instruction, by splitting the operand
         operand = calculate_u8_with_rr( right & 0xFFFFFF00 )
-        raise "no fit for #{right}" unless operand
-        # use sub for sub and add for add, ie same as opcode
+        raise "no fit for #{right} in #{self}" unless operand
         @next.set_value(right & 0xFF )
       end
       return operand
