@@ -78,7 +78,7 @@ module Risc
       translate_arm unless @translated
       #need the initial jump at 0 and then functions
       Position.set_position(binary_init,0)
-      cpu_init.set_position( 12 ,0)
+      cpu_init.set_position( 12 ,0 , binary_init)
       @code_start = position_objects( binary_init.padded_length )
       # and then everything code
       position_code
@@ -110,7 +110,7 @@ module Risc
       at = @code_start
       objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
-        method.cpu_instructions.set_position( at + 12)
+        method.cpu_instructions.set_position( at + 12 , 0 , method.binary)
         before = at
         nekst = method.binary
         while(nekst)

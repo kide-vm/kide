@@ -23,11 +23,12 @@ module Arm
 
     def insert(instruction)
       super
-      @next.set_position( Risc::Position.position(self) + self.byte_length , 0) #FIXME
+      my_pos = Risc::Position.position(self)
+      @next.set_position(  my_pos + self.byte_length , 0 , my_pos.binary)
     end
 
-    def set_position( position , count )
-      Risc::Position.set_position(self,position)
+    def set_position( position , count , extra = nil)
+      Risc::Position.set_position(self,position , extra)
       position += byte_length
       if self.next
         count += 1 #assumes 4 byte instructions, as does the whole setup
@@ -35,7 +36,7 @@ module Arm
           count = 0
           position += 12 # 12=3*4 , 3 for marker,type,next words to jump over
         end
-        self.next.set_position( position , count )
+        self.next.set_position( position , count , extra)
       else
         position
       end

@@ -36,12 +36,14 @@ module Risc
       "0x#{@at.to_s(16)}"
     end
     def reset_to(pos)
+      return false if pos == at
       if((at - pos).abs > 1000)
         raise "position set too far off #{pos}!=#{at} for #{object}:#{object.class}"
       end
       @at = pos
-      self
+      true
     end
+
     def self.positions
       @positions
     end
@@ -62,7 +64,10 @@ module Risc
       # in measures (of 32)
       #puts "Setting #{pos} for #{self.class}"
       old = Position.positions[object]
-      return old.reset_to(pos) if old != nil
+      if old != nil
+        old.reset_to(pos)
+        return old
+      end
       self.positions[object] = for_at( object , pos , extra)
     end
 
@@ -71,7 +76,7 @@ module Risc
       when Parfait::BinaryCode
         BPosition.new(object,at , extra)
       when Arm::Instruction , Risc::Label
-        IPosition.new(object,at)
+        IPosition.new(object,at , extra)
       else
         Position.new(at)
       end
@@ -79,11 +84,22 @@ module Risc
   end
   # handle event propagation
   class IPosition < Position
-    attr_reader :instruction
-    def initialize(instruction, pos)
+    attr_reader :instruction , :binary
+    def initialize(instruction, pos , binary)
+      raise "not set " unless binary
       super(pos)
       @instruction = instruction
+      @binary = binary
     end
+
+    def reset_to(pos)
+      changed = super(pos)
+      puts "Reset (#{changed}) #{instruction}"
+      return unless changed
+      return unless instruction.next
+      instruction.next.set_position( pos + instruction.byte_length , 0)
+    end
+
   end
   class BPosition < Position
     attr_reader :code , :method
