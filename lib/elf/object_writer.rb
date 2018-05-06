@@ -27,7 +27,7 @@ module Elf
         type.each_method do |f|
           f.cpu_instructions.each do |label|
             next unless label.is_a?(Risc::Label)
-            add_symbol "#{type.name}::#{f.name}:#{label.name}" , Risc::Position.position(label).at
+            add_symbol "#{type.name}::#{f.name}:#{label.name}" , Risc::Position.get(label).at
           end
         end
       end
@@ -37,12 +37,12 @@ module Elf
         if( slot.respond_to? :sof_reference_name )
           label = "#{slot.sof_reference_name}"
         else
-          label = "#{slot.class.name}::#{Risc::Position.position(slot)}"
+          label = "#{slot.class.name}::#{Risc::Position.get(slot)}"
         end
         label += "=#{slot}" if slot.is_a?(Symbol) or slot.is_a?(String)
-        add_symbol label , Risc::Position.position(slot).at
+        add_symbol label , Risc::Position.get(slot).at
         if slot.is_a?(Parfait::TypedMethod)
-          add_symbol slot.name.to_s , Risc::Position.position(slot.binary).at
+          add_symbol slot.name.to_s , Risc::Position.get(slot.binary).at
         end
       end
     end

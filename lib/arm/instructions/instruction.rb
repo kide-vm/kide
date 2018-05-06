@@ -23,12 +23,12 @@ module Arm
 
     def insert(instruction)
       super
-      my_pos = Risc::Position.position(self)
+      my_pos = Risc::Position.get(self)
       @next.set_position(  my_pos + self.byte_length , 0 , my_pos.binary)
     end
 
     def set_position( position , count , extra = nil)
-      Risc::Position.set_position(self,position , extra)
+      Risc::Position.set(self,position , extra)
       position += byte_length
       if self.next
         count += 1 #assumes 4 byte instructions, as does the whole setup

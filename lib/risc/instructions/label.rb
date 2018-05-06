@@ -46,7 +46,7 @@ module Risc
 
     # labels have the same position as their next
     def set_position( position , count = 0 , extra = nil)
-      Position.set_position(self,position , extra)
+      Position.set(self,position , extra)
       self.next.set_position(position,count,extra) if self.next
     end
 

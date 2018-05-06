@@ -77,7 +77,7 @@ module Risc
     def position_all
       translate_arm unless @translated
       #need the initial jump at 0 and then functions
-      Position.set_position(binary_init,0)
+      Position.set(binary_init,0)
       cpu_init.set_position( 12 ,0 , binary_init)
       @code_start = position_objects( binary_init.padded_length )
       # and then everything code
@@ -91,7 +91,7 @@ module Risc
       # want to have the objects first in the executable
       objects.each do | id , objekt|
         next if objekt.is_a?( Parfait::BinaryCode) or objekt.is_a?( Risc::Label )
-        Position.set_position(objekt,at)
+        Position.set(objekt,at)
         before = at
         at += objekt.padded_length
         log.debug "Object #{objekt.class}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
@@ -114,7 +114,7 @@ module Risc
         before = at
         nekst = method.binary
         while(nekst)
-          Position.set_position(nekst , at , method)
+          Position.set(nekst , at , method)
           at += nekst.padded_length
           nekst = nekst.next
         end

@@ -48,7 +48,11 @@ module Risc
       @positions
     end
 
-    def self.position(object)
+    def self.set?(object)
+      self.positions.has_key?(object)
+    end
+
+    def self.get(object)
       pos = self.positions[object]
       if pos == nil
         str = "position accessed but not set, "
@@ -59,7 +63,7 @@ module Risc
       pos
     end
 
-    def self.set_position( object , pos , extra = nil)
+    def self.set( object , pos , extra = nil)
       # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
       # in measures (of 32)
       #puts "Setting #{pos} for #{self.class}"

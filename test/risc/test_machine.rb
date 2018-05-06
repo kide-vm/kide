@@ -25,7 +25,7 @@ module Risc
     end
     def test_has_positions
       @machine.objects.each do |id,obj|
-        assert Position.position(obj)
+        assert Position.get(obj)
       end
     end
   end
