@@ -78,7 +78,7 @@ module Risc
       translate_arm unless @translated
       #need the initial jump at 0 and then functions
       Position.set(binary_init,0)
-      cpu_init.set_position( 12 ,0 , binary_init)
+      Position.set(cpu_init , 3 , binary_init)
       @code_start = position_objects( binary_init.padded_length )
       # and then everything code
       position_code
@@ -91,8 +91,8 @@ module Risc
       # want to have the objects first in the executable
       objects.each do | id , objekt|
         next if objekt.is_a?( Parfait::BinaryCode) or objekt.is_a?( Risc::Label )
-        Position.set(objekt,at)
         before = at
+        Position.set(objekt,at)
         at += objekt.padded_length
         log.debug "Object #{objekt.class}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
       end
@@ -110,14 +110,16 @@ module Risc
       at = @code_start
       objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
-        method.cpu_instructions.set_position( at + 12 , 0 , method.binary)
         before = at
-        nekst = method.binary
-        while(nekst)
-          Position.set(nekst , at , method)
-          at += nekst.padded_length
-          nekst = nekst.next
-        end
+        Position.set( method.binary , at , method)
+        Position.set( method.cpu_instructions, 3 , method.binary)
+        # before = at
+        # nekst = method.binary
+        # while(nekst)
+        #   Position.set(nekst , at , method)
+        #   at += nekst.padded_length
+        #   nekst = nekst.next
+        # end
         log.debug "Method #{method.name}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
         log.debug "Instructions #{method.cpu_instructions.object_id.to_s(16)}:#{(before+12).to_s(16)}"
       end

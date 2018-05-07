@@ -24,23 +24,7 @@ module Arm
     def insert(instruction)
       super
       my_pos = Risc::Position.get(self)
-      @next.set_position(  my_pos + self.byte_length , 0 , my_pos.binary)
+      Risc::Position.set(  my_pos + self.byte_length , 0 , my_pos.binary)
     end
-
-    def set_position( position , count , extra = nil)
-      Risc::Position.set(self,position , extra)
-      position += byte_length
-      if self.next
-        count += 1 #assumes 4 byte instructions, as does the whole setup
-        if( 0 == count % 12) # 12 is the amount of instructions that fit into a BinaryCode
-          count = 0
-          position += 12 # 12=3*4 , 3 for marker,type,next words to jump over
-        end
-        self.next.set_position( position , count , extra)
-      else
-        position
-      end
-    end
-
   end
 end

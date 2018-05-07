@@ -1,8 +1,12 @@
 require_relative "../helper"
 
 module Risc
-  class TestPosition < MiniTest::Test
+  class TestPositionBasic < MiniTest::Test
 
+    def setup
+      Risc.machine.boot
+      @binary = Parfait::BinaryCode.new(1)
+    end
     def test_creation_ok
       assert Position.new(0)
     end
@@ -26,7 +30,7 @@ module Risc
       assert_equal 5 , pos.at
     end
     def test_set_instr
-      pos = Position.set( Risc::Label.new("hi","ho") , 0)
+      pos = Position.set( Risc::Label.new("hi","ho") , 0 , @binary)
       assert_equal IPosition , pos.class
     end
     def tet_tos

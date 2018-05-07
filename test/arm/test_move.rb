@@ -22,7 +22,7 @@ module Arm
     end
     def test_mov_big
       code = @machine.mov  :r0,  0x222  # is not 8 bit and can't be rotated by the arm system in one instruction
-      code.set_position(0,0)
+      Risc::Position.set(code,0,1)
       begin  # mov 512(0x200) = e3 a0 0c 02    add 34(0x22) = e2 90 00 22
         assert_code code , :mov , [ 0x02,0x0c,0xb0,0xe3]
       rescue Risc::LinkException

@@ -44,12 +44,6 @@ module Risc
       ret
     end
 
-    # labels have the same position as their next
-    def set_position( position , count = 0 , extra = nil)
-      Position.set(self,position , extra)
-      self.next.set_position(position,count,extra) if self.next
-    end
-
     # shame we need this, just for logging
     def byte_length
       0
