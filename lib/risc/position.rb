@@ -36,7 +36,7 @@ module Risc
       "0x#{@at.to_s(16)}"
     end
     # just a callback after creation AND insertion
-    def init
+    def init(pos)
     end
     def reset_to(pos)
       return false if pos == at
@@ -77,7 +77,7 @@ module Risc
       end
       position = for_at( object , pos , extra)
       self.positions[object] = position
-      position.init
+      position.init(pos)
       position
     end
 
@@ -102,22 +102,16 @@ module Risc
       @binary = binary
     end
 
-    def set_position( position , binary = nil)
-      raise "invalid position #{position}" if position > 15
-      binary = Risc::Position.get(self).binary unless binary
-      Risc::Position.set(self,  position , binary)
-      position += byte_length / 4 #assumes 4 byte instructions, as does the whole setup
-      if self.next
-        if( 3 == position % 15) # 12 is the amount of instructions that fit into a BinaryCode
-          position = 3
-          binary = binary.next
-        end
-        self.next.set_position( position  , binary)
-      else
-        position
+    def init(at)
+      return unless instruction.next
+      at += instruction.byte_length
+      bin = binary
+      if( 12 == at % 60)
+        at = 12
+        bin = binary.next
       end
+      Position.set(instruction.next, at , binary)
     end
-
 
     def reset_to(pos)
       changed = super(pos)
@@ -134,6 +128,10 @@ module Risc
       super(pos)
       @code = code
       @method = method
+    end
+    def init(at)
+      return unless code.next
+      Position.set(code.next , at + code.padded_length, method)
     end
   end
 end

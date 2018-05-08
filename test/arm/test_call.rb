@@ -20,7 +20,7 @@ module Arm
       bin = Parfait::BinaryCode.new(1)
       Risc::Position.set(bin , 0x20)
       code = @machine.call(	bin ,{} )#this jumps to the next instruction
-      Risc::Position.set(code , 0)
+      Risc::Position.set(code , 0, 1)
       assert_code code , :call, [0x09,0x0,0x0,0xeb]
     end
     def test_swi

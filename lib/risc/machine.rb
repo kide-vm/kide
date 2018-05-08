@@ -78,7 +78,7 @@ module Risc
       translate_arm unless @translated
       #need the initial jump at 0 and then functions
       Position.set(binary_init,0)
-      Position.set(cpu_init , 3 , binary_init)
+      Position.set(cpu_init , 12 , binary_init)
       @code_start = position_objects( binary_init.padded_length )
       # and then everything code
       position_code

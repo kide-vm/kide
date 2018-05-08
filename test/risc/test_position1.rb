@@ -1,12 +1,9 @@
 require_relative "../helper"
 
 module Risc
+  # tests that do no require a boot and only test basic positioning
   class TestPositionBasic < MiniTest::Test
 
-    def setup
-      Risc.machine.boot
-      @binary = Parfait::BinaryCode.new(1)
-    end
     def test_creation_ok
       assert Position.new(0)
     end
@@ -28,10 +25,6 @@ module Risc
     def test_set
       pos = Position.set(self , 5)
       assert_equal 5 , pos.at
-    end
-    def test_set_instr
-      pos = Position.set( Risc::Label.new("hi","ho") , 0 , @binary)
-      assert_equal IPosition , pos.class
     end
     def tet_tos
       assert_equal "0x10" , Position.set(self).to_s
