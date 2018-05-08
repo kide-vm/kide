@@ -12,7 +12,6 @@ module Risc
     end
 
     # Go through and assemble all instructions.
-    # Assembly may cause LinkException, which is caught by caller
     def assemble( instruction )
       @index = 1
       while(instruction)
@@ -25,21 +24,6 @@ module Risc
       @code.set_word( @index , bin )
       @index += 1
     end
-  end
-
-  # A LinkException is raised when the arm code can't fit a constant into _one_
-  # instruction. This is kind of unavoidable with arm.
-  #
-  # Off course the problem could be fixed without the exception, but the exception
-  # means all subsequent Instructions, including labels/jump targets move.
-  # Thus changing jump instructions to those labels.
-  # So the whole method has to be reassembled and (at least) the instructions beyond
-  # repositioned. Ie a non-local problem, and so the Exception.
-  #
-  # Note: In the future i hope to have a more flexible system, possibly with position
-  # listeners and change events. Because positions chaning is normal, not exceptional.
-  #
-  class LinkException < Exception
   end
 
 end

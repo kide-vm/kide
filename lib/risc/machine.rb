@@ -133,22 +133,6 @@ module Risc
     # constant loads into one instruction.
     #
     def create_binary
-      not_ok = 1
-      while(not_ok)
-        begin
-          return do_create_binary
-        rescue LinkException
-          not_ok += 1
-          log.debug "Relink #{not_ok}"
-          position_code
-        end
-      end
-    end
-
-    # have to retry until it works. Unfortunately (FIXME) jumps can go be both
-    # directions, and so already assembled codes get wrong by moving/ inserting
-    # instructions. And we end up assmebling all code again :-(
-    def do_create_binary
       objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
         writer = BinaryWriter.new(method.binary)

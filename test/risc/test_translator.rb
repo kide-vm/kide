@@ -34,11 +34,7 @@ module Risc
       @machine.objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
         method.cpu_instructions.each do |ins|
-          begin
-            ins.assemble(DevNull.new)
-          rescue LinkException
-            ins.assemble(DevNull.new)
-          end
+          ins.assemble(DevNull.new)
         end
       end
     end

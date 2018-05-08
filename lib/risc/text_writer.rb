@@ -72,7 +72,7 @@ module Risc
     def write_any( obj )
       write_any_log( obj ,  "Write")
       if @stream.length != Position.get(obj).at
-        raise "Write #{obj.class}:0x#{obj.object_id.to_s(16)} at 0x#{stream_position.to_s(16)} not #{Position.get(obj)}"
+        puts "Write #{obj.class}:0x#{obj.object_id.to_s(16)} at 0x#{stream_position.to_s(16)} not #{Position.get(obj)}"
       end
       write_any_out(obj)
       write_any_log( obj ,  "Wrote")

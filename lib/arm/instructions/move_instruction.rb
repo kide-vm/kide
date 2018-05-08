@@ -67,7 +67,7 @@ module Arm
       end
       raise "Negatives not implemented #{right} " if right < 0
       unless @extra
-        puts "RELINK M at #{Risc::Position.get(self)}"
+        #puts "RELINK M at #{Risc::Position.get(self)}"
         @extra = 1
         insert ArmMachine.add( to , to , 0 ) #noop that we change below
       end
