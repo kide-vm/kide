@@ -21,6 +21,14 @@ module Risc
       Position.set( @label , 0 , @binary)
       assert_equal 0 , Position.get(@label.next).at
     end
+    def test_ins_propagates_again
+      second = Arm::ArmMachine.b( @label)
+      @label.set_next(second)
+      Position.set( @label , 0 , @binary)
+      Position.set(second , 2 , @binary)
+      Position.set( @label , 0 , @binary)
+      assert_equal 0 , Position.get(@label.next).at
+    end
     def test_bin_propagates
       @binary.extend_to(16)
       Position.set( @binary , 0 , Parfait.object_space.get_main)

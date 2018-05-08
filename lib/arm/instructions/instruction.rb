@@ -24,7 +24,8 @@ module Arm
     def insert(instruction)
       super
       my_pos = Risc::Position.get(self)
-      Risc::Position.set(  my_pos + self.byte_length , 0 , my_pos.binary)
+      # set my position to set next according to rules
+      Risc::Position.set(  self , my_pos.at , my_pos.binary) 
     end
   end
 end

@@ -114,11 +114,9 @@ module Risc
     end
 
     def reset_to(pos)
-      changed = super(pos)
+      super(pos)
       #puts "Reset (#{changed}) #{instruction}"
-      return unless changed
-      return unless instruction.next
-      instruction.next.set_position( pos + instruction.byte_length , 0)
+      init(pos)
     end
 
   end
