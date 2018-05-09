@@ -17,13 +17,18 @@ module Parfait
     end
     def extend_to(total_size)
       if total_size > self.data_length
-        @next = BinaryCode.new(1) unless @next
+        unless @next
+          @next = BinaryCode.new(1)
+          #puts "extending #{total_size - data_length} in #{self}"
+          Risc::Position.reset(self) if Risc::Position.set?(self)
+        end
         @next.extend_to(total_size - data_length)
       end
     end
     def to_s
-      "BinaryCode #{}"
+      "BinaryCode #{Risc::Position.set?(self) ? Risc::Position.get(self): self.object_id.to_s(16)}"
     end
+
     def each_word
       index = 1
       while( index <= data_length)

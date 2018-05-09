@@ -66,6 +66,13 @@ module Risc
       pos
     end
 
+    # set to the same position as before, thus triggering whatever code that propagates
+    # position _must have been set, otherwise raises
+    def self.reset(obj)
+      old = self.get(obj)
+      old.reset_to( old.at )
+    end
+
     def self.set( object , pos , extra = nil)
       # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
       # in measures (of 32)
@@ -92,6 +99,7 @@ module Risc
       end
     end
   end
+
   # handle event propagation
   class IPosition < Position
     attr_reader :instruction , :binary
@@ -130,6 +138,11 @@ module Risc
     def init(at)
       return unless code.next
       Position.set(code.next , at + code.padded_length, method)
+    end
+    def reset_to(pos)
+      super(pos)
+      #puts "Reset (#{changed}) #{instruction}"
+      init(pos)
     end
   end
 end

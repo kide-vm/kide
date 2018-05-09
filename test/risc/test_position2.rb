@@ -29,9 +29,14 @@ module Risc
       Position.set( @label , 0 , @binary)
       assert_equal 0 , Position.get(@label.next).at
     end
-    def test_bin_propagates
+    def test_bin_propagates_existing
       @binary.extend_to(16)
       Position.set( @binary , 0 , Parfait.object_space.get_main)
+      assert_equal @binary.padded_length , Position.get(@binary.next).at
+    end
+    def test_bin_propagates_after
+      Position.set( @binary , 0 , Parfait.object_space.get_main)
+      @binary.extend_to(16)
       assert_equal @binary.padded_length , Position.get(@binary.next).at
     end
   end
