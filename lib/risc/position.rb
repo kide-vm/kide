@@ -9,43 +9,13 @@ module Risc
   # positions, that do not reflect the position of the object, but of the
   # assembled instruction in the binary.
   #
-  # The Position class keeps a hash of all compile time positions.
+  # The Position module keeps a hash of all compile time positions.
   #
-  # While the Position objects transmit the change that (re) positioning
+  # While the (different)Position objects transmit the change that (re) positioning
   # entails to affected objects.
 
-  class Position
+  module Position
     @positions = {}
-
-    attr_reader :at
-
-    def initialize( at )
-      @at = at
-      raise "not int #{self}-#{at}" unless @at.is_a?(Integer)
-    end
-
-    def +(offset)
-      offset = offset.at if offset.is_a?(Position)
-      @at + offset
-    end
-    def -(offset)
-      offset = offset.at if offset.is_a?(Position)
-      @at - offset
-    end
-    def to_s
-      "0x#{@at.to_s(16)}"
-    end
-    # just a callback after creation AND insertion
-    def init(pos)
-    end
-    def reset_to(pos)
-      return false if pos == at
-      if((at - pos).abs > 1000)
-        raise "position set too far off #{pos}!=#{at} for #{object}:#{object.class}"
-      end
-      @at = pos
-      true
-    end
 
     def self.positions
       @positions
@@ -91,58 +61,15 @@ module Risc
     def self.for_at(object , at , extra)
       case object
       when Parfait::BinaryCode
-        BPosition.new(object,at , extra)
+        CodePosition.new(object,at , extra)
       when Arm::Instruction , Risc::Label
-        IPosition.new(object,at , extra)
+        InstructionPosition.new(object,at , extra)
       else
-        Position.new(at)
+        ObjectPosition.new(at)
       end
-    end
-  end
-
-  # handle event propagation
-  class IPosition < Position
-    attr_reader :instruction , :binary
-    def initialize(instruction, pos , binary)
-      raise "not set " unless binary
-      super(pos)
-      @instruction = instruction
-      @binary = binary
-    end
-
-    def init(at)
-      return unless instruction.next
-      at += instruction.byte_length
-      bin = binary
-      if( 12 == at % 60)
-        at = 12
-        bin = binary.next
-      end
-      Position.set(instruction.next, at , binary)
-    end
-
-    def reset_to(pos)
-      super(pos)
-      #puts "Reset (#{changed}) #{instruction}"
-      init(pos)
-    end
-
-  end
-  class BPosition < Position
-    attr_reader :code , :method
-    def initialize(code, pos , method)
-      super(pos)
-      @code = code
-      @method = method
-    end
-    def init(at)
-      return unless code.next
-      Position.set(code.next , at + code.padded_length, method)
-    end
-    def reset_to(pos)
-      super(pos)
-      #puts "Reset (#{changed}) #{instruction}"
-      init(pos)
     end
   end
 end
+require_relative "position/object_position"
+require_relative "position/instruction_position"
+require_relative "position/code_position"
