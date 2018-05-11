@@ -17,14 +17,16 @@ module Parfait
     end
     def extend_to(total_size)
       if total_size > self.data_length
-        unless @next
-          @next = BinaryCode.new(1)
-          #puts "extending #{total_size - data_length} in #{self}"
-          Risc::Position.reset(self) if Risc::Position.set?(self)
-        end
+        extend_one unless @next
         @next.extend_to(total_size - data_length)
       end
     end
+    def extend_one
+      @next = BinaryCode.new(1)
+      #puts "extending #{total_size - data_length} in #{self}"
+      Risc::Position.reset(self) if Risc::Position.set?(self)
+    end
+    
     def to_s
       "BinaryCode #{Risc::Position.set?(self) ? Risc::Position.get(self): self.object_id.to_s(16)}"
     end

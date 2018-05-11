@@ -6,21 +6,21 @@ module Risc
     class TestPositionBasic < MiniTest::Test
 
       def test_creation_ok
-        assert ObjectPosition.new(0)
+        assert ObjectPosition.new(0,self)
       end
       def test_creation_fail
         assert_raises {Position.new("0")}
       end
       def test_add
-        res = ObjectPosition.new(0) + 5
+        res = ObjectPosition.new(0,self) + 5
         assert_equal 5 , res
       end
       def test_sub
-        res = ObjectPosition.new(5) - 1
+        res = ObjectPosition.new(5,self) - 1
         assert_equal 4 , res
       end
       def test_sub_pos
-        res = ObjectPosition.new(5) - ObjectPosition.new(1)
+        res = ObjectPosition.new(5,self) - ObjectPosition.new(1,self)
         assert_equal 4 , res
       end
       def test_set

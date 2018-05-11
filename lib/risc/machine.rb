@@ -112,7 +112,7 @@ module Risc
         next unless method.is_a? Parfait::TypedMethod
         before = at
         Position.set( method.binary , at , method)
-        Position.set( method.cpu_instructions, 3 , method.binary)
+        Position.set( method.cpu_instructions, at + 12 , method.binary)
         # before = at
         # nekst = method.binary
         # while(nekst)

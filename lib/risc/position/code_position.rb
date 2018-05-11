@@ -1,10 +1,16 @@
 module Risc
   module Position
 
+    # BinaryCodes form a linked list
+    #
+    # We want to keep all code for a method continous, so we propagate Positions
+    #
     class CodePosition < ObjectPosition
+
       attr_reader :code , :method
+
       def initialize(code, pos , method)
-        super(pos)
+        super(pos,code)
         @code = code
         @method = method
       end

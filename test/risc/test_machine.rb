@@ -39,7 +39,7 @@ module Risc
       assert_equal Parfait::BinaryCode , @machine.binary_init.class
     end
     def test_has_jump
-      assert_equal "ea0011f4" ,  @machine.binary_init.get_word(1).to_s(16)
+      assert_equal "ea000fb4" ,  @machine.binary_init.get_word(1).to_s(16)
     end
     def test_pos_bin
       assert_equal "0x0" ,  Position.get(@machine.binary_init).to_s
@@ -48,7 +48,7 @@ module Risc
       assert_equal 12 ,  Position.get(@machine.cpu_init).at
     end
     def test_cpu_at
-      assert_equal 3 ,  Position.get(@machine.cpu_init.first).at
+      assert_equal "0x3ee4" ,  Position.get(@machine.cpu_init.first).to_s
     end
     def test_cpu_bin
       assert_equal "0x3ed8" ,  Position.get(Position.get(@machine.cpu_init.first).binary).to_s

@@ -82,7 +82,7 @@ module Arm
     end
     def test_too_big_add
       code = @machine.add	 :r1 , :r1, 0x222
-      Risc::Position.set(code,0,1)
+      Risc::Position.set(code,0,@binary)
       # add 0x02 (first instruction) and then 0x220 shifted
       assert_code code , :add , [0x02,0x1c,0x91,0xe2] #e2 91 1e 02
       # added extra instruction to add "extra"
@@ -91,13 +91,13 @@ module Arm
 
     def label( pos = 0x22 + 8)
       l  = Risc.label("some" , "Label")
-      Risc::Position.set(l,pos , 1)
+      Risc::Position.set(l,pos , @binary)
       l
     end
 
     def test_move_object
       code = @machine.add( :r1 , label)
-      Risc::Position.set(code,0,0)
+      Risc::Position.set(code,0,@binary)
       assert_code code , :add , [0x22,0x10,0x9f,0xe2] #e2 9f 10 22
     end
 

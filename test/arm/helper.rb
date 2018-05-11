@@ -5,9 +5,16 @@ require_relative "../helper"
 # tests are named as per assembler code, ie test_mov testing mov instruction
 
 module Arm
+  class FakeBin
+    def byte_length
+      4
+    end
+  end
   module ArmHelper
     def setup
       @machine = Arm::ArmMachine
+      @binary = FakeBin.new
+      Risc::Position.set(@binary , 0)
     end
 
     # code is what the generator spits out, at least one instruction worth (.first)

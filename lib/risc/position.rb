@@ -65,7 +65,7 @@ module Risc
       when Arm::Instruction , Risc::Label
         InstructionPosition.new(object,at , extra)
       else
-        ObjectPosition.new(at)
+        ObjectPosition.new(at,object)
       end
     end
   end
