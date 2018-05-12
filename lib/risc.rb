@@ -21,6 +21,7 @@ end
 
 require_relative "risc/padding"
 require_relative "risc/position"
+require_relative "risc/platform"
 
 require "parfait"
 require_relative "risc/machine"
