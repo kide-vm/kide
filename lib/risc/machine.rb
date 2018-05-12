@@ -21,26 +21,27 @@ module Risc
       @risc_init = nil
       @constants = []
     end
-    attr_reader  :constants , :cpu_init , :binary_init
+    attr_reader  :constants , :cpu_init
     attr_reader  :booted , :translated
+    attr_reader  :platform
 
     # translate to arm, ie instantiate an arm translator and pass it to translate
     #
     # currently we have no machanism to translate to other cpu's (nor such translators)
     # but the mechanism is ready
     def translate_arm
+      @platform = Platform.for("Arm")
       @translated = true
-      translate(Arm::Translator.new)
+      translate(@platform.translator)
     end
 
     # translate code to whatever cpu the translator translates to
-    # this means translating the initial jump (cpu_init into binary_init)
+    # this means translating the initial jump
     # and then translating all methods
     def translate( translator )
       methods = Parfait.object_space.get_all_methods
       translate_methods( methods , translator )
       @cpu_init = risc_init.to_cpu(translator)
-      @binary_init = Parfait::BinaryCode.new(1)
     end
 
     # go through all methods and translate them to cpu, given the translator
@@ -77,9 +78,8 @@ module Risc
     def position_all
       translate_arm unless @translated
       #need the initial jump at 0 and then functions
-      Position.set(binary_init,0)
-      Position.set(cpu_init , 12 , binary_init)
-      @code_start = position_objects( binary_init.padded_length )
+      Position.set(cpu_init , 0 , cpu_init)
+      @code_start = position_objects( @platform.padding )
       # and then everything code
       position_code
     end
@@ -91,6 +91,7 @@ module Risc
       # want to have the objects first in the executable
       objects.each do | id , objekt|
         next if objekt.is_a?( Parfait::BinaryCode) or objekt.is_a?( Risc::Label )
+        next if objekt.is_a?( Parfait::TypedMethod)
         before = at
         Position.set(objekt,at)
         at += objekt.padded_length
@@ -111,15 +112,10 @@ module Risc
       objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
         before = at
+        Position.set(method,at)
+        at += method.padded_length
         Position.set( method.binary , at , method)
         Position.set( method.cpu_instructions, at + 12 , method.binary)
-        # before = at
-        # nekst = method.binary
-        # while(nekst)
-        #   Position.set(nekst , at , method)
-        #   at += nekst.padded_length
-        #   nekst = nekst.next
-        # end
         log.debug "Method #{method.name}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
         log.debug "Instructions #{method.cpu_instructions.object_id.to_s(16)}:#{(before+12).to_s(16)}"
       end
@@ -139,7 +135,6 @@ module Risc
         writer.assemble(method.cpu_instructions)
       end
       log.debug "BinaryInit #{cpu_init.first.object_id.to_s(16)}"
-      BinaryWriter.new(binary_init).assemble(cpu_init)
     end
 
     def boot

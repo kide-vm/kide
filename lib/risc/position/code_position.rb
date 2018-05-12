@@ -15,8 +15,12 @@ module Risc
         @method = method
       end
       def init(at)
-        return unless code.next
-        Position.set(code.next , at + code.padded_length, method)
+        next_pos = at + code.padded_length
+        if code.next
+          Position.set(code.next , next_pos, method)
+        else
+          Position.set(method , next_pos)
+        end
       end
       def reset_to(pos)
         super(pos)

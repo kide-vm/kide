@@ -18,7 +18,7 @@ module Risc
 
     MARKER = 0xBAD4C0DE
 
-    def initialize( machine)
+    def initialize(machine)
       @machine = machine
       @load_at = 0x10054 # this is linux/arm
     end
@@ -29,7 +29,7 @@ module Risc
     # - all BinaryCode
     def write_as_string
       @stream = StringIO.new
-      write_init(@machine.binary_init)
+      write_init(@machine.cpu_init)
       write_debug
       write_objects
       write_code
@@ -150,15 +150,9 @@ module Risc
       log.debug "Data4 witten stream 0x#{@stream.length.to_s(16)}"
     end
 
-    # first jump, treated as a binary code, but this one needs
-    # the actual jump as the first
-    def write_init( code )
-      code.each_word do |word|
-        @stream.write_unsigned_int_32( word || 0 )
-      end
-      write_ref_for( code.next )
-      write_ref_for( code.get_type )
-      @stream.write_signed_int_32( MARKER  )
+    # first jump,
+    def write_init( cpu_init )
+      cpu_init.assemble(@stream)
       log.debug "Init witten stream 0x#{@stream.length.to_s(16)}"
     end
 

@@ -8,8 +8,8 @@ module Arm
       # the address is what an assembler calculates (a signed number for the amount of instructions),
       # ie the relative (to pc) address -8 (pipeline) /4 so save space
       # so the cpu adds the value*4 and starts loading that (load, decode, execute)
-      code = @machine.b(	-4 ) #this jumps to the next instruction
-      assert_code code , :b , [0xff,0xff,0xff,0xea] #ea ff ff fe
+      code = @machine.b(	0 ) #this jumps to the next next instruction
+      assert_code code , :b , [0x0,0x0,0x0,0xea] #ea 00 00 00
     end
     def test_call #see comment above. bx not implemented (as it means into thumb, and no thumb here)
       code = @machine.call(	-4 ,{} )#this jumps to the next instruction
