@@ -198,4 +198,22 @@ module Parfait
       assert_nil  @list.last
     end
   end
+  class TestListContains < ParfaitTest
+    def setup
+      super
+      @list = ::Parfait::List.new
+      @list.push :one
+      @list.push :two
+    end
+
+    def test_next_value_ok
+      assert_equal :two , @list.next_value(:one)
+    end
+    def test_next_value_end
+      assert_nil @list.next_value(:two)
+    end
+    def test_next_value_not_int
+      assert_nil @list.next_value(:three)
+    end
+  end
 end

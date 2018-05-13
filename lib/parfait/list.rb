@@ -78,7 +78,7 @@ module Parfait
     end
 
     # include? means non nil index
-    def include?  item
+    def include?( item )
       return index_of(item) != nil
     end
 
@@ -97,6 +97,14 @@ module Parfait
       return nil
     end
 
+    # return the next of given. Nil if item not in list or there is not next
+    def next_value(val)
+      index = index_of(val)
+      return nil unless index
+      return nil if index == get_length
+      return get(index + 1)
+    end
+    
     # push means add to the end
     # this automatically grows the List
     def push( value )

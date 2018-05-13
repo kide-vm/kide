@@ -30,6 +30,10 @@ module Parfait
       return @keys.get_length()
     end
 
+    def next_value(val)
+      return @values.next_value(val)
+    end
+
     # get a value fot the given key
     # key identity is checked with == not === (ie equals not identity)
     # return nil if no such key

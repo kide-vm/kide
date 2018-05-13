@@ -50,7 +50,7 @@ module Parfait
       @nil_object = Parfait::NilClass.new
     end
 
-    attr_reader  :classes , :first_message , :next_integer
+    attr_reader  :classes , :types , :first_message , :next_integer
     attr_reader  :true_object , :false_object , :nil_object
 
     def each_type

@@ -76,4 +76,22 @@ module Parfait
       assert @lookup[2] == :two
     end
   end
+  class TestDictionaryNextValue < ParfaitTest
+    def setup
+      super
+      @lookup = ::Parfait::Dictionary.new
+      @lookup[:key1] = :value1
+      @lookup[:key2] = :value2
+      @lookup[:key3] = :value3
+    end
+    def test_next_value_ok
+      assert_equal :value2 , @lookup.next_value(:value1)
+    end
+    def test_next_value_end
+      assert_equal :value3 , @lookup.next_value(:value2)
+    end
+    def test_next_value_not
+      assert_nil @lookup.next_value(:value3)
+    end
+  end
 end

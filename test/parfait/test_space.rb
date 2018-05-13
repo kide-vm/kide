@@ -43,6 +43,9 @@ module Parfait
     def test_types
       assert  @space.instance_variable_ged("@types").is_a? Parfait::Dictionary
     end
+    def test_types_attr
+      assert @space.types.is_a? Parfait::Dictionary
+    end
 
     def test_types_each
       @space.each_type do |type|
