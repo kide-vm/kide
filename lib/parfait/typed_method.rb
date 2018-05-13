@@ -117,6 +117,13 @@ module Parfait
       "#{@for_type.object_class.name}:#{name}(#{arguments_type.inspect})"
     end
 
+    def each_binary( &block )
+      bin = binary
+      while(bin) do
+        block.call( bin )
+        bin = bin.next
+      end
+    end
     def each_method( &block )
       block.call( self )
       next_method.each_method( &block ) if next_method

@@ -53,6 +53,7 @@ module Risc
     def write_objects
       sorted_objects.each do |objekt|
         next if objekt.is_a? Risc::Label # ignore
+        next if objekt.is_a? Parfait::BinaryCode # ignore
         write_any( objekt )
       end
     end
@@ -60,12 +61,11 @@ module Risc
     # Write the BinaryCode objects of all methods to stream.
     # Really like any other object, it's just about the ordering
     def write_code
-      @machine.objects.each do |id, method|
-        next unless method.is_a? Parfait::TypedMethod
-        binary = method.binary
-        while(binary) do
-          write_any( binary )
-          binary = binary.next
+      Parfait.object_space.each_type do |type|
+        type.each_method do |method|
+          method.each_binary do |code|
+            write_any(code)
+          end
         end
       end
     end
@@ -73,8 +73,8 @@ module Risc
     # Write any object just logs a bit and passes to write_any_out
     def write_any( obj )
       write_any_log( obj ,  "Write")
-      if @stream.length != Position.get(obj).at
-        #puts "Write #{obj.class}:0x#{obj.object_id.to_s(16)} at 0x#{stream_position.to_s(16)} not #{Position.get(obj)}"
+      if stream_position != Position.get(obj).at
+        raise "Write #{obj.class}:0x#{obj.object_id.to_s(16)} at 0x#{stream_position.to_s(16)} not #{Position.get(obj)}"
       end
       write_any_out(obj)
       write_any_log( obj ,  "Wrote")

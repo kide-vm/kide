@@ -30,6 +30,7 @@ module Risc
     def test_sorted_positions1
       sorted_objects = @text_writer.sorted_objects
       sorted_objects.each_slice(2) do |l,r|
+        next unless r
         assert Position.get(l).at < Position.get(r).at , "#{Position.get(l)} < #{Position.get(r)} , #{l.class}, #{r.class}"
       end
     end
@@ -37,7 +38,6 @@ module Risc
       sorted_objects = @text_writer.sorted_objects
       sorted_objects.shift
       sorted_objects.each_slice(2) do |l,r|
-        next unless l
         next unless r
         assert Position.get(l).at < Position.get(r).at , "#{Position.get(l)} < #{Position.get(r)} , #{l.class}, #{r.class}"
       end
