@@ -27,6 +27,11 @@ module Parfait
       Risc::Position.reset(self) if Risc::Position.set?(self)
     end
     
+    def each( &block )
+      block.call( self )
+      @next.each( &block ) if @next
+    end
+
     def to_s
       "BinaryCode #{Risc::Position.set?(self) ? Risc::Position.get(self): self.object_id.to_s(16)}"
     end

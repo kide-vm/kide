@@ -27,7 +27,11 @@ module Elf
         type.each_method do |f|
           f.cpu_instructions.each do |label|
             next unless label.is_a?(Risc::Label)
-            add_symbol "#{type.name}::#{f.name}:#{label.name}" , Risc::Position.get(label).at
+            add_symbol "#{type.name}@#{f.name}:#{label.name}" , Risc::Position.get(label).at
+          end
+          f.binary.each do |code|
+            label = "BinaryCode@#{Risc::Position.get(code).method.name}"
+            add_symbol label , Risc::Position.get(code).at
           end
         end
       end
@@ -41,9 +45,6 @@ module Elf
         end
         label += "=#{slot}" if slot.is_a?(Symbol) or slot.is_a?(String)
         add_symbol label , Risc::Position.get(slot).at
-        if slot.is_a?(Parfait::TypedMethod)
-          add_symbol slot.name.to_s , Risc::Position.get(slot.binary).at
-        end
       end
     end
 

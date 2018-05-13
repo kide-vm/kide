@@ -103,5 +103,10 @@ module Parfait
       @code.set_word(1 , 1)
       assert_equal 1, @code.get_internal_word(@code.data_start + 1)
     end
+    def test_has_each
+      sum = 0
+      @code.each{ sum += 1}
+      assert_equal sum , 1
+    end
   end
 end
