@@ -91,7 +91,6 @@ module Risc
       # want to have the objects first in the executable
       objects.each do | id , objekt|
         next if objekt.is_a?( Parfait::BinaryCode) or objekt.is_a?( Risc::Label )
-        next if objekt.is_a?( Parfait::TypedMethod)
         before = at
         Position.set(objekt,at)
         at += objekt.padded_length
@@ -109,16 +108,12 @@ module Risc
     # assembly stops throwing errors
     def position_code
       at = @code_start
-      objects.each do |id , method|
-        next unless method.is_a? Parfait::TypedMethod
-        before = at
-        Position.set(method,at)
-        at += method.padded_length
-        Position.set( method.binary , at , method)
-        Position.set( method.cpu_instructions, at + 12 , method.binary)
-        log.debug "Method #{method.name}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
-        log.debug "Instructions #{method.cpu_instructions.object_id.to_s(16)}:#{(before+12).to_s(16)}"
-      end
+      first_method = Parfait.object_space.types.values.first.methods
+      before = at
+      Position.set( first_method.binary , at , first_method)
+      Position.set( first_method.cpu_instructions, at + 12 , first_method.binary)
+      log.debug "Method #{first_method.name}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
+      log.debug "Instructions #{first_method.cpu_instructions.object_id.to_s(16)}:#{(before+12).to_s(16)}"
       at
     end
 

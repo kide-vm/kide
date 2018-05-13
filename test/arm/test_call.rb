@@ -18,7 +18,7 @@ module Arm
     def test_method_call
       Risc.machine.boot
       bin = Parfait::BinaryCode.new(1)
-      Risc::Position.set(bin , 0x20)
+      Risc::Position.set(bin , 0x20,Parfait.object_space.get_main)
       Risc::Position.set(@binary , 0)
       code = @machine.call(	bin ,{} )#this jumps to the next instruction
       Risc::Position.set(code , 0, @binary)

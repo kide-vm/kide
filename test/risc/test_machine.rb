@@ -39,10 +39,10 @@ module Risc
       assert_equal 0 ,  Position.get(@machine.cpu_init).at
     end
     def test_cpu_at
-      assert_equal "0x4d50" ,  Position.get(@machine.cpu_init.first).to_s
+      assert_equal "0x5ad0" ,  Position.get(@machine.cpu_init.first).to_s
     end
     def test_cpu_bin
-      assert_equal "0x4d44" ,  Position.get(Position.get(@machine.cpu_init.first).binary).to_s
+      assert_equal "0x5ac4" ,  Position.get(Position.get(@machine.cpu_init.first).binary).to_s
     end
     def test_cpu_label
       assert_equal Position::InstructionPosition ,  Position.get(@machine.cpu_init.first).class

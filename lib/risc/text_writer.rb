@@ -20,7 +20,6 @@ module Risc
 
     def initialize(machine)
       @machine = machine
-      @load_at = 0x10054 # this is linux/arm
     end
 
     # objects must be written in same order as positioned by the machine, namely
@@ -37,19 +36,22 @@ module Risc
       return @stream.string
     end
 
+    def sorted_objects
+      @machine.objects.values.sort do |left , right|
+        Position.get(left).at <=> Position.get(right).at
+      end
+    end
     # debugging loop to write out positions (in debug)
     def write_debug
-      @machine.objects.each do |id , objekt|
+      sorted_objects.each do |objekt|
         next if objekt.is_a?(Risc::Label)
         log.debug "Linked #{objekt.class}:0x#{objekt.object_id.to_s(16)} at #{Position.get(objekt)} / 0x#{objekt.padded_length.to_s(16)}"
       end
     end
 
-    # Write all the objects
+    # Write all the objects in the order that they have been positioed
     def write_objects
-      #  then the objects , not code yet
-      @machine.objects.each do | id, objekt|
-        next if objekt.is_a? Parfait::BinaryCode
+      sorted_objects.each do |objekt|
         next if objekt.is_a? Risc::Label # ignore
         write_any( objekt )
       end
@@ -80,7 +82,7 @@ module Risc
     end
 
     def write_any_log( obj , at)
-      log.debug "#{at} #{obj.class}:0x#{obj.object_id.to_s(16)} at stream #{stream_position} pos:#{Position.get(obj)} , len:0x#{obj.padded_length.to_s(16)}"
+      log.debug "#{at} #{obj.class}:0x#{obj.object_id.to_s(16)} at stream 0x#{stream_position.to_s(16)} pos:#{Position.get(obj)} , len:0x#{obj.padded_length.to_s(16)}"
     end
 
     # Most objects are the same and get passed to write_object
@@ -92,7 +94,7 @@ module Risc
       when Parfait::BinaryCode
         write_BinaryCode obj
       when Parfait::Data4
-        write_data2 obj
+        write_data4 obj
       else
         write_object obj
       end
@@ -144,7 +146,7 @@ module Risc
       written
     end
 
-    def write_data2( code )
+    def write_data4( code )
       @stream.write_signed_int_32( MARKER  )
       write_ref_for( code.get_type )
       log.debug "Data4 witten stream 0x#{@stream.length.to_s(16)}"
@@ -153,6 +155,7 @@ module Risc
     # first jump,
     def write_init( cpu_init )
       cpu_init.assemble(@stream)
+      @stream.write_unsigned_int_8(0) until @machine.platform.padding == stream_position
       log.debug "Init witten stream 0x#{@stream.length.to_s(16)}"
     end
 
@@ -200,7 +203,7 @@ module Risc
       when Fixnum
         @stream.write_signed_int_32(object)
       else
-        @stream.write_signed_int_32(Position.get(object) + @load_at)
+        @stream.write_signed_int_32(Position.get(object) + @machine.platform.loaded_at)
       end
     end
 
@@ -221,5 +224,4 @@ module Risc
     end
   end
 
-  RxFile::Volotile.add(TextWriter , [:objects])
 end

@@ -7,7 +7,7 @@ module Risc
       def setup
         Risc.machine.boot
         @binary = Parfait::BinaryCode.new(1)
-        Position.set(@binary , 0)
+        Position.set(@binary , 0,Parfait.object_space.get_main)
         @label = Label.new("hi","ho")
       end
       def test_set_instr
