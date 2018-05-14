@@ -27,8 +27,7 @@ module Risc
           source = "set_internal_word"
           builder = compiler.builder(true, compiler.method)
           me , index = builder.self_and_int_arg(source)
-          value = builder.load_int_arg_at(source , 2)
-
+          value = builder.load_int_arg_at(source , 1)
           # do the set
           builder.add_reg_to_slot( source , value , me , index)
           compiler.add_mom( Mom::ReturnSequence.new)

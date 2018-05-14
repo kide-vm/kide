@@ -153,6 +153,7 @@ module Risc
       else
         index = get_register(@instruction.index)
       end
+      puts "INDEX #{index} #{value}"
       object.set_internal_word( index , value )
       trigger(:object_changed, @instruction.array , index)
       true

@@ -21,7 +21,7 @@ module Arm
     # if an instruction is passed in we get the index with index function
     def arm_index( index )
       index = index.index if index.is_a?(Risc::Instruction)
-      raise "index error 0" if index == 0
+      raise "index error #{index}" if index < 0
       index * 4
     end
 

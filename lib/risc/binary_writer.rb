@@ -13,7 +13,7 @@ module Risc
 
     # Go through and assemble all instructions.
     def assemble( instruction )
-      @index = 1
+      @index = 0
       while(instruction)
         instruction.assemble(self)
         instruction = instruction.next

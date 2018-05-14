@@ -36,14 +36,14 @@ module Risc
       assert_equal SlotToReg , produced.next(base+1).class
       assert_equal :r2 , produced.next(base+1).register.symbol
       assert_equal :r0 , produced.next(base+1).array.symbol
-      assert_equal 2 , produced.next(base+1).index
+      assert_equal 1 , produced.next(base+1).index
     end
     def test_load_args
       produced = produce_body
       assert_equal SlotToReg , produced.next(base+2).class
       assert_equal :r3 , produced.next(base+2).register.symbol
       assert_equal :r2 , produced.next(base+2).array.symbol
-      assert_equal 9 , produced.next(base+2).index
+      assert_equal 8 , produced.next(base+2).index
     end
     def test_store_arg_at
       produced = produce_body
@@ -62,14 +62,14 @@ module Risc
       assert_equal SlotToReg , produced.next(base+5).class
       assert_equal :r0 , produced.next(base+5).array.symbol
       assert_equal :r3 , produced.next(base+5).register.symbol
-      assert_equal 2 , produced.next(base+5).index
+      assert_equal 1 , produced.next(base+5).index
     end
     def test_store_
       produced = produce_body
       assert_equal RegToSlot , produced.next(base+6).class
       assert_equal :r3 , produced.next(base+6).array.symbol
       assert_equal :r2 , produced.next(base+6).register.symbol
-      assert_equal 5 , produced.next(base+6).index
+      assert_equal 4 , produced.next(base+6).index
     end
 
     def test_swap_messages
@@ -77,7 +77,7 @@ module Risc
       assert_equal SlotToReg , produced.next(base+7).class
       assert_equal :r0 , produced.next(base+7).array.symbol
       assert_equal :r0 , produced.next(base+7).register.symbol
-      assert_equal 2 , produced.next(base+7).index
+      assert_equal 1 , produced.next(base+7).index
     end
 
     def test_function_call

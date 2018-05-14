@@ -41,7 +41,7 @@ module Risc
           source = "set_internal_byte"
           builder = compiler.builder(true, compiler.method)
           me , index = builder.self_and_int_arg(source)
-          value = builder.load_int_arg_at(source , 2 )
+          value = builder.load_int_arg_at(source , 1 )
           builder.reduce_int( source + " fix me", value )
           builder.reduce_int( source + " fix arg", index )
           builder.add_reg_to_byte( source , value , me , index)

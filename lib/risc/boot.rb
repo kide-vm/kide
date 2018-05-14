@@ -59,8 +59,8 @@ module Risc
       space = Parfait::Space.new( classes )
       Parfait.set_object_space( space )
 
-      #puts Sof.write(space)
-      #boot_functions( space )
+      #puts Rfx.write(space)
+      boot_functions( space )
     end
 
     # types is where the snake bites its tail. Every chain ends at a type and then it

@@ -145,6 +145,7 @@ module Risc
 
     def write_data4( code )
       write_ref_for( code.get_type )
+      write_ref_for( code.get_type )
       log.debug "Data4 witten stream 0x#{@stream.length.to_s(16)}"
     end
 
@@ -161,6 +162,7 @@ module Risc
       code.each_word do |word|
         @stream.write_unsigned_int_32( word || 0 )
       end
+      write_ref_for( code.get_type )
       log.debug "Code16 witten stream 0x#{@stream.length.to_s(16)}"
     end
 

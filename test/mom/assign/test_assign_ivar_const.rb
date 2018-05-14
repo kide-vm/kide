@@ -25,8 +25,8 @@ module Risc
 
     def test_load_self_from_message
       produced = produce_body
-      assert_equal :r0 , produced.next.array.symbol , produced.next.to_rxf
-      assert_equal 3 , produced.next.index , produced.next.to_rxf
+      assert_equal :r0 , produced.next.array.symbol , produced.next.to_rxf[0..200]
+      assert_equal 2 , produced.next.index , produced.next.to_rxf[0..200]
     end
 
   end

@@ -103,7 +103,7 @@ module Risc
     # return both registers
     def self_and_int_arg( source )
       me = add_known( :receiver )
-      int_arg = load_int_arg_at(source , 1 )
+      int_arg = load_int_arg_at(source , 0 )
       return me , int_arg
     end
 
@@ -114,7 +114,7 @@ module Risc
       add_slot_to_reg(source , int_arg , at + 1, int_arg ) #1 for type
       return int_arg
     end
-    
+
     # assumed Integer in given register is replaced by the fixnum that it is holding
     def reduce_int( source , register )
       add_slot_to_reg( source + "int -> fix" , register , Parfait::Integer.integer_index , register)

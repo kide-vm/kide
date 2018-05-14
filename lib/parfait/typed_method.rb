@@ -92,7 +92,7 @@ module Parfait
     end
 
     def add_local( name , type )
-      index = has_local name
+      index = has_local( name )
       return index if index
       @frame_type = @frame_type.add_instance_variable(name,type)
     end

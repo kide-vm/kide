@@ -33,8 +33,8 @@ module Parfait
     def test_add_arg
       @method.add_argument(:foo2 , :Object)
       assert_equal 3 , @method.arguments_length
-      assert_equal :foo2 , @method.argument_name(3)
-      assert_equal :Object , @method.argument_type(3)
+      assert_equal :foo2 , @method.argument_name(2)
+      assert_equal :Object , @method.argument_type(2)
     end
 
     def test_get_arg_name1
@@ -70,8 +70,8 @@ module Parfait
     def test_add_local
       @method.add_local(:foo2 , :Object)
       assert_equal 3 , @method.frame_length
-      assert_equal :foo2 , @method.locals_name(3)
-      assert_equal :Object , @method.locals_type(3)
+      assert_equal :foo2 , @method.locals_name(2)
+      assert_equal :Object , @method.locals_type(2)
     end
 
     def test_get_locals_name1
