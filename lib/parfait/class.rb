@@ -27,7 +27,7 @@ module Parfait
       set_instance_type( instance_type )
     end
 
-    def sof_reference_name
+    def rxf_reference_name
       name
     end
 

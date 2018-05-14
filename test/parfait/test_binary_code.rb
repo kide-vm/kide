@@ -18,7 +18,7 @@ module Parfait
       assert_equal 2 , @code.get_instance_variables.get_length
     end
     def test_var_next
-      assert_equal :next , @code.get_instance_variables[2]
+      assert_equal :next , @code.get_instance_variables[1]
     end
     def test_next_nil
       assert_nil @code.next

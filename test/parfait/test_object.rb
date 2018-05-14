@@ -13,7 +13,7 @@ module Parfait
     end
 
     def test_one_set1
-      assert_equal @object.get_type ,  @object.set_internal_word(1, @object.get_type)
+      assert_equal @object.get_type ,  @object.set_internal_word(0, @object.get_type)
     end
 
   end

@@ -18,12 +18,12 @@ module Parfait
     def test_message_by_index
       assert_equal @mess.next_message , @mess.get_instance_variable(:next_message)
       index = @mess.get_type.variable_index :next_message
-      assert_equal 2 , index
+      assert_equal 1 , index
       assert_equal @mess.next_message , @mess.get_internal_word(index)
     end
 
     def test_type_methods
-      assert_equal 5 , @mess.get_type.get_type.variable_index(:methods)
+      assert_equal 4 , @mess.get_type.get_type.variable_index(:methods)
     end
 
   end

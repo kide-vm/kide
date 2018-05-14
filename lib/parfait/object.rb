@@ -7,13 +7,13 @@
 
 # Objects are arranged or layed out (in memory) according to their Type
 # every object has a Type. Type objects are immutalbe and may be reused for a group/class
-# off objects.
+# of objects.
 # The Type of an object may change, but then a new Type is created
 # The Type also defines the class of the object
-# The Type is **always** the first entry (index 1) in an object
+# The Type is **always** the first entry (index 0) in an object
 
 module Parfait
-  TYPE_INDEX  = 1
+  TYPE_INDEX  = 0
 
   class Object
 
@@ -30,16 +30,16 @@ module Parfait
       object
     end
 
-    # 1 -based index
+    # 0 -based index
     def get_internal_word(index)
       name = get_type().name_at(index)
       return nil unless name
       instance_variable_get("@#{name}".to_sym)
     end
 
-    # 1 -based index
+    # 0 -based index
     def set_internal_word(index , value)
-      return set_type(value) if( index == 1)
+      return set_type(value) if( index == 0)
       raise "not type #{@type.class}" unless @type.is_a?(Type)
       name = @type.name_at(index)
       #return value unless name
@@ -111,7 +111,7 @@ module Parfait
     end
 
     # parfait versions are deliberately called different, so we "relay"
-    # have to put the "@" on the names for sof to take them off again
+    # have to put the "@" on the names for rfx to take them off again
     def instance_variables
       get_instance_variables.to_a.collect{ |n| "@#{n}".to_sym }
     end

@@ -75,8 +75,8 @@ module Parfait
 
     # yield to each key value pair
     def each
-      index = 1
-      while index <= @keys.get_length
+      index = 0
+      while index < @keys.get_length
         key = @keys.get(index)
         value = @values.get(index)
         yield key , value
@@ -93,8 +93,8 @@ module Parfait
       string + "}"
     end
 
-    def to_sof_node(writer , level , ref)
-      Sof.hash_to_sof_node( self , writer , level , ref)
+    def to_rxf_node(writer , level , ref)
+      Sof.hash_to_rxf_node( self , writer , level , ref)
     end
   end
 end

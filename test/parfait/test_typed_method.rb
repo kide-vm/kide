@@ -22,12 +22,12 @@ module Parfait
     def test_arg1
       assert_equal 2 , @method.arguments_length , @method.arguments_type.inspect
       assert_equal Symbol , @method.arguments_type.names.first.class
-      assert_equal :bar , @method.argument_name(1)
+      assert_equal :bar , @method.argument_name(0)
     end
 
     def test_has_argument
-      assert_equal 1 , @method.has_argument(:bar)
-      assert_equal 2 , @method.has_argument(:foo)
+      assert_equal 0 , @method.has_argument(:bar)
+      assert_equal 1 , @method.has_argument(:foo)
     end
 
     def test_add_arg
@@ -39,7 +39,7 @@ module Parfait
 
     def test_get_arg_name1
       index = @method.has_argument(:bar)
-      assert_equal 1 , index
+      assert_equal 0 , index
       assert_equal :bar , @method.argument_name(index)
     end
     def test_get_arg_type1
@@ -48,7 +48,7 @@ module Parfait
     end
     def test_get_arg_name2
       index = @method.has_argument(:foo)
-      assert_equal 2 , index
+      assert_equal 1 , index
       assert_equal :foo , @method.argument_name(index)
     end
     def test_get_arg_type2
@@ -59,12 +59,12 @@ module Parfait
     def test_local1
       assert_equal 2 , @method.frame_length , @method.frame_type.inspect
       assert_equal Symbol , @method.frame_type.names.first.class
-      assert_equal :local_bar , @method.locals_name(1)
+      assert_equal :local_bar , @method.locals_name(0)
     end
 
     def test_has_local
-      assert_equal 1 , @method.has_local(:local_bar)
-      assert_equal 2 , @method.has_local(:local_foo)
+      assert_equal 0 , @method.has_local(:local_bar)
+      assert_equal 1 , @method.has_local(:local_foo)
     end
 
     def test_add_local
@@ -76,7 +76,7 @@ module Parfait
 
     def test_get_locals_name1
       index = @method.has_local(:local_bar)
-      assert_equal 1 , index
+      assert_equal 0 , index
       assert_equal :local_bar , @method.locals_name(index)
     end
     def test_get_frame_type1
@@ -85,7 +85,7 @@ module Parfait
     end
     def test_get_locals_name2
       index = @method.has_local(:local_foo)
-      assert_equal 2 , index
+      assert_equal 1 , index
       assert_equal :local_foo , @method.locals_name(index)
     end
     def test_get_frame_type2

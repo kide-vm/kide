@@ -41,21 +41,21 @@ module Parfait
     def test_added_name_length
       type = test_add_name
       assert_equal 2 , type.names.get_length , type.inspect
-      assert_equal :type , type.names.get(1)
-      assert_equal :boo , type.names.get(2)
+      assert_equal :type , type.names.get(0)
+      assert_equal :boo , type.names.get(1)
     end
 
     def test_added_name_index
       type = test_add_name
-      assert_equal 2 , type.variable_index(:boo)
-      assert_equal :Object , type.type_at(2)
+      assert_equal 1 , type.variable_index(:boo)
+      assert_equal :Object , type.type_at(1)
     end
 
     def test_basic_var_index
-      assert_equal 1 , @type.variable_index(:type)
+      assert_equal 0 , @type.variable_index(:type)
     end
     def test_basic_type_index
-      assert_equal :Type , @type.type_at(1)
+      assert_equal :Type , @type.type_at(0)
     end
 
     def test_inspect_added
@@ -65,8 +65,8 @@ module Parfait
 
     def test_added_names
       type = test_add_name
-      assert_equal :type , type.names.get(1)
-      assert_equal :boo , type.names.get(2)
+      assert_equal :type , type.names.get(0)
+      assert_equal :boo , type.names.get(1)
       assert_equal 2 , type.names.get_length
     end
 

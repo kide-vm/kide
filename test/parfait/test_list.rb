@@ -24,15 +24,6 @@ module Parfait
       @list.push(1)
       assert_equal Parfait::Type , @list.get_type.class
     end
-    def notest_type_is_first
-      type = @list.get_type
-      assert_equal 1 , type.variable_index(:type)
-    end
-    def notest_type_is_first_old
-      type =  Parfait.object_space.classes.keys.get_type
-      assert_equal 1 , type.variable_index(:type)
-    end
-
     def test_length0
       assert_equal 0 , @list.get_length
       assert_equal 0,  @list.indexed_length
@@ -41,17 +32,17 @@ module Parfait
       assert_equal 2 , @list.get_offset
     end
     def test_indexed_index
-      # 1 type , 2 indexed_length
-      assert_equal 2 , @list.get_type.variable_index(:indexed_length)
+      # 0 type , 1 indexed_length
+      assert_equal 1 , @list.get_type.variable_index(:indexed_length)
     end
     def test_length1
       @list.push :one
       assert_equal 1 , @list.get_length
       assert_equal 1 , @list.indexed_length
-      assert_equal 1 , @list.get_internal_word(Parfait::TYPE_INDEX + 1)
+      assert_equal :one , @list.get_internal_word(Parfait::TYPE_INDEX + 2)
     end
     def test_list_inspect
-      @list.set(1,1)
+      @list.set(0,1)
       assert_equal "1" , @list.inspect
     end
     def test_list_equal
@@ -70,73 +61,32 @@ module Parfait
       assert_nil  @list.get(3)
     end
     def test_one_set1
-      assert_equal 2 , @list.set(1,2)
-      assert_equal 1 , @list.get_internal_word(2)
+      assert_equal 2 , @list.set(0,2)
+      assert_equal 1 , @list.get_internal_word(1)
+      assert_equal 2 , @list.get_internal_word(2)
     end
     def test_set1_len
-      @list.set(1,1)
+      @list.set(0,1)
       assert_equal 1 , @list.get_length
+    end
+    def test_one_get1
+      test_one_set1
+      assert_equal 2 , @list.get(0)
     end
     def test_one_set2
       assert_equal :some , @list.set(2,:some)
     end
     def test_set2_len
-      @list.set(2,:some)
+      @list.set(1,:some)
       assert_equal 2 , @list.get_length
     end
     def test_two_sets
       assert_equal 1 , @list.set(1,1)
       assert_equal :some , @list.set(1,:some)
     end
-    def test_one_get1
-      test_one_set1
-      assert_equal 2 , @list.get(1)
-    end
     def test_one_get2
       test_one_set2
       assert_equal :some , @list.get(2)
-    end
-    def set_shouldda
-      shouldda  = { 1 => :one , 2 => :two , 3 => :three}
-      shouldda.each do |k,v|
-        @list.set(k,v)
-      end
-      shouldda
-    end
-    def test_many_get
-      shouldda = set_shouldda
-      shouldda.each do |k,v|
-        assert_equal v , @list.get(k)
-      end
-    end
-    def test_each
-      shouldda_values = set_shouldda.values
-      @list.each do |val|
-        shouldda_values.delete val
-      end
-      assert_equal 0 , shouldda_values.length
-    end
-    def test_each_index
-      set_shouldda
-      @list.each_with_index do |val , index|
-        assert_equal @list[index] , val
-      end
-    end
-    def test_each_pair_length
-      shouldda_values = set_shouldda.values
-      @list.each_pair do |key,val|
-        shouldda_values.delete key
-        shouldda_values.delete val
-      end
-      assert_equal 0 , shouldda_values.length
-    end
-    def test_each_pair_count
-      set_shouldda.values
-      counter = 0
-      @list.each_pair do |key,val|
-        counter += 1
-      end
-      assert_equal 2 , counter
     end
     def test_find
       @list.set(1,1)
@@ -147,35 +97,6 @@ module Parfait
       @list.set(1,1)
       assert_nil @list.find{|i| i == 3}
     end
-    def test_delete_at
-      test_many_get
-      assert @list.delete_at 2
-      assert_equal 2 , @list.get_length
-      assert_equal 2 , @list.index_of( :three )
-    end
-
-    def test_delete
-      test_many_get
-      assert @list.delete :two
-      assert_equal 2 , @list.get_length
-      assert_equal 2 , @list.index_of( :three )
-    end
-    def test_index_of
-      test_many_get
-      assert_equal 2 , @list.index_of( :two )
-      assert_equal 3 , @list.index_of( :three )
-      assert_nil  @list.index_of( :four )
-    end
-    def test_inspect
-      test_many_get
-      assert @list.inspect.include?("one") , @list.inspect
-      assert @list.inspect.include?("three") , @list.inspect
-    end
-    def test_inlcude
-      test_many_get
-      assert_equal true , @list.include?( :two )
-      assert_equal false , @list.include?( :four )
-    end
     def test_empty_empty
       assert_equal true , @list.empty?
     end
@@ -183,37 +104,81 @@ module Parfait
       assert_equal 1 , @list.set(1,1)
       assert_equal false , @list.empty?
     end
-    def test_first
-      test_many_get
-      assert_equal :one , @list.first
-    end
     def test_first_empty
       assert_nil  @list.first
-    end
-    def test_last
-      test_many_get
-      assert_equal :three , @list.last
     end
     def test_last_empty
       assert_nil  @list.last
     end
   end
-  class TestListContains < ParfaitTest
+  class TestListMany < ParfaitTest
     def setup
       super
       @list = ::Parfait::List.new
-      @list.push :one
-      @list.push :two
+      @shouldda = { 0 => :one , 1 => :two , 2 => :three}
+      @shouldda.each{|k,v| @list.set(k,v)}
     end
-
     def test_next_value_ok
       assert_equal :two , @list.next_value(:one)
     end
     def test_next_value_end
-      assert_nil @list.next_value(:two)
+      assert_nil @list.next_value(:three)
+    end
+    def test_delete_at
+      assert @list.delete_at 1
+      assert_equal 2 , @list.get_length
+      assert_equal 1 , @list.index_of( :three )
+    end
+    def test_last
+      assert_equal :three , @list.last
+    end
+    def test_many_get
+      assert @list.delete :two
+      assert_equal 2 , @list.get_length
+      assert_equal 1 , @list.index_of( :three )
+    end
+    def test_index_of
+      assert_equal 1 , @list.index_of( :two )
+      assert_equal 2 , @list.index_of( :three )
+      assert_nil  @list.index_of( :four )
+    end
+    def test_inspect
+      assert @list.inspect.include?("one") , @list.inspect
+      assert @list.inspect.include?("three") , @list.inspect
+    end
+    def test_inlcude
+      assert_equal true , @list.include?( :two )
+      assert_equal false , @list.include?( :four )
     end
     def test_next_value_not_int
       assert_nil @list.next_value(:three)
+    end
+    def test_each
+      shouldda_values = @shouldda.values
+      @list.each do |val|
+        shouldda_values.delete val
+      end
+      assert_equal 0 , shouldda_values.length
+    end
+    def test_each_index
+      @list.each_with_index do |val , index|
+        assert_equal @list[index] , val
+      end
+    end
+    def test_each_pair_length
+      shouldda_values = @shouldda.values
+      @list.each_pair do |key,val|
+        shouldda_values.delete key
+        shouldda_values.delete val
+      end
+      assert_equal 0 , shouldda_values.length
+    end
+    def test_each_pair_count
+      counter = 0
+      @list.each_pair do |key,val|
+        counter += 1
+      end
+      assert_equal 2 , counter
     end
   end
 end

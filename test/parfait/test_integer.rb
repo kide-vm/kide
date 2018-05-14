@@ -39,7 +39,7 @@ module Parfait
       20.times do
         assert int
         assert_equal Parfait::Integer , int.class
-        assert int.get_internal_word(2)
+        assert int.get_internal_word(1)
         int = int.next_integer
       end
     end

@@ -32,15 +32,15 @@ module Parfait
       return get_type.get_length
     end
 
-    # 1 -based index
+    # 0 -based index
     def get_internal_word(index)
-      return super if index <= data_start
+      return super if index < data_start
       @memory[index]
     end
 
     # 1 -based index
     def set_internal_word(index , value)
-      return super if index <= data_start
+      return super if index < data_start
       raise "Word[#{index}] = nil" if( value.nil? )
       @memory[index] = value
       value
@@ -49,7 +49,7 @@ module Parfait
 
   class Data4 < DataObject
     def data_length
-      3
+      4
     end
     def padded_length
       2 * 4
@@ -58,7 +58,7 @@ module Parfait
 
   class Data8 < DataObject
     def data_length
-      7
+      8
     end
     def padded_length
       8 * 4
@@ -66,7 +66,7 @@ module Parfait
   end
   class Data16 < DataObject
     def data_length
-      15
+      16
     end
     def padded_length
       16 * 4

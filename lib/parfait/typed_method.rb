@@ -109,7 +109,7 @@ module Parfait
       frame_type.types.get(index + 1)
     end
 
-    def sof_reference_name
+    def rxf_reference_name
       "Method: " + @name.to_s
     end
 

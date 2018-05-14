@@ -46,8 +46,8 @@ module Parfait
       assert_equal @word.copy , @word
     end
     def test_equals_copy2
-      @word.set_char(1 , 2)
-      @word.set_char(5 , 6)
+      @word.set_char(0 , 2)
+      @word.set_char(4 , 6)
       assert_equal @word.copy , @word
     end
     def test_equals_same

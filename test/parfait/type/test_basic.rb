@@ -16,7 +16,7 @@ module Parfait
 
     def test_type_is_first
       type = @mess.get_type
-      assert_equal 1 , type.variable_index(:type)
+      assert_equal 0 , type.variable_index(:type)
     end
 
     def test_length
@@ -38,16 +38,16 @@ module Parfait
 
     def test_type_length_index
       type = @mess.get_type.get_type
-      assert_equal 5 , type.variable_index(:methods)
-      assert_equal type.object_class , type.get_internal_word(4)
+      assert_equal 4 , type.variable_index(:methods)
+      assert_equal type.object_class , type.get_internal_word(3)
     end
 
-    def test_no_index_below_1
+    def test_no_index_below_0
       type = @mess.get_type
       names = type.names
       assert_equal 9 , names.get_length , names.inspect
       names.each do |n|
-        assert type.variable_index(n) >= 1
+        assert type.variable_index(n) >= 0
       end
     end
 
@@ -59,18 +59,18 @@ module Parfait
     # not really parfait test, but related and no other place currently
     def test_reg_index
       message_ind = Risc.resolve_to_index( :message , :receiver )
-      assert_equal 3 , message_ind
+      assert_equal 2 , message_ind
       @mess.set_receiver( 55)
       assert_equal 55 , @mess.get_internal_word(message_ind)
     end
 
     def test_instance_type
-      assert_equal 2 , @mess.get_type.variable_index(:next_message)
+      assert_equal 1 , @mess.get_type.variable_index(:next_message)
     end
 
     def test_remove_me
       type = @mess.get_type
-      assert_equal type , @mess.get_internal_word(1)
+      assert_equal type , @mess.get_internal_word(0)
     end
   end
 end

@@ -1,3 +1,5 @@
+module Parfait
+
 # An Object is really a hash like structure. It is dynamic and
 # you want to store values by name (instance variable names).
 #
@@ -32,7 +34,6 @@
 # there is only one instance of every type. Hash and equality are defined on type
 # for this to work.
 
-module Parfait
   class Type < Object
 
     attr_reader :object_class , :names , :types , :methods
@@ -178,11 +179,11 @@ module Parfait
     end
 
     # index of the variable when using get_internal_word
-    # (get_internal_word is 1 based and 1 is always the type)
+    # (get_internal_word is 0 based and 0 is always the type)
     def variable_index( name )
       has = @names.index_of(name)
       return nil unless has
-      raise "internal error #{name}:#{has}" if has < 1
+      raise "internal error #{name}:#{has}" if has < 0
       has
     end
 
@@ -202,14 +203,14 @@ module Parfait
       "Type[#{names.inspect}]"
     end
 
-    def sof_reference_name
+    def rxf_reference_name
       "#{@object_class.name}_Type"
     end
-    alias :name :sof_reference_name
+    alias :name :rxf_reference_name
 
     def each
-      index = 1
-      while( index <=  get_length() )
+      index = 0
+      while( index <  get_length() )
         yield( name_at(index) , type_at(index) )
         index += 1
       end
@@ -222,6 +223,8 @@ module Parfait
     def to_hash
       hash = {}
       each do |name , type|
+        raise "Name nil #{type}" unless name
+        raise "Type nil #{name}" unless type
         hash[name] = type
       end
       hash

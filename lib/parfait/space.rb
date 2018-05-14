@@ -121,7 +121,7 @@ module Parfait
       @classes[name] = c
     end
 
-    def sof_reference_name
+    def rxf_reference_name
       "space"
     end
 

@@ -25,12 +25,12 @@ module Parfait
     # initialize with length. For now we try to keep all non-parfait (including String) out
     # String will contain spaces for non-zero length
     # Risc provides methods to create Parfait objects from ruby
-    def initialize len
+    def initialize( len )
       super()
       @char_length = 0
       raise "Must init with int, not #{len.class}" unless len.kind_of? Fixnum
       raise "Must init with positive, not #{len}" if len < 0
-      set_length( len , 32 ) unless len == 0 #32 beeing ascii space
+      set_length( len , 32 ) unless len == 0 #32 being ascii space
       #puts "type #{self.get_type} #{self.object_id.to_s(16)}"
     end
 
@@ -38,8 +38,8 @@ module Parfait
     # return a copy of self
     def copy
       cop = Word.new( self.length )
-      index = 1
-      while( index <= self.length )
+      index = 0
+      while( index < self.length )
         cop.set_char(index , self.get_char(index))
         index = index + 1
       end
@@ -53,14 +53,14 @@ module Parfait
     end
 
     # make every char equal the given one
-    def fill_with char
+    def fill_with( char )
       fill_from_with(0 , char)
     end
 
-    def fill_from_with from , char
+    def fill_from_with( from , char )
       len = self.length()
-      return if from <= 0
-      while( from <= len)
+      return if from < 0
+      while( from < len)
         set_char( from , char)
         from = from + 1
       end
@@ -134,12 +134,12 @@ module Parfait
       return ret
     end
 
-    # private method to calculate negative indexes into positives
-    def range_correct_index at
+    # private method to account for
+    def range_correct_index( at )
       index = at
 #      index = self.length + at if at < 0
-      raise "index must be positive , not #{at}" if (index <= 0)
-      raise "index too large #{at} > #{self.length}" if (index > self.length )
+      raise "index must be positive , not #{at}" if (index < 0)
+      raise "index too large #{at} > #{self.length}" if (index >= self.length )
       return index + 11
     end
 
@@ -149,8 +149,8 @@ module Parfait
     def compare( other )
       return false if other.class != self.class
       return false if other.length != self.length
-      len = self.length
-      while(len > 0)
+      len = self.length - 1
+      while(len >= 0)
         return false if self.get_char(len) != other.get_char(len)
         len = len - 1
       end
@@ -168,8 +168,8 @@ module Parfait
 
     def to_string
       string = ""
-      index = 1
-      while( index <= @char_length)
+      index = 0
+      while( index < @char_length)
         char = get_char(index)
         string += char ? char.chr : "*"
         index = index + 1
@@ -177,8 +177,8 @@ module Parfait
       string
     end
 
-    # as we answered is_value? with true, sof will create a basic node with this string
-    def to_sof
+    # as we answered is_value? with true, rfx will create a basic node with this string
+    def to_rfx
       "'" + to_s + "'"
     end
 
@@ -197,7 +197,7 @@ module Parfait
     string = string.to_s if string.is_a? Symbol
     word = Word.new( string.length )
     string.codepoints.each_with_index do |code , index |
-      word.set_char(index + 1 , code)
+      word.set_char(index , code)
     end
     word
   end

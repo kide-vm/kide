@@ -15,7 +15,7 @@ module Parfait
       assert_equal 55 , @mess.receiver
     end
     def test_indexed
-      assert_equal 9 , @mess.get_type.variable_index(:arguments)
+      assert_equal 8 , @mess.get_type.variable_index(:arguments)
     end
     def test_next_message
       assert_equal Message ,  @mess.next_message.class
