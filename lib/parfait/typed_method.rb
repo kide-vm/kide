@@ -62,28 +62,6 @@ module Parfait
       @cpu_instructions
     end
 
-    # determine whether this method has an argument by the name
-    def has_argument( name )
-      raise "has_argument #{name}.#{name.class}" unless name.is_a? Symbol
-      index = arguments_type.variable_index( name )
-      index ? (index - 1) : index
-    end
-
-    def add_argument(name , type)
-      @arguments_type = @arguments_type.add_instance_variable(name,type)
-    end
-
-    def arguments_length
-      arguments_type.instance_length - 1
-    end
-
-    def argument_name( index )
-      arguments_type.names.get(index + 1)
-    end
-    def argument_type( index )
-      arguments_type.types.get(index + 1)
-    end
-
     # determine if method has a local variable or tmp (anonymous local) by given name
     def has_local( name )
       raise "has_local #{name}.#{name.class}" unless name.is_a? Symbol
