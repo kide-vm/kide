@@ -22,7 +22,7 @@ module Risc
       class_source "#{@name} (next: #{self.next.class.name.split("::").last})"
     end
 
-    def sof_reference_name
+    def rxf_reference_name
       @name
     end
 

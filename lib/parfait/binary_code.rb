@@ -13,7 +13,7 @@ module Parfait
       super()
       extend_to(total_size)
       #puts "Init with #{total_size} for #{object_id}"
-      (1..(data_length+1)).each{ |index| set_word(index , 0) }
+      (0 ..(data_length)).each{ |index| set_word(index , 0) }
     end
     def extend_to(total_size)
       if total_size > self.data_length
@@ -26,7 +26,7 @@ module Parfait
       #puts "extending #{total_size - data_length} in #{self}"
       Risc::Position.reset(self) if Risc::Position.set?(self)
     end
-    
+
     def each( &block )
       block.call( self )
       @next.each( &block ) if @next
@@ -37,13 +37,13 @@ module Parfait
     end
 
     def each_word
-      index = 1
-      while( index <= data_length)
+      index = 0
+      while( index < data_length)
         yield get_word(index)
         index += 1
       end
     end
-    #16 - 2 -1 , two instance varaibles and one for the jump
+    #16 - 2 -1 , two instance variables and one for the jump
     def data_length
       13
     end
@@ -51,8 +51,8 @@ module Parfait
       4*data_length
     end
     def set_word(index , word)
-      raise "invalid index #{index}" if index < 1
-      if index > data_length + 1
+      raise "invalid index #{index}" if index < 0
+      if index > data_length
         #raise "invalid index #{index}" unless @next
         extend_to( index )
         @next.set_word( index - data_length , word)
@@ -60,7 +60,7 @@ module Parfait
       set_internal_word(index + 2 , word)
     end
     def get_word(index)
-      raise "invalid index #{index}" if index < 1
+      raise "invalid index #{index}" if index < 0
       if index > data_length + 1
         raise "invalid index #{index}" unless @next
         return @next.get_word( index - data_length)

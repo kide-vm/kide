@@ -24,7 +24,7 @@ module Risc
       end
       def init(at)
         diff = at - Position.get(@binary).at
-        if( diff % 60 == 13*4)
+        if( diff % 60 == 12*4)
           @binary.extend_one unless @binary.next
           @binary = @binary.next
           raise "end of line " unless @binary

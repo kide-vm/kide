@@ -16,8 +16,6 @@ module Risc
     include Logging
     log_level :info
 
-    MARKER = 0xBAD4C0DE
-
     def initialize(machine)
       @machine = machine
     end
@@ -134,7 +132,6 @@ module Risc
     end
 
     def write_object_variables(object)
-      @stream.write_signed_int_32( MARKER  )
       written = 0 # compensate for the "secret" marker
       object.get_instance_variables.each do |var|
         inst = object.get_instance_variable(var)
@@ -147,7 +144,6 @@ module Risc
     end
 
     def write_data4( code )
-      @stream.write_signed_int_32( MARKER  )
       write_ref_for( code.get_type )
       log.debug "Data4 witten stream 0x#{@stream.length.to_s(16)}"
     end
@@ -160,7 +156,6 @@ module Risc
     end
 
     def write_BinaryCode( code )
-      @stream.write_signed_int_32( MARKER  )
       write_ref_for( code.get_type )
       write_ref_for( code.next )
       code.each_word do |word|
@@ -180,7 +175,6 @@ module Risc
     end
 
     def write_checked_string(string, str)
-      @stream.write_signed_int_32( MARKER  )
       write_ref_for( string.get_type ) #ref
       @stream.write_signed_int_32( str.length  ) #int
       @stream.write str
@@ -210,7 +204,7 @@ module Risc
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
     def pad_after( length )
       before = stream_position
-      pad = Padding.padding_for(length) - 4  # four is for the MARKER we write
+      pad = Padding.padding_for(length)
       pad.times do
         @stream.write_unsigned_int_8(0)
       end

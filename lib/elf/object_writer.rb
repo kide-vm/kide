@@ -24,12 +24,12 @@ module Elf
 
       # for debug add labels for labels
       Parfait.object_space.each_type do |type|
-        type.each_method do |f|
-          f.cpu_instructions.each do |label|
+        type.each_method do |meth|
+          meth.cpu_instructions.each do |label|
             next unless label.is_a?(Risc::Label)
-            add_symbol "#{type.name}@#{f.name}:#{label.name}" , Risc::Position.get(label).at
+            add_symbol "#{type.name}@#{meth.name}:Label=#{label.name}" , Risc::Position.get(label).at
           end
-          f.binary.each do |code|
+          meth.binary.each do |code|
             label = "BinaryCode@#{Risc::Position.get(code).method.name}"
             add_symbol label , Risc::Position.get(code).at
           end
@@ -38,8 +38,8 @@ module Elf
 
       @machine.objects.each do |id,slot|
         next if slot.is_a?(Parfait::BinaryCode)
-        if( slot.respond_to? :sof_reference_name )
-          label = "#{slot.sof_reference_name}"
+        if( slot.respond_to? :rxf_reference_name )
+          label = "#{slot.rxf_reference_name}"
         else
           label = "#{slot.class.name}::#{Risc::Position.get(slot)}"
         end

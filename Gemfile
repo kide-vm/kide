@@ -5,7 +5,8 @@ gem "rubyx" , :path => "."
 gem "rake"
 gem "rye"
 
-gem "rx-file" , :git => "https://github.com/ruby-x/rx-file"
+gem "rx-file" , git: "https://github.com/ruby-x/rx-file"
+#gem "rx-file" , path: "../rx-file"
 
 group :test do
   gem "codeclimate-test-reporter" , require: false

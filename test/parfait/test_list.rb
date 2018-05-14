@@ -180,5 +180,10 @@ module Parfait
       end
       assert_equal 2 , counter
     end
+    def test_to_a
+      arr = @list.to_a
+      assert_equal Array , arr.class
+      assert_equal 3 , arr.length
+    end
   end
 end

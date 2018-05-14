@@ -24,8 +24,8 @@ module Risc
       when String , Symbol
         @constant.to_s
       else
-        if( @constant.respond_to? :sof_reference_name )
-          constant.sof_reference_name
+        if( @constant.respond_to? :rxf_reference_name )
+          constant.rxf_reference_name
         else
           constant.class.name.to_s
         end

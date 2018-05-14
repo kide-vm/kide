@@ -53,7 +53,7 @@ module Parfait
     end
     def test_nilled
       assert_equal 0 , @code.get_word(1)
-      assert_equal 0 , @code.get_word(14)
+      assert_equal 0 , @code.get_word(13)
     end
     def test_get_set_self
       @code.set_word(10,1)
@@ -86,11 +86,11 @@ module Parfait
       assert_equal 13 , len
     end
     def test_each_set
-      (1..13).each{|i| @code.set_word(i,i)}
+      (0..12).each{|i| @code.set_word(i,i)}
       all = []
       @code.each_word{ |w| all << w}
-      assert_equal 1 , all.first
-      assert_equal 13 , all.last
+      assert_equal 0 , all.first
+      assert_equal 12 , all.last
     end
     def test_set_word
       assert_equal 1 , @code.set_word(1 , 1)

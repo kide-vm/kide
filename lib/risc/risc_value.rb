@@ -52,7 +52,7 @@ module Risc
       RiscValue.new( sym , type, value)
     end
 
-    def sof_reference_name
+    def rxf_reference_name
       @symbol
     end
 

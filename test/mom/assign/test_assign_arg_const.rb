@@ -25,7 +25,7 @@ module Risc
     def test_load_args_from_message
       produced = produce_body
       assert_equal :r0 , produced.next.array.symbol , produced.next.to_rxf
-      assert_equal 9 , produced.next.index , produced.next.to_rxf
+      assert_equal 8 , produced.next.index , produced.next.to_rxf
     end
 
   end

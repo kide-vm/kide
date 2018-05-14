@@ -45,8 +45,8 @@ module Risc
 
     def self.message(object , depth)
       msg =  "adding #{depth}#{' ' * depth}:"
-      if( object.respond_to?(:sof_reference_name))
-        msg + object.sof_reference_name.to_s
+      if( object.respond_to?(:rxf_reference_name))
+        msg + object.rxf_reference_name.to_s
       else
         msg + object.class.name
       end

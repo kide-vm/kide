@@ -21,7 +21,7 @@ module Risc
       @register = register
       @array = array
       @index = index
-      raise "index 0 " if index == 0
+      raise "index 0 " if index < 0
       raise "Not integer or reg #{index}" unless index.is_a?(Numeric) or RiscValue.look_like_reg(index)
       raise "Not register #{register}" unless RiscValue.look_like_reg(register)
       raise "Not register #{array}" unless RiscValue.look_like_reg(array)

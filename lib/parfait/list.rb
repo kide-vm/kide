@@ -266,7 +266,7 @@ module Parfait
       array = []
       index = 0
       while( index < self.get_length)
-        array[index - 1] = get(index)
+        array[index] = get(index)
         index = index + 1
       end
       array

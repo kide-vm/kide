@@ -40,7 +40,7 @@ module Risc
     #
     # The way out is to build empty shell objects and stuff the neccessary data into them
     #  (not use the normal initialize way)
-    #  (PPS: The "real" solution is to read a sof graph and not do this by hand
+    #  (PPS: The "real" solution is to read a rx-file graph and not do this by hand
     #    That graph can be programatically built and written (with this to boot that process :-))
 
     # There are some helpers below, but the roadmap is something like:
@@ -60,7 +60,7 @@ module Risc
       Parfait.set_object_space( space )
 
       #puts Sof.write(space)
-      boot_functions( space )
+      #boot_functions( space )
     end
 
     # types is where the snake bites its tail. Every chain ends at a type and then it
@@ -98,7 +98,8 @@ module Risc
       classes = Parfait::Dictionary.new
       type_names.each do |name , vars|
         super_c = super_class_names[name] || :Object
-        classes[name] = Parfait::Class.new(name , super_c , types[name] )
+        clazz = Parfait::Class.new(name , super_c , types[name] )
+        classes[name] = clazz
       end
       classes
     end
