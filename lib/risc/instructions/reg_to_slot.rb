@@ -18,14 +18,9 @@ module Risc
   #     (which are precisely the symbols :message or :new_message. or a register)
   # index resolves with resolve_to_index.
   def self.reg_to_slot( source , from_reg , to , index )
-    no_rec = index != :receiver
-    puts "FROM #{from_reg}"
-    puts "TO #{to}"
-    puts "IN #{index}"
     from = resolve_to_register from_reg
     index = resolve_to_index( to , index)
     to = resolve_to_register to
-#    raise "HALLO " if index == 2 and no_rec
     RegToSlot.new( source, from , to , index)
   end
 

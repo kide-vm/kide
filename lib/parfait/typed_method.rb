@@ -65,26 +65,13 @@ module Parfait
     # determine if method has a local variable or tmp (anonymous local) by given name
     def has_local( name )
       raise "has_local #{name}.#{name.class}" unless name.is_a? Symbol
-      index = frame_type.variable_index( name )
-      index ? (index - 1) : index
+      frame_type.variable_index( name )
     end
 
     def add_local( name , type )
       index = has_local( name )
       return index if index
       @frame_type = @frame_type.add_instance_variable(name,type)
-    end
-
-    def frame_length
-      frame_type.instance_length - 1
-    end
-
-    def locals_name( index )
-      frame_type.names.get(index + 1)
-    end
-
-    def locals_type( index )
-      frame_type.types.get(index + 1)
     end
 
     def rxf_reference_name

@@ -38,7 +38,6 @@ module Parfait
       101.times { @next_integer = Integer.new(0,@next_integer) }
       50.times do
         @first_message = Message.new message
-        #puts "INIT caller #{message.object_id} to #{@first_message.object_id}"
         message.set_caller @first_message
         message = @first_message
       end

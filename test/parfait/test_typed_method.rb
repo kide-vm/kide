@@ -57,40 +57,40 @@ module Parfait
     end
 
     def test_local1
-      assert_equal 2 , @method.frame_length , @method.frame_type.inspect
+      assert_equal 3 , @method.frame_type.get_length , @method.frame_type.inspect
       assert_equal Symbol , @method.frame_type.names.first.class
-      assert_equal :local_bar , @method.locals_name(0)
+      assert_equal :local_bar , @method.frame_type.name_at(1)
     end
 
     def test_has_local
-      assert_equal 0 , @method.has_local(:local_bar)
-      assert_equal 1 , @method.has_local(:local_foo)
+      assert_equal 1 , @method.has_local(:local_bar)
+      assert_equal 2 , @method.has_local(:local_foo)
     end
 
     def test_add_local
       @method.add_local(:foo2 , :Object)
-      assert_equal 3 , @method.frame_length
-      assert_equal :foo2 , @method.locals_name(2)
-      assert_equal :Object , @method.locals_type(2)
+      assert_equal 4 , @method.frame_type.get_length
+      assert_equal :foo2 , @method.frame_type.name_at(3)
+      assert_equal :Object , @method.frame_type.type_at(3)
     end
 
     def test_get_locals_name1
       index = @method.has_local(:local_bar)
-      assert_equal 0 , index
-      assert_equal :local_bar , @method.locals_name(index)
+      assert_equal 1 , index
+      assert_equal :local_bar , @method.frame_type.name_at(index)
     end
     def test_get_frame_type1
       index = @method.has_local(:local_bar)
-      assert_equal :Integer , @method.locals_type(index)
+      assert_equal :Integer , @method.frame_type.type_at(index)
     end
     def test_get_locals_name2
       index = @method.has_local(:local_foo)
-      assert_equal 1 , index
-      assert_equal :local_foo , @method.locals_name(index)
+      assert_equal 2 , index
+      assert_equal :local_foo , @method.frame_type.name_at(index)
     end
     def test_get_frame_type2
       index = @method.has_local(:local_bar)
-      assert_equal :Integer , @method.locals_type(index)
+      assert_equal :Integer , @method.frame_type.type_at(index)
     end
     def test_created_with_binary
       assert @method.binary

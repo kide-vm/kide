@@ -37,21 +37,21 @@ module Risc
       sl = main_ticks( 31 )
       assert_equal SlotToReg , sl.class
       assert_equal :r0 , sl.array.symbol #load from message
-      assert_equal 3 , sl.index
+      assert_equal 2 , sl.index
       assert_equal :r1 , sl.register.symbol
     end
     def test_slot_args #load args from message
       sl = main_ticks( 32 )
       assert_equal SlotToReg , sl.class
       assert_equal :r0 , sl.array.symbol #load from message
-      assert_equal 9 , sl.index
+      assert_equal 8 , sl.index
       assert_equal :r2 , sl.register.symbol
     end
     def test_slot_arg #load arg 1, destructively from args
       sl = main_ticks( 33 )
       assert_equal SlotToReg , sl.class
       assert_equal :r2 , sl.array.symbol #load from message
-      assert_equal 2 , sl.index
+      assert_equal 1 , sl.index
       assert_equal :r2 , sl.register.symbol
     end
     def test_slot_int1 #load int from object
@@ -79,7 +79,7 @@ module Risc
       sl = main_ticks(38)
       assert_equal SlotToReg , sl.class
       assert_equal :r3 , sl.array.symbol #load from space
-      assert_equal 5 , sl.index
+      assert_equal 4 , sl.index
       assert_equal :r2 , sl.register.symbol
       assert_equal Parfait::Integer , @interpreter.get_register(:r2).class
     end
@@ -87,7 +87,7 @@ module Risc
       sl = main_ticks(39)
       assert_equal SlotToReg , sl.class
       assert_equal :r2 , sl.array.symbol #load from next_int
-      assert_equal 2 , sl.index
+      assert_equal 1 , sl.index
       assert_equal :r4 , sl.register.symbol
       assert_equal Parfait::Integer , @interpreter.get_register(:r4).class
     end
@@ -95,7 +95,7 @@ module Risc
       sl = main_ticks(40)
       assert_equal RegToSlot , sl.class
       assert_equal :r3 , sl.array.symbol #store to space
-      assert_equal  5 , sl.index
+      assert_equal  4 , sl.index
       assert_equal :r4 , sl.register.symbol
     end
     def test_sys

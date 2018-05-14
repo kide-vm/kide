@@ -129,7 +129,7 @@ module Risc
        {  Word: {char_length: :Integer} ,
           List: {indexed_length: :Integer} ,
           Message: { next_message: :Message,   receiver: :Object, frame: :NamedList ,
-                     return_address: :Integer, return_value: :Integer,
+                     return_address: :Integer, return_value: :Object,
                      caller: :Message ,        name: :Word ,     arguments: :NamedList },
           Integer: {next_integer: :Integer},
           DataObject: {},
