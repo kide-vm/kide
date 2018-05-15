@@ -80,8 +80,8 @@ module Vool
       mom_receive = @receiver.slot_definition(in_method)
       arg_target = [:message , :next_message , :arguments]
       args = []
-      @arguments.each_with_index do |arg , index| # +1 because of type, + 1 beacuse 1-indexed
-        args << Mom::SlotLoad.new( arg_target + [index+1+1] , arg.slot_definition(in_method))
+      @arguments.each_with_index do |arg , index| # +1 because of type
+        args << Mom::SlotLoad.new( arg_target + [index + 1] , arg.slot_definition(in_method))
       end
       setup << Mom::ArgumentTransfer.new( mom_receive , args )
     end

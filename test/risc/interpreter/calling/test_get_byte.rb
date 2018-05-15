@@ -5,7 +5,7 @@ module Risc
     include Ticker
 
     def setup
-        @string_input = as_main("return 'Hello'.get_internal_byte(1)")
+        @string_input = as_main("return 'Hello'.get_internal_byte(0)")
       super
     end
     def test_chain

@@ -5,7 +5,7 @@ module Risc
     include Ticker
 
     def setup
-      @string_input = as_main("return 'Hello'.set_internal_byte(1,75)")
+      @string_input = as_main("return 'Hello'.set_internal_byte(0,75)")
       super
     end
 

@@ -50,7 +50,7 @@ module Risc
       assert_equal RegToSlot , produced.next(base+3).class
       assert_equal :r1 , produced.next(base+3).register.symbol
       assert_equal :r3 , produced.next(base+3).array.symbol
-      assert_equal  2 , produced.next(base+3).index , "first arg must have index 1"
+      assert_equal  1 , produced.next(base+3).index , "first arg must have index 1"
     end
     def test_load_label
       produced = produce_body

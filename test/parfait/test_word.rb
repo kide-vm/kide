@@ -110,5 +110,19 @@ module Parfait
       two = Parfait.new_word("one")
       assert one.compare(two)
     end
+    def test_first_char
+      one = Parfait.new_word("one")
+      one.set_char(0 , "T".ord)
+      assert_equal "Tne" , one.to_string
+    end
+    def test_sec_char
+      one = Parfait.new_word("one")
+      one.set_char(1 , "m".ord)
+      assert_equal "ome" , one.to_string
+    end
+    def test_more_char
+      one = Parfait.new_word("one")
+      assert_raises {one.set_char(3 , "s".ord)}
+    end
   end
 end

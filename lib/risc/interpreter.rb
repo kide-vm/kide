@@ -141,6 +141,7 @@ module Risc
       else
         value = object.get_internal_word( index )
       end
+      log.debug "#{@instruction} == #{object}(#{object.class})   (#{value}|#{index})"
       set_register( @instruction.register , value )
       true
     end
@@ -153,7 +154,6 @@ module Risc
       else
         index = get_register(@instruction.index)
       end
-      puts "INDEX #{index} #{value}"
       object.set_internal_word( index , value )
       trigger(:object_changed, @instruction.array , index)
       true
