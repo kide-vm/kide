@@ -17,38 +17,4 @@ module Mom
       assert_raises {slot(nil)}
     end
   end
-  class TestSlotDefinitionConstant < MiniTest::Test
-    def setup
-      Risc.machine.boot
-      @compiler = CompilerMock.new
-      @definition = SlotDefinition.new(StringConstant.new("hi") , [])
-      @instruction = @definition.to_register(@compiler , InstructionMock.new)
-    end
-    def test_def_class
-      assert_equal Risc::LoadConstant , @instruction.class
-    end
-    def test_def_register
-      assert_equal :r1 , @instruction.register.symbol
-    end
-    def test_def_const
-      assert_equal "hi" , @instruction.constant.to_string
-    end
-  end
-  class TestSlotDefinitionKnown1 < MiniTest::Test
-    def setup
-      Risc.machine.boot
-      @compiler = CompilerMock.new
-      @definition = SlotDefinition.new(:message , :caller)
-      @instruction = @definition.to_register(@compiler , InstructionMock.new)
-    end
-    def test_def_class
-      assert_equal Risc::SlotToReg , @instruction.class
-    end
-    def test_def_array
-      assert_equal :r0 , @instruction.array.symbol
-    end
-    def test_def_register
-      assert_equal :r1 , @instruction.register.symbol
-    end
-  end
 end
