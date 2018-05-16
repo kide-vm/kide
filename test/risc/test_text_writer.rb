@@ -18,6 +18,7 @@ module Risc
 
     def setup
       @machine = Risc.machine.boot
+      @machine.translate(:arm)
       @machine.position_all
       @text_writer = TextWriter.new(@machine)
     end

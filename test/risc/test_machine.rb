@@ -21,6 +21,7 @@ module Risc
   class TestMachinePositions < MiniTest::Test
     def setup
       @machine = Risc.machine.boot
+      @machine.translate(:arm)
       @machine.position_all
     end
     def test_has_positions
@@ -32,6 +33,7 @@ module Risc
   class TestMachineInit < MiniTest::Test
     def setup
       @machine = Risc.machine.boot
+      @machine.translate(:arm)
       @machine.position_all
       @machine.create_binary
     end

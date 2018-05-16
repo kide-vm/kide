@@ -25,23 +25,18 @@ module Risc
     attr_reader  :booted , :translated
     attr_reader  :platform
 
-    # translate to arm, ie instantiate an arm translator and pass it to translate
+    # Translate code to whatever cpu is specified.
+    # Currently only :arm and :interpret
     #
-    # currently we have no machanism to translate to other cpu's (nor such translators)
-    # but the mechanism is ready
-    def translate_arm
-      @platform = Platform.for("Arm")
-      @translated = true
-      translate(@platform.translator)
-    end
-
-    # translate code to whatever cpu the translator translates to
-    # this means translating the initial jump
+    # Translating means translating the initial jump
     # and then translating all methods
-    def translate( translator )
+    def translate( platform )
+      platform = platform.to_s.capitalize
+      @platform = Platform.for(platform)
+      @translated = true
       methods = Parfait.object_space.get_all_methods
-      translate_methods( methods , translator )
-      @cpu_init = risc_init.to_cpu(translator)
+      translate_methods( methods , @platform.translator )
+      @cpu_init = risc_init.to_cpu(@platform.translator)
     end
 
     # go through all methods and translate them to cpu, given the translator
@@ -66,6 +61,7 @@ module Risc
       raise "Must be Parfait #{const}" unless const.is_a?(Parfait::Object)
       @constants << const
     end
+
     # To create binaries, objects (and labels) need to have a position
     # (so objects can be loaded and branches know where to jump)
     #
@@ -76,7 +72,7 @@ module Risc
     # As code length amy change during assembly, this way at least the objects stay
     # in place and we don't have to deal with chaning loading code
     def position_all
-      translate_arm unless @translated
+      raise "Not translated " unless @translated
       #need the initial jump at 0 and then functions
       Position.set(cpu_init , 0 , cpu_init)
       @code_start = position_objects( @platform.padding )
