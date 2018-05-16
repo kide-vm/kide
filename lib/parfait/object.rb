@@ -39,7 +39,7 @@ module Parfait
 
     # 0 -based index
     def set_internal_word(index , value)
-      return set_type(value) if( index == 0)
+      return set_type(value) if( index == TYPE_INDEX)
       raise "not type #{@type.class}" unless @type.is_a?(Type)
       name = @type.name_at(index)
       #return value unless name

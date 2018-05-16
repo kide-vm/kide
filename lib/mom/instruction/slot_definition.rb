@@ -72,7 +72,7 @@ module Mom
         const << Risc::SlotToReg.new( instruction , right ,index, right)
         if slots.length > 2
           raise "3 slots only for type #{slots}" unless slots[2] == :type
-          const << Risc::SlotToReg.new( instruction , right , 0, right)
+          const << Risc::SlotToReg.new( instruction , right , Parfait::TYPE_INDEX, right)
         end
       end
       const
