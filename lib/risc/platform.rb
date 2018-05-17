@@ -15,14 +15,17 @@ module Risc
     end
     # Factory method to create a Platform object according to the platform
     # string given.
-    # Currently only "Arm"
+    # Currently only "Arm" and "Interpreter"
     def self.for( name )
       case name
       when "Arm"
         return Arm::ArmPlatform.new
+      when "Interpreter"
+        return Risc::InterpreterPlatform.new
       else
         raise "not recignized platform #{name}"
       end
     end
   end
 end
+require_relative "interpreter_platform"

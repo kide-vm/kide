@@ -1,11 +1,28 @@
 require_relative "helper"
 
 module Risc
+  class TestInterpreterPlatform < MiniTest::Test
+    def setup
+      @inter = Platform.for("Interpreter")
+    end
+    def test_platform_class
+      assert_equal Risc::InterpreterPlatform , @inter.class
+    end
+    def test_platform_translator_class
+      assert_equal Risc::IdentityTranslator , @inter.translator.class
+    end
+    def test_platform_loaded_class
+      assert_equal Fixnum , @inter.loaded_at.class
+    end
+    def test_translator
+      assert IdentityTranslator.new
+    end
+  end
   class TestTranslator < MiniTest::Test
 
     def setup
       @machine = Risc.machine.boot
-      @translator = Arm::Translator.new
+      @translator = IdentityTranslator.new
     end
 
     def test_translate_label
@@ -14,11 +31,11 @@ module Risc
     end
 
     def test_translate_space
-      assert @machine.translate(:arm)
+      assert @machine.translate(:interpreter)
     end
 
     def test_no_loops_in_chain
-      @machine.translate(:arm)
+      @machine.translate(:interpreter)
       @machine.position_all
       init = Parfait.object_space.get_init
       all = []
@@ -28,8 +45,9 @@ module Risc
       end
     end
     def test_no_risc #by assembling, risc doesnt have assemble method
-      @machine.translate(:arm)
+      @machine.translate(:interpreter)
       @machine.position_all
+      @machine.create_binary
       @machine.objects.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
         method.cpu_instructions.each do |ins|
@@ -39,4 +57,5 @@ module Risc
     end
 
   end
+
 end

@@ -9,7 +9,7 @@ module Risc
     def setup
       Risc.machine.boot
       do_clean_compile
-      Vool::VoolCompiler.ruby_to_vool( @string_input )
+      Vool::VoolCompiler.ruby_to_binary( @string_input , :interpreter)
       Collector.collect_space
       @interpreter = Interpreter.new
       @interpreter.start Risc.machine.risc_init

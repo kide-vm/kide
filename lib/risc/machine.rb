@@ -125,7 +125,7 @@ module Risc
         writer = BinaryWriter.new(method.binary)
         writer.assemble(method.cpu_instructions)
       end
-      log.debug "BinaryInit #{cpu_init.first.object_id.to_s(16)}"
+      log.debug "BinaryInit #{cpu_init.object_id.to_s(16)}"
     end
 
     def boot
