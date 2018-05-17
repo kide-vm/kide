@@ -27,6 +27,14 @@ module Risc
         Position.set( @label , 0 , @binary)
         assert_equal 0 , Position.get(@label.next).at
       end
+      def test_label_at
+        branch = Branch.new("b" , @label)
+        Position.set(@label , 4 , @binary)
+        Position.set(branch , 4 , @binary)
+        at_4 = Position.at(4)
+        assert_equal InstructionPosition , at_4.class
+        assert_equal Branch , at_4.instruction.class
+      end
     end
   end
 end

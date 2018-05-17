@@ -42,6 +42,11 @@ module Risc
       def test_raises_set_nil
         assert_raises { Position.set(self,nil)}
       end
+      def test_at
+        pos = Position.set(self , 5)
+        pos = Position.at(5)
+        assert_equal 5 , pos.at
+      end
     end
   end
 end

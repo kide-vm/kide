@@ -1,4 +1,4 @@
-require_relative "../helper"
+require_relative "helper"
 
 module Risc
   class TestMachineObjects < MiniTest::Test
@@ -16,18 +16,6 @@ module Risc
     end
     def test_constant
       assert @machine.add_constant( Parfait::Integer.new(5) )
-    end
-  end
-  class TestMachinePositions < MiniTest::Test
-    def setup
-      @machine = Risc.machine.boot
-      @machine.translate(:arm)
-      @machine.position_all
-    end
-    def test_has_positions
-      @machine.objects.each do |id,obj|
-        assert Position.get(obj)
-      end
     end
   end
   class TestMachineInit < MiniTest::Test

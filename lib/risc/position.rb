@@ -21,6 +21,15 @@ module Risc
       @positions
     end
 
+    def self.at( int )
+      self.positions.each do |object , position|
+        next unless position.at == int
+        return position unless position.is_a?(InstructionPosition)
+        return position unless position.instruction.is_a?(Label)
+      end
+      nil
+    end
+
     def self.set?(object)
       self.positions.has_key?(object)
     end

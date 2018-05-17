@@ -21,7 +21,7 @@ module Risc
     def length
       88
     end
-    def est_state_change
+    def test_state_change
       @interpreter.register_event :state_changed , self
       ticks length
       assert @state_events[:state_changed]
@@ -30,7 +30,7 @@ module Risc
       @interpreter.unregister_event :state_changed , self
     end
 
-    def est_instruction_events
+    def test_instruction_events
       @interpreter.register_event :instruction_changed , self
       ticks length
       assert_equal length ,  @instruction_events.length
