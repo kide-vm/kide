@@ -19,10 +19,11 @@ module Risc
       4
     end
     def assemble(io)
-      io.write_unsigned_int_32(self)
+      pos = Position.get(self).at
+      io.write_unsigned_int_32(pos)
     end
     class Branch < Instruction
-      def first
+      def first #some logging assumes arm
         self
       end
     end

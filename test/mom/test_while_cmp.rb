@@ -49,21 +49,11 @@ module Risc
       assert_equal Risc::LoadConstant , produced.next(38).class
       assert_equal Parfait::NilClass , produced.next(38).constant.class
     end
-    def pest_nil_check
-      produced = produce_body
-      assert_equal produced.next(13) , produced.next(8).label
-    end
 
     def test_back_jump # should jump back to condition label
       produced = produce_body
       assert_equal Risc::Branch , produced.next(44).class
       assert_equal produced , produced.next(44).label
-    end
-
-    def test_merge_label
-      produced = produce_body
-      assert_equal Risc::Label ,  produced.next(45).class
-      assert produced.next(45).name.start_with?("merge_") , produced.next(29).name
     end
 
   end

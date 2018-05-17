@@ -62,7 +62,7 @@ module Risc
       case object
       when Parfait::BinaryCode
         CodePosition.new(object,at , extra)
-      when Arm::Instruction , Risc::Label
+      when Arm::Instruction , Risc::Instruction
         InstructionPosition.new(object,at , extra)
       else
         ObjectPosition.new(at,object)

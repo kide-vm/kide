@@ -64,14 +64,14 @@ module Vool
       assert_equal "Word_Type" , compile( ":symbol").name
     end
     # classes fot these are not implemented in parfait yet
-    # def pest_nil
-    #   assert_equal "Nil_Type" , compile( "nil").name
-    # end
-    # def pest_false
-    #   assert_equal "False_Type" , compile( "false").name
-    # end
-    # def pest_true
-    #   assert_equal "True_Type" , compile( "true").name
-    # end
+    def pest_nil
+      assert_equal "Nil_Type" , compile( "nil").name
+    end
+    def pest_false
+      assert_equal "False_Type" , compile( "false").name
+    end
+    def pest_true
+      assert_equal "True_Type" , compile( "true").name
+    end
   end
 end

@@ -18,7 +18,7 @@ module Risc
       assert IdentityTranslator.new
     end
   end
-  class TestTranslator < MiniTest::Test
+  class TestIdentityTranslator < MiniTest::Test
 
     def setup
       @machine = Risc.machine.boot
@@ -44,7 +44,7 @@ module Risc
         all << ins
       end
     end
-    def test_no_risc #by assembling, risc doesnt have assemble method
+    def test_no_risc
       @machine.translate(:interpreter)
       @machine.position_all
       @machine.create_binary
