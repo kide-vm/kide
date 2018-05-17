@@ -30,7 +30,10 @@ module Risc
   end
   class IdentityTranslator
     def translate(code)
-      return Label.new( code.source , code.name ) if code.is_a?(Label)
+      #return Label.new( code.source , code.name ) if code.is_a?(Label)
+      if( code.is_a?(Branch))
+        return code.class.new(code.source , code.label.to_cpu(self))
+      end
       ret = code.dup
       ret.nil_next
       ret

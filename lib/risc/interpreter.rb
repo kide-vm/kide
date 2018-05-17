@@ -31,10 +31,11 @@ module Risc
       end
     end
 
-    def start( instruction )
+    def start_machine
       initialize
+      init = Risc.machine.cpu_init
       set_state(:running)
-      set_instruction( instruction )
+      set_pc( Position.get(init).at )
     end
 
     def set_state( state )
@@ -44,12 +45,22 @@ module Risc
       trigger(:state_changed , old , state )
     end
 
+    def set_pc( pos )
+      raise "Not int #{pos}" unless pos.is_a? Numeric
+      position = Position.at(pos)
+      log.debug "Setting Position #{pos}"
+      raise "not instruction position #{position}-#{position.class}-#{position.object.class}" unless position.is_a?(Position::InstructionPosition)
+      set_instruction( position.instruction)
+      @clock = position.at
+    end
+
     def set_instruction( instruction )
       raise "set to same instruction #{instruction}:#{instruction.class}" if @instruction == instruction
+      log.debug "Setting Instruction #{instruction}"
       old = @instruction
       @instruction = instruction
       trigger(:instruction_changed, old , instruction)
-      set_state( :exited) unless instruction
+      set_state( :exited ) unless instruction
     end
 
     def get_register( reg )
@@ -77,29 +88,32 @@ module Risc
     end
 
     def tick
-      return unless @instruction
-      @clock += 1
+      unless @instruction
+        log.debug "No Instruction , No Tick"
+        return @clock
+      end
       name = @instruction.class.name.split("::").last
       log.debug "#{@clock.to_s}: #{@instruction.to_s}"
       fetch = send "execute_#{name}"
       log.debug register_dump
-      return unless fetch
-      set_instruction @instruction.next
-    end
-
-    # Label is a noop.
-    def execute_Label
-      true
+      if fetch
+        clock = @clock + @instruction.byte_length
+        set_pc(clock)
+      else
+        log.debug "No Fetch"
+      end
+      @clock
     end
 
     # Instruction interpretation starts here
     def execute_DynamicJump
       method =  get_register(@instruction.register)
       set_instruction( method.risc_instructions )
+      false
     end
     def execute_Branch
       label = @instruction.label
-      set_instruction label
+      set_pc Position.get(label).at
       false
     end
 
