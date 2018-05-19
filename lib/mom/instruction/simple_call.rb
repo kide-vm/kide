@@ -17,20 +17,18 @@ module Mom
     def to_s
       "SimpleCall #{@method.name}"
     end
-    # To call the method, we determine the jumpable address (method.binary), move that
-    # into a register and issue a FunctionCall
-    #
+    # Calling a Method is basically jumping to the Binary (+ offset).
+    # We just swap in the new message and go.
+    # 
     # For returning, we add a label after the call, and load it's address into the
     # return_address of the next_message, for the ReturnSequence to pick it up.
     def to_risc(compiler)
-      jump_address = compiler.use_reg(:Object)
       return_label = Risc::Label.new(self,"continue_#{object_id}")
       save_return =  SlotLoad.new([:message,:next_message,:return_address],[return_label],self)
       moves = save_return.to_risc(compiler)
       moves << Risc.slot_to_reg(self, :message , :next_message , Risc.message_reg)
 
-      moves << Risc.load_constant(self , method.binary , jump_address)
-      moves << Risc::FunctionCall.new(self, method ,jump_address)
+      moves << Risc::FunctionCall.new(self, method )
 
       moves << return_label
     end

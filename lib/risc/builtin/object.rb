@@ -67,7 +67,7 @@ module Risc
           builder.build do
             add_load_constant("__init__ load return", exit_label , ret_tmp)
             add_reg_to_slot("__init__ store return", ret_tmp , :message , :return_address)
-            add_function_call( "__init__ issue call" ,  Parfait.object_space.get_main , ret_tmp)
+            add_function_call( "__init__ issue call" ,  Parfait.object_space.get_main)
             add_code exit_label
           end
           compiler.reset_regs

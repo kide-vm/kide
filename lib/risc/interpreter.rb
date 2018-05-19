@@ -49,6 +49,9 @@ module Risc
       raise "Not int #{pos}" unless pos.is_a? Numeric
       position = Position.at(pos)
       log.debug "Setting Position #{pos}"
+      if position.is_a?(Position::CodePosition)
+        return set_pc(position.at + 12)
+      end
       raise "not instruction position #{position}-#{position.class}-#{position.object.class}" unless position.is_a?(Position::InstructionPosition)
       set_instruction( position.instruction)
       @clock = position.at
@@ -207,7 +210,11 @@ module Risc
     end
 
     def execute_FunctionCall
-      set_instruction @instruction.method.risc_instructions
+      meth = @instruction.method
+      at = Position.get(meth.binary).at
+      log.debug "Call to #{meth.name} at:#{at}"
+      set_pc(at + 12)
+      #set_instruction @instruction.method.risc_instructions
       false
     end
 
