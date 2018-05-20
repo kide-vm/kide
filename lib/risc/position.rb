@@ -15,6 +15,9 @@ module Risc
   # entails to affected objects.
 
   module Position
+    include Util::Logging
+    log_level :debug
+
     @positions = {}
 
     def self.positions
@@ -39,7 +42,7 @@ module Risc
       if pos == nil
         str = "position accessed but not set, "
         str += "0x#{object.object_id.to_s(16)}\n"
-        str += "for #{object.class} byte_length #{object.byte_length if object.respond_to?(:byte_length)} for #{object.inspect[0...130]}"
+        str += "for #{object.class} byte_length #{object.byte_length if object.respond_to?(:byte_length)} for #{object.to_s[0...130]}"
         raise str
       end
       pos
@@ -55,7 +58,7 @@ module Risc
     def self.set( object , pos , extra = nil)
       # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
       # in measures (of 32)
-      #puts "Setting #{pos} for #{self.class}"
+      log.debug "Setting #{pos} for #{object.class}-#{object}" if pos < 3000
       old = Position.positions[object]
       if old != nil
         old.reset_to(pos)
@@ -64,6 +67,7 @@ module Risc
       position = for_at( object , pos , extra)
       self.positions[object] = position
       position.init(pos)
+      log.debug "Set #{pos} for #{position.class}" if pos < 3000
       position
     end
 

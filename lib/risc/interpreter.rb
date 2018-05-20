@@ -48,7 +48,7 @@ module Risc
     def set_pc( pos )
       raise "Not int #{pos}" unless pos.is_a? Numeric
       position = Position.at(pos)
-      log.debug "Setting Position #{pos}"
+      log.debug "Setting Position #{position}"
       if position.is_a?(Position::CodePosition)
         return set_pc(position.at + 12)
       end

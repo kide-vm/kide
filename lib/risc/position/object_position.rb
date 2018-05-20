@@ -5,6 +5,7 @@ module Risc
 
       def initialize( at , object)
         @at = at
+        @object = object
         raise "not int #{self}-#{at}" unless @at.is_a?(Integer)
       end
 

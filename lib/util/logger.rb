@@ -458,7 +458,7 @@ module Util
     # Default formatter for log messages
     class Formatter
       def call(severity, time, progname, msg)
-        "#{severity} #{progname} #{time.strftime("%M-%S-%L")} #{progname}::#{msg2str(msg)}\n"
+        "#{severity} #{progname} #{time.strftime("%M-%S-%L")}::#{msg2str(msg)}\n"
       end
 
     private
