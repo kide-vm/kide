@@ -9,7 +9,7 @@ end
 
 require "rx-file"
 
-require_relative "logging"
+require "util/logging"
 require_relative "elf/object_writer"
 require_relative "risc"
 require_relative "arm/arm_machine"

@@ -7,7 +7,7 @@ class MemLogger
   def self.log_stream
     @stream = StringIO.new
   end
-  include Logging
+  include Util::Logging
 end
 
 class LoggerTest < MiniTest::Test

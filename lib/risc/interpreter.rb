@@ -13,8 +13,8 @@ module Risc
   class Interpreter
     # fire events for changed pc and register contents
     include Util::Eventable
-    include Logging
-    log_level :info
+    include Util::Logging
+    log_level :debug
 
     attr_reader :instruction , :clock    # current instruction or pc
     attr_reader :registers     # the registers, 16 (a hash, sym -> contents)

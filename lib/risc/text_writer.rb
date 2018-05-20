@@ -13,7 +13,7 @@ module Risc
   # we just add it to pointers.
 
   class TextWriter
-    include Logging
+    include Util::Logging
     log_level :info
 
     def initialize(machine)
