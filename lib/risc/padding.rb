@@ -6,7 +6,7 @@ module Padding
   # objects only come in lengths of multiple of 8 words / 32 bytes
   # and there is a "hidden" 1 word that is used for debug/check memory corruption
   def self.padded( len )
-    a = 32 * (1 + (len + 3)/32 )
+    a = 32 * (1 + ((len + 3)/32).floor )
     #puts "#{a} for #{len}"
     a
   end
