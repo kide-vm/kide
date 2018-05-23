@@ -14,7 +14,7 @@ module Risc
     # fire events for changed pc and register contents
     include Util::Eventable
     include Util::Logging
-    log_level :info
+    log_level :debug
 
     attr_reader :instruction , :clock , :pc  # current instruction and pc
     attr_reader :registers     # the registers, 16 (a hash, sym -> contents)
@@ -48,9 +48,11 @@ module Risc
     def set_pc( pos )
       raise "Not int #{pos}" unless pos.is_a? Numeric
       position = Position.at(pos)
-      log.debug "Setting Position #{position}"
       if position.is_a?(Position::CodePosition)
-        return set_pc(position.at + 12)
+        log.debug "Setting Position #{clock}-#{position}, #{position.method}"
+        return set_pc(position.at + Parfait::BinaryCode.offset)
+      else
+        log.debug "Setting Position #{clock}-#{position}, #{position.binary}"
       end
       raise "not instruction position #{position}-#{position.class}-#{position.object.class}" unless position.is_a?(Position::InstructionPosition)
       set_instruction( position.instruction )
@@ -60,7 +62,7 @@ module Risc
 
     def set_instruction( instruction )
       raise "set to same instruction #{instruction}:#{instruction.class}" if @instruction == instruction
-      log.debug "Setting Instruction #{instruction}"
+      log.debug "Setting Instruction #{instruction.class}"
       old = @instruction
       @instruction = instruction
       trigger(:instruction_changed, old , instruction)
@@ -97,7 +99,7 @@ module Risc
         return @clock
       end
       name = @instruction.class.name.split("::").last
-      log.debug "#{@pc.to_s}:#{@clock.to_s(16)}: #{@instruction.to_s}"
+      log.debug "#{@pc.to_s(16)}:#{@clock}: #{@instruction.to_s}"
       fetch = send "execute_#{name}"
       log.debug register_dump
       if fetch
@@ -214,7 +216,7 @@ module Risc
       meth = @instruction.method
       at = Position.get(meth.binary).at
       log.debug "Call to #{meth.name} at:#{at}"
-      set_pc(at + 12)
+      set_pc(at + BinaryCode.offset)
       #set_instruction @instruction.method.risc_instructions
       false
     end

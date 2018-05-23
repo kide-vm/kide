@@ -8,20 +8,22 @@ module Parfait
   #
   class BinaryCode < Data16
     attr_reader :next
+    def self.offset
+      2 * 4 # size of type (2, type+next) * word_size (4)
+    end
 
     def initialize(total_size)
       super()
-      extend_to(total_size)
+      extend_to(total_size )
       #puts "Init with #{total_size} for #{object_id}"
       (0 ..(data_length)).each{ |index| set_word(index , 0) }
     end
     def extend_to(total_size)
-      if total_size > self.data_length
-        extend_one unless @next
-        @next.extend_to(total_size - data_length)
-      end
+      return unless total_size > self.data_length
+      extend_one() unless @next
+      @next.extend_to(total_size - data_length)
     end
-    def extend_one
+    def extend_one()
       @next = BinaryCode.new(1)
       #puts "extending #{total_size - data_length} in #{self}"
       Risc::Position.reset(self) if Risc::Position.set?(self)

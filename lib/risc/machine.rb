@@ -108,7 +108,7 @@ module Risc
       first_method = Parfait.object_space.types.values.first.methods
       before = at
       Position.set( first_method.binary , at , first_method)
-      Position.set( first_method.cpu_instructions, at + 12 , first_method.binary)
+      Position.set( first_method.cpu_instructions, at + Parfait::BinaryCode.offset , first_method.binary)
       log.debug "Method #{first_method.name}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
       log.debug "Instructions #{first_method.cpu_instructions.object_id.to_s(16)}:#{(before+12).to_s(16)}"
       at
