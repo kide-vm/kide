@@ -32,7 +32,7 @@ module Risc
     end
     def test_pos
       @interpreter.start_machine
-      assert_equal 0 , @interpreter.clock
+      assert_equal 1 , @interpreter.clock
     end
   end
   class TestInterpreterTicks < MiniTest::Test
@@ -43,12 +43,30 @@ module Risc
       @interpreter = Interpreter.new
       @interpreter.start_machine
     end
-    def test_tick
-      assert_equal 19484 , @interpreter.tick
+    def test_tick1
+      assert_equal 2 , @interpreter.tick
     end
-    def test_tick
-      assert_equal 19484 , @interpreter.tick
-      assert_equal 19488 , @interpreter.tick
+    def test_clock1
+      @interpreter.tick
+      assert_equal 2 , @interpreter.clock
+    end
+    def test_pc1
+      @interpreter.tick
+      assert_equal 19484 , @interpreter.pc
+    end
+    def test_tick2
+      @interpreter.tick
+      assert_equal 3 , @interpreter.tick
+    end
+    def test_clock2
+      @interpreter.tick
+      @interpreter.tick
+      assert_equal 3 , @interpreter.clock
+    end
+    def test_pc2
+      @interpreter.tick
+      @interpreter.tick
+      assert_equal 19488 , @interpreter.pc
     end
   end
 end

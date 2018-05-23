@@ -46,7 +46,7 @@ module Risc
     end
     def source_mini
       return "(no source)" unless source
-      return "(from: #{source[0..35]})" if source.is_a?(String)
+      return "(from: #{source[0..50]})" if source.is_a?(String)
       "(from: #{source.class.name.split("::").last})"
     end
   end

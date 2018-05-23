@@ -14,15 +14,15 @@ module Risc
     # fire events for changed pc and register contents
     include Util::Eventable
     include Util::Logging
-    log_level :debug
+    log_level :info
 
-    attr_reader :instruction , :clock    # current instruction or pc
+    attr_reader :instruction , :clock , :pc  # current instruction and pc
     attr_reader :registers     # the registers, 16 (a hash, sym -> contents)
     attr_reader :stdout,  :state , :flags  # somewhat like the lags on a cpu, hash  sym => bool (zero .. . )
 
     #start in state :stopped and set registers to unknown
     def initialize()
-      @stdout , @clock , @state = "", 0 , :stopped
+      @stdout , @clock , @pc , @state = "", 0 , 0 , :stopped
       @registers = {}
       @flags = {  :zero => false , :plus => false ,
                   :minus => false , :overflow => false }
@@ -53,8 +53,9 @@ module Risc
         return set_pc(position.at + 12)
       end
       raise "not instruction position #{position}-#{position.class}-#{position.object.class}" unless position.is_a?(Position::InstructionPosition)
-      set_instruction( position.instruction)
-      @clock = position.at
+      set_instruction( position.instruction )
+      @clock += 1
+      @pc = position.at
     end
 
     def set_instruction( instruction )
@@ -96,12 +97,12 @@ module Risc
         return @clock
       end
       name = @instruction.class.name.split("::").last
-      log.debug "#{@clock.to_s}: #{@instruction.to_s}"
+      log.debug "#{@pc.to_s}:#{@clock.to_s(16)}: #{@instruction.to_s}"
       fetch = send "execute_#{name}"
       log.debug register_dump
       if fetch
-        clock = @clock + @instruction.byte_length
-        set_pc(clock)
+        pc = @pc + @instruction.byte_length
+        set_pc(pc)
       else
         log.debug "No Fetch"
       end
