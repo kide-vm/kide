@@ -14,6 +14,7 @@ module Risc
   class Instruction
     def nil_next
       @next = nil
+      self
     end
     def byte_length
       4
@@ -30,12 +31,13 @@ module Risc
   end
   class IdentityTranslator
     def translate(code)
-      #return Label.new( code.source , code.name ) if code.is_a?(Label)
-      if( code.is_a?(Branch))
-        return code.class.new(code.source , code.label.to_cpu(self))
+      case code
+      when Branch
+        ret = code.class.new(code.source , code.label.to_cpu(self))
+      else
+        ret = code.dup
+        ret.nil_next
       end
-      ret = code.dup
-      ret.nil_next
       ret
     end
   end

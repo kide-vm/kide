@@ -14,7 +14,7 @@ module Risc
 
   class Machine
     include Util::Logging
-    log_level :debug
+    log_level :info
 
     def initialize
       @booted = false

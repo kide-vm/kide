@@ -16,7 +16,7 @@ module Risc
 
   module Position
     include Util::Logging
-    log_level :debug
+    log_level :info
 
     @positions = {}
 

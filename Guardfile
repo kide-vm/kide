@@ -1,7 +1,7 @@
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
-guard :minitest do   # with Minitest::Unit
+guard :minitest , all_on_start: false do   # with Minitest::Unit
 
   # if any test file changes, run that test
   watch(%r{^test/(.*)\/?test_(.*)\.rb$})

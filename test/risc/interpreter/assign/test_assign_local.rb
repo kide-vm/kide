@@ -9,7 +9,7 @@ module Risc
       super
     end
 
-    def test_chain
+    def pest_chain
       #show_main_ticks # get output of what is
       check_main_chain  [Label, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg , RegToSlot, SlotToReg, SlotToReg, RegToSlot,
@@ -18,7 +18,7 @@ module Risc
       assert_equal 15 , get_return.value
     end
 
-    def test_call_main
+    def pest_call_main
       call_ins = ticks(main_at)
       assert_equal FunctionCall , call_ins.class
       assert  :main , call_ins.method.name
@@ -29,17 +29,17 @@ module Risc
       assert_equal Parfait::Integer , @interpreter.get_register(load_ins.register).class
       assert_equal 15 , @interpreter.get_register(load_ins.register).value
     end
-    def test_return
+    def pest_return
       ret = main_ticks(13)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
       assert_equal Label , link.class
     end
-    def test_transfer
+    def pest_transfer
       transfer = main_ticks(14)
       assert_equal Transfer ,  transfer.class
     end
-    def test_sys
+    def pest_sys
       sys = main_ticks(15)
       assert_equal Syscall ,  sys.class
     end

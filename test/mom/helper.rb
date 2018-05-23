@@ -9,10 +9,10 @@ module Risc
     end
 
     def preamble
-      [Label ]
+      [ Label ]
     end
     def postamble
-      [ Label]
+      [ Label ]
     end
     # test hack to in place change object type
     def add_space_field(name,type)
@@ -24,11 +24,14 @@ module Risc
       preamble.each{ produced = produced.next }
       produced
     end
+    def as_test_main
+      "class Test; def main(arg);#{@input};end;end"
+    end
     def produce_instructions
       assert @expect , "No output given"
-      Vool::VoolCompiler.ruby_to_vool "class Test; def main(arg);#{@input};end;end"
+      Vool::VoolCompiler.ruby_to_binary as_test_main , :interpreter
       test = Parfait.object_space.get_class_by_name :Test
-      test.instance_type.get_method( :main).risc_instructions
+      test.instance_type.get_method(:main).cpu_instructions
     end
     def check_nil
       produced = produce_instructions
