@@ -3,7 +3,7 @@ module Risc
     class ObjectPosition
       attr_reader :at , :object
 
-      def initialize( at , object)
+      def initialize( object, at)
         @at = at
         @object = object
         raise "not int #{self}-#{at}" unless @at.is_a?(Integer)

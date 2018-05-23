@@ -16,7 +16,7 @@ module Risc
 
   module Position
     include Util::Logging
-    log_level :info
+    log_level :debug
 
     @positions = {}
 
@@ -57,17 +57,21 @@ module Risc
 
     def self.set( object , pos , extra = nil)
       # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
-      # in measures (of 32)
-      log.debug "Setting #{pos} for #{object.class}-#{object}" if pos < 3000
+      # in measures
+      log.debug "Setting #{pos.to_s(16)} for #{object.class}-#{object}"
       old = Position.positions[object]
+      testing = self.at( pos )
       if old != nil
+        raise "Mismatch was:#{old}#{old.class} , should #{testing}#{testing.class}" if testing and testing.class != old.class
         old.reset_to(pos)
+        log.debug "Reset #{pos.to_s(16)} for #{old.class}"
         return old
       end
       position = for_at( object , pos , extra)
+      raise "Mismatch was:#{position}#{position.class} , should #{testing}#{testing.class}" if testing and testing.class != old.class
       self.positions[object] = position
       position.init(pos)
-      log.debug "Set #{pos} for #{position.class}" if pos < 3000
+      log.debug "Set #{pos.to_s(16)} for #{position.class}"
       position
     end
 
@@ -78,7 +82,7 @@ module Risc
       when Arm::Instruction , Risc::Instruction
         InstructionPosition.new(object,at , extra)
       else
-        ObjectPosition.new(at,object)
+        ObjectPosition.new(object,at)
       end
     end
   end

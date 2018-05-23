@@ -18,26 +18,26 @@ module Risc
       attr_reader :instruction , :binary
       def initialize(instruction, pos , binary)
         raise "not set " unless binary
-        super(pos, instruction)
+        super(instruction,pos)
         @instruction = instruction
         @binary = binary
       end
       def init(at)
         diff = at - Position.get(@binary).at
-        if( diff % 60 == 12*4)
+        if( diff % 60 == 13*4)
           @binary.extend_one unless @binary.next
           @binary = @binary.next
           raise "end of line " unless @binary
-          at = Position.get(@binary).at + 3*4
+          at = Position.get(@binary).at + Parfait::BinaryCode.offset
         end
-        return unless instruction.next
-        at += instruction.byte_length
-        Position.set(instruction.next, at , binary)
+        return unless @instruction.next
+        at += @instruction.byte_length
+        Position.set(@instruction.next, at , @binary)
       end
 
       def reset_to(pos)
         super(pos)
-        #puts "Reset (#{changed}) #{instruction}"
+        Position.log.debug "Reset (#{pos}) #{instruction}"
         init(pos)
       end
     end
