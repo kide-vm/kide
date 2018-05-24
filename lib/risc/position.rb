@@ -29,7 +29,7 @@ module Risc
       @positions = {}
       @reverse_cache = {}
     end
-    
+
     def self.at( int )
       @reverse_cache[int]
     end
@@ -65,9 +65,11 @@ module Risc
         if testing.class != position.class
           raise "Mismatch (at #{to.to_s(16)}) new:#{position}:#{position.class} , was #{testing}:#{testing.class}"
         end
-        @reverse_cache.delete(to)
       end
-      @reverse_cache[position.at] = position
+      unless position.object.is_a? Label
+        @reverse_cache.delete(to)
+        @reverse_cache[position.at] = position
+      end
       log.debug "Reset #{position} (#{to.to_s(16)}) for #{position.class}"
       return position
     end
@@ -81,7 +83,7 @@ module Risc
       raise "Mismatch (at #{pos.to_s(16)}) was:#{position} #{position.class} #{position.object} , should #{testing}#{testing.class}" if testing and testing.class != position.class
       self.positions[object] = position
       position.init(pos)
-      @reverse_cache[position.at] = position
+      @reverse_cache[position.at] = position unless object.is_a? Label
       log.debug "Set #{position} (#{pos.to_s(16)}) for #{position.class}"
       position
     end

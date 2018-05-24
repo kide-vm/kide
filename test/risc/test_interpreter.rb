@@ -3,16 +3,16 @@ require_relative "helper"
 module Risc
   class TestInterpreterBasics < MiniTest::Test
 
-    def pest_class
+    def test_class
       assert_equal Risc::Interpreter , Interpreter.new.class
     end
-    def pest_starts_stopped
+    def test_starts_stopped
       assert_equal :stopped , Interpreter.new.state
     end
-    def pest_has_regs
+    def test_has_regs
       assert_equal 12 , Interpreter.new.registers.length
     end
-    def pest_has_r0
+    def test_has_r0
       assert_equal :r0 , Interpreter.new.registers.keys.first
     end
   end
@@ -23,14 +23,14 @@ module Risc
       @machine.position_all
       @interpreter = Interpreter.new
     end
-    def pest_starts
+    def test_starts
       assert_equal 0 , @interpreter.start_machine
     end
-    def pest_started
+    def test_started
       @interpreter.start_machine
       assert_equal :running , @interpreter.state
     end
-    def pest_pos
+    def test_pos
       @interpreter.start_machine
       assert_equal 1 , @interpreter.clock
     end
@@ -43,30 +43,30 @@ module Risc
       @interpreter = Interpreter.new
       @interpreter.start_machine
     end
-    def pest_tick1
+    def test_tick1
       assert_equal 2 , @interpreter.tick
     end
-    def pest_clock1
+    def test_clock1
       @interpreter.tick
       assert_equal 2 , @interpreter.clock
     end
-    def pest_pc1
+    def test_pc1
       @interpreter.tick
-      assert_equal 19484 , @interpreter.pc
+      assert_equal 18392 , @interpreter.pc
     end
-    def pest_tick2
+    def test_tick2
       @interpreter.tick
       assert_equal 3 , @interpreter.tick
     end
-    def pest_clock2
+    def test_clock2
       @interpreter.tick
       @interpreter.tick
       assert_equal 3 , @interpreter.clock
     end
-    def pest_pc2
+    def test_pc2
       @interpreter.tick
       @interpreter.tick
-      assert_equal 19488 , @interpreter.pc
+      assert_equal 18396 , @interpreter.pc
     end
     def test_tick_15
       15.times {@interpreter.tick}

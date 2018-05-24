@@ -35,6 +35,14 @@ module Risc
         assert_equal InstructionPosition , at_4.class
         assert_equal Branch , at_4.instruction.class
       end
+      def test_label_at_reverse
+        branch = Branch.new("b" , @label)
+        Position.set(branch , 8 , @binary)
+        Position.set(@label , 8 , @binary)
+        at_4 = Position.at(8)
+        assert_equal InstructionPosition , at_4.class
+        assert_equal Branch , at_4.instruction.class
+      end
       def test_reset_false_type
         assert_raises {Position.set(@label , 0 , @binary)}
       end
