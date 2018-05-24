@@ -1,7 +1,7 @@
-require_relative '../helper'
+require_relative 'helper'
 
 module Mains
-  class TestPuts < MainsTest
+  class TestPuts #< MainsTest
 
     def test_say_hi
       hi = "Hello there"

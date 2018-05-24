@@ -11,16 +11,15 @@ module Risc
 
     def test_if
         #show_main_ticks # get output of what is in main
-        check_main_chain [Label, LoadConstant, SlotToReg, RegToSlot, Label,
-             LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-             RegToSlot, SlotToReg, LoadConstant, FunctionCall, Label,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-             OperatorInstruction, IsMinus, IsZero, LoadConstant, Branch,
-             Label, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+        check_main_chain [LoadConstant, SlotToReg, RegToSlot, LoadConstant, LoadConstant,
+             SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             RegToSlot, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
+             RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
+             FunctionCall, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
+             SlotToReg, OperatorInstruction, IsMinus, IsZero, LoadConstant,
+             Branch, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
              SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, LoadConstant, OperatorInstruction,
              IsZero, LoadConstant, OperatorInstruction, IsZero, LoadConstant,
@@ -29,31 +28,29 @@ module Risc
              SlotToReg, RegToSlot, SlotToReg, RegToSlot, LoadConstant,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
              SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             SlotToReg, LoadConstant, FunctionCall, Label, SlotToReg,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, OperatorInstruction,
-             LoadConstant, SlotToReg, SlotToReg, RegToSlot, RegToSlot,
-             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, FunctionReturn, SlotToReg, SlotToReg, RegToSlot,
-             Branch, Label, LoadConstant, LoadConstant, SlotToReg,
-             RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant,
-             FunctionCall, Label, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, SlotToReg, OperatorInstruction, IsMinus, IsZero,
-             Label, LoadConstant, Label, RegToSlot, SlotToReg,
+             SlotToReg, FunctionCall, SlotToReg, SlotToReg, SlotToReg,
+             SlotToReg, SlotToReg, OperatorInstruction, LoadConstant, SlotToReg,
+             SlotToReg, RegToSlot, RegToSlot, RegToSlot, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             LoadConstant, OperatorInstruction, IsZero, Label, SlotToReg,
+             SlotToReg, SlotToReg, RegToSlot, Branch, LoadConstant,
+             LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, FunctionReturn, Transfer, Syscall,
-             NilClass]
+             SlotToReg, RegToSlot, SlotToReg, RegToSlot, LoadConstant,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
+             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
+             SlotToReg, FunctionCall, SlotToReg, SlotToReg, SlotToReg,
+             SlotToReg, SlotToReg, OperatorInstruction, IsMinus, IsZero,
+             LoadConstant, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, LoadConstant, OperatorInstruction,
+             IsZero, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
+             Transfer, Syscall, NilClass]
        assert_kind_of Parfait::Integer , get_return
        assert_equal 0 , get_return.value
     end
     def test_exit
-      done = main_ticks(185)
+      done = main_ticks(172)
       assert_equal Syscall ,  done.class
     end
   end

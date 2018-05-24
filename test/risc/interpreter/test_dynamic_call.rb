@@ -11,28 +11,26 @@ module Risc
 
     def test_chain
       #show_main_ticks # get output of what is
-      check_main_chain [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, OperatorInstruction,
-             IsZero, SlotToReg, SlotToReg, SlotToReg, LoadConstant,
-             RegToSlot, LoadConstant, LoadConstant, SlotToReg, SlotToReg,
-             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
+      check_main_chain [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             SlotToReg, SlotToReg, SlotToReg, OperatorInstruction, IsZero,
+             SlotToReg, SlotToReg, SlotToReg, LoadConstant, RegToSlot,
+             LoadConstant, LoadConstant, SlotToReg, SlotToReg, LoadConstant,
+             SlotToReg, OperatorInstruction, IsZero, SlotToReg, OperatorInstruction,
+             IsZero, SlotToReg, Branch, LoadConstant, SlotToReg,
+             OperatorInstruction, IsZero, SlotToReg, OperatorInstruction, IsZero,
+             SlotToReg, Branch, LoadConstant, SlotToReg, OperatorInstruction,
+             IsZero, SlotToReg, OperatorInstruction, IsZero, SlotToReg,
+             Branch, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
              SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
-             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
-             SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
-             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
-             SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
-             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
-             SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
-             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
-             SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
-             Label, LoadConstant, SlotToReg, OperatorInstruction, IsZero,
-             SlotToReg, OperatorInstruction, IsZero, Label, RegToSlot,
-             Label, LoadConstant, SlotToReg, LoadConstant, SlotToReg,
-             RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
-             RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
-             LoadConstant, SlotToReg, DynamicJump, Label, SlotToReg,
+             LoadConstant, SlotToReg, OperatorInstruction, IsZero, SlotToReg,
+             OperatorInstruction, IsZero, SlotToReg, Branch, LoadConstant,
+             SlotToReg, OperatorInstruction, IsZero, SlotToReg, OperatorInstruction,
+             IsZero, RegToSlot, LoadConstant, SlotToReg, LoadConstant,
+             SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             RegToSlot, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
+             SlotToReg, LoadConstant, SlotToReg, DynamicJump, SlotToReg,
              SlotToReg, LoadData, OperatorInstruction, LoadConstant, SlotToReg,
              SlotToReg, RegToSlot, RegToSlot, RegToSlot, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
@@ -44,28 +42,28 @@ module Risc
     end
 
     def test_call_main
-      call_ins = ticks(26)
+      call_ins = ticks(25)
       assert_equal FunctionCall , call_ins.class
       assert_equal  :main , call_ins.method.name
     end
     def test_load_entry
-      call_ins = main_ticks(5)
+      call_ins = main_ticks(4)
       assert_equal LoadConstant , call_ins.class
       assert_equal  Parfait::CacheEntry , call_ins.constant.class
     end
 
     def test_dyn
-      cal = main_ticks(108)
+      cal = main_ticks(99)
       assert_equal DynamicJump ,  cal.class
     end
     def test_return
-      ret = main_ticks(137)
+      ret = main_ticks(127)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
       assert_equal Label , link.class
     end
     def test_sys
-      sys = main_ticks(139)
+      sys = main_ticks(129)
       assert_equal Syscall ,  sys.class
     end
   end

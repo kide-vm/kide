@@ -82,7 +82,7 @@ module Arm
     end
     def test_too_big_add
       code = @machine.add	 :r1 , :r1, 0x222
-      Risc::Position.set(code,0,@binary)
+      Risc::Position.set(code,0,nil)
       # add 0x02 (first instruction) and then 0x220 shifted
       assert_code code , :add , [0x02,0x1c,0x91,0xe2] #e2 91 1e 02
       # added extra instruction to add "extra"

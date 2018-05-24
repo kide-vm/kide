@@ -9,11 +9,15 @@ module Arm
     def byte_length
       4
     end
+    def is_a?(_)
+      true
+    end
   end
   module ArmHelper
     def setup
       @machine = Arm::ArmMachine
       @binary = FakeBin.new
+      Risc::Position.clear_positions
       Risc::Position.set(@binary , 0)
     end
 

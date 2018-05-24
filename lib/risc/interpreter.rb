@@ -48,6 +48,7 @@ module Risc
     def set_pc( pos )
       raise "Not int #{pos}" unless pos.is_a? Numeric
       position = Position.at(pos)
+      raise "No position #{pos}" unless position
       if position.is_a?(Position::CodePosition)
         log.debug "Setting Position #{clock}-#{position}, #{position.method}"
         return set_pc(position.at + Parfait::BinaryCode.offset)
@@ -114,7 +115,7 @@ module Risc
     # Instruction interpretation starts here
     def execute_DynamicJump
       method =  get_register(@instruction.register)
-      set_instruction( method.risc_instructions )
+      set_pc( Position.get(method.cpu_instructions).at )
       false
     end
     def execute_Branch
