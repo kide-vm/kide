@@ -25,6 +25,12 @@ module Risc
       @translator = IdentityTranslator.new
     end
 
+    def test_load_translates_label
+      label = Label.new("test" , "test")
+      load = Risc.load_constant("source" , label , :r1)
+      translated = @translator.translate(load)
+      assert label != translated.constant
+    end
     def test_translate_first_label
       label = Parfait.object_space.get_main.risc_instructions
       assert_equal "Space_Type.main" ,label.to_cpu(@translator).name , label

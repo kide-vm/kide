@@ -34,10 +34,14 @@ module Risc
       case code
       when Branch
         ret = code.class.new(code.source , code.label.to_cpu(self))
+      when LoadConstant
+        const = code.constant
+        const = const.to_cpu(self) if const.is_a?(Label)
+        ret = LoadConstant.new(code.source , const , code.register)
       else
         ret = code.dup
-        ret.nil_next
       end
+      ret.nil_next
       ret
     end
   end

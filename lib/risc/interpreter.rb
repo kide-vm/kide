@@ -216,7 +216,7 @@ module Risc
       meth = @instruction.method
       at = Position.get(meth.binary).at
       log.debug "Call to #{meth.name} at:#{at}"
-      set_pc(at + BinaryCode.offset)
+      set_pc(at + Parfait::BinaryCode.offset)
       #set_instruction @instruction.method.risc_instructions
       false
     end
@@ -224,9 +224,8 @@ module Risc
     def execute_FunctionReturn
       link = get_register( @instruction.register )
       log.debug "Return to #{link}"
-      @instruction = link
-      # we jump back to the call instruction. so it is as if the call never happened and we continue
-      true
+      set_pc Position.get(link).at
+      false
     end
 
     def execute_Syscall

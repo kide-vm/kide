@@ -5,7 +5,7 @@ module Risc
   # second argument is the register the constant is loaded into
 
   class LoadConstant < Instruction
-    def initialize source , constant , register
+    def initialize( source , constant , register)
       super(source)
       @register = register
       @constant = constant
@@ -33,6 +33,6 @@ module Risc
     end
   end
   def self.load_constant( source , constant , register )
-    LoadConstant.new source , constant , register
+    LoadConstant.new( source , constant , register )
   end
 end

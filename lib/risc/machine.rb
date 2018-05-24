@@ -34,14 +34,13 @@ module Risc
       platform = platform.to_s.capitalize
       @platform = Platform.for(platform)
       @translated = true
-      methods = Parfait.object_space.get_all_methods
-      translate_methods( methods , @platform.translator )
+      translate_methods( @platform.translator )
       @cpu_init = risc_init.to_cpu(@platform.translator)
     end
 
     # go through all methods and translate them to cpu, given the translator
-    def translate_methods(methods , translator)
-      methods.each do |method|
+    def translate_methods(translator)
+      Parfait.object_space.get_all_methods.each do |method|
         log.debug "Translate method #{method.name}"
         method.translate_cpu(translator)
       end
@@ -90,7 +89,6 @@ module Risc
         before = at
         Position.set(objekt,at)
         at += objekt.padded_length
-        log.debug "PADDED #{objekt.padded_length}"
         log.debug "Object #{objekt.class}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
       end
       at
