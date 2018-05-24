@@ -11,10 +11,10 @@ module Risc
                  SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
                  RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
                  LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-                 RegToSlot, SlotToReg, LoadConstant, FunctionCall, Label,
+                 RegToSlot, SlotToReg, FunctionCall, Label, SlotToReg,
+                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
                  SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-                 RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-                 SlotToReg, FunctionReturn]
+                 FunctionReturn]
     end
 
     def test_return_instructions
@@ -22,7 +22,7 @@ module Risc
     end
     def test_function_return
       produced = produce_body
-      assert_equal FunctionReturn , produced.next(36).class
+      assert_equal FunctionReturn , produced.next(35).class
     end
     def test_load_5
       produced = produce_body

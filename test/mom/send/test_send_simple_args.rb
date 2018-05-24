@@ -12,7 +12,7 @@ module Risc
                  RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
                  LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
                  SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-                 SlotToReg, LoadConstant, FunctionCall, Label]
+                 SlotToReg, FunctionCall, Label]
     end
 
     def test_send_instructions
@@ -61,14 +61,14 @@ module Risc
       produced = produce_body
       assert_equal SlotToReg , produced.next(base+5).class
       assert_equal :r0 , produced.next(base+5).array.symbol
-      assert_equal :r3 , produced.next(base+5).register.symbol
+      assert_equal :r2 , produced.next(base+5).register.symbol
       assert_equal 1 , produced.next(base+5).index
     end
     def test_store_
       produced = produce_body
       assert_equal RegToSlot , produced.next(base+6).class
-      assert_equal :r3 , produced.next(base+6).array.symbol
-      assert_equal :r2 , produced.next(base+6).register.symbol
+      assert_equal :r2 , produced.next(base+6).array.symbol
+      assert_equal :r1 , produced.next(base+6).register.symbol
       assert_equal 4 , produced.next(base+6).index
     end
 
@@ -82,16 +82,12 @@ module Risc
 
     def test_function_call
       produced = produce_body
-      assert_equal FunctionCall , produced.next(base+9).class
-      assert_equal :get_internal_word , produced.next(base+9).method.name
-    end
-    def test_call_reg_setup
-      produced = produce_body
-      assert_equal produced.next(base+8).register , produced.next(base+9).register
+      assert_equal FunctionCall , produced.next(base+8).class
+      assert_equal :get_internal_word , produced.next(base+8).method.name
     end
     def test_check_continue
       produced = produce_body
-      assert produced.next(base+10).name.start_with?("continue_")
+      assert produced.next(base+9).name.start_with?("continue_")
     end
     #TODO check the message setup, type and frame moves
   end

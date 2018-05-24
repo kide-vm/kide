@@ -12,7 +12,7 @@ module Risc
                  SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
                  RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
                  LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-                 RegToSlot, SlotToReg, LoadConstant, FunctionCall, Label]
+                 RegToSlot, SlotToReg, FunctionCall, Label]
       @produced = produce_body
     end
 

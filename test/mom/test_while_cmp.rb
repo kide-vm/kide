@@ -12,11 +12,10 @@ module Risc
                  SlotToReg, RegToSlot, SlotToReg, RegToSlot, SlotToReg,
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
                  SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-                 RegToSlot, SlotToReg, LoadConstant, FunctionCall, Label,
-                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-                 LoadConstant, OperatorInstruction, IsZero, LoadConstant, OperatorInstruction,
-                 IsZero, LoadConstant, SlotToReg, RegToSlot, Branch,
-                 Label]
+                 RegToSlot, SlotToReg, FunctionCall, Label, SlotToReg,
+                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, LoadConstant,
+                 OperatorInstruction, IsZero, LoadConstant, OperatorInstruction, IsZero,
+                 LoadConstant, SlotToReg, RegToSlot, Branch, Label]
     end
 
     def test_while_instructions
@@ -41,19 +40,19 @@ module Risc
     end
     def test_false_check
       produced = produce_body
-      assert_equal  Risc::IsZero , produced.next(37).class
-      assert produced.next(37).label.name.start_with?("merge_label") , produced.next(37).label.name
+      assert_equal  Risc::IsZero , produced.next(36).class
+      assert produced.next(36).label.name.start_with?("merge_label") , produced.next(36).label.name
     end
     def test_nil_load
       produced = produce_body
-      assert_equal Risc::LoadConstant , produced.next(38).class
-      assert_equal Parfait::NilClass , produced.next(38).constant.class
+      assert_equal Risc::LoadConstant , produced.next(37).class
+      assert_equal Parfait::NilClass , produced.next(37).constant.class
     end
 
     def test_back_jump # should jump back to condition label
       produced = produce_body
-      assert_equal Risc::Branch , produced.next(44).class
-      assert_equal produced , produced.next(44).label
+      assert_equal Risc::Branch , produced.next(43).class
+      assert_equal produced , produced.next(43).label
     end
 
   end
