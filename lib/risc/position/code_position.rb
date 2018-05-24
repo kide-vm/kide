@@ -31,9 +31,9 @@ module Risc
         end
       end
       def reset_to(pos)
-        super(pos)
-        Position.log.debug "Reset (#{pos.to_s(16)}) #{code}"
         init(pos)
+        super(pos)
+        Position.log.debug "ResetCode (#{pos.to_s(16)}) #{code}"
       end
       def next_method
         next_m = @method.next_method

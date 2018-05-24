@@ -25,8 +25,11 @@ module Parfait
     end
     def extend_one()
       @next = BinaryCode.new(1)
-      #puts "extending #{total_size - data_length} in #{self}"
-      Risc::Position.reset(self) if Risc::Position.set?(self)
+      if Risc::Position.set?(self)
+        Risc::Position.log.debug "extending #{total_size - data_length} in #{self}"
+        my_pos = Risc::Position.get(self)
+        Risc::Position.reset(my_pos , my_pos.at)
+      end
     end
 
     def each( &block )

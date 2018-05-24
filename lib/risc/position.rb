@@ -16,21 +16,22 @@ module Risc
 
   module Position
     include Util::Logging
-    log_level :debug
+    log_level :info
 
     @positions = {}
+    @reverse_cache = {}
 
     def self.positions
       @positions
     end
 
+    def self.clear_positions
+      @positions = {}
+      @reverse_cache = {}
+    end
+    
     def self.at( int )
-      self.positions.each do |object , position|
-        next unless position.at == int
-        return position unless position.is_a?(InstructionPosition)
-        return position unless position.instruction.is_a?(Label)
-      end
-      nil
+      @reverse_cache[int]
     end
 
     def self.set?(object)
@@ -48,30 +49,40 @@ module Risc
       pos
     end
 
-    # set to the same position as before, thus triggering whatever code that propagates
-    # position _must have been set, otherwise raises
     def self.reset(obj)
       old = self.get(obj)
       old.reset_to( old.at )
     end
 
-    def self.set( object , pos , extra = nil)
-      # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
-      # in measures
-      log.debug "Setting #{pos.to_s(16)} for #{object.class}-#{object}"
-      old = Position.positions[object]
-      testing = self.at( pos )
-      if old != nil
-        raise "Mismatch was:#{old}#{old.class} , should #{testing}#{testing.class}" if testing and testing.class != old.class
-        old.reset_to(pos)
-        log.debug "Reset #{pos.to_s(16)} for #{old.class}"
-        return old
+    # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
+    # in measures
+    #
+    # reseting to the same position as before, triggers code that propagates
+    def self.reset(position , to)
+      log.debug "ReSetting #{position}, to:#{to.to_s(16)}, for #{position.object.class}-#{position.object}"
+      position.reset_to(to)
+      if testing = @reverse_cache[ to ]
+        if testing.class != position.class
+          raise "Mismatch (at #{to.to_s(16)}) new:#{position}:#{position.class} , was #{testing}:#{testing.class}"
+        end
+        @reverse_cache.delete(to)
       end
+      @reverse_cache[position.at] = position
+      log.debug "Reset #{position} (#{to.to_s(16)}) for #{position.class}"
+      return position
+    end
+
+    def self.set( object , pos , extra = nil)
+      old = Position.positions[object]
+      return self.reset(old , pos) if old
+      log.debug "Setting #{pos.to_s(16)} for #{object.class}-#{object}"
+      testing = self.at( pos )
       position = for_at( object , pos , extra)
-      raise "Mismatch was:#{position}#{position.class} , should #{testing}#{testing.class}" if testing and testing.class != old.class
+      raise "Mismatch (at #{pos.to_s(16)}) was:#{position} #{position.class} #{position.object} , should #{testing}#{testing.class}" if testing and testing.class != position.class
       self.positions[object] = position
       position.init(pos)
-      log.debug "Set #{pos.to_s(16)} for #{position.class}"
+      @reverse_cache[position.at] = position
+      log.debug "Set #{position} (#{pos.to_s(16)}) for #{position.class}"
       position
     end
 

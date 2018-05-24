@@ -23,15 +23,15 @@ module Risc
         second = Arm::ArmMachine.b( @label)
         @label.set_next(second)
         Position.set( @label , 8 , @binary)
-        Position.set(second , 2 , @binary)
+        Position.set(second , 12 , @binary)
         Position.set( @label , 8 , @binary)
         assert_equal 8 , Position.get(@label.next).at
       end
       def test_label_at
         branch = Branch.new("b" , @label)
-        Position.set(@label , 4 , @binary)
-        Position.set(branch , 4 , @binary)
-        at_4 = Position.at(4)
+        Position.set(@label , 8 , @binary)
+        Position.set(branch , 8 , @binary)
+        at_4 = Position.at(8)
         assert_equal InstructionPosition , at_4.class
         assert_equal Branch , at_4.instruction.class
       end

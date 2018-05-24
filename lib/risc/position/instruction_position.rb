@@ -17,28 +17,32 @@ module Risc
     class InstructionPosition < ObjectPosition
       attr_reader :instruction , :binary
       def initialize(instruction, pos , binary)
-        raise "not set " unless binary
+        raise "not set #{binary}" if pos != 0 and !binary.is_a?(Parfait::BinaryCode)
         super(instruction,pos)
         @instruction = instruction
         @binary = binary
       end
       def init(at)
-        diff = at - Position.get(@binary).at
-        if( diff % 60 == 13*4)
+        return if at == 0 and binary.nil?
+        return unless @instruction.next
+        nekst = at + @instruction.byte_length
+        diff = nekst - Position.get(@binary).at
+        Position.log.debug "Diff: #{diff.to_s(16)} , next #{nekst.to_s(16)} , binary #{Position.get(@binary)}"
+        raise "Invalid position #{diff.to_s(16)} , next #{nekst.to_s(16)} #{self}" if diff < 8
+        if( (diff % @binary.padded_length ) == 0 )
           @binary.extend_one unless @binary.next
           @binary = @binary.next
           raise "end of line " unless @binary
-          at = Position.get(@binary).at + Parfait::BinaryCode.offset
+          nekst = Position.get(@binary).at + Parfait::BinaryCode.offset
+          Position.log.debug "Jump to: #{nekst.to_s(16)}"
         end
-        return unless @instruction.next
-        at += @instruction.byte_length
-        Position.set(@instruction.next, at , @binary)
+        Position.set(@instruction.next, nekst , @binary)
       end
 
       def reset_to(pos)
-        super(pos)
-        Position.log.debug "Reset (#{pos}) #{instruction}"
         init(pos)
+        super(pos)
+        Position.log.debug "ResetInstruction (#{pos.to_s(16)}) #{instruction}"
       end
     end
   end

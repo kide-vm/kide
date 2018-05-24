@@ -74,7 +74,7 @@ module Risc
     def position_all
       raise "Not translated " unless @translated
       #need the initial jump at 0 and then functions
-      Position.set(cpu_init , 0 , cpu_init)
+      Position.set(cpu_init , 0 , nil)
       @code_start = position_objects( @platform.padding )
       # and then everything code
       position_code
@@ -131,7 +131,7 @@ module Risc
 
     def boot
       initialize
-      Position.positions.clear
+      Position.clear_positions
       @objects = nil
       @translated = false
       boot_parfait!
