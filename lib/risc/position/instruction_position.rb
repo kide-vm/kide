@@ -24,20 +24,22 @@ module Risc
       end
       def init(at, binary)
         return if at == 0 and binary.nil?
+        raise "faux pas" if Position.get(instruction).at < Position.get(binary).at
         return unless @instruction.next
         @binary = binary
         nekst = at + @instruction.byte_length
         diff = nekst - Position.get(@binary).at
         Position.log.debug "Diff: #{diff.to_s(16)} , next #{nekst.to_s(16)} , binary #{Position.get(@binary)}"
         raise "Invalid position #{diff.to_s(16)} , next #{nekst.to_s(16)} #{self}" if diff < 8
+        next_binary = @binary
         if( (diff % (@binary.padded_length - @instruction.byte_length)) == 0 )
-          @binary.extend_one unless @binary.next
-          @binary = @binary.next
-          raise "end of line " unless @binary
-          nekst = Position.get(@binary).at + Parfait::BinaryCode.offset
+          next_binary.extend_one unless next_binary.next
+          next_binary = next_binary.next
+          raise "end of line " unless next_binary
+          nekst = Position.get(next_binary).at + Parfait::BinaryCode.offset
           Position.log.debug "Jump to: #{nekst.to_s(16)}"
         end
-        Position.set(@instruction.next, nekst , @binary)
+        Position.set(@instruction.next, nekst , next_binary)
       end
 
       def reset_to(pos , binary)

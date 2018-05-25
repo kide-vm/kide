@@ -14,7 +14,7 @@ module Risc
     # fire events for changed pc and register contents
     include Util::Eventable
     include Util::Logging
-    log_level :debug
+    log_level :info
 
     attr_reader :instruction , :clock , :pc  # current instruction and pc
     attr_reader :registers     # the registers, 16 (a hash, sym -> contents)
@@ -119,7 +119,9 @@ module Risc
     end
     def execute_Branch
       label = @instruction.label
-      set_pc Position.get(label).at
+      pos = Position.get(label).at
+      pos += Parfait::BinaryCode.offset if label.is_a?(Parfait::BinaryCode)
+      set_pc pos
       false
     end
 

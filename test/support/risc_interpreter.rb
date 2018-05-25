@@ -8,16 +8,11 @@ module Risc
 
     def setup
       Risc.machine.boot
-      do_clean_compile
       Vool::VoolCompiler.ruby_to_binary( @string_input , :interpreter)
       @interpreter = Interpreter.new
       @interpreter.start_machine
     end
     alias :do_setup :setup
-
-    # must be after boot, but before main compile, to define method
-    def do_clean_compile
-    end
 
     # check the given array of instructions is what the interpreter actually does
     # possible second argument ignores the given amount, usually up until main

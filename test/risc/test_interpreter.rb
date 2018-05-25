@@ -68,7 +68,20 @@ module Risc
       @interpreter.tick
       assert_equal 18396 , @interpreter.pc
     end
-    def test_tick_15
+    def test_tick_14_jump
+      14.times {@interpreter.tick}
+      assert_equal Branch , @interpreter.instruction.class
+    end
+    def test_tick_14_bin
+      13.times {@interpreter.tick}
+      binary_pos = binary_position
+      @interpreter.tick
+      assert_equal binary_pos , binary_position , "#{binary_pos.to_s(16)}!=#{binary_position.to_s(16)}"
+    end
+    def binary_position
+      Position.get(Position.get(@interpreter.instruction).binary).at
+    end
+    def test_tick_15 #more than a binary code worth
       15.times {@interpreter.tick}
     end
   end
