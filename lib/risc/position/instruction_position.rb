@@ -22,14 +22,15 @@ module Risc
         @instruction = instruction
         @binary = binary
       end
-      def init(at)
+      def init(at, binary)
         return if at == 0 and binary.nil?
         return unless @instruction.next
+        @binary = binary
         nekst = at + @instruction.byte_length
         diff = nekst - Position.get(@binary).at
         Position.log.debug "Diff: #{diff.to_s(16)} , next #{nekst.to_s(16)} , binary #{Position.get(@binary)}"
         raise "Invalid position #{diff.to_s(16)} , next #{nekst.to_s(16)} #{self}" if diff < 8
-        if( (diff % @binary.padded_length ) == 0 )
+        if( (diff % (@binary.padded_length - @instruction.byte_length)) == 0 )
           @binary.extend_one unless @binary.next
           @binary = @binary.next
           raise "end of line " unless @binary
@@ -39,9 +40,9 @@ module Risc
         Position.set(@instruction.next, nekst , @binary)
       end
 
-      def reset_to(pos)
-        init(pos)
-        super(pos)
+      def reset_to(pos , binary)
+        super(pos , binary)
+        init(pos , binary)
         Position.log.debug "ResetInstruction (#{pos.to_s(16)}) #{instruction}"
       end
     end
