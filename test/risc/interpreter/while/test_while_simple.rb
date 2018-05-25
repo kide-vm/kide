@@ -13,11 +13,11 @@ module Risc
         #show_main_ticks # get output of what is in main
         check_main_chain [LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
              LoadConstant, OperatorInstruction, IsZero, LoadConstant, OperatorInstruction,
-             IsZero, LoadConstant, SlotToReg, RegToSlot, Branch,
-             SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsZero,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, FunctionReturn, Transfer,
-             Syscall, NilClass]
+             IsZero, LoadConstant, SlotToReg, Branch, RegToSlot,
+             Branch, SlotToReg, SlotToReg, LoadConstant, OperatorInstruction,
+             IsZero, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
+             Transfer, Syscall, NilClass]
       assert_kind_of Parfait::FalseClass , get_return
     end
     def test_load_false_const
@@ -54,7 +54,7 @@ module Risc
       assert check.label.name.start_with?("merge_label") , check.label.name
     end
     def test_exit
-      done = main_ticks(31)
+      done = main_ticks(32)
       assert_equal Syscall ,  done.class
     end
   end

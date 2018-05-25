@@ -9,31 +9,32 @@ module Risc
       super
     end
 
-    def pest_add
+    def test_add
       #show_main_ticks # get output of what is
       check_main_chain [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             SlotToReg, FunctionCall, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, SlotToReg, OperatorInstruction, LoadConstant, SlotToReg,
-             SlotToReg, RegToSlot, RegToSlot, RegToSlot, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, RegToSlot, Branch, SlotToReg,
+             RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
+             SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             RegToSlot, SlotToReg, Branch, FunctionCall, SlotToReg,
+             SlotToReg, SlotToReg, SlotToReg, SlotToReg, OperatorInstruction,
+             LoadConstant, SlotToReg, SlotToReg, RegToSlot, RegToSlot,
+             RegToSlot, SlotToReg, Branch, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, FunctionReturn, Transfer, Syscall, NilClass]
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
+             Transfer, Syscall, NilClass]
        assert_equal Parfait::Integer , get_return.class
        assert_equal 10 , get_return.value
     end
     def test_load_5
-      lod = main_ticks( 19 )
+      lod = main_ticks( 20 )
       assert_equal LoadConstant , lod.class
       assert_equal Parfait::Integer , lod.constant.class
       assert_equal 5 , lod.constant.value
     end
     def base
-      28
+      30
     end
     def test_slot_receiver #load receiver from message
       sl = main_ticks( base )
@@ -101,7 +102,7 @@ module Risc
       assert_equal :r4 , sl.register.symbol
     end
     def test_sys
-      sys = main_ticks(59)
+      sys = main_ticks(62)
       assert_equal Syscall ,  sys.class
       assert_equal :exit ,  sys.name
     end

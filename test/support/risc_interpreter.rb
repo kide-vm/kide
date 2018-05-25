@@ -31,7 +31,7 @@ module Risc
     # how many instruction up until the main starts, ie
     # ticks(main_at) will be the label for main
     def main_at
-      25
+      26
     end
 
     def get_return
@@ -74,6 +74,10 @@ module Risc
     end
 
     # do the setup, compile and run the input (a main) to the end
+    def run_main_return(input)
+      run_main("return #{input}")
+    end
+
     def run_main(input)
       @string_input = as_main(input)
       do_setup

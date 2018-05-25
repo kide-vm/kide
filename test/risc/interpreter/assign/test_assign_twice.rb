@@ -13,17 +13,18 @@ module Risc
       #show_main_ticks # get output of what is
       check_main_chain [LoadConstant, SlotToReg, RegToSlot, LoadConstant, LoadConstant,
              SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             RegToSlot, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-             RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
-             FunctionCall, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg,
-             RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             RegToSlot, SlotToReg, SlotToReg, Branch, RegToSlot,
+             SlotToReg, RegToSlot, SlotToReg, RegToSlot, LoadConstant,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
+             SlotToReg, RegToSlot, Branch, LoadConstant, SlotToReg,
+             RegToSlot, SlotToReg, FunctionCall, SlotToReg, SlotToReg,
+             SlotToReg, SlotToReg, SlotToReg, OperatorInstruction, LoadConstant,
+             SlotToReg, SlotToReg, RegToSlot, RegToSlot, RegToSlot,
+             SlotToReg, Branch, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, FunctionReturn, SlotToReg, SlotToReg, RegToSlot,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             FunctionReturn, Transfer, Syscall, NilClass]
+             Branch, RegToSlot, SlotToReg, SlotToReg, FunctionReturn,
+             Transfer, Syscall, NilClass]
       assert_equal 10 , get_return.value
     end
   end

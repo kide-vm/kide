@@ -13,26 +13,27 @@ module Risc
       #show_main_ticks # get output of what is
       check_main_chain [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-             RegToSlot, SlotToReg, FunctionCall, SlotToReg, SlotToReg,
-             LoadData, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg,
-             RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             RegToSlot, SlotToReg, RegToSlot, Branch, SlotToReg,
+             RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
+             SlotToReg, RegToSlot, SlotToReg, FunctionCall, SlotToReg,
+             SlotToReg, LoadData, OperatorInstruction, LoadConstant, SlotToReg,
+             SlotToReg, RegToSlot, RegToSlot, RegToSlot, SlotToReg,
+             SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg,
+             FunctionReturn, SlotToReg, SlotToReg, RegToSlot, Branch,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             FunctionReturn, Transfer, Syscall, NilClass]
+             RegToSlot, SlotToReg, SlotToReg, FunctionReturn, Transfer,
+             Syscall, NilClass]
        assert_equal Parfait::Integer , get_return.class
        assert_equal 2 , get_return.value
     end
 
     def test_load
-      lod = main_ticks(16)
+      lod = main_ticks(17)
       assert_equal LoadConstant , lod.class
       assert_equal 9 , lod.constant.value
     end
     def test_fix # reduce self to fix
-      sl = main_ticks(25)
+      sl = main_ticks(26)
       assert_equal SlotToReg , sl.class
       assert_equal :r1 , sl.array.symbol
       assert_equal 3 , sl.index
@@ -41,7 +42,7 @@ module Risc
     end
 
     def test_sys
-      sys = main_ticks(53)
+      sys = main_ticks(56)
       assert_equal Syscall ,  sys.class
       assert_equal :exit ,  sys.name
     end

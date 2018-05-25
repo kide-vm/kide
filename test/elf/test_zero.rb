@@ -18,7 +18,7 @@ class TestZeroCode < MiniTest::Test
 
   def pest_empty_translate
     assert_equal 2 , @space.get_all_methods.length
-    @machine.translate_arm
+    @machine.translate(:arm)
     writer = Elf::ObjectWriter.new(@machine , @objects )
     writer.save "test/zero.o"
   end
