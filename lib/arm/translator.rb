@@ -108,7 +108,8 @@ module Arm
     # The only target for a call is a Block, so we just need to get the address for the code
     # and branch to it.
     def translate_Branch( code )
-      ArmMachine.b( code.label.to_cpu(self) )
+      target = code.label.is_a?(Risc::Label) ? code.label.to_cpu(self) : code.label
+      ArmMachine.b( target )
     end
 
     def translate_IsPlus( code )

@@ -58,9 +58,9 @@ module Risc
     # in measures
     #
     # reseting to the same position as before, triggers code that propagates
-    def self.reset(position , to)
+    def self.reset(position , to , extra)
       log.debug "ReSetting #{position}, to:#{to.to_s(16)}, for #{position.object.class}-#{position.object}"
-      position.reset_to(to)
+      position.reset_to(to, extra)
       if testing = @reverse_cache[ to ]
         if testing.class != position.class
           raise "Mismatch (at #{to.to_s(16)}) new:#{position}:#{position.class} , was #{testing}:#{testing.class}"
@@ -76,13 +76,13 @@ module Risc
 
     def self.set( object , pos , extra = nil)
       old = Position.positions[object]
-      return self.reset(old , pos) if old
+      return self.reset(old , pos , extra) if old
       log.debug "Setting #{pos.to_s(16)} for #{object.class}-#{object}"
       testing = self.at( pos )
       position = for_at( object , pos , extra)
       raise "Mismatch (at #{pos.to_s(16)}) was:#{position} #{position.class} #{position.object} , should #{testing}#{testing.class}" if testing and testing.class != position.class
       self.positions[object] = position
-      position.init(pos)
+      position.init(pos , extra)
       @reverse_cache[position.at] = position unless object.is_a? Label
       log.debug "Set #{position} (#{pos.to_s(16)}) for #{position.class}"
       position

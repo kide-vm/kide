@@ -22,9 +22,9 @@ module Risc
         "0x#{@at.to_s(16)}"
       end
       # just a callback after creation AND insertion
-      def init(pos)
+      def init(pos , is_nil)
       end
-      def reset_to(pos)
+      def reset_to(pos , guaranteed_nil )
         return false if pos == at
         if((at - pos).abs > 1000)
           raise "position set too far off #{pos}!=#{at} for #{object}:#{object.class}"

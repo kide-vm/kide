@@ -11,7 +11,15 @@ module Risc
     attr_reader :label
 
     def to_s
-      class_source "#{label ? label.name : '(no label)'}"
+      case label
+      when Label
+        str = label.name
+      when Parfait::BinaryCode
+        str = "Code"
+      else
+        str = "(no label)"
+      end
+      class_source( str )
     end
     alias :inspect :to_s
 

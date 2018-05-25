@@ -33,7 +33,8 @@ module Risc
     def translate(code)
       case code
       when Branch
-        ret = code.class.new(code.source , code.label.to_cpu(self))
+        new_label = code.label.is_a?(Label) ? code.label.to_cpu(self) : code.label
+        ret = code.class.new(code.source , new_label)
       when LoadConstant
         const = code.constant
         const = const.to_cpu(self) if const.is_a?(Label)

@@ -14,7 +14,7 @@ module Risc
     # fire events for changed pc and register contents
     include Util::Eventable
     include Util::Logging
-    log_level :info
+    log_level :debug
 
     attr_reader :instruction , :clock , :pc  # current instruction and pc
     attr_reader :registers     # the registers, 16 (a hash, sym -> contents)
@@ -48,13 +48,12 @@ module Risc
     def set_pc( pos )
       raise "Not int #{pos}" unless pos.is_a? Numeric
       position = Position.at(pos)
-      raise "No position #{pos}" unless position
+      raise "No position #{pos.to_s(16)}" unless position
       if position.is_a?(Position::CodePosition)
-        log.debug "Setting Position #{clock}-#{position}, #{position.method}"
-        return set_pc(position.at + Parfait::BinaryCode.offset)
-      else
-        log.debug "Setting Position #{clock}-#{position}, #{position.binary}"
+        raise "Setting Code #{clock}-#{position}, #{position.method}"
+        #return set_pc(position.at + Parfait::BinaryCode.offset)
       end
+      log.debug "Setting Position #{clock}-#{position}, #{position.binary}"
       raise "not instruction position #{position}-#{position.class}-#{position.object.class}" unless position.is_a?(Position::InstructionPosition)
       set_instruction( position.instruction )
       @clock += 1
