@@ -24,7 +24,7 @@ module Risc
       end
       def init(at, binary)
         return if at == 0 and binary.nil?
-        raise "faux pas" if Position.get(instruction).at < Position.get(binary).at
+        raise "faux pas" if at < Position.get(binary).at
         return unless @instruction.next
         @binary = binary
         nekst = at + @instruction.byte_length
@@ -43,8 +43,8 @@ module Risc
       end
 
       def reset_to(pos , binary)
-        super(pos , binary)
         init(pos , binary)
+        super(pos , binary)
         Position.log.debug "ResetInstruction (#{pos.to_s(16)}) #{instruction}"
       end
     end

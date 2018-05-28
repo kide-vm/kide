@@ -40,10 +40,6 @@ module Risc
       word = Parfait::Word.new(12)
       assert_equal 32 , word.padded_length
     end
-    def test_pos_arm
-      mov = Arm::ArmMachine.mov  :r1,  128
-      Risc::Position.set(0,0)
-    end
 
   end
 end

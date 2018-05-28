@@ -29,7 +29,7 @@ module Elf
             next unless label.is_a?(Risc::Label)
             add_symbol "#{type.name}@#{meth.name}:Label=#{label.name}" , Risc::Position.get(label).at
           end
-          meth.binary.each do |code|
+          meth.binary.each_block do |code|
             label = "BinaryCode@#{Risc::Position.get(code).method.name}"
             add_symbol label , Risc::Position.get(code).at
           end

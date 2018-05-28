@@ -37,5 +37,13 @@ module Risc
     def test_cpu_label
       assert_equal Position::InstructionPosition ,  Position.get(@machine.cpu_init.first).class
     end
+    def test_first_binary_jump
+      bin = Parfait.object_space.get_init.binary
+      assert 0 != bin.get_word(14) , "index 0 is 0 #{bin.inspect}"
+    end
+    def test_second_binary_first
+      bin = Parfait.object_space.get_init.binary.next
+      assert 0 != bin.get_word(0) , "index 0 is 0 #{bin.inspect}"
+    end
   end
 end

@@ -80,17 +80,23 @@ module Parfait
       assert @code.next.next
       assert_nil @code.next.next.next
     end
-    def test_each
+    def test_each_word
+      len = 0
+      @code.each_word(false){ len += 1}
+      assert_equal 13 , len
+    end
+    def test_each_word_all
       len = 0
       @code.each_word{ len += 1}
-      assert_equal 13 , len
+      assert_equal 14 , len
     end
     def test_each_set
       (0..12).each{|i| @code.set_word(i,i)}
       all = []
-      @code.each_word{ |w| all << w}
+      @code.each_word(false){ |w| all << w}
       assert_equal 0 , all.first
       assert_equal 12 , all.last
+      assert_nil @code.next
     end
     def test_set_word
       assert_equal 1 , @code.set_word(1 , 1)
@@ -103,9 +109,21 @@ module Parfait
       @code.set_word(1 , 1)
       assert_equal 1, @code.get_internal_word(@code.data_start + 1)
     end
+    def test_set_13
+      @code.set_word(13 , 1)
+      assert_nil @code.next
+    end
+    def test_set_last_no_extend
+      @code.set_last(1)
+      assert_nil @code.next
+    end
+    def test_set_last_and_get
+      @code.set_last(1)
+      assert_equal 1, @code.get_word(BinaryCode.data_length)
+    end
     def test_has_each
       sum = 0
-      @code.each{ sum += 1}
+      @code.each_block{ sum += 1}
       assert_equal sum , 1
     end
   end

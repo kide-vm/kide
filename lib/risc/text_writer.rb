@@ -162,7 +162,6 @@ module Risc
       code.each_word do |word|
         @stream.write_unsigned_int_32( word || 0 )
       end
-      write_ref_for( code.get_type )
       log.debug "Code16 witten stream 0x#{@stream.length.to_s(16)}"
     end
 
@@ -180,7 +179,7 @@ module Risc
       write_ref_for( string.get_type ) #ref
       @stream.write_signed_int_32( str.length  ) #int
       @stream.write str
-      pad_after(str.length + 8 ) # type , length   *4 == 12
+      pad_after(str.length + 8 ) # type , length   
       log.debug "String (0x#{string.length.to_s(16)}) stream 0x#{@stream.length.to_s(16)}"
     end
 

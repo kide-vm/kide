@@ -27,13 +27,13 @@ module Risc
   end
 
   #even less glue to get that last jump in there.
-  # So instructions don't run into the BinaryCode object header 
+  # So instructions don't run into the BinaryCode object header
   class JumpWriter
     def initialize( code )
       @code = code
     end
     def write_unsigned_int_32( bin )
-      @code.set_word( 14 , bin )
+      @code.set_last( bin )
     end
   end
 end

@@ -12,6 +12,17 @@ module Parfait
       2 * 4 # size of type (2, type+next) * word_size (4)
     end
 
+    #16 - 2 -1 , two instance variables and one for the jump
+    def self.data_length
+      13
+    end
+    def data_length
+      self.class.data_length
+    end
+    def byte_length
+      4*data_length
+    end
+
     def initialize(total_size)
       super()
       extend_to(total_size )
@@ -32,7 +43,7 @@ module Parfait
       end
     end
 
-    def each( &block )
+    def each_block( &block )
       block.call( self )
       @next.each( &block ) if @next
     end
@@ -41,20 +52,16 @@ module Parfait
       "BinaryCode #{Risc::Position.set?(self) ? Risc::Position.get(self): self.object_id.to_s(16)}"
     end
 
-    def each_word
+    def each_word( all = true)
       index = 0
-      while( index < data_length)
+      length = data_length
+      length += 1 if all
+      while( index < length)
         yield get_word(index)
         index += 1
       end
     end
-    #16 - 2 -1 , two instance variables and one for the jump
-    def data_length
-      13
-    end
-    def byte_length
-      4*data_length
-    end
+
     def set_word(index , word)
       raise "invalid index #{index}" if index < 0
       if index > data_length
@@ -63,6 +70,9 @@ module Parfait
         @next.set_word( index - data_length , word)
       end
       set_internal_word(index + 2 , word)
+    end
+    def set_last(word)
+      set_word( data_length , word)
     end
     def get_word(index)
       raise "invalid index #{index}" if index < 0
