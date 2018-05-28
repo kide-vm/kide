@@ -12,22 +12,18 @@
 # so all incoming/outgoing indexes have to be shifted one up/down
 
 module Parfait
-  class List < Object
+  class List < Data32
+    attr_reader :indexed_length
+
+    def self.type_length
+      2    # 0 type , 1 length
+    end
     def self.get_length_index
-      return 2
-    end
-    def self.get_indexed(index)
-      return index + 2
-    end
-    def length_index
-      1
-    end
-    def get_offset
-      return 2
+      type_length - 1
     end
 
     def get_length
-      r = get_internal_word( length_index ) #one for type
+      r = @indexed_length
       r.nil? ? 0 : r
     end
 
@@ -39,7 +35,7 @@ module Parfait
         grow_to(index + 1)
       end
       # start one higher than offset, which is where the length is
-      set_internal_word( index + get_offset, value)
+      set_internal_word( index + self.class.type_length, value)
     end
 
     # set the value at index.
@@ -49,34 +45,28 @@ module Parfait
       ret = nil
       if(index < get_length)
         # start one higher than offset, which is where the length is
-        ret = get_internal_word(index + get_offset )
+        ret = get_internal_word(index + self.class.type_length )
       end
       ret
     end
-
+    alias :[] :get
+    
     def grow_to( len )
       raise "Only positive lenths, #{len}" if len < 0
       old_length = get_length
       return if old_length >= len
-      #          raise "bounds error at #{len}" if( len + offset > 16 )
-      # be nice to use the indexed_length , but that relies on booted space
-      set_internal_word( length_index  , len) #one for type
+      internal_set_length( len)
     end
 
     def shrink_to( len )
       raise "Only positive lenths, #{len}" if len < 0
       old_length = get_length
       return if old_length <= len
-      set_internal_word( length_index  , len)
+      internal_set_length( len)
     end
 
     def indexed_length
       get_length()
-    end
-
-    def initialize(  )
-      super()
-      @memory = []
     end
 
     # include? means non nil index
@@ -236,20 +226,6 @@ module Parfait
       ret
     end
 
-    # 0 -based index
-    def get_internal_word(index)
-      @memory[index]
-    end
-
-    # 0 -based index
-    def set_internal_word(index , value)
-      raise "Word[#{index}] = " if((self.class == Parfait::Word) and value.nil? )
-      @memory[index] = value
-      value
-    end
-
-    alias :[] :get
-
     def to_rxf_node(writer , level , ref )
       Sof.array_to_rxf_node(self , writer , level , ref )
     end
@@ -271,6 +247,10 @@ module Parfait
       end
       array
     end
+    private
+    def internal_set_length( i )
+      @indexed_length = i
+    end
   end
 
   # new list from ruby array to be precise
@@ -284,5 +264,4 @@ module Parfait
     end
     list
   end
-
 end

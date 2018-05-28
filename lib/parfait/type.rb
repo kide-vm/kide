@@ -192,6 +192,7 @@ module Parfait
     end
 
     def name_at( index )
+      raise "No names #{index}" unless @names
       @names.get(index)
     end
 

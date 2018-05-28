@@ -30,8 +30,8 @@ module Parfait
     def data_length
       raise "called #{self}"
     end
-    def data_start
-      return get_type.get_length
+    def self.type_length
+      raise "called #{self}"
     end
   end
 
@@ -67,6 +67,11 @@ module Parfait
     end
     def padded_length
       16 * 4
+    end
+  end
+  class Data32 < DataObject
+    def self.memory_size
+      32
     end
   end
 end

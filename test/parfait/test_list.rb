@@ -29,7 +29,7 @@ module Parfait
       assert_equal 0,  @list.indexed_length
     end
     def test_offset
-      assert_equal 2 , @list.get_offset
+      assert_equal 2 , @list.class.type_length
     end
     def test_indexed_index
       # 0 type , 1 indexed_length

@@ -15,15 +15,11 @@ module Parfait
   class Word < Data8
     attr_reader :char_length
 
-    #semi "indexed" methods for interpreter
-    def self.get_length_index
-      2 # 2 is the amount of attributes, type and char_length. the offset after which chars start
-    end
     def self.type_length
       2    # 0 type , 1 char_length
     end
-    def self.get_indexed( i )
-      i + get_length_index * 4
+    def self.get_length_index
+      type_length - 1
     end
     # initialize with length. For now we try to keep all non-parfait (including String) out
     # String will contain spaces for non-zero length

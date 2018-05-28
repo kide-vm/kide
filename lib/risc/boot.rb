@@ -119,7 +119,7 @@ module Risc
     def  super_class_names
        { Data4: :DataObject , Data8: :DataObject ,Data16: :DataObject ,
          BinaryCode: :Data16 , Integer: :Data4, Word: :Data8 ,
-         Object: :BasicObject}
+         Object: :BasicObject , List: :Data16}
     end
 
     # the function really just returns a constant (just avoiding the constant)

@@ -11,14 +11,14 @@ module Parfait
 
     # 0 -based index
     def get_internal_word(index)
-      return super if index < data_start
+      return super if index < self.class.type_length
       @memory[index]
     end
 
     # 1 -based index
     def set_internal_word(index , value)
-      return super if index < data_start
-      raise "Word[#{index}] = nil" if( value.nil? )
+      return super if index < self.class.type_length
+      raise "Word[#{index}] = nil" if( value.nil? and self.class != List)
       @memory[index] = value
       value
     end
