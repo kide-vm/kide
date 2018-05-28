@@ -33,8 +33,8 @@ module Risc
         end
       end
       def reset_to(pos , ignored)
-        init(pos , ignored)
         super(pos, ignored)
+        init(pos , ignored)
         Position.log.debug "ResetCode (#{pos.to_s(16)}) #{code}"
       end
       # insert a jump to the next instruction, at the last instruction

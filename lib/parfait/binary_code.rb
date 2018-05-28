@@ -15,9 +15,8 @@ module Parfait
     def self.byte_offset
       self.type_length * 4 # size of type * word_size (4)
     end
-    #16 - 2 -1 , two instance variables and one for the jump
     def self.data_length
-      13
+      self.memory_size - self.type_length - 1 #one for the jump
     end
     def data_length
       self.class.data_length
@@ -29,14 +28,15 @@ module Parfait
     def initialize(total_size)
       super()
       extend_to(total_size )
-      #puts "Init with #{total_size} for #{object_id}"
-      (0 ..(data_length)).each{ |index| set_word(index , 0) }
+      (0 ... data_length).each{ |index| set_word(index , 0) }
+      set_last(0)
     end
     def extend_to(total_size)
-      return unless total_size > self.data_length
+      return if total_size < data_length
       extend_one() unless @next
       @next.extend_to(total_size - data_length)
     end
+
     def extend_one()
       @next = BinaryCode.new(1)
       if Risc::Position.set?(self)
@@ -57,34 +57,36 @@ module Parfait
 
     def each_word( all = true)
       index = 0
-      length = data_length
-      length += 1 if all
-      while( index < length)
+      while( index < data_length)
         yield get_word(index)
         index += 1
       end
+      yield( get_last ) if all
     end
 
     def set_word(index , word)
       raise "invalid index #{index}" if index < 0
-      if index > data_length
+      if index >= data_length
         #raise "invalid index #{index}" unless @next
         extend_to( index )
         @next.set_word( index - data_length , word)
       else
-        set_internal_word(index + 2 , word)
+        set_internal_word(index + BinaryCode.type_length , word)
       end
     end
+    def get_last()
+      get_internal_word(data_length + BinaryCode.type_length)
+    end
     def set_last(word)
-      set_word( data_length , word)
+      set_internal_word(data_length + BinaryCode.type_length , word)
     end
     def get_word(index)
       raise "invalid index #{index}" if index < 0
-      if index > data_length + 1
+      if index >= data_length
         raise "invalid index #{index}" unless @next
         return @next.get_word( index - data_length)
       end
-      get_internal_word(index + 2)
+      get_internal_word(index + BinaryCode.type_length)
     end
     def set_char(index , char)
       if index >= byte_length

@@ -15,7 +15,7 @@ module Parfait
       @memory[index]
     end
 
-    # 1 -based index
+    # 0 -based index
     def set_internal_word(index , value)
       return super if index < self.class.type_length
       raise "Word[#{index}] = nil" if( value.nil? and self.class != List)
