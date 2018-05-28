@@ -19,8 +19,12 @@ module Parfait
     def value
       get_internal_word(Integer.integer_index)
     end
+
+    def self.type_length
+      2    # 0 type, 1 next_i
+    end
     def self.integer_index
-      3 # 1 type, 2 next_i
+      type_length
     end
 
     # :integer?, :odd?, :even?, :upto, :downto, :times, :succ, :next, :pred, :chr, :ord, :to_i, :to_int, :floor,
@@ -42,17 +46,26 @@ module Parfait
     def initialize
       super
     end
+    def self.type_length
+      1    # 0 type
+    end
   end
   class TrueClass < Data4
     #FIXME: this is "just" for compilation
     def initialize
       super
     end
+    def self.type_length
+      1    # 0 type
+    end
   end
   class NilClass < Data4
     #FIXME: this is "just" for compilation
     def initialize
       super
+    end
+    def self.type_length
+      1    # 0 type
     end
   end
 end

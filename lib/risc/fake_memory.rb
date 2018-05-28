@@ -34,7 +34,7 @@ module Risc
 
     def range_check(index)
       raise "index too low #{index} < #{min}" if index < min
-      raise "index too big #{index} < #{min}" if index >= size
+      raise "index too big #{index} >= #{size}" if index >= size
     end
   end
 end

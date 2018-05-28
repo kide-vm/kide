@@ -28,7 +28,7 @@ module Risc
           next_meth = next_method
           return unless next_meth
           Position.set( next_meth.binary , next_pos , next_meth)
-          next_cpu_pos = next_pos + Parfait::BinaryCode.offset
+          next_cpu_pos = next_pos + Parfait::BinaryCode.byte_offset
           Position.set( next_meth.cpu_instructions, next_cpu_pos , next_meth.binary)
         end
       end

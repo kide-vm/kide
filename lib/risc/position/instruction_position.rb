@@ -36,7 +36,7 @@ module Risc
           next_binary.extend_one unless next_binary.next
           next_binary = next_binary.next
           raise "end of line " unless next_binary
-          nekst = Position.get(next_binary).at + Parfait::BinaryCode.offset
+          nekst = Position.get(next_binary).at + Parfait::BinaryCode.byte_offset
           Position.log.debug "Jump to: #{nekst.to_s(16)}"
         end
         Position.set(@instruction.next, nekst , next_binary)

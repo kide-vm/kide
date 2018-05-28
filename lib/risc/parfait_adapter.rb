@@ -5,8 +5,7 @@ module Parfait
 
     def self.allocate
       r = super
-      puts "#{self.memory_size}"
-      r.instance_variable_set(:@memory , [])
+      r.instance_variable_set(:@memory , Risc::FakeMemory.new(self.type_length , self.memory_size))
       r
     end
 

@@ -36,7 +36,7 @@ module Risc
       sl = main_ticks(26)
       assert_equal SlotToReg , sl.class
       assert_equal :r1 , sl.array.symbol
-      assert_equal 3 , sl.index
+      assert_equal 2 , sl.index
       assert_equal :r1 , sl.register.symbol
       assert_equal 9 , @interpreter.get_register(:r1)
     end

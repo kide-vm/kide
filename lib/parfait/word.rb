@@ -19,6 +19,9 @@ module Parfait
     def self.get_length_index
       2 # 2 is the amount of attributes, type and char_length. the offset after which chars start
     end
+    def self.type_length
+      2    # 0 type , 1 char_length
+    end
     def self.get_indexed( i )
       i + get_length_index * 4
     end

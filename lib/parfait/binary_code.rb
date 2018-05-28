@@ -8,10 +8,13 @@ module Parfait
   #
   class BinaryCode < Data16
     attr_reader :next
-    def self.offset
-      2 * 4 # size of type (2, type+next) * word_size (4)
-    end
 
+    def self.type_length
+      2 #type + next (could get from space, maybe later)
+    end
+    def self.byte_offset
+      self.type_length * 4 # size of type * word_size (4)
+    end
     #16 - 2 -1 , two instance variables and one for the jump
     def self.data_length
       13
@@ -45,7 +48,7 @@ module Parfait
 
     def each_block( &block )
       block.call( self )
-      @next.each( &block ) if @next
+      @next.each_block( &block ) if @next
     end
 
     def to_s
@@ -68,8 +71,9 @@ module Parfait
         #raise "invalid index #{index}" unless @next
         extend_to( index )
         @next.set_word( index - data_length , word)
+      else
+        set_internal_word(index + 2 , word)
       end
-      set_internal_word(index + 2 , word)
     end
     def set_last(word)
       set_word( data_length , word)

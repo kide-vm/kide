@@ -60,7 +60,7 @@ module Risc
       assert_equal RegToSlot , sl.class
       assert_equal :r1 , sl.register.symbol #return
       assert_equal :r2 , sl.array.symbol #parfait integer
-      assert_equal  3 , sl.index
+      assert_equal  2 , sl.index
     end
     def test_return
       done = main_ticks(43)

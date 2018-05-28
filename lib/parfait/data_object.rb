@@ -24,6 +24,9 @@ module Parfait
     def initialize
       super
     end
+    def self.integer_index
+      type_length
+    end
     def data_length
       raise "called #{self}"
     end

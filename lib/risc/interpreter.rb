@@ -51,7 +51,7 @@ module Risc
       raise "No position #{pos.to_s(16)}" unless position
       if position.is_a?(Position::CodePosition)
         raise "Setting Code #{clock}-#{position}, #{position.method}"
-        #return set_pc(position.at + Parfait::BinaryCode.offset)
+        #return set_pc(position.at + Parfait::BinaryCode.byte_offset)
       end
       log.debug "Setting Position #{clock}-#{position}, #{position.binary}"
       raise "not instruction position #{position}-#{position.class}-#{position.object.class}" unless position.is_a?(Position::InstructionPosition)
@@ -120,7 +120,7 @@ module Risc
     def execute_Branch
       label = @instruction.label
       pos = Position.get(label).at
-      pos += Parfait::BinaryCode.offset if label.is_a?(Parfait::BinaryCode)
+      pos += Parfait::BinaryCode.byte_offset if label.is_a?(Parfait::BinaryCode)
       set_pc pos
       false
     end
@@ -218,7 +218,7 @@ module Risc
       meth = @instruction.method
       at = Position.get(meth.binary).at
       log.debug "Call to #{meth.name} at:#{at}"
-      set_pc(at + Parfait::BinaryCode.offset)
+      set_pc(at + Parfait::BinaryCode.byte_offset)
       #set_instruction @instruction.method.risc_instructions
       false
     end

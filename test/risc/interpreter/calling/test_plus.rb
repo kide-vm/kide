@@ -61,7 +61,7 @@ module Risc
       sl = main_ticks( base + 3 )
       assert_equal SlotToReg , sl.class
       assert_equal :r1 , sl.array.symbol #load from message
-      assert_equal 3 , sl.index
+      assert_equal 2 , sl.index
       assert_equal :r1 , sl.register.symbol
     end
     def test_op
