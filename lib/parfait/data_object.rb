@@ -23,7 +23,6 @@ module Parfait
   class DataObject < Object
     def initialize
       super
-      @memory = []
     end
     def data_length
       raise "called #{self}"
@@ -31,23 +30,12 @@ module Parfait
     def data_start
       return get_type.get_length
     end
-
-    # 0 -based index
-    def get_internal_word(index)
-      return super if index < data_start
-      @memory[index]
-    end
-
-    # 1 -based index
-    def set_internal_word(index , value)
-      return super if index < data_start
-      raise "Word[#{index}] = nil" if( value.nil? )
-      @memory[index] = value
-      value
-    end
   end
 
   class Data4 < DataObject
+    def self.memory_size
+      4
+    end
     def data_length
       4
     end
@@ -57,6 +45,9 @@ module Parfait
   end
 
   class Data8 < DataObject
+    def self.memory_size
+      8
+    end
     def data_length
       8
     end
@@ -65,6 +56,9 @@ module Parfait
     end
   end
   class Data16 < DataObject
+    def self.memory_size
+      16
+    end
     def data_length
       16
     end

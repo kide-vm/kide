@@ -22,8 +22,8 @@ end
 require_relative "risc/padding"
 require_relative "risc/position"
 require_relative "risc/platform"
-
 require "parfait"
+require_relative "risc/parfait_adapter"
 require_relative "risc/machine"
 require_relative "risc/method_compiler"
 
