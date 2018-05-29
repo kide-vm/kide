@@ -33,6 +33,10 @@ module Parfait
       assert_equal 14, int.instance_type.method_names.get_length
     end
 
+    def test_get_integer_instance
+      int = @space.get_integer
+      assert_equal Integer , int.class
+    end
     def test_classes_class
       classes.each do |name|
         assert_equal :Class , @space.classes[name].get_class.name

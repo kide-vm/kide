@@ -52,6 +52,16 @@ module Parfait
     attr_reader  :classes , :types , :first_message , :next_integer
     attr_reader  :true_object , :false_object , :nil_object
 
+    # hand out one of the preallocated ints for use as constant
+    # the same code is hardcoded as risc instructions for "normal" use, to
+    # avoid the method call at runtime. But at compile time we want to keep
+    # the number of integers known (fixed).
+    def get_integer
+      int = @next_integer
+      @next_integer = @next_integer.next_integer
+      int
+    end
+
     def each_type
       @types.values.each do |type|
         yield(type)

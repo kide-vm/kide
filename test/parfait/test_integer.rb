@@ -43,6 +43,9 @@ module Parfait
         int = int.next_integer
       end
     end
-
+    def test_set
+      @int.set_value(1)
+      assert_equal 1 , @int.value
+    end
   end
 end

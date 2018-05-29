@@ -27,6 +27,12 @@ module Parfait
       type_length
     end
 
+    # compile time method to set the actual value.
+    # this should not really be part of parfait, as ints are immutable at runtime.
+    def set_value(value)
+      set_internal_word(Integer.integer_index, value)
+    end
+
     # :integer?, :odd?, :even?, :upto, :downto, :times, :succ, :next, :pred, :chr, :ord, :to_i, :to_int, :floor,
     # :ceil, :truncate, :round, :gcd, :lcm, :gcdlcm, :numerator, :denominator, :to_r, :rationalize,
     # :singleton_method_added, :coerce, :i, :+@, :-@, :fdiv, :div, :divmod, :%, :modulo, :remainder, :abs, :magnitude,
