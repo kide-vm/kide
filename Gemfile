@@ -12,6 +12,7 @@ group :test do
   gem "codeclimate-test-reporter" , require: false
   gem "simplecov"
   gem "minitest-color"
+  gem 'minitest-fail-fast'
 end
 
 group :development do

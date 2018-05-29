@@ -49,6 +49,8 @@ GEM
     minitest (5.10.3)
     minitest-color (0.0.2)
       minitest (~> 5)
+    minitest-fail-fast (0.1.0)
+      minitest (~> 5)
     nenv (0.3.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -95,6 +97,7 @@ DEPENDENCIES
   guard
   guard-minitest
   minitest-color
+  minitest-fail-fast
   rake
   rb-readline
   rubyx!
