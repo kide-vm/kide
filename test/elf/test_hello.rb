@@ -12,7 +12,7 @@ class HelloTest < MiniTest::Test
   end
 
   def test_string_put
-    @input = "'Hello'.putstring"
+    @input = "return 'Hello'.putstring"
     check
   end
 end
