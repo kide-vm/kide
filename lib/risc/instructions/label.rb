@@ -8,11 +8,13 @@ module Risc
   #
 
   class Label < Instruction
-    def initialize( source , name , nekst = nil)
+    def initialize( source , name , int , nekst = nil)
       super(source , nekst)
       @name = name
+      @integer = int
+      raise "Not int #{int}" if int and !int.is_a?(Parfait::Integer)
     end
-    attr_reader :name
+    attr_reader :name , :integer
 
     def to_cpu(translator)
       @cpu_label ||= super
@@ -51,7 +53,8 @@ module Risc
     alias :padded_length  :byte_length
   end
 
-  def self.label( source , name , nekst = nil)
-    Label.new( source , name , nekst = nil)
+  def self.label( source , name , position = nil , nekst = nil)
+    position ||= Parfait.object_space.get_integer
+    Label.new( source , name , position, nekst )
   end
 end

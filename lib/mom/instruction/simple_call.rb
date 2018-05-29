@@ -19,11 +19,11 @@ module Mom
     end
     # Calling a Method is basically jumping to the Binary (+ offset).
     # We just swap in the new message and go.
-    # 
+    #
     # For returning, we add a label after the call, and load it's address into the
     # return_address of the next_message, for the ReturnSequence to pick it up.
     def to_risc(compiler)
-      return_label = Risc::Label.new(self,"continue_#{object_id}")
+      return_label = Risc.label(self,"continue_#{object_id}")
       save_return =  SlotLoad.new([:message,:next_message,:return_address],[return_label],self)
       moves = save_return.to_risc(compiler)
       moves << Risc.slot_to_reg(self, :message , :next_message , Risc.message_reg)

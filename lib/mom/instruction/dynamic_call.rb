@@ -33,7 +33,7 @@ module Mom
     def to_risc(compiler)
       compiler.add_constant( @cache_entry )
       reg = compiler.use_reg( :Object )
-      return_label = Risc::Label.new(self,"continue_#{object_id}")
+      return_label = Risc.label(self, "continue_#{object_id}")
       save_return =  SlotLoad.new([:message,:next_message,:return_address],[return_label],self)
       moves = save_return.to_risc(compiler)
       moves << Risc.slot_to_reg(self, :message , :next_message , Risc.message_reg)

@@ -7,7 +7,7 @@ module Risc
       Risc.machine.boot
       init = Parfait.object_space.get_init
       @builder = Risc::MethodCompiler.new( init ).builder(false , init)
-      @label = Risc::Label.new("source","name")
+      @label = Risc.label("source","name")
     end
     def test_has_build
       assert @builder.respond_to?(:build)

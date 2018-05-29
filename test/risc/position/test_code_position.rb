@@ -7,7 +7,7 @@ module Risc
       Risc.machine.boot
       @binary = Parfait::BinaryCode.new(1)
       @method = Parfait.object_space.types.values.first.methods
-      @label = Label.new("hi","ho")
+      @label = Risc.label("hi","ho")
     end
     def test_set_bin
       pos = Position.set( @binary , 0 , @method)
@@ -29,7 +29,7 @@ module Risc
       machine.translate(:interpreter)
       @binary = Parfait::BinaryCode.new(1)
       @method = Parfait.object_space.types.values.first.methods
-      @label = Label.new("hi","ho")
+      @label = Risc.label("hi","ho")
     end
 
     def test_bin_propagates_existing
