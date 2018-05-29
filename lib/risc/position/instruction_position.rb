@@ -24,6 +24,7 @@ module Risc
       end
       def init(at, binary)
         @binary = binary
+        instruction.integer.set_value(at) if instruction.is_a?(Label)
         return if at == 0 and binary.nil?
         raise "faux pas" if at < Position.get(binary).at
         return unless @instruction.next

@@ -14,6 +14,15 @@ module Risc
         pos = Position.set( @label , 8 , @binary)
         assert_equal InstructionPosition , pos.class
       end
+      def test_label_set_int
+        Position.set( @label , 8 , @binary)
+        assert_equal 8 , @label.integer.value
+      end
+      def test_label_reset_int
+        Position.set( @label , 8 , @binary)
+        Position.set( @label , 18 , @binary)
+        assert_equal 18 , @label.integer.value        
+      end
       def test_ins_propagates
         @label.set_next Arm::ArmMachine.b( @label)
         Position.set( @label , 8 , @binary)
