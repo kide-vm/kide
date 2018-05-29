@@ -84,7 +84,8 @@ module Risc
     # return final position that is stored in code_start
     def position_objects(at)
       # want to have the objects first in the executable
-      objects.each do | id , objekt|
+      sorted = objects.values.sort{|left,right| left.class.name <=> right.class.name}
+      sorted.each do | objekt|
         next if objekt.is_a?( Parfait::BinaryCode) or objekt.is_a?( Risc::Label )
         before = at
         Position.set(objekt,at)

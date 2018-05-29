@@ -27,6 +27,9 @@ module Parfait
       type_length
     end
 
+    def to_s
+      "Integer #{@value}"
+    end
     # compile time method to set the actual value.
     # this should not really be part of parfait, as ints are immutable at runtime.
     def set_value(value)
