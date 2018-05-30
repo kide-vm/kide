@@ -62,7 +62,7 @@ module Risc
       ret = main_ticks(137)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
-      assert_equal Label , link.class
+      assert_equal Parfait::Integer , link.class
     end
     def test_sys
       sys = main_ticks(139)

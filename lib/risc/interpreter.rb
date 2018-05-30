@@ -141,7 +141,7 @@ module Risc
     def execute_LoadConstant
       to = @instruction.register
       value = @instruction.constant
-      value = value.value if value.is_a?(Mom::Constant)
+      value = value.integer if value.is_a?(Label)
       set_register( to , value )
       true
     end
@@ -226,7 +226,7 @@ module Risc
     def execute_FunctionReturn
       link = get_register( @instruction.register )
       log.debug "Return to #{link}"
-      set_pc Position.get(link).at
+      set_pc link.value
       false
     end
 
