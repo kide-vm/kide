@@ -89,9 +89,10 @@ module Arm
       assert_code code.next , :add , [0x22,0x10,0x91,0xe2] #e2 91 10 22
     end
 
-    def label( pos = 0x22 + 8)
-      l  = Risc.label("some" , "Label")
-      Risc::Position.set(l,pos , @binary)
+    def label( pos = 0x12 + 8)
+      l  = Risc::Label.new("some" , "Label" , FakeInt.new(2))
+      Risc::Position.set(l.integer , 0x22 + 8)
+      Risc::Position.set(l , pos , @binary)
       l
     end
 

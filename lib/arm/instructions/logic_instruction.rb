@@ -90,9 +90,12 @@ module Arm
     def determine_operands
       if( @left.is_a?(Parfait::Object) or @left.is_a?(Risc::Label) or
         (@left.is_a?(Symbol) and !Risc::RiscValue.look_like_reg(@left)))
+        left = @left
+        puts "Label #{@left.integer.inspect}" if left.is_a?(Risc::Label)
+        left = @left.integer if left.is_a?(Risc::Label)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie pointing to fetch and not execute)
-        right = Risc::Position.get(@left) - Risc::Position.get(self) - 8
+        right = Risc::Position.get(left) - Risc::Position.get(self) - 8
         if( (right < 0) && ((opcode == :add) || (opcode == :sub)) )
           right *= -1   # this works as we never issue sub only add
           set_opcode :sub  # so (as we can't change the sign permanently) we can change the opcode

@@ -5,7 +5,7 @@ module Risc
   # compilation of ruby code. Ruby code works on Objects only
   #
   # But for Builtin methods, methods that are created programatically and form the runtime,
-  # it can be handy to load an integer directly withou the object overhead.
+  # it can be handy to load an integer directly without the object overhead.
   #
   class LoadData < Instruction
     def initialize( source , constant , register)

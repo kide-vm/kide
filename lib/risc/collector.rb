@@ -5,6 +5,7 @@ module Risc
     def self.collect_space
       @objects = {}
       keep Parfait.object_space , 0
+      puts "CONST #{Risc.machine.constants}" 
       Risc.machine.constants.each {|obj| keep(obj,0)}
       @objects
     end

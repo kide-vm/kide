@@ -55,7 +55,7 @@ module Risc
     def risc_init
       @risc_init ||= Branch.new( "__initial_branch__" , Parfait.object_space.get_init.risc_instructions )
     end
-    # add a constant (which get created during compilatio and need to be linked)
+    # add a constant (which get created during compilation and need to be linked)
     def add_constant(const)
       raise "Must be Parfait #{const}" unless const.is_a?(Parfait::Object)
       @constants << const
@@ -66,10 +66,10 @@ module Risc
     #
     # Position in the order
     # - initial jump
-    # - all object
-    # - all code
-    # As code length amy change during assembly, this way at least the objects stay
-    # in place and we don't have to deal with chaning loading code
+    # - all objects
+    # - all code (BinaryCode objects)
+    # As code length may change during assembly, this way at least the objects stay
+    # in place and we don't have to deal with changing loading code
     def position_all
       raise "Not translated " unless @translated
       #need the initial jump at 0 and then functions

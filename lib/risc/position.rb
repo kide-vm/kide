@@ -43,7 +43,9 @@ module Risc
       if pos == nil
         str = "position accessed but not set, "
         str += "0x#{object.object_id.to_s(16)}\n"
-        str += "for #{object.class} byte_length #{object.byte_length if object.respond_to?(:byte_length)} for #{object.to_s[0...130]}"
+        str += "for #{object.class} "
+        str += "byte_length #{object.byte_length}" if object.respond_to?(:byte_length)
+        str += " for #{object.to_s[0...130]}"
         raise str
       end
       pos
