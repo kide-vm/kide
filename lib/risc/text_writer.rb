@@ -91,6 +91,8 @@ module Risc
         write_String obj
       when Parfait::BinaryCode
         write_BinaryCode obj
+      when Parfait::Integer
+        write_integer obj
       when Parfait::Data4
         write_data4 obj
       else
@@ -143,7 +145,17 @@ module Risc
       written
     end
 
+    def write_integer( int )
+      write_ref_for( int.get_type )
+      write_ref_for( int.next_integer )
+      @stream.write_signed_int_32( int.value )
+      @stream.write_signed_int_32( 0 )
+      log.debug "Integer witten stream 0x#{@stream.length.to_s(16)}"
+    end
+
     def write_data4( code )
+      write_ref_for( code.get_type )
+      write_ref_for( code.get_type )
       write_ref_for( code.get_type )
       write_ref_for( code.get_type )
       log.debug "Data4 witten stream 0x#{@stream.length.to_s(16)}"
@@ -179,7 +191,7 @@ module Risc
       write_ref_for( string.get_type ) #ref
       @stream.write_signed_int_32( str.length  ) #int
       @stream.write str
-      pad_after(str.length + 8 ) # type , length   
+      pad_after(str.length + 8 ) # type , length
       log.debug "String (0x#{string.length.to_s(16)}) stream 0x#{@stream.length.to_s(16)}"
     end
 

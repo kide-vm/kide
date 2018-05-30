@@ -27,11 +27,14 @@ module Parfait
     def self.integer_index
       type_length
     end
-    def data_length
-      raise "called #{self}"
-    end
     def self.type_length
       raise "called #{self}"
+    end
+    def padded_length
+      self.class.memory_size * 4
+    end
+    def data_length
+      self.class.memory_size
     end
   end
 
@@ -39,34 +42,15 @@ module Parfait
     def self.memory_size
       4
     end
-    def data_length
-      4
-    end
-    def padded_length
-      2 * 4
-    end
   end
-
   class Data8 < DataObject
     def self.memory_size
       8
-    end
-    def data_length
-      8
-    end
-    def padded_length
-      8 * 4
     end
   end
   class Data16 < DataObject
     def self.memory_size
       16
-    end
-    def data_length
-      16
-    end
-    def padded_length
-      16 * 4
     end
   end
   class Data32 < DataObject

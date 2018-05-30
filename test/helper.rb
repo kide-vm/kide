@@ -14,7 +14,7 @@ end
 
 require "minitest/color"
 require "minitest/autorun"
-require "minitest/fail_fast"
+#require "minitest/fail_fast"
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'test'))

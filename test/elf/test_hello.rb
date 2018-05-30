@@ -3,7 +3,7 @@ require_relative "../helper"
 class HelloTest < MiniTest::Test
 
   def setup
-    Risc.machine
+    Risc.machine.boot
   end
   def check
     Vool::VoolCompiler.ruby_to_binary( "class Space;def main(arg);#{@input};end;end" )
