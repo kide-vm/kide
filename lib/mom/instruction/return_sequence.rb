@@ -27,6 +27,7 @@ module Mom
       caller_index = Risc.resolve_to_index(:message , :caller)
       return_index = Risc.resolve_to_index(:message , :return_address)
       moves << Risc::SlotToReg.new(self, Risc.message_reg, return_index , return_address)
+      moves << Risc::SlotToReg.new( self , return_address , Parfait::Integer.integer_index , return_address)
       moves << Risc::SlotToReg.new(self, Risc.message_reg , caller_index , Risc.message_reg)
       moves << Risc::FunctionReturn.new(self, return_address)
     end

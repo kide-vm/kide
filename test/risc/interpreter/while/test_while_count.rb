@@ -21,38 +21,39 @@ module Risc
              SlotToReg, SlotToReg, SlotToReg, OperatorInstruction, IsMinus,
              IsZero, LoadConstant, Branch, RegToSlot, SlotToReg,
              Branch, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             FunctionReturn, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, LoadConstant, OperatorInstruction, IsZero, Branch,
-             LoadConstant, OperatorInstruction, IsZero, LoadConstant, LoadConstant,
+             SlotToReg, FunctionReturn, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsZero,
+             Branch, LoadConstant, OperatorInstruction, IsZero, LoadConstant,
+             LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, Branch,
+             RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
+             LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             SlotToReg, SlotToReg, RegToSlot, Branch, LoadConstant,
+             SlotToReg, RegToSlot, SlotToReg, FunctionCall, SlotToReg,
+             SlotToReg, SlotToReg, SlotToReg, SlotToReg, OperatorInstruction,
+             LoadConstant, SlotToReg, SlotToReg, RegToSlot, RegToSlot,
+             RegToSlot, SlotToReg, Branch, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
+             SlotToReg, RegToSlot, Branch, LoadConstant, LoadConstant,
              SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, Branch, RegToSlot,
              SlotToReg, RegToSlot, SlotToReg, RegToSlot, LoadConstant,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
              SlotToReg, RegToSlot, Branch, LoadConstant, SlotToReg,
              RegToSlot, SlotToReg, FunctionCall, SlotToReg, SlotToReg,
-             SlotToReg, SlotToReg, SlotToReg, OperatorInstruction, LoadConstant,
-             SlotToReg, SlotToReg, RegToSlot, RegToSlot, RegToSlot,
-             SlotToReg, Branch, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, FunctionReturn, SlotToReg, SlotToReg, RegToSlot,
-             Branch, LoadConstant, LoadConstant, SlotToReg, RegToSlot,
-             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, Branch, RegToSlot, SlotToReg, RegToSlot,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-             Branch, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
-             FunctionCall, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, OperatorInstruction, IsMinus, IsZero, LoadConstant,
-             RegToSlot, SlotToReg, Branch, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, LoadConstant, OperatorInstruction,
-             IsZero, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             Branch, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             FunctionReturn, Transfer, Syscall, NilClass]
+             SlotToReg, SlotToReg, SlotToReg, OperatorInstruction, IsMinus,
+             IsZero, LoadConstant, RegToSlot, SlotToReg, Branch,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
+             FunctionReturn, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, LoadConstant, OperatorInstruction, IsZero, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, Branch, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
+             Transfer, Syscall, NilClass]
        assert_kind_of Parfait::Integer , get_return
        assert_equal 0 , get_return.value
     end
     def test_exit
-      done = main_ticks(183)
+      done = main_ticks(187)
       assert_equal Syscall ,  done.class
     end
   end

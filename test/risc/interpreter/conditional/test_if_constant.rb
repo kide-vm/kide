@@ -14,7 +14,7 @@ module Risc
         check_main_chain [LoadConstant, LoadConstant, OperatorInstruction, IsZero, LoadConstant,
              OperatorInstruction, IsZero, LoadConstant, RegToSlot, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, Branch, SlotToReg,
-             FunctionReturn, Transfer, Syscall, NilClass]
+             SlotToReg, FunctionReturn, Transfer, Syscall, NilClass]
       assert_equal Parfait::Word , get_return.class
       assert_equal "then" , get_return.to_string
     end
@@ -39,7 +39,7 @@ module Risc
       assert check.label.name.start_with?("false_label") , check.label.name
     end
     def test_exit
-      done = main_ticks(18)
+      done = main_ticks(19)
       assert_equal Syscall ,  done.class
     end
   end

@@ -35,10 +35,11 @@ module Risc
              SlotToReg, Branch, DynamicJump, SlotToReg, SlotToReg,
              LoadData, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg,
              RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, Branch, SlotToReg, SlotToReg, FunctionReturn,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, FunctionReturn, Transfer, Syscall, NilClass]
+             RegToSlot, Branch, SlotToReg, SlotToReg, SlotToReg,
+             FunctionReturn, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, SlotToReg, Branch, FunctionReturn,
+             Transfer, Syscall, NilClass]
        assert_equal Parfait::Integer , get_return.class
        assert_equal 1 , get_return.value
     end
@@ -59,13 +60,13 @@ module Risc
       assert_equal DynamicJump ,  cal.class
     end
     def test_return
-      ret = main_ticks(137)
+      ret = main_ticks(140)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
-      assert_equal Parfait::Integer , link.class
+      assert_equal Fixnum , link.class
     end
     def test_sys
-      sys = main_ticks(139)
+      sys = main_ticks(142)
       assert_equal Syscall ,  sys.class
     end
   end

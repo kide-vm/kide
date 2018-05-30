@@ -226,7 +226,7 @@ module Risc
     def execute_FunctionReturn
       link = get_register( @instruction.register )
       log.debug "Return to #{link}"
-      set_pc link.value
+      set_pc link
       false
     end
 

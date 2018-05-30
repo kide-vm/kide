@@ -19,10 +19,11 @@ module Risc
              SlotToReg, Transfer, Syscall, Transfer, Transfer,
              LoadConstant, SlotToReg, SlotToReg, RegToSlot, RegToSlot,
              RegToSlot, SlotToReg, Branch, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
-             RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             FunctionReturn, Transfer, Syscall, NilClass]
+             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
+             SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, SlotToReg, FunctionReturn, Transfer, Syscall,
+             NilClass]
        assert_equal "Hello again" , @interpreter.stdout
        assert_equal Parfait::Integer , get_return.class
        assert_equal 11 , get_return.value #bytes written
@@ -63,7 +64,7 @@ module Risc
       assert_equal  2 , sl.index
     end
     def test_return
-      done = main_ticks(43)
+      done = main_ticks(44)
       assert_equal FunctionReturn ,  done.class
     end
 

@@ -20,10 +20,11 @@ module Risc
              RegToSlot, SlotToReg, FunctionCall, SlotToReg, SlotToReg,
              SlotToReg, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
              RegToByte, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, Branch, SlotToReg, FunctionReturn, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, Branch, RegToSlot, SlotToReg,
-             SlotToReg, FunctionReturn, Transfer, Syscall, NilClass]
+             SlotToReg, Branch, SlotToReg, SlotToReg, FunctionReturn,
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, Branch, RegToSlot,
+             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer,
+             Syscall, NilClass]
        assert_equal Parfait::Word , get_return.class
        assert_equal "Kello" , get_return.to_string
     end
@@ -33,7 +34,7 @@ module Risc
       assert_equal "K".ord ,  @interpreter.get_register(done.register)
     end
     def test_exit
-      done = main_ticks(64)
+      done = main_ticks(66)
       assert_equal Syscall ,  done.class
     end
 

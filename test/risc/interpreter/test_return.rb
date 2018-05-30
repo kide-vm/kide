@@ -12,8 +12,8 @@ module Risc
     def test_chain
       #show_main_ticks # get output of what is
       check_main_chain [LoadConstant, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, FunctionReturn, Transfer, Syscall,
-             NilClass]
+             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer,
+             Syscall, NilClass]
       assert_equal 5 , get_return.value
     end
 
@@ -28,17 +28,17 @@ module Risc
       assert_equal 5 , @interpreter.get_register(load_ins.register).value
     end
     def test_return
-      ret = main_ticks(8)
+      ret = main_ticks(9)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
-      assert_equal Parfait::Integer , link.class
+      assert_equal Fixnum , link.class
     end
     def test_transfer
-      transfer = main_ticks(9)
+      transfer = main_ticks(10)
       assert_equal Transfer ,  transfer.class
     end
     def test_sys
-      sys = main_ticks(10)
+      sys = main_ticks(11)
       assert_equal Syscall ,  sys.class
     end
   end
