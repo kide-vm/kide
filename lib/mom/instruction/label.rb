@@ -31,10 +31,7 @@ module Mom
     # Off course some specific place still has to be responsible for actually
     # adding the label to the instruction list (usually an if/while)
     def to_risc(compiler)
-      int = Parfait.object_space.get_integer
-      puts "ADDING int #{int}"
-      compiler.add_constant(int)
-      @risc_label ||= Risc.label(self,name , int , nil)
+      @risc_label ||= Risc.label(self,name)
     end
   end
 end

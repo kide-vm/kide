@@ -1,18 +1,25 @@
 module Risc
 
   # A label is a placeholder for it's next Instruction
-  # It's function is not to turn into code, but to be a valid brnch target
+  # It's function is not to turn into code, but to be a valid branch target
+  # Labels have the same position as their next instruction (See positioning code)
   #
   # So branches and Labels are pairs, fan out, fan in
   #
-  #
+  # For a return, the address (position) of the label has to be loaded.
+  # So a Label carries the Integer constant that holds the address (it's own
+  # position, again see positioning code).
+  # But currently the label is used in the Risc abstraction layer, and in the
+  # arm/interpreter layer. The integer is only used in the lower layer, but needs
+  # to be created (and positioned)
 
   class Label < Instruction
+    # See class description. also factory method Risc.label below
     def initialize( source , name , int , nekst = nil)
       super(source , nekst)
       @name = name
       @integer = int
-      raise "Not int #{int}" if int and !int.is_a?(Parfait::Integer)
+      raise "Not int #{int}" unless int.is_a?(Parfait::Integer)
     end
     attr_reader :name , :integer
 
@@ -53,8 +60,15 @@ module Risc
     alias :padded_length  :byte_length
   end
 
+  # Labels carry what is esentially an integer constant
+  # The int holds the labels position for use at runtime (return address)
+  # An integer is plucked from object_space abd added to the machine constant pool
+  # if none was given
   def self.label( source , name , position = nil , nekst = nil)
-    position ||= Parfait.object_space.get_integer
+    unless position
+      position = Parfait.object_space.get_integer
+      Risc.machine.add_constant(position)
+    end
     Label.new( source , name , position, nekst )
   end
 end
