@@ -20,6 +20,7 @@ module Risc
       @booted = false
       @risc_init = nil
       @constants = []
+      @next_address = nil
     end
     attr_reader  :constants , :cpu_init
     attr_reader  :booted , :translated
@@ -59,6 +60,17 @@ module Risc
     def add_constant(const)
       raise "Must be Parfait #{const}" unless const.is_a?(Parfait::Object)
       @constants << const
+    end
+
+    # hand out a return address for use as constant the address is added
+    def get_address
+      10.times do # 10 for whole pages
+        @next_address = Parfait::ReturnAddress.new(0,@next_address)
+        add_constant( @next_address )
+      end unless @next_address
+      addr = @next_address
+      @next_address = @next_address.next_integer
+      addr
     end
 
     # To create binaries, objects (and labels) need to have a position

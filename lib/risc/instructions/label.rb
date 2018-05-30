@@ -66,8 +66,7 @@ module Risc
   # if none was given
   def self.label( source , name , position = nil , nekst = nil)
     unless position
-      position = Parfait.object_space.get_integer
-      Risc.machine.add_constant(position)
+      position = Risc.machine.get_address
     end
     Label.new( source , name , position, nekst )
   end

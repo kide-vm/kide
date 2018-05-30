@@ -48,4 +48,18 @@ module Parfait
       assert_equal 1 , @int.value
     end
   end
+  class AddressTest < ParfaitTest
+    def test_address
+      assert ReturnAddress.new(55)
+    end
+    def test_value
+      assert_equal 55 , ReturnAddress.new(55).value
+    end
+    def test_value_set
+      addr = ReturnAddress.new(55)
+      addr.set_value(33)
+      assert_equal 33 , addr.value
+    end
+  end
+
 end

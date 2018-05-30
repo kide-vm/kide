@@ -49,6 +49,13 @@ module Parfait
     # :>, :>=, :<, :<=, :between?
   end
 
+  # Marker class. Same functionality as Integer
+  # (ie carrying an int, the return address)
+  #
+  # But the integer (address) needs to be adjusted by load address.
+  class ReturnAddress < Integer
+  end
+
   # adding other base classes in here for now:
   class FalseClass < Data4
     #FIXME: this is "just" for compilation

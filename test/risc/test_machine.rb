@@ -17,6 +17,22 @@ module Risc
     def test_constant
       assert @machine.add_constant( Parfait::Integer.new(5) )
     end
+    def test_address_get
+      assert_equal Parfait::ReturnAddress ,  @machine.get_address.class
+    end
+    def test_address_is_constant
+      addr = @machine.get_address
+      assert @machine.constants.include?(addr)
+    end
+    def test_address_count
+      addr = @machine.get_address
+      count = 0
+      while(addr)
+        count += 1
+        addr = addr.next_integer
+      end
+      assert_equal 5, count  
+    end
   end
   class TestMachineInit < MiniTest::Test
     def setup
@@ -29,10 +45,10 @@ module Risc
       assert_equal 0 ,  Position.get(@machine.cpu_init).at
     end
     def test_cpu_at
-      assert_equal "0x5a54" ,  Position.get(@machine.cpu_init.first).to_s
+      assert_equal "0x5ed4" ,  Position.get(@machine.cpu_init.first).to_s
     end
     def test_cpu_bin
-      assert_equal "0x5a4c" ,  Position.get(Position.get(@machine.cpu_init.first).binary).to_s
+      assert_equal "0x5ecc" ,  Position.get(Position.get(@machine.cpu_init.first).binary).to_s
     end
     def test_cpu_label
       assert_equal Position::InstructionPosition ,  Position.get(@machine.cpu_init.first).class

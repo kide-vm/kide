@@ -148,8 +148,8 @@ module Risc
     def write_integer( int )
       write_ref_for( int.get_type )
       write_ref_for( int.next_integer )
-      @stream.write_signed_int_32( int.value )
-      @stream.write_signed_int_32( 0 )
+      write_ref_for( int.value )
+      write_ref_for( 0 )
       log.debug "Integer witten stream 0x#{@stream.length.to_s(16)}"
     end
 
