@@ -90,8 +90,8 @@ module Arm
     end
 
     def label( pos = 0x12 + 8)
-      l  = Risc::Label.new("some" , "Label" , FakeInt.new(2))
-      Risc::Position.set(l.integer , 0x22 + 8)
+      l  = Risc::Label.new("some" , "Label" , FakeAddress.new(2))
+      Risc::Position.set(l.address , 0x22 + 8)
       Risc::Position.set(l , pos , @binary)
       l
     end

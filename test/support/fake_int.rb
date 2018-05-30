@@ -13,3 +13,8 @@ class FakeInt
     @value = val
   end
 end
+class FakeAddress < FakeInt
+  def is_a?(clazz)
+    clazz == Parfait::ReturnAddress
+  end
+end

@@ -13,7 +13,7 @@ module Arm
     end
 
     def translate_Label( code )
-      Risc.label( code.source , code.name , code.integer)
+      Risc.label( code.source , code.name , code.address)
     end
 
     # arm indexes are

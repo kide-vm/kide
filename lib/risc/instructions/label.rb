@@ -7,7 +7,7 @@ module Risc
   # So branches and Labels are pairs, fan out, fan in
   #
   # For a return, the address (position) of the label has to be loaded.
-  # So a Label carries the Integer constant that holds the address (it's own
+  # So a Label carries the ReturnAddress constant that holds the address (it's own
   # position, again see positioning code).
   # But currently the label is used in the Risc abstraction layer, and in the
   # arm/interpreter layer. The integer is only used in the lower layer, but needs
@@ -15,13 +15,13 @@ module Risc
 
   class Label < Instruction
     # See class description. also factory method Risc.label below
-    def initialize( source , name , int , nekst = nil)
+    def initialize( source , name , addr , nekst = nil)
       super(source , nekst)
       @name = name
-      @integer = int
-      raise "Not int #{int}" unless int.is_a?(Parfait::Integer)
+      @address = addr
+      raise "Not address #{addr}" unless addr.is_a?(Parfait::ReturnAddress)
     end
-    attr_reader :name , :integer
+    attr_reader :name , :address
 
     def to_cpu(translator)
       @cpu_label ||= super
@@ -65,9 +65,7 @@ module Risc
   # An integer is plucked from object_space abd added to the machine constant pool
   # if none was given
   def self.label( source , name , position = nil , nekst = nil)
-    unless position
-      position = Risc.machine.get_address
-    end
+    position = Risc.machine.get_address unless position
     Label.new( source , name , position, nekst )
   end
 end

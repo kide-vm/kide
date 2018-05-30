@@ -91,7 +91,7 @@ module Arm
       if( @left.is_a?(Parfait::Object) or @left.is_a?(Risc::Label) or
         (@left.is_a?(Symbol) and !Risc::RiscValue.look_like_reg(@left)))
         left = @left
-        left = @left.integer if left.is_a?(Risc::Label)
+        left = @left.address if left.is_a?(Risc::Label)
         # do pc relative addressing with the difference to the instuction
         # 8 is for the funny pipeline adjustment (ie pointing to fetch and not execute)
         right = Risc::Position.get(left) - Risc::Position.get(self) - 8

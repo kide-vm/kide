@@ -90,13 +90,15 @@ module Risc
       when Parfait::Word, Symbol
         write_String obj
       when Parfait::BinaryCode
-        write_BinaryCode obj
+        write_BinaryCode( obj )
+      when Parfait::ReturnAddress
+        write_return_address( obj )
       when Parfait::Integer
-        write_integer obj
+        write_integer( obj )
       when Parfait::Data4
-        write_data4 obj
+        write_data4( obj )
       else
-        write_object obj
+        write_object( obj )
       end
     end
 
@@ -143,6 +145,14 @@ module Risc
         written += 4
       end
       written
+    end
+
+    def write_return_address( addr )
+      write_ref_for( addr.get_type )
+      write_ref_for( addr.next_integer )
+      write_ref_for( addr.value + @machine.platform.loaded_at )
+      write_ref_for( 0 )
+      log.debug "Integer witten stream 0x#{@stream.length.to_s(16)}"
     end
 
     def write_integer( int )

@@ -3,7 +3,7 @@ require_relative "../helper"
 module Risc
   class TestInstructions < MiniTest::Test
     def setup
-      @label = Label.new("test" , "test",FakeInt.new(5))
+      @label = Label.new("test" , "test",FakeAddress.new(5))
       @branch = Branch.new("test" , @label)
       @instruction = Instruction.new("test")
     end
@@ -19,7 +19,7 @@ module Risc
       assert @label.to_s.include?("Label")
     end
     def test_label_tos2
-      assert Label.new("nil",nil,FakeInt.new(2)).to_s.include?("Label")
+      assert Label.new("nil",nil,FakeAddress.new(2)).to_s.include?("Label")
     end
     def test_last_empty
       assert_equal @instruction, @instruction.last
@@ -55,7 +55,7 @@ module Risc
       assert_nil  @instruction.next(2)
     end
     def test_label_is_method
-      label = Label.new("test" , "Object.test" , FakeInt.new(5))
+      label = Label.new("test" , "Object.test" , FakeAddress.new(5))
       assert label.is_method
     end
     def test_label_is_not_method

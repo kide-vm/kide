@@ -141,7 +141,7 @@ module Risc
     def execute_LoadConstant
       to = @instruction.register
       value = @instruction.constant
-      value = value.integer if value.is_a?(Label)
+      value = value.address if value.is_a?(Label)
       set_register( to , value )
       true
     end
