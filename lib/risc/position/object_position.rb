@@ -1,6 +1,10 @@
+require "util/eventable"
+
 module Risc
   module Position
     class ObjectPosition
+      include Util::Eventable
+
       attr_reader :at , :object
 
       def initialize( object, at)
@@ -32,25 +36,6 @@ module Risc
         end
         @at = pos
         true
-      end
-
-      # Register a handler position change event.
-      # The object calls position_changed on the handler object
-      #
-      #   obj.position_changed( changed_position )
-      #
-      # @param [Object] object handling position_changed
-      def register_listener( handler)
-        @listeners << handler
-      end
-
-      def unregister_listener(handler)
-        @listeners.delete handler
-      end
-
-      # Trigger position change  and pass self to position_changed
-      def trigger()
-        @listeners.each { |handler| handler.position_changed( self ) }
       end
     end
   end

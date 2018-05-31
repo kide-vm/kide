@@ -53,21 +53,21 @@ module Risc
         @position = ObjectPosition.new(self,0)
       end
       def test_has_register
-        assert @position.register_listener(self)
+        assert @position.register_event(:position_changed , self)
       end
       def test_can_unregister
-        assert @position.register_listener(self)
-        assert @position.unregister_listener(self)
+        assert @position.register_event(:position_changed ,self)
+        assert @position.unregister_event(:position_changed ,self)
       end
       def test_fires
-        @position.register_listener(self)
-        @position.trigger
+        @position.register_event(:position_changed ,self)
+        @position.trigger(:position_changed , @position)
         assert_equal @position , @trigger
       end
       def test_no_fire_after_unregister
-        assert @position.register_listener(self)
-        assert @position.unregister_listener(self)
-        @position.trigger
+        assert @position.register_event(:position_changed ,self)
+        assert @position.unregister_event(:position_changed ,self)
+        @position.trigger(:position_changed , @position)
         assert_nil @trigger
       end
       def position_changed(pos)
