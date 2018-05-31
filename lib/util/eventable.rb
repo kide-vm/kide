@@ -3,7 +3,7 @@ module Util
   # Events are stored in the `@events` ivar.
   module Eventable
 
-    # Risc a handler for the given event name.
+    # Register a handler for the given event name.
     # The event name is the method name called on the handler object
     #
     #   obj.on(:foo , some_object_that_implements foo( whateverargs)

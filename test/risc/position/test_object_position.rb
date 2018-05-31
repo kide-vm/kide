@@ -48,5 +48,31 @@ module Risc
         assert_equal 5 , pos.at
       end
     end
+    class TestPositionEvents < MiniTest::Test
+      def setup
+        @position = ObjectPosition.new(self,0)
+      end
+      def test_has_register
+        assert @position.register_listener(self)
+      end
+      def test_can_unregister
+        assert @position.register_listener(self)
+        assert @position.unregister_listener(self)
+      end
+      def test_fires
+        @position.register_listener(self)
+        @position.trigger
+        assert_equal @position , @trigger
+      end
+      def test_no_fire_after_unregister
+        assert @position.register_listener(self)
+        assert @position.unregister_listener(self)
+        @position.trigger
+        assert_nil @trigger
+      end
+      def position_changed(pos)
+        @trigger = pos
+      end
+    end
   end
 end
