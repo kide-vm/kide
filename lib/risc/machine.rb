@@ -86,9 +86,9 @@ module Risc
       raise "Not translated " unless @translated
       #need the initial jump at 0 and then functions
       Position.set(cpu_init , 0 , nil)
-      @code_start = position_objects( @platform.padding )
+      code_start = position_objects( @platform.padding )
       # and then everything code
-      position_code
+      position_code(code_start)
     end
 
     # go through everything that is not code (BinaryCode) and set position
@@ -97,10 +97,13 @@ module Risc
     def position_objects(at)
       # want to have the objects first in the executable
       sorted = objects.values.sort{|left,right| left.class.name <=> right.class.name}
+      previous = nil
       sorted.each do | objekt|
         next if objekt.is_a?( Parfait::BinaryCode) or objekt.is_a?( Risc::Label )
         before = at
-        Position.set(objekt,at)
+        position = Position.set(objekt,at)
+        previous.register_event(:position_changed , Position::ObjectListener.new(objekt)) if previous
+        previous = position
         at += objekt.padded_length
         log.debug "Object #{objekt.class}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
       end
@@ -112,17 +115,14 @@ module Risc
     # So that all code from one method is layed out linearly (for debugging)
     # we go through methods, and then through all codes from the method
     #
-    # start at @code_start. The method is called until
-    # assembly stops throwing errors
-    def position_code
-      at = @code_start
+    # start at code_start.
+    def position_code(code_start)
       first_method = Parfait.object_space.types.values.first.methods
-      before = at
-      Position.set( first_method.binary , at , first_method)
-      Position.set( first_method.cpu_instructions, at + Parfait::BinaryCode.byte_offset , first_method.binary)
-      log.debug "Method #{first_method.name}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
+      before = code_start
+      Position.set( first_method.binary , code_start , first_method)
+      Position.set( first_method.cpu_instructions, code_start + Parfait::BinaryCode.byte_offset , first_method.binary)
+      log.debug "Method #{first_method.name}:#{before.to_s(16)} len: #{(code_start - before).to_s(16)}"
       log.debug "Instructions #{first_method.cpu_instructions.object_id.to_s(16)}:#{(before+Parfait::BinaryCode.byte_offset).to_s(16)}"
-      at
     end
 
     # Create Binary code for all methods and the initial jump

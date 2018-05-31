@@ -31,6 +31,7 @@ module Risc
       end
       def reset_to(pos , guaranteed_nil )
         return false if pos == at
+        trigger(:position_changed , self)
         if((at - pos).abs > 1000)
           raise "position set too far off #{pos}!=#{at} for #{object}:#{object.class}"
         end
