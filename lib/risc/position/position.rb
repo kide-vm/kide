@@ -82,7 +82,9 @@ module Risc
       log.debug "Setting #{pos.to_s(16)} for #{object.class}-#{object}"
       testing = self.at( pos )
       position = for_at( object , pos , extra)
-      raise "Mismatch (at #{pos.to_s(16)}) was:#{position} #{position.class} #{position.object} , should #{testing}#{testing.class}" if testing and testing.class != position.class
+      if testing and testing.class != position.class
+        raise "Mismatch (at #{pos.to_s(16)}) was:#{position} #{position.class} #{position.object} , should #{testing}#{testing.class}"
+      end
       self.positions[object] = position
       position.init(pos , extra)
       @reverse_cache[position.at] = position unless object.is_a? Label
@@ -102,6 +104,6 @@ module Risc
     end
   end
 end
-require_relative "position/object_position"
-require_relative "position/instruction_position"
-require_relative "position/code_position"
+require_relative "object_position"
+require_relative "instruction_position"
+require_relative "code_position"
