@@ -31,7 +31,9 @@ module Arm
       assert_equal should.length , binary.length , "code length wrong for #{code.inspect}"
       index = 0
       binary.each_byte do |byte |
-        assert_equal should[index] , byte , "byte #{index} 0x#{should[index].to_s(16)} != 0x#{byte.to_s(16)}"
+        msg = "byte #{index} 0x#{should[index].to_s(16)} != 0x#{byte.to_s(16)} | "
+        msg += "#{should[index].to_s(2)} != #{byte.to_s(2)}"
+        assert_equal should[index] , byte , msg
         index += 1
       end
     end

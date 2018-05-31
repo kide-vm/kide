@@ -4,4 +4,4 @@ script:
   - ruby test/test_all.rb
   - bundle exec codeclimate-test-reporter
 rvm:
-  - 2.3.3
+  - 2.3.7

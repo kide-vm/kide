@@ -11,6 +11,7 @@ module Arm
       @to = to
       raise "move must have from set #{inspect}" unless from
       @attributes[:update_status] = 1 if @attributes[:update_status] == nil
+      @attributes[:update_status] = 0 if @to == :pc
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @attributes[:opcode] = attributes[:opcode]
       @operand = 0
@@ -19,17 +20,6 @@ module Arm
       @extra = nil
     end
     attr_accessor :to , :from
-
-    # arm intructions are pretty sensible, and always 4 bytes (thumb not supported)
-    # but not all constants fit into the part of the instruction that is left after the instruction
-    # code, so large moves have to be split into two instructions.
-    # we handle this "transparently", just this instruction looks longer
-    # alas, full transparency is not achieved as we only know when to use 2 instruction once we
-    # know where the other object is, and that position is only set after code positions have been
-    # determined (in link) and so see below in assemble
-    def byte_length
-      4
-    end
 
     # don't overwrite instance variables, to make assembly repeatable
     def assemble(io)

@@ -10,7 +10,11 @@ module Arm
     end
     def test_mov_pc
       code = @machine.mov  :pc,  5
-      assert_code code , :mov , [0x05,0xf0,0xb0,0xe3] #e3 b0 f0 06
+      assert_code code , :mov , [0x05,0xf0,0xa0,0xe3] #e3 a0 f0 06
+    end
+    def test_mov_pc_r1
+      code = @machine.mov  :pc,  :r1
+      assert_code code , :mov , [0x01,0xf0,0xa0,0xe1] #e1 a0 f0 01
     end
     def test_mov_max_128
       code = @machine.mov  :r1,  128
