@@ -1,4 +1,4 @@
-require_relative "../helper"
+require_relative "helper"
 
 module Risc
   # tests that require a boot and test propagation
