@@ -48,11 +48,20 @@ module Risc
     def position_listeners
       event_table[:position_changed]
     end
+
     #look for InstructionListener and return its code if found
     def get_code
       listener = event_table.find{|one| one.class == InstructionListener}
       return nil unless listener
       listener.code
+    end
+
+    def set(int)
+      same = int == self.at
+      Position.set_to(self , int)
+      @at = int
+      trigger(:position_changed , self ) unless same
+      int
     end
 
     def +(offset)
@@ -122,6 +131,6 @@ module Risc
     end
   end
 end
-require_relative "object_listener"
+require_relative "position_listener"
 require_relative "instruction_listener"
 require_relative "code_listener"

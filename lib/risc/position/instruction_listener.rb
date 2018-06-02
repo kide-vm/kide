@@ -39,12 +39,6 @@ module Risc
       Position.set(@instruction.next, nekst , binary)
     end
 
-    def reset_to(pos , binary)
-      super(pos , binary)
-      init(pos , binary)
-      Position.log.debug "ResetInstruction (#{pos.to_s(16)}) #{instruction}"
-    end
-
     # initialize the dependency graph for instructions
     #
     # starting from the given instruction, create Positions
@@ -55,6 +49,7 @@ module Risc
     # return the position for the first instruction which may be used to
     # set all positions in the chain
     def self.init( instruction , code )
+      raise "Not Binary Code #{code.class}" unless code.is_a?(Parfait::BinaryCode)
       first = nil
       while(instruction)
         position = Position.new(instruction , -1)

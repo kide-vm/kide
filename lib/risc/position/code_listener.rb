@@ -42,10 +42,12 @@ module Risc
       cpu_jump.assemble(JumpWriter.new(code))
     end
 
+    # Create Position for the given BinaryCode object
+    # return the last position that was created, for chaining
     def self.init( code , at = -1)
       while code
+        raise "Not Binary Code #{code.class}" unless code.is_a?(Parfait::BinaryCode)
         position = Position.new(code , at)
-        Position.set_to(position , at)
         if code.next
           listener = PositionListener.new(code.next)
           position.position_listener( listener)

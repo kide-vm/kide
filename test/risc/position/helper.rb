@@ -6,4 +6,7 @@ module Risc
       4
     end
   end
+  class DummyInstruction < Dummy
+    include Util::List
+  end
 end

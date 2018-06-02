@@ -20,7 +20,8 @@ module Risc
     # position to reflect that change
     #
     def position_changed(previous)
-      me = previous.at + previous.object.padded_length
+      add = previous.object ? previous.object.padded_length : 0
+      me = previous.at + add
       object_pos = Position.get(@object)
       return if me == object_pos.at
       Position.set(@object , me)

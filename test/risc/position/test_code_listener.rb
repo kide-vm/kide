@@ -14,8 +14,10 @@ module Risc
       pos = CodeListener.init(@binary)
       assert_equal pos, Position.get(@binary)
     end
+    def test_init_fail
+      assert_raises{ CodeListener.init( @method)}
+    end
     def test_init_returns_position
-
       assert_equal Position , CodeListener.init(@binary).class
     end
     def test_init_listner

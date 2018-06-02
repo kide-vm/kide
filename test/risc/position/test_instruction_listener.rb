@@ -7,10 +7,13 @@ module Risc
       Risc.machine.boot
       @binary = Parfait::BinaryCode.new(1)
       #Position.set(@binary , 0 , Parfait.object_space.get_main)
-      @label = Risc.label("hi","ho")
+      @label = DummyInstruction.new
     end
     def test_init
       assert InstructionListener.init(@label , @binary)
+    end
+    def test_init_fail
+      assert_raises {InstructionListener.init(@label , nil)}
     end
     def pest_set_instr
       pos = Position.set( @label , 8 , @binary)
