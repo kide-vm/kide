@@ -56,51 +56,18 @@ module Risc
       old.reset_to( old.at )
     end
 
-    # resetting of position used to be error, but since relink and dynamic instruction size it is ok.
-    # in measures
-    #
-    # reseting to the same position as before, triggers code that propagates
-    def self.reset(position , to , extra)
-      log.debug "ReSetting #{position}, to:#{to.to_s(16)}, for #{position.object.class}-#{position.object}"
-      position.reset_to(to, extra)
-      if testing = @reverse_cache[ to ]
-        if testing.class != position.class
-          raise "Mismatch (at #{to.to_s(16)}) new:#{position}:#{position.class} , was #{testing}:#{testing.class}"
-        end
-      end
-      unless position.object.is_a? Label
-        @reverse_cache.delete(to)
-        @reverse_cache[position.at] = position
-      end
-      log.debug "Reset #{position} (#{to.to_s(16)}) for #{position.class}"
-      return position
-    end
-
-    def self.set( object , pos , extra = nil)
-      old = Position.positions[object]
-      return self.reset(old , pos , extra) if old
-      log.debug "Setting #{pos.to_s(16)} for #{object.class}-#{object}"
-      testing = self.at( pos )
-      position = for_at( object , pos , extra)
+    def self.set_to( position , to)
+      postest = Position.positions[position.object]
+      raise "Mismatch #{position}" if postest and postest != position
+      @reverse_cache.delete(position.at) unless position.object.is_a? Label
+      testing = self.at( position.at ) if position.at >= 0
       if testing and testing.class != position.class
         raise "Mismatch (at #{pos.to_s(16)}) was:#{position} #{position.class} #{position.object} , should #{testing}#{testing.class}"
       end
-      self.positions[object] = position
-      position.init(pos , extra)
-      @reverse_cache[position.at] = position unless object.is_a? Label
-      log.debug "Set #{position} (#{pos.to_s(16)}) for #{position.class}"
+      self.positions[position.object] = position
+      @reverse_cache[to] = position unless position.object.is_a? Label
+      log.debug "Set #{position} (#{to.to_s(16)}) for #{position.class}"
       position
-    end
-
-    def self.for_at(object , at , extra)
-      case object
-      when Parfait::BinaryCode
-        CodePosition.new(object,at , extra)
-      when Arm::Instruction , Risc::Instruction
-        InstructionPosition.new(object,at , extra)
-      else
-        ObjectPosition.new(object,at)
-      end
     end
   end
 end

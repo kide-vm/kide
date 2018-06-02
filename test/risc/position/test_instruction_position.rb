@@ -3,32 +3,35 @@ require_relative "helper"
 module Risc
   module Position
     # tests that require a boot and test propagation
-    class TestPositionBasic < MiniTest::Test
+    class TestInstructionPosition < MiniTest::Test
       def setup
         Risc.machine.boot
         @binary = Parfait::BinaryCode.new(1)
-        Position.set(@binary , 0 , Parfait.object_space.get_main)
+        #Position.set(@binary , 0 , Parfait.object_space.get_main)
         @label = Risc.label("hi","ho")
       end
-      def test_set_instr
+      def test_init
+        assert InstructionPosition.init(@label , nil)
+      end
+      def pest_set_instr
         pos = Position.set( @label , 8 , @binary)
         assert_equal InstructionPosition , pos.class
       end
-      def test_label_set_int
+      def pest_label_set_int
         Position.set( @label , 8 , @binary)
         assert_equal 8 , @label.address.value
       end
-      def test_label_reset_int
+      def pest_label_reset_int
         Position.set( @label , 8 , @binary)
         Position.set( @label , 18 , @binary)
         assert_equal 18 , @label.address.value
       end
-      def test_ins_propagates
+      def pest_ins_propagates
         @label.set_next Arm::ArmMachine.b( @label)
         Position.set( @label , 8 , @binary)
         assert_equal 8 , Position.get(@label.next).at
       end
-      def test_ins_propagates_again
+      def pest_ins_propagates_again
         second = Arm::ArmMachine.b( @label)
         @label.set_next(second)
         Position.set( @label , 8 , @binary)
@@ -36,7 +39,7 @@ module Risc
         Position.set( @label , 8 , @binary)
         assert_equal 8 , Position.get(@label.next).at
       end
-      def test_label_at
+      def pest_label_at
         branch = Branch.new("b" , @label)
         Position.set(@label , 8 , @binary)
         Position.set(branch , 8 , @binary)
@@ -44,7 +47,7 @@ module Risc
         assert_equal InstructionPosition , at_4.class
         assert_equal Branch , at_4.instruction.class
       end
-      def test_label_at_reverse
+      def pest_label_at_reverse
         branch = Branch.new("b" , @label)
         Position.set(branch , 8 , @binary)
         Position.set(@label , 8 , @binary)
@@ -52,7 +55,7 @@ module Risc
         assert_equal InstructionPosition , at_4.class
         assert_equal Branch , at_4.instruction.class
       end
-      def test_reset_false_type
+      def pest_reset_false_type
         assert_raises {Position.set(@label , 0 , @binary)}
       end
     end

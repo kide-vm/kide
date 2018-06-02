@@ -5,25 +5,25 @@ module Risc
     def setup
       @machine = Risc.machine.boot
     end
-    def test_cpu_init
+    def pest_cpu_init
       @machine.translate(:interpreter)
       @machine.position_all
       assert Position.get @machine.cpu_init
     end
-    def test_cpu_label
+    def pest_cpu_label
       @machine.translate(:interpreter)
       @machine.position_all
       assert Position.get( @machine.cpu_init.label )
     end
-    def test_cpu_first_arm
+    def pest_cpu_first_arm
       @machine.translate(:arm)
       @machine.position_all
       assert Position.get( @machine.cpu_init.first )
     end
-    def test_has_arm_pos
+    def pest_has_arm_pos
       has_positions(:arm)
     end
-    def test_has_int_pos
+    def pest_has_int_pos
       has_positions(:interpreter)
     end
     def has_positions(platform)
@@ -33,10 +33,10 @@ module Risc
         assert Position.get(obj)
       end
     end
-    def test_has_arm_meth
+    def pest_has_arm_meth
       meth_positions(:arm)
     end
-    def test_has_int_meth
+    def pest_has_int_meth
       meth_positions(:interpreter)
     end
     def meth_positions(platform)

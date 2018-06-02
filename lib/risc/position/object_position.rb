@@ -7,11 +7,13 @@ module Risc
 
       attr_reader :at , :object
 
-      def initialize( object, at)
-        @at = at
+      # initialize with a given object, first parameter
+      # The object ill be the key in global position map
+      # Give an integer as the actual position, where -1
+      # which means no legal position known
+      def initialize(object , pos )
+        @at = 0
         @object = object
-        @listeners = []
-        raise "not int #{self}-#{at}" unless @at.is_a?(Integer)
       end
 
       def +(offset)
@@ -31,12 +33,16 @@ module Risc
       end
       def reset_to(pos , guaranteed_nil )
         return false if pos == at
-        trigger(:position_changed , self)
         if((at - pos).abs > 1000)
           raise "position set too far off #{pos}!=#{at} for #{object}:#{object.class}"
         end
         @at = pos
+        trigger(:position_changed , self)
         true
+      end
+      def self.init(object , at = -1)
+        position = ObjectPosition.new(object , at)
+        Position.set_to( position , at)
       end
     end
   end

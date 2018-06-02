@@ -5,44 +5,47 @@ module Risc
     # tests that do no require a boot and only test basic positioning
     class TestPositionBasic < MiniTest::Test
 
-      def test_creation_ok
+      def test_init
+        assert_equal ObjectPosition.init(self)
+      end
+      def pest_creation_ok
         assert ObjectPosition.new(self,0)
       end
-      def test_creation_fail
+      def pest_creation_fail
         assert_raises {Position.new("0")}
       end
-      def test_add
+      def pest_add
         res = ObjectPosition.new(self,0) + 5
         assert_equal 5 , res
       end
-      def test_sub
+      def pest_sub
         res = ObjectPosition.new(self,0) - 1
         assert_equal -1 , res
       end
-      def test_sub_pos
+      def pest_sub_pos
         res = ObjectPosition.new(self,0) - ObjectPosition.new(self,0)
         assert_equal 0 , res
       end
-      def test_set
+      def pest_set
         pos = Position.set(self , 5)
         assert_equal 5 , pos.at
       end
       def tet_tos
         assert_equal "0x10" , Position.set(self).to_s
       end
-      def test_reset_ok
+      def pest_reset_ok
         pos = Position.set(self , 5)
         pos = Position.set(self , 10)
         assert_equal 10 , pos.at
       end
-      def test_reset_fail
+      def pest_reset_fail
         Position.set(self , 5)
         assert_raises{Position.set(self , 10000)}
       end
-      def test_raises_set_nil
+      def pest_raises_set_nil
         assert_raises { Position.set(self,nil)}
       end
-      def test_at
+      def pest_at
         pos = Position.set(self , 5)
         pos = Position.at(5)
         assert_equal 5 , pos.at
@@ -50,21 +53,21 @@ module Risc
     end
     class TestPositionEvents < MiniTest::Test
       def setup
-        @position = ObjectPosition.new(self,0)
+        @position = ObjectPosition.new(self)
       end
-      def test_has_register
+      def pest_has_register
         assert @position.register_event(:position_changed , self)
       end
-      def test_can_unregister
+      def pest_can_unregister
         assert @position.register_event(:position_changed ,self)
         assert @position.unregister_event(:position_changed ,self)
       end
-      def test_fires
+      def pest_fires
         @position.register_event(:position_changed ,self)
         @position.trigger(:position_changed , @position)
         assert_equal @position , @trigger
       end
-      def test_no_fire_after_unregister
+      def pest_no_fire_after_unregister
         assert @position.register_event(:position_changed ,self)
         assert @position.unregister_event(:position_changed ,self)
         @position.trigger(:position_changed , @position)

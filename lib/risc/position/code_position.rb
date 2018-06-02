@@ -12,14 +12,13 @@ module Risc
 
       attr_reader :code , :method
 
-      def initialize(code, pos , method)
+      def initialize(code , method)
         super(code,pos)
         @code = code
         @method = method
         raise "Method nil" unless method
       end
-      def init(at , method)
-        raise "No no" unless method.name == @method.name
+      def set(at )
         next_pos = at + code.padded_length
         if code.next
           Position.set(code.next , next_pos, method)
@@ -32,11 +31,7 @@ module Risc
           Position.set( next_meth.cpu_instructions, next_cpu_pos , next_meth.binary)
         end
       end
-      def reset_to(pos , ignored)
-        super(pos, ignored)
-        init(pos , ignored)
-        Position.log.debug "ResetCode (#{pos.to_s(16)}) #{code}"
-      end
+
       # insert a jump to the next instruction, at the last instruction
       # thus hopping over the object header
       def set_jump(at)

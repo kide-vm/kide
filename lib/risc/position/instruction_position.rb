@@ -16,9 +16,9 @@ module Risc
     #
     class InstructionPosition < ObjectPosition
       attr_reader :instruction , :binary
-      def initialize(instruction, pos , binary)
-        raise "not set #{binary}" if pos != 0 and !binary.is_a?(Parfait::BinaryCode)
-        super(instruction,pos)
+      def initialize(instruction , binary)
+        pos = 0
+        super(instruction)
         @instruction = instruction
         @binary = binary
       end
@@ -46,6 +46,25 @@ module Risc
         super(pos , binary)
         init(pos , binary)
         Position.log.debug "ResetInstruction (#{pos.to_s(16)}) #{instruction}"
+      end
+
+      # initialize the dependency graph for instructions
+      #
+      # starting from the given instruction, create InstructionPositions
+      # for it and the whole chain
+      #
+      # Set the next created to be dependent on the previous
+      def self.init( instruction , code)
+        while(instruction)
+          position = InstructionPosition.new(instruction , code)
+          nekst = instruction.next
+          if nekst
+            listener = InstructionListener.new( nekst )
+            position.register_event(:position_changed , listener)
+          end
+          instruction = nekst
+        end
+        position
       end
     end
   end
