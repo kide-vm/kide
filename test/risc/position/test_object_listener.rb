@@ -7,8 +7,8 @@ module Risc
       def setup
         @object = Dummy.new
         @dependent = Dummy.new
-        @pos = Position.set(@object,0)
-        Position.set(@dependent,0)
+        @pos = ObjectPosition.new(@object,0)
+        ObjectPosition.new(@dependent,0)
         @listener = ObjectListener.new(@dependent)
       end
       def test_register
@@ -16,13 +16,13 @@ module Risc
       end
       def test_no_fire
         @pos.register_event(:position_changed , self)
-        @pos = Position.set(@object,0)
-        assert_equal 0 , Position.get(@dependent).at
+        Position.set_to(@pos,0)
+        assert_equal 0 , Position.get(@object).at
       end
       def test_reset
         @pos.register_event(:position_changed , @listener)
-        @pos = Position.set(@object,4)
-        assert_equal 4 , Position.get(@dependent).at
+        Position.set_to(@pos,4)
+        assert_equal 0 , Position.at(4).at
       end
     end
   end

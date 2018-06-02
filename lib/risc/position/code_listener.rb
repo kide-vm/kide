@@ -8,7 +8,7 @@ module Risc
     # At the end of the list the propagation spills into the next methods
     # binary and so on
     #
-    class CodePosition < ObjectPosition
+    class CodeListener
 
       attr_reader :code , :method
 
@@ -60,6 +60,18 @@ module Risc
         return nil unless nekst
         return nekst if nekst.methods
         return next_type(nekst)
+      end
+      def self.init( code , at = -1)
+        while code
+          position = ObjectPosition.new(code , at)
+          Position.set_to(position , at)
+          if code.next
+            listener = ObjectListener.new(code.next)
+            position.register_event(:position_changed , listener)
+          end
+          at += code.padded_length unless at < 0
+          code = code.next
+        end
       end
     end
   end
