@@ -117,14 +117,15 @@ module Risc
     #
     # start at code_start.
     def position_code(code_start)
-      prev = nil
+      prev_code = nil
       Parfait.object_space.types.values.each do |type|
         next unless type.methods
         type.methods.each_method do |method|
-          last = Position::CodeListener.init(method.binary , code_start)
-          last.register_event(:position_changed , prev.object) if prev
-          prev = last
-          code_start = last.next_slot
+          last_code = Position::CodeListener.init(method.binary , code_start)
+          Position::InstructionListener.init(method.cpu_instructions, method.binary)
+          last_code.register_event(:position_changed , prev_code.object) if prev_code
+          prev_code = last_code
+          code_start = last_code.next_slot
         end
       end
       #Position.set( first_method.cpu_instructions, code_start + Parfait::BinaryCode.byte_offset , first_method.binary)

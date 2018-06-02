@@ -14,11 +14,10 @@ module Risc
     # When propagating positions we have to see that the next position assembles into
     # the same BinaryCode, or else move it and the code along
     #
-    class InstructionPosition < ObjectPosition
+    class InstructionListener
       attr_reader :instruction , :binary
       def initialize(instruction , binary)
         pos = 0
-        super(instruction)
         @instruction = instruction
         @binary = binary
       end
@@ -50,21 +49,26 @@ module Risc
 
       # initialize the dependency graph for instructions
       #
-      # starting from the given instruction, create InstructionPositions
-      # for it and the whole chain
+      # starting from the given instruction, create ObjectPositions
+      # for it and the whole chain. Then attach InstructionListeners
+      # for dependency tracking. All positions are initialized with -1
+      # and so setting the first will trigger a chain reaction
       #
-      # Set the next created to be dependent on the previous
-      def self.init( instruction , code)
+      # return the position for the first instruction which may be used to
+      # set all positions in the chain
+      def self.init( instruction , code )
+        first = nil
         while(instruction)
-          position = InstructionPosition.new(instruction , code)
+          position = ObjectPosition.new(instruction , -1)
+          first = position unless first
           nekst = instruction.next
           if nekst
-            listener = InstructionListener.new( nekst )
+            listener = InstructionListener.new( nekst , code )
             position.register_event(:position_changed , listener)
           end
           instruction = nekst
         end
-        position
+        first
       end
     end
   end

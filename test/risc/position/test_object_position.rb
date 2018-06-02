@@ -3,7 +3,7 @@ require_relative "helper"
 module Risc
   module Position
     # tests that do no require a boot and only test basic positioning
-    class TestPositionBasic < MiniTest::Test
+    class TestObjectPosition < MiniTest::Test
 
       def test_init
         assert ObjectPosition.init(self , -1)
@@ -12,6 +12,9 @@ module Risc
         mov = Arm::ArmMachine.mov(:r1 , :r1)
         position = ObjectPosition.new(mov , 0)
         assert_equal 4, position.next_slot
+      end
+      def test_has_get_code
+        assert_nil ObjectPosition.init(self , -1).get_code
       end
       def pest_creation_ok
         assert ObjectPosition.new(self,0)

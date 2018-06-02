@@ -12,10 +12,17 @@ module Risc
       # Give an integer as the actual position, where -1
       # which means no legal position known
       def initialize(object , pos )
-        @at = 0
+        @at = pos
         @object = object
+        Position.set_to(self , pos)
       end
 
+      #look for InstructionListener and return its code if found
+      def get_code
+        listener = event_table.find{|one| one.class == InstructionListener}
+        return nil unless listener
+        listener.code
+      end
       def +(offset)
         offset = offset.at if offset.is_a?(ObjectPosition)
         @at + offset

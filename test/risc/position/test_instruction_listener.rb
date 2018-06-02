@@ -3,7 +3,7 @@ require_relative "helper"
 module Risc
   module Position
     # tests that require a boot and test propagation
-    class TestInstructionPosition < MiniTest::Test
+    class TestInstructionListener < MiniTest::Test
       def setup
         Risc.machine.boot
         @binary = Parfait::BinaryCode.new(1)
@@ -11,7 +11,7 @@ module Risc
         @label = Risc.label("hi","ho")
       end
       def test_init
-        assert InstructionPosition.init(@label , nil)
+        assert InstructionListener.init(@label , @binary)
       end
       def pest_set_instr
         pos = Position.set( @label , 8 , @binary)

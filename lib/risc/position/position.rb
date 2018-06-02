@@ -57,7 +57,7 @@ module Risc
     end
 
     def self.set_to( position , to)
-      postest = Position.positions[position.object]
+      postest = Position.positions[position.object] unless to < 0 
       raise "Mismatch #{position}" if postest and postest != position
       @reverse_cache.delete(position.at) unless position.object.is_a? Label
       testing = self.at( position.at ) if position.at >= 0
@@ -73,5 +73,5 @@ module Risc
 end
 require_relative "object_position"
 require_relative "object_listener"
-require_relative "instruction_position"
+require_relative "instruction_listener"
 require_relative "code_listener"
