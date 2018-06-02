@@ -48,7 +48,7 @@ module Risc
         Position.set_to(position , at)
         if code.next
           listener = PositionListener.new(code.next)
-          position.register_event(:position_changed , listener)
+          position.position_listener( listener)
         end
         at += code.padded_length unless at < 0
         code = code.next

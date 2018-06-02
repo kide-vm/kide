@@ -34,6 +34,20 @@ module Risc
       Position.set_to(self , pos)
     end
 
+    # utility to register events of type :position_changed
+    # can give an object and a PositionListener will be created for it
+    def position_listener(listener)
+      unless listener.class.name.include?("Listener")
+        listener = PositionListener.new(listener)
+      end
+      register_event(:position_changed , listener)
+    end
+
+    # utility to get all registered listeners to the :position_changed event
+    # returns an array
+    def position_listeners
+      event_table[:position_changed]
+    end
     #look for InstructionListener and return its code if found
     def get_code
       listener = event_table.find{|one| one.class == InstructionListener}

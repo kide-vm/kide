@@ -31,7 +31,7 @@ module Risc
         count += 1
         addr = addr.next_integer
       end
-      assert_equal 5, count  
+      assert_equal 5, count
     end
   end
   class TestMachineInit < MiniTest::Test
@@ -48,10 +48,10 @@ module Risc
       assert_equal "0x5ed4" ,  Position.get(@machine.cpu_init.first).to_s
     end
     def test_cpu_bin
-      assert_equal "0x5ecc" ,  Position.get(Position.get(@machine.cpu_init.first).binary).to_s
+      assert_equal "0x5ecc" ,  Position.get(@machine.cpu_init).to_s
     end
     def test_cpu_label
-      assert_equal InstructionPosition ,  Position.get(@machine.cpu_init.first).class
+      assert_equal Position ,  Position.get(@machine.cpu_init.first).class
     end
     def test_first_binary_jump
       bin = Parfait.object_space.get_init.binary

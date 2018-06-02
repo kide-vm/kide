@@ -15,9 +15,18 @@ module Risc
     def test_has_get_code
       assert_nil Position.new(self , -1).get_code
     end
-    def pest_creation_ok
-      assert Position.new(self,0)
+    def test_has_listeners_helper
+      assert_equal Array , Position.new(self,-1).position_listeners.class
     end
+    def test_listeners_empty
+      assert Position.new(self,-1).position_listeners.empty?
+    end
+    def test_has_listener_helper
+      pos = Position.new(self,-1)
+      pos.position_listener( self )
+      assert_equal 1 , pos.position_listeners.length
+    end
+
     def pest_creation_fail
       assert_raises {Position.new("0")}
     end
@@ -63,20 +72,22 @@ module Risc
       @position = Position.new(self)
     end
     def pest_has_register
-      assert @position.register_event(:position_changed , self)
+      assert @position.position_listener( self)
     end
     def pest_can_unregister
-      assert @position.register_event(:position_changed ,self)
-      assert @position.unregister_event(:position_changed ,self)
+      listener = PositionListener.new(self)
+      assert @position.position_listener(listener)
+      assert @position.unregister_event(:position_changed ,listener)
     end
     def pest_fires
-      @position.register_event(:position_changed ,self)
+      @position.position_listener(self)
       @position.trigger(:position_changed , @position)
       assert_equal @position , @trigger
     end
     def pest_no_fire_after_unregister
-      assert @position.register_event(:position_changed ,self)
-      assert @position.unregister_event(:position_changed ,self)
+      listener = PositionListener.new(self)
+      assert @position.position_listener( listener)
+      assert @position.unregister_event(:position_changed ,listener)
       @position.trigger(:position_changed , @position)
       assert_nil @trigger
     end

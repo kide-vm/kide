@@ -62,7 +62,7 @@ module Risc
         nekst = instruction.next
         if nekst
           listener = InstructionListener.new( nekst , code )
-          position.register_event(:position_changed , listener)
+          position.position_listener(listener)
         end
         instruction = nekst
       end
