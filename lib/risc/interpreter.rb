@@ -49,12 +49,12 @@ module Risc
       raise "Not int #{pos}" unless pos.is_a? Numeric
       position = Position.at(pos)
       raise "No position #{pos.to_s(16)}" unless position
-      if position.is_a?(Position::CodePosition)
+      if position.is_a?(CodePosition)
         raise "Setting Code #{clock}-#{position}, #{position.method}"
         #return set_pc(position.at + Parfait::BinaryCode.byte_offset)
       end
       log.debug "Setting Position #{clock}-#{position}, #{position.binary}"
-      raise "not instruction position #{position}-#{position.class}-#{position.object.class}" unless position.is_a?(Position::InstructionPosition)
+      raise "not instruction position #{position}-#{position.class}-#{position.object.class}" unless position.is_a?(InstructionPosition)
       set_instruction( position.instruction )
       @clock += 1
       @pc = position.at

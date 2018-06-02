@@ -11,7 +11,7 @@ module Risc
     end
     def test_set_bin
       pos = Position.set( @binary , 0 , @method)
-      assert_equal Position::CodePosition , pos.class
+      assert_equal CodePosition , pos.class
     end
     def test_type
       pos = Position.set( @binary , 0 , @method)

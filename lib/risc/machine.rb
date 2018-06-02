@@ -85,7 +85,7 @@ module Risc
     def position_all
       raise "Not translated " unless @translated
       #need the initial jump at 0 and then functions
-      Position::ObjectPosition.init(cpu_init , -1)
+      Position.init(cpu_init , -1)
       code_start = position_objects( @platform.padding )
       # and then everything code
       position_code(code_start)
@@ -101,8 +101,8 @@ module Risc
       sorted.each do | objekt|
         next if objekt.is_a?( Parfait::BinaryCode) or objekt.is_a?( Risc::Label )
         before = at
-        position = Position::ObjectPosition.init(objekt,at)
-        previous.register_event(:position_changed , Position::ObjectListener.new(objekt)) if previous
+        position = Position.init(objekt,at)
+        previous.register_event(:position_changed , PositionListener.new(objekt)) if previous
         previous = position
         at += objekt.padded_length
         log.debug "Object #{objekt.class}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
@@ -121,8 +121,8 @@ module Risc
       Parfait.object_space.types.values.each do |type|
         next unless type.methods
         type.methods.each_method do |method|
-          last_code = Position::CodeListener.init(method.binary , code_start)
-          Position::InstructionListener.init(method.cpu_instructions, method.binary)
+          last_code = CodeListener.init(method.binary , code_start)
+          InstructionListener.init(method.cpu_instructions, method.binary)
           last_code.register_event(:position_changed , prev_code.object) if prev_code
           prev_code = last_code
           code_start = last_code.next_slot

@@ -25,7 +25,7 @@ module Arm
       super
       my_pos = Risc::Position.get(self)
       # set my position to set next according to rules
-      Risc::Position::InstructionListener.init(instruction , my_pos.get_code)
+      Risc::InstructionListener.init(instruction , my_pos.get_code)
     end
   end
 end

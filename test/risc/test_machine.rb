@@ -51,7 +51,7 @@ module Risc
       assert_equal "0x5ecc" ,  Position.get(Position.get(@machine.cpu_init.first).binary).to_s
     end
     def test_cpu_label
-      assert_equal Position::InstructionPosition ,  Position.get(@machine.cpu_init.first).class
+      assert_equal InstructionPosition ,  Position.get(@machine.cpu_init.first).class
     end
     def test_first_binary_jump
       bin = Parfait.object_space.get_init.binary

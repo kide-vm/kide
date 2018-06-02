@@ -42,7 +42,7 @@ module Parfait
       if Risc::Position.set?(self)
         Risc::Position.log.debug "extending one in #{self}"
         my_pos = Risc::Position.get(self)
-        Risc::Position.reset(my_pos , my_pos.at , my_pos.method)
+        Risc::CodeListener.init( @next , my_pos + self.padded_length)
       end
     end
 
