@@ -72,6 +72,7 @@ module Risc
           at += code.padded_length unless at < 0
           code = code.next
         end
+        position
       end
     end
   end

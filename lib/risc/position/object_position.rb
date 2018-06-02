@@ -40,6 +40,10 @@ module Risc
         trigger(:position_changed , self)
         true
       end
+      def next_slot
+        return -1 if at < 0
+        at + object.byte_length
+      end
       def self.init(object , at = -1)
         position = ObjectPosition.new(object , at)
         Position.set_to( position , at)

@@ -12,8 +12,12 @@ module Risc
       end
 
       def test_has_init
-        CodeListener.init(@binary)
-        assert Position.get(@binary)
+        pos = CodeListener.init(@binary)
+        assert_equal pos, Position.get(@binary)
+      end
+      def test_init_returns_position
+
+        assert_equal Position::ObjectPosition , CodeListener.init(@binary).class
       end
       def test_init_listner
         @binary.extend_one

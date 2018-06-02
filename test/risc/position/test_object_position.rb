@@ -6,7 +6,12 @@ module Risc
     class TestPositionBasic < MiniTest::Test
 
       def test_init
-        assert_equal ObjectPosition.init(self)
+        assert ObjectPosition.init(self , -1)
+      end
+      def test_next_slot
+        mov = Arm::ArmMachine.mov(:r1 , :r1)
+        position = ObjectPosition.new(mov , 0)
+        assert_equal 4, position.next_slot
       end
       def pest_creation_ok
         assert ObjectPosition.new(self,0)

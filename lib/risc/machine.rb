@@ -117,12 +117,19 @@ module Risc
     #
     # start at code_start.
     def position_code(code_start)
-      first_method = Parfait.object_space.types.values.first.methods
-      before = code_start
-      Position.set( first_method.binary , code_start , first_method)
-      Position.set( first_method.cpu_instructions, code_start + Parfait::BinaryCode.byte_offset , first_method.binary)
-      log.debug "Method #{first_method.name}:#{before.to_s(16)} len: #{(code_start - before).to_s(16)}"
-      log.debug "Instructions #{first_method.cpu_instructions.object_id.to_s(16)}:#{(before+Parfait::BinaryCode.byte_offset).to_s(16)}"
+      prev = nil
+      Parfait.object_space.types.values.each do |type|
+        next unless type.methods
+        type.methods.each_method do |method|
+          last = Position::CodeListener.init(method.binary , code_start)
+          last.register_event(:position_changed , prev.object) if prev
+          prev = last
+          code_start = last.next_slot
+        end
+      end
+      #Position.set( first_method.cpu_instructions, code_start + Parfait::BinaryCode.byte_offset , first_method.binary)
+      #log.debug "Method #{first_method.name}:#{before.to_s(16)} len: #{(code_start - before).to_s(16)}"
+      #log.debug "Instructions #{first_method.cpu_instructions.object_id.to_s(16)}:#{(before+Parfait::BinaryCode.byte_offset).to_s(16)}"
     end
 
     # Create Binary code for all methods and the initial jump
