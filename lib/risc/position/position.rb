@@ -57,10 +57,10 @@ module Risc
     end
 
     def set(int)
-      same = int == self.at
+      return int if int == self.at
       Position.set_to(self , int)
       @at = int
-      trigger(:position_changed , self ) unless same
+      trigger(:position_changed , self )
       int
     end
 
@@ -79,6 +79,7 @@ module Risc
 
     def next_slot
       return -1 if at < 0
+      self.log.debug "Next Slot @#{at.to_s(16)} for #{object.class} == #{(at + object.byte_length).to_s(16)}"
       at + object.byte_length
     end
 
@@ -103,6 +104,8 @@ module Risc
       self.positions.has_key?(object)
     end
 
+    # get a position from the cache (object -> position)
+    # unless it's a label, then get the position of it's next
     def self.get(object)
       pos = self.positions[object]
       if pos == nil
@@ -116,17 +119,21 @@ module Risc
       pos
     end
 
+    # populate the position caches (forward and revese) with the given position
+    # forward caches object -> position
+    # reverse caches position.at > position
+    # Labels do not participatein reverse cache
     def self.set_to( position , to)
       postest = Position.positions[position.object] unless to < 0
       raise "Mismatch #{position}" if postest and postest != position
-      @reverse_cache.delete(position.at) unless position.object.is_a? Label
+      @reverse_cache.delete(position.at) unless position.object.is_a?(Label)
       testing = self.at( position.at ) unless position.at < 0
-      if testing and testing.class != position.class
+      if testing and testing.object.class != position.object.class
         raise "Mismatch (at #{pos.to_s(16)}) was:#{position} #{position.class} #{position.object} , should #{testing}#{testing.class}"
       end
       self.positions[position.object] = position
-      @reverse_cache[to] = position unless position.object.is_a? Label
-      log.debug "Set #{position} (#{to.to_s(16)}) for #{position.class}"
+      @reverse_cache[to] = position unless position.object.is_a?(Label)
+      log.debug "Set #{position} (#{to.to_s(16)}) for #{position.object.class} #{position.object.object_id.to_s(16)}"
       position
     end
   end

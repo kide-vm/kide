@@ -26,6 +26,9 @@ module Parfait
     def test_data_length
       assert_equal 13 , @code.data_length
     end
+    def test_padded_length
+      assert_equal 16*4 , @code.padded_length
+    end
     def test_byte_length
       assert_equal 13*4 , @code.byte_length
     end

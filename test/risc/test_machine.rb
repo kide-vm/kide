@@ -45,7 +45,7 @@ module Risc
       assert_equal 0 ,  Position.get(@machine.cpu_init).at
     end
     def test_cpu_at
-      assert_equal "0x5ed4" ,  Position.get(@machine.cpu_init.first).to_s
+      assert_equal "0x5e08" ,  Position.get(@machine.cpu_init.first).to_s
     end
     def pest_cpu_bin
       assert_equal "0x5ecc" ,  Position.get(@machine.cpu_init).to_s

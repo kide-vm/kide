@@ -64,7 +64,7 @@ module Risc
   class TestPositionEvents < MiniTest::Test
     def setup
       Position.clear_positions
-      @instruciton = DummyInstruction.new
+      @instruction = DummyInstruction.new
       @position = Position.new(@instruction , 0)
       @listener = PositionListener.new( @instruction )
     end

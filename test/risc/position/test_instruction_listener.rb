@@ -6,40 +6,40 @@ module Risc
     def setup
       Risc.machine.boot
       @binary = Parfait::BinaryCode.new(1)
-      #Position.set(@binary , 0 , Parfait.object_space.get_main)
-      @label = DummyInstruction.new
+      @instruction = DummyInstruction.new(DummyInstruction.new)
+      @position = InstructionListener.init(@instruction , @binary)
     end
     def test_init
-      assert InstructionListener.init(@label , @binary)
+      assert InstructionListener.init(@instruction , @binary)
+    end
+    def test_pos_not_set
+      assert_equal (-1),  @position.at
     end
     def test_init_fail
-      assert_raises {InstructionListener.init(@label , nil)}
+      assert_raises {InstructionListener.init(@instruction , nil)}
     end
-    def pest_set_instr
-      pos = Position.set( @label , 8 , @binary)
-      assert_equal InstructionPosition , pos.class
+    def test_init_fail_nil
+      assert_raises {InstructionListener.init(nil , @binary)}
     end
-    def pest_label_set_int
-      Position.set( @label , 8 , @binary)
-      assert_equal 8 , @label.address.value
+    def test_listener_method
+      listener = InstructionListener.new( @instruction , @binary )
+      listener.position_changed(@position)
     end
-    def pest_label_reset_int
-      Position.set( @label , 8 , @binary)
-      Position.set( @label , 18 , @binary)
-      assert_equal 18 , @label.address.value
+    def test_ins_propagates
+      assert_equal (-1) , Position.get(@instruction.next).at
+      @position.set( 8 )
+      assert_equal 12 , Position.get(@instruction.next).at
     end
-    def pest_ins_propagates
-      @label.set_next Arm::ArmMachine.b( @label)
-      Position.set( @label , 8 , @binary)
-      assert_equal 8 , Position.get(@label.next).at
+    def test_ins_propagates_again
+      test_ins_propagates
+      @position.set( 12 )
+      assert_equal 16 , Position.get(@instruction.next).at
     end
-    def pest_ins_propagates_again
-      second = Arm::ArmMachine.b( @label)
-      @label.set_next(second)
-      Position.set( @label , 8 , @binary)
-      Position.set(second , 12 , @binary)
-      Position.set( @label , 8 , @binary)
-      assert_equal 8 , Position.get(@label.next).at
+    def test_label_has_no_length
+      label = Label.new("Hi","Ho" , FakeAddress.new(5) , @instruction)
+      InstructionListener.init(label , @binary)
+      Position.get(label).set(10)
+      assert_equal 10 , Position.get(@instruction).at
     end
     def pest_label_at
       branch = Branch.new("b" , @label)

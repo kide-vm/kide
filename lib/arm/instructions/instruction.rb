@@ -24,8 +24,8 @@ module Arm
     def insert(instruction)
       super
       my_pos = Risc::Position.get(self)
-      # set my position to set next according to rules
-      Risc::InstructionListener.init(instruction , my_pos.get_code)
+      listener = Risc::InstructionListener.new( instruction , my_pos.get_code )
+      my_pos.position_listener(listener)
     end
   end
 end

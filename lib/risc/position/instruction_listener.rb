@@ -15,11 +15,10 @@ module Risc
   class InstructionListener
     attr_reader :instruction , :binary
     def initialize(instruction , binary)
-      pos = 0
       @instruction = instruction
       @binary = binary
     end
-    def init(at, binary)
+    def old_code(at, binary)
       @binary = binary
       instruction.address.set_value(at) if instruction.is_a?(Label)
       return if at == 0 and binary.nil?
@@ -39,6 +38,10 @@ module Risc
       Position.set(@instruction.next, nekst , binary)
     end
 
+    def position_changed(position)
+      my_pos = Position.get(@instruction)
+      my_pos.set(position.at + position.object.byte_length)
+    end
     # initialize the dependency graph for instructions
     #
     # starting from the given instruction, create Positions
@@ -50,6 +53,7 @@ module Risc
     # set all positions in the chain
     def self.init( instruction , code )
       raise "Not Binary Code #{code.class}" unless code.is_a?(Parfait::BinaryCode)
+      raise "Must init with instruction, not nil" unless instruction
       first = nil
       while(instruction)
         position = Position.new(instruction , -1)
