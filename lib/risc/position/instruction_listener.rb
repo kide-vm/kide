@@ -39,9 +39,33 @@ module Risc
     end
 
     def position_changed(position)
+      fix_binary
       my_pos = Position.get(@instruction)
       my_pos.set(position.at + position.object.byte_length)
     end
+
+    # check that the binary we use is the one where the current position falls
+    # if not move up and register/unregister (soon)
+    def fix_binary
+      return if Position.get(@instruction).at == -1
+      count = 0
+      org_pos = Position.get(@binary)
+      return if org_pos.at == -1
+      while( !pos_in_binary)
+        @binary = @binary.ensure_next
+        count += 1
+        raise "Positions messed #{Position.get(@instruction)}:#{org_pos}"
+      end
+    end
+
+    def pos_in_binary
+      me = Position.get(@instruction)
+      bin = Position.get(@binary)
+      return false if me < bin
+      return false if me > (bin + @binary.padded_length)
+      return true
+    end
+
     # initialize the dependency graph for instructions
     #
     # starting from the given instruction, create Positions

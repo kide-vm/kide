@@ -46,6 +46,11 @@ module Parfait
       end
     end
 
+    def ensure_next
+      extend_one unless @next
+      @next
+    end
+
     def each_block( &block )
       block.call( self )
       @next.each_block( &block ) if @next

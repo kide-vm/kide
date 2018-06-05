@@ -73,6 +73,17 @@ module Risc
       offset = offset.at if offset.is_a?(Position)
       @at - offset
     end
+
+    def <(right)
+      right = right.at if right.is_a?(Position)
+      @at < right
+    end
+
+    def >(right)
+      right = right.at if right.is_a?(Position)
+      @at > right
+    end
+
     def to_s
       "0x#{@at.to_s(16)}"
     end
@@ -129,7 +140,7 @@ module Risc
       @reverse_cache.delete(position.at) unless position.object.is_a?(Label)
       testing = self.at( position.at ) unless position.at < 0
       if testing and testing.object.class != position.object.class
-        raise "Mismatch (at #{pos.to_s(16)}) was:#{position} #{position.class} #{position.object} , should #{testing}#{testing.class}"
+        raise "Mismatch (at #{to.to_s(16)}) was:#{position} #{position.class} #{position.object} , should #{testing}#{testing.class}"
       end
       self.positions[position.object] = position
       @reverse_cache[to] = position unless position.object.is_a?(Label)

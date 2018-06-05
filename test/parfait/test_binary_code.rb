@@ -23,6 +23,10 @@ module Parfait
     def test_next_nil
       assert_nil @code.next
     end
+    def test_ensure_next
+      assert BinaryCode , @code.ensure_next.class
+      assert @code.next
+    end
     def test_data_length
       assert_equal 13 , @code.data_length
     end

@@ -90,16 +90,15 @@ module Arm
     end
 
     def label( pos = 0x12 + 8)
-      addr = Risc::Position.new(FakeAddress.new(2) , 2)
-      l  = Risc::Label.new("some" , "Label" , addr.object)
-      Risc::Position.new(l , 0x22 + 8)
+      label  = Risc::Label.new("some" , "Label" , FakeAddress.new(pos))
+      Risc::Position.new(label , pos)
       #Risc::Position.set(l , pos , @binary)
-      l
+      label
     end
 
     def test_move_object
       code = @machine.add( :r1 , label)
-      Risc::Position.new(code,0)
+      Risc::Position.new(code,12)
       assert_code code , :add , [0x22,0x10,0x9f,0xe2] #e2 9f 10 22
     end
 

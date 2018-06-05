@@ -49,6 +49,9 @@ module Risc
       res = @pos - Position.new(@pos,4)
       assert_equal 1 , res
     end
+    def test_lg
+      assert @pos > Position.new(@pos,4)
+    end
     def test_tos
       assert_equal "0x5" , @pos.to_s
     end
