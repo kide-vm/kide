@@ -41,24 +41,13 @@ module Risc
       Position.get(label).set(10)
       assert_equal 10 , Position.get(@instruction).at
     end
-    def pest_label_at
+    def test_label_at
       branch = Branch.new("b" , @label)
-      Position.set(@label , 8 , @binary)
-      Position.set(branch , 8 , @binary)
-      at_4 = Position.at(8)
-      assert_equal InstructionPosition , at_4.class
-      assert_equal Branch , at_4.instruction.class
-    end
-    def pest_label_at_reverse
-      branch = Branch.new("b" , @label)
-      Position.set(branch , 8 , @binary)
-      Position.set(@label , 8 , @binary)
-      at_4 = Position.at(8)
-      assert_equal InstructionPosition , at_4.class
-      assert_equal Branch , at_4.instruction.class
-    end
-    def pest_reset_false_type
-      assert_raises {Position.set(@label , 0 , @binary)}
+      Position.new(@label , 8 )
+      Position.new(branch , 8 )
+      at_8 = Position.at(8)
+      assert_equal Position , at_8.class
+      assert_equal Branch , at_8.object.class
     end
   end
 end

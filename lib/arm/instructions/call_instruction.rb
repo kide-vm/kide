@@ -52,7 +52,8 @@ module Arm
         # But, for methods, this happens to be the size of the object header,
         # so there it balances out, but not blocks
         # have to use the code, not the method object for methods
-        arg = Risc::Position.get(@first) - Risc::Position.get(self)
+        f_pos = Risc::Position.get(@first)
+        arg =  f_pos - Risc::Position.get(self)
       else
         arg = @first
       end

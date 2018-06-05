@@ -24,7 +24,7 @@ module Risc
       me = previous.at + add
       object_pos = Position.get(@object)
       return if me == object_pos.at
-      Position.set(@object , me)
+      Position.set_to(@object , me)
     end
   end
 end
