@@ -18,35 +18,26 @@ module Risc
       @instruction = instruction
       @binary = binary
     end
-    def old_code(at, binary)
-      @binary = binary
-      instruction.address.set_value(at) if instruction.is_a?(Label)
-      return if at == 0 and binary.nil?
-      raise "faux pas" if at < Position.get(binary).at
-      return unless @instruction.next
-      nekst = at + @instruction.byte_length
-      diff = nekst - Position.get(@binary).at
-      Position.log.debug "Diff: #{diff.to_s(16)} , next #{nekst.to_s(16)} , binary #{Position.get(@binary)}"
-      raise "Invalid position #{diff.to_s(16)} , next #{nekst.to_s(16)} #{self}" if diff < 8
-      if( (diff % (binary.padded_length - @instruction.byte_length)) == 0 )
-        binary.extend_one unless binary.next
-        binary = binary.next
-        raise "end of line " unless binary
-        nekst = Position.get(binary).at + Parfait::BinaryCode.byte_offset
-        Position.log.debug "Jump to: #{nekst.to_s(16)}"
-      end
-      Position.set(@instruction.next, nekst , binary)
-    end
 
     def position_changed(position)
       fix_binary
       my_pos = Position.get(@instruction)
-      my_pos.set(position.at + position.object.byte_length)
+      next_pos = position.at + position.object.byte_length
+      diff = next_pos - Position.get(@binary).at
+      Position.log.debug "Diff: #{diff.to_s(16)} , next #{next_pos.to_s(16)} , binary #{Position.get(@binary)}"
+      raise "Invalid position #{diff.to_s(16)} , next #{next_pos.to_s(16)} #{position}" if diff < 8
+      if( (diff % (@binary.padded_length - @instruction.byte_length)) == 0 )
+        @binary = @binary.ensure_next
+        next_pos = Position.get(@binary).at + Parfait::BinaryCode.byte_offset
+        Position.log.debug "Jump to: #{next_pos.to_s(16)}"
+      end
+      my_pos.set(next_pos)
     end
 
     # check that the binary we use is the one where the current position falls
     # if not move up and register/unregister (soon)
     def fix_binary
+      raise "Binary has no position (-1)" if Position.get(@binary).at == -1
       return if Position.get(@instruction).at == -1
       count = 0
       org_pos = Position.get(@binary)

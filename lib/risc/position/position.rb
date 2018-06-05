@@ -56,6 +56,10 @@ module Risc
       listener.code
     end
 
+    def valid?
+      @at != -1
+    end
+
     def set(int)
       return int if int == self.at
       Position.set_to(self , int)

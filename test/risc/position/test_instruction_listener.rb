@@ -23,6 +23,7 @@ module Risc
       assert_raises {InstructionListener.init(nil , @binary)}
     end
     def test_listener_method
+      @position.set(8)
       listener = InstructionListener.new( @instruction , @binary )
       listener.position_changed(@position)
     end

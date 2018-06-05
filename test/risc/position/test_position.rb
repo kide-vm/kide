@@ -10,6 +10,9 @@ module Risc
     def test_new
       assert @pos
     end
+    def test_invalid
+      assert !@pos.valid?
+    end
     def test_next_slot
       mov = Arm::ArmMachine.mov(:r1 , :r1)
       position = Position.new(mov , 0)
