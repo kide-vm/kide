@@ -14,5 +14,10 @@ module Risc
     def initialize(nekst = nil)
       @next = nekst
     end
+    def insert(instruction)
+      ret = super
+      Position.get(self).trigger_inserted if Position.set?(self)
+      ret
+    end
   end
 end

@@ -22,10 +22,9 @@ module Arm
     end
 
     def insert(instruction)
-      super
-      my_pos = Risc::Position.get(self)
-      listener = Risc::InstructionListener.new( instruction , my_pos.get_code )
-      my_pos.position_listener(listener)
+      ret = super
+      Risc::Position.get(self).trigger_inserted if Risc::Position.set?(self)
+      ret
     end
   end
 end

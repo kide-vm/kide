@@ -19,6 +19,10 @@ module Risc
       @binary = binary
     end
 
+    # if the position of the instruction before us changes, we need to
+    # adjust the position of this instruction accordingly
+    # Taking into account that BinaryCodes only take 13 instructions,
+    # meaning that chain may have to be extended
     def position_changed(position)
       fix_binary
       my_pos = Position.get(@instruction)
@@ -32,6 +36,32 @@ module Risc
         Position.log.debug "Jump to: #{next_pos.to_s(16)}"
       end
       my_pos.set(next_pos)
+    end
+
+    # When this is called, only the actual insert has happened (keeping the
+    # position logic out of the instruction assembly).
+    #
+    # This event happens at the listener that was dependent on the position
+    # before the insert, ie:
+    # position : the arg is the first instruction in the chain where insert happened
+    # position.object.next : is the newly inserted instruction we need to setup
+    # @instruction : previously dependent on position, now on .next's position
+    #
+    # So we need to :
+    # - move the listener of @instruction to listen to the inserted instruction
+    # - add a listener for the new instruction (to listen to the arg)
+    # - set the new position (moving the chain along)
+    def position_inserted(position)
+      inserted = position.object.next
+      raise "uups" unless inserted ## TODO: remove
+      position.remove_position_listener(InstructionListener)
+      new_pos = Position.get(inserted)
+      new_pos.position_listener(old_listener)
+
+      my_pos = Position.get(@instruction)
+      listen = InstructionListener.new(position.object , @binary)
+      my_pos.position_listener(listen)
+
     end
 
     # check that the binary we use is the one where the current position falls

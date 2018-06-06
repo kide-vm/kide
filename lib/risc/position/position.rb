@@ -43,6 +43,11 @@ module Risc
       register_event(:position_changed , listener)
     end
 
+    # When instruction get inserted, we have to move listeners around, remove given
+    def remove_position_listener(list)
+      unregister_event(:position_changed, list)
+    end
+
     # utility to get all registered listeners to the :position_changed event
     # returns an array
     def position_listeners
@@ -66,6 +71,10 @@ module Risc
       @at = int
       trigger(:position_changed , self )
       int
+    end
+
+    def trigger_inserted
+      event_table[:position_changed].each { |handler| handler.position_inserted( self) }
     end
 
     def +(offset)

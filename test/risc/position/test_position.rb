@@ -24,6 +24,9 @@ module Risc
     def test_has_listeners_helper
       assert_equal Array , @pos.position_listeners.class
     end
+    def test_has_trigger_inserted
+      assert_equal [] , @pos.trigger_inserted
+    end
     def test_listeners_empty
       assert @pos.position_listeners.empty?
     end
@@ -80,7 +83,7 @@ module Risc
     def test_can_unregister
       listener = PositionListener.new(self)
       assert @position.position_listener(listener)
-      assert @position.unregister_event(:position_changed ,listener)
+      assert @position.remove_position_listener(listener)
     end
     def test_fires
       @object = @instruction
@@ -92,11 +95,20 @@ module Risc
       @object = @instruction
       Position.new(self, 10)
       assert @position.register_event(:position_changed , self)
-      assert @position.unregister_event(:position_changed ,self)
+      assert @position.remove_position_listener(self)
       @position.trigger(:position_changed , @position)
       assert_nil @trigger
     end
+    def test_can_trigger_inserted
+      @object = @instruction
+      @position.register_event(:position_changed , self)
+      @position.trigger_inserted
+      assert_equal @position , @trigger
+    end
     def position_changed(pos)
+      @trigger = pos
+    end
+    def position_inserted(pos)
       @trigger = pos
     end
   end

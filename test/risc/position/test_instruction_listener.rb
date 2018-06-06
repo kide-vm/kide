@@ -53,24 +53,4 @@ module Risc
       assert_equal Branch , at_8.object.class
     end
   end
-  class TestInstructionListenerBig < MiniTest::Test
-    def setup
-      Risc.machine.boot
-      @binary = Parfait::BinaryCode.new(1)
-      @bin_pos = Position.new(@binary,0)
-      @instruction = DummyInstruction.new
-      13.times {@instruction.last.insert(DummyInstruction.new) }
-      @position = InstructionListener.init(@instruction , @binary)
-      @position.set(8)
-    end
-    def test_padding
-      assert_equal 64 , @binary.padded_length
-    end
-    def test_last
-      assert_equal 72 , Position.get(@instruction.last).at
-    end
-    def test_next
-      assert @binary.next
-    end
-  end
 end
