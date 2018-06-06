@@ -69,8 +69,15 @@ module Risc
       return int if int == self.at
       Position.set_to(self , int)
       @at = int
-      trigger(:position_changed , self )
+      trigger_changed
       int
+    end
+
+    # helper to fire the event that the position changed
+    # Note: set checks if the position actually has changed, before fireing
+    #     but during insert it is helpful to trigger just to set the next
+    def trigger_changed
+      trigger(:position_changed , self )
     end
 
     def trigger_inserted

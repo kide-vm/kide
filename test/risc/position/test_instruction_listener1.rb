@@ -24,7 +24,7 @@ module Risc
       @instruction.insert DummyInstruction.new
       assert Position.get(@instruction.next)
     end
-    def pest_insert_pushes
+    def test_insert_pushes
       @instruction.insert DummyInstruction.new
       assert_equal 76 , Position.get(@instruction.last).at
     end

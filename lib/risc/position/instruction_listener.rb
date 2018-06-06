@@ -45,23 +45,23 @@ module Risc
     # before the insert, ie:
     # position : the arg is the first instruction in the chain where insert happened
     # position.object.next : is the newly inserted instruction we need to setup
-    # @instruction : previously dependent on position, now on .next's position
+    # @instruction : previously dependent on position, now on inserted's position
     #
     # So we need to :
-    # - move the listener of @instruction to listen to the inserted instruction
+    # - move the listener self to listen to the inserted instruction
     # - add a listener for the new instruction (to listen to the arg)
     # - set the new position (moving the chain along)
     def position_inserted(position)
       inserted = position.object.next
       raise "uups" unless inserted ## TODO: remove
-      position.remove_position_listener(InstructionListener)
-      new_pos = Position.get(inserted)
-      new_pos.position_listener(old_listener)
+      position.remove_position_listener(self)
+      new_pos = Position.new(inserted , -1)
+      new_pos.position_listener(self)
 
-      my_pos = Position.get(@instruction)
-      listen = InstructionListener.new(position.object , @binary)
-      my_pos.position_listener(listen)
+      listen = InstructionListener.new(inserted , @binary)
+      position.position_listener(listen)
 
+      position.trigger_changed
     end
 
     # check that the binary we use is the one where the current position falls
