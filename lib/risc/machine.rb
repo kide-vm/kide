@@ -121,7 +121,8 @@ module Risc
       Parfait.object_space.types.values.each do |type|
         next unless type.methods
         type.methods.each_method do |method|
-          last_code = CodeListener.init(method.binary , code_start)
+          last_code = CodeListener.init(method.binary)
+          last_code.set(code_start)
           first_position = InstructionListener.init(method.cpu_instructions, method.binary)
           first_position.set( code_start + Parfait::BinaryCode.byte_offset)
           last_code.position_listener( prev_code.object) if prev_code

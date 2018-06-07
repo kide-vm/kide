@@ -20,16 +20,19 @@ module Risc
     def test_init_returns_position
       assert_equal Position , CodeListener.init(@binary).class
     end
+    def test_not_init_listner
+      pos = CodeListener.init(@binary)
+      assert CodeListener == pos.event_table[:position_changed].last.class
+    end
     def test_init_listner
       @binary.extend_one
       CodeListener.init(@binary)
       pos = Position.get(@binary)
-      assert !pos.event_table[:position_changed].empty?
+      assert_equal CodeListener , pos.event_table[:position_changed].first.class
     end
-    def test_not_init_listner
+    def test_extends_creates_jump
+      @binary.extend_one
       CodeListener.init(@binary)
-      pos = Position.get(@binary)
-      assert pos.event_table[:position_changed].empty?
     end
   end
 end

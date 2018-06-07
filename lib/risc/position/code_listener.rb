@@ -9,15 +9,8 @@ module Risc
   #
   class CodeListener
 
-    attr_reader :code , :method
-
-    def initialize(code , method)
-      super(code,pos)
-      @code = code
-      @method = method
-      raise "Method nil" unless method
-    end
-    def set(at )
+    def set(at)
+      raise "Called"
       next_pos = at + code.padded_length
       if code.next
         Position.set(code.next , next_pos, method)
@@ -33,7 +26,9 @@ module Risc
 
     # insert a jump to the next instruction, at the last instruction
     # thus hopping over the object header
-    def set_jump(at)
+    def set_jump_for(position)
+      at = position.at
+      code = position.object
       jump = Branch.new("BinaryCode #{at.to_s(16)}" , code.next)
       translator = Risc.machine.platform.translator
       cpu_jump = translator.translate(jump)
@@ -42,20 +37,31 @@ module Risc
       cpu_jump.assemble(JumpWriter.new(code))
     end
 
+    def position_inserted(position)
+      Position.log.debug "extending one in #{self}"
+      pos = CodeListener.init( position.object.next )
+      pos.set( position + position.object.padded_length)
+      return unless position.valid?
+      set_jump_for(position)
+    end
+
+    def position_changed(position)
+      return unless position.object.next
+      raise "Called"
+    end
+
     # Create Position for the given BinaryCode object
-    # return the last position that was created, for chaining
-    def self.init( code , at = -1)
+    # return the first position that was created, to set it
+    def self.init( code )
+      first = nil
       while code
         raise "Not Binary Code #{code.class}" unless code.is_a?(Parfait::BinaryCode)
-        position = Position.new(code , at)
-        if code.next
-          listener = PositionListener.new(code.next)
-          position.position_listener( listener)
-        end
-        at += code.padded_length unless at < 0
+        position = Position.new(code , -1)
+        first = position unless first
+        position.position_listener(CodeListener.new)
         code = code.next
       end
-      position
+      first
     end
   end
 end

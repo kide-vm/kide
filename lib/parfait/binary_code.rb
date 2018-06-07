@@ -39,11 +39,7 @@ module Parfait
 
     def extend_one()
       @next = BinaryCode.new(1)
-      if Risc::Position.set?(self)
-        Risc::Position.log.debug "extending one in #{self}"
-        my_pos = Risc::Position.get(self)
-        Risc::CodeListener.init( @next , my_pos + self.padded_length)
-      end
+      Risc::Position.get(self).trigger_inserted if Risc::Position.set?(self)
     end
 
     def ensure_next
