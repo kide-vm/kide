@@ -28,6 +28,12 @@ module Risc
       pos = @pos.set(10)
       assert_equal 10 , pos
     end
+    def test_object_class_test
+      assert_equal :object , @pos.object_class
+    end
+    def test_object_class_instr
+      assert_equal :instruction , Position.new(Label.new("hi","ho",FakeAddress.new(1)),4).object_class
+    end
     def test_at
       pos = Position.at(5)
       assert_equal 5 , pos.at

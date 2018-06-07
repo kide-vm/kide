@@ -5,7 +5,7 @@ module Risc
     def setup
       Risc.machine.boot
       @binary = Parfait::BinaryCode.new(1)
-      @bin_pos = Position.new(@binary,0)
+      @bin_pos = CodeListener.init(@binary,0)
       @instruction = DummyInstruction.new
       13.times {@instruction.last.insert(DummyInstruction.new) }
       @position = InstructionListener.init(@instruction , @binary)
@@ -27,6 +27,11 @@ module Risc
     def test_insert_pushes
       @instruction.insert DummyInstruction.new
       assert_equal 76 , Position.get(@instruction.last).at
+    end
+    def test_pushes_after_insert
+      @instruction.insert DummyInstruction.new
+      @position.set(12)
+      assert_equal 80 , Position.get(@instruction.last).at
     end
   end
 end

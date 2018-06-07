@@ -24,15 +24,16 @@ module Risc
     # Taking into account that BinaryCodes only take 13 instructions,
     # meaning that chain may have to be extended
     def position_changed(position)
-      fix_binary
-      my_pos = Position.get(@instruction)
       next_pos = position.at + position.object.byte_length
+      fix_binary_for(next_pos)
+      my_pos = Position.get(@instruction)
       diff = next_pos - Position.get(@binary).at
-      Position.log.debug "Diff: #{diff.to_s(16)} , next #{next_pos.to_s(16)} , binary #{Position.get(@binary)}"
+      Position.log.debug "Diff: 0x#{diff.to_s(16)} , next 0x#{next_pos.to_s(16)} , binary #{Position.get(@binary)}"
       raise "Invalid position #{diff.to_s(16)} , next #{next_pos.to_s(16)} #{position}" if diff < 8
       if( (diff % (@binary.padded_length - @instruction.byte_length)) == 0 )
         @binary = @binary.ensure_next
         next_pos = Position.get(@binary).at + Parfait::BinaryCode.byte_offset
+        #Insert/Position the jump (its missing)
         Position.log.debug "Jump to: #{next_pos.to_s(16)}"
       end
       my_pos.set(next_pos)
@@ -66,24 +67,26 @@ module Risc
 
     # check that the binary we use is the one where the current position falls
     # if not move up and register/unregister (soon)
-    def fix_binary
+    #
+    # Because the position for the @instruction may not be set yet,
+    # we use the one that it will be set to (the arg)
+    def fix_binary_for(new_pos)
       raise "Binary has no position (-1)" if Position.get(@binary).at == -1
-      return if Position.get(@instruction).at == -1
       count = 0
-      org_pos = Position.get(@binary)
-      return if org_pos.at == -1
-      while( !pos_in_binary)
+      bin_pos = Position.get(@binary)
+      while( !pos_in_binary(new_pos))
         @binary = @binary.ensure_next
         count += 1
-        raise "Positions messed #{Position.get(@instruction)}:#{org_pos}"
+        raise "Positions too far out (#{count}) #{Position.get(@instruction)}:#{bin_pos}" if count > 5
       end
     end
 
-    def pos_in_binary
-      me = Position.get(@instruction)
+    # check if the given position is inside the @binary
+    # ie not below start or above end
+    def pos_in_binary(new_pos)
       bin = Position.get(@binary)
-      return false if me < bin
-      return false if me > (bin + @binary.padded_length)
+      return false if bin > new_pos
+      return false if new_pos > (bin + @binary.padded_length)
       return true
     end
 
