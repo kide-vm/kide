@@ -3,9 +3,9 @@ require_relative "helper"
 module Risc
   class TestInstructionListenerBig < MiniTest::Test
     def setup
-      Risc.machine.boot
+      DummyPlatform.boot
       @binary = Parfait::BinaryCode.new(1)
-      @bin_pos = CodeListener.init(@binary,0)
+      @bin_pos = CodeListener.init(@binary).set(0)
       @instruction = DummyInstruction.new
       13.times {@instruction.last.insert(DummyInstruction.new) }
       @position = InstructionListener.init(@instruction , @binary)
