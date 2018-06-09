@@ -24,7 +24,6 @@ module Parfait
     attr_reader :name , :risc_instructions , :for_type , :cpu_instructions
     attr_reader :arguments_type , :frame_type , :binary , :next_method
 
-    # not part of the parfait model, hence ruby accessor
     attr_accessor :source
 
     def initialize( type , name , arguments_type , frame_type)
