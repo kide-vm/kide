@@ -30,9 +30,5 @@ module Risc
       pos = Position.get(@binary)
       assert_equal CodeListener , pos.event_table[:position_changed].first.class
     end
-    def test_extends_creates_jump
-      @binary.extend_one
-      CodeListener.init(@binary)
-    end
   end
 end

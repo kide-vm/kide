@@ -117,16 +117,14 @@ module Risc
     #
     # start at code_start.
     def position_code(code_start)
-      prev_code = nil
       Parfait.object_space.types.values.each do |type|
         next unless type.methods
         type.methods.each_method do |method|
+          Position.log.debug "Position starts for method #{method.name}"
           last_code = CodeListener.init(method.binary)
           last_code.set(code_start)
           first_position = InstructionListener.init(method.cpu_instructions, method.binary)
           first_position.set( code_start + Parfait::BinaryCode.byte_offset)
-          last_code.position_listener( prev_code.object) if prev_code
-          prev_code = last_code
           code_start = last_code.next_slot
         end
       end

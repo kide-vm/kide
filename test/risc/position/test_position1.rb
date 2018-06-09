@@ -36,11 +36,23 @@ module Risc
       @position.trigger_inserted
       assert_equal @position , @trigger
     end
+    def test_position_set_triggers
+      @object = @instruction
+      Position.new(self, 0)
+      @position.register_event(:position_changed , self)#can't use helper
+      @position.set(10)
+      assert_equal @position , @trigger
+      assert_equal @to , 10
+    end
     def position_changed(pos)
       @trigger = pos
     end
     def position_inserted(pos)
       @trigger = pos
+    end
+    def position_changing(pos , to)
+      @trigger = pos
+      @to = to
     end
   end
 end

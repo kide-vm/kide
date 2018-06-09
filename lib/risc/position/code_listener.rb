@@ -9,34 +9,6 @@ module Risc
   #
   class CodeListener
 
-    def set(at)
-      raise "Called"
-      next_pos = at + code.padded_length
-      if code.next
-        Position.set(code.next , next_pos, method)
-        set_jump(at)
-      else
-        next_meth = next_method
-        return unless next_meth
-        Position.set( next_meth.binary , next_pos , next_meth)
-        next_cpu_pos = next_pos + Parfait::BinaryCode.byte_offset
-        Position.set( next_meth.cpu_instructions, next_cpu_pos , next_meth.binary)
-      end
-    end
-
-    # insert a jump to the next instruction, at the last instruction
-    # thus hopping over the object header
-    def set_jump_for(position)
-      at = position.at
-      code = position.object
-      jump = Branch.new("BinaryCode #{at.to_s(16)}" , code.next)
-      translator = Risc.machine.platform.translator
-      cpu_jump = translator.translate(jump)
-      pos = at + code.padded_length - cpu_jump.byte_length
-      Position.set( cpu_jump , pos , code)
-      cpu_jump.assemble(JumpWriter.new(code))
-    end
-
     def position_inserted(position)
       Position.log.debug "extending one in #{self}"
       pos = CodeListener.init( position.object.next )
@@ -46,8 +18,28 @@ module Risc
     end
 
     def position_changed(position)
-      return unless position.object.next
-      raise "Called"
+      set_jump_for(position)
+    end
+
+    def position_changing(position , to)
+      move_along = Position.at( to )
+      return unless move_along
+      raise "Not BinaryCode at (#{to.to_s(16)}), but is #{move_along.object.class}" unless move_along.object.is_a?(Parfait::BinaryCode)
+      move_along.set(move_along + move_along.object.padded_length)
+    end
+
+    # insert a jump to the next instruction, at the last instruction
+    # thus hopping over the object header
+    def set_jump_for(position)
+      at = position.at
+      code = position.object
+      return unless code.next #dont jump beyond and
+      jump = Branch.new("BinaryCode #{at.to_s(16)}" , code.next)
+      translator = Risc.machine.platform.translator
+      cpu_jump = translator.translate(jump)
+      pos = at + code.padded_length - cpu_jump.byte_length
+      Position.new(cpu_jump , pos)
+      cpu_jump.assemble(JumpWriter.new(code))
     end
 
     # Create Position for the given BinaryCode object

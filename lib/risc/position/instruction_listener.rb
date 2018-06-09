@@ -19,6 +19,10 @@ module Risc
       @binary = binary
     end
 
+    def position_changing(position , to)
+
+    end
+
     # if the position of the instruction before us changes, we need to
     # adjust the position of this instruction accordingly
     # Taking into account that BinaryCodes only take 13 instructions,

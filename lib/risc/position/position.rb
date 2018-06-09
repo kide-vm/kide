@@ -67,13 +67,20 @@ module Risc
 
     def set(int)
       return int if int == self.at
+      trigger_changing( int )
       Position.set_to(self , int)
       @at = int
       trigger_changed
       int
     end
 
-    # helper to fire the event that the position changed
+    # helper to fire the event that the position is about to change
+    # the argument is the new position (as int)
+    def trigger_changing( to )
+      event_table[:position_changed].each { |handler| handler.position_changing( self , to) }
+    end
+
+    # helper to fire the event that the position has changed
     # Note: set checks if the position actually has changed, before fireing
     #     but during insert it is helpful to trigger just to set the next
     def trigger_changed
@@ -116,8 +123,9 @@ module Risc
 
     def next_slot
       return -1 if at < 0
-      self.log.debug "Next Slot @#{at.to_s(16)} for #{object.class} == #{(at + object.byte_length).to_s(16)}"
-      at + object.byte_length
+      slot = at + object.padded_length
+      self.log.debug "Next Slot @#{at.to_s(16)} for #{object.class}(#{object.padded_length.to_s(16)}) == #{(slot).to_s(16)}"
+      slot
     end
 
     ## class level forward and reverse cache

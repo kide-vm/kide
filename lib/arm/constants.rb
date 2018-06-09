@@ -130,6 +130,6 @@ module Arm
    def byte_length
      4
    end
-
+   alias :padded_length :byte_length
   end
 end
