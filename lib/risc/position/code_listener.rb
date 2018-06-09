@@ -10,10 +10,10 @@ module Risc
   class CodeListener
 
     def position_inserted(position)
-      Position.log.debug "extending one in #{self}"
+      Position.log.debug "extending one at #{position}"
       pos = CodeListener.init( position.object.next )
-      pos.set( position + position.object.padded_length)
       return unless position.valid?
+      pos.set( position + position.object.padded_length)
       set_jump_for(position)
     end
 

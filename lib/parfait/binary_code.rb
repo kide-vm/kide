@@ -47,6 +47,12 @@ module Parfait
       @next
     end
 
+    def last_code
+      last = self
+      last = last.next while(last.next)
+      last
+    end
+
     def each_block( &block )
       block.call( self )
       @next.each_block( &block ) if @next

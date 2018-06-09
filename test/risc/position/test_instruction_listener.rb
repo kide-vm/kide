@@ -24,7 +24,7 @@ module Risc
     end
     def test_listener_method
       @position.set(8)
-      listener = InstructionListener.new( @instruction , @binary )
+      listener = InstructionListener.new( @binary )
       listener.position_changed(@position)
     end
     def test_ins_propagates
@@ -40,8 +40,8 @@ module Risc
     def test_label_has_no_length
       label = Label.new("Hi","Ho" , FakeAddress.new(5) , @instruction)
       InstructionListener.init(label , @binary)
-      Position.get(label).set(10)
-      assert_equal 10 , Position.get(@instruction).at
+      Position.get(label).set(12)
+      assert_equal 12 , Position.get(@instruction).at
     end
     def test_label_at_branch
       label = Label.new("Hi","Ho" , FakeAddress.new(5) , @instruction)
