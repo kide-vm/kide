@@ -190,3 +190,4 @@ end
 require_relative "position_listener"
 require_relative "instruction_listener"
 require_relative "code_listener"
+require_relative "label_listener"

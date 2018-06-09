@@ -120,12 +120,13 @@ module Risc
       Parfait.object_space.types.values.each do |type|
         next unless type.methods
         type.methods.each_method do |method|
-          Position.log.debug "Position starts for method #{method.name}"
-          last_code = CodeListener.init(method.binary)
-          last_code.set(code_start)
-          first_position = InstructionListener.init(method.cpu_instructions, method.binary)
-          first_position.set( code_start + Parfait::BinaryCode.byte_offset)
-          code_start = last_code.next_slot
+          #next unless method.name == :main or method.name == :__init__
+          Position.log.debug "Method start #{code_start.to_s(16)} #{method.name}"
+          code_pos = CodeListener.init(method.binary)
+          InstructionListener.init(method.cpu_instructions, method.binary)
+          code_pos.position_listener( LabelListener.new(method.cpu_instructions))
+          code_pos.set(code_start)
+          code_start = Position.get(method.binary.last_code).next_slot
         end
       end
       #Position.set( first_method.cpu_instructions, code_start + Parfait::BinaryCode.byte_offset , first_method.binary)

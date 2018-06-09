@@ -34,6 +34,18 @@ module Risc
       assert_equal 5, count
     end
   end
+  class TestMachinePos < MiniTest::Test
+    def setup
+      @machine = Risc.machine.boot
+      @machine.translate(:arm)
+      @machine.position_all
+    end
+    def test_positions_set
+      @machine.objects.each do |id,obj|
+        assert Position.get(obj).valid? , "#{Position.get(obj)} , #{obj.object_id.to_s(16)}"
+      end
+    end
+  end
   class TestMachineInit < MiniTest::Test
     def setup
       @machine = Risc.machine.boot
@@ -45,10 +57,7 @@ module Risc
       assert_equal 0 ,  Position.get(@machine.cpu_init).at
     end
     def test_cpu_at
-      assert_equal "0x5e08" ,  Position.get(@machine.cpu_init.first).to_s
-    end
-    def pest_cpu_bin
-      assert_equal "0x5ecc" ,  Position.get(@machine.cpu_init).to_s
+      assert_equal "0x5eb4" ,  Position.get(@machine.cpu_init.first).to_s
     end
     def test_cpu_label
       assert_equal Position ,  Position.get(@machine.cpu_init.first).class
@@ -61,5 +70,11 @@ module Risc
       bin = Parfait.object_space.get_init.binary.next
       assert 0 != bin.get_word(0) , "index 0 is 0 #{bin.inspect}"
     end
+    def test_positions_set
+      @machine.objects.each do |id,obj|
+        assert Position.get(obj).valid? , "#{Position.get(obj)} , #{obj.object_id.to_s(16)}"
+      end
+    end
+
   end
 end
