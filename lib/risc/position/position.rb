@@ -178,7 +178,11 @@ module Risc
       end
       self.positions[position.object] = position
       @reverse_cache[to] = position unless position.object.is_a?(Label)
-      log.debug "Set #{position} to 0x#{to.to_s(16)} for #{position.object.class} #{position.object.object_id.to_s(16)}"
+      if to == -1
+        log.debug "Initialize for #{position.object.class} #{position.object.object_id.to_s(16)}"
+      else
+        log.debug "Set #{position} to 0x#{to.to_s(16)} for #{position.object.class} #{position.object.object_id.to_s(16)}"
+      end
       position
     end
   end

@@ -18,6 +18,13 @@ module Risc
     end
 
     def position_changed(position)
+      nekst = position.object.next
+      if( nekst )
+        nekst_pos = Position.get(nekst)
+        unless(nekst_pos.valid?)
+          nekst_pos.set(position + position.object.padded_length)
+        end
+      end
       set_jump_for(position)
     end
 

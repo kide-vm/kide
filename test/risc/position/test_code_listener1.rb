@@ -17,10 +17,15 @@ module Risc
       pos = Position.get(@binary.next)
       assert_equal CodeListener , pos.event_table[:position_changed].first.class
     end
+    def test_valid_pos_for_extended
+      @binary.extend_one
+      CodeListener.init(@binary).set(10)
+      assert Position.get(@binary.next).valid?
+    end
     def test_extend_sets_next_pos
       CodeListener.init(@binary).set(10)
       @binary.extend_one
-      assert Position.get(@binary.next)
+      assert Position.get(@binary.next).valid?
     end
     def test_extends_creates_jump
       CodeListener.init(@binary).set(10)
