@@ -10,6 +10,13 @@ module Risc
       @instruction = DummyInstruction.new(DummyInstruction.new)
       @position = InstructionListener.init(@instruction , @binary)
     end
+    def test_label_address
+      label = Label.new("hi" ,"ho" , FakeAddress.new(0))
+      label_pos = Position.new( label , -1 )
+      label_pos.position_listener(InstructionListener.new(@binary))
+      label_pos.set(8)
+      assert_equal 8 , label_pos.object.address.value
+    end
     def test_init
       assert InstructionListener.init(@instruction , @binary)
     end

@@ -50,8 +50,11 @@ module Risc
       raise "Invalid negative index #{@index} ,  #{Position.get(@binary)}" if index < 0
     end
 
+    # update label positions. All else done in position_changing
     def position_changed(position)
-      #code moved to position_changing
+      instruction = position.object
+      return unless instruction.is_a?(Label)
+      instruction.address.set_value(position.at)
     end
 
     # When this is called, only the actual insert has happened (keeping the
