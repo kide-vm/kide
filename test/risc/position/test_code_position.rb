@@ -12,11 +12,11 @@ module Risc
 
     def test_bin_propagates_existing
       @binary.extend_to(16)
-      CodeListener.init( @binary , 0 )
+      CodeListener.init( @binary).set(0)
       assert_equal @binary.padded_length , Position.get(@binary.next).at
     end
     def test_bin_propagates_after
-      CodeListener.init( @binary , 0 )
+      CodeListener.init( @binary).set(0)
       @binary.extend_to(16)
       assert_equal @binary.padded_length , Position.get(@binary.next).at
     end
