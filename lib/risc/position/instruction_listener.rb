@@ -25,11 +25,11 @@ module Risc
     # Taking into account that BinaryCodes only take 13 instructions,
     # meaning that chain may have to be extended
     def position_changing(position , to)
-      Position.log.debug "Changing #{position} to #{to.to_s(16)}, bin #{Position.get(@binary)}"
+      Position.log.debug "Changing #{position} to 0x#{to.to_s(16)}, bin #{Position.get(@binary)}"
       update_index(to)
       instruction = position.object
       return unless instruction.next
-      if @index == (Parfait::BinaryCode.data_length - 1 )
+      if @index == (Parfait::BinaryCode.data_length - 1 ) and !instruction.is_a?(Label)
         nekst_pos_diff = @binary.padded_length
       else
         nekst_pos_diff = @index * 4 + instruction.byte_length
