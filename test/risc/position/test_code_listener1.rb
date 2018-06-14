@@ -1,7 +1,6 @@
 require_relative "helper"
 
 module Risc
-  # tests that require a boot and test propagation
   class TestCodeListenerFull < MiniTest::Test
     def setup
       @machine = Risc.machine.boot

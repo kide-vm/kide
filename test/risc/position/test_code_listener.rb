@@ -1,8 +1,7 @@
 require_relative "helper"
 
 module Risc
-  # tests that require a boot and test propagation
-  class TestcodeListener < MiniTest::Test
+  class TestCodeListener < MiniTest::Test
     def setup
       Risc.machine.boot
       @binary = Parfait::BinaryCode.new(1)

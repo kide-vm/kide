@@ -1,7 +1,6 @@
 require_relative "helper"
 
 module Risc
-  # tests that require a boot and test propagation
   class TestInstructionListener < MiniTest::Test
     def setup
       Risc.machine.boot

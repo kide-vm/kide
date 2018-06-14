@@ -23,6 +23,10 @@ module Risc
     end
     alias :inspect :to_s
 
+    # if branch is implemented it must return the label it branches to
+    def branch
+      label
+    end
   end
 
   # dynamic version of an Branch branch that jumps to the contents

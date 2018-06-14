@@ -13,7 +13,7 @@ module Risc
   # the same BinaryCode, or else move it and the code along
   #
   class InstructionListener
-    attr_reader :binary
+    attr_reader :binary , :index
 
     def initialize(binary)
       @binary = binary
@@ -91,7 +91,12 @@ module Risc
       while(instruction)
         position = Position.new(instruction , -1)
         first = position unless first
-        position.position_listener(InstructionListener.new( code ))
+        il = InstructionListener.new( code )
+        position.position_listener(il)
+        if instruction.respond_to?(:branch)
+#          label_pos = Position.get(instruction.branch)
+#          label_pos.position_listener( BranchListener.new(il)) 
+        end
         instruction = instruction.next
       end
       first
