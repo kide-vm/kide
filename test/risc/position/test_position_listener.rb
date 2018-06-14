@@ -18,10 +18,10 @@ module Risc
       Position.set_to(@pos,0)
       assert_equal 0 , Position.get(@object).at
     end
-    def test_reset
+    def test_at
       @pos.position_listener( @listener)
-      Position.set_to(@pos,4)
-      assert_equal 0 , Position.at(4).at
+      @pos.set(8)
+      assert_equal 8 , Position.at(8).at
     end
   end
 end
