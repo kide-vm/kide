@@ -54,7 +54,7 @@ module Risc
       @machine.translate(:interpreter)
       @machine.position_all
       @machine.create_binary
-      @machine.objects.each do |id , method|
+      @machine.object_positions.each do | method , position|
         next unless method.is_a? Parfait::TypedMethod
         method.cpu_instructions.each do |ins|
           ins.assemble(DevNull.new)

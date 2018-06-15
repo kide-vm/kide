@@ -35,7 +35,7 @@ module Risc
     end
 
     def sorted_objects
-      @machine.objects.values.sort do |left , right|
+      @machine.object_positions.values.sort do |left , right|
         Position.get(left).at <=> Position.get(right).at
       end
     end
@@ -118,7 +118,7 @@ module Risc
     def write_object_check(object)
       log.debug "Write object #{object.class} #{object.inspect[0..100]}"
       #Only initially created codes are collected. Binary_init and method "tails" not
-      if !@machine.objects.has_key?(object.object_id) and !object.is_a?(Parfait::BinaryCode)
+      if !@machine.object_positions.has_key?(object) and !object.is_a?(Parfait::BinaryCode)
         log.debug "Object at 0x#{Position.get(object).to_s(16)}:#{object.get_type()}"
         raise "Object(0x#{object.object_id.to_s(16)}) not linked #{object.inspect}"
       end

@@ -7,7 +7,7 @@ module Risc
       @machine = Risc.machine.boot
     end
     def test_objects
-      objects = @machine.objects
+      objects = @machine.object_positions
       assert_equal Hash , objects.class
       assert 350 < objects.length
     end
@@ -41,7 +41,7 @@ module Risc
       @machine.position_all
     end
     def test_positions_set
-      @machine.objects.each do |id,obj|
+      @machine.object_positions.each do |id,obj|
         assert Position.get(obj).valid? , "#{Position.get(obj)} , #{obj.object_id.to_s(16)}"
       end
     end
@@ -71,7 +71,7 @@ module Risc
       assert 0 != bin.get_word(0) , "index 0 is 0 #{bin.inspect}"
     end
     def test_positions_set
-      @machine.objects.each do |id,obj|
+      @machine.object_positions.each do |id,obj|
         assert Position.get(obj).valid? , "#{Position.get(obj)} , #{obj.object_id.to_s(16)}"
       end
     end

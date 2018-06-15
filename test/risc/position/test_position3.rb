@@ -34,7 +34,7 @@ module Risc
     end
     def has_positions(platform)
       setup_for(platform)
-      @machine.objects.each do |id,obj|
+      @machine.object_positions.each do |obj , pos|
         assert Position.get(obj)
       end
     end

@@ -47,8 +47,9 @@ module Risc
       end
     end
 
-    # machine keeps a list of all objects. this is lazily created with a collector
-    def objects
+    # machine keeps a list of all objects and their positions.
+    # this is lazily created with a collector
+    def object_positions
       @objects ||= Collector.collect_space
     end
 
@@ -96,7 +97,9 @@ module Risc
     # return final position that is stored in code_start
     def position_objects(at)
       # want to have the objects first in the executable
-      sorted = objects.values.sort{|left,right| left.class.name <=> right.class.name}
+      sorted = object_positions.values.sort do |left,right|
+        left.class.name <=> right.class.name
+      end
       previous = nil
       sorted.each do | objekt|
         next if objekt.is_a?( Parfait::BinaryCode) or objekt.is_a?( Risc::Label )
@@ -141,7 +144,7 @@ module Risc
     # constant loads into one instruction.
     #
     def create_binary
-      objects.each do |id , method|
+      object_positions.each do |id , method|
         next unless method.is_a? Parfait::TypedMethod
         writer = BinaryWriter.new(method.binary)
         writer.assemble(method.cpu_instructions)

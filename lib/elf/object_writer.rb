@@ -36,7 +36,7 @@ module Elf
         end
       end
 
-      @machine.objects.each do |id,slot|
+      @machine.object_positions.each do |slot , position|
         next if slot.is_a?(Parfait::BinaryCode)
         if( slot.respond_to? :rxf_reference_name )
           label = "#{slot.rxf_reference_name}"

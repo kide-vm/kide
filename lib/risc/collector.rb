@@ -30,7 +30,7 @@ module Risc
 
     # Objects are data and get assembled after functions
     def self.add_object( objekt , depth)
-      return false if @objects[objekt.object_id]
+      return false if @objects[objekt]
       return true if objekt.is_a? Fixnum
       return true if objekt.is_a?( Risc::Label)
       #puts message(objekt , depth)
@@ -39,7 +39,7 @@ module Risc
         raise "adding non parfait #{objekt.class}:#{objekt}"
       end
       #raise "Method #{objekt.name}" if objekt.is_a? Parfait::TypedMethod
-      @objects[objekt.object_id] = objekt
+      @objects[objekt] = objekt
       true
     end
 
