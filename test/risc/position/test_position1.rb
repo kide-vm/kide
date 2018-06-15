@@ -5,7 +5,7 @@ module Risc
     def setup
       Position.clear_positions
       @instruction = DummyInstruction.new
-      @position = Position.new(@instruction , 0)
+      @position = Position.new(@instruction).set(0)
       @listener = PositionListener.new( @instruction )
     end
     def test_has_register
@@ -24,7 +24,7 @@ module Risc
     end
     def test_no_fire_after_unregister
       @object = @instruction
-      Position.new(self, 10)
+      Position.new(self).set(10)
       assert @position.register_event(:position_changed , self)#can't use helper
       assert @position.remove_position_listener(self)
       @position.trigger(:position_changed , @position)
@@ -38,7 +38,7 @@ module Risc
     end
     def test_position_set_triggers
       @object = @instruction
-      Position.new(self, 0)
+      Position.new(self).set(0)
       @position.register_event(:position_changed , self)#can't use helper
       @position.set(10)
       assert_equal @position , @trigger

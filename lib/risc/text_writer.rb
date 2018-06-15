@@ -50,20 +50,8 @@ module Risc
     # Write all the objects in the order that they have been positioed
     def write_objects
       sorted_objects.each do |objekt|
-        next unless is_object(objekt)
+        next unless Position.is_object(objekt)
         write_any( objekt )
-      end
-    end
-    def is_object(object)
-      case object
-      when Risc::Label , Parfait::BinaryCode
-        return false
-      when Parfait::Object , Symbol
-        return true
-      when Arm::Instruction
-        return false
-      else
-        raise "Class #{object.class}"
       end
     end
 

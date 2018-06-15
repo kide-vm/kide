@@ -20,18 +20,19 @@ module Risc
     include Util::Logging
     log_level :info
 
+    INVALID = -1
+
     include Util::Eventable
 
     attr_reader :at , :object
 
     # initialize with a given object, first parameter
-    # The object ill be the key in global position map
-    # Give an integer as the actual position, where -1
-    # which means no legal position known
-    def initialize(object , pos )
-      @at = pos
+    # The object will be the key in global position map
+    #
+    # The actual position starts as -1 (invalid)
+    def initialize(object)
+      @at = INVALID
       @object = object
-      Position.set_to(self , pos)
     end
 
     # utility to register events of type :position_changed
@@ -62,7 +63,7 @@ module Risc
     end
 
     def valid?
-      @at != -1
+      @at != INVALID
     end
 
     def set(int)
@@ -71,7 +72,7 @@ module Risc
       Position.set_to(self , int)
       @at = int
       trigger_changed
-      int
+      self
     end
 
     # helper to fire the event that the position is about to change
@@ -164,6 +165,23 @@ module Risc
       pos
     end
 
+    # creating means instantiating and caching
+    def self.create(object)
+      pos = Position.new(object)
+      self.positions[object] = pos
+      log.debug "Initialize for #{object.class} #{object.object_id.to_s(16)}"
+      pos
+    end
+
+    def self.get_or_create(object)
+      if self.positions.has_key?(object)
+        pos = self.get(object)
+      else
+        pos = self.create(object)
+      end
+      return pos
+    end
+
     # populate the position caches (forward and revese) with the given position
     # forward caches object -> position
     # reverse caches position.at > position
@@ -178,12 +196,25 @@ module Risc
       end
       self.positions[position.object] = position
       @reverse_cache[to] = position unless position.object.is_a?(Label)
-      if to == -1
-        log.debug "Initialize for #{position.object.class} #{position.object.object_id.to_s(16)}"
+      if to == INVALID
+        raise "Old style, change code"
       else
         log.debug "Set #{position} to 0x#{to.to_s(16)} for #{position.object.class} #{position.object.object_id.to_s(16)}"
       end
       position
+    end
+
+    def self.is_object(object)
+      case object
+      when Risc::Label , Parfait::BinaryCode
+        return false
+      when Parfait::Object , Symbol
+        return true
+      when Arm::Instruction , Risc::Branch
+        return false
+      else
+        raise "Class #{object.class}"
+      end
     end
   end
 end

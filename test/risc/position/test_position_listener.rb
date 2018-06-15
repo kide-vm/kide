@@ -6,8 +6,8 @@ module Risc
     def setup
       @object = Dummy.new
       @dependent = Dummy.new
-      @pos = Position.new(@object,0)
-      Position.new(@dependent,0)
+      @pos = Position.new(@object).set(0)
+      Position.new(@dependent).set(0)
       @listener = PositionListener.new(@dependent)
     end
     def test_register

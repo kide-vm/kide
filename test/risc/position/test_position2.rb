@@ -4,7 +4,7 @@ module Risc
   class TestPositionMath < MiniTest::Test
 
     def setup
-      @pos = Position.new(self , 5)
+      @pos = Position.new(self).set(5)
     end
     def test_add
       res = @pos + 5
@@ -15,24 +15,24 @@ module Risc
       assert_equal 2 , res
     end
     def test_sub_pos
-      res = @pos - Position.new(@pos,4)
+      res = @pos - Position.new(@pos).set(4)
       assert_equal 1 , res
     end
     def test_lg
-      assert @pos > Position.new(@pos,4)
+      assert @pos > Position.new(@pos).set(2)
     end
     def test_tos
       assert_equal "0x5" , @pos.to_s
     end
     def test_reset_ok
       pos = @pos.set(10)
-      assert_equal 10 , pos
+      assert_equal 10 , pos.at
     end
     def test_object_class_test
       assert_equal :object , @pos.object_class
     end
     def test_object_class_instr
-      assert_equal :instruction , Position.new(Label.new("hi","ho",FakeAddress.new(1)),4).object_class
+      assert_equal :instruction , Position.new(Label.new("hi","ho",FakeAddress.new(1))).set(4).object_class
     end
     def test_at
       pos = Position.at(5)

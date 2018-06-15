@@ -18,7 +18,7 @@ module Arm
       @machine = Arm::ArmMachine
       @binary = FakeBin.new
       Risc::Position.clear_positions
-      Risc::Position.new(@binary , 0)
+      Risc::Position.create(@binary).set(0)
     end
 
     # code is what the generator spits out, at least one instruction worth (.first)

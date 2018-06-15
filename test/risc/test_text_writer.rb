@@ -20,6 +20,7 @@ module Risc
       @machine = Risc.machine.boot
       @machine.translate(:arm)
       @machine.position_all
+      @machine.create_binary
       @text_writer = TextWriter.new(@machine)
     end
     def test_write_all

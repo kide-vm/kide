@@ -6,9 +6,9 @@ module Risc
     def setup
       Risc.machine.boot
       @label = Label.new("Hi","Ho" , FakeAddress.new(5))
-      @label_pos = Position.new(@label , -1)
+      @label_pos = Position.new(@label ).set(4)
       @code = Parfait::BinaryCode.new(1)
-      @code_pos = Position.new(@code , -1)
+      @code_pos = Position.new(@code)
       @code_pos.position_listener( LabelListener.new(@label))
     end
 

@@ -5,13 +5,13 @@ module Risc
     def setup
       Risc.machine.boot
       @binary = Parfait::BinaryCode.new(1)
-      @bin_pos = Position.new(@binary,0)
+      @bin_pos = Position.new(@binary).set(0)
       @instruction = DummyInstruction.new(DummyInstruction.new)
       @position = InstructionListener.init(@instruction , @binary)
     end
     def test_label_address
       label = Label.new("hi" ,"ho" , FakeAddress.new(0))
-      label_pos = Position.new( label , -1 )
+      label_pos = Position.new( label )
       label_pos.position_listener(InstructionListener.new(@binary))
       label_pos.set(8)
       assert_equal 8 , label_pos.object.address.value
@@ -52,8 +52,8 @@ module Risc
     def test_label_at_branch
       label = Label.new("Hi","Ho" , FakeAddress.new(5) , @instruction)
       branch = Branch.new("b" , label)
-      Position.new(label , 8 )
-      Position.new(branch , 8 )
+      Position.new(label ).set(8)
+      Position.new(branch).set(8)
       at_8 = Position.at(8)
       assert_equal Position , at_8.class
       assert_equal Branch , at_8.object.class

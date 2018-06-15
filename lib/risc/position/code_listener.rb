@@ -45,7 +45,7 @@ module Risc
       translator = Risc.machine.platform.translator
       cpu_jump = translator.translate(jump)
       pos = at + code.padded_length - cpu_jump.byte_length
-      Position.new(cpu_jump , pos)
+      Position.create(cpu_jump).set(pos)
       cpu_jump.assemble(JumpWriter.new(code))
     end
 
@@ -55,7 +55,7 @@ module Risc
       first = nil
       while code
         raise "Not Binary Code #{code.class}" unless code.is_a?(Parfait::BinaryCode)
-        position = Position.new(code , -1)
+        position = Position.get_or_create(code)
         first = position unless first
         position.position_listener(CodeListener.new)
         code = code.next

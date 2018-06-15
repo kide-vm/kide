@@ -69,7 +69,7 @@ module Risc
     # - trigger change for this (fake) to set position of inserted
     def position_inserted(position)
       inserted = position.object.next
-      new_pos = Position.new(inserted , -1)
+      new_pos = Position.get_or_create(inserted)
       new_pos.position_listener(InstructionListener.new(@binary))
 
       position.trigger_changing(position.at)
@@ -89,13 +89,13 @@ module Risc
       raise "Must init with instruction, not nil" unless instruction
       first = nil
       while(instruction)
-        position = Position.new(instruction , -1)
+        position = Position.get_or_create(instruction)
         first = position unless first
         il = InstructionListener.new( code )
         position.position_listener(il)
         if instruction.respond_to?(:branch)
 #          label_pos = Position.get(instruction.branch)
-#          label_pos.position_listener( BranchListener.new(il)) 
+#          label_pos.position_listener( BranchListener.new(il))
         end
         instruction = instruction.next
       end

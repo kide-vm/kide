@@ -5,7 +5,7 @@ module Risc
   class TestPosition < MiniTest::Test
 
     def setup
-      @pos = Position.new(self , -1)
+      @pos = Position.new(self )
     end
     def test_new
       assert @pos
@@ -15,7 +15,7 @@ module Risc
     end
     def test_next_slot
       mov = Arm::ArmMachine.mov(:r1 , :r1)
-      position = Position.new(mov , 0)
+      position = Position.new(mov ).set(0)
       assert_equal 4, position.next_slot
     end
     def test_has_get_code
@@ -38,7 +38,7 @@ module Risc
       assert_equal 1 , @pos.position_listeners.length
     end
     def test_set
-      assert_equal 0 , @pos.set(0)
+      assert_equal 0 , @pos.set(0).at
     end
   end
 end

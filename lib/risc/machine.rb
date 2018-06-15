@@ -103,7 +103,7 @@ module Risc
       end
       previous = nil
       sorted.each do |objekt|
-        next if objekt.is_a?( Parfait::BinaryCode) or objekt.is_a?( Risc::Label )
+        next unless Position.is_object(objekt)
         before = at
         unless( Position.set?(objekt))
           raise objekt.class
