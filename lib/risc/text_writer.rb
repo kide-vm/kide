@@ -35,7 +35,7 @@ module Risc
     end
 
     def sorted_objects
-      @machine.object_positions.values.sort do |left , right|
+      @machine.object_positions.keys.sort do |left , right|
         Position.get(left).at <=> Position.get(right).at
       end
     end
@@ -50,9 +50,20 @@ module Risc
     # Write all the objects in the order that they have been positioed
     def write_objects
       sorted_objects.each do |objekt|
-        next if objekt.is_a? Risc::Label # ignore
-        next if objekt.is_a? Parfait::BinaryCode # ignore
+        next unless is_object(objekt)
         write_any( objekt )
+      end
+    end
+    def is_object(object)
+      case object
+      when Risc::Label , Parfait::BinaryCode
+        return false
+      when Parfait::Object , Symbol
+        return true
+      when Arm::Instruction
+        return false
+      else
+        raise "Class #{object.class}"
       end
     end
 
@@ -118,8 +129,8 @@ module Risc
     def write_object_check(object)
       log.debug "Write object #{object.class} #{object.inspect[0..100]}"
       #Only initially created codes are collected. Binary_init and method "tails" not
-      if !@machine.object_positions.has_key?(object) and !object.is_a?(Parfait::BinaryCode)
-        log.debug "Object at 0x#{Position.get(object).to_s(16)}:#{object.get_type()}"
+      unless object.is_a?(Parfait::BinaryCode)
+        log.debug "Object at 0x#{Position.get(object)}:#{object.get_type()}"
         raise "Object(0x#{object.object_id.to_s(16)}) not linked #{object.inspect}"
       end
     end

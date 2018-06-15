@@ -1,12 +1,13 @@
 module Risc
 
   #  collect anything that is in the space but and reachable from init
+  #
+  # The place we collect in is the position map in Position class
   module Collector
     def self.collect_space
-      @objects = {}
       keep Parfait.object_space , 0
       Risc.machine.constants.each {|obj| keep(obj,0)}
-      @objects
+      Position.positions
     end
 
     def self.keep( object , depth )
@@ -30,7 +31,7 @@ module Risc
 
     # Objects are data and get assembled after functions
     def self.add_object( objekt , depth)
-      return false if @objects[objekt]
+      return false if Position.set?(objekt)
       return true if objekt.is_a? Fixnum
       return true if objekt.is_a?( Risc::Label)
       #puts message(objekt , depth)
@@ -39,7 +40,7 @@ module Risc
         raise "adding non parfait #{objekt.class}:#{objekt}"
       end
       #raise "Method #{objekt.name}" if objekt.is_a? Parfait::TypedMethod
-      @objects[objekt] = objekt
+      Position.get_or_create(objekt)
       true
     end
 

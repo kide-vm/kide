@@ -41,7 +41,7 @@ module Risc
       @machine.position_all
     end
     def test_positions_set
-      @machine.object_positions.each do |id,obj|
+      @machine.object_positions.each do |obj , position|
         assert Position.get(obj).valid? , "#{Position.get(obj)} , #{obj.object_id.to_s(16)}"
       end
     end
@@ -71,8 +71,8 @@ module Risc
       assert 0 != bin.get_word(0) , "index 0 is 0 #{bin.inspect}"
     end
     def test_positions_set
-      @machine.object_positions.each do |id,obj|
-        assert Position.get(obj).valid? , "#{Position.get(obj)} , #{obj.object_id.to_s(16)}"
+      @machine.object_positions.each do |obj,position|
+        assert position.valid? , "#{position} , #{obj.object_id.to_s(16)}"
       end
     end
 

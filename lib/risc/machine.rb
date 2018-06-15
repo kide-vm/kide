@@ -50,7 +50,8 @@ module Risc
     # machine keeps a list of all objects and their positions.
     # this is lazily created with a collector
     def object_positions
-      @objects ||= Collector.collect_space
+      Collector.collect_space if Position.positions.empty?
+      Position.positions
     end
 
     # lazy init risc_init
@@ -86,7 +87,7 @@ module Risc
     def position_all
       raise "Not translated " unless @translated
       #need the initial jump at 0 and then functions
-      Position.new(cpu_init , 0)
+      Position.new(cpu_init).set(0)
       code_start = position_objects( @platform.padding )
       # and then everything code
       position_code(code_start)
@@ -97,14 +98,17 @@ module Risc
     # return final position that is stored in code_start
     def position_objects(at)
       # want to have the objects first in the executable
-      sorted = object_positions.values.sort do |left,right|
+      sorted = object_positions.keys.sort do |left,right|
         left.class.name <=> right.class.name
       end
       previous = nil
-      sorted.each do | objekt|
+      sorted.each do |objekt|
         next if objekt.is_a?( Parfait::BinaryCode) or objekt.is_a?( Risc::Label )
         before = at
-        position = Position.new(objekt , at)
+        unless( Position.set?(objekt))
+          raise objekt.class
+        end
+        position = Position.get(objekt).set(at)
         previous.position_listener(objekt) if previous
         previous = position
         at += objekt.padded_length
@@ -132,9 +136,6 @@ module Risc
           code_start = Position.get(method.binary.last_code).next_slot
         end
       end
-      #Position.set( first_method.cpu_instructions, code_start + Parfait::BinaryCode.byte_offset , first_method.binary)
-      #log.debug "Method #{first_method.name}:#{before.to_s(16)} len: #{(code_start - before).to_s(16)}"
-      #log.debug "Instructions #{first_method.cpu_instructions.object_id.to_s(16)}:#{(before+Parfait::BinaryCode.byte_offset).to_s(16)}"
     end
 
     # Create Binary code for all methods and the initial jump
@@ -144,7 +145,7 @@ module Risc
     # constant loads into one instruction.
     #
     def create_binary
-      object_positions.each do |id , method|
+      object_positions.each do |method,position|
         next unless method.is_a? Parfait::TypedMethod
         writer = BinaryWriter.new(method.binary)
         writer.assemble(method.cpu_instructions)
