@@ -19,15 +19,14 @@ module Risc
     def position_changing(position , to)
     end
 
-    # when the argument changes position, we update the objects
+    # when the argument changes position, we update the next objects
     # position to reflect that change
     #
     def position_changed(previous)
       add = previous.object ? previous.object.padded_length : 0
-      my_pos = previous.at + add
-      object_pos = Position.get(@object)
-      return if my_pos == object_pos.at
-      Position.set_to(object_pos , my_pos)
+      next_at = previous.at + add
+      next_pos = Position.get(@object)
+      next_pos.set(next_at)
     end
   end
 end

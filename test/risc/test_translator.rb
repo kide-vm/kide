@@ -30,7 +30,7 @@ module Risc
     def test_no_risc #by assembling, risc doesnt have assemble method
       @machine.translate(:arm)
       @machine.position_all
-      @machine.object_positions.each do |method , position|
+      @machine.object_positions.keys.each do |method|
         next unless method.is_a? Parfait::TypedMethod
         method.cpu_instructions.each do |ins|
           ins.assemble(DevNull.new)

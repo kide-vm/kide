@@ -50,7 +50,7 @@ module Risc
     # machine keeps a list of all objects and their positions.
     # this is lazily created with a collector
     def object_positions
-      Collector.collect_space if Position.positions.empty?
+      Collector.collect_space if Position.positions.length < 2 #one is the label
       Position.positions
     end
 
@@ -105,9 +105,7 @@ module Risc
       sorted.each do |objekt|
         next unless Position.is_object(objekt)
         before = at
-        unless( Position.set?(objekt))
-          raise objekt.class
-        end
+        raise objekt.class unless( Position.set?(objekt)) #debug check
         position = Position.get(objekt).set(at)
         previous.position_listener(objekt) if previous
         previous = position
@@ -145,7 +143,7 @@ module Risc
     # constant loads into one instruction.
     #
     def create_binary
-      object_positions.each do |method,position|
+      object_positions.keys.each do |method|
         next unless method.is_a? Parfait::TypedMethod
         writer = BinaryWriter.new(method.binary)
         writer.assemble(method.cpu_instructions)

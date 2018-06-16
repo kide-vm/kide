@@ -91,8 +91,7 @@ module Risc
       while(instruction)
         position = Position.get_or_create(instruction)
         first = position unless first
-        il = InstructionListener.new( code )
-        position.position_listener(il)
+        position.position_listener( InstructionListener.new( code ) )
         if instruction.respond_to?(:branch)
 #          label_pos = Position.get(instruction.branch)
 #          label_pos.position_listener( BranchListener.new(il))

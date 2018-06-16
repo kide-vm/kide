@@ -13,6 +13,7 @@ module Risc
       Position.log.debug "extending one at #{position}"
       pos = CodeListener.init( position.object.next )
       return unless position.valid?
+      puts "insert #{position.object.next.object_id.to_s(16)}" unless position.valid?
       pos.set( position + position.object.padded_length)
       set_jump_for(position)
     end

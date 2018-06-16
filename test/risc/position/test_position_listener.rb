@@ -15,7 +15,7 @@ module Risc
     end
     def test_no_fire
       @pos.position_listener(self)
-      Position.set_to(@pos,0)
+      @pos.set(0)
       assert_equal 0 , Position.get(@object).at
     end
     def test_at

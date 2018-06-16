@@ -69,7 +69,7 @@ module Risc
     def set(int)
       return int if int == self.at
       trigger_changing( int )
-      Position.set_to(self , int)
+      Position.set_cache(self , int)
       @at = int
       trigger_changed
       self
@@ -157,9 +157,9 @@ module Risc
       if pos == nil
         str = "position accessed but not initialized, "
         str += "0x#{object.object_id.to_s(16)}\n"
-        str += "for #{object.class} "
+        str += "class: #{object.class} "
         str += "byte_length #{object.byte_length}" if object.respond_to?(:byte_length)
-        str += " for #{object.to_s[0...130]}"
+        str += " object: #{object.to_s[0...130]}"
         raise str
       end
       pos
@@ -186,7 +186,7 @@ module Risc
     # forward caches object -> position
     # reverse caches position.at > position
     # Labels do not participatein reverse cache
-    def self.set_to( position , to)
+    def self.set_cache( position , to)
       postest = Position.positions[position.object] unless to < 0
       raise "Mismatch #{position}" if postest and postest != position
       @reverse_cache.delete(position.at) unless position.object.is_a?(Label)

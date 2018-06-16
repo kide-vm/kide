@@ -104,7 +104,6 @@ module Risc
     # write type of the instance, and the variables that are passed
     # variables ar values, ie int or refs. For refs the object needs to save the object first
     def write_object( object )
-      write_object_check(object)
       obj_written = write_object_variables(object)
       log.debug "instances=#{object.get_instance_variables.inspect} mem_len=0x#{object.padded_length.to_s(16)}"
       indexed_written = write_object_indexed(object)
@@ -112,15 +111,6 @@ module Risc
       log.debug "Len = 0x#{object.get_length.to_s(16)} , inst =0x#{object.get_type.instance_length.to_s(16)}" if object.is_a? Parfait::Type
       pad_after( obj_written + indexed_written  )
       Position.get(object)
-    end
-
-    def write_object_check(object)
-      log.debug "Write object #{object.class} #{object.inspect[0..100]}"
-      #Only initially created codes are collected. Binary_init and method "tails" not
-      unless object.is_a?(Parfait::BinaryCode)
-        log.debug "Object at 0x#{Position.get(object)}:#{object.get_type()}"
-        raise "Object(0x#{object.object_id.to_s(16)}) not linked #{object.inspect}"
-      end
     end
 
     def write_object_indexed(object)
