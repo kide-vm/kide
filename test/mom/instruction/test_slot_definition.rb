@@ -13,6 +13,9 @@ module Mom
       assert_equal Array , slot.slots.class
       assert_equal :caller , slot.slots.first
     end
+    def test_to_s
+      assert_equal "[message,caller]" , slot.to_s
+    end
     def test_create_fail_none
       assert_raises {slot(nil)}
     end

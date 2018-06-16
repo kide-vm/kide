@@ -18,5 +18,8 @@ module Mom
     def test_def_const
       assert_equal "hi" , @instruction.constant.to_string
     end
+    def test_to_s
+      assert_equal "[StringConstant]" , @definition.to_s
+    end
   end
 end
