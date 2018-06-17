@@ -37,6 +37,10 @@ module Risc
       ret
     end
 
+    # just part of the protocol, noop in this case
+    def precheck
+    end
+
     def to_cpu( translator )
       translator.translate( self )
     end

@@ -33,7 +33,7 @@ module Risc
       @machine.object_positions.keys.each do |method|
         next unless method.is_a? Parfait::TypedMethod
         method.cpu_instructions.each do |ins|
-          ins.assemble(DevNull.new)
+          ins.assemble(Util::DevNull.new)
         end
       end
     end

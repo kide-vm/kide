@@ -1,4 +1,6 @@
 require "util/list"
+require "util/dev_null"
+
 module Arm
   # Arm instruction base class
   # Mostly linked list functionality that all instructions have
@@ -19,6 +21,13 @@ module Arm
       ret = 0
       self.each{|ins| ret += ins.byte_length}
       ret
+    end
+
+    # precheck that everything is ok, before asembly
+    # in arm, we use the oppertunity to assemble to dev_null, so any
+    # additions are done _before_ assemnly
+    def precheck
+      assemble(Util::DevNull.new)
     end
 
     def insert(instruction)

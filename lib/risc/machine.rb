@@ -22,6 +22,7 @@ module Risc
       @constants = []
       @next_address = nil
     end
+    
     attr_reader  :constants , :cpu_init
     attr_reader  :booted , :translated
     attr_reader  :platform
@@ -143,12 +144,23 @@ module Risc
     # constant loads into one instruction.
     #
     def create_binary
-      object_positions.keys.each do |method|
-        next unless method.is_a? Parfait::TypedMethod
+      methods = object_positions.keys.find_all{|obj| obj.is_a? Parfait::TypedMethod}
+      prerun(methods)
+      assemble(methods)
+      log.debug "BinaryInit #{cpu_init.object_id.to_s(16)}"
+    end
+
+    def prerun(methods)
+      methods.each do |method|
+        method.cpu_instructions.each {|i| i.precheck }
+      end
+    end
+
+    def assemble(methods)
+      methods.each do |method|
         writer = BinaryWriter.new(method.binary)
         writer.assemble(method.cpu_instructions)
       end
-      log.debug "BinaryInit #{cpu_init.object_id.to_s(16)}"
     end
 
     def boot
