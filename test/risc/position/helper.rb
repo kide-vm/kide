@@ -37,6 +37,14 @@ module Risc
       DummyInstruction.new
     end
   end
+  class DummyBranch < Branch
+    attr_reader :precheck_called
+
+    def precheck
+      @precheck_called = true
+    end
+  end
+
   class DummyInstruction < Dummy
     include Util::List
     def initialize(nekst = nil)

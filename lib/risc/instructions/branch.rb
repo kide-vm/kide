@@ -23,8 +23,8 @@ module Risc
     end
     alias :inspect :to_s
 
-    # if branch is implemented it must return the label it branches to
-    def branch
+    # if branch_to is implemented it must return the label it branches to
+    def branch_to
       label
     end
   end

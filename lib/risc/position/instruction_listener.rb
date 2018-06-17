@@ -88,15 +88,17 @@ module Risc
       raise "Not Binary Code #{code.class}" unless code.is_a?(Parfait::BinaryCode)
       raise "Must init with instruction, not nil" unless instruction
       first = nil
+      branches = []
       while(instruction)
         position = Position.get_or_create(instruction)
         first = position unless first
         position.position_listener( InstructionListener.new( code ) )
-        if instruction.respond_to?(:branch)
-#          label_pos = Position.get(instruction.branch)
-#          label_pos.position_listener( BranchListener.new(il))
-        end
+        branches << instruction if instruction.respond_to?(:branch_to)
         instruction = instruction.next
+      end
+      branches.each do |branch|
+        label_pos = Position.get(branch.branch_to)
+        label_pos.position_listener( BranchListener.new(branch) )
       end
       first
     end

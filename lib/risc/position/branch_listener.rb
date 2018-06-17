@@ -3,12 +3,13 @@ module Risc
   class BranchListener
 
     # initialize with the instruction listener
-    def initialize(listener)
-      @listener = listener
+    def initialize(branch)
+      @branch = branch
     end
 
-
+    # incoming position is the labels
     def position_changed(position)
+      @branch.precheck
     end
 
     # don't react to insertion, as the CodeListener will take care
