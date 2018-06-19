@@ -147,7 +147,7 @@ module Risc
     end
 
     def self.set?(object)
-      self.positions.has_key?(object)
+      self.positions[object]
     end
 
     # get a position from the cache (object -> position)
