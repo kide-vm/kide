@@ -15,6 +15,15 @@ module Arm
       code = @machine.call(	-4 ,{} )#this jumps to the next instruction
       assert_code code , :call, [0xff,0xff,0xff,0xeb] #ea ff ff fe
     end
+    def test_has_branch_to
+      label = Risc::Label.new("HI","ho" , FakeAddress.new(0))
+      code = @machine.b( label )
+      assert_equal label , code.branch_to
+    end
+    def test_branch_to_for_swi
+      code = @machine.swi( 0x05 )
+      assert_nil code.branch_to
+    end
     def test_method_call
       Risc.machine.boot
       bin = Parfait::BinaryCode.new(1)

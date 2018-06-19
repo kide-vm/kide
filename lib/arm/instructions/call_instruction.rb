@@ -41,6 +41,11 @@ module Arm
       end
     end
 
+    # if branch_to is implemented it must return the label it branches to
+    def branch_to
+      @first unless opcode == :swi
+    end
+
     def handle_call(io)
       case @first
       when Risc::Label

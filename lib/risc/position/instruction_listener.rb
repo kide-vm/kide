@@ -97,6 +97,7 @@ module Risc
         instruction = instruction.next
       end
       branches.each do |branch|
+        next if branch.branch_to.nil? #nil allowed for when there is no branch
         label_pos = Position.get(branch.branch_to)
         label_pos.position_listener( BranchListener.new(branch) )
       end

@@ -38,6 +38,7 @@ module Elf
 
       @machine.object_positions.each do |slot , position|
         next if slot.is_a?(Parfait::BinaryCode)
+        next if slot.class.name.include?("Arm")
         if( slot.respond_to? :rxf_reference_name )
           label = "#{slot.rxf_reference_name}"
         else
