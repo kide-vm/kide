@@ -140,7 +140,7 @@ module Arm
     end
 
     def putstring( int_code )
-      codes = ArmMachine.add( :r1 ,  :r1 , 12 ) # adjust for object header
+      codes = ArmMachine.add( :r1 ,  :r1 , Parfait::Word.type_length*4 ) # adjust for object header
       codes.append ArmMachine.mov( :r0 ,  1 )  # write to stdout == 1
       syscall(int_code , codes )
     end
