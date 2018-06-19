@@ -22,8 +22,8 @@ module Risc
              SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
-             Branch, FunctionReturn, SlotToReg, SlotToReg, Branch,
-             Transfer, Syscall, NilClass]
+             Branch, FunctionReturn, Transfer, SlotToReg, Branch,
+             SlotToReg, Syscall, NilClass]
        assert_equal "H".ord , get_return
     end
     def test_byte_to_reg

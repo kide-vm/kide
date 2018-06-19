@@ -13,8 +13,8 @@ module Risc
       #show_main_ticks # get output of what is
       check_main_chain [LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
-             Branch, Transfer, Syscall, NilClass]
+             SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg,
+             Branch, SlotToReg, Syscall, NilClass]
       assert_equal 15 , get_return
     end
 
@@ -36,7 +36,7 @@ module Risc
       assert_equal Fixnum , link.class
     end
     def test_transfer
-      transfer = main_ticks(17)
+      transfer = main_ticks(14)
       assert_equal Transfer ,  transfer.class
     end
     def test_sys

@@ -23,8 +23,8 @@ module Risc
              SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             SlotToReg, Branch, FunctionReturn, SlotToReg, SlotToReg,
-             Branch, Transfer, Syscall, NilClass]
+             SlotToReg, Branch, FunctionReturn, Transfer, SlotToReg,
+             Branch, SlotToReg, Syscall, NilClass]
        assert_equal 0 , get_return
     end
     def test_zero

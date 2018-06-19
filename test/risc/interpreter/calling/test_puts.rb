@@ -22,10 +22,9 @@ module Risc
              SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
              SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
-             Branch, Transfer, Syscall, NilClass]
+             SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg,
+             Branch, SlotToReg, Syscall, NilClass]
        assert_equal "Hello again" , @interpreter.stdout
-       assert_equal Fixnum , get_return.class
        assert_equal 11 , get_return #bytes written
     end
     def test_call

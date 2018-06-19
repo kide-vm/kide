@@ -14,9 +14,8 @@ module Risc
         check_main_chain [LoadConstant, LoadConstant, OperatorInstruction, IsZero, LoadConstant,
              OperatorInstruction, IsZero, LoadConstant, RegToSlot, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, Branch, SlotToReg,
-             SlotToReg, FunctionReturn, SlotToReg, SlotToReg, Branch,
-             Transfer, Syscall, NilClass]
-      assert_equal Fixnum , get_return.class
+             SlotToReg, FunctionReturn, Transfer, SlotToReg, Branch,
+             SlotToReg, Syscall, NilClass]
       assert_equal 1 , get_return
     end
     def test_load_10

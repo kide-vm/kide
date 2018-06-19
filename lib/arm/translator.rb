@@ -146,15 +146,16 @@ module Arm
     end
 
     def exit( int_code )
-      codes =  ArmMachine.ldr( :r0 ,  :r0 , arm_index(Risc.resolve_to_index(:Message , :return_value)) )
-      syscall int_code , codes
+      codes = ArmMachine.mov( :r7 ,  int_code )
+      codes.append ArmMachine.swi( 0 )
+      codes
     end
 
     private
 
     # syscall is always triggered by swi(0)
     # The actual code (ie the index of the kernel function) is in r7
-    def syscall int_code , codes
+    def syscall( int_code , codes)
       codes.append ArmMachine.mov( :r7 ,  int_code )
       codes.append ArmMachine.swi( 0 )
       codes

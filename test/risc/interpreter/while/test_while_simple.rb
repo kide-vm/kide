@@ -17,7 +17,7 @@ module Risc
              Branch, SlotToReg, SlotToReg, LoadConstant, OperatorInstruction,
              IsZero, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
-             FunctionReturn, SlotToReg, SlotToReg, Branch, Transfer,
+             FunctionReturn, Transfer, SlotToReg, Branch, SlotToReg,
              Syscall, NilClass]
       assert_kind_of Parfait::NilClass , get_return
     end

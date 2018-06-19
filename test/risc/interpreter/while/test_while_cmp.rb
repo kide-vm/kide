@@ -47,9 +47,8 @@ module Risc
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, LoadConstant,
              OperatorInstruction, IsZero, SlotToReg, SlotToReg, RegToSlot,
              SlotToReg, Branch, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
-             Branch, Transfer, Syscall, NilClass]
-       assert_kind_of Fixnum , get_return
+             SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg,
+             Branch, SlotToReg, Syscall, NilClass]
        assert_equal 1 , get_return
     end
     def test_exit
