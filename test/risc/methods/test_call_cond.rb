@@ -20,13 +20,11 @@ HERE
     end
     def test_call_sm
       run_space if_cond(8)
-      assert_equal Parfait::Integer , get_return.class
-      assert_equal 10 , get_return.value
+      assert_equal 10 , get_return
     end
     def test_call_lg
       run_space if_cond(18)
-      assert_equal Parfait::Integer , get_return.class
-      assert_equal 20 , get_return.value
+      assert_equal 20 , get_return
     end
   end
 end

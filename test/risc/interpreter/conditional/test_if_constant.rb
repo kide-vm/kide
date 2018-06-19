@@ -5,7 +5,7 @@ module Risc
     include Ticker
 
     def setup
-      @string_input = as_main 'if( 10 ); return "then";else;return "else";end'
+      @string_input = as_main 'if( 10 ); return 1;else;return 2;end'
       super
     end
 
@@ -14,9 +14,10 @@ module Risc
         check_main_chain [LoadConstant, LoadConstant, OperatorInstruction, IsZero, LoadConstant,
              OperatorInstruction, IsZero, LoadConstant, RegToSlot, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, Branch, SlotToReg,
-             SlotToReg, FunctionReturn, Transfer, Syscall, NilClass]
-      assert_equal Parfait::Word , get_return.class
-      assert_equal "then" , get_return.to_string
+             SlotToReg, FunctionReturn, SlotToReg, SlotToReg, Branch,
+             Transfer, Syscall, NilClass]
+      assert_equal Fixnum , get_return.class
+      assert_equal 1 , get_return
     end
     def test_load_10
       load = main_ticks(1)
@@ -39,7 +40,7 @@ module Risc
       assert check.label.name.start_with?("false_label") , check.label.name
     end
     def test_exit
-      done = main_ticks(19)
+      done = main_ticks(22)
       assert_equal Syscall ,  done.class
     end
   end

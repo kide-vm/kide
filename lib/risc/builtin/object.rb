@@ -71,13 +71,23 @@ module Risc
             add_code exit_label
           end
           compiler.reset_regs
-          emit_syscall( builder , :exit )
+          exit_sequence(builder)
           return compiler.method
+        end
+
+        # a sort of inline version of exit method.
+        # Used by exit and __init__ (so it doesn't have to call it)
+        def exit_sequence(builder)
+          r1 = RiscValue.new( :r1 , :Integer )
+          builder.add_slot_to_reg "get return" , :message , :return_value , r1
+          builder.reduce_int( "reduce return" , r1)
+          emit_syscall( builder  , :exit )
         end
 
         def exit( context )
           compiler = compiler_for(:Object,:exit ,{})
-          emit_syscall( compiler.builder(true, compiler.method) , :exit )
+          builder = compiler.builder(true, compiler.method)
+          exit_sequence(builder)
           return compiler.method
         end
 

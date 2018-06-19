@@ -17,8 +17,9 @@ module Risc
              Branch, SlotToReg, SlotToReg, LoadConstant, OperatorInstruction,
              IsZero, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
-             FunctionReturn, Transfer, Syscall, NilClass]
-      assert_kind_of Parfait::FalseClass , get_return
+             FunctionReturn, SlotToReg, SlotToReg, Branch, Transfer,
+             Syscall, NilClass]
+      assert_kind_of Parfait::NilClass , get_return
     end
     def test_load_false_const
       load = main_ticks(1)
@@ -54,7 +55,7 @@ module Risc
       assert check.label.name.start_with?("merge_label") , check.label.name
     end
     def test_exit
-      done = main_ticks(33)
+      done = main_ticks(36)
       assert_equal Syscall ,  done.class
     end
   end

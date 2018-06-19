@@ -48,12 +48,13 @@ module Risc
              SlotToReg, LoadConstant, OperatorInstruction, IsZero, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, Branch, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
-             Transfer, Syscall, NilClass]
-       assert_kind_of Parfait::Integer , get_return
-       assert_equal 0 , get_return.value
+             SlotToReg, SlotToReg, Branch, Transfer, Syscall,
+             NilClass]
+       assert_kind_of Fixnum , get_return
+       assert_equal 0 , get_return
     end
     def test_exit
-      done = main_ticks(187)
+      done = main_ticks(190)
       assert_equal Syscall ,  done.class
     end
   end

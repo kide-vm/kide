@@ -22,9 +22,9 @@ module Risc
              SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
-             Branch, FunctionReturn, Transfer, Syscall, NilClass]
-       assert_equal Parfait::Integer , get_return.class
-       assert_equal "H".ord , get_return.value
+             Branch, FunctionReturn, SlotToReg, SlotToReg, Branch,
+             Transfer, Syscall, NilClass]
+       assert_equal "H".ord , get_return
     end
     def test_byte_to_reg
       done = main_ticks(34)
@@ -32,7 +32,7 @@ module Risc
       assert_equal "H".ord ,  @interpreter.get_register(done.register)
     end
     def test_exit
-      done = main_ticks(64)
+      done = main_ticks(67)
       assert_equal Syscall ,  done.class
     end
   end

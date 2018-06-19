@@ -28,10 +28,9 @@ module Risc
              RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
              SlotToReg, SlotToReg, RegToSlot, Branch, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer,
-             Syscall, NilClass]
-       assert_equal Parfait::Integer , get_return.class
-       assert_equal 2 , get_return.value
+             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
+             SlotToReg, Branch, Transfer, Syscall, NilClass]
+       assert_equal 2 , get_return
     end
 
     def test_load_25
@@ -46,7 +45,7 @@ module Risc
       assert_equal Fixnum , link.class
     end
     def test_sys
-      sys = main_ticks(91)
+      sys = main_ticks(94)
       assert_equal Syscall ,  sys.class
       assert_equal :exit ,  sys.name
     end

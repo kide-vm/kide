@@ -12,8 +12,7 @@ module Methods
         return same(8)
       end
 HERE
-      assert_equal Parfait::Integer , get_return.class
-      assert_equal 8 , get_return.value
+      assert_equal 8 , get_return
     end
 
     def test_call_with_call
@@ -26,8 +25,7 @@ HERE
         return a
       end
 HERE
-      assert_equal Parfait::Integer , get_return.class
-      assert_equal 7 , get_return.value
+      assert_equal 7 , get_return
     end
   end
 end

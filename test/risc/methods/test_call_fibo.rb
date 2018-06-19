@@ -18,8 +18,7 @@ module Methods
         return down(8)
       end
 HERE
-      assert_equal Parfait::Integer , get_return.class
-      assert_equal 1 , get_return.value
+      assert_equal 1 , get_return
     end
 
     def est_fibo
@@ -38,8 +37,7 @@ HERE
         return fibo_r(8)
       end
 HERE
-      assert_equal Parfait::Integer , get_return.class
-      assert_equal 8 , get_return.value
+      assert_equal 8 , get_return
     end
   end
 end

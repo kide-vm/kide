@@ -13,8 +13,7 @@ module Mains
         end
         return a
 HERE
-      assert_equal Parfait::Integer , get_return.class
-      assert_equal 10 , get_return.value
+      assert_equal 10 , get_return
     end
     def test_ruby_subs
       run_main <<HERE
@@ -24,8 +23,7 @@ HERE
         end
         return b
 HERE
-      assert_equal Parfait::Integer , get_return.class
-      assert_equal 0 , get_return.value
+      assert_equal 0 , get_return
     end
     def test_ruby_adds_fibo
       run_main <<HERE
@@ -41,8 +39,7 @@ HERE
         end
       	return result
 HERE
-      assert_equal Parfait::Integer , get_return.class
-      assert_equal 8 , get_return.value
+      assert_equal 8 , get_return
     end
   end
 end

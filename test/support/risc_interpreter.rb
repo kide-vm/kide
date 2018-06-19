@@ -36,7 +36,7 @@ module Risc
 
     def get_return
       assert_equal Parfait::Message , @interpreter.get_register(:r0).class
-      @interpreter.get_register(:r0).return_value
+      @interpreter.get_register(:r1)
     end
 
     # do as many as given ticks in the main, ie main_at more
@@ -78,6 +78,11 @@ module Risc
       run_main("return #{input}")
     end
 
+    # get the return from the message (not exit code)
+    # exit code must be int
+    def get_message_return
+      @interpreter.get_register(:r8).return_value
+    end
     def run_main(input)
       @string_input = as_main(input)
       do_setup

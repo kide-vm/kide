@@ -11,7 +11,7 @@ module Risc
 
     def test_chain
       #show_main_ticks # get output of what is
-      check_main_chain  [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
+      check_main_chain [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, RegToSlot, Branch, SlotToReg,
              RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
@@ -22,11 +22,11 @@ module Risc
              SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
              SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, SlotToReg, FunctionReturn, Transfer, Syscall,
-             NilClass]
+             SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
+             Branch, Transfer, Syscall, NilClass]
        assert_equal "Hello again" , @interpreter.stdout
-       assert_equal Parfait::Integer , get_return.class
-       assert_equal 11 , get_return.value #bytes written
+       assert_equal Fixnum , get_return.class
+       assert_equal 11 , get_return #bytes written
     end
     def test_call
       cal =  main_ticks(24)

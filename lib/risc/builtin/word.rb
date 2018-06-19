@@ -45,7 +45,8 @@ module Risc
           builder.reduce_int( source + " fix me", value )
           builder.reduce_int( source + " fix arg", index )
           builder.add_reg_to_byte( source , value , me , index)
-          builder.add_reg_to_slot( source , me , :message , :return_value)
+          value = builder.load_int_arg_at(source , 1 )
+          builder.add_reg_to_slot( source , value , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler.method
         end
