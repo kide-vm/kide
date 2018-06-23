@@ -1,18 +1,14 @@
-require_relative "../helper"
+require_relative "helper"
 
-class HelloTest < MiniTest::Test
+module Elf
+  class HelloTest < FullTest
 
-  def setup
-    Risc.machine.boot
-  end
-  def check
-    Vool::VoolCompiler.ruby_to_binary( "class Space;def main(arg);#{@input};end;end" )
-    writer = Elf::ObjectWriter.new(Risc.machine)
-    writer.save "test/hello.o"
-  end
-
-  def test_string_put
-    @input = "return 'Hello World!\n'.putstring"
-    check
+    def test_string_put
+      hello = "Hello World!\n"
+      @input = "return '#{hello}'.putstring"
+      @stdout = hello
+      @exit_code = hello.length
+      check "hello"
+    end
   end
 end
