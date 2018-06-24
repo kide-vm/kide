@@ -15,6 +15,10 @@ module Elf
       Vool::VoolCompiler.ruby_to_binary( "class Space;def main(arg);#{@input};end;end" )
       writer = Elf::ObjectWriter.new(Risc.machine)
       writer.save "test/#{file}.o"
+    end
+
+    def check_remote(file)
+      check(file)
       stdout , exit_code = run_ssh(file)
       @stdout = "" unless @stdout
       assert_equal @stdout , stdout
