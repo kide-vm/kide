@@ -5,18 +5,30 @@ require 'net/scp'
 module Mains
   class TestArm < MiniTest::Test
 
+    DEBUG = true
+    def self.user
+      ENV["ARM_USER"] || "pi"
+    end
+    def self.port
+      ENV["ARM_PORT"] || 2222
+    end
+
     # runnable_methods is called by minitest to determine which tests to run
     def self.runnable_methods
-      all = Dir["test/mains/source/*.rb"]
+      all = Dir["test/mains/source/*_*.rb"]
       tests =[]
+      host = ENV["ARM_HOST"]
+      return tests unless host
+      ssh = Net::SSH.start(host, user , port: port )
       all.each do |file_name|
         fullname = file_name.split("/").last.split(".").first
         name , stdout , exit_code = fullname.split("_")
         method_name = "test_#{name}"
-        tests << method_name
         input = File.read(file_name)
+        tests << method_name
         self.send(:define_method, method_name ) do
-          out , code = run_main(input , name)
+          compile( input , name , ssh.scp)
+          out , code = run_ssh(name , ssh)
           assert_equal stdout , out , "Wrong stdout #{name}"
           assert_equal exit_code , code.to_s , "Wrong exit code #{name}"
         end
@@ -24,39 +36,27 @@ module Mains
       tests
     end
 
-    DEBUG = true
-
-    def setup
+    def compile(input , file , scp)
       Risc.machine.boot
-    end
-
-    def run_main(input , file)
+      puts "Compiling test/#{file}.o" if DEBUG
       Vool::VoolCompiler.ruby_to_binary( "class Space;def main(arg);#{input};end;end" )
       writer = Elf::ObjectWriter.new(Risc.machine)
       writer.save "test/#{file}.o"
-      run_ssh(file)
+      object_file = "/tmp/#{file}.o"
+      puts "Copying test/#{file}.o to #{object_file}" if DEBUG
+      scp.upload! "test/#{file}.o",  object_file
     end
 
-    def run_ssh( file )
-      host = ENV["ARM_HOST"]
-      return unless host
-      port = (ENV["ARM_PORT"] || 2222)
-      user = (ENV["ARM_USER"] || "pi")
+    def run_ssh( file , ssh)
       binary_file = "/tmp/#{file}"
       object_file = binary_file + ".o"
-      Net::SCP.start(host, user , port: port ) do |scp|
-        puts "Copying test/#{file}.o to #{object_file}" if DEBUG
-        scp.upload! "test/#{file}.o",  object_file
-      end
-      Net::SSH.start(host, user , port: port ) do |ssh|
-        puts "Linking #{object_file}" if DEBUG
-        stdout , exit_code = ssh_exec!(ssh , "ld -N -o #{binary_file} #{object_file}")
-        assert_equal 0 , exit_code , "Linking #{binary_file} failed"
-        puts "Running #{binary_file}" if DEBUG
-        stdout , exit_code = ssh_exec!(ssh , binary_file)
-        puts "Result #{stdout} #{exit_code}" if DEBUG
-        return stdout , exit_code
-      end
+      puts "Linking #{object_file}" if DEBUG
+      stdout , exit_code = ssh_exec!(ssh , "ld -N -o #{binary_file} #{object_file}")
+      assert_equal 0 , exit_code , "Linking #{binary_file} failed"
+      puts "Running #{binary_file}" if DEBUG
+      stdout , exit_code = ssh_exec!(ssh , binary_file)
+      puts "Result #{stdout} #{exit_code}" if DEBUG
+      return stdout , exit_code
     end
 
     def ssh_exec!(ssh, command)
