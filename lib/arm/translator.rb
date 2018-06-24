@@ -65,9 +65,10 @@ module Arm
       ArmMachine.b( code.method.binary )
     end
 
-    def translate_FunctionReturn code
+    def translate_FunctionReturn( code )
       ArmMachine.mov( :pc , code.register)
     end
+    alias :translate_DynamicJump :translate_FunctionReturn
 
     def translate_LoadConstant( code )
       constant = code.constant
