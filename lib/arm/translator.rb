@@ -68,7 +68,12 @@ module Arm
     def translate_FunctionReturn( code )
       ArmMachine.mov( :pc , code.register)
     end
-    alias :translate_DynamicJump :translate_FunctionReturn
+    def translate_DynamicJump(code)
+      index = Parfait.object_space.get_class_by_name(:TypedMethod).instance_type.variable_index(:binary)
+      codes = ArmMachine.ldr( code.register ,  code.register  , arm_index(index) )
+      codes << ArmMachine.mov( :pc , code.register)
+      codes
+    end
 
     def translate_LoadConstant( code )
       constant = code.constant

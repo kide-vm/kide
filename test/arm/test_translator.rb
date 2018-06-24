@@ -1,17 +1,30 @@
 require_relative 'helper'
 
 module Arm
-  class TestStack < MiniTest::Test
+  class TestTranslator < MiniTest::Test
 
-    def test_init
-      assert Translator.new
+    def setup
+      Risc.machine.boot
+      @jump = Risc::DynamicJump.new("" , :r1)
+      @codes = Translator.new.translate @jump
     end
-
-    def test_dynamic
-      trans = Translator.new
-      jump = Risc::DynamicJump.new("" , :r1)
-      res = trans.translate jump
-      assert :r1 , res.from
+    def test_slot_class
+      assert_equal MemoryInstruction , @codes.class
+    end
+    def test_slot_left
+      assert_equal :r1 , @codes.left
+    end
+    def test_slot_result
+      assert_equal :r1 , @codes.left
+    end
+    def test_slot_right
+      assert_equal 16 , @codes.right
+    end
+    def test_next_from
+      assert_equal :r1 , @codes.next.from.symbol
+    end
+    def test_next_class
+      assert_equal MoveInstruction , @codes.next.class
     end
   end
 end

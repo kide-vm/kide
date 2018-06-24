@@ -3,6 +3,7 @@ module Arm
   # Implemented: immediate offset with offset=0
 
   class MemoryInstruction < Instruction
+    attr_reader :left , :right , :result
 
     def initialize result , left , right = nil , attributes = {}
       super(nil)
