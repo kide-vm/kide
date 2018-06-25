@@ -22,6 +22,9 @@ guard :minitest , all_on_start: false do   # with Minitest::Unit
   #parfait type tests have a whole directory
   watch(%r{^lib/parfait/type.rb}) { Dir["test/parfait/type/test_*.rb"] }
 
+  # ruby compiler tests have a whole directory
+  watch(%r{^lib/vool/ruby_compiler.rb}) { Dir["test/vool/ruby_compiler/test_*.rb"] }
+
   # Vool to_mom compile process +   # Ruby to vool compile process
   watch(%r{^lib/vool/statements/(.+)_statement.rb}) { |m|
     [ Dir["test/vool/to_mom/test_#{m[1]}*.rb"] , "test/vool/statements/test_#{m[1]}.rb"] }

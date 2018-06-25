@@ -10,6 +10,7 @@ module Vool
   # The next step is then to normalize the code and then finally to compile
   # to the next level down, MOM (Minimal Object Machine)
   class RubyCompiler < AST::Processor
+  include AST::Sexp
 
     def self.compile(input)
       ast = Parser::Ruby22.parse( input )
@@ -130,6 +131,16 @@ module Vool
       name = expression.children[0]
       value = process(expression.children[1])
       IvarAssignment.new(instance_name(name),value)
+    end
+
+    def on_op_asgn(expression)
+      ass , op , exp = *expression
+      name = ass.children[0]
+      a_type = ass.type.to_s[0,3]
+      rewrite = s( a_type + "sgn" ,
+                  name ,
+                  s(:send , s( a_type + "r" , name ) , op , exp ) )
+      process(rewrite)
     end
 
     def on_return statement

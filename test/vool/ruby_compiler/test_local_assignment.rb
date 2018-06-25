@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestLocal < MiniTest::Test
+  class TestLocalAssignment < MiniTest::Test
 
     def test_local
       lst = RubyCompiler.compile( "foo = bar")

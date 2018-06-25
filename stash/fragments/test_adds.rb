@@ -14,7 +14,7 @@ module Rubyx
           result = a + b
           a = b
           b = result
-          i+= 1
+          i += 1
         end
       	return result
       end
