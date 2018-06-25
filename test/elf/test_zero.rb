@@ -16,10 +16,12 @@ class TestZeroCode < MiniTest::Test
     name == :main or name == :__init__
   end
 
-  def pest_empty_translate
+  def test_empty_translate
     assert_equal 2 , @space.get_all_methods.length
     @machine.translate(:arm)
-    writer = Elf::ObjectWriter.new(@machine , @objects )
+    @machine.position_all
+    @machine.create_binary
+    writer = Elf::ObjectWriter.new(@machine )
     writer.save "test/zero.o"
   end
 

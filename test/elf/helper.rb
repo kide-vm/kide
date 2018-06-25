@@ -11,8 +11,14 @@ module Elf
       Risc.machine.boot
     end
 
-    def check(file)
-      Vool::VoolCompiler.ruby_to_binary( "class Space;def main(arg);#{@input};end;end" )
+    def in_space(input)
+      "class Space; #{input} ; end"
+    end
+    def as_main(input)
+      in_space("def main(arg);#{input};end")
+    end
+    def check(input, file)
+      Vool::VoolCompiler.ruby_to_binary( input )
       writer = Elf::ObjectWriter.new(Risc.machine)
       writer.save "test/#{file}.o"
     end
