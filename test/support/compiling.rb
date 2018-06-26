@@ -26,7 +26,7 @@ module MomCompile
     # but here we return the intermediate mom instructions that are otherwise not available
     statements = Vool::RubyCompiler.compile as_test_main( input )
     statements = statements.normalize
-    res = statements.create_objects
+    res = statements.to_mom(nil)
     assert_equal Parfait::Class , statements.clazz.class , statements
     @method = statements.clazz.get_method(:main)
     assert_equal Parfait::VoolMethod , @method.class

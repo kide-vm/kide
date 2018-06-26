@@ -11,21 +11,18 @@ module Vool
       ClassStatement.new(@name , @super_class_name, @body&.normalize )
     end
 
-    # there is no mom equivalent for a class, this should never be called
     def to_mom( _ )
-      raise "should not be called (call create_objects)"
+      create_class_object
+      mom = nil #return mom for test purpose
+      self.each do |node|
+        mom = node.to_mom(@clazz) if node.is_a?(MethodStatement)  
+      end
+      mom
     end
 
     def each(&block)
       block.call(self)
       @body.each(&block) if @body
-    end
-
-    def create_objects
-      create_class_object
-      mom = nil #return mom for test purpose
-      self.each {|node| mom = node.create_objects(@clazz) if node.is_a?(MethodStatement)  }
-      mom
     end
 
     def create_class_object

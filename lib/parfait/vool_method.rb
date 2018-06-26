@@ -22,7 +22,7 @@ module Parfait
       raise "source must be vool" unless source.is_a?(Vool::Statement)
     end
 
-    def create_parfait_method( type )
+    def create_typed_method( type )
       raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
       type.create_method( @name , @args_type , @frame_type)
     end

@@ -8,10 +8,16 @@ module Vool
       @clazz = clazz
     end
 
-    # there is no mom equivalent for a method definition, only a vool/parfait one
-    # Only the source of gets momed, this should never be called
-    def to_mom( _ )
-      raise "should not be called (call create_objects)"
+    def to_mom(clazz)
+      @clazz = clazz
+      raise "no class" unless clazz
+      method = Parfait::VoolMethod.new(name , make_type , make_frame , body )
+      @clazz.add_method( method )
+      typed_method = method.create_typed_method(clazz.instance_type)
+      head = @body.to_mom( typed_method )
+      compiler = Risc::MethodCompiler.new( typed_method )
+      compiler.add_mom(head)
+      head # return for testing
     end
 
     def each(&block)
@@ -21,20 +27,6 @@ module Vool
 
     def normalize
       MethodStatement.new( @name , @args , @body.normalize)
-    end
-
-    def create_objects(clazz)
-      @clazz = clazz
-      raise "no class" unless clazz
-      args_type = make_type
-      frame_type = make_frame
-      method = Parfait::VoolMethod.new(name , args_type , frame_type , body )
-      @clazz.add_method( method )
-      typed_method = method.create_parfait_method(clazz.instance_type)
-      head = @body.to_mom( typed_method )
-      compiler = Risc::MethodCompiler.new( typed_method )
-      compiler.add_mom(head)
-      head # return for testing
     end
 
     private

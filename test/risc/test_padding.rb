@@ -4,7 +4,7 @@ module Risc
   class TestPadding < MiniTest::Test
 
     def setup
-      Risc.machine.boot unless Risc.machine.booted
+      Risc.machine.boot
     end
 
     def test_small
