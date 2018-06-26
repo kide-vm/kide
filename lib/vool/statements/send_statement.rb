@@ -10,11 +10,15 @@ module Vool
   # As cache key we must use the type of the object (which is the first word of _every_ object)
   # as that is constant, and function implementations depend on the type (not class)
   class SendStatement < Statement
-    attr_reader :name , :receiver , :arguments
+    attr_reader :name , :receiver , :arguments , :block
 
     def initialize(name , receiver , arguments )
       @name , @receiver , @arguments = name , receiver , arguments
       @arguments ||= []
+    end
+
+    def block=( block )
+      @block = block
     end
 
     def normalize

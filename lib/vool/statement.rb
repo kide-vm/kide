@@ -65,6 +65,7 @@ end
 require_relative "statements/assign_statement"
 require_relative "statements/array_statement"
 require_relative "statements/basic_values"
+require_relative "statements/block_statement"
 require_relative "statements/class_statement"
 require_relative "statements/hash_statement"
 require_relative "statements/if_statement"

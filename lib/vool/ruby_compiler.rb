@@ -37,6 +37,18 @@ module Vool
       arg.first
     end
 
+    def on_block(block_node)
+      sendd = process(block_node.children[0])
+      args = process(block_node.children[1])
+      body = process(block_node.children[2])
+      sendd.block = BlockStatement.new(args , body)
+      sendd
+    end
+
+    def on_args(args)
+      args.children.collect{|a| process(a)}
+    end
+
     #basic Values
     def on_self exp
       SelfExpression.new
