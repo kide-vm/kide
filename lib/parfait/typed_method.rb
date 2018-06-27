@@ -1,19 +1,22 @@
 # A TypedMethod is static object that primarily holds the executable code.
-# It is called typed, because all arguments and variables it uses are typed.
+# It is called typed, because all arguments and variables it uses are "typed",
+# that is to say the names are known and form a type (not that the types of the
+# variables are known). The objects type is known too, which means all instances
+# variable names are known (not their respective type).
 
-# It's relation to the method a ruby programmer knows (called RubyMethod) is many to one,
-# meaning one RubyMethod (untyped) has many TypedMethod implementations.
-# The RubyMethod only holds ruby code, no binary.
+# It's relation to the method a ruby programmer knows (called VoolMethod) is many to one,
+# meaning one VoolMethod (untyped) has many TypedMethod implementations.
+# The VoolMethod only holds vool code, no binary.
 
 # The Typed method has the following instance variables
 # - name : This is the same as the ruby method name it implements
-# - source: is currently the ast (or string) that represents the "code". This is historic
-#           and will change to the RubyMethod that it implements
-# - instructions: The sequence of instructions the source (ast) was compiled to
+# - risc_instructions: The sequence of risc level instructions that mom was compiled to
+# - cpu_instructions: The sequence of cpu specific instructions that the
+#                      risc_instructions was compiled to
 #                 Instructions derive from class Instruction and form a linked list
 # - binary:  The binary (jumpable) code that the instructions get assembled into
-# - arguments: A type object describing the arguments (name+types) to be passed
-# - frame:  A type object describing the local variables that the method has
+# - arguments_type: A type object describing the arguments (name+types) to be passed
+# - frame_type:  A type object describing the local variables that the method has
 # - for_type:  The Type the Method is for
 
 
@@ -23,8 +26,6 @@ module Parfait
 
     attr_reader :name , :risc_instructions , :for_type , :cpu_instructions
     attr_reader :arguments_type , :frame_type , :binary , :next_method
-
-    attr_accessor :source
 
     def initialize( type , name , arguments_type , frame_type)
       super()

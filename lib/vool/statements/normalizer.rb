@@ -5,7 +5,7 @@ module Vool
     # Return a Name, and a possible rest that has a hoisted part of the statement
     #
     # eg  if( @var % 5) is not normalized
-    # but if(tmp_123) is with tmp_123 = @var % 5 hoited above the if
+    # but if(tmp_123) is with tmp_123 = @var % 5 hoisted above the if
     #
     # also constants count, though they may not be so useful in ifs, but returns
     def normalize_name( condition )

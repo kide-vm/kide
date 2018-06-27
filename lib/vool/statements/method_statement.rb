@@ -9,15 +9,9 @@ module Vool
     end
 
     def to_mom(clazz)
-      @clazz = clazz
-      raise "no class" unless clazz
-      method = Parfait::VoolMethod.new(name , make_type , make_frame , body )
-      @clazz.add_method( method )
-      typed_method = method.create_typed_method(clazz.instance_type)
-      head = @body.to_mom( typed_method )
-      compiler = Risc::MethodCompiler.new( typed_method )
-      compiler.add_mom(head)
-      head # return for testing
+      @clazz = clazz || raise( "no class in #{self}")
+      method = @clazz.add_method_for(name , make_arg_type , make_frame , body )
+      method.compile_to_risc(clazz.instance_type)
     end
 
     def each(&block)
@@ -31,7 +25,7 @@ module Vool
 
     private
 
-    def make_type(  )
+    def make_arg_type(  )
       type_hash = {}
       @args.each {|arg| type_hash[arg] = :Object }
       Parfait::NamedList.type_for( type_hash )

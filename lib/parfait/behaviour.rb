@@ -25,7 +25,7 @@ module Parfait
     end
 
     def add_instance_method( method )
-      raise "not implemented #{method.class} #{method.inspect}" unless method.is_a? RubyMethod
+      raise "not implemented #{method.class} #{method.inspect}" unless method.is_a? VoolMethod
       method
     end
 

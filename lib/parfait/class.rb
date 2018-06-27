@@ -1,17 +1,18 @@
-# Class is mainly a list of methods with a name. The methods are untyped, sis Vool.
+# Class is mainly a list of methods with a name.
+# The methods are untyped, sis VoolMethod.
 
 # The memory layout of an object is determined by the Type (see there).
-# The class carries the "current" type, ie the type an object would be if you created an instance
-# of the class. Note that this changes over time and so many types share the same class.
+# The class carries the "current" type, ie the type an object would be if you
+# created an instance of the class.
+# Note that this changes over time and so many types share the same class.
 
 # For dynamic OO it is essential that the class (the object defining the class)
-# can carry methods. It does so as instance variables.
-# In fact this property is implemented in the Type, as methods
-# may be added to any object at run-time.
+# can carry methods. It does so in an instance variable methods.
 
 # An Object carries the data for the instance variables it has.
 # The Type lists the names of the instance variables
-# The Class keeps a list of instance methods, these have a name and code
+# The Class keeps a list of instance methods, these have a name and (vool) code
+# Each type in turn has a list of TypedMethods that hold binary code
 
 module Parfait
   class Class < Object
@@ -33,6 +34,12 @@ module Parfait
 
     def inspect
       "Class(#{name})"
+    end
+
+    def add_method_for(name , type , frame , body )
+      method = Parfait::VoolMethod.new(name , type , frame , body )
+      add_method( method )
+      method
     end
 
     def add_method(method)
