@@ -23,13 +23,19 @@ module Vool
       MethodStatement.new( @name , @args , @body.normalize)
     end
 
-    private
+    def has_yield?
+      each{|statement| return true if statement.is_a?(YieldStatement)}
+      return false
+    end
 
     def make_arg_type(  )
       type_hash = {}
       @args.each {|arg| type_hash[arg] = :Object }
+      type_hash[:implicit_block] = :Object if has_yield?
       Parfait::NamedList.type_for( type_hash )
     end
+
+    private
 
     def make_frame
       type_hash = {}

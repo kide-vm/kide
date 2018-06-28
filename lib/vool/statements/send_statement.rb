@@ -17,8 +17,14 @@ module Vool
       @arguments ||= []
     end
 
-    def block=( block )
-      @block = block
+    def block
+      return nil if arguments.empty?
+      bl = arguments.last
+      bl.is_a?(BlockStatement) ? bl : nil
+    end
+
+    def add_block( block )
+      @arguments << block
     end
 
     def normalize
@@ -54,6 +60,7 @@ module Vool
       @arguments.each do |arg|
         block.call(arg)
       end
+      self.block.each(block) if self.block
     end
 
     # lazy init this, to keep the dependency (which goes to parfait and booting) at bay
@@ -65,6 +72,7 @@ module Vool
     # - Setting up the next message, with receiver, arguments, and (importantly) return address
     # - a CachedCall , or a SimpleCall, depending on wether the receiver type can be determined
     def to_mom( in_method )
+      @parfait_block = self.block.to_mom(in_method) if self.block
       @receiver = SelfExpression.new(in_method.for_type) if @receiver.is_a?(SelfExpression)
       if(@receiver.ct_type)
         simple_call(in_method)

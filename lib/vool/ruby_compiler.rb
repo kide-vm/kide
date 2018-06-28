@@ -41,8 +41,13 @@ module Vool
       sendd = process(block_node.children[0])
       args = process(block_node.children[1])
       body = process(block_node.children[2])
-      sendd.block = BlockStatement.new(args , body)
+      sendd.add_block BlockStatement.new(args , body)
       sendd
+    end
+
+    def on_yield(node)
+      args = process_all(node.children)
+      YieldStatement.new(args)
     end
 
     def on_args(args)
