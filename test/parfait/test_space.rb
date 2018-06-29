@@ -7,9 +7,6 @@ module Parfait
       [:Word,:List,:Message,:NamedList,:Type,:Object,:Class,:Dictionary,:TypedMethod , :Integer]
     end
 
-    def test_booted
-      assert_equal true , @machine.booted
-    end
     def test_space_length
       assert_equal 8 , @space.get_type.instance_length , @space.get_type.inspect
     end

@@ -9,10 +9,7 @@ module Vool
       statements.to_mom(nil)
       statements
     end
-    def self.ruby_to_mom(source)
-      statements = self.ruby_to_vool(source)
-      statements.to_mom(nil)
-    end
+
     def self.ruby_to_binary(source , platform = :arm)
       machine = Risc.machine.boot
       self.ruby_to_vool(source)

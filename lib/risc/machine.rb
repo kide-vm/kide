@@ -17,14 +17,13 @@ module Risc
     log_level :info
 
     def initialize
-      @booted = false
       @risc_init = nil
       @constants = []
       @next_address = nil
     end
-    
+
     attr_reader  :constants , :cpu_init
-    attr_reader  :booted , :translated
+    attr_reader  :translated
     attr_reader  :platform
 
     # Translate code to whatever cpu is specified.
@@ -169,7 +168,6 @@ module Risc
       @objects = nil
       @translated = false
       boot_parfait!
-      @booted = true
       self
     end
 
