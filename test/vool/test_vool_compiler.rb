@@ -9,7 +9,8 @@ module Vool
     end
 
     def compile_in_test input
-      VoolCompiler.ruby_to_vool in_Test(input)
+      vool = VoolCompiler.ruby_to_vool in_Test(input)
+      vool.to_mom(nil)
       itest = Parfait.object_space.get_class_by_name(:Test)
       assert itest
       itest
@@ -38,14 +39,16 @@ module Vool
     end
 
     def test_creates_class_without_deriviation
-      VoolCompiler.ruby_to_vool "class Testing ; end"
+      vool = VoolCompiler.ruby_to_vool "class Testing ; end"
+      vool.to_mom(nil)
       clazz = Parfait.object_space.get_class_by_name(:Testing)
       assert clazz , "No classes created"
       assert_equal :Object , clazz.super_class_name
     end
 
     def test_creates_class_with_deriviation
-      VoolCompiler.ruby_to_vool  "class Test2 < List ;end"
+      vool = VoolCompiler.ruby_to_vool  "class Test2 < List ;end"
+      vool.to_mom(nil)
       clazz = Parfait.object_space.get_class_by_name(:Test2)
       assert clazz, "No classes created"
       assert_equal :List , clazz.super_class_name

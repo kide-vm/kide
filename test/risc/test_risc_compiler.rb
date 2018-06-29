@@ -9,7 +9,8 @@ module Vool
     end
 
     def create_method
-      VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
+      vool = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
+      vool.to_mom(nil)
       test = Parfait.object_space.get_class_by_name(:Test)
       test.get_method(:meth)
     end
@@ -41,17 +42,20 @@ module Vool
     end
 
     def test_method_statement_has_class
-      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
-      assert clazz.body.clazz
+      vool = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
+      clazz = vool.to_mom(nil)
+      assert vool.body.clazz
     end
 
     def test_parfait_class_creation
-      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
-      assert_equal Parfait::Class , clazz.body.clazz.class
+      vool = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
+      clazz = vool.to_mom(nil)
+      assert_equal Parfait::Class , vool.body.clazz.class
     end
 
     def test_typed_method_instance_type
-      VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5; @ibar = 4;end")
+      vool = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5; @ibar = 4;end")
+      vool.to_mom(nil)
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.instance_type.get_method(:meth)
       assert_equal 1, method.for_type.variable_index(:ivar)
@@ -59,7 +63,8 @@ module Vool
     end
 
     def test_vool_method_has_one_local
-      VoolCompiler.ruby_to_vool in_Test("def meth; local = 5 ; a = 6;end")
+      vool = VoolCompiler.ruby_to_vool in_Test("def meth; local = 5 ; a = 6;end")
+      vool.to_mom(nil)
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.get_method(:meth)
       assert_equal 3 , method.frame_type.instance_length
@@ -68,7 +73,8 @@ module Vool
     end
 
     def test_typed_method_has_one_local
-      VoolCompiler.ruby_to_vool in_Test("def meth; local = 5 ; a = 6;end")
+      vool = VoolCompiler.ruby_to_vool in_Test("def meth; local = 5 ; a = 6;end")
+      vool.to_mom(nil)
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.instance_type.get_method(:meth)
       assert_equal 3 , method.frame_type.instance_length

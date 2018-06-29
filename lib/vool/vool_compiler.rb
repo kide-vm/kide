@@ -4,15 +4,15 @@ module Vool
   class VoolCompiler
 
     def self.ruby_to_vool( ruby_source )
-      statements = RubyCompiler.compile( ruby_source )
-      statements = statements.normalize
-      statements.to_mom(nil)
-      statements
+      vool = RubyCompiler.compile( ruby_source )
+      vool = vool.normalize
+      vool
     end
 
     def self.ruby_to_binary(source , platform = :arm)
       machine = Risc.machine.boot
-      self.ruby_to_vool(source)
+      vool = self.ruby_to_vool(source)
+      vool.to_mom(nil)
       machine.translate(platform)
       machine.position_all
       machine.create_binary
