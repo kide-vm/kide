@@ -115,7 +115,7 @@ module Parfait
 
   # superclasses other than default object
   def self.super_class_names
-     { Data4: :DataObject , Data8: :DataObject ,Data16: :DataObject ,
+     { Data4: :DataObject , Data8: :DataObject ,Data16: :DataObject ,Data32: :DataObject ,
        BinaryCode: :Data16 , Integer: :Data4 , Word: :Data8 ,
        Object: :BasicObject , List: :Data16 , ReturnAddress: :Integer}
   end
@@ -124,8 +124,8 @@ module Parfait
   # unfortuantely that constant condenses every detail about the system, class names
   # and all instance variable names. Really have to find a better way
   def self.type_names
-     {  Word: {char_length: :Integer} ,
-        List: {indexed_length: :Integer} ,
+     {  Word: {char_length: :Integer , next_word: :Word} ,
+        List: {indexed_length: :Integer , next_list: :List} ,
         Message: { next_message: :Message,   receiver: :Object, frame: :NamedList ,
                    return_address: :Integer, return_value: :Object,
                    caller: :Message ,        name: :Word ,     arguments: :NamedList },
@@ -146,14 +146,15 @@ module Parfait
         NamedList: {},
         Type: {names: :List , types: :List  ,
                object_class: :Class, methods: :TypedMethod } ,
-        Class: {instance_methods: :List, instance_type: :Type, name: :Word,
-                    super_class_name: :Word , instance_names: :List },
+        Class: {instance_methods: :List, instance_type: :Type,
+                name: :Word, super_class_name: :Word },
         Dictionary: {keys: :List , values: :List  } ,
         CacheEntry: {cached_type: :Type , cached_method: :TypedMethod  } ,
         TypedMethod: {name: :Word, risc_instructions: :Object,
                       cpu_instructions: :Object, binary: :BinaryCode,
                       arguments_type: :Type , for_type: :Type, frame_type: :Type ,
                       next_method: :TypedMethod} ,
+        VoolMethod: { name: :Word , args_type: :Type , frame_type: :Type } ,
       }
   end
 end

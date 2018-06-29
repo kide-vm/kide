@@ -1,30 +1,35 @@
 # A List, or rather an ordered list, is just that, a list of items.
 
-# For a programmer this may be a little strange as this new start goes with trying to break old
-# bad habits. A List would be an array in some languages, but list is a better name, closer to
-# common language.
-# Another bad habit is to start a list from 0. This is "just" programmers lazyness, as it goes
-# with the standard c implementation. But it bends the mind, and in oo we aim not to.
-# If you have a list of three items, they will be first, second and third, ie 1,2,3
 #
 # For the implementation we use Objects memory which is index addressable
-# But, objects are also lists where indexes start with 1, except 1 is taken for the Type
-# so all incoming/outgoing indexes have to be shifted one up/down
+# But, objects are also lists where indexes start with 0, except 0 is taken for the Type
+# so all incoming/outgoing indexes have to be shifted two up/down (one more for length)
 
 module Parfait
-  class List < Data32
-    attr_reader :indexed_length
+  class List < Data16
+    attr_reader :indexed_length , :next
 
     def self.type_length
-      2    # 0 type , 1 length
+      3    # 0 type , 1 length , 2 - next_list
     end
     def self.get_length_index
-      type_length - 1
+      1
+    end
+    def self.data_length
+      self.memory_size - self.type_length - 1 #one for the jump
+    end
+    def data_length
+      self.class.data_length
     end
 
     def get_length
       r = @indexed_length
       r.nil? ? 0 : r
+    end
+
+    def ensure_next
+      @next = List.new unless @next
+      @next
     end
 
     # set the value at index.
@@ -34,20 +39,28 @@ module Parfait
       if index >= get_length
         grow_to(index + 1)
       end
-      # start one higher than offset, which is where the length is
-      set_internal_word( index + self.class.type_length, value)
+      if index >= data_length
+        ensure_next
+        @next.set( index - data_length , value)
+      else
+        set_internal_word( index + self.class.type_length, value)
+      end
     end
 
     # set the value at index.
     # Lists start from index 0
     def get( index )
       raise "Only positive indexes, #{index}" if index < 0
-      ret = nil
-      if(index < get_length)
-        # start one higher than offset, which is where the length is
-        ret = get_internal_word(index + self.class.type_length )
+      if index >= data_length
+        return nil unless @next
+        return @next.get( index - data_length)
+      else
+        ret = nil
+        if(index < get_length)
+          ret = get_internal_word(index + self.class.type_length )
+        end
+        return ret
       end
-      ret
     end
     alias :[] :get
 
