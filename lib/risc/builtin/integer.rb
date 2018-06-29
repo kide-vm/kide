@@ -8,7 +8,7 @@ module Risc
         def div4(context)
           source = "div4"
           compiler = compiler_for(:Integer,:div4 ,{})
-          builder = compiler.builder(true, compiler.method)
+          builder = compiler.compiler_builder(compiler.method)
           me = builder.add_known( :receiver )
           builder.reduce_int( source , me )
           two = compiler.use_reg :fixnum , 2
@@ -33,7 +33,7 @@ module Risc
         end
         def comparison( operator  )
           compiler = compiler_for(:Integer, operator ,{other: :Integer})
-          builder = compiler.builder(true, compiler.method)
+          builder = compiler.compiler_builder(compiler.method)
           me , other = builder.self_and_int_arg("#{operator} load receiver and arg")
           false_label = Risc.label(compiler.method , "false_label_#{builder.object_id.to_s(16)}")
           merge_label = Risc.label(compiler.method , "merge_label_#{builder.object_id.to_s(16)}")
@@ -63,7 +63,7 @@ module Risc
         end
         def operator_method( op_sym )
           compiler = compiler_for(:Integer, op_sym ,{other: :Integer})
-          builder = compiler.builder(true, compiler.method)
+          builder = compiler.compiler_builder(compiler.method)
           me , other = builder.self_and_int_arg(op_sym.to_s + "load receiver and arg")
           builder.reduce_int( op_sym.to_s + " fix me", me )
           builder.reduce_int( op_sym.to_s + " fix arg", other )
@@ -76,7 +76,7 @@ module Risc
         def div10( context )
           s = "div_10 "
           compiler = compiler_for(:Integer,:div10 ,{})
-          builder = compiler.builder(true, compiler.method)
+          builder = compiler.compiler_builder(compiler.method)
           #FIX: this could load receiver once, reduce and then transfer twice
           me = builder.add_known( :receiver )
           tmp = builder.add_known( :receiver )

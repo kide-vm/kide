@@ -106,11 +106,16 @@ module Risc
       builder.build(&block)
     end
 
-    # return a new builder that uses this compiler
-    # must specify whether to add code automatically to compiler
-    # second arg is the source for which to build, either method or mom::instruction
-    def builder( auto_add , source)
-      Builder.new(self , auto_add , source)
+    # return a new code builder that uses this compiler
+    # CodeBuilder returns code after building
+    def code_builder( source)
+      CodeBuilder.new(self , source)
+    end
+
+    # return a CompilerBuilder
+    # CompilerBuilder adds the generated code to the compiler
+    def compiler_builder( source)
+      CompilerBuilder.new(self , source)
     end
   end
 end
