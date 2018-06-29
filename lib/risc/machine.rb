@@ -165,9 +165,9 @@ module Risc
     def boot
       initialize
       Position.clear_positions
-      @objects = nil
       @translated = false
-      boot_parfait!
+      Parfait.boot!
+      Builtin.boot_functions
       self
     end
 
@@ -183,4 +183,4 @@ module Risc
 
 end
 
-require_relative "boot"
+require_relative "parfait_boot"
