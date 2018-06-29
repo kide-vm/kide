@@ -2,10 +2,11 @@ require_relative "helper"
 
 module Vool
   class TestEmptyClassStatement < MiniTest::Test
+    include RubyTests
 
     def setup
       input = "class Tryout < Base;end"
-      @lst = RubyCompiler.compile( input )
+      @lst = compile( input )
     end
 
     def test_compile_class
@@ -27,13 +28,14 @@ module Vool
   end
   class TestBasicClassStatement < MiniTest::Test
     include CompilerHelper
+    include RubyTests
 
     def test_compile_one_method
-      lst = RubyCompiler.compile( in_Test("@ivar = 4") )
+      lst = compile( in_Test("@ivar = 4") )
       assert_equal IvarAssignment , lst.body.class
     end
     def test_compile_two_methods
-      lst = RubyCompiler.compile( in_Test("false; true;") )
+      lst = compile( in_Test("false; true;") )
       assert_equal ScopeStatement , lst.body.class
       assert_equal TrueConstant , lst.body.statements[1].class
     end

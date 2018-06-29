@@ -2,76 +2,79 @@ require_relative "helper"
 
 module Vool
   class TestBasicValues < MiniTest::Test
+    include RubyTests
 
     def test_self
-      lst = RubyCompiler.compile( "self")
+      lst = compile( "self")
       assert_equal SelfExpression , lst.class
     end
     def test_nil
-      lst = RubyCompiler.compile( "nil")
+      lst = compile( "nil")
       assert_equal NilConstant , lst.class
     end
     def test_false
-      lst = RubyCompiler.compile( "false")
+      lst = compile( "false")
       assert_equal FalseConstant , lst.class
     end
     def test_true
-      lst = RubyCompiler.compile( "true")
+      lst = compile( "true")
       assert_equal TrueConstant , lst.class
     end
     def test_integer
-      lst = RubyCompiler.compile( "123")
+      lst = compile( "123")
       assert_equal IntegerConstant , lst.class
     end
     def test_string
-      lst = RubyCompiler.compile( "'string'")
+      lst = compile( "'string'")
       assert_equal StringConstant , lst.class , lst.inspect
     end
     def test_sym
-      lst = RubyCompiler.compile( ":symbol")
+      lst = compile( ":symbol")
       assert_equal SymbolConstant , lst.class , lst.inspect
     end
     def test_dstr
       assert_raises RuntimeError do
-        RubyCompiler.compile( '"dstr#{self}"')
+        compile( '"dstr#{self}"')
       end
     end
 
     def test_scope
-      lst = RubyCompiler.compile( "begin ; 1 ; end")
+      lst = compile( "begin ; 1 ; end")
       assert_equal ScopeStatement , lst.class , lst.inspect
     end
     def test_scope_contents
-      lst = RubyCompiler.compile( "begin ; 1 ; end")
+      lst = compile( "begin ; 1 ; end")
       assert_equal 1 , lst.statements.first.value
     end
   end
   class TestBasicTypes < MiniTest::Test
+    include RubyTests
+
     def setup
       Risc.machine.boot
     end
-    def compile( input )
-      lst = RubyCompiler.compile( input )
+    def compile_ct( input )
+      lst = compile( input )
       lst.ct_type
     end
     def test_integer
-      assert_equal "Integer_Type" , compile( "123").name
+      assert_equal "Integer_Type" , compile_ct( "123").name
     end
     def test_string
-      assert_equal "Word_Type" , compile( "'string'").name
+      assert_equal "Word_Type" , compile_ct( "'string'").name
     end
     def test_sym
-      assert_equal "Word_Type" , compile( ":symbol").name
+      assert_equal "Word_Type" , compile_ct( ":symbol").name
     end
     # classes fot these are not implemented in parfait yet
     def pest_nil
-      assert_equal "Nil_Type" , compile( "nil").name
+      assert_equal "Nil_Type" , compile_ct( "nil").name
     end
     def pest_false
-      assert_equal "False_Type" , compile( "false").name
+      assert_equal "False_Type" , compile_ct( "false").name
     end
     def pest_true
-      assert_equal "True_Type" , compile( "true").name
+      assert_equal "True_Type" , compile_ct( "true").name
     end
   end
 end

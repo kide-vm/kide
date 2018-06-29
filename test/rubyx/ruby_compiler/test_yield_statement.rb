@@ -2,10 +2,11 @@ require_relative "helper"
 
 module Vool
   class TestYieldStatement < MiniTest::Test
+    include RubyTests
 
     def setup()
       input = "def plus_one; yield(0) ; end "
-      @lst = RubyCompiler.compile( input )
+      @lst = compile( input )
     end
     def test_method
       assert_equal MethodStatement , @lst.class

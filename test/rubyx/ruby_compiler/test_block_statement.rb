@@ -2,10 +2,11 @@ require_relative "helper"
 
 module Vool
   class TestBlockStatement < MiniTest::Test
-
+    include RubyTests
+    
     def setup()
       input = "plus_one{|arg1| arg1 + 1 } "
-      @lst = RubyCompiler.compile( input )
+      @lst = compile( input )
     end
     def test_method
       assert_equal SendStatement , @lst.class

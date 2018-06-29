@@ -20,8 +20,9 @@ module Vool
   end
   class TestLocalOpAssign < MiniTest::Test
     include OpAss
+    include RubyTests
     def setup
-      @lst = RubyCompiler.compile( "foo += 5")
+      @lst = compile( "foo += 5")
     end
     def test_local_ass
       assert_equal LocalAssignment , @lst.class
@@ -29,8 +30,9 @@ module Vool
   end
   class TestIvarOpAssign < MiniTest::Test
     include OpAss
+    include RubyTests
     def setup
-      @lst = RubyCompiler.compile( "@foo += 5")
+      @lst = compile( "@foo += 5")
     end
     def test_ivar_ass
       assert_equal IvarAssignment , @lst.class

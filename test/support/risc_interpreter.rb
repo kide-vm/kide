@@ -8,7 +8,7 @@ module Risc
 
     def setup
       Risc.machine.boot
-      Vool::VoolCompiler.ruby_to_binary( @string_input , :interpreter)
+      Vool::RubyXCompiler.ruby_to_binary( @string_input , :interpreter)
       @interpreter = Interpreter.new
       @interpreter.start_machine
     end

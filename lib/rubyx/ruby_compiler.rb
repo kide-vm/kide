@@ -1,6 +1,5 @@
-require_relative "statement"
 
-module Vool
+module RubyX
   # This RubyCompiler compiles incoming ruby (string) into vools internal representation
   # with the help of the parser gem. The parser outputs an abstract ast (nodes)
   # that get transformed into concrete, specific classes.
@@ -24,13 +23,13 @@ module Vool
 
     def on_class( statement )
       name , sup , body = *statement
-      ClassStatement.new( get_name(name) , get_name(sup) , process(body) )
+      Vool::ClassStatement.new( get_name(name) , get_name(sup) , process(body) )
     end
 
     def on_def( statement )
       name , args , body = *statement
       arg_array = process_all( args )
-      MethodStatement.new( name , arg_array , process(body) )
+      Vool::MethodStatement.new( name , arg_array , process(body) )
     end
 
     def on_arg( arg )
@@ -41,13 +40,13 @@ module Vool
       sendd = process(block_node.children[0])
       args = process(block_node.children[1])
       body = process(block_node.children[2])
-      sendd.add_block BlockStatement.new(args , body)
+      sendd.add_block Vool::BlockStatement.new(args , body)
       sendd
     end
 
     def on_yield(node)
       args = process_all(node.children)
-      YieldStatement.new(args)
+      Vool::YieldStatement.new(args)
     end
 
     def on_args(args)
@@ -56,31 +55,31 @@ module Vool
 
     #basic Values
     def on_self exp
-      SelfExpression.new
+      Vool::SelfExpression.new
     end
 
     def on_nil expression
-      NilConstant.new
+      Vool::NilConstant.new
     end
 
     def on_int expression
-      IntegerConstant.new(expression.children.first)
+      Vool::IntegerConstant.new(expression.children.first)
     end
 
     def on_float expression
-      FloatConstant.new(expression.children.first)
+      Vool::FloatConstant.new(expression.children.first)
     end
 
     def on_true expression
-      TrueConstant.new
+      Vool::TrueConstant.new
     end
 
     def on_false expression
-      FalseConstant.new
+      Vool::FalseConstant.new
     end
 
     def on_str expression
-      StringConstant.new(expression.children.first)
+      Vool::StringConstant.new(expression.children.first)
     end
     alias  :on_string :on_str
 
@@ -90,7 +89,7 @@ module Vool
     alias  :on_xstr :on_dstr
 
     def on_sym expression
-      SymbolConstant.new(expression.children.first)
+      Vool::SymbolConstant.new(expression.children.first)
     end
     alias  :on_string :on_str
 
@@ -98,17 +97,17 @@ module Vool
       raise "Not implemented dynamix symbols (with interpolation)"
     end
     def on_kwbegin statement
-      ScopeStatement.new process_all( statement.children )
+      Vool::ScopeStatement.new process_all( statement.children )
     end
     alias  :on_begin :on_kwbegin
 
     # Array + Hashes
     def on_array expression
-      ArrayStatement.new expression.children.collect{ |elem| process(elem) }
+      Vool::ArrayStatement.new expression.children.collect{ |elem| process(elem) }
     end
 
     def on_hash expression
-      hash = HashStatement.new
+      hash = Vool::HashStatement.new
       expression.children.each do |elem|
         raise "Hash error, hash contains non pair: #{elem.type}" if elem.type != :pair
         hash.add( process(elem.children[0]) , process(elem.children[1]) )
@@ -118,15 +117,15 @@ module Vool
 
     #Variables
     def on_lvar expression
-      LocalVariable.new(expression.children.first)
+      Vool::LocalVariable.new(expression.children.first)
     end
 
     def on_ivar expression
-      InstanceVariable.new(instance_name(expression.children.first))
+      Vool::InstanceVariable.new(instance_name(expression.children.first))
     end
 
     def on_cvar expression
-      ClassVariable.new(expression.children.first.to_s[2 .. -1].to_sym)
+      Vool::ClassVariable.new(expression.children.first.to_s[2 .. -1].to_sym)
     end
 
     def on_const expression
@@ -134,20 +133,20 @@ module Vool
       if scope
         raise "Only unscoped Names implemented #{scope}" unless scope.type == :cbase
       end
-      ModuleName.new(expression.children[1])
+      Vool::ModuleName.new(expression.children[1])
     end
 
     # Assignements
     def on_lvasgn expression
       name = expression.children[0]
       value = process(expression.children[1])
-      LocalAssignment.new(name,value)
+      Vool::LocalAssignment.new(name,value)
     end
 
     def on_ivasgn expression
       name = expression.children[0]
       value = process(expression.children[1])
-      IvarAssignment.new(instance_name(name),value)
+      Vool::IvarAssignment.new(instance_name(name),value)
     end
 
     def on_op_asgn(expression)
@@ -162,52 +161,52 @@ module Vool
 
     def on_return statement
       return_value = process(statement.children.first)
-      ReturnStatement.new( return_value )
+      Vool::ReturnStatement.new( return_value )
     end
 
     def on_while statement
       condition , statements = *statement
-      WhileStatement.new( process(condition) , process(statements))
+      Vool::WhileStatement.new( process(condition) , process(statements))
     end
 
     def on_if statement
       condition , if_true , if_false = *statement
       if_true = process(if_true)
       if_false = process(if_false)
-      IfStatement.new( process(condition) , if_true , if_false )
+      Vool::IfStatement.new( process(condition) , if_true , if_false )
     end
 
     def on_send statement
       kids = statement.children.dup
-      receiver = process(kids.shift) || SelfExpression.new
+      receiver = process(kids.shift) || Vool::SelfExpression.new
       name = kids.shift
       arguments = process_all(kids)
-      SendStatement.new( name , receiver , arguments )
+      Vool::SendStatement.new( name , receiver , arguments )
     end
 
     def on_and expression
       name = expression.type
       left = process(expression.children[0])
       right = process( expression.children[1] )
-      LogicalStatement.new( name , left , right)
+      Vool::LogicalStatement.new( name , left , right)
     end
     alias :on_or :on_and
 
     # this is a call to super without args (z = zero arity)
     def on_zsuper exp
-      SendStatement.new( nil , SuperExpression.new , nil)
+      Vool::SendStatement.new( nil , Vool::SuperExpression.new , nil)
     end
 
     # this is a call to super with args and
     # same name as current method, which is set later
     def on_super( statement )
       arguments = process_all(statement.children)
-      SendStatement.new( nil , SuperExpression.new , arguments)
+      Vool::SendStatement.new( nil , Vool::SuperExpression.new , arguments)
     end
 
     def on_assignment statement
       name , value = *statement
-      w = Assignment.new()
+      w = Vool::Assignment.new()
       w.name = process name
       w.value = process(value)
       w

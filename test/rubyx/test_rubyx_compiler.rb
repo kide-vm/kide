@@ -1,6 +1,6 @@
-require_relative "helper"
+require_relative "../helper"
 
-module Vool
+module RubyX
   class TestClassCompiler < MiniTest::Test
     include CompilerHelper
 
@@ -9,7 +9,7 @@ module Vool
     end
 
     def compile_in_test input
-      vool = VoolCompiler.ruby_to_vool in_Test(input)
+      vool = RubyXCompiler.ruby_to_vool in_Test(input)
       vool.to_mom(nil)
       itest = Parfait.object_space.get_class_by_name(:Test)
       assert itest
@@ -28,26 +28,33 @@ module Vool
 
     def test_doesnt_create_existing_clas
       space_class = Parfait.object_space.get_class_by_name(:Space)
-      VoolCompiler.ruby_to_vool "class Space ; end"
+      RubyXCompiler.ruby_to_vool "class Space ; end"
       clazz = Parfait.object_space.get_class_by_name(:Space)
       assert_equal clazz , space_class
     end
 
     def test_class_body_is_scope
-      clazz = VoolCompiler.ruby_to_vool in_Test("def meth; @ivar = 5 ;end")
+      clazz = RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5 ;end")
       assert_equal MethodStatement , clazz.body.class
     end
 
     def test_creates_class_without_deriviation
-      vool = VoolCompiler.ruby_to_vool "class Testing ; end"
+      vool = RubyXCompiler.ruby_to_vool "class Testing ; end"
       vool.to_mom(nil)
       clazz = Parfait.object_space.get_class_by_name(:Testing)
       assert clazz , "No classes created"
       assert_equal :Object , clazz.super_class_name
     end
 
+    def test_creates_class_deriviation
+      vool = RubyXCompiler.ruby_to_vool "class Testing ; end"
+      mom = vool.to_mom(nil)
+      assert_equal ClassStatement , vool.class
+      assert mom , "No classes created"
+    end
+
     def test_creates_class_with_deriviation
-      vool = VoolCompiler.ruby_to_vool  "class Test2 < List ;end"
+      vool = RubyXCompiler.ruby_to_vool  "class Test2 < List ;end"
       vool.to_mom(nil)
       clazz = Parfait.object_space.get_class_by_name(:Test2)
       assert clazz, "No classes created"
@@ -56,14 +63,14 @@ module Vool
 
     def test_space_is_unchanged_by_compile
       space1 = Parfait.object_space.get_class_by_name(:Space)
-      VoolCompiler.ruby_to_vool  "class Space ;end"
+      RubyXCompiler.ruby_to_vool  "class Space ;end"
       space2 = Parfait.object_space.get_class_by_name(:Space)
       assert_equal space1 , space2
     end
 
     def test_space_type_is_unchanged_by_compile
       space1 = Parfait.object_space.get_class_by_name(:Space).instance_type
-      VoolCompiler.ruby_to_vool  "class Space ;end"
+      RubyXCompiler.ruby_to_vool  "class Space ;end"
       space2 = Parfait.object_space.get_class_by_name(:Space).instance_type
       assert_equal space1 , space2
     end

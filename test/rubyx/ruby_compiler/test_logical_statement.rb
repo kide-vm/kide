@@ -1,10 +1,11 @@
-require_relative "../helper"
+require_relative "helper"
 
 module Vool
   class TestLogical < MiniTest::Test
+    include RubyTests
 
     def simple
-      RubyCompiler.compile( "@a and @b")
+      compile( "@a and @b")
     end
     def test_simple
       lst = simple
@@ -24,16 +25,16 @@ module Vool
     end
 
     def test_or
-      lst = RubyCompiler.compile( "@a or @b")
+      lst = compile( "@a or @b")
       assert_equal :or , lst.name
     end
 
     def test_or2
-      lst = RubyCompiler.compile( "@a || @b")
+      lst = compile( "@a || @b")
       assert_equal :or , lst.name
     end
     def test_and2
-      lst = RubyCompiler.compile( "@a && @b")
+      lst = compile( "@a && @b")
       assert_equal :and , lst.name
     end
   end
