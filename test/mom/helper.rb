@@ -2,7 +2,6 @@ require_relative '../helper'
 
 module Risc
   module Statements
-    include CleanCompile
 
     def setup
       Risc.machine.boot # force boot to reset main

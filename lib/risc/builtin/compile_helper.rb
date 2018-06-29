@@ -3,10 +3,10 @@ module Risc
   module Builtin
     module CompileHelper
 
-      def compiler_for( type , method_name , arguments , locals = {})
+      def compiler_for( clazz_name , method_name , arguments , locals = {})
         frame = Parfait::NamedList.type_for( locals )
         args = Parfait::NamedList.type_for( arguments )
-        Risc::MethodCompiler.create_method(type , method_name , args, frame )
+        Risc::MethodCompiler.compiler_for_class(clazz_name , method_name , args, frame )
       end
 
     end

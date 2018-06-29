@@ -61,14 +61,6 @@ module MomCompile
 end
 
 
-module CleanCompile
-  def clean_compile(clazz_name , method_name , args , statements)
-    compiler = Vm::MethodCompiler.create_method(clazz_name,method_name,args )
-    compiler.process( Vm.ast_to_code( statements ) )
-  end
-
-end
-
 
 
 class Ignored

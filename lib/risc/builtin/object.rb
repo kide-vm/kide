@@ -41,11 +41,12 @@ module Risc
           emit_syscall( compiler.builder(true, compiler.method) , :exit )
           return compiler.method
         end
+
         # this is the really really first place the machine starts (apart from the jump here)
         # it isn't really a function, ie it is jumped to (not called), exits and may not return
         # so it is responsible for initial setup
         def __init__ context
-          compiler = Risc::MethodCompiler.create_method(:Object,:__init__ ,
+          compiler = MethodCompiler.compiler_for_class(:Object,:__init__ ,
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
           builder = compiler.builder(true, compiler.method)
           builder.build do

@@ -8,32 +8,30 @@ module Risc
 
     def initialize( method )
       @regs = []
-      if method == :main
-        @type = Parfait.object_space.get_type()
-        @method = @type.get_method( :main )
-        @method = @type.create_method( :main ,{}) unless @method
-      else
-        @method = method
-        @type = method.for_type
-      end
+      @method = method
+      @type = method.for_type
       @current = @method.risc_instructions
     end
     attr_reader :type , :method
 
-    # create the method, do some checks and set it as the current method to be added to
-    # class_name and method_name are pretty clear, args are given as a ruby array
-    def self.create_method( class_name , method_name , args , frame )
+
+    # helper method for builtin mainly
+    # the class_name is a symbol, which is resolved to the instance_type of that class
+    #
+    # return compiler_for_type with the resolved type
+    #
+    def self.compiler_for_class( class_name , method_name , args , frame )
       raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
       clazz = Parfait.object_space.get_class_by_name! class_name
-      create_method_for( clazz.instance_type , method_name , args , frame)
+      compiler_for_type( clazz.instance_type , method_name , args , frame)
     end
 
     # create a method for the given type ( Parfait type object)
     # method_name is a Symbol
     # args a hash that will be converted to a type
     # the created method is set as the current and the given type too
-    # return the compiler (for chaining)
-    def self.create_method_for( type , method_name , args , frame)
+    # return the compiler
+    def self.compiler_for_type( type , method_name , args , frame)
       raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
       raise "Args must be Type #{args}" unless args.is_a?(Parfait::Type)
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
