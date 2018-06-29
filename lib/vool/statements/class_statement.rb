@@ -15,7 +15,7 @@ module Vool
       create_class_object
       mom = nil #return mom for test purpose
       self.each do |node|
-        mom = node.to_mom(@clazz) if node.is_a?(MethodStatement)  
+        mom = node.to_mom(@clazz) if node.is_a?(MethodStatement)
       end
       mom
     end

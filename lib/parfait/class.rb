@@ -24,7 +24,7 @@ module Parfait
       super()
       @name = name
       @super_class_name = superclass
-      @methods = {}
+      @instance_methods = List.new
       set_instance_type( instance_type )
     end
 
@@ -44,11 +44,11 @@ module Parfait
 
     def add_method(method)
       raise "Must be untyped method #{method}" unless method.is_a? Parfait::VoolMethod
-      @methods[method.name] = method
+      @instance_methods.push(method)
     end
 
     def get_method(name)
-      @methods[name]
+      @instance_methods.find{|m| m.name == name }
     end
 
     # adding an instance changes the instance_type to include that variable

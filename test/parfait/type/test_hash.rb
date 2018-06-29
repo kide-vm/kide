@@ -28,7 +28,7 @@ module Parfait
     def test_to_hash
       hash = @first.to_hash
       assert_equal hash[:type] , :Type
-      assert_equal 2 ,  hash.length
+      assert_equal 3 ,  hash.length
     end
     def test_add_is_different
       type = @first.add_instance_variable :random , :Integer

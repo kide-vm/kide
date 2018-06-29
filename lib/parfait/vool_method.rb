@@ -10,7 +10,7 @@ module Parfait
   # as it changes during the course of it's life. Types do not change. Objects have
   # type, and so only indirectly a class.
   #
-  class VoolMethod
+  class VoolMethod < Object
 
     attr_reader :name , :args_type , :frame_type , :source
 

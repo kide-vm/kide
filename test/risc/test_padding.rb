@@ -29,7 +29,7 @@ module Risc
     end
     def test_list5
       list = Parfait.new_list([1,2,3,4,5])
-      assert_equal 32 , list.padded_length
+      assert_equal 64 , list.padded_length
     end
     def test_type
       type = Parfait::Type.for_hash Parfait.object_space.get_class_by_name(:Object) , {}
