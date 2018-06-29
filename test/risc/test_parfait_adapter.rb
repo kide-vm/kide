@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Parfait
-  class TestCompat < MiniTest::Test
+  class TestAdapter < MiniTest::Test
 
     def setup
       Risc.machine.boot

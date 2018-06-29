@@ -191,14 +191,4 @@ module Parfait
     end
   end
 
-  # Word from string
-  def self.new_word( string )
-    string = string.to_s if string.is_a? Symbol
-    word = Word.new( string.length )
-    string.codepoints.each_with_index do |code , index |
-      word.set_char(index , code)
-    end
-    word
-  end
-
 end

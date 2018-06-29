@@ -50,7 +50,7 @@ module Parfait
       ret
     end
     alias :[] :get
-    
+
     def grow_to( len )
       raise "Only positive lenths, #{len}" if len < 0
       old_length = get_length
@@ -253,15 +253,4 @@ module Parfait
     end
   end
 
-  # new list from ruby array to be precise
-  def self.new_list array
-    list = Parfait::List.new
-    list.set_length array.length
-    index = 0
-    while index < array.length do
-      list.set(index , array[index])
-      index = index + 1
-    end
-    list
-  end
 end

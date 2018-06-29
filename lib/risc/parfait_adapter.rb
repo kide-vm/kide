@@ -23,6 +23,29 @@ module Parfait
       value
     end
   end
+
+  # new list from ruby array to be precise
+  def self.new_list array
+    list = Parfait::List.new
+    list.set_length array.length
+    index = 0
+    while index < array.length do
+      list.set(index , array[index])
+      index = index + 1
+    end
+    list
+  end
+
+  # Word from string
+  def self.new_word( string )
+    string = string.to_s if string.is_a? Symbol
+    word = Word.new( string.length )
+    string.codepoints.each_with_index do |code , index |
+      word.set_char(index , code)
+    end
+    word
+  end
+
 end
 
 class Symbol
