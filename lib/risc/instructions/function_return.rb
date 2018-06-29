@@ -7,7 +7,7 @@ module Risc
     def initialize( source , register )
       super(source)
       @register = register
-      raise "Not register #{register}" unless RiscValue.look_like_reg(register)
+      raise "Not register #{register}" unless RegisterValue.look_like_reg(register)
     end
     attr_reader :register
 

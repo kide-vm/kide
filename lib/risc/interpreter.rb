@@ -70,8 +70,8 @@ module Risc
     end
 
     def get_register( reg )
-      reg = reg.symbol if reg.is_a? Risc::RiscValue
-      raise "Not a register #{reg}" unless Risc::RiscValue.look_like_reg(reg)
+      reg = reg.symbol if reg.is_a? Risc::RegisterValue
+      raise "Not a register #{reg}" unless Risc::RegisterValue.look_like_reg(reg)
       @registers[reg]
     end
 
@@ -87,7 +87,7 @@ module Risc
         @flags[:minus] = false
       end
       return if old === val
-      reg = reg.symbol if reg.is_a? Risc::RiscValue
+      reg = reg.symbol if reg.is_a? Risc::RegisterValue
       val = Parfait.object_space.nil_object if val.nil? #because that's what real code has
       @registers[reg] = val
       trigger(:register_changed, reg ,  old , val)

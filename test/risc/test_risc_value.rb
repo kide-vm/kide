@@ -11,8 +11,8 @@ module Risc
 
     def setup
       Risc.machine.boot
-      @r0 = RiscValue.new(:r0 , :Message)
-      @r1 = RiscValue.new(:r1 , :Space)
+      @r0 = RegisterValue.new(:r0 , :Message)
+      @r1 = RegisterValue.new(:r1 , :Space)
     end
     def test_r0
       assert_equal :r0 , @r0.symbol

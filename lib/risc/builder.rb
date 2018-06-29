@@ -162,7 +162,7 @@ module Risc
   # by the slots. All data (at any time) is in one of the instance variables of these two
   # objects. Risc defines module methods with the same names (and _reg)
   def self.resolve_to_register( reference )
-    return reference if reference.is_a?(RiscValue)
+    return reference if reference.is_a?(RegisterValue)
     case reference
     when :message
       return message_reg
@@ -175,7 +175,7 @@ module Risc
 
   # The first arg is a class name (possibly lowercase) and the second an instance variable name.
   def self.resolve_type( object , compiler )
-    object = object.type if object.is_a?(RiscValue)
+    object = object.type if object.is_a?(RegisterValue)
     case object
     when :name
       type = Parfait.object_space.get_class_by_name( :Word ).instance_type
@@ -206,7 +206,7 @@ module Risc
   # The class can be mapped to a register, and so we get a memory address (reg+index)
   # Third arg, compiler, is only needed to resolve receiver/arguments/frame
   def self.resolve_to_index(object , variable_name ,compiler = nil)
-    return variable_name if variable_name.is_a?(Integer) or variable_name.is_a?(RiscValue)
+    return variable_name if variable_name.is_a?(Integer) or variable_name.is_a?(RegisterValue)
     type = resolve_type(object , compiler)
     index = type.variable_index(variable_name)
     raise "Index not found for #{variable_name} in #{object} of type #{type}" unless index

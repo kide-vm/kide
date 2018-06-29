@@ -18,19 +18,19 @@ module Arm
       rn , operand , immediate= @rn ,  @operand , 1
 
       arg = @right
-      operand = Risc::RiscValue.new( arg , :Integer) if( arg.is_a? Symbol )
+      operand = Risc::RegisterValue.new( arg , :Integer) if( arg.is_a? Symbol )
       case operand
       when Numeric
         operand = arg
         raise "numeric literal operand to large #{arg.inspect}" unless (arg.fits_u8?)
-      when Symbol , ::Risc::RiscValue
+      when Symbol , ::Risc::RegisterValue
         immediate = 0
       when Arm::Shift
         handle_shift
       else
         raise "invalid operand argument #{arg.inspect} , #{inspect}"
       end
-      val = (operand.is_a?(Symbol) or operand.is_a?(::Risc::RiscValue)) ? reg_code(operand) : operand
+      val = (operand.is_a?(Symbol) or operand.is_a?(::Risc::RegisterValue)) ? reg_code(operand) : operand
       val = 0 if val == nil
       val = shift(val , 0)
       raise inspect unless reg_code(@rd)

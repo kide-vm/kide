@@ -1,8 +1,8 @@
 module Risc
 
-  # RiscValue is like a variable name, a storage location. The location is a register off course.
+  # RegisterValue is like a variable name, a storage location. The location is a register off course.
 
-  class RiscValue
+  class RegisterValue
 
     attr_reader :symbol , :type , :value
 
@@ -26,7 +26,7 @@ module Risc
     end
 
     def self.look_like_reg is_it
-      return true if is_it.is_a? RiscValue
+      return true if is_it.is_a? RegisterValue
       return false unless is_it.is_a? Symbol
       if( [:lr , :pc].include? is_it )
         return true
@@ -40,7 +40,7 @@ module Risc
 
     def == other
       return false if other.nil?
-      return false if other.class != RiscValue
+      return false if other.class != RegisterValue
       symbol == other.symbol
     end
 
@@ -49,7 +49,7 @@ module Risc
       int = @symbol[1,3].to_i
       raise "No more registers #{self}" if int > 11
       sym = "r#{int + 1}".to_sym
-      RiscValue.new( sym , type, value)
+      RegisterValue.new( sym , type, value)
     end
 
     def rxf_reference_name
@@ -57,16 +57,16 @@ module Risc
     end
 
     # can't overload "=" , so use shift for it.
-    # move the right side to the left. Left (this) is a RiscValue
+    # move the right side to the left. Left (this) is a RegisterValue
     # right value may be
     # - constant (Parfait object) , resulting in a LoadConstant
-    # - another RiscValue, resulting in a Transfer instruction
+    # - another RegisterValue, resulting in a Transfer instruction
     # - an RValue, resulting in an SlotToReg
     def <<( right )
       case right
       when Parfait::Object , Symbol
         ins = Risc.load_constant("#{right.class} to #{self.type}" , right , self)
-      when RiscValue
+      when RegisterValue
         ins = Risc.transfer("#{right.type} to #{self.type}" , right , self)
       when RValue
         ins = Risc.slot_to_reg("#{right.register.type}[#{right.index}] -> #{self.type}" , right.register , right.index , self)
@@ -78,7 +78,7 @@ module Risc
     end
 
     def -( right )
-      raise "operators only on registers, not #{right.class}" unless right.is_a? RiscValue
+      raise "operators only on registers, not #{right.class}" unless right.is_a? RegisterValue
       op = Risc.op("#{self.type} - #{right.type}", :- , self , right )
       builder.add_code(op) if builder
       op
@@ -92,7 +92,7 @@ module Risc
     end
   end
 
-  # Just a struct, see comment for [] of RiscValue
+  # Just a struct, see comment for [] of RegisterValue
   #
   class RValue
     attr_reader :register , :index , :builder
@@ -103,7 +103,7 @@ module Risc
     # fullfil the objects purpose by creating a RegToSlot instruction from
     # itself (the slot) and the register given
     def <<( reg )
-      raise "not reg #{reg}" unless reg.is_a?(RiscValue)
+      raise "not reg #{reg}" unless reg.is_a?(RegisterValue)
       reg_to_slot = Risc.reg_to_slot("#{reg.type} -> #{register.type}[#{index}]" , reg , register, index)
       builder.add_code(reg_to_slot) if builder
       reg_to_slot
@@ -113,19 +113,19 @@ module Risc
 
   # The register we use to store the current message object is :r0
   def self.message_reg
-    RiscValue.new :r0 , :Message
+    RegisterValue.new :r0 , :Message
   end
 
   # The register we use to store the new message object is :r3
   # The new message is the one being built, to be sent
   def self.new_message_reg
-    RiscValue.new :r1 , :Message
+    RegisterValue.new :r1 , :Message
   end
 
   # The first scratch register. There is a next_reg_use to get a next and next.
   # Current thinking is that scratch is schatch between instructions
   def self.tmp_reg( type , value = nil)
-    RiscValue.new :r1 , type , value
+    RegisterValue.new :r1 , type , value
   end
 
 end

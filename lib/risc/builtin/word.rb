@@ -9,7 +9,7 @@ module Risc
           builder = compiler.builder(true, compiler.method)
           builder.add_slot_to_reg( "putstring" , :message , :receiver , :new_message )
           index = Parfait::Word.get_length_index
-          reg = RiscValue.new(:r2 , :Integer)
+          reg = RegisterValue.new(:r2 , :Integer)
           builder.add_slot_to_reg( "putstring" , :new_message , index , reg )
           Risc::Builtin::Object.emit_syscall( builder , :putstring )
           compiler.add_mom( Mom::ReturnSequence.new)

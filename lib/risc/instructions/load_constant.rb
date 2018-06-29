@@ -10,7 +10,7 @@ module Risc
       @register = register
       @constant = constant
       raise "Not Constant #{constant}" if constant.is_a?(Mom::SlotDefinition)
-      raise "Not register #{register}" unless RiscValue.look_like_reg(register)
+      raise "Not register #{register}" unless RegisterValue.look_like_reg(register)
     end
     attr_accessor :register , :constant
 

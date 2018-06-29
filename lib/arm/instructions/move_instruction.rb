@@ -4,8 +4,8 @@ module Arm
     def initialize( to , from , options = {})
       super(nil)
       @attributes = options
-      if( from.is_a?(Symbol) and Risc::RiscValue.look_like_reg(from) )
-        from = Risc::RiscValue.new(from , :Integer)
+      if( from.is_a?(Symbol) and Risc::RegisterValue.look_like_reg(from) )
+        from = Risc::RegisterValue.new(from , :Integer)
       end
       @from = from
       @to = to
@@ -28,7 +28,7 @@ module Arm
       case right
       when Numeric
         operand = numeric_operand(right)
-      when Risc::RiscValue
+      when Risc::RegisterValue
         operand = reg_code(right)
         immediate = 0                # ie not immediate is register
       else

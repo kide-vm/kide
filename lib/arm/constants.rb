@@ -60,7 +60,7 @@ module Arm
     end
     def reg_code r_name
       raise "double r #{r_name}" if( :rr1 == r_name)
-      if r_name.is_a? ::Risc::RiscValue
+      if r_name.is_a? ::Risc::RegisterValue
         r_name = r_name.symbol
       end
       if r_name.is_a? Fixnum
@@ -93,7 +93,7 @@ module Arm
      end
    end
 
-   Risc::RiscValue.class_eval do
+   Risc::RegisterValue.class_eval do
     def reg_no
       @symbol.to_s[1 .. -1].to_i
     end

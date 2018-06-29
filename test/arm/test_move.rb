@@ -37,28 +37,28 @@ module Arm
     end
 
     def test_shiftr1
-      code = @machine.mov  :r1,  :r2 , :shift_asr => Risc::RiscValue.new(:r3 , :Integer)
+      code = @machine.mov  :r1,  :r2 , :shift_asr => Risc::RegisterValue.new(:r3 , :Integer)
       assert_code code , :mov , [0x52,0x13,0xb0,0xe1] #e1 b0 13 52
     end
     def test_shiftr2
-      code = @machine.mov  :r2,  :r3 , :shift_asr => Risc::RiscValue.new(:r4 , :Integer)
+      code = @machine.mov  :r2,  :r3 , :shift_asr => Risc::RegisterValue.new(:r4 , :Integer)
       assert_code code , :mov , [0x53,0x24,0xb0,0xe1] #e1 b0 24 53
     end
     def test_shiftr3
-      code = @machine.mov  :r3,  :r4 , :shift_asr => Risc::RiscValue.new(:r5 , :Integer)
+      code = @machine.mov  :r3,  :r4 , :shift_asr => Risc::RegisterValue.new(:r5 , :Integer)
       assert_code code , :mov , [0x54,0x35,0xb0,0xe1] #e1 b0 35 54
     end
 
     def test_shiftl1
-      code = @machine.mov  :r1,  :r2 , :shift_lsr => Risc::RiscValue.new(:r3 , :Integer)
+      code = @machine.mov  :r1,  :r2 , :shift_lsr => Risc::RegisterValue.new(:r3 , :Integer)
       assert_code code , :mov , [0x32,0x13,0xb0,0xe1] #e1 b0 13 32
     end
     def test_shiftl2
-      code = @machine.mov  :r2,  :r3 , :shift_lsr => Risc::RiscValue.new(:r4 , :Integer)
+      code = @machine.mov  :r2,  :r3 , :shift_lsr => Risc::RegisterValue.new(:r4 , :Integer)
       assert_code code , :mov , [0x33,0x24,0xb0,0xe1] #e1 b0 24 33
     end
     def test_shiftl3
-      code = @machine.mov  :r3,  :r4 , :shift_lsr => Risc::RiscValue.new(:r5 , :Integer)
+      code = @machine.mov  :r3,  :r4 , :shift_lsr => Risc::RegisterValue.new(:r5 , :Integer)
       assert_code code , :mov , [0x34,0x35,0xb0,0xe1] #e1 b0 35 34
     end
 

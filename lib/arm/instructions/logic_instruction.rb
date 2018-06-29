@@ -24,7 +24,7 @@ module Arm
 
       if (right.is_a?(Numeric))
         operand = handle_numeric(right)
-      elsif (right.is_a?(Symbol) or right.is_a?(::Risc::RiscValue))
+      elsif (right.is_a?(Symbol) or right.is_a?(::Risc::RegisterValue))
         operand = reg_code(right)    #integer means the register the integer is in (otherwise constant)
         immediate = 0                # ie not immediate is register
       else
@@ -89,7 +89,7 @@ module Arm
     # this also loads constants, which are issued as pc relative adds
     def determine_operands
       if( @left.is_a?(Parfait::Object) or @left.is_a?(Risc::Label) or
-        (@left.is_a?(Symbol) and !Risc::RiscValue.look_like_reg(@left)))
+        (@left.is_a?(Symbol) and !Risc::RegisterValue.look_like_reg(@left)))
         left = @left
         left = left.address if left.is_a?(Risc::Label)
         # do pc relative addressing with the difference to the instuction

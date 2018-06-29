@@ -20,8 +20,8 @@ module Risc
       super(source)
       @from = from
       @to = to
-      raise "Fix me #{from}" unless from.is_a? RiscValue
-      raise "Fix me #{to}" unless to.is_a? RiscValue
+      raise "Fix me #{from}" unless from.is_a? RegisterValue
+      raise "Fix me #{to}" unless to.is_a? RegisterValue
     end
     attr_reader :from, :to
 

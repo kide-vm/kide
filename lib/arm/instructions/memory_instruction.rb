@@ -24,8 +24,8 @@ module Arm
     #TODO better test, this operand integer (register) does not work.
     def assemble(io)
       arg = @left
-      arg = arg.symbol if( arg.is_a? ::Risc::RiscValue )
-      is_reg = arg.is_a?(::Risc::RiscValue)
+      arg = arg.symbol if( arg.is_a? ::Risc::RegisterValue )
+      is_reg = arg.is_a?(::Risc::RegisterValue)
       is_reg = (arg.to_s[0] == "r") if( arg.is_a?(Symbol) and not is_reg)
 
       raise "invalid operand argument #{arg.inspect} #{inspect}" unless (is_reg )
@@ -34,7 +34,7 @@ module Arm
       #not sure about these 2 constants. They produce the correct output for str r0 , r1
       # but i can't help thinking that that is because they are not used in that instruction and
       # so it doesn't matter. Will see
-      if (operand.is_a?(Symbol) or operand.is_a?(::Risc::RiscValue))
+      if (operand.is_a?(Symbol) or operand.is_a?(::Risc::RegisterValue))
         val = reg_code(operand)
         i = 1  # not quite sure about this, but it gives the output of as. read read read.
       else
@@ -66,7 +66,7 @@ module Arm
     def get_operand
       return @operand unless  @right
       operand = @right
-      operand = operand.symbol if operand.is_a? ::Risc::RiscValue
+      operand = operand.symbol if operand.is_a? ::Risc::RegisterValue
       unless( operand.is_a? Symbol)
         # TODO test/check/understand: has no effect in current tests
         # add_offset = (operand < 0) ? 0 : 1
