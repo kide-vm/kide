@@ -35,7 +35,7 @@ module RubyX
 
     def test_class_body_is_scope
       clazz = RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5 ;end")
-      assert_equal MethodStatement , clazz.body.class
+      assert_equal Vool::MethodStatement , clazz.body.class
     end
 
     def test_creates_class_without_deriviation
@@ -49,8 +49,8 @@ module RubyX
     def test_creates_class_deriviation
       vool = RubyXCompiler.ruby_to_vool "class Testing ; end"
       mom = vool.to_mom(nil)
-      assert_equal ClassStatement , vool.class
-      assert mom , "No classes created"
+      assert_equal Vool::ClassStatement , vool.class
+      #assert mom , "No classes created"
     end
 
     def test_creates_class_with_deriviation

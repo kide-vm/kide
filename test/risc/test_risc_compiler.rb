@@ -1,6 +1,6 @@
 require_relative "helper"
 
-module Vool
+module Risc
   class TestRiscCompiler < MiniTest::Test
     include CompilerHelper
 
@@ -9,7 +9,7 @@ module Vool
     end
 
     def create_method
-      vool = RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
+      vool = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
       vool.to_mom(nil)
       test = Parfait.object_space.get_class_by_name(:Test)
       test.get_method(:meth)
@@ -17,7 +17,7 @@ module Vool
 
     def test_method_has_source
       method = create_method
-      assert_equal IvarAssignment ,  method.source.class
+      assert_equal Vool::IvarAssignment ,  method.source.class
     end
 
     def test_method_has_no_locals
@@ -37,24 +37,24 @@ module Vool
     end
 
     def test_creates_method_statement_in_class
-      clazz = RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5 ;end")
-      assert_equal MethodStatement , clazz.body.class
+      clazz = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5 ;end")
+      assert_equal Vool::MethodStatement , clazz.body.class
     end
 
     def test_method_statement_has_class
-      vool = RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
+      vool = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
       clazz = vool.to_mom(nil)
       assert vool.body.clazz
     end
 
     def test_parfait_class_creation
-      vool = RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
+      vool = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
       clazz = vool.to_mom(nil)
       assert_equal Parfait::Class , vool.body.clazz.class
     end
 
     def test_typed_method_instance_type
-      vool = RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5; @ibar = 4;end")
+      vool = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5; @ibar = 4;end")
       vool.to_mom(nil)
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.instance_type.get_method(:meth)
@@ -63,7 +63,7 @@ module Vool
     end
 
     def test_vool_method_has_one_local
-      vool = RubyXCompiler.ruby_to_vool in_Test("def meth; local = 5 ; a = 6;end")
+      vool = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; local = 5 ; a = 6;end")
       vool.to_mom(nil)
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.get_method(:meth)
@@ -73,7 +73,7 @@ module Vool
     end
 
     def test_typed_method_has_one_local
-      vool = RubyXCompiler.ruby_to_vool in_Test("def meth; local = 5 ; a = 6;end")
+      vool = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; local = 5 ; a = 6;end")
       vool.to_mom(nil)
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.instance_type.get_method(:meth)

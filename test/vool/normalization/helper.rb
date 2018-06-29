@@ -6,7 +6,7 @@ module Vool
     class NormTest < MiniTest::Test
 
       def normalize(input)
-        RubyCompiler.compile(input).normalize
+        RubyX::RubyCompiler.compile(input).normalize
       end
     end
   end

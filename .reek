@@ -7,7 +7,7 @@ DuplicateMethodCall:
 FeatureEnvy:
   exclude:
     - "Vool::Compiler"
-    - "Vool::RubyCompiler"
+    - "RubyX::RubyCompiler"
     - "Risc::Interpreter"
     - "Risc::TextWriter"
     - "Arm::Translator"
@@ -15,7 +15,7 @@ FeatureEnvy:
 TooManyMethods:
   exclude:
     - "Vool::Compiler"
-    - "Vool::RubyCompiler"
+    - "RubyX::RubyCompiler"
     - "Risc::Interpreter"
     - "Risc::TextWriter"
     - "Arm::Translator"
@@ -23,7 +23,7 @@ TooManyMethods:
 UtilityFunction:
   exclude:
     - "Vool::Compiler"
-    - "Vool::RubyCompiler"
+    - "RubyX::RubyCompiler"
     - "Risc::Interpreter"
     - "Risc::TextWriter"
     - "Arm::Translator"
@@ -31,7 +31,7 @@ UtilityFunction:
 UncommunicativeMethodName:
   exclude:
     - "Vool::Compiler"
-    - "Vool::RubyCompiler"
+    - "RubyX::RubyCompiler"
     - "Risc::TextWriter"
     - "Risc::Interpreter"
     - "Arm::Translator"

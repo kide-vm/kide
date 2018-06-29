@@ -24,7 +24,7 @@ module MomCompile
   def compile_first_method( input )
     # works a lot like Vool.ruby_to_vool
     # but here we return the intermediate mom instructions that are otherwise not available
-    statements = Vool::RubyCompiler.compile as_test_main( input )
+    statements = RubyX::RubyCompiler.compile as_test_main( input )
     statements = statements.normalize
     res = statements.to_mom(nil)
     assert_equal Parfait::Class , statements.clazz.class , statements

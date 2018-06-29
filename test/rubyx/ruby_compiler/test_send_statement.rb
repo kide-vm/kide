@@ -61,6 +61,7 @@ module Vool
     end
   end
   class TestSendReceiverType < MiniTest::Test
+    include RubyTests
 
     def setup
       Risc.machine.boot
