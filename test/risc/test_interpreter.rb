@@ -18,6 +18,7 @@ module Risc
   end
   class TestInterpreterStarts < MiniTest::Test
     def setup
+      Parfait.boot!
       @machine = Risc.machine.boot
       @machine.translate(:interpreter)
       @machine.position_all
@@ -37,6 +38,7 @@ module Risc
   end
   class TestInterpreterTicks < MiniTest::Test
     def setup
+      Parfait.boot!
       @machine = Risc.machine.boot
       @machine.translate(:interpreter)
       @machine.position_all

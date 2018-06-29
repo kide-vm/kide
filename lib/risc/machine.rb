@@ -23,7 +23,6 @@ module Risc
     end
 
     attr_reader  :constants , :cpu_init
-    attr_reader  :translated
     attr_reader  :platform
 
     # Translate code to whatever cpu is specified.
@@ -34,7 +33,6 @@ module Risc
     def translate( platform )
       platform = platform.to_s.capitalize
       @platform = Platform.for(platform)
-      @translated = true
       translate_methods( @platform.translator )
       @cpu_init = risc_init.to_cpu(@platform.translator)
     end
@@ -85,7 +83,6 @@ module Risc
     # As code length may change during assembly, this way at least the objects stay
     # in place and we don't have to deal with changing loading code
     def position_all
-      raise "Not translated " unless @translated
       #need the initial jump at 0 and then functions
       Position.new(cpu_init).set(0)
       code_start = position_objects( @platform.padding )
@@ -165,8 +162,6 @@ module Risc
     def boot
       initialize
       Position.clear_positions
-      @translated = false
-      Parfait.boot!
       Builtin.boot_functions
       self
     end

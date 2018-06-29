@@ -4,6 +4,7 @@ module Risc
   class TestCodeBuilder < MiniTest::Test
 
     def setup
+      Parfait.boot!
       Risc.machine.boot
       init = Parfait.object_space.get_init
       @builder = Risc::RiscCompiler.new( init ).code_builder(init)
@@ -100,6 +101,7 @@ module Risc
   class TestCompilerBuilder < MiniTest::Test
 
     def setup
+      Parfait.boot!
       Risc.machine.boot
       @init = Parfait.object_space.get_init
       @builder = Risc::RiscCompiler.new( @init ).compiler_builder(@init)

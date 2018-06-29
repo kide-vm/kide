@@ -5,7 +5,7 @@ module Risc
     include ScopeHelper
 
     def setup
-      Risc.machine.boot
+      Parfait.boot!
     end
 
     def create_method

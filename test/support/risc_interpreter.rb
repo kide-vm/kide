@@ -7,6 +7,7 @@ module Risc
     include ScopeHelper
 
     def setup
+      Parfait.boot!
       Risc.machine.boot
       RubyX::RubyXCompiler.ruby_to_binary( @string_input , :interpreter)
       @interpreter = Interpreter.new

@@ -4,7 +4,7 @@ module Parfait
   class ParfaitTest < MiniTest::Test
 
     def setup
-      @machine = Risc.machine.boot
+      Parfait.boot!
       @space = Parfait.object_space
     end
   end

@@ -4,6 +4,7 @@ module Risc
   class TestMachineObjects < MiniTest::Test
 
     def setup
+      Parfait.boot!
       @machine = Risc.machine.boot
     end
     def test_objects
@@ -36,6 +37,7 @@ module Risc
   end
   class TestMachinePos < MiniTest::Test
     def setup
+      Parfait.boot!
       @machine = Risc.machine.boot
       @machine.translate(:arm)
       @machine.position_all
@@ -48,6 +50,7 @@ module Risc
   end
   class TestMachineInit < MiniTest::Test
     def setup
+      Parfait.boot!
       @machine = Risc.machine.boot
       @machine.translate(:arm)
       @machine.position_all

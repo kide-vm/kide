@@ -15,20 +15,10 @@ module Parfait
       assert @space.false_object , "No lies"
       assert @space.nil_object , "No nothing"
     end
-    def test_methods_booted
-      word = @space.get_class_by_name(:Word).instance_type
-      assert_equal 3 , word.method_names.get_length
-      assert word.get_method(:putstring) , "no putstring"
-    end
-
     def test_global_space
       assert_equal Parfait::Space , Parfait.object_space.class
     end
 
-    def test_integer
-      int = Parfait.object_space.get_class_by_name :Integer
-      assert_equal 14, int.instance_type.method_names.get_length
-    end
 
     def test_get_integer_instance
       int = @space.get_integer
@@ -158,6 +148,21 @@ module Parfait
         assert_equal 0 , cl.instance_type.methods_length , "name #{cl.name}"
       end
     end
-
   end
+  class TestMethods < ParfaitTest
+    def setup
+      super
+      Risc::Builtin.boot_functions
+    end
+    def test_integer
+      int = Parfait.object_space.get_class_by_name :Integer
+      assert_equal 14, int.instance_type.method_names.get_length
+    end
+    def test_methods_booted
+      word = @space.get_class_by_name(:Word).instance_type
+      assert_equal 3 , word.method_names.get_length
+      assert word.get_method(:putstring) , "no putstring"
+    end
+  end
+
 end

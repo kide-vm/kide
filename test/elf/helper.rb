@@ -8,6 +8,7 @@ module Elf
     DEBUG = false
 
     def setup
+      Parfait.boot!
       Risc.machine.boot
     end
 

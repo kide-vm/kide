@@ -3,6 +3,7 @@ require_relative "../helper"
 class TestZeroCode < MiniTest::Test
 
   def setup
+    Parfait.boot!
     @machine = Risc.machine.boot
     @space = Parfait.object_space
     @space.each_type do | type |

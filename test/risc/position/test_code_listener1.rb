@@ -3,6 +3,7 @@ require_relative "helper"
 module Risc
   class TestCodeListenerFull < MiniTest::Test
     def setup
+      Parfait.boot!
       @machine = Risc.machine.boot
       @binary = Parfait::BinaryCode.new(1)
       @method = Parfait.object_space.types.values.first.methods

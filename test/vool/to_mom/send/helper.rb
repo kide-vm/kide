@@ -6,7 +6,8 @@ module Vool
     include MomCompile
 
     def setup
-      Risc.machine.boot
+      Parfait.boot!
+      Risc::Builtin.boot_functions
       @ins = compile_first_method( send_method )
     end
 

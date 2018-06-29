@@ -5,7 +5,8 @@ module Vool
     include MomCompile
 
     def setup
-      Risc.machine.boot
+      Parfait.boot!
+      Risc::Builtin.boot_functions
       @ins = compile_first_method( "local = 5")
     end
 
@@ -36,7 +37,7 @@ module Vool
   class TestAssignMomInstanceToLocal < MiniTest::Test
     include MomCompile
     def setup
-      Risc.machine.boot
+      Parfait.boot!
       @ins = compile_first_method( "@a = 5 ; local = @a")
     end
     def test_class_compiles
@@ -49,7 +50,7 @@ module Vool
     include MomCompile
 
     def setup
-      Risc.machine.boot
+      Parfait.boot!
       @ins = compile_first_method( "arg = 5")
     end
 
@@ -73,7 +74,7 @@ module Vool
   class TestAssignMomToInstance < MiniTest::Test
     include MomCompile
     def setup
-      Risc.machine.boot
+      Parfait.boot!
     end
     def test_assigns_const
       @ins = compile_first_method( "@a = 5")

@@ -3,6 +3,7 @@ require_relative "../helper"
 module RubyX
   module RubyXHelper
     def setup
+      Parfait.boot!
       Risc.machine.boot
     end
     def ruby_to_vool(input)

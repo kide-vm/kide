@@ -4,6 +4,7 @@ module Arm
   class TestTranslator < MiniTest::Test
 
     def setup
+      Parfait.boot!
       Risc.machine.boot
       @jump = Risc::DynamicJump.new("" , :r1)
       @codes = Translator.new.translate @jump

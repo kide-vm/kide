@@ -4,7 +4,8 @@ module Risc
   module Statements
 
     def setup
-      Risc.machine.boot # force boot to reset main
+      Parfait.boot!
+      Risc::Builtin.boot_functions
     end
 
     def preamble

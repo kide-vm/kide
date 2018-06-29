@@ -21,6 +21,7 @@ module Risc
   class TestIdentityTranslator < MiniTest::Test
 
     def setup
+      Parfait.boot!
       @machine = Risc.machine.boot
       @translator = IdentityTranslator.new
     end

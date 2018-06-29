@@ -17,6 +17,7 @@ module Risc
   class TestTextWriterPositions < MiniTest::Test
 
     def setup
+      Parfait.boot!
       @machine = Risc.machine.boot
       @machine.translate(:arm)
       @machine.position_all

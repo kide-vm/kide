@@ -4,6 +4,7 @@ module Mom
   class TestSlotLoad2 < MiniTest::Test
 
     def setup
+      Parfait.boot!
       Risc.machine.boot
       @load = SlotLoad.new( [:message, :caller] , [:message, :caller , :type] )
       @compiler = CompilerMock.new

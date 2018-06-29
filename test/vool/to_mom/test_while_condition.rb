@@ -7,7 +7,8 @@ module Vool
     include Mom
 
     def setup
-      Risc.machine.boot
+      Parfait.boot!
+      Risc::Builtin.boot_functions
       @ins = compile_first_method( "while(5.div4) ; 5.div4 ; end")
     end
 

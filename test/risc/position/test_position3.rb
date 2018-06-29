@@ -3,6 +3,7 @@ require_relative "helper"
 module Risc
   class TestMachinePositions < MiniTest::Test
     def setup_for(platform)
+      Parfait.boot!
       @machine = Risc.machine.boot
       @machine.translate(platform)
       @machine.position_all

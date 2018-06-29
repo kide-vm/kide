@@ -4,6 +4,7 @@ module Risc
   class TestCollector < MiniTest::Test
 
     def setup
+      Parfait.boot!
       @machine = Risc.machine.boot
     end
 

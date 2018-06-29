@@ -4,6 +4,7 @@ module Risc
   class TestTranslator < MiniTest::Test
 
     def setup
+      Parfait.boot!
       @machine = Risc.machine.boot
       @translator = Arm::Translator.new
     end

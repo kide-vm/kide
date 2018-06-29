@@ -3,6 +3,7 @@ require_relative "helper"
 module Risc
   class TestPositionTranslated < MiniTest::Test
     def setup
+      Parfait.boot!
       machine = Risc.machine.boot
       machine.translate(:interpreter)
       @binary = Parfait::BinaryCode.new(1)

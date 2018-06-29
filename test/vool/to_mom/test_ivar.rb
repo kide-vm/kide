@@ -5,7 +5,7 @@ module Vool
     include MomCompile
 
     def setup
-      Risc.machine.boot
+      Parfait.boot!
       @ins = compile_first_method( "@a = 5")
     end
 
