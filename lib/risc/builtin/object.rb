@@ -46,7 +46,7 @@ module Risc
         # it isn't really a function, ie it is jumped to (not called), exits and may not return
         # so it is responsible for initial setup
         def __init__ context
-          compiler = MethodCompiler.compiler_for_class(:Object,:__init__ ,
+          compiler = RiscCompiler.compiler_for_class(:Object,:__init__ ,
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
           builder = compiler.compiler_builder(compiler.method)
           builder.build do
@@ -63,7 +63,7 @@ module Risc
             message[:receiver] << space
           end
 
-          exit_label = Risc.label(compiler.method , "#{compiler.type.object_class.name}.#{compiler.method.name}" )
+          exit_label = Risc.label(compiler.method , "#{compiler.method.for_type.object_class.name}.#{compiler.method.name}" )
           ret_tmp = compiler.use_reg(:Label)
           builder.build do
             add_load_constant("__init__ load return", exit_label , ret_tmp)

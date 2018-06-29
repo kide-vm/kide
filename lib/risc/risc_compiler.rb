@@ -1,19 +1,17 @@
 module Risc
 
-  # MethodCompiler (old name) is used to generate risc instructions for methods
+  # RiscCompiler (old name) is used to generate risc instructions for methods
   # and to instantiate the methods correctly. Most of the init is typed layer stuff,
   # but there is some logic too.
 
-  class MethodCompiler
+  class RiscCompiler
 
     def initialize( method )
       @regs = []
       @method = method
-      @type = method.for_type
       @current = @method.risc_instructions
     end
-    attr_reader :type , :method
-
+    attr_reader :method
 
     # helper method for builtin mainly
     # the class_name is a symbol, which is resolved to the instance_type of that class

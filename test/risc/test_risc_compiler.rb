@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestMethodCompiler < MiniTest::Test
+  class TestRiscCompiler < MiniTest::Test
     include CompilerHelper
 
     def setup

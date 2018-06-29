@@ -18,7 +18,7 @@ module Mom
     # In other words Mom is the higher abstraction and so mom instructions convert
     # to many (1-10) risc instructions
     #
-    # The argument that is passed is a MethodCompiler, which has the method and some
+    # The argument that is passed is a RiscCompiler, which has the method and some
     # state about registers used. (also provides helpers to generate risc instructions)
     def to_risc(compiler)
       raise self.class.name + "_todo"

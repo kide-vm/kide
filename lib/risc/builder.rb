@@ -135,7 +135,7 @@ module Risc
     def add_known(name)
       case name
       when :receiver
-        ret = compiler.use_reg compiler.type
+        ret = compiler.use_reg compiler.method.for_type
         add_slot_to_reg(" load self" , :message , :receiver , ret )
         return ret
       when :space
@@ -236,7 +236,7 @@ module Risc
     end
   end
 
-  # A CompilerBuilder adds the generated code to the MethodCompiler.
+  # A CompilerBuilder adds the generated code to the RiscCompiler.
   #
   class CompilerBuilder < Builder
     # add code straight to the compiler
