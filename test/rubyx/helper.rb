@@ -8,6 +8,9 @@ module RubyX
     def ruby_to_vool(input)
       RubyXCompiler.ruby_to_vool(input)
     end
+    def ruby_to_mom(input)
+      RubyXCompiler.ruby_to_mom(input)
+    end
     def compile_in_test input
       vool = ruby_to_vool in_Test(input)
       vool.to_mom(nil)

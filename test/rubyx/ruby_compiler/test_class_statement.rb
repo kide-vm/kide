@@ -22,7 +22,7 @@ module Vool
     end
 
     def test_compile_class_body
-      assert_nil @lst.body
+      assert @lst.body.empty?
     end
 
   end
@@ -31,13 +31,13 @@ module Vool
     include RubyTests
 
     def test_compile_one_method
-      lst = compile( in_Test("@ivar = 4") )
-      assert_equal IvarAssignment , lst.body.class
+      lst = compile( as_test_main("@ivar = 4") )
+      assert_equal IvarAssignment , lst.body.first.body.class
     end
-    def test_compile_two_methods
-      lst = compile( in_Test("false; true;") )
-      assert_equal ScopeStatement , lst.body.class
-      assert_equal TrueConstant , lst.body.statements[1].class
+    def test_compile_two_stats
+      lst = compile( as_test_main("false; true;") )
+      assert_equal ScopeStatement , lst.body.first.body.class
+      assert_equal TrueConstant , lst.body.first.body.statements[1].class
     end
 
   end

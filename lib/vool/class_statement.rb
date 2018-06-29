@@ -4,11 +4,22 @@ module Vool
     attr_reader :clazz
 
     def initialize( name , supe , body)
-      @name , @super_class_name , @body = name , supe , body
+      @name , @super_class_name = name , supe
+      case body
+      when MethodStatement
+        @body = Statements.new([body])
+      when Statements
+        @body = body
+      when nil
+        @body = Statements.new([])
+      else
+        raise "what body #{body}"
+      end
     end
 
     def normalize
-      ClassStatement.new(@name , @super_class_name, @body&.normalize )
+      meths = body.statements.collect{|meth| meth.normalize}
+      ClassStatement.new(@name , @super_class_name, Statements.new(meths) )
     end
 
     def to_mom( _ )
