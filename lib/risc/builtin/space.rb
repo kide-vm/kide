@@ -1,11 +1,8 @@
-require "ast/sexp"
-require_relative "compile_helper"
 
 module Risc
   module Builtin
     class Space
       module ClassMethods
-        include AST::Sexp
         include CompileHelper
 
         # main entry point, ie __init__ calls this
@@ -21,7 +18,3 @@ module Risc
     end
   end
 end
-
-require_relative "integer"
-require_relative "object"
-require_relative "word"

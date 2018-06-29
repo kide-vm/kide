@@ -37,5 +37,5 @@ end
 require_relative "risc/instruction"
 require_relative "risc/risc_value"
 require_relative "risc/text_writer"
-require_relative "risc/builtin/space"
+require_relative "risc/builtin"
 require_relative "risc/builder"
