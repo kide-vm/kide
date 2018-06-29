@@ -4,7 +4,7 @@ require_relative "compiling"
 
 module Risc
   module Ticker
-    include CompilerHelper
+    include ScopeHelper
 
     def setup
       Risc.machine.boot

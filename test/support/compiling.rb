@@ -1,5 +1,5 @@
 
-module CompilerHelper
+module ScopeHelper
 
   def in_Test(statements)
     "class Test ; #{statements} ; end"
@@ -19,7 +19,7 @@ module CompilerHelper
 end
 
 module MomCompile
-  include CompilerHelper
+  include ScopeHelper
 
   def compile_first_method( input )
     # works a lot like Vool.ruby_to_vool

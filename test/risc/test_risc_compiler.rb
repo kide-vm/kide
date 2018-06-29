@@ -2,7 +2,7 @@ require_relative "helper"
 
 module Risc
   class TestRiscCompiler < MiniTest::Test
-    include CompilerHelper
+    include ScopeHelper
 
     def setup
       Risc.machine.boot

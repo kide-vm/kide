@@ -27,7 +27,7 @@ module Vool
 
   end
   class TestBasicClassStatement < MiniTest::Test
-    include CompilerHelper
+    include ScopeHelper
     include RubyTests
 
     def test_compile_one_method
