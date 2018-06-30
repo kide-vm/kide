@@ -1,10 +1,10 @@
 module Risc
 
-  # RiscCompiler (old name) is used to generate risc instructions for methods
+  # MethodCompiler (old name) is used to generate risc instructions for methods
   # and to instantiate the methods correctly. Most of the init is typed layer stuff,
   # but there is some logic too.
 
-  class RiscCompiler
+  class MethodCompiler
 
     def initialize( method )
       @regs = []

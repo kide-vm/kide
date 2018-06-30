@@ -46,7 +46,7 @@ module Risc
         # it isn't really a function, ie it is jumped to (not called), exits and may not return
         # so it is responsible for initial setup
         def __init__ context
-          compiler = RiscCompiler.compiler_for_class(:Object,:__init__ ,
+          compiler = MethodCompiler.compiler_for_class(:Object,:__init__ ,
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
           builder = compiler.compiler_builder(compiler.method)
           builder.build do

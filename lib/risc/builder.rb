@@ -236,7 +236,7 @@ module Risc
     end
   end
 
-  # A CompilerBuilder adds the generated code to the RiscCompiler.
+  # A CompilerBuilder adds the generated code to the MethodCompiler.
   #
   class CompilerBuilder < Builder
     # add code straight to the compiler

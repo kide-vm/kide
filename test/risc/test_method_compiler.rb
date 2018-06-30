@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Risc
-  class TestRiscCompiler < MiniTest::Test
+  class TestMethodCompiler < MiniTest::Test
     include ScopeHelper
 
     def setup
