@@ -17,7 +17,7 @@ module Risc
           builder.add_new_int(source,me , two)
           builder.add_reg_to_slot( source , two , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
-          return compiler.method
+          return compiler
         end
         def >( context )
           comparison( :> )
@@ -54,12 +54,12 @@ module Risc
           builder.add_code merge_label
           builder.add_reg_to_slot( "#{operator} save ret" , other , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
-          return compiler.method
+          return compiler
         end
         def putint(context)
           compiler = compiler_for(:Integer,:putint ,{})
           compiler.add_mom( Mom::ReturnSequence.new)
-          return compiler.method
+          return compiler
         end
         def operator_method( op_sym )
           compiler = compiler_for(:Integer, op_sym ,{other: :Integer})
@@ -71,7 +71,7 @@ module Risc
           builder.add_new_int(op_sym.to_s + " new int", me , other)
           builder.add_reg_to_slot( op_sym.to_s + "save ret" , other , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
-          return compiler.method
+          return compiler
         end
         def div10( context )
           s = "div_10 "
@@ -134,7 +134,7 @@ module Risc
           builder.add_reg_to_slot( s , tmp , :message , :return_value)
 
           compiler.add_mom( Mom::ReturnSequence.new)
-          return compiler.method
+          return compiler
         end
       end
       extend ClassMethods

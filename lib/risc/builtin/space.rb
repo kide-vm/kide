@@ -10,7 +10,7 @@ module Risc
         def main(context)
           compiler = compiler_for(:Space , :main ,{args: :Integer})
           compiler.add_mom( Mom::ReturnSequence.new)
-          return compiler.method
+          return compiler
         end
 
       end

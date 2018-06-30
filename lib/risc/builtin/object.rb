@@ -17,7 +17,7 @@ module Risc
           # and put it back into the return value
           builder.add_reg_to_slot( source , me , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
-          return compiler.method
+          return compiler
         end
 
         # self[index] = val basically. Index is the first arg , value the second
@@ -31,7 +31,7 @@ module Risc
           # do the set
           builder.add_reg_to_slot( source , value , me , index)
           compiler.add_mom( Mom::ReturnSequence.new)
-          return compiler.method
+          return compiler
         end
 
         # every object needs a method missing.
@@ -39,7 +39,7 @@ module Risc
         def _method_missing( context )
           compiler = compiler_for(:Object,:method_missing ,{})
           emit_syscall( compiler.compiler_builder(compiler.method) , :exit )
-          return compiler.method
+          return compiler
         end
 
         # this is the really really first place the machine starts (apart from the jump here)
@@ -73,7 +73,7 @@ module Risc
           end
           compiler.reset_regs
           exit_sequence(builder)
-          return compiler.method
+          return compiler
         end
 
         # a sort of inline version of exit method.
@@ -89,7 +89,7 @@ module Risc
           compiler = compiler_for(:Object,:exit ,{})
           builder = compiler.compiler_builder(compiler.method)
           exit_sequence(builder)
-          return compiler.method
+          return compiler
         end
 
         def emit_syscall( builder , name )

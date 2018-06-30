@@ -12,33 +12,46 @@ module Risc
     # This should return the implementation of the method (ie a method object),
     # not actually try to implement it(as that's impossible in ruby)
     #
-    def self.boot_functions( )
+    def self.boot_functions
+      compilers = []
       space = Parfait.object_space
-      # very fiddly chicken 'n egg problem. Functions need to be in the right order, and in fact we
-      # have to define some dummies, just for the others to compile
-      # TODO go through the virtual parfait layer and adjust function names to what they really are
-      space_class = space.get_class
-      space_class.instance_type.add_method Builtin::Space.send(:main, nil)
+      # very fiddly chicken 'n egg problem. Functions need to be in the right order,
+      # and in fact we  have to define some dummies, just for the others to compile
+      # TODO go through the virtual parfait layer and adjust function names
+      #      to what they really are
+      space_type = space.get_class.instance_type
+      compilers << compiler_for( space_type   , Space , :main)
 
-      obj = space.get_class_by_name(:Object)
+      obj_type = space.get_class_by_name(:Object).instance_type
       [ :get_internal_word , :set_internal_word , :_method_missing,
         :exit , :__init__].each do |f|
-        obj.instance_type.add_method Builtin::Object.send(f , nil)
+        compilers << compiler_for( obj_type , Object , f)
       end
 
-      obj = space.get_class_by_name(:Word)
+      word_type = space.get_class_by_name(:Word).instance_type
       [:putstring , :get_internal_byte , :set_internal_byte ].each do |f|
-        obj.instance_type.add_method Builtin::Word.send(f , nil)
+        compilers << compiler_for( word_type , Word , f)
       end
 
-      obj = space.get_class_by_name(:Integer)
+      int_type = space.get_class_by_name(:Integer).instance_type
       Risc.operators.each do |op|
-        obj.instance_type.add_method Builtin::Integer.operator_method(op)
+        compilers << operator_compiler( int_type , op)
       end
       [:putint, :div4, :div10 , :<,:<= , :>=, :>].each do |f|   #div4 is just a forward declaration
-        obj.instance_type.add_method Builtin::Integer.send(f , nil)
+        compilers << compiler_for( int_type , Integer , f)
       end
+      compilers
     end
 
+    def self.compiler_for( type , mod , name)
+      compiler = mod.send(name , nil)
+      type.add_method( compiler.method )
+      compiler
+    end
+    def self.operator_compiler(int_type , op)
+      compiler = Integer.operator_method(op)
+      int_type.add_method(compiler.method)
+      compiler
+    end
   end
 end

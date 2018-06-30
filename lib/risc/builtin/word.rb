@@ -13,7 +13,7 @@ module Risc
           builder.add_slot_to_reg( "putstring" , :new_message , index , reg )
           Risc::Builtin::Object.emit_syscall( builder , :putstring )
           compiler.add_mom( Mom::ReturnSequence.new)
-          compiler.method
+          compiler
         end
 
         # self[index] basically. Index is the first arg > 0
@@ -30,7 +30,7 @@ module Risc
           # and put it back into the return value
           builder.add_reg_to_slot( source , index , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
-          return compiler.method
+          return compiler
         end
 
         # self[index] = val basically. Index is the first arg ( >0),
@@ -48,7 +48,7 @@ module Risc
           value = builder.load_int_arg_at(source , 1 )
           builder.add_reg_to_slot( source , value , :message , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
-          return compiler.method
+          return compiler
         end
 
       end
