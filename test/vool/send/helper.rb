@@ -11,7 +11,7 @@ module Vool
       @ins = compile_first_method( send_method )
     end
 
-    def test_compiles_not_array
+    def test_first_not_array
       assert Array != @ins.class , @ins
     end
     def test_class_compiles

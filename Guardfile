@@ -25,11 +25,8 @@ guard :minitest , all_on_start: false do   # with Minitest::Unit
   # ruby compiler tests have a whole directory
   watch(%r{^lib/rubyx/ruby_compiler.rb}) { Dir["test/rubyx/ruby_compiler/test_*.rb"] }
 
-  # Vool to_mom compile process +   # Ruby to vool compile process
-  watch(%r{^lib/vool/(.+)_statement.rb}) { |m|
-    [ Dir["test/vool/to_mom/test_#{m[1]}*.rb"] , "test/vool/statements/test_#{m[1]}.rb"] }
   watch(%r{^lib/vool/statements/send_statement.rb}) {
-    [ Dir["test/vool/to_mom/send/test_*.rb"] , "test/vool/statements/test_send_statement.rb"] }
+    [ Dir["test/vool/send/test_*.rb"] ] }
 
   # message setup
   watch(%r{^lib/mom/instruction/message_setup.rb}) { Dir["test/mom/send/test_setup*.rb"] }

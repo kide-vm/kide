@@ -24,9 +24,10 @@ module Vool
 
     def to_mom( _ )
       create_class_object
-      mom = nil #return mom for test purpose
-      self.each do |node|
-        mom = node.to_mom(@clazz) if node.is_a?(MethodStatement)
+      mom = []
+      body.statements.each do |node|
+        raise "Only methods for now #{node}" unless node.is_a?(MethodStatement)
+        mom << node.to_mom(@clazz)
       end
       mom
     end

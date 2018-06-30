@@ -31,7 +31,7 @@ module MomCompile
     @method = statements.clazz.get_method(:main)
     assert_equal Parfait::VoolMethod , @method.class
     #puts "#{res.class}"
-    res
+    res.first
   end
 
   def check_array( should , is )
