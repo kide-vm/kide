@@ -6,6 +6,10 @@ module RubyX
       Parfait.boot!
       Risc.machine.boot
     end
+    def ruby_to_risc(input , platform)
+      mom = ruby_to_mom(input)
+      mom.translate(platform)
+    end
     def ruby_to_vool(input)
       RubyXCompiler.ruby_to_vool(input)
     end

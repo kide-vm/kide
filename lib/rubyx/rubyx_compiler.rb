@@ -17,7 +17,8 @@ module RubyX
     def self.ruby_to_binary(source , platform = :arm)
       Parfait.boot!
       machine = Risc.machine.boot
-      ruby_to_mom(source)
+      mom = ruby_to_mom(source)
+      #mom.translate(platform)
       machine.translate(platform)
       machine.position_all
       machine.create_binary

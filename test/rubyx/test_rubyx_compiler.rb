@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module RubyX
-  class TestVoolCompiler < MiniTest::Test
+  class TestRubyXCompiler < MiniTest::Test
     include ScopeHelper
     include RubyXHelper
 
