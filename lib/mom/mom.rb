@@ -15,3 +15,4 @@ module Mom
 end
 
 require_relative "instruction/instruction.rb"
+require_relative "class_compiler"

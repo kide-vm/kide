@@ -21,17 +21,17 @@ end
 module MomCompile
   include ScopeHelper
 
-  def compile_first_method( input )
-    # works a lot like Vool.ruby_to_vool
-    # but here we return the intermediate mom instructions that are otherwise not available
-    statements = RubyX::RubyCompiler.compile as_test_main( input )
-    statements = statements.normalize
+  def compile_mom(input)
+    statements = RubyX::RubyXCompiler.ruby_to_vool input
     res = statements.to_mom(nil)
     assert_equal Parfait::Class , statements.clazz.class , statements
     @method = statements.clazz.get_method(:main)
     assert_equal Parfait::VoolMethod , @method.class
-    #puts "#{res.class}"
-    res.first
+    res
+  end
+  def compile_first_method( input )
+    res = compile_mom( as_test_main( input ))
+    res.clazz.instance_methods.first.compile_to_mom(res.clazz.instance_type)
   end
 
   def check_array( should , is )

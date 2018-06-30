@@ -43,6 +43,7 @@ module Vool
     include Mom
 
     def setup
+      Parfait.boot!
       Risc.machine.boot
       @ins = compile_first_method( "return 5.div4")
     end

@@ -20,11 +20,17 @@ module Parfait
       raise "args_type must be type" unless args_type.is_a?(Parfait::Type)
       raise "frame_type must be type" unless frame_type.is_a?(Parfait::Type)
       raise "source must be vool" unless source.is_a?(Vool::Statement)
+      raise "Empty bod" if(source.is_a?(Vool::Statements) and source.empty?)
     end
 
     def create_typed_method( type )
       raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
       type.create_method( @name , @args_type , @frame_type)
+    end
+
+    def compile_to_mom(for_type)
+      typed_method = create_typed_method(for_type)
+      source.to_mom( typed_method )
     end
 
     def compile_to_risc(for_type)
