@@ -6,7 +6,7 @@ module Risc
     def setup
       Parfait.boot!
       Risc.boot!
-      @machine = Linker.new
+      @machine = Linker.new(:arm)
     end
     def test_objects
       objects = @machine.object_positions
@@ -20,11 +20,12 @@ module Risc
       assert @machine.add_constant( Parfait::Integer.new(5) )
     end
   end
-  class TestMachinePos #< MiniTest::Test
+  class TestMachinePos < MiniTest::Test
     def setup
       Parfait.boot!
-      @machine = Risc.machine.boot
-      @machine.translate(:arm)
+      Risc.boot!
+      @linker = Linker.new(:arm)
+      @linker.translate
       @machine.position_all
     end
     def test_positions_set

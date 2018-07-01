@@ -1,6 +1,6 @@
 
 module Risc
-  class InterpreterPlatform
+  class InterpreterPlatform < Platform
     def translator
       IdentityTranslator.new
     end

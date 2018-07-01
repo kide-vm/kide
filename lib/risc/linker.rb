@@ -13,7 +13,13 @@ module Risc
     include Util::Logging
     log_level :info
 
-    def initialize
+    def initialize(platform)
+      if(platform.is_a?(Symbol))
+        platform = platform.to_s.capitalize
+        platform = Risc::Platform.for(platform)
+      end
+      raise "Platform must be platform, not #{platform.class}" unless platform.is_a?(Platform)
+      @platform = platform
       @risc_init = nil
       @constants = []
     end

@@ -1,6 +1,6 @@
 require_relative "translator"
 module Arm
-  class ArmPlatform
+  class ArmPlatform < Risc::Platform
     def translator
       Translator.new
     end
