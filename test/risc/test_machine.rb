@@ -35,7 +35,7 @@ module Risc
       assert_equal 5, count
     end
   end
-  class TestMachinePos < MiniTest::Test
+  class TestMachinePos #< MiniTest::Test
     def setup
       Parfait.boot!
       @machine = Risc.machine.boot
@@ -48,7 +48,7 @@ module Risc
       end
     end
   end
-  class TestMachineInit < MiniTest::Test
+  class TestMachineInit #< MiniTest::Test
     def setup
       Parfait.boot!
       @machine = Risc.machine.boot

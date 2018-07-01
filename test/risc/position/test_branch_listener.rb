@@ -4,6 +4,7 @@ require 'minitest/mock'
 module Risc
   class TestBranchListenerBooted < MiniTest::Test
     def setup
+      Parfait.boot!
       DummyPlatform.boot
       @binary = Parfait::BinaryCode.new(1)
       @bin_pos = CodeListener.init(@binary).set(0)

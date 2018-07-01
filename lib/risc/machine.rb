@@ -25,26 +25,6 @@ module Risc
     attr_reader  :constants , :cpu_init
     attr_reader  :platform
 
-    # Translate code to whatever cpu is specified.
-    # Currently only :arm and :interpret
-    #
-    # Translating means translating the initial jump
-    # and then translating all methods
-    def translate( platform )
-      platform = platform.to_s.capitalize
-      @platform = Platform.for(platform)
-      translate_methods( @platform.translator )
-      @cpu_init = risc_init.to_cpu(@platform.translator)
-    end
-
-    # go through all methods and translate them to cpu, given the translator
-    def translate_methods(translator)
-      Parfait.object_space.get_all_methods.each do |method|
-        log.debug "Translate method #{method.name}"
-        method.translate_cpu(translator)
-      end
-    end
-
     # machine keeps a list of all objects and their positions.
     # this is lazily created with a collector
     def object_positions
