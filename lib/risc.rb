@@ -26,6 +26,7 @@ require "parfait"
 require_relative "risc/parfait_adapter"
 require_relative "risc/machine"
 require_relative "risc/method_compiler"
+require_relative "risc/assembler"
 
 class Fixnum
   def fits_u8?
