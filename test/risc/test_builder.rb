@@ -5,7 +5,7 @@ module Risc
 
     def setup
       Parfait.boot!
-      Risc.machine.boot
+      Risc.boot!
       init = Parfait.object_space.get_init
       @builder = Risc::MethodCompiler.new( init ).code_builder(init)
       @label = Risc.label("source","name")
@@ -102,7 +102,7 @@ module Risc
 
     def setup
       Parfait.boot!
-      Risc.machine.boot
+      Risc.boot!
       @init = Parfait.object_space.get_init
       @builder = Risc::MethodCompiler.new( @init ).compiler_builder(@init)
     end

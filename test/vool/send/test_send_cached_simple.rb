@@ -7,7 +7,6 @@ module Vool
 
     def setup
       Parfait.boot!
-      Risc.machine.boot
       @ins = compile_first_method( "a = 5; a.div4")
     end
     def test_check_type

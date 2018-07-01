@@ -7,7 +7,7 @@ module Vool
 
     def setup
       Parfait.boot!
-      Risc.machine.boot
+      Risc.boot!
       @ins = compile_first_method( "a = main(1 + 2)" )
     end
 

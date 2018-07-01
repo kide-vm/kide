@@ -35,8 +35,8 @@ module MomCompile
     compile_to_mom(method , res.clazz.instance_type)
   end
   def compile_to_mom(method , for_type)
-    typed_method = create_typed_method(for_type)
-    source.to_mom( typed_method )
+    typed_method = method.create_typed_method(for_type)
+    method.source.to_mom( typed_method )
   end
 
   def check_array( should , is )

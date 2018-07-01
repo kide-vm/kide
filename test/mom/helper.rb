@@ -29,7 +29,7 @@ module Risc
     end
     def produce_instructions
       assert @expect , "No output given"
-      RubyX::RubyXCompiler.ruby_to_binary as_test_main , :interpreter
+      RubyX::RubyXCompiler.new(as_test_main).ruby_to_binary( :interpreter)
       test = Parfait.object_space.get_class_by_name :Test
       test.instance_type.get_method(:main).cpu_instructions
     end

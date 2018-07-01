@@ -5,7 +5,6 @@ module Arm
 
     def setup
       Parfait.boot!
-      Risc.machine.boot
       @jump = Risc::DynamicJump.new("" , :r1)
       @codes = Translator.new.translate @jump
     end

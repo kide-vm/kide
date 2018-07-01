@@ -4,7 +4,7 @@ module Risc
   class TestLabelListener < MiniTest::Test
 
     def setup
-      Risc.machine.boot
+      Parfait.boot!
       @label = Label.new("Hi","Ho" , FakeAddress.new(5))
       @label_pos = Position.new(@label ).set(4)
       @code = Parfait::BinaryCode.new(1)

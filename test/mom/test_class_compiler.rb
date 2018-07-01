@@ -18,11 +18,27 @@ module Mom
     def test_has_translate
       assert @comp.translate(:interpreter)
     end
+  end
+  class TestClassCompilerTranslate < MiniTest::Test
+    include MomCompile
+
+    def setup
+      Parfait.boot!
+      @comp = compile_mom( "class Test ; def main(); return 1; end; end;")
+      @trans = @comp.translate(:interpreter)
+    end
+
     def test_translate_class
-      assert_equal Array , @comp.translate(:interpreter).class
+      assert_equal Array , @trans.class
     end
     def test_translate_assemblers
-      assert_equal Risc::Assembler , @comp.translate(:interpreter).first.class
+      assert_equal Risc::Assembler , @trans.first.class
+    end
+    def test_assembler_code
+      assert_equal Risc::Label , @trans.first.instructions.class
+    end
+    def test_assembler_assembled
+      assert_equal Risc::LoadConstant , @trans.first.instructions.next.class
     end
   end
 end

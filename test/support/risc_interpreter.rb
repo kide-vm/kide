@@ -8,7 +8,7 @@ module Risc
 
     def setup
       Parfait.boot!
-      Risc.machine.boot
+      Risc.boot!
       RubyX::RubyXCompiler.ruby_to_binary( @string_input , :interpreter)
       @interpreter = Interpreter.new
       @interpreter.start_machine

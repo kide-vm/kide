@@ -4,11 +4,10 @@ module RubyX
   module RubyXHelper
     def setup
       Parfait.boot!
-      Risc.machine.boot
+      Risc.boot!
     end
     def ruby_to_risc(input , platform)
       mom = ruby_to_mom(input)
-      puts "MOM #{mom.class}"
       mom.translate(platform)
     end
     def ruby_to_vool(input)

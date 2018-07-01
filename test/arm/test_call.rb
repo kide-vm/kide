@@ -25,7 +25,7 @@ module Arm
       assert_nil code.branch_to
     end
     def test_method_call
-      Risc.machine.boot
+      Parfait.boot!
       bin = Parfait::BinaryCode.new(1)
       Risc::Position.new(bin).set(0x20)
       code = @machine.call(	bin ,{} )#this jumps to the next instruction

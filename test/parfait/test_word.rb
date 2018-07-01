@@ -4,7 +4,7 @@ module Parfait
   class TestEmptyWord < ParfaitTest
 
     def setup
-      Risc.machine.boot
+      Parfait.boot!
       @word = Parfait::Word.new(0)
     end
     def test_word_create

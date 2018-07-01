@@ -9,7 +9,7 @@ module Elf
 
     def setup
       Parfait.boot!
-      Risc.machine.boot
+      Risc.boot!
     end
 
     def in_space(input)

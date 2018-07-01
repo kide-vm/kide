@@ -19,15 +19,19 @@ module RubyX
       vool.to_mom(nil)
     end
 
+    def ruby_to_risc(platform)
+      mom = ruby_to_mom
+      mom.translate(platform)
+    end
+
     def ruby_to_binary(platform = :arm)
       Parfait.boot!
-      machine = Risc.machine.boot
-      mom = ruby_to_mom
-      puts "MOM #{mom.class}"
-      mom.translate(platform)
-      #machine.translate(platform)
-      machine.position_all
-      machine.create_binary
+      Risc.boot!
+      assemblers = ruby_to_mom(platform)
+      puts "Assemblers #{assemblers}"
+      linker = Linker.new
+      linker.position_all
+      linker.create_binary
     end
   end
 end

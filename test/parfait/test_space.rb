@@ -97,6 +97,15 @@ module Parfait
     def test_has_next_address
       assert_equal Parfait::ReturnAddress , @space.next_address.next_integer.class
     end
+    def test_address_count
+      addr = @space.get_address
+      count = 0
+      while(addr)
+        count += 1
+        addr = addr.next_integer
+      end
+      assert_equal 10, count
+    end
 
     def test_messages
       mess = @space.first_message

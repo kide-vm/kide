@@ -51,7 +51,7 @@ module Vool
     include RubyTests
 
     def setup
-      Risc.machine.boot
+      Parfait.boot!
     end
     def compile_ct( input )
       lst = compile( input )

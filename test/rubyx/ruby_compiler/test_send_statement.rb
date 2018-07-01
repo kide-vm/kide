@@ -64,7 +64,7 @@ module Vool
     include RubyTests
 
     def setup
-      Risc.machine.boot
+      Parfait.boot!
     end
 
     def test_int_receiver

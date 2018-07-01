@@ -44,7 +44,7 @@ module Vool
 
     def setup
       Parfait.boot!
-      Risc.machine.boot
+      Risc.boot!
       @ins = compile_first_method( "return 5.div4")
     end
 

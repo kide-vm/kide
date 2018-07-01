@@ -5,7 +5,7 @@ module Mom
 
     def setup
       Parfait.boot!
-      Risc.machine.boot
+      Risc.boot!
       @load = SlotLoad.new( [:message, :caller] , [:message, :caller , :type] )
       @compiler = CompilerMock.new
       @instruction = @load.to_risc(@compiler)

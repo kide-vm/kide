@@ -21,7 +21,7 @@ module Vool
       assert_equal true , @lst.has_yield?
     end
     def test_method_args
-      Risc.machine.boot
+      Parfait.boot!
       assert_equal 2 , @lst.make_arg_type.get_length
     end
   end

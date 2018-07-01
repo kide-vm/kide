@@ -5,7 +5,7 @@ module Risc
 
     def setup
       Parfait.boot!
-      Risc.boot
+      Risc.boot!
       @machine = Linker.new
     end
     def test_objects
@@ -18,22 +18,6 @@ module Risc
     end
     def test_constant
       assert @machine.add_constant( Parfait::Integer.new(5) )
-    end
-    def test_address_get
-      assert_equal Parfait::ReturnAddress ,  @machine.get_address.class
-    end
-    def test_address_is_constant
-      addr = @machine.get_address
-      assert @machine.constants.include?(addr)
-    end
-    def test_address_count
-      addr = @machine.get_address
-      count = 0
-      while(addr)
-        count += 1
-        addr = addr.next_integer
-      end
-      assert_equal 5, count
     end
   end
   class TestMachinePos #< MiniTest::Test

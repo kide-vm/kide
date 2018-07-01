@@ -3,7 +3,7 @@ require_relative "helper"
 module Mom
   class TestSlotDefinitionKnown1 < MiniTest::Test
     def setup
-      Risc.machine.boot
+      Parfait.boot!
       @compiler = CompilerMock.new
       @definition = SlotDefinition.new(:message , :caller)
       @instruction = @definition.to_register(@compiler , InstructionMock.new)
