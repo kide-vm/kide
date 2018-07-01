@@ -13,7 +13,7 @@ module Mom
       assert_equal MomCompiler , @comp.class
     end
     def test_compilers
-      assert_equal 1 , @comp.method_compilers.length
+      assert_equal 24 , @comp.method_compilers.length
     end
     def test_has_translate
       assert @comp.translate(:interpreter)
@@ -29,16 +29,19 @@ module Mom
     end
 
     def test_translate_class
-      assert_equal Array , @trans.class
+      assert_equal Risc::Linker , @trans.class
+    end
+    def test_translate_platform
+      assert_kind_of Risc::Platform , @trans.platform
     end
     def test_translate_assemblers
-      assert_equal Risc::Assembler , @trans.first.class
+      assert_equal Risc::Assembler , @trans.assemblers.first.class
     end
     def test_assembler_code
-      assert_equal Risc::Label , @trans.first.instructions.class
+      assert_equal Risc::Label , @trans.assemblers.first.instructions.class
     end
     def test_assembler_assembled
-      assert_equal Risc::LoadConstant , @trans.first.instructions.next.class
+      assert_equal Risc::SlotToReg , @trans.assemblers.first.instructions.next.class
     end
   end
 end

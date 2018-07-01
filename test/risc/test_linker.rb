@@ -6,27 +6,23 @@ module Risc
     def setup
       Parfait.boot!
       Risc.boot!
-      @machine = Linker.new(:arm)
+      @linker = Mom::MomCompiler.new.translate(:arm)
     end
     def test_objects
-      objects = @machine.object_positions
+      objects = @linker.object_positions
       assert_equal Hash , objects.class
       assert 350 < objects.length
     end
     def test_constant_fail
       assert_raises {@machine.add_constant( 1 )}
     end
-    def test_constant
-      assert @machine.add_constant( Parfait::Integer.new(5) )
-    end
   end
   class TestMachinePos < MiniTest::Test
     def setup
       Parfait.boot!
       Risc.boot!
-      @linker = Linker.new(:arm)
-      @linker.translate
-      @machine.position_all
+      @linker = Mom::MomCompiler.new.translate(:arm)
+      @linker.position_all
     end
     def test_positions_set
       @machine.object_positions.each do |obj , position|

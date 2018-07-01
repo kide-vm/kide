@@ -61,7 +61,9 @@ module Risc
       end
     end
 
+    # add a constant (which get created during compilation and need to be linked)
     def add_constant(const)
+      raise "Must be Parfait #{const}" unless const.is_a?(Parfait::Object)
       @constants << const
     end
 

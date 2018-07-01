@@ -13,19 +13,20 @@ module Risc
     include Util::Logging
     log_level :info
 
-    def initialize(platform)
+    def initialize(platform , assemblers)
       if(platform.is_a?(Symbol))
         platform = platform.to_s.capitalize
         platform = Risc::Platform.for(platform)
       end
       raise "Platform must be platform, not #{platform.class}" unless platform.is_a?(Platform)
       @platform = platform
+      @assemblers = assemblers
       @risc_init = nil
       @constants = []
     end
 
     attr_reader  :constants , :cpu_init
-    attr_reader  :platform
+    attr_reader  :platform , :assemblers
 
     # machine keeps a list of all objects and their positions.
     # this is lazily created with a collector
@@ -38,12 +39,6 @@ module Risc
     def risc_init
       @risc_init ||= Branch.new( "__initial_branch__" , Parfait.object_space.get_init.risc_instructions )
     end
-    # add a constant (which get created during compilation and need to be linked)
-    def add_constant(const)
-      raise "Must be Parfait #{const}" unless const.is_a?(Parfait::Object)
-      @constants << const
-    end
-
 
     # To create binaries, objects (and labels) need to have a position
     # (so objects can be loaded and branches know where to jump)

@@ -5,11 +5,16 @@ module RubyX
     include ScopeHelper
     include RubyXHelper
 
-    def test_to_risc
+    def setup
+      super
       code = "class Space ; def main(arg);return arg;end; end"
-      risc = ruby_to_risc(code, :interpreter)
-      assert_equal Array , risc.class
+      @linker = ruby_to_risc(code, :interpreter)
     end
-
+    def test_to_risc
+      assert_equal Risc::Linker , @linker.class
+    end
+    def test_method
+      assert_equal :main , @linker.assemblers.last.method.name
+    end
   end
 end

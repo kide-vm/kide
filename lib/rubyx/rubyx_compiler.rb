@@ -27,9 +27,7 @@ module RubyX
     def ruby_to_binary(platform = :arm)
       Parfait.boot!
       Risc.boot!
-      assemblers = ruby_to_mom
-      puts "Assemblers #{assemblers}"
-      linker = Risc::Linker.new(platform)
+      linker = ruby_to_risc(platform)
       linker.position_all
       linker.create_binary
     end

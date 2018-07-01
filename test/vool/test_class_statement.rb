@@ -16,5 +16,10 @@ module Vool
     def test_has_compilers
       assert_equal Risc::MethodCompiler , @ret.method_compilers.first.class
     end
+
+    def test_constant
+      assert @ret.method_compilers.first.add_constant( Parfait::Integer.new(5) )
+    end
+
   end
 end

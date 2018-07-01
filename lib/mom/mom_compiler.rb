@@ -3,7 +3,7 @@ module Mom
     attr_reader :clazz , :method_compilers
 
     def initialize(compilers = [])
-      @method_compilers = Builtin.boot_functions + compilers
+      @method_compilers = Risc::Builtin.boot_functions + compilers
     end
 
     # Translate code to whatever cpu is specified.
@@ -14,7 +14,8 @@ module Mom
     def translate( platform_sym )
       platform_sym = platform_sym.to_s.capitalize
       platform = Risc::Platform.for(platform_sym)
-      translate_methods( platform.translator )
+      assemblers = translate_methods( platform.translator )
+      Risc::Linker.new(platform , assemblers)
       #@cpu_init = risc_init.to_cpu(@platform.translator)
     end
 
