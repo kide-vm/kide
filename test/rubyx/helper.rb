@@ -8,13 +8,14 @@ module RubyX
     end
     def ruby_to_risc(input , platform)
       mom = ruby_to_mom(input)
+      puts "MOM #{mom.class}"
       mom.translate(platform)
     end
     def ruby_to_vool(input)
-      RubyXCompiler.ruby_to_vool(input)
+      RubyXCompiler.new(input).ruby_to_vool
     end
     def ruby_to_mom(input)
-      RubyXCompiler.ruby_to_mom(input)
+      RubyXCompiler.new(input).ruby_to_mom
     end
     def compile_in_test input
       vool = ruby_to_vool in_Test(input)

@@ -22,7 +22,7 @@ module MomCompile
   include ScopeHelper
 
   def compile_mom(input)
-    statements = RubyX::RubyXCompiler.ruby_to_vool input
+    statements = RubyX::RubyXCompiler.new(input).ruby_to_vool
     res = statements.to_mom(nil)
     assert_equal Parfait::Class , statements.clazz.class , statements
     @method = statements.clazz.get_method(:main)
@@ -31,7 +31,12 @@ module MomCompile
   end
   def compile_first_method( input )
     res = compile_mom( as_test_main( input ))
-    res.clazz.instance_methods.first.compile_to_mom(res.clazz.instance_type)
+    method = res.clazz.instance_methods.first
+    compile_to_mom(method , res.clazz.instance_type)
+  end
+  def compile_to_mom(method , for_type)
+    typed_method = create_typed_method(for_type)
+    source.to_mom( typed_method )
   end
 
   def check_array( should , is )
