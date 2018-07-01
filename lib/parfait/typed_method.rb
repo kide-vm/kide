@@ -10,10 +10,6 @@
 
 # The Typed method has the following instance variables
 # - name : This is the same as the ruby method name it implements
-# - risc_instructions: The sequence of risc level instructions that mom was compiled to
-# - cpu_instructions: The sequence of cpu specific instructions that the
-#                      risc_instructions was compiled to
-#                 Instructions derive from class Instruction and form a linked list
 # - binary:  The binary (jumpable) code that the instructions get assembled into
 # - arguments_type: A type object describing the arguments (name+types) to be passed
 # - frame_type:  A type object describing the local variables that the method has
@@ -24,7 +20,7 @@ module Parfait
 
   class TypedMethod < Object
 
-    attr_reader :name , :risc_instructions , :for_type , :cpu_instructions
+    attr_reader :name , :for_type
     attr_reader :arguments_type , :frame_type , :binary , :next_method
 
     def initialize( type , name , arguments_type , frame_type)
@@ -37,29 +33,12 @@ module Parfait
     end
 
     # (re) init with given args and frame types
-    # also set first risc_instruction to a label
     def init(arguments_type, frame_type)
       raise "Wrong argument type, expect Type not #{arguments_type.class}" unless arguments_type.is_a? Type
       raise "Wrong frame type, expect Type not #{frame_type.class}" unless frame_type.is_a? Type
       @arguments_type = arguments_type
       @frame_type = frame_type
       @binary = BinaryCode.new(0)
-      name = "#{@for_type.name}.#{@name}"
-      @risc_instructions = Risc.label(self, name)
-      @risc_instructions << Risc.label( self, "unreachable")
-    end
-
-    def translate_cpu(translator)
-      @cpu_instructions = @risc_instructions.to_cpu(translator)
-      nekst = @risc_instructions.next
-      while(nekst)
-        cpu = nekst.to_cpu(translator) # returning nil means no replace
-        @cpu_instructions << cpu if cpu
-        nekst = nekst.next
-      end
-      total = @cpu_instructions.total_byte_length / 4 + 1
-      @binary.extend_to( total )
-      @cpu_instructions
     end
 
     # determine if method has a local variable or tmp (anonymous local) by given name
