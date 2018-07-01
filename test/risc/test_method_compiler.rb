@@ -8,9 +8,14 @@ module Risc
       Parfait.boot!
     end
 
-    def create_method
-      vool = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
+    def in_test_vool(str)
+      input = in_Test(str)
+      vool = RubyX::RubyXCompiler.new(input).ruby_to_vool
       vool.to_mom(nil)
+      vool
+    end
+    def create_method
+      vool = in_test_vool("def meth; @ivar = 5;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       test.get_method(:meth)
     end
@@ -37,26 +42,27 @@ module Risc
     end
 
     def test_creates_method_statement_in_class
-      clazz = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5 ;end")
+      clazz = in_test_vool("def meth; @ivar = 5 ;end")
       assert_equal Vool::Statements , clazz.body.class
       assert_equal Vool::MethodStatement , clazz.body.first.class
     end
 
     def test_method_statement_has_class
-      vool = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
+      input = in_Test("def meth; @ivar = 5;end")
+      vool = RubyX::RubyXCompiler.new(input).ruby_to_vool
       clazz = vool.to_mom(nil)
       assert vool.body.first.clazz
     end
 
     def test_parfait_class_creation
-      vool = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5;end")
+      input = in_Test("def meth; @ivar = 5;end")
+      vool = RubyX::RubyXCompiler.new(input).ruby_to_vool
       clazz = vool.to_mom(nil)
       assert_equal Parfait::Class , vool.body.first.clazz.class
     end
 
     def test_typed_method_instance_type
-      vool = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; @ivar = 5; @ibar = 4;end")
-      vool.to_mom(nil)
+      vool = in_test_vool("def meth; @ivar = 5; @ibar = 4;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.instance_type.get_method(:meth)
       assert_equal 1, method.for_type.variable_index(:ivar)
@@ -64,8 +70,7 @@ module Risc
     end
 
     def test_vool_method_has_one_local
-      vool = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; local = 5 ; a = 6;end")
-      vool.to_mom(nil)
+      vool = in_test_vool("def meth; local = 5 ; a = 6;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.get_method(:meth)
       assert_equal 3 , method.frame_type.instance_length
@@ -74,8 +79,7 @@ module Risc
     end
 
     def test_typed_method_has_one_local
-      vool = RubyX::RubyXCompiler.ruby_to_vool in_Test("def meth; local = 5 ; a = 6;end")
-      vool.to_mom(nil)
+      vool = in_test_vool("def meth; local = 5 ; a = 6;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.instance_type.get_method(:meth)
       assert_equal 3 , method.frame_type.instance_length

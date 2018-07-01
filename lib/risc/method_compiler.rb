@@ -4,14 +4,22 @@ module Risc
   # and to instantiate the methods correctly. Most of the init is typed layer stuff,
   # but there is some logic too.
 
+  # - risc_instructions: The sequence of risc level instructions that mom was compiled to
+  # - cpu_instructions: The sequence of cpu specific instructions that the
+  #                      risc_instructions was compiled to
+  #                 Instructions derive from class Instruction and form a linked list
+
   class MethodCompiler
 
     def initialize( method )
       @regs = []
       @method = method
-      @current = @method.risc_instructions
+      name = "#{method.for_type.name}.#{method.name}"
+      @risc_instructions = Risc.label(name, name)
+      @risc_instructions << Risc.label( name, "unreachable")
+      @current = @risc_instructions
     end
-    attr_reader :method
+    attr_reader :method , :risc_instructions
 
     # helper method for builtin mainly
     # the class_name is a symbol, which is resolved to the instance_type of that class

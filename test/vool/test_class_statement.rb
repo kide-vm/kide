@@ -7,11 +7,14 @@ module Vool
 
     def setup
       Parfait.boot!
-      @ins = compile_mom( "class Test ; def main(); return 1; end; end;")
+      @ret = compile_mom( "class Test ; def main(); return 1; end; end;")
     end
 
-    def test_return
-      assert_equal Mom::ClassCompiler , @ins.class
+    def test_return_class
+      assert_equal Mom::ClassCompiler , @ret.class
+    end
+    def test_has_compilers
+      assert_equal Risc::MethodCompiler , @ret.method_compilers.first.class
     end
   end
 end
