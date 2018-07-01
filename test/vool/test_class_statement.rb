@@ -11,7 +11,7 @@ module Vool
     end
 
     def test_return_class
-      assert_equal Mom::ClassCompiler , @ret.class
+      assert_equal Mom::MomCompiler , @ret.class
     end
     def test_has_compilers
       assert_equal Risc::MethodCompiler , @ret.method_compilers.first.class

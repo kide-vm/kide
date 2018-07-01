@@ -1,10 +1,9 @@
 module Mom
-  class ClassCompiler
+  class MomCompiler
     attr_reader :clazz , :method_compilers
 
-    def initialize(clazz , compilers)
-      @clazz = clazz
-      @method_compilers = compilers
+    def initialize(compilers = [])
+      @method_compilers = Builtin.boot_functions + compilers
     end
 
     # Translate code to whatever cpu is specified.

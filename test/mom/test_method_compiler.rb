@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Mom
-  class TestClassCompiler < MiniTest::Test
+  class TestMomCompiler < MiniTest::Test
     include MomCompile
 
     def setup
@@ -10,7 +10,7 @@ module Mom
     end
 
     def test_class
-      assert_equal ClassCompiler , @comp.class
+      assert_equal MomCompiler , @comp.class
     end
     def test_compilers
       assert_equal 1 , @comp.method_compilers.length
@@ -19,7 +19,7 @@ module Mom
       assert @comp.translate(:interpreter)
     end
   end
-  class TestClassCompilerTranslate < MiniTest::Test
+  class TestMomCompilerTranslate < MiniTest::Test
     include MomCompile
 
     def setup

@@ -29,7 +29,7 @@ module Vool
         raise "Only methods for now #{node}" unless node.is_a?(MethodStatement)
         method_compilers << node.to_mom(@clazz)
       end
-      Mom::ClassCompiler.new(@clazz , method_compilers)
+      Mom::MomCompiler.new(method_compilers)
     end
 
     def each(&block)
