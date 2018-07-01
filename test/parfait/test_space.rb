@@ -4,11 +4,13 @@ module Parfait
   class TestSpace < ParfaitTest
 
     def classes
-      [:Word,:List,:Message,:NamedList,:Type,:Object,:Class,:Dictionary,:TypedMethod , :Integer]
+      [:Word,:List,:Message,:Integer,:ReturnAddress,:DataObject,:Data4,:Data8,
+        :TrueClass,:FalseClass,:NilClass,:Object,:BinaryCode,:Space,:NamedList,
+        :Type,:Class,:Dictionary,:CacheEntry,:TypedMethod,:VoolMethod]
     end
 
     def test_space_length
-      assert_equal 8 , @space.get_type.instance_length , @space.get_type.inspect
+      assert_equal 9 , @space.get_type.instance_length , @space.get_type.inspect
     end
     def test_singletons
       assert @space.true_object , "No truth"
@@ -18,7 +20,6 @@ module Parfait
     def test_global_space
       assert_equal Parfait::Space , Parfait.object_space.class
     end
-
 
     def test_get_integer_instance
       int = @space.get_integer
@@ -30,33 +31,31 @@ module Parfait
         assert_equal Parfait::Class , @space.classes[name].class
       end
     end
-
+    def test_all_classes
+      assert_equal classes.length , @space.classes.length , @space.classes.keys.inspect
+    end
     def test_types
       assert  @space.instance_variable_ged("@types").is_a? Parfait::Dictionary
     end
     def test_types_attr
       assert @space.types.is_a? Parfait::Dictionary
     end
-
     def test_types_each
       @space.each_type do |type|
         assert type.is_a?(Parfait::Type)
       end
     end
-
     def test_types_hashes
       types = @space.instance_variable_ged("@types")
       types.each do |has , type|
         assert has.is_a?(Fixnum) , has.inspect
       end
     end
-
     def test_classes_types_in_space_types
       @space.classes do |name , clazz|
         assert_equal clazz.instance_type , @space.get_type_for(clazz.instance_type.hash) , clazz.name
       end
     end
-
     def test_word_class
       word = @space.classes[:Word]
       assert word.instance_type
@@ -64,19 +63,16 @@ module Parfait
       assert_equal word.instance_type.hash , t_word.hash
       assert_equal word.instance_type.object_id , t_word.object_id
     end
-
     def test_classes_type
       classes.each do |name|
         assert_equal Parfait::Type , @space.classes[name].get_type.class
       end
     end
-
     def test_classes_name
       classes.each do |name|
         assert_equal name , @space.classes[name].name
       end
     end
-
     def test_method_name
       classes.each do |name|
         cl = @space.classes[name]
@@ -87,6 +83,21 @@ module Parfait
         end
       end
     end
+    def test_has_integers
+      assert_equal Parfait::Integer , @space.next_integer.class
+      assert_equal 0 , @space.next_integer.value
+    end
+    def test_has_next_integer
+      assert_equal Parfait::Integer , @space.next_integer.next_integer.class
+    end
+    def test_has_addresses
+      assert_equal Parfait::ReturnAddress , @space.next_address.class
+      assert_equal 0 , @space.next_address.value
+    end
+    def test_has_next_address
+      assert_equal Parfait::ReturnAddress , @space.next_address.next_integer.class
+    end
+
     def test_messages
       mess = @space.first_message
       all = []
@@ -105,7 +116,6 @@ module Parfait
       assert all
       assert all.include?(:next_message)
     end
-
     def test_create_class
       assert @space.create_class( :NewClass )
     end

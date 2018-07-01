@@ -36,6 +36,8 @@ module Parfait
       @types = Dictionary.new
       message = Message.new(nil)
       101.times { @next_integer = Integer.new(0,@next_integer) }
+      10.times { @next_address = ReturnAddress.new(0,@next_address) }
+
       50.times do
         @first_message = Message.new message
         message.set_caller @first_message
@@ -49,7 +51,7 @@ module Parfait
       @nil_object = Parfait::NilClass.new
     end
 
-    attr_reader  :classes , :types , :first_message , :next_integer
+    attr_reader  :classes , :types , :first_message , :next_integer , :next_address
     attr_reader  :true_object , :false_object , :nil_object
 
     # hand out one of the preallocated ints for use as constant
@@ -60,6 +62,16 @@ module Parfait
       int = @next_integer
       @next_integer = @next_integer.next_integer
       int
+    end
+
+    # hand out a return address for use as constant the address is added
+    def get_address
+      10.times do # 10 for whole pages
+        @next_address = ReturnAddress.new(0,@next_address)
+      end unless @next_address
+      addr = @next_address
+      @next_address = @next_address.next_integer
+      addr
     end
 
     def each_type

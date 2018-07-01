@@ -115,9 +115,10 @@ module Parfait
 
   # superclasses other than default object
   def self.super_class_names
-     { Data4: :DataObject , Data8: :DataObject ,Data16: :DataObject ,Data32: :DataObject ,
+     { Data4: :DataObject ,  Data8: :DataObject ,Data16: :DataObject ,
+       Data32: :DataObject ,
        BinaryCode: :Data16 , Integer: :Data4 , Word: :Data8 ,
-       Object: :BasicObject , List: :Data16 , ReturnAddress: :Integer}
+       Object: :BasicObject, List: :Data16 , ReturnAddress: :Integer}
   end
 
   # the function really just returns a constant (just avoiding the constant)
@@ -130,7 +131,7 @@ module Parfait
                    return_address: :Integer, return_value: :Object,
                    caller: :Message ,        name: :Word ,     arguments: :NamedList },
         Integer: {next_integer: :Integer},
-        ReturnAddress: {next_integer: :Integer},
+        ReturnAddress: {next_integer: :ReturnAddress},
         DataObject: {},
         Data4: {},
         Data8: {},
@@ -141,7 +142,7 @@ module Parfait
         BinaryCode: {next: :BinaryCode} ,
         Space: {classes: :Dictionary , types: :Dictionary ,
                 first_message: :Message , next_integer: :Integer ,
-                true_object: :TrueClass,
+                true_object: :TrueClass, next_address: :ReturnAddress ,
                 false_object: :FalseClass , nil_object: :NilClass},
         NamedList: {},
         Type: {names: :List , types: :List  ,
