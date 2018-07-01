@@ -5,7 +5,8 @@ module Risc
 
     def setup
       Parfait.boot!
-      @machine = Risc.machine.boot
+      Risc.boot
+      @machine = Linker.new
     end
     def test_objects
       objects = @machine.object_positions

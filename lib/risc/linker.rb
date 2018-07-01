@@ -2,9 +2,6 @@ require_relative "collector"
 require_relative "binary_writer"
 
 module Risc
-  # The Risc Machine is an abstraction of the register level. This is seperate from the
-  # actual assembler level to allow for several cpu architectures.
-  # The Instructions (see class Instruction) define what the machine can do (ie load/store/maths)
 
   # From code, the next step down is Vool, then Mom (in two steps)
   #
@@ -12,14 +9,13 @@ module Risc
   #  executes. The step after transforms to Arm, which creates executables.
   #
 
-  class Machine
+  class Linker
     include Util::Logging
     log_level :info
 
     def initialize
       @risc_init = nil
       @constants = []
-      @next_address = nil
     end
 
     attr_reader  :constants , :cpu_init
@@ -42,16 +38,6 @@ module Risc
       @constants << const
     end
 
-    # hand out a return address for use as constant the address is added
-    def get_address
-      10.times do # 10 for whole pages
-        @next_address = Parfait::ReturnAddress.new(0,@next_address)
-        add_constant( @next_address )
-      end unless @next_address
-      addr = @next_address
-      @next_address = @next_address.next_integer
-      addr
-    end
 
     # To create binaries, objects (and labels) need to have a position
     # (so objects can be loaded and branches know where to jump)
@@ -139,23 +125,12 @@ module Risc
       end
     end
 
-    def boot
-      initialize
-      Position.clear_positions
-      Builtin.boot_functions
-      self
-    end
-
   end
 
-  # Module function to retrieve singleton
-  def self.machine
-    unless defined?(@machine)
-      @machine = Machine.new
-    end
-    @machine
+  # module method to reset, and init
+  def self.boot
+    Position.clear_positions
+    Builtin.boot_functions
   end
 
 end
-
-require_relative "parfait_boot"
