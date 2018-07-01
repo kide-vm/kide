@@ -36,7 +36,7 @@ module Mom
         cpu_instructions << cpu if cpu
         nekst = nekst.next
       end
-      Risc::Assembler.new(compiler.method , cpu_instructions)
+      Risc::Assembler.new(compiler.method , cpu_instructions , compiler.constants)
     end
 
   end

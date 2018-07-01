@@ -18,8 +18,9 @@ module Risc
       @risc_instructions = Risc.label(name, name)
       @risc_instructions << Risc.label( name, "unreachable")
       @current = @risc_instructions
+      @constants = []
     end
-    attr_reader :method , :risc_instructions
+    attr_reader :method , :risc_instructions , :constants
 
     # helper method for builtin mainly
     # the class_name is a symbol, which is resolved to the instance_type of that class
@@ -61,7 +62,7 @@ module Risc
     end
 
     def add_constant(const)
-      Risc.machine.add_constant(const)
+      @constants << const
     end
 
     # add a risc instruction after the current (insertion point)

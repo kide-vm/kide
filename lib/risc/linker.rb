@@ -24,7 +24,7 @@ module Risc
     # machine keeps a list of all objects and their positions.
     # this is lazily created with a collector
     def object_positions
-      Collector.collect_space if Position.positions.length < 2 #one is the label
+      Collector.collect_space(self) if Position.positions.length < 2 #one is the label
       Position.positions
     end
 
@@ -128,7 +128,7 @@ module Risc
   end
 
   # module method to reset, and init
-  def self.boot
+  def self.boot!
     Position.clear_positions
     Builtin.boot_functions
   end

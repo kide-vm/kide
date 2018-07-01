@@ -4,9 +4,9 @@ module Risc
   #
   # The place we collect in is the position map in Position class
   module Collector
-    def self.collect_space
+    def self.collect_space(linker)
       keep Parfait.object_space , 0
-      Risc.machine.constants.each {|obj| keep(obj,0)}
+      linker.constants.each {|obj| keep(obj,0)}
       Position.positions
     end
 
