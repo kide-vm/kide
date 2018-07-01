@@ -23,7 +23,7 @@ module Risc
       when "Interpreter"
         return Risc::InterpreterPlatform.new
       else
-        raise "not recignized platform #{name}"
+        raise "not recognized platform #{name.class}:#{name}"
       end
     end
   end

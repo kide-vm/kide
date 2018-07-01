@@ -28,17 +28,12 @@ module Parfait
       type.create_method( @name , @args_type , @frame_type)
     end
 
-    def compile_to_mom(for_type)
-      typed_method = create_typed_method(for_type)
-      source.to_mom( typed_method )
-    end
-
-    def compile_to_risc(for_type)
+    def compiler_for(for_type)
       typed_method = create_typed_method(for_type)
       head = source.to_mom( typed_method )
       compiler = Risc::MethodCompiler.new( typed_method )
       compiler.add_mom(head)
-      head # return for testing
+      compiler
     end
   end
 end

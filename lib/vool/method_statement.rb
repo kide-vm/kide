@@ -11,7 +11,7 @@ module Vool
     def to_mom(clazz)
       @clazz = clazz || raise( "no class in #{self}")
       method = @clazz.add_method_for(name , make_arg_type , make_frame , body )
-      method.compile_to_risc(clazz.instance_type)
+      method.compiler_for(clazz.instance_type)
     end
 
     def each(&block)
