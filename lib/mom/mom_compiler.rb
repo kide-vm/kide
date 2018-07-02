@@ -1,6 +1,6 @@
 module Mom
   class MomCompiler
-    attr_reader :clazz , :method_compilers
+    attr_reader :method_compilers
 
     def initialize(compilers = [])
       @method_compilers = Risc::Builtin.boot_functions + compilers
