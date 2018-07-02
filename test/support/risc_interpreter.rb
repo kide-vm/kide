@@ -7,11 +7,8 @@ module Risc
     include ScopeHelper
 
     def setup
-      Parfait.boot!
-      Risc.boot!
-      RubyX::RubyXCompiler.new(@string_input).ruby_to_binary( :interpreter)
-      @interpreter = Interpreter.new
-      @interpreter.start_machine
+      @linker = RubyX::RubyXCompiler.new(@string_input).ruby_to_binary( :interpreter)
+      @interpreter = Interpreter.new(@linker)
     end
     alias :do_setup :setup
 

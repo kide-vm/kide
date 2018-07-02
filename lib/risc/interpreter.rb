@@ -33,7 +33,7 @@ module Risc
     end
 
     def start_program
-      initialize
+      initialize(@linker)
       init = @linker.cpu_init
       set_state(:running)
       set_pc( Position.get(init).at )
@@ -62,7 +62,7 @@ module Risc
     end
 
     def set_instruction( instruction )
-      raise "set to same instruction #{instruction}:#{instruction.class}" if @instruction == instruction
+      raise "set to same instruction #{instruction}:#{instruction.class} at #{clock}" if @instruction == instruction
       log.debug "Setting Instruction #{instruction.class}"
       old = @instruction
       @instruction = instruction

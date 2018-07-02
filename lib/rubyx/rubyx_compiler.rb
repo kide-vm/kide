@@ -24,12 +24,13 @@ module RubyX
       mom.translate(platform)
     end
 
-    def ruby_to_binary(platform = :arm)
+    def ruby_to_binary(platform)
       Parfait.boot!
       Risc.boot!
       linker = ruby_to_risc(platform)
       linker.position_all
       linker.create_binary
+      linker
     end
   end
 end
