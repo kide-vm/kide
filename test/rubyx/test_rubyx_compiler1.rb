@@ -14,7 +14,7 @@ module RubyX
 
     def test_creates_class_deriviation
       mom = ruby_to_mom "class Testing ; end"
-      #assert mom , "No classes created"
+      assert mom , "No classes created"
     end
 
     def test_creates_class_with_deriviation

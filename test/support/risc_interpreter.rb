@@ -9,6 +9,7 @@ module Risc
     def setup
       @linker = RubyX::RubyXCompiler.new(@string_input).ruby_to_binary( :interpreter)
       @interpreter = Interpreter.new(@linker)
+      @interpreter.start_program
     end
     alias :do_setup :setup
 
@@ -57,7 +58,7 @@ module Risc
       classes = []
       tick = 1
       begin
-        while true and (classes.length < max)
+        while(classes.length < max)
           cl = ticks(1).class
           tick += 1
           classes << cl

@@ -5,7 +5,7 @@ module Risc
     include Ticker
 
     def setup
-      @string_input = as_main("return 5 + 7")
+      @string_input = as_main("return 5")
       @state_events = {}
       @instruction_events = []
       super
@@ -19,7 +19,7 @@ module Risc
       @instruction_events << was
     end
     def length
-      94
+      40
     end
     def test_state_change
       @interpreter.register_event :state_changed , self
@@ -44,22 +44,12 @@ module Risc
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, Branch,
              SlotToReg, RegToSlot, SlotToReg, RegToSlot, SlotToReg,
              RegToSlot, SlotToReg, RegToSlot, LoadConstant, RegToSlot,
-             FunctionCall, LoadConstant, LoadConstant, SlotToReg, RegToSlot,
-             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, RegToSlot, Branch,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, RegToSlot, SlotToReg, Branch, FunctionCall,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-             OperatorInstruction, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
-             RegToSlot, RegToSlot, SlotToReg, Branch, SlotToReg,
+             FunctionCall, LoadConstant, RegToSlot, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, SlotToReg, Branch, FunctionReturn, Transfer,
-             SlotToReg, Branch, SlotToReg, Syscall, NilClass]
+             Transfer, SlotToReg, Branch, SlotToReg, Syscall,
+             NilClass]
       assert_equal Fixnum , get_return.class
-      assert_equal 12 , get_return
+      assert_equal 5 , get_return
     end
     def test_length
       run_all
