@@ -60,7 +60,7 @@ module Mom
     def build_message_data( builder )
       builder.build do
         space << Parfait.object_space
-        next_message << space[:first_message]
+        next_message << space[:next_message]
         message[:next_message] << next_message
         next_message[:caller] << message
 
@@ -79,7 +79,7 @@ module Mom
         #FIXME in a multithreaded future this should be done soon after getting
         #   the first_message, using lock free compare and swap. Now saving regs
         next_message << next_message[:next_message]
-        space[:first_message] << next_message
+        space[:next_message] << next_message
       end
     end
   end

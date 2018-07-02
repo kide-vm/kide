@@ -34,24 +34,27 @@ module Parfait
     def initialize( classes )
       @classes = classes
       @types = Dictionary.new
-      message = Message.new(nil)
-      101.times { @next_integer = Integer.new(0,@next_integer) }
-      10.times { @next_address = ReturnAddress.new(0,@next_address) }
-
-      50.times do
-        @first_message = Message.new message
-        message.set_caller @first_message
-        message = @first_message
-      end
       @classes.each do |name , cl|
         add_type(cl.instance_type)
       end
+      101.times { @integers = Integer.new(0,@integers) }
+      10.times { @addresses = ReturnAddress.new(0,@addresses) }
+      message = Message.new(nil)
+      50.times do
+        @messages = Message.new message
+        message.set_caller @messages
+        message = @messages
+      end
+      @next_message = @messages
+      @next_integer = @integers
+      @next_address = @addresses
       @true_object = Parfait::TrueClass.new
       @false_object = Parfait::FalseClass.new
       @nil_object = Parfait::NilClass.new
     end
 
-    attr_reader  :classes , :types , :first_message , :next_integer , :next_address
+    attr_reader  :classes , :types , :next_message , :next_integer , :next_address
+    attr_reader  :messages, :integers , :addresses
     attr_reader  :true_object , :false_object , :nil_object
 
     # hand out one of the preallocated ints for use as constant
@@ -68,7 +71,7 @@ module Parfait
     def get_address
       10.times do # 10 for whole pages
         @next_address = ReturnAddress.new(0,@next_address)
-      end unless @next_address
+      end unless @next_address.next_integer
       addr = @next_address
       @next_address = @next_address.next_integer
       addr

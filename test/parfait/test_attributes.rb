@@ -5,7 +5,7 @@ module Parfait
 
     def setup
       super
-      @mess = @space.first_message
+      @mess = @space.next_message
       @type = @mess.get_type
     end
 

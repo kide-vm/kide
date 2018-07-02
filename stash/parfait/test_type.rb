@@ -45,7 +45,7 @@ HERE
   # copy of register parfait tests, in order
   def test_message_type
     @main = <<HERE
-Message m = self.first_message
+Message m = self.next_message
 m = m.next_message
 Word w = m.get_class_name()
 w.putstring()

@@ -51,9 +51,9 @@ module Risc
           builder = compiler.compiler_builder(compiler.method)
           builder.build do
             space << Parfait.object_space
-            message << space[:first_message]
+            message << space[:next_message]
             next_message << message[:next_message]
-            space[:first_message] << next_message
+            space[:next_message] << next_message
           end
 
           Mom::MessageSetup.new(Parfait.object_space.get_main).build_with( builder )

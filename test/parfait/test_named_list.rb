@@ -5,7 +5,7 @@ module Parfait
 
     def setup
       super
-      @named_list = @space.first_message.frame
+      @named_list = @space.next_message.frame
       @type = @named_list.get_type
     end
 

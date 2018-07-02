@@ -10,7 +10,7 @@ module Parfait
     end
 
     def test_space_length
-      assert_equal 9 , @space.get_type.instance_length , @space.get_type.inspect
+      assert_equal 12 , @space.get_type.instance_length , @space.get_type.inspect
     end
     def test_singletons
       assert @space.true_object , "No truth"
@@ -98,7 +98,7 @@ module Parfait
       assert_equal Parfait::ReturnAddress , @space.next_address.next_integer.class
     end
     def test_address_count
-      addr = @space.get_address
+      addr = @space.addresses
       count = 0
       while(addr)
         count += 1
@@ -108,7 +108,7 @@ module Parfait
     end
 
     def test_messages
-      mess = @space.first_message
+      mess = @space.messages
       all = []
       while mess
         all << mess
@@ -120,7 +120,7 @@ module Parfait
       assert_equal  50 + 1 , all.length
     end
     def test_message_vars
-      mess = @space.first_message
+      mess = @space.next_message
       all = mess.get_instance_variables
       assert all
       assert all.include?(:next_message)

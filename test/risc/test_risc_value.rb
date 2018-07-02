@@ -36,20 +36,20 @@ module Risc
       assert_equal Transfer , builder.built.class
     end
     def test_index_op
-      message = @r0[:first_message]
+      message = @r0[:next_message]
       assert_equal RValue , message.class
-      assert_equal :first_message , message.index
+      assert_equal :next_message , message.index
       assert_equal @r0 , message.register
     end
     def test_slot_to_reg
-      instr = @r0 << @r1[:first_message]
+      instr = @r0 << @r1[:next_message]
       assert_equal SlotToReg , instr.class
       assert_equal @r1 , instr.array
       assert_equal @r0 , instr.register
       assert_equal 3 , instr.index
     end
     def test_reg_to_slot
-      instr = @r1[:first_message] << @r0
+      instr = @r1[:next_message] << @r0
       assert_equal RegToSlot , instr.class
       assert_equal @r1 , instr.array
       assert_equal @r0 , instr.register
