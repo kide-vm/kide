@@ -51,7 +51,7 @@ module Risc
     # in place and we don't have to deal with changing loading code
     def position_all
       #need the initial jump at 0 and then functions
-      Position.new(cpu_init).set(0)
+      #TODO Position.new(cpu_init).set(0)
       code_start = position_objects( @platform.padding )
       # and then everything code
       position_code(code_start)
@@ -86,43 +86,37 @@ module Risc
     #
     # start at code_start.
     def position_code(code_start)
-      Parfait.object_space.types.values.each do |type|
-        next unless type.methods
-        type.methods.each_method do |method|
-          #next unless method.name == :main or method.name == :__init__
-          Position.log.debug "Method start #{code_start.to_s(16)} #{method.name}"
-          code_pos = CodeListener.init(method.binary)
-          InstructionListener.init(method.cpu_instructions, method.binary)
-          code_pos.position_listener( LabelListener.new(method.cpu_instructions))
-          code_pos.set(code_start)
-          code_start = Position.get(method.binary.last_code).next_slot
-        end
+      assemblers.each do |asm|
+        #next unless method.name == :main or method.name == :__init__
+        Position.log.debug "Method start #{code_start.to_s(16)} #{asm.method.name}"
+        code_pos = CodeListener.init(asm.method.binary, platform)
+        instructions = asm.instructions
+        InstructionListener.init( instructions, asm.method.binary)
+        code_pos.position_listener( LabelListener.new(instructions))
+        code_pos.set(code_start)
+        code_start = Position.get(asm.method.binary.last_code).next_slot
       end
     end
 
     # Create Binary code for all methods and the initial jump
     # BinaryWriter handles the writing from instructions into BinaryCode objects
     #
-    # current (poor) design throws an exception when the assembly can't fit
-    # constant loads into one instruction.
-    #
     def create_binary
-      methods = object_positions.keys.find_all{|obj| obj.is_a? Parfait::TypedMethod}
-      prerun(methods)
-      assemble(methods)
+      prerun
+      assemble
       log.debug "BinaryInit #{cpu_init.object_id.to_s(16)}"
     end
 
-    def prerun(methods)
-      methods.each do |method|
-        method.cpu_instructions.each {|i| i.precheck }
+    def prerun
+      assemblers.each do |asm|
+        asm.instructions.each {|i| i.precheck }
       end
     end
 
-    def assemble(methods)
-      methods.each do |method|
-        writer = BinaryWriter.new(method.binary)
-        writer.assemble(method.cpu_instructions)
+    def assemble
+      assemblers.each do |asm|
+        writer = BinaryWriter.new(asm.method.binary)
+        writer.assemble(asm.instructions)
       end
     end
 

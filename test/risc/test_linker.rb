@@ -25,18 +25,18 @@ module Risc
       @linker.position_all
     end
     def test_positions_set
-      @machine.object_positions.each do |obj , position|
+      @linker.object_positions.each do |obj , position|
         assert Position.get(obj).valid? , "#{Position.get(obj)} , #{obj.object_id.to_s(16)}"
       end
     end
   end
-  class TestMachineInit #< MiniTest::Test
+  class TestMachineInit < MiniTest::Test
     def setup
       Parfait.boot!
-      @machine = Risc.machine.boot
-      @machine.translate(:arm)
-      @machine.position_all
-      @machine.create_binary
+      Risc.boot!
+      @linker = Mom::MomCompiler.new.translate(:arm)
+      @linker.position_all
+      @linker.create_binary
     end
     def test_pos_cpu
       assert_equal 0 ,  Position.get(@machine.cpu_init).at
