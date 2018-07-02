@@ -1,16 +1,18 @@
 require_relative "../helper"
 
 module Risc
-  class TestTextWriter #< MiniTest::Test
+  class TestTextWriter < MiniTest::Test
 
     def setup
-      @machine = Risc.machine.boot
+      Parfait.boot!
+      Risc.boot!
+      @linker = Mom::MomCompiler.new.translate(:arm)
     end
     def test_init
-      @text_writer = TextWriter.new(@machine)
+      @text_writer = TextWriter.new(@linker)
     end
     def test_write_fails
-      @text_writer = TextWriter.new(@machine)
+      @text_writer = TextWriter.new(@linker)
       assert_raises{ @text_writer.write_as_string} #must translate first
     end
   end
@@ -18,11 +20,11 @@ module Risc
 
     def setup
       Parfait.boot!
-      @machine = Risc.machine.boot
-      @machine.translate(:arm)
-      @machine.position_all
-      @machine.create_binary
-      @text_writer = TextWriter.new(@machine)
+      Risc.boot!
+      @linker = Mom::MomCompiler.new.translate(:arm)
+      @linker.position_all
+      @linker.create_binary
+      @text_writer = TextWriter.new(@linker)
     end
     def test_write_all
       assert @text_writer.write_as_string

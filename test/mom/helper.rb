@@ -29,9 +29,9 @@ module Risc
     end
     def produce_instructions
       assert @expect , "No output given"
-      RubyX::RubyXCompiler.new(as_test_main).ruby_to_binary( :interpreter)
-      test = Parfait.object_space.get_class_by_name :Test
-      test.instance_type.get_method(:main).cpu_instructions
+      linker = RubyX::RubyXCompiler.new(as_test_main).ruby_to_risc(:interpreter)
+      compiler = linker.assemblers.find{|c| c.method.name == :main and c.method.for_type.object_class.name == :Test}
+      compiler.instructions
     end
     def check_nil
       produced = produce_instructions

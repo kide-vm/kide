@@ -4,7 +4,7 @@ module Parfait
   class TestAdapter < MiniTest::Test
 
     def setup
-      Risc.machine.boot
+      Parfait.boot!
     end
 
     def test_list_create_from_array

@@ -1,36 +1,20 @@
-require_relative "../helper"
+require_relative "helper"
 
-class TestZeroCode < MiniTest::Test
+module Elf
 
-  def setup
-    Parfait.boot!
-    @machine = Risc.machine.boot
-    @space = Parfait.object_space
-    @space.each_type do | type |
-      type.method_names.each do |method|
-        type.remove_method(method) unless keeper(method)
-      end
+  class TestZeroCode < FullTest
+
+    def setup
+      super
+      @linker = RubyX::RubyXCompiler.new(as_main("return 1")).ruby_to_risc(:arm)
+      @linker.position_all
+      @linker.create_binary
     end
-    @objects = Risc::Collector.collect_space
-  end
-  def keeper name
-    name == :main or name == :__init__
-  end
 
-  def test_empty_translate
-    assert_equal 2 , @space.get_all_methods.length
-    @machine.translate(:arm)
-    @machine.position_all
-    @machine.create_binary
-    writer = Elf::ObjectWriter.new(@machine )
-    writer.save "test/zero.o"
-  end
-
-  def test_methods_match_objects
-    assert_equal 2 , @space.get_all_methods.length
-    @objects.each do |id , objekt|
-      next unless objekt.is_a? Parfait::TypedMethod
-      assert keeper(objekt.name) ,  "CODE1 #{objekt.name}"
+    def test_empty_translate
+      writer = Elf::ObjectWriter.new(@linker )
+      writer.save "test/zero.o"
     end
+
   end
 end

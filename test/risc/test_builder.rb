@@ -104,12 +104,13 @@ module Risc
       Parfait.boot!
       Risc.boot!
       @init = Parfait.object_space.get_init
-      @builder = Risc::MethodCompiler.new( @init ).compiler_builder(@init)
+      @compiler = Risc::MethodCompiler.new( @init )
+      @builder  = @compiler.compiler_builder(@init)
     end
     def test_inserts_built
       r1 = RegisterValue.new(:r1 , :Space)
       @builder.build{ space << r1 }
-      assert_equal Transfer , @init.risc_instructions.next.class , @init.risc_instructions.next
+      assert_equal Transfer , @compiler.risc_instructions.next.class
     end
 
   end
