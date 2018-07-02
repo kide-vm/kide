@@ -25,7 +25,7 @@ module Risc
       @cpu_init = cpu_init_init
     end
 
-    attr_reader  :constants
+    attr_reader  :constants , :cpu_init
     attr_reader  :platform , :assemblers
 
     # machine keeps a list of all objects and their positions.
@@ -104,7 +104,6 @@ module Risc
 
     def prerun
       assemblers.each do |asm|
-        puts "method #{asm.method.name}"
         asm.instructions.each {|i| i.precheck }
       end
     end

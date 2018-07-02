@@ -39,13 +39,13 @@ module Risc
       @linker.create_binary
     end
     def test_pos_cpu
-      assert_equal 0 ,  Position.get(@machine.cpu_init).at
+      assert_equal 0 ,  Position.get(@linker.cpu_init).at
     end
     def test_cpu_at
-      assert_equal "0x6034" ,  Position.get(@machine.cpu_init.first).to_s
+      assert_equal "0x624c" ,  Position.get(@linker.cpu_init.first).to_s
     end
     def test_cpu_label
-      assert_equal Position ,  Position.get(@machine.cpu_init.first).class
+      assert_equal Position ,  Position.get(@linker.cpu_init.first).class
     end
     def test_first_binary_jump
       bin = Parfait.object_space.get_init.binary
@@ -56,7 +56,7 @@ module Risc
       assert 0 != bin.get_word(0) , "index 0 is 0 #{bin.inspect}"
     end
     def test_positions_set
-      @machine.object_positions.each do |obj,position|
+      @linker.object_positions.each do |obj,position|
         assert position.valid? , "#{position} , #{obj.object_id.to_s(16)}"
       end
     end

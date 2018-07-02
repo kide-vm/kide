@@ -38,7 +38,7 @@ module Parfait
         add_type(cl.instance_type)
       end
       101.times { @integers = Integer.new(0,@integers) }
-      10.times { @addresses = ReturnAddress.new(0,@addresses) }
+      200.times { @addresses = ReturnAddress.new(0,@addresses) }
       message = Message.new(nil)
       50.times do
         @messages = Message.new message
@@ -69,9 +69,6 @@ module Parfait
 
     # hand out a return address for use as constant the address is added
     def get_address
-      10.times do # 10 for whole pages
-        @next_address = ReturnAddress.new(0,@next_address)
-      end unless @next_address.next_integer
       addr = @next_address
       @next_address = @next_address.next_integer
       addr

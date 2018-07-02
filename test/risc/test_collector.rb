@@ -6,7 +6,7 @@ module Risc
     def setup
       Parfait.boot!
       Risc.boot!
-      @linker = Linker.new
+      @linker = Mom::MomCompiler.new.translate(:arm)
     end
 
     def test_simple_collect

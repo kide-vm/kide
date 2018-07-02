@@ -21,7 +21,7 @@ module Risc
     attr_reader :stdout,  :state , :flags  # somewhat like the lags on a cpu, hash  sym => bool (zero .. . )
 
     #start in state :stopped and set registers to unknown
-    def initialize()
+    def initialize( linker )
       @stdout , @clock , @pc , @state = "", 0 , 0 , :stopped
       @registers = {}
       @flags = {  :zero => false , :plus => false ,
@@ -29,11 +29,12 @@ module Risc
       (0...12).each do |reg|
         set_register "r#{reg}".to_sym , "r#{reg}:unknown"
       end
+      @linker = linker
     end
 
-    def start_machine
+    def start_program
       initialize
-      init = Risc.machine.cpu_init
+      init = @linker.cpu_init
       set_state(:running)
       set_pc( Position.get(init).at )
     end
