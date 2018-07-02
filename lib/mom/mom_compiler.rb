@@ -16,7 +16,6 @@ module Mom
       platform = Risc::Platform.for(platform_sym)
       assemblers = translate_methods( platform.translator )
       Risc::Linker.new(platform , assemblers)
-      #@cpu_init = risc_init.to_cpu(@platform.translator)
     end
 
     # go through all methods and translate them to cpu, given the translator

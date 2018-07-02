@@ -22,7 +22,7 @@ module Risc
 
     def setup
       Parfait.boot!
-      @machine = Risc.machine.boot
+      Risc.boot!
       @translator = IdentityTranslator.new
     end
 
@@ -32,37 +32,6 @@ module Risc
       translated = @translator.translate(load)
       assert label != translated.constant
     end
-    def test_translate_first_label
-      label = Parfait.object_space.get_main.risc_instructions
-      assert_equal "Space_Type.main" ,label.to_cpu(@translator).name , label
-    end
-
-    def test_translate_space
-      assert @machine.translate(:interpreter)
-    end
-
-    def test_no_loops_in_chain
-      @machine.translate(:interpreter)
-      @machine.position_all
-      init = Parfait.object_space.get_init
-      all = []
-      init.cpu_instructions.each do |ins|
-        assert !all.include?(ins)
-        all << ins
-      end
-    end
-    def test_no_risc
-      @machine.translate(:interpreter)
-      @machine.position_all
-      @machine.create_binary
-      @machine.object_positions.each do | method , position|
-        next unless method.is_a? Parfait::TypedMethod
-        method.cpu_instructions.each do |ins|
-          ins.assemble(Util::DevNull.new)
-        end
-      end
-    end
-
   end
 
 end
