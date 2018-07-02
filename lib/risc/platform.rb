@@ -17,6 +17,8 @@ module Risc
     # string given.
     # Currently only "Arm" and "Interpreter"
     def self.for( name )
+      return name if name.is_a?(Platform)
+      name = name.to_s.capitalize
       case name
       when "Arm"
         return Arm::ArmPlatform.new
