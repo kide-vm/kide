@@ -4,17 +4,17 @@ module Risc
   class TestMachinePositions < MiniTest::Test
     def setup_for(platform)
       Parfait.boot!
-      @machine = Risc.machine.boot
-      @machine.translate(platform)
-      @machine.position_all
+      Risc.boot!
+      @linker = Mom::MomCompiler.new.translate(platform)
+      @linker.position_all
     end
     def test_cpu_init
       setup_for(:interpreter)
-      assert Position.get @machine.cpu_init
+#TODO      assert Position.get @linker.cpu_init
     end
     def test_cpu_label
       setup_for(:interpreter)
-      assert Position.get( @machine.cpu_init.label )
+#TODO      assert Position.get( @linker.cpu_init.label )
     end
     def test_label_positions_match
       setup_for(:interpreter)
@@ -25,7 +25,7 @@ module Risc
     end
     def test_cpu_first_arm
       setup_for(:arm)
-      assert Position.get( @machine.cpu_init.first )
+#TODO      assert Position.get( @linker.cpu_init.first )
     end
     def test_has_arm_pos
       has_positions(:arm)
@@ -35,7 +35,7 @@ module Risc
     end
     def has_positions(platform)
       setup_for(platform)
-      @machine.object_positions.each do |obj , pos|
+      @linker.object_positions.each do |obj , pos|
         assert Position.get(obj)
       end
     end
@@ -50,8 +50,10 @@ module Risc
       Parfait.object_space.each_type do |type|
         type.each_method do |method|
           assert Position.get(method.binary)
-          assert Position.get(method.cpu_instructions)
         end
+      end
+      @linker.assemblers.each do |asm|
+        assert Position.get(asm.instructions)
       end
     end
   end

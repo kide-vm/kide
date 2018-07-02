@@ -33,6 +33,7 @@ module Risc
     def initialize(object)
       @at = INVALID
       @object = object
+      raise "Object may not be nil" if object.nil?
     end
 
     # utility to register events of type :position_changed
