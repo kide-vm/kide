@@ -3,7 +3,7 @@ module Risc
   #
   # Binary code is already created by the Machine (by translating risc to arm to binary)
   #
-  # This class serves to write all the objects of the machine (wich also contain the code)
+  # This class serves to write all the objects of the linker (wich also contain the code)
   # into one stream or binary text object. This is then written to an ELF text section.
   #
   # A word about positions: The c world has a thing called position independent code, and
@@ -16,17 +16,18 @@ module Risc
     include Util::Logging
     log_level :info
 
-    def initialize(machine)
-      @machine = machine
+    def initialize(linker)
+      @linker = linker
+      raise "may not me nil" if linker.nil?
     end
 
-    # objects must be written in same order as positioned by the machine, namely
+    # objects must be written in same order as positioned by the linker, namely
     # - intial jump
     # - all objects
     # - all BinaryCode
     def write_as_string
       @stream = StringIO.new
-      write_init(@machine.cpu_init)
+      write_init(@linker.cpu_init)
       write_debug
       write_objects
       write_code
@@ -35,7 +36,7 @@ module Risc
     end
 
     def sorted_objects
-      @machine.object_positions.keys.sort do |left , right|
+      @linker.object_positions.keys.sort do |left , right|
         Position.get(left).at <=> Position.get(right).at
       end
     end
@@ -58,11 +59,9 @@ module Risc
     # Write the BinaryCode objects of all methods to stream.
     # Really like any other object, it's just about the ordering
     def write_code
-      Parfait.object_space.each_type do |type|
-        type.each_method do |method|
-          method.each_binary do |code|
-            write_any(code)
-          end
+      @linker.assemblers.each do |asm|
+        asm.method.each_binary do |code|
+          write_any(code)
         end
       end
     end
@@ -139,7 +138,7 @@ module Risc
     def write_return_address( addr )
       write_ref_for( addr.get_type )
       write_ref_for( addr.next_integer )
-      write_ref_for( addr.value + @machine.platform.loaded_at )
+      write_ref_for( addr.value + @linker.platform.loaded_at )
       write_ref_for( 0 )
       log.debug "Integer witten stream 0x#{@stream.length.to_s(16)}"
     end
@@ -163,7 +162,7 @@ module Risc
     # first jump,
     def write_init( cpu_init )
       cpu_init.assemble(@stream)
-      @stream.write_unsigned_int_8(0) until @machine.platform.padding == stream_position
+      @stream.write_unsigned_int_8(0) until @linker.platform.padding == stream_position
       log.debug "Init witten stream 0x#{@stream.length.to_s(16)}"
     end
 
@@ -209,7 +208,7 @@ module Risc
       when Fixnum
         @stream.write_signed_int_32(object)
       else
-        @stream.write_signed_int_32(Position.get(object) + @machine.platform.loaded_at)
+        @stream.write_signed_int_32(Position.get(object) + @linker.platform.loaded_at)
       end
     end
 
