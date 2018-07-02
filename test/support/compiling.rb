@@ -21,22 +21,25 @@ end
 module MomCompile
   include ScopeHelper
 
-  def compile_mom(input)
+  def compile_method(input)
     statements = RubyX::RubyXCompiler.new(input).ruby_to_vool
-    res = statements.to_mom(nil)
+    assert statements.is_a?(Vool::ClassStatement)
+    ret = statements.to_mom(nil)
     assert_equal Parfait::Class , statements.clazz.class , statements
     @method = statements.clazz.get_method(:main)
     assert_equal Parfait::VoolMethod , @method.class
-    res
+    ret
   end
   def compile_first_method( input )
-    res = compile_mom( as_test_main( input ))
-    method = res.clazz.instance_methods.first
-    compile_to_mom(method , res.clazz.instance_type)
+    ret = compile_method( as_test_main( input ))
+    assert_equal Mom::MomCompiler , ret.class
+    compiler = ret.method_compilers.find{|c| c.method.name == :main and c.method.for_type.object_class.name == :Test}
+    assert_equal Risc::MethodCompiler , compiler.class
+    @method.source.to_mom( compiler.method )
   end
-  def compile_to_mom(method , for_type)
-    typed_method = method.create_typed_method(for_type)
-    method.source.to_mom( typed_method )
+
+  def compile_mom(input)
+    RubyX::RubyXCompiler.new(input).ruby_to_mom
   end
 
   def check_array( should , is )
