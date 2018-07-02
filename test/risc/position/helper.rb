@@ -21,9 +21,8 @@ module Risc
   end
   class DummyPlatform
     def self.boot
-      machine = Risc.machine.boot
-      machine.set_platform( self.new )
-      machine
+      Parfait.boot!
+      Risc.boot!
     end
     def translator
       DummyTranslator.new

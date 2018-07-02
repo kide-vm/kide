@@ -69,7 +69,7 @@ module Risc
         previous.position_listener(objekt) if previous
         previous = position
         at += objekt.padded_length
-        log.debug "Object #{objekt.class}:#{before.to_s(16)} len: #{(at - before).to_s(16)}"
+        log.debug "Object #{objekt.class}:0x#{before.to_s(16)} len: #{(at - before).to_s(16)}"
       end
       at
     end

@@ -25,7 +25,7 @@ module Risc
     # Taking into account that BinaryCodes only take 13 instructions,
     # meaning that chain may have to be extended
     def position_changing(position , to)
-      Position.log.debug "Changing #{position} to 0x#{to.to_s(16)}, bin #{Position.get(@binary)}"
+      Position.log.debug "Instruction from #{position} to 0x#{to.to_s(16)}, bin #{Position.get(@binary)}"
       update_index(to)
       instruction = position.object
       return unless instruction.next
@@ -43,8 +43,11 @@ module Risc
       index = (to - Position.get(@binary).at) / 4
       raise "Invalid negative index #{index} ,  #{Position.get(@binary)}" if index < Parfait::BinaryCode.type_length
       while(index >= (Parfait::BinaryCode.memory_size - 1) )
+        Position.log.debug "Binary Extend (#{index}) #{Position.get(@binary)}, 0x#{@binary.object_id.to_s(16)}"
         @binary = @binary.ensure_next
+        Position.log.debug "Binary Extended (#{index}) #{Position.get(@binary)}"
         index = (to - Position.get(@binary).at) / 4
+        Position.log.debug "Binary Extended new index (#{index}) #{Position.get(@binary)}"
       end
       @index = index - 2
       raise "Invalid negative index #{@index} ,  #{Position.get(@binary)}" if index < 0

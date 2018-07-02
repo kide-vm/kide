@@ -17,21 +17,22 @@ module Risc
     def position_inserted(position)
       Position.log.debug "extending one at #{position}"
       pos = CodeListener.init( position.object.next , @platform)
+      raise "HI #{position}" unless position.valid?
       return unless position.valid?
-      puts "insert #{position.object.next.object_id.to_s(16)}" unless position.valid?
+      Position.log.debug "insert #{position.object.next.object_id.to_s(16)}"
       pos.set( position + position.object.padded_length)
       set_jump_for(position)
     end
 
     def position_changed(position)
+      Position.log.debug "Code changed #{position}"
       nekst = position.object.next
       if( nekst )
         nekst_pos = Position.get(nekst)
-        unless(nekst_pos.valid?)
-          nekst_pos.set(position + position.object.padded_length)
-        end
+        Position.log.debug "Code changed, setting next #{position}"
+        nekst_pos.set(position + position.object.padded_length)
+        set_jump_for(position)
       end
-      set_jump_for(position)
     end
 
     def position_changing(position , to)

@@ -5,7 +5,7 @@ module Risc
     def setup
       DummyPlatform.boot
       @binary = Parfait::BinaryCode.new(1)
-      @bin_pos = CodeListener.init(@binary).set(0)
+      @bin_pos = CodeListener.init(@binary, :interpreter).set(0)
       @instruction = DummyInstruction.new
       13.times {@instruction.last.insert(DummyInstruction.new) }
       @position = InstructionListener.init(@instruction , @binary)

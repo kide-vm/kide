@@ -17,19 +17,6 @@ module Risc
       assert_raises {@machine.add_constant( 1 )}
     end
   end
-  class TestMachinePos < MiniTest::Test
-    def setup
-      Parfait.boot!
-      Risc.boot!
-      @linker = Mom::MomCompiler.new.translate(:arm)
-      @linker.position_all
-    end
-    def test_positions_set
-      @linker.object_positions.each do |obj , position|
-        assert Position.get(obj).valid? , "#{Position.get(obj)} , #{obj.object_id.to_s(16)}"
-      end
-    end
-  end
   class TestMachineInit < MiniTest::Test
     def setup
       Parfait.boot!
@@ -60,6 +47,5 @@ module Risc
         assert position.valid? , "#{position} , #{obj.object_id.to_s(16)}"
       end
     end
-
   end
 end
