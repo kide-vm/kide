@@ -21,11 +21,11 @@ module Risc
       raise "Platform must be platform, not #{platform.class}" unless platform.is_a?(Platform)
       @platform = platform
       @assemblers = assemblers
-      @risc_init = nil
       @constants = []
+      @cpu_init = cpu_init_init
     end
 
-    attr_reader  :constants , :cpu_init
+    attr_reader  :constants
     attr_reader  :platform , :assemblers
 
     # machine keeps a list of all objects and their positions.
@@ -33,11 +33,6 @@ module Risc
     def object_positions
       Collector.collect_space(self) if Position.positions.length < 2 #one is the label
       Position.positions
-    end
-
-    # lazy init risc_init
-    def risc_init
-      @risc_init ||= Branch.new( "__initial_branch__" , Parfait.object_space.get_init.risc_instructions )
     end
 
     # To create binaries, objects (and labels) need to have a position
@@ -51,7 +46,7 @@ module Risc
     # in place and we don't have to deal with changing loading code
     def position_all
       #need the initial jump at 0 and then functions
-      #TODO Position.new(cpu_init).set(0)
+      Position.new(@cpu_init).set(0)
       code_start = position_objects( @platform.padding )
       # and then everything code
       position_code(code_start)
@@ -104,11 +99,12 @@ module Risc
     def create_binary
       prerun
       assemble
-      log.debug "BinaryInit #{cpu_init.object_id.to_s(16)}"
+      log.debug "BinaryInit #{@cpu_init.object_id.to_s(16)}"
     end
 
     def prerun
       assemblers.each do |asm|
+        puts "method #{asm.method.name}"
         asm.instructions.each {|i| i.precheck }
       end
     end
@@ -118,6 +114,16 @@ module Risc
         writer = BinaryWriter.new(asm.method.binary)
         writer.assemble(asm.instructions)
       end
+    end
+
+    private
+    # cpu_init come from translating the risc_init
+    # risc_init is a branch to the __init__ method
+    #
+    def cpu_init_init
+      init = assemblers.find {|asm| asm.method.name == :__init__}
+      risc_init = Branch.new( "__initial_branch__" , init.method.binary )
+      @platform.translator.translate(risc_init)
     end
 
   end
