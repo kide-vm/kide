@@ -6,6 +6,11 @@ module Mom
       @method_compilers = Risc::Builtin.boot_functions + compilers
     end
 
+    # collects constants from all compilers into one array
+    def constants
+      @method_compilers.inject([]){|sum ,comp| sum + comp.constants }
+    end
+
     # Translate code to whatever cpu is specified.
     # Currently only :arm and :interpret
     #
@@ -15,7 +20,7 @@ module Mom
       platform_sym = platform_sym.to_s.capitalize
       platform = Risc::Platform.for(platform_sym)
       assemblers = translate_methods( platform.translator )
-      Risc::Linker.new(platform , assemblers)
+      Risc::Linker.new(platform , assemblers , constants)
     end
 
     # go through all methods and translate them to cpu, given the translator
@@ -35,7 +40,7 @@ module Mom
         cpu_instructions << cpu if cpu
         nekst = nekst.next
       end
-      Risc::Assembler.new(compiler.method , cpu_instructions , compiler.constants)
+      Risc::Assembler.new(compiler.method , cpu_instructions )
     end
 
   end

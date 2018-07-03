@@ -6,12 +6,21 @@ module Mom
 
     def setup
       Parfait.boot!
-      @comp = compile_mom( "class Test ; def main(); return 1; end; end;")
+      @comp = compile_mom( "class Test ; def main(); return 'Hi'; end; end;")
       @linker = @comp.translate(:interpreter)
     end
 
     def test_translate_class
       assert_equal Risc::Linker , @linker.class
+    end
+    def test_linker_has_constants
+      assert_equal Array , @linker.constants.class
+    end
+    def test_linker_constants_not_empty
+      assert !@linker.constants.empty?
+    end
+    def test_linker_constants_contains_hi
+      assert @linker.constants.include?("Hi")
     end
     def test_translate_platform
       assert_kind_of Risc::Platform , @linker.platform

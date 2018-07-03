@@ -13,7 +13,7 @@ module Risc
     include Util::Logging
     log_level :info
 
-    def initialize(platform , assemblers)
+    def initialize(platform , assemblers , constants)
       if(platform.is_a?(Symbol))
         platform = platform.to_s.capitalize
         platform = Risc::Platform.for(platform)
@@ -21,7 +21,7 @@ module Risc
       raise "Platform must be platform, not #{platform.class}" unless platform.is_a?(Platform)
       @platform = platform
       @assemblers = assemblers
-      @constants = []
+      @constants = constants
       @cpu_init = cpu_init_init
     end
 
