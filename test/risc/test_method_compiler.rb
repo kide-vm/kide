@@ -9,13 +9,15 @@ module Risc
     end
 
     def in_test_vool(str)
-      input = in_Test(str)
-      vool = RubyX::RubyXCompiler.new(input).ruby_to_vool
+      vool = RubyX::RubyXCompiler.new(in_Test(str)).ruby_to_vool
       vool.to_mom(nil)
       vool
     end
-    def create_method
-      vool = in_test_vool("def meth; @ivar = 5;end")
+    def in_test_mom(str)
+      RubyX::RubyXCompiler.new(in_Test(str)).ruby_to_mom()
+    end
+    def create_method(body = "@ivar = 5")
+      in_test_vool("def meth; #{body};end")
       test = Parfait.object_space.get_class_by_name(:Test)
       test.get_method(:meth)
     end
@@ -48,42 +50,37 @@ module Risc
     end
 
     def test_method_statement_has_class
-      input = in_Test("def meth; @ivar = 5;end")
-      vool = RubyX::RubyXCompiler.new(input).ruby_to_vool
-      clazz = vool.to_mom(nil)
+      vool = in_test_vool("def meth; @ivar = 5;end")
       assert vool.body.first.clazz
     end
 
     def test_parfait_class_creation
-      input = in_Test("def meth; @ivar = 5;end")
-      vool = RubyX::RubyXCompiler.new(input).ruby_to_vool
-      clazz = vool.to_mom(nil)
+      vool = in_test_vool("def meth; @ivar = 5;end")
       assert_equal Parfait::Class , vool.body.first.clazz.class
     end
 
     def test_typed_method_instance_type
-      vool = in_test_vool("def meth; @ivar = 5; @ibar = 4;end")
+      in_test_vool("def meth; @ivar = 5; @ibar = 4;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.instance_type.get_method(:meth)
       assert_equal 1, method.for_type.variable_index(:ivar)
       assert_equal 2, method.for_type.variable_index(:ibar)
     end
-
-    def test_vool_method_has_one_local
-      vool = in_test_vool("def meth; local = 5 ; a = 6;end")
+    def test_typed_method_has_one_local
+      in_test_vool("def meth; local = 5 ; a = 6;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.get_method(:meth)
       assert_equal 3 , method.frame_type.instance_length
       assert_equal 1 , method.frame_type.variable_index(:local)
       assert_equal 2 , method.frame_type.variable_index(:a)
     end
-
-    def test_typed_method_has_one_local
-      vool = in_test_vool("def meth; local = 5 ; a = 6;end")
-      test = Parfait.object_space.get_class_by_name(:Test)
-      method = test.instance_type.get_method(:meth)
-      assert_equal 3 , method.frame_type.instance_length
-      assert_equal 1 , method.frame_type.variable_index(:local)
+    def test_has_constant
+      input = in_Test("def meth; return 'Hi';end")
+      mom = RubyX::RubyXCompiler.new(input).ruby_to_mom
+      assert_equal Mom::MomCompiler , mom.class
+      compiler = mom.method_compilers.last
+      assert_equal MethodCompiler , compiler.class
+      assert compiler.constants.include?("Hi")
     end
 
   end

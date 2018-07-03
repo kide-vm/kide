@@ -19,8 +19,8 @@ module Elf
       in_space("def main(arg);#{input};end")
     end
     def check(input, file)
-      RubyX::RubyXCompiler.new(input).ruby_to_binary( :arm )
-      writer = Elf::ObjectWriter.new(Risc.machine)
+      linker = RubyX::RubyXCompiler.new(input).ruby_to_binary( :arm )
+      writer = Elf::ObjectWriter.new(linker)
       writer.save "test/#{file}.o"
     end
 

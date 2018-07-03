@@ -82,7 +82,7 @@ module Risc
       sl = main_ticks(base + 7)
       assert_equal SlotToReg , sl.class
       assert_equal :r3 , sl.array.symbol #load from space
-      assert_equal 4 , sl.index
+      assert_equal 5 , sl.index
       assert_equal :r2 , sl.register.symbol
       assert_equal Parfait::Integer , @interpreter.get_register(:r2).class
     end
@@ -98,7 +98,7 @@ module Risc
       sl = main_ticks(base + 9)
       assert_equal RegToSlot , sl.class
       assert_equal :r3 , sl.array.symbol #store to space
-      assert_equal  4 , sl.index
+      assert_equal  5 , sl.index
       assert_equal :r4 , sl.register.symbol
     end
     def test_sys

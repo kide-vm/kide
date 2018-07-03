@@ -11,6 +11,11 @@ module Risc
     def test_class
       assert_equal Risc::Interpreter , Interpreter.new(@linker).class
     end
+    def test_starts
+      interpreter = Interpreter.new(@linker)
+      @linker.position_all
+      assert_equal 0 , interpreter.start_program
+    end
     def test_starts_stopped
       assert_equal :stopped , Interpreter.new(@linker).state
     end
@@ -27,15 +32,10 @@ module Risc
       @string_input = as_main("return 5")
       super
     end
-    def test_starts
-      assert_equal 0 , @interpreter.start_program
-    end
     def test_started
-      @interpreter.start_program
       assert_equal :running , @interpreter.state
     end
     def test_pos
-      @interpreter.start_program
       assert_equal 1 , @interpreter.clock
     end
   end
@@ -44,7 +44,6 @@ module Risc
     def setup
       @string_input = as_main("return 5")
       super
-      @interpreter.start_program
     end
     def test_tick1
       assert_equal 2 , @interpreter.tick

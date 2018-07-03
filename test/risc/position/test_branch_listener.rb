@@ -6,7 +6,7 @@ module Risc
     def setup
       Parfait.boot!
       @binary = Parfait::BinaryCode.new(1)
-      @bin_pos = CodeListener.init(@binary).set(0)
+      @bin_pos = CodeListener.init(@binary,:interpreter).set(0)
       @label = Label.new("HI","ho" , FakeAddress.new(2))
       @branch = DummyBranch.new( "Dummy" , @label )
       @branch.insert @label
