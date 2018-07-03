@@ -40,6 +40,11 @@ module Vool
       block.call(self)
       @value.each(&block)
     end
+
+    def to_s(depth = 0)
+      at_depth(depth , "#{@name} = #{@value}")
+    end
+
   end
 
   class IvarAssignment < Assignment

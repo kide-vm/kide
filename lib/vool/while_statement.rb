@@ -34,5 +34,9 @@ module Vool
       @body.each(&block)
     end
 
+    def to_s(depth = 0)
+      at_depth(depth , "while (#{@condition})" , @body.to_s(depth + 1) , "end" )
+    end
+
   end
 end

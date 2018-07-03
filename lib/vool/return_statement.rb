@@ -29,5 +29,8 @@ module Vool
       ret << Mom::ReturnSequence.new
     end
 
+    def to_s(depth = 0)
+      at_depth(depth , "return #{@return_value.to_s}")
+    end
   end
 end

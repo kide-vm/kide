@@ -62,5 +62,11 @@ module Vool
       @if_true != nil
     end
 
+    def to_s(depth = 0)
+      parts = ["if (#{@condition})" , @body.to_s(depth + 1) ]
+      parts += ["else" ,  "@if_false.to_s(depth + 1)"] if(@false)
+      parts << "end"
+      at_depth(depth , *parts )
+    end
   end
 end

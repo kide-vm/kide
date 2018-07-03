@@ -8,5 +8,9 @@ module Vool
       @name , @left , @right = name , left , right
     end
 
+    def to_s(depth = 0)
+      at_depth(depth , "#{left} #{name} #{right}")
+    end
+
   end
 end

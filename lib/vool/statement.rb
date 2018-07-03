@@ -36,6 +36,11 @@ module Vool
       raise "Not implemented for #{self}"
     end
 
+    def at_depth(depth , *strings)
+      prefix = " " * 2 * depth
+      strings.collect{|str| prefix + str}.join("\n")
+    end
+
   end
 
   class Expression

@@ -18,6 +18,9 @@ module Vool
       end
       Mom::SlotDefinition.new(:message , [type , @name])
     end
+    def to_s
+      name.to_s
+    end
   end
 
   class InstanceVariable < Expression
@@ -28,6 +31,9 @@ module Vool
     # used to collect type information
     def add_ivar( array )
       array << @name
+    end
+    def to_s
+      "@#{name}"
     end
   end
 

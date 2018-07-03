@@ -129,6 +129,11 @@ module Vool
       message_setup(in_method,dynamic_call.cache_entry) << dynamic_call
     end
 
+    def to_s(depth = 0)
+      sen = "#{receiver}.#{name}(#{@arguments.collect{|a| a.to_s}.join(', ')})"
+      at_depth(depth , sen)
+    end
+
     private
     def receiver_type_definition(in_method)
       defi = @receiver.slot_definition(in_method)

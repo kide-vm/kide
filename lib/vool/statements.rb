@@ -55,6 +55,10 @@ module Vool
         Statements.new(@statements.collect{|s| s.normalize})
       end
     end
+    def to_s(depth = 0)
+      at_depth(depth , *@statements.collect{|st| st.to_s(depth)})
+    end
+
   end
 
   class ScopeStatement < Statements

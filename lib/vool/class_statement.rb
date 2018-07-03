@@ -52,5 +52,9 @@ module Vool
         @clazz.set_instance_type( Parfait::Type.for_hash( @clazz ,  ivar_hash ) )
       end
     end
+
+    def to_s(depth = 0)
+      at_depth(depth , "class #{name}" , @body.to_s(depth + 1) , "end")
+    end
   end
 end
