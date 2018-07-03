@@ -16,6 +16,7 @@ module Risc
         str = label.name
       when Parfait::BinaryCode
         str = "Code"
+        str += ":#{Position.get(label)}" if Position.set?(label)
       else
         str = "(no label)"
       end

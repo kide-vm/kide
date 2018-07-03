@@ -32,7 +32,8 @@ module Risc
       @linker = linker
     end
 
-    def start_program
+    def start_program(linker = nil)
+      @linker = linker || @linker
       initialize(@linker)
       init = @linker.cpu_init
       set_state(:running)
@@ -115,14 +116,15 @@ module Risc
     # Instruction interpretation starts here
     def execute_DynamicJump
       method =  get_register(@instruction.register)
-      set_pc( Position.get(method.cpu_instructions).at )
+      pos = Position.get(method.binary).at + Parfait::BinaryCode.byte_offset
+      set_pc( pos )
       false
     end
     def execute_Branch
       label = @instruction.label
       pos = Position.get(label).at
       pos += Parfait::BinaryCode.byte_offset if label.is_a?(Parfait::BinaryCode)
-      set_pc pos
+      set_pc( pos )
       false
     end
 

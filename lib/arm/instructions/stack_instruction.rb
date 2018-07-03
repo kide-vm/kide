@@ -57,7 +57,7 @@ module Arm
     end
 
     def to_s
-      "#{opcode} [#{@first.join(',') }] #{super}"
+      "#{opcode} [#{@first.join(', ') }] #{super}"
     end
   end
 

@@ -30,7 +30,7 @@ module Mom
 
     def to_s
       names = [known_name] + @slots
-      "[#{names.join(',')}]"
+      "[#{names.join(', ')}]"
     end
 
     def known_name

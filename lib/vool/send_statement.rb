@@ -52,7 +52,7 @@ module Vool
     end
 
     def to_s
-      "#{receiver}.#{name}(#{arguments.join(',')})"
+      "#{receiver}.#{name}(#{arguments.join(', ')})"
     end
     def each(&block)
       block.call(self)
