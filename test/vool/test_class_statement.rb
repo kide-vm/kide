@@ -7,7 +7,7 @@ module Vool
 
     def setup
       Parfait.boot!
-      @ret = compile_mom( "class Test ; def main(); return 1; end; end;")
+      @ret = compile_mom( as_test_main("return 1"))
     end
 
     def test_return_class

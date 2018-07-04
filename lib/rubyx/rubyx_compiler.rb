@@ -11,7 +11,6 @@ module RubyX
     def ruby_to_vool
       vool = RubyCompiler.compile( source )
       vool = vool.normalize
-      #puts vool
       vool
     end
 
