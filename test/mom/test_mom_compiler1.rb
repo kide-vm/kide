@@ -32,7 +32,7 @@ module Mom
       assert_equal Risc::Label , @linker.assemblers.first.instructions.class
     end
     def test_assembler_assembled
-      assert_equal Risc::SlotToReg , @linker.assemblers.first.instructions.next.class
+      assert_equal Risc::LoadConstant , @linker.assemblers.first.instructions.next.class
     end
     def test_no_loops_in_chain
       @linker.assemblers.each do |asm|

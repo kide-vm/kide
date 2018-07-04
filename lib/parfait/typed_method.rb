@@ -32,6 +32,12 @@ module Parfait
       init(arguments_type, frame_type)
     end
 
+    def ==(other)
+      return false unless other.is_a?(TypedMethod)
+      return false if @name != other.name
+      @for_type == other.for_type
+    end
+
     # (re) init with given args and frame types
     def init(arguments_type, frame_type)
       raise "Wrong argument type, expect Type not #{arguments_type.class}" unless arguments_type.is_a? Type
