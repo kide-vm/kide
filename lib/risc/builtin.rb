@@ -12,15 +12,17 @@ module Risc
     # This should return the implementation of the method (ie a method object),
     # not actually try to implement it(as that's impossible in ruby)
     #
-    def self.boot_functions
-      compilers = []
-      space = Parfait.object_space
-      # very fiddly chicken 'n egg problem. Functions need to be in the right order,
-      # and in fact we  have to define some dummies, just for the others to compile
+    # When no main has been compiled, we will add an empty main (for testing)
+    #
+    def self.boot_functions(add_main = false)
       # TODO go through the virtual parfait layer and adjust function names
       #      to what they really are
+      compilers = []
+      space = Parfait.object_space
       space_type = space.get_class.instance_type
-      compilers << compiler_for( space_type   , Space , :main)
+      if(space_type.methods.nil?)
+        compilers << compiler_for( space_type   , Space , :main)
+      end
 
       obj_type = space.get_class_by_name(:Object).instance_type
       [ :get_internal_word , :set_internal_word , :_method_missing,

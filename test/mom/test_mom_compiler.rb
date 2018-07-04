@@ -13,10 +13,10 @@ module Mom
       assert_equal MomCompiler , @comp.class
     end
     def test_compilers
-      assert_equal 24 , @comp.method_compilers.length
+      assert_equal 23 , @comp.method_compilers.length
     end
     def test_compilers_bare
-      assert_equal 23 , MomCompiler.new.method_compilers.length
+      assert_equal 22 , MomCompiler.new.method_compilers.length
     end
     def test_returns_constants
       assert_equal Array , @comp.constants.class

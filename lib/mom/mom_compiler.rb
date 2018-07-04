@@ -3,12 +3,7 @@ module Mom
     attr_reader :method_compilers
 
     def initialize(compilers = [])
-      @method_compilers = compilers
-      Risc::Builtin.boot_functions.each do |boot_comp|
-        next if @method_compilers.find{|comp| comp.method == boot_comp.method }        
-        @method_compilers << boot_comp
-      end
-
+      @method_compilers = compilers + Risc::Builtin.boot_functions
     end
 
     # collects constants from all compilers into one array
