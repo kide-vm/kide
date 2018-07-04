@@ -33,8 +33,7 @@ module Risc
     end
 
     def start_program(linker = nil)
-      @linker = linker || @linker
-      initialize(@linker)
+      initialize(linker || @linker)
       init = @linker.cpu_init
       set_state(:running)
       set_pc( Position.get(init).at )
@@ -51,12 +50,7 @@ module Risc
       raise "Not int #{pos}" unless pos.is_a? Numeric
       position = Position.at(pos)
       raise "No position at 0x#{pos.to_s(16)}" unless position
-      if position.is_a?(CodeListener)
-        raise "Setting Code #{clock}-#{position}, #{position.method}"
-        #return set_pc(position.at + Parfait::BinaryCode.byte_offset)
-      end
       log.debug "Setting Position #{clock}-#{position}, "
-      #raise "not instruction position #{position}-#{position.class}-#{position.object.class}" unless position.is_a?(InstructionPosition)
       set_instruction( position.object )
       @clock += 1
       @pc = position.at
@@ -166,7 +160,7 @@ module Risc
       else
         value = object.get_internal_word( index )
       end
-      log.debug "#{@instruction} == #{object}(#{object.class})   (#{value}|#{index})"
+      log.debug "#{@instruction} == #{object}(#{Position.get(object)})   (#{value}|#{index})"
       set_register( @instruction.register , value )
       true
     end
@@ -219,16 +213,15 @@ module Risc
 
     def execute_FunctionCall
       meth = @instruction.method
-      at = Position.get(meth.binary).at
+      at = Position.get(meth.binary)
       log.debug "Call to #{meth.name} at:#{at}"
       set_pc(at + Parfait::BinaryCode.byte_offset)
-      #set_instruction @instruction.method.risc_instructions
       false
     end
 
     def execute_FunctionReturn
       link = get_register( @instruction.register )
-      log.debug "Return to #{link} #{link.class}"
+      log.debug "Return to #{link.to_s(16)}"
       set_pc link
       false
     end

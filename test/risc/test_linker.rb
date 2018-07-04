@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Risc
-  class TestMachineObjects < MiniTest::Test
+  class TestLinkerObjects < MiniTest::Test
 
     def setup
       Parfait.boot!
@@ -17,7 +17,7 @@ module Risc
       assert_raises {@machine.add_constant( 1 )}
     end
   end
-  class TestMachineInit < MiniTest::Test
+  class TestLinkerInit < MiniTest::Test
     def setup
       Parfait.boot!
       Risc.boot!

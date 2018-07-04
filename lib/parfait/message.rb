@@ -39,5 +39,8 @@ module Parfait
       index = @type.get_index(name)
       get_at(index)
     end
+    def to_s
+      "Message:#{name}(#{arguments.get_length})"
+    end
   end
 end

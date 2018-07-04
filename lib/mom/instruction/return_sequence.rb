@@ -33,7 +33,7 @@ module Mom
     end
 
     def to_s
-      "ReturnSequence"
+      "ReturnSequence in (#{compiler.method.name})"
     end
   end
 

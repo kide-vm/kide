@@ -10,7 +10,7 @@ module ScopeHelper
   end
 
   def as_main(statements)
-    in_Space("def main ; #{statements}; end")
+    in_Space("def main(arg) ; #{statements}; end")
   end
 
   def as_test_main( statements )

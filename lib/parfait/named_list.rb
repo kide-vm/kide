@@ -23,6 +23,13 @@
 module Parfait
   class NamedList < Object
 
+    def to_s
+      str  = "NamedList len= #{get_length}"
+      str += " at #{Risc::Position.get(self)}" if Risc::Position.set?(self)
+    end
+    def get_length
+      get_type.get_length - 1
+    end
     def self.type_for( arguments )
       my_class = Parfait.object_space.classes[:NamedList]
       Type.for_hash( my_class , {type: my_class.instance_type}.merge(arguments))

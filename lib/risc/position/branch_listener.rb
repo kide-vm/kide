@@ -7,7 +7,7 @@ module Risc
       @branch = branch
     end
 
-    # incoming position is the labels
+    # incoming position is the label
     def position_changed(position)
       @branch.precheck
     end

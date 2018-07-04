@@ -13,5 +13,12 @@ module Risc
         assert Position.get(obj).valid? , "#{Position.get(obj)} , #{obj.object_id.to_s(16)}"
       end
     end
+    def test_one_main
+      mains = @linker.assemblers.find_all{|asm| asm.method.name == :main }
+      assert_equal 1 , mains.length
+    end
+    def test_assembler_num
+      assert_equal 23 , @linker.assemblers.length
+    end
   end
 end

@@ -82,7 +82,6 @@ module Risc
     # start at code_start.
     def position_code(code_start)
       assemblers.each do |asm|
-        #next unless method.name == :main or method.name == :__init__
         Position.log.debug "Method start #{code_start.to_s(16)} #{asm.method.name}"
         code_pos = CodeListener.init(asm.method.binary, platform)
         instructions = asm.instructions

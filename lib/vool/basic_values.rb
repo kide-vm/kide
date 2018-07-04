@@ -38,6 +38,9 @@ module Vool
     def slot_definition(method)
       return Mom::SlotDefinition.new(Parfait.object_space.true_object , [])
     end
+    def to_s(depth = 0)
+      "true"
+    end
   end
   class FalseConstant < Constant
     def ct_type
@@ -46,6 +49,9 @@ module Vool
     def slot_definition(method)
       return Mom::SlotDefinition.new(Parfait.object_space.false_object , [])
     end
+    def to_s(depth = 0)
+      "false"
+    end
   end
   class NilConstant < Constant
     def ct_type
@@ -53,6 +59,9 @@ module Vool
     end
     def slot_definition(method)
       return Mom::SlotDefinition.new(Parfait.object_space.nil_object , [])
+    end
+    def to_s(depth = 0)
+      "nil"
     end
   end
   class SelfExpression < Expression
@@ -67,11 +76,14 @@ module Vool
     def ct_type
       @my_type
     end
-    def to_s
+    def to_s(depth = 0)
       "self"
     end
   end
   class SuperExpression < Statement
+    def to_s(depth = 0)
+      "super"
+    end
   end
   class StringConstant < Constant
     attr_reader :value
@@ -83,6 +95,9 @@ module Vool
     end
     def ct_type
       Parfait.object_space.get_class_by_name(:Word).instance_type
+    end
+    def to_s(depth = 0)
+      "'#{@value}'"
     end
   end
   class SymbolConstant < StringConstant
