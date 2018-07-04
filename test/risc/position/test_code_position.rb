@@ -4,6 +4,7 @@ module Risc
   class TestPositionTranslated < MiniTest::Test
     def setup
       Parfait.boot!
+      Risc.boot!
       @binary = Parfait::BinaryCode.new(1)
       @method = Parfait.object_space.types.values.first.methods
       @label = Risc.label("hi","ho")

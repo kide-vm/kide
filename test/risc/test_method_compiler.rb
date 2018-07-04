@@ -78,7 +78,7 @@ module Risc
       input = in_Test("def meth; return 'Hi';end")
       mom = RubyX::RubyXCompiler.new(input).ruby_to_mom
       assert_equal Mom::MomCompiler , mom.class
-      compiler = mom.method_compilers.last
+      compiler = mom.method_compilers.first
       assert_equal MethodCompiler , compiler.class
       assert compiler.constants.include?("Hi")
     end

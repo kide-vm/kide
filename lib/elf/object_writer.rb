@@ -7,8 +7,8 @@ require_relative 'string_table_section'
 module Elf
 
   class ObjectWriter
-    def initialize( machine )
-      @machine = machine
+    def initialize( linker )
+      @linker = linker
       target = Elf::Constants::TARGET_ARM
       @object = Elf::ObjectFile.new(target)
       sym_strtab = Elf::StringTableSection.new(".strtab")
@@ -19,24 +19,23 @@ module Elf
       @text = Elf::TextSection.new(".text")
       @object.add_section @text
 
-      assembler = Risc::TextWriter.new(@machine)
+      assembler = Risc::TextWriter.new(@linker)
       set_text assembler.write_as_string
 
       # for debug add labels for labels
-      Parfait.object_space.each_type do |type|
-        type.each_method do |meth|
-          meth.cpu_instructions.each do |label|
-            next unless label.is_a?(Risc::Label)
-            add_symbol "#{type.name}@#{meth.name}:Label=#{label.name}" , Risc::Position.get(label).at
-          end
-          meth.binary.each_block do |code|
-            label = "BinaryCode@#{meth.name}"
-            add_symbol label , Risc::Position.get(code).at
-          end
+      @linker.assemblers.each do |asm|
+        meth = asm.method
+        asm.instructions.each do |label|
+          next unless label.is_a?(Risc::Label)
+          add_symbol "#{meth.for_type.name}@#{meth.name}:Label=#{label.name}" , Risc::Position.get(label).at
+        end
+        meth.binary.each_block do |code|
+          label = "BinaryCode@#{meth.name}"
+          add_symbol label , Risc::Position.get(code).at
         end
       end
 
-      @machine.object_positions.each do |slot , position|
+      @linker.object_positions.each do |slot , position|
         next if slot.is_a?(Parfait::BinaryCode)
         next if slot.class.name.include?("Arm")
         if( slot.respond_to? :rxf_reference_name )

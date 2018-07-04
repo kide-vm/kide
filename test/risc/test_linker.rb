@@ -19,17 +19,13 @@ module Risc
   end
   class TestLinkerInit < MiniTest::Test
     def setup
-      Parfait.boot!
-      Risc.boot!
-      @linker = Mom::MomCompiler.new.translate(:arm)
-      @linker.position_all
-      @linker.create_binary
+      @linker = RubyX::RubyXCompiler.new("class Space;def main;return 1;end;end").ruby_to_binary(:arm)
     end
     def test_pos_cpu
       assert_equal 0 ,  Position.get(@linker.cpu_init).at
     end
     def test_cpu_at
-      assert_equal "0x624c" ,  Position.get(@linker.cpu_init.first).to_s
+      assert_equal "0x626c" ,  Position.get(@linker.cpu_init.first).to_s
     end
     def test_cpu_label
       assert_equal Position ,  Position.get(@linker.cpu_init.first).class
@@ -44,7 +40,7 @@ module Risc
     end
     def test_positions_set
       @linker.object_positions.each do |obj,position|
-        assert position.valid? , "#{position} , #{obj.object_id.to_s(16)}"
+        assert position.valid? , "#{position} #{position.object.class}, #{obj.object_id.to_s(16)}"
       end
     end
   end

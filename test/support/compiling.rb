@@ -39,6 +39,7 @@ module MomCompile
   end
 
   def compile_mom(input)
+    Risc.boot!
     RubyX::RubyXCompiler.new(input).ruby_to_mom
   end
 

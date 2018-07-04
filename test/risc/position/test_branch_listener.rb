@@ -5,6 +5,7 @@ module Risc
   class TestBranchListenerBooted < MiniTest::Test
     def setup
       Parfait.boot!
+      Risc.boot!
       @binary = Parfait::BinaryCode.new(1)
       @bin_pos = CodeListener.init(@binary,:interpreter).set(0)
       @label = Label.new("HI","ho" , FakeAddress.new(2))
