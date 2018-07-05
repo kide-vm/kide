@@ -29,12 +29,12 @@ module Vool
     end
 
     # create mom instructions
-    def to_mom( method )
+    def to_mom( compiler )
       raise "Empty list ? #{statements.length}" if empty?
       stats = @statements.dup
-      flat = stats.shift.to_mom(method)
+      flat = stats.shift.to_mom(compiler)
       while( nekst = stats.shift )
-        flat.append nekst.to_mom(method)
+        flat.append nekst.to_mom(compiler)
       end
       flat
     end

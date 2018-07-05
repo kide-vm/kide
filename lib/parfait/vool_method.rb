@@ -30,8 +30,8 @@ module Parfait
 
     def compiler_for(for_type)
       typed_method = create_typed_method(for_type)
-      head = source.to_mom( typed_method )
       compiler = Risc::MethodCompiler.new( typed_method )
+      head = source.to_mom( compiler )
       compiler.add_mom(head)
       compiler
     end

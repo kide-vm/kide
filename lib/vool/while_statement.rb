@@ -16,13 +16,13 @@ module Vool
       WhileStatement.new(cond , @body.normalize , rest)
     end
 
-    def to_mom( method )
+    def to_mom( compiler )
       merge_label = Mom::Label.new( "merge_label_#{object_id.to_s(16)}")
       cond_label = Mom::Label.new( "cond_label_#{object_id.to_s(16)}")
       codes = cond_label
-      codes << @hoisted.to_mom(method) if @hoisted
-      codes << Mom::TruthCheck.new(condition.slot_definition(method) , merge_label)
-      codes << @body.to_mom(method)
+      codes << @hoisted.to_mom(compiler) if @hoisted
+      codes << Mom::TruthCheck.new(condition.slot_definition(compiler) , merge_label)
+      codes << @body.to_mom(compiler)
       codes << Mom::Jump.new(cond_label)
       codes << merge_label
     end

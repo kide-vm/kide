@@ -31,9 +31,9 @@ module Vool
       statements
     end
 
-    def chain_assign(assign , method)
+    def chain_assign(assign , compiler)
       return assign unless @value.is_a?(SendStatement)
-      @value.to_mom(method) << assign
+      @value.to_mom(compiler) << assign
     end
 
     def each(&block)
@@ -54,10 +54,10 @@ module Vool
       return IvarAssignment.new(@name , @value)
     end
 
-    def to_mom( method )
+    def to_mom( compiler )
       to = Mom::SlotDefinition.new(:message ,[ :receiver , @name])
-      from = @value.slot_definition(method)
-      return chain_assign( Mom::SlotLoad.new(to,from) , method)
+      from = @value.slot_definition(compiler)
+      return chain_assign( Mom::SlotLoad.new(to,from) , compiler)
     end
 
   end

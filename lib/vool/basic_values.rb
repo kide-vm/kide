@@ -10,7 +10,7 @@ module Vool
     def initialize(value)
       @value = value
     end
-    def slot_definition(method)
+    def slot_definition(compiler)
       return Mom::SlotDefinition.new(Mom::IntegerConstant.new(@value) , [])
     end
     def ct_type
@@ -35,7 +35,7 @@ module Vool
     def ct_type
       Parfait.object_space.get_class_by_name(:True).instance_type
     end
-    def slot_definition(method)
+    def slot_definition(compiler)
       return Mom::SlotDefinition.new(Parfait.object_space.true_object , [])
     end
     def to_s(depth = 0)
@@ -46,7 +46,7 @@ module Vool
     def ct_type
       Parfait.object_space.get_class_by_name(:False).instance_type
     end
-    def slot_definition(method)
+    def slot_definition(compiler)
       return Mom::SlotDefinition.new(Parfait.object_space.false_object , [])
     end
     def to_s(depth = 0)
@@ -57,7 +57,7 @@ module Vool
     def ct_type
       Parfait.object_space.get_class_by_name(:Nil).instance_type
     end
-    def slot_definition(method)
+    def slot_definition(compiler)
       return Mom::SlotDefinition.new(Parfait.object_space.nil_object , [])
     end
     def to_s(depth = 0)
@@ -69,8 +69,8 @@ module Vool
     def initialize(type = nil)
       @my_type = type
     end
-    def slot_definition(in_method)
-      @my_type = in_method.for_type
+    def slot_definition(compiler)
+      @my_type = compiler.method.for_type
       Mom::SlotDefinition.new(:message , [:receiver])
     end
     def ct_type
@@ -90,7 +90,7 @@ module Vool
     def initialize(value)
       @value = value
     end
-    def slot_definition(method)
+    def slot_definition(compiler)
       return Mom::SlotDefinition.new(Mom::StringConstant.new(@value),[])
     end
     def ct_type

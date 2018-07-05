@@ -35,7 +35,7 @@ module MomCompile
     assert_equal Mom::MomCompiler , ret.class
     compiler = ret.method_compilers.find{|c| c.method.name == :main and c.method.for_type.object_class.name == :Test}
     assert_equal Risc::MethodCompiler , compiler.class
-    @method.source.to_mom( compiler.method )
+    @method.source.to_mom( compiler )
   end
 
   def compile_mom(input)

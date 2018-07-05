@@ -8,8 +8,11 @@ module Vool
       @clazz = clazz
     end
 
-    def to_mom( _ )
-      raise "should not be called (call create_objects)"
+    def to_mom( compiler )
+#      raise "should not be called (call create_objects)"
+    end
+    def slot_definition(compiler)
+      return Mom::SlotDefinition.new(Mom::IntegerConstant.new(1) , [])
     end
 
     def each(&block)

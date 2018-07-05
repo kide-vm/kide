@@ -10,8 +10,8 @@ module Vool
 
   class LocalVariable < Expression
     include Named
-    def slot_definition(method)
-      if method.arguments_type.variable_index(@name)
+    def slot_definition(compiler)
+      if compiler.method.arguments_type.variable_index(@name)
         type = :arguments
       else
         type = :frame
@@ -25,7 +25,7 @@ module Vool
 
   class InstanceVariable < Expression
     include Named
-    def slot_definition(method)
+    def slot_definition(compiler)
       Mom::SlotDefinition.new(:message , [ :receiver , @name] )
     end
     # used to collect type information
