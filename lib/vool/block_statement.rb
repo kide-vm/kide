@@ -8,11 +8,19 @@ module Vool
       @clazz = clazz
     end
 
-    def to_mom( compiler )
-#      raise "should not be called (call create_objects)"
-    end
+    # because of normalization (of send), slot_definition is called first,
+    # to assign the block to a variable.
+    #
+    # This means we do the compiler here (rather than to_mom, which is in
+    # fact never called)
     def slot_definition(compiler)
+      @parfait_block = to_parfait(compiler)
+      compiler.add_constant(@parfait_block)
       return Mom::SlotDefinition.new(Mom::IntegerConstant.new(1) , [])
+    end
+
+    def to_mom( compiler )
+#      raise "should not be called "
     end
 
     def each(&block)
@@ -24,9 +32,10 @@ module Vool
       BlockStatement.new( @args , @body.normalize)
     end
 
-    def create_objects(clazz)
-    end
+    private
+    def to_parfait(compiler)
 
+    end
 
   end
 end

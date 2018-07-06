@@ -16,7 +16,7 @@ module Parfait
     end
 
     def test_class_for
-      assert_equal :Object , @method.for_type.object_class.name
+      assert_equal :Object , @method.self_type.object_class.name
     end
 
     def test_arg1

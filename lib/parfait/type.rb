@@ -83,7 +83,7 @@ module Parfait
       found = get_method( method_name )
       if found
         #puts "redefining method #{method_name}" #TODO, this surely must get more complicated
-        raise "attempt to redifine method for different type " unless self == found.for_type
+        raise "attempt to redifine method for different type " unless self == found.self_type
         found.init(arguments , frame)
         return found
       else
@@ -94,7 +94,7 @@ module Parfait
     def add_method( method )
       raise "not a method #{method.class} #{method.inspect}" unless method.is_a? TypedMethod
       raise "syserr #{method.name.class}" unless method.name.is_a? Symbol
-      if self.is_a?(Class) and (method.for_type != self)
+      if self.is_a?(Class) and (method.self_type != self)
         raise "Adding to wrong class, should be #{method.for_class}"
       end
       if get_method( method.name )

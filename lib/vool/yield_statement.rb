@@ -48,7 +48,7 @@ module Vool
     # - a SimpleCall,
     def to_mom( compiler )
       @parfait_block = @block.to_mom(compiler) if @block
-      @receiver = SelfExpression.new(compiler.for_type) if @receiver.is_a?(SelfExpression)
+      @receiver = SelfExpression.new(compiler.self_type) if @receiver.is_a?(SelfExpression)
       if(@receiver.ct_type)
         simple_call(compiler)
       else

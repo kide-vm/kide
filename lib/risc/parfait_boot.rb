@@ -154,7 +154,7 @@ module Parfait
         CacheEntry: {cached_type: :Type , cached_method: :TypedMethod  } ,
         TypedMethod: {name: :Word, risc_instructions: :Object,
                       cpu_instructions: :Object, binary: :BinaryCode,
-                      arguments_type: :Type , for_type: :Type, frame_type: :Type ,
+                      arguments_type: :Type , self_type: :Type, frame_type: :Type ,
                       next_method: :TypedMethod} ,
         VoolMethod: { name: :Word , args_type: :Type , frame_type: :Type } ,
       }

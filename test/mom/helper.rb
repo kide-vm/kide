@@ -30,7 +30,7 @@ module Risc
     def produce_instructions
       assert @expect , "No output given"
       linker = RubyX::RubyXCompiler.new(as_test_main).ruby_to_risc(:interpreter)
-      compiler = linker.assemblers.find{|c| c.method.name == :main and c.method.for_type.object_class.name == :Test}
+      compiler = linker.assemblers.find{|c| c.method.name == :main and c.method.self_type.object_class.name == :Test}
       compiler.instructions
     end
     def check_nil

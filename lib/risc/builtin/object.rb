@@ -63,7 +63,7 @@ module Risc
             message[:receiver] << space
           end
 
-          exit_label = Risc.label(compiler.method , "#{compiler.method.for_type.object_class.name}.#{compiler.method.name}" )
+          exit_label = Risc.label(compiler.method , "#{compiler.method.self_type.object_class.name}.#{compiler.method.name}" )
           ret_tmp = compiler.use_reg(:Label)
           builder.build do
             add_load_constant("__init__ load return", exit_label , ret_tmp)

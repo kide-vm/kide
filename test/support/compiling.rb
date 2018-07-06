@@ -33,7 +33,7 @@ module MomCompile
   def compile_first_method( input )
     ret = compile_method( as_test_main( input ))
     assert_equal Mom::MomCompiler , ret.class
-    compiler = ret.method_compilers.find{|c| c.method.name == :main and c.method.for_type.object_class.name == :Test}
+    compiler = ret.method_compilers.find{|c| c.method.name == :main and c.method.self_type.object_class.name == :Test}
     assert_equal Risc::MethodCompiler , compiler.class
     @method.source.to_mom( compiler )
   end

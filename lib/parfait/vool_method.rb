@@ -28,8 +28,8 @@ module Parfait
       type.create_method( @name , @args_type , @frame_type)
     end
 
-    def compiler_for(for_type)
-      typed_method = create_typed_method(for_type)
+    def compiler_for(self_type)
+      typed_method = create_typed_method(self_type)
       compiler = Risc::MethodCompiler.new( typed_method )
       head = source.to_mom( compiler )
       compiler.add_mom(head)

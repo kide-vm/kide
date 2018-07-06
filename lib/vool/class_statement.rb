@@ -24,10 +24,9 @@ module Vool
 
     def to_mom( _ )
       create_class_object
-      method_compilers = []
-      body.statements.each do |node|
+      method_compilers =  body.statements.collect do |node|
         raise "Only methods for now #{node}" unless node.is_a?(MethodStatement)
-        method_compilers << node.to_mom(@clazz)
+        node.to_mom(@clazz)
       end
       Mom::MomCompiler.new(method_compilers)
     end

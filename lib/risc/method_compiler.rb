@@ -14,7 +14,7 @@ module Risc
     def initialize( method )
       @regs = []
       @method = method
-      name = "#{method.for_type.name}.#{method.name}"
+      name = "#{method.self_type.name}.#{method.name}"
       @risc_instructions = Risc.label(name, name)
       @risc_instructions << Risc.label( name, "unreachable")
       @current = @risc_instructions
@@ -25,12 +25,12 @@ module Risc
     # helper method for builtin mainly
     # the class_name is a symbol, which is resolved to the instance_type of that class
     #
-    # return compiler_for_type with the resolved type
+    # return compiler_self_type with the resolved type
     #
     def self.compiler_for_class( class_name , method_name , args , frame )
       raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
       clazz = Parfait.object_space.get_class_by_name! class_name
-      compiler_for_type( clazz.instance_type , method_name , args , frame)
+      compiler_self_type( clazz.instance_type , method_name , args , frame)
     end
 
     # create a method for the given type ( Parfait type object)
@@ -38,7 +38,7 @@ module Risc
     # args a hash that will be converted to a type
     # the created method is set as the current and the given type too
     # return the compiler
-    def self.compiler_for_type( type , method_name , args , frame)
+    def self.compiler_self_type( type , method_name , args , frame)
       raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
       raise "Args must be Type #{args}" unless args.is_a?(Parfait::Type)
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
