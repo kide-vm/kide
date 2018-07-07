@@ -34,7 +34,20 @@ module Vool
 
     private
     def to_parfait(compiler)
-
+      Parfait::Block.new(compiler.method.self_type , make_arg_type , make_frame)
+    end
+    def make_arg_type(  )
+      type_hash = {}
+      @args.each {|arg| type_hash[arg] = :Object }
+      Parfait::NamedList.type_for( type_hash )
+    end
+    def make_frame
+      type_hash = {}
+      @body.each do |node|
+        next unless node.is_a?(LocalVariable) or node.is_a?(LocalAssignment)
+        type_hash[node.name] = :Object
+      end
+      Parfait::NamedList.type_for( type_hash )
     end
 
   end
