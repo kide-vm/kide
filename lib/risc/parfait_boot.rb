@@ -124,6 +124,7 @@ module Parfait
        Word: :Data8 ,
        List: :Data16 ,
        CallableMethod: :Callable,
+       Block: :Callable,
        ReturnAddress: :Integer}
   end
 
@@ -132,6 +133,9 @@ module Parfait
   # and all instance variable names. Really have to find a better way
   def self.type_names
      {BinaryCode: {next: :BinaryCode} ,
+      Block: {binary: :BinaryCode, next: :CallableMethod,
+                      arguments_type: :Type , self_type: :Type, frame_type: :Type } ,
+
       CacheEntry: {cached_type: :Type , cached_method: :CallableMethod  } ,
       Callable:   {binary: :BinaryCode,next: :Callable ,
                    arguments_type: :Type , self_type: :Type, frame_type: :Type  } ,

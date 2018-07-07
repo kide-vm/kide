@@ -36,5 +36,24 @@ module Parfait
       block.call( self )
       @next.each_method( &block ) if @next
     end
+
+    def create_block(args , frame)
+      bl = Block.new(self_type , args , frame)
+      block = self.blocks
+      bl.next = block if(block)
+      @blocks = bl
+    end
+
+    def has_block(block)
+      each_block{ |bl| return true if bl == block}
+      false
+    end
+    def each_block(&bl)
+      blo = blocks
+      while( blo )
+        yield(blo)
+        blo = blo.next
+      end
+    end
   end
 end
