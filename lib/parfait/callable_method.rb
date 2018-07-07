@@ -38,7 +38,10 @@ module Parfait
     end
 
     def create_block(args , frame)
-      bl = Block.new(self_type , args , frame)
+      add_block( Block.new(self_type , args , frame))
+    end
+
+    def add_block(bl)
       block = self.blocks
       bl.next = block if(block)
       @blocks = bl

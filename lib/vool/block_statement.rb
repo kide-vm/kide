@@ -15,7 +15,6 @@ module Vool
     # fact never called)
     def slot_definition(compiler)
       @parfait_block = to_parfait(compiler)
-      compiler.add_constant(@parfait_block)
       return Mom::SlotDefinition.new(Mom::IntegerConstant.new(1) , [])
     end
 
@@ -34,7 +33,7 @@ module Vool
 
     private
     def to_parfait(compiler)
-      Parfait::Block.new(compiler.method.self_type , make_arg_type , make_frame)
+      compiler.method.create_block( make_arg_type , make_frame)
     end
     def make_arg_type(  )
       type_hash = {}

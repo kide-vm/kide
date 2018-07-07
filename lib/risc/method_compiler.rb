@@ -45,7 +45,7 @@ module Risc
       method = type.create_method( method_name , args , frame)
       self.new(method)
     end
-
+    
     # convert the given mom instruction to_risc and then add it (see add_code)
     # continue down the instruction chain unti depleted
     # (adding moves the insertion point so the whole mom chain is added as a risc chain)
