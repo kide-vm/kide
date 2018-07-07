@@ -7,14 +7,16 @@
 RubyX is about native code generation in and of ruby.
 In other words, compiling ruby to binary, in ruby.
 
-X can be read as 10 times faster, or a decade away, depending on mindset.
+X can be read as X times faster, or a decade away, depending on mindset.
 
-The current (fourth) rewrite adds aims at clarifying the roles of the different layers
-of the system, see below. The overhaul is almost done.
+The last rewrite clarified the roles of the different layers
+of the system, see below. The overhaul is done and rubyx produces working binaries.
 
 Processing goes through layers: Ruby --> Vool --> Mom --> Risc --> Arm --> binary .
 
-
+Currently most functional constructs work to some (usable) degree, ie if, while,
+assignment, ivars, calling and dynamic dispatch all work. Work continues
+on blocks currently, see below.
 
 ## Layers
 
@@ -31,9 +33,8 @@ it has semantics, and those are substantially simpler than ruby.
 Vool is Ruby without the fluff. No unless, no reverse if/while, no splats. Just simple
 oo. (Without this level the step down to the next layer was just too big)
 
-Also Vool has a typed syntax tree, unlike the AST from the parser gem. This is easier when
-writing conversion code: the code goes with the specific class (more oo than the visitor
-pattern, imho)
+Also Vool has a typed syntax tree, unlike the AST from the parser gem. This is easier when writing conversion code: the code goes with the specific class
+(more oo than the visitor pattern, imho)
 
 ### Mom
 
@@ -78,10 +79,28 @@ Generating code (by descending above layers) is only half the story in an oo sys
 The other half is classes, types, constant objects and a minimal run-time. This is
 what is Parfait is.
 
+Parfait has basic clases like string/array/hash, and also anything that is really needed
+to express code, ie Class/Type/Method/Block.
+
+Parfait is used at compile time, and the objects get serialised into the executable to
+make up, or make up the executable, and are thus available at run time. Currently the
+methods are not parsed yet, so do not exist at runtime yet.
+
+### Builtin
+
+There are a small number of methods that can not be coded in ruby. For example an
+integer addition, or a instance variable access. These methods exists in any compiler,
+and are called builtin here.
+
+Builtin methods are coded at the risc level with a dsl. Even though basically assembler,
+they are through the ruby magic quite readable
+([see init](https://github.com/ruby-x/rubyx/blob/2f07cc34f3f56c72d05c7d822f40fa6c15fd6a08/lib/risc/builtin/object.rb#L48))
+
 ## Types and classes, static vs dynamic
 
-Classes in dynamic languages are open. They can change at any time, meaning you can add/remove
-methods and use any instance variable. This is the reason dynamic languages are interpreted.
+Classes in dynamic languages are open. They can change at any time, meaning you can
+add/remove methods and use any instance variable. This is the reason dynamic
+languages are interpreted.
 
 For Types to make any sense, they have to be static, immutable.
 
@@ -95,8 +114,7 @@ When a class changes, say a new method is added that uses a new instance variabl
 **new** Type is generated to describe the class at that point. **New** code is generated
 for this new Type.
 
-In essence the Class always **has a** current Type and **many** Types implement (different
-versions of) a Class.
+In essence the Class always **has a** current Type and **many** Types implement (different versions of) a Class.
 
 All Objects have a Type, as their first member (also integers!). The Type points to the
 Class that the object has in oo terms.
@@ -119,7 +137,21 @@ out what is going on, and in finding bugs.
 
 ## Status
 
-Just finishing the rewrite (above architecture) and about to get to binaries again.
+The above architecture is implemented. At the top level the RubyXCompiler works
+pretty much as you'd expect, by falling down the layers. And when it get's
+to the Risc layer it slots the builtin in there as if is were just normal code.
+
+Specifically here is a list of what works:
+- if (with or without else)
+- while
+- return
+- assignment (local/args/ivar)
+- static calling (where method is determined at compile time)
+- dynamic dispatch with caching
+
+Current work is on implicit blocks, which are surprisingly like static method calls
+and lambdas like dynamic dispatch.
+
 
 ### Stary sky
 

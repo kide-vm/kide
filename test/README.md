@@ -1,10 +1,10 @@
 # Testing
 
-Testing is off course great, and well practised in the ruby community.
-Good tests exists in the parts where functionality is clear: Parsing and binary generation.
+Tdd, Bdd , Xdd, whatever you call it, i have come to the point where it
+is a way not only to write software, but to think about software. Ie:
+- if it's not tested, we don't know it works
+- test first makes me think about the software from the outside. (good perspective)
 
-But it is difficult to write tests when you don't know what the functionality is.
-Also TDD does not really help as it assumes you know what you're doing.
 
 I used minitest as the framework, just because it is lighter and thus when the
 time comes to move to rubyx, less work.
@@ -15,20 +15,18 @@ time comes to move to rubyx, less work.
   ruby test/test_all.rb
 ''''
 
-### Parfait
+### Parfait, Risc , Arm , Mom
 
-Well, test Parfait. Not perfect, but growing as bugs appear. Basics are ok though.
+Follow the directory structure of the source and may be called unit tests
 
-### Compiler
+### Risc/Interpreter
 
-Different kinds of quite minimal tests that ensure we can go from parsed to code.
+Contains many system tests that rely on everything else working.
+Should be hoisted i guess.
 
-### Fragments
+### Main
 
-Much more elaborate tests of the compling functionality. All code constructs and their output
-in terms of instructions are tested.
+Much like the Interpreter test, but for Arm. This is where the currently few
+executables are generated and there is an automatic way of running them remotely.
 
-### vm
-
-Mostly tests about the Parfait compatibility layer and padding (for assmenbly).
-Slightly bad name ... wip
+The plan is to integrate this with the interpreter directory
