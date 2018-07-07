@@ -92,7 +92,7 @@ module Risc
       assert_equal @label , ret.label
     end
     def test_minus
-      op = @builder.build {space - typed_method}
+      op = @builder.build {space - callable_method}
       assert_equal OperatorInstruction , op.class
       assert_equal :- , op.operator
       assert_equal :Space , op.left.type

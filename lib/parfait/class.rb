@@ -12,7 +12,7 @@
 # An Object carries the data for the instance variables it has.
 # The Type lists the names of the instance variables
 # The Class keeps a list of instance methods, these have a name and (vool) code
-# Each type in turn has a list of TypedMethods that hold binary code
+# Each type in turn has a list of CallableMethods that hold binary code
 
 module Parfait
   class Class < Object

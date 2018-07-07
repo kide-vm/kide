@@ -87,12 +87,12 @@ module Parfait
         found.init(arguments , frame)
         return found
       else
-        add_method TypedMethod.new( self , method_name , arguments , frame )
+        add_method CallableMethod.new( self , method_name , arguments , frame )
       end
     end
 
     def add_method( method )
-      raise "not a method #{method.class} #{method.inspect}" unless method.is_a? TypedMethod
+      raise "not a method #{method.class} #{method.inspect}" unless method.is_a? CallableMethod
       raise "syserr #{method.name.class}" unless method.name.is_a? Symbol
       if self.is_a?(Class) and (method.self_type != self)
         raise "Adding to wrong class, should be #{method.for_class}"
@@ -109,16 +109,16 @@ module Parfait
     def remove_method( method_name )
       raise "No such method #{method_name} in #{self.name}" unless @methods
       if( @methods.name == method_name)
-        @methods = @methods.next_method
+        @methods = @methods.next
         return true
       end
       method = @methods
-      while(method && method.next_method)
-        if( method.next_method.name == method_name)
-          method.set_next( method.next_method.next_method )
+      while(method && method.next)
+        if( method.next.name == method_name)
+          method.set_next( method.next.next )
           return true
         else
-          method = method.next_method
+          method = method.next
         end
       end
       raise "No such method #{method_name} in #{self.name}"
@@ -144,6 +144,7 @@ module Parfait
       return method if method
       sup = object_class.super_class
       return nil unless sup
+      return nil if object_class.name == :Object
       sup.instance_type.resolve_method(fname)
     end
 

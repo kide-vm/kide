@@ -59,14 +59,14 @@ module Risc
       assert_equal Parfait::Class , vool.body.first.clazz.class
     end
 
-    def test_typed_method_instance_type
+    def test_callable_method_instance_type
       in_test_vool("def meth; @ivar = 5; @ibar = 4;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.instance_type.get_method(:meth)
       assert_equal 1, method.self_type.variable_index(:ivar)
       assert_equal 2, method.self_type.variable_index(:ibar)
     end
-    def test_typed_method_has_one_local
+    def test_callable_method_has_one_local
       in_test_vool("def meth; local = 5 ; a = 6;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.get_method(:meth)

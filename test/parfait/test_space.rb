@@ -4,9 +4,10 @@ module Parfait
   class TestSpace < ParfaitTest
 
     def classes
-      [:Word,:List,:Message,:Integer,:ReturnAddress,:DataObject,:Data4,:Data8,
-        :TrueClass,:FalseClass,:NilClass,:Object,:BinaryCode,:Space,:NamedList,
-        :Type,:Class,:Dictionary,:CacheEntry,:TypedMethod,:VoolMethod]
+      [:BinaryCode,:CacheEntry,:Callable,:CallableMethod,:Class,
+        :DataObject,:Data4,:Data8,:Data16,:Dictionary,:Integer,:FalseClass,
+        :List,:Message,:NamedList,:NilClass,:Object,:ReturnAddress,
+        :Space,:TrueClass,:Type,:VoolMethod,:Word]
     end
 
     def test_space_length

@@ -8,11 +8,12 @@ module Parfait
   # - frame_type:  A type object describing the local variables that the method has
   # - binary:  The binary (jumpable) code that instructions get assembled into
   # - blocks: linked list of blocks inside this method/block
+  # - next: next block/method at same level
   #
   class Callable < Object
 
-    attr_reader :self_type , :arguments_type , :frame_type , :binary , :blocks
-
+    attr_reader :self_type , :arguments_type , :frame_type , :binary
+    attr_reader :blocks, :next
     def initialize( self_type , arguments_type , frame_type)
       super()
       raise "No class #{self}" unless self_type
@@ -53,5 +54,10 @@ module Parfait
         bin = bin.next
       end
     end
+
+    def set_next( method )
+      @next = method
+    end
+
   end
 end

@@ -2,7 +2,7 @@
 # we resolve the method at runtime, and then cache it. Aaron has shown that over 99%
 # of call sites are type stable, so one cache entry at the moment
 #
-# A cache entry stores the type of the object and the TypedMethod that is to be called
+# A cache entry stores the type of the object and the CallableMethod that is to be called
 # This is used in DynamicCall, see there
 #
 module Parfait

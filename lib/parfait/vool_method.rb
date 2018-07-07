@@ -5,7 +5,7 @@ module Parfait
   # Type objects are already created for args and locals, but the main attribute
   # is the source, which is a Vool::Statement
   #
-  # Classes store VoolMethods, while Types store TypedMethod
+  # Classes store VoolMethods, while Types store CallableMethod
   # A Type referes to a Class , but a Class (interface) is implemented by many types
   # as it changes during the course of it's life. Types do not change. Objects have
   # type, and so only indirectly a class.
@@ -23,14 +23,14 @@ module Parfait
       raise "Empty bod" if(source.is_a?(Vool::Statements) and source.empty?)
     end
 
-    def create_typed_method( type )
+    def create_callable_method( type )
       raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
       type.create_method( @name , @args_type , @frame_type)
     end
 
     def compiler_for(self_type)
-      typed_method = create_typed_method(self_type)
-      compiler = Risc::MethodCompiler.new( typed_method )
+      callable_method = create_callable_method(self_type)
+      compiler = Risc::MethodCompiler.new( callable_method )
       head = source.to_mom( compiler )
       compiler.add_mom(head)
       compiler

@@ -35,12 +35,12 @@ module Mom
     # but also used directly in __init
     def build_with(builder)
       case from = method_source
-      when Parfait::TypedMethod
-        builder.build { typed_method << from }
+      when Parfait::CallableMethod
+        builder.build { callable_method << from }
       when Parfait::CacheEntry
         builder.build do
           cache_entry << from
-          typed_method << cache_entry[:cached_method]
+          callable_method << cache_entry[:cached_method]
         end
       else
         raise "unknown source #{method_source}"
@@ -64,15 +64,15 @@ module Mom
         message[:next_message] << next_message
         next_message[:caller] << message
 
-        type << typed_method[:arguments_type]
+        type << callable_method[:arguments_type]
         named_list << next_message[:arguments]
         named_list[:type] << type
 
-        type << typed_method[:frame_type]
+        type << callable_method[:frame_type]
         named_list << next_message[:frame]
         named_list[:type] << type
 
-        name << typed_method[:name]
+        name << callable_method[:name]
         next_message[:name] << name
 
         #store next.next back into space

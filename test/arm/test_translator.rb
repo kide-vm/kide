@@ -18,7 +18,7 @@ module Arm
       assert_equal :r1 , @codes.left
     end
     def test_slot_right
-      assert_equal 16 , @codes.right
+      assert_equal 8 , @codes.right
     end
     def test_next_from
       assert_equal :r1 , @codes.next.from.symbol

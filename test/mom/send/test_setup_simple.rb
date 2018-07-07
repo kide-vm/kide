@@ -21,7 +21,7 @@ module Risc
     end
     def test_load_method
       method = @produced
-      assert_load( method, Parfait::TypedMethod ,:r1)
+      assert_load( method, Parfait::CallableMethod ,:r1)
       assert_equal :div4 , method.constant.name
     end
     def test_load_space
@@ -43,7 +43,7 @@ module Risc
 
     def test_get_args_type #from method in r1
       sl = @produced.next( 5 )
-      assert_slot_to_reg( sl , :r1 ,  5 ,  :r4 )
+      assert_slot_to_reg( sl , :r1 ,  3 ,  :r4 )
     end
     def test_get_args #from message
       sl = @produced.next( 6 )
@@ -56,7 +56,7 @@ module Risc
 
     def test_get_frame_type #from method in r1
       sl = @produced.next( 8 )
-      assert_slot_to_reg( sl , :r1 ,  7 ,  :r4 )
+      assert_slot_to_reg( sl , :r1 ,  5 ,  :r4 )
     end
     def test_get_frame #from message
       sl = @produced.next( 9 )

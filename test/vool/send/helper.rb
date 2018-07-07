@@ -35,7 +35,7 @@ module Vool
         assert_equal Mom::SimpleCall,  @ins.next(2).class
     end
     def test_call_has_method
-      assert_equal Parfait::TypedMethod,  @ins.next(2).method.class
+      assert_equal Parfait::CallableMethod,  @ins.next(2).method.class
     end
     def test_array
       check_array [Mom::MessageSetup,Mom::ArgumentTransfer,Mom::SimpleCall] , @ins

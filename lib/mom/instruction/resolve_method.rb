@@ -41,28 +41,28 @@ module Mom
         cache_entry << cache_entry_
 
         type << cache_entry[:cached_type]
-        typed_method << type[:methods]
+        callable_method << type[:methods]
 
         add_code while_start_label
 
         space << Parfait.object_space
         space << space[:nil_object]
-        space - typed_method
+        space - callable_method
         if_zero exit_label
 
-        name << typed_method[:name]
+        name << callable_method[:name]
         name - word
 
         if_zero ok_label
 
-        typed_method << typed_method[:next_method]
+        callable_method << callable_method[:next]
         branch  while_start_label
 
         add_code exit_label
         Risc::Builtin::Object.emit_syscall( builder , :exit )
 
         add_code ok_label
-        cache_entry[:cached_method] << typed_method
+        cache_entry[:cached_method] << callable_method
       end
       return builder.built
     end

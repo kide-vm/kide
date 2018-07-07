@@ -8,7 +8,7 @@ module Parfait
       @obj = Parfait.object_space.get_class_by_name(:Object).instance_type
       @args = Parfait::Type.for_hash( @obj.object_class , { bar: :Integer , foo: :Type})
       @frame = Parfait::Type.for_hash( @obj.object_class , { local_bar: :Integer , local_foo: :Type})
-      @method = Parfait::TypedMethod.new( @obj , :meth , @args , @frame)
+      @method = Parfait::CallableMethod.new( @obj , :meth , @args , @frame)
     end
 
     def test_method_name
@@ -99,7 +99,7 @@ module Parfait
       assert_equal @method , @method
     end
     def test_not_equal
-      method = Parfait::TypedMethod.new( @obj , :other , @args , @frame)
+      method = Parfait::CallableMethod.new( @obj , :other , @args , @frame)
       assert @method != method
     end
   end

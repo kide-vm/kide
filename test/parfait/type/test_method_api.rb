@@ -14,7 +14,7 @@ module Parfait
     end
     def foo_method( for_class = :Try)
       args = Parfait::Type.for_hash( @try_class , { bar: :Integer})
-      ::Parfait::TypedMethod.new( @space.get_class_by_name(for_class).instance_type , :foo , args,empty_frame)
+      ::Parfait::CallableMethod.new( @space.get_class_by_name(for_class).instance_type , :foo , args,empty_frame)
     end
     def add_foo_to( clazz = :Try )
       foo = foo_method( clazz )
@@ -50,7 +50,7 @@ module Parfait
     end
     def test_method_get
       add_foo_to
-      assert_equal Parfait::TypedMethod , @try_type.get_method(:foo).class
+      assert_equal Parfait::CallableMethod , @try_type.get_method(:foo).class
     end
     def test_method_get_nothere
       assert_nil  @try_type.get_method(:foo)

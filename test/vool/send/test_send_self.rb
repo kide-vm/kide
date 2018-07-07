@@ -18,7 +18,7 @@ module Vool
       assert_equal SimpleCall,  @ins.next(2).class
     end
     def test_call_has_method
-      assert_equal Parfait::TypedMethod,  @ins.next(2).method.class
+      assert_equal Parfait::CallableMethod,  @ins.next(2).method.class
     end
     def test_call_has_right_method
       assert_equal :get_internal_word,  @ins.next(2).method.name

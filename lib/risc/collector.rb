@@ -35,11 +35,11 @@ module Risc
       return true if objekt.is_a? Fixnum
       return true if objekt.is_a?( Risc::Label)
       #puts message(objekt , depth)
-      #puts "ADD #{objekt.inspect}, #{objekt.name}" if objekt.is_a? Parfait::TypedMethod
+      #puts "ADD #{objekt.inspect}, #{objekt.name}" if objekt.is_a? Parfait::CallableMethod
       unless objekt.is_a?( Parfait::Object) or objekt.is_a?( Symbol)
         raise "adding non parfait #{objekt.class}:#{objekt}"
       end
-      #raise "Method #{objekt.name}" if objekt.is_a? Parfait::TypedMethod
+      #raise "Method #{objekt.name}" if objekt.is_a? Parfait::CallableMethod
       Position.get_or_create(objekt)
       true
     end
