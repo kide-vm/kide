@@ -18,7 +18,7 @@ module Vool
       assert_equal 5 , @lst.value.arguments.first.value
     end
   end
-  class TestLocalOpAssign < MiniTest::Test
+  class TestLocalOpAssignX < MiniTest::Test
     include OpAss
     include RubyTests
     def setup
@@ -28,7 +28,7 @@ module Vool
       assert_equal LocalAssignment , @lst.class
     end
   end
-  class TestIvarOpAssign < MiniTest::Test
+  class TestIvarOpAssignX < MiniTest::Test
     include OpAss
     include RubyTests
     def setup

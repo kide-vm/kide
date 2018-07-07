@@ -1,9 +1,9 @@
 require_relative "helper"
 
 module Vool
-  class TestBlockStatement < MiniTest::Test
+  class TestBlockStatementX < MiniTest::Test
     include RubyTests
-    
+
     def setup()
       input = "plus_one{|arg1| arg1 + 1 } "
       @lst = compile( input )

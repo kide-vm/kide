@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestVariables < MiniTest::Test
+  class TestVariablesX < MiniTest::Test
     include RubyTests
 
     # "free standing" local can not be tested as it will result in send

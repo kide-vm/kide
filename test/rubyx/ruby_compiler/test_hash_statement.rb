@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class HashArray < MiniTest::Test
+  class HashArrayX < MiniTest::Test
     include RubyTests
 
     def test_empty

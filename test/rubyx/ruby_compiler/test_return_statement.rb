@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestReturnStatement < MiniTest::Test
+  class TestReturnStatementX < MiniTest::Test
     include RubyTests
 
     def test_return_const

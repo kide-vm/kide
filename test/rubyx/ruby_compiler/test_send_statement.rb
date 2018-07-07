@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestSend < MiniTest::Test
+  class TestSendX < MiniTest::Test
     include RubyTests
 
     def test_simple

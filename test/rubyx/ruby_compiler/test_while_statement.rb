@@ -1,7 +1,7 @@
 require_relative 'helper'
 
 module Vool
-  class TestWhileStatement < MiniTest::Test
+  class TestWhileStatementX < MiniTest::Test
     include RubyTests
 
     def basic_while

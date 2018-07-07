@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestLocalAssignment < MiniTest::Test
+  class TestLocalAssignmentX < MiniTest::Test
     include RubyTests
 
     def test_local

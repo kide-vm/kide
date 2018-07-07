@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestBasicValues < MiniTest::Test
+  class TestBasicValuesX < MiniTest::Test
     include RubyTests
 
     def test_self
@@ -47,7 +47,7 @@ module Vool
       assert_equal 1 , lst.statements.first.value
     end
   end
-  class TestBasicTypes < MiniTest::Test
+  class TestBasicTypesX < MiniTest::Test
     include RubyTests
 
     def setup

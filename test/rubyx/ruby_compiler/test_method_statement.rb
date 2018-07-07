@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestMethodStatement < MiniTest::Test
+  class TestMethodStatementX < MiniTest::Test
     include RubyTests
 
     def basic_setup()

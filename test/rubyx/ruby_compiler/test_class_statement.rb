@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestEmptyClassStatement < MiniTest::Test
+  class TestEmptyClassStatementX < MiniTest::Test
     include RubyTests
 
     def setup
@@ -26,7 +26,7 @@ module Vool
     end
 
   end
-  class TestBasicClassStatement < MiniTest::Test
+  class TestBasicClassStatementX < MiniTest::Test
     include ScopeHelper
     include RubyTests
 
