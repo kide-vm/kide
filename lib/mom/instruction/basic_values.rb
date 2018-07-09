@@ -5,6 +5,16 @@ module Mom
   class Constant
   end
 
+  class BlockConstant < Constant
+    attr_reader :block
+    def initialize(bl)
+      @block = bl
+    end
+    def to_parfait(compiler)
+      @block
+    end
+  end
+
   class IntegerConstant < Constant
     attr_reader :value
     def initialize(value)

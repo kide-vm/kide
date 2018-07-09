@@ -19,18 +19,19 @@ module Risc
       @risc_instructions << Risc.label( name, "unreachable")
       @current = @risc_instructions
       @constants = []
+      @block_compilers = []
     end
     attr_reader :method , :risc_instructions , :constants
 
     # helper method for builtin mainly
     # the class_name is a symbol, which is resolved to the instance_type of that class
     #
-    # return compiler_self_type with the resolved type
+    # return compiler_for_type with the resolved type
     #
     def self.compiler_for_class( class_name , method_name , args , frame )
       raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
       clazz = Parfait.object_space.get_class_by_name! class_name
-      compiler_self_type( clazz.instance_type , method_name , args , frame)
+      compiler_for_type( clazz.instance_type , method_name , args , frame)
     end
 
     # create a method for the given type ( Parfait type object)
@@ -38,14 +39,18 @@ module Risc
     # args a hash that will be converted to a type
     # the created method is set as the current and the given type too
     # return the compiler
-    def self.compiler_self_type( type , method_name , args , frame)
+    def self.compiler_for_type( type , method_name , args , frame)
       raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
       raise "Args must be Type #{args}" unless args.is_a?(Parfait::Type)
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
       method = type.create_method( method_name , args , frame)
       self.new(method)
     end
-    
+
+    def add_block_compiler(compiler)
+      @block_compilers << compiler
+    end
+
     # convert the given mom instruction to_risc and then add it (see add_code)
     # continue down the instruction chain unti depleted
     # (adding moves the insertion point so the whole mom chain is added as a risc chain)

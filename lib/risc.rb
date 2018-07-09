@@ -27,6 +27,7 @@ require_relative "risc/parfait_adapter"
 require_relative "risc/parfait_boot"
 require_relative "risc/linker"
 require_relative "risc/method_compiler"
+require_relative "risc/block_compiler"
 require_relative "risc/assembler"
 
 class Fixnum

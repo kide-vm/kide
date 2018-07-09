@@ -11,7 +11,11 @@ module Vool
     def to_mom(clazz)
       @clazz = clazz || raise( "no class in #{self}")
       method = @clazz.add_method_for(name , make_arg_type , make_frame , body )
-      method.compiler_for(clazz.instance_type)
+      compiler = method.compiler_for(clazz.instance_type)
+      each do |node| ## TODO: must account for nested blocks (someday)
+        node.to_mom(compiler) if node.is_a?(BlockStatement)
+      end
+      compiler
     end
 
     def each(&block)

@@ -37,7 +37,10 @@ module MomCompile
     assert_equal Risc::MethodCompiler , compiler.class
     @method.source.to_mom( compiler )
   end
-
+  def compile_first_block( block_input )
+    mom = compile_first_method( "main_local = 5 ; self.main{|val| #{block_input}}")
+    mom.next(4) # ignore local assign (1) and call (3)
+  end
   def compile_mom(input)
     Risc.boot!
     RubyX::RubyXCompiler.new(input).ruby_to_mom

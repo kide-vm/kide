@@ -43,7 +43,7 @@ module Parfait
 
     def add_block(bl)
       block = self.blocks
-      bl.next = block if(block)
+      bl.set_next(block) if(block)
       @blocks = bl
     end
 

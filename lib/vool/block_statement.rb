@@ -14,12 +14,19 @@ module Vool
     # This means we do the compiler here (rather than to_mom, which is in
     # fact never called)
     def slot_definition(compiler)
-      @parfait_block = to_parfait(compiler)
-      return Mom::SlotDefinition.new(Mom::IntegerConstant.new(1) , [])
+      return Mom::SlotDefinition.new(Mom::BlockConstant.new(parfait_block(compiler)) , [])
     end
 
+    # create a block, a compiler for it, comile the bock and add the compiler(code)
+    # to the method compiler for further processing
     def to_mom( compiler )
-#      raise "should not be called "
+      parfait_block = self.parfait_block(compiler)
+      block_compiler = Risc::BlockCompiler.new( parfait_block , compiler.method )
+      compiler.add_block_compiler(block_compiler)
+      puts "BODY #{body}"
+      head = body.to_mom( block_compiler )
+      block_compiler.add_mom(head)
+      block_compiler
     end
 
     def each(&block)
@@ -31,10 +38,14 @@ module Vool
       BlockStatement.new( @args , @body.normalize)
     end
 
-    private
-    def to_parfait(compiler)
-      compiler.method.create_block( make_arg_type , make_frame)
+    # create the parfait block (parfait representation of the block, a Callable similar
+    #  to CallableMethod)
+    def parfait_block(compiler)
+      return @parfait_block if @parfait_block
+      @parfait_block = compiler.method.create_block( make_arg_type , make_frame)
     end
+
+    private
     def make_arg_type(  )
       type_hash = {}
       @args.each {|arg| type_hash[arg] = :Object }
