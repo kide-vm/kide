@@ -171,7 +171,11 @@ module Risc
     end
   end
 
-  # The first arg is a class name (possibly lowercase) and the second an instance variable name.
+  # resolve a symbol to a type. In the simplest case the sybbol is the class name
+  # But in building sometimes variations are needed, so next_message or caller work
+  # too (and return Message)
+  # Also objects work, in which case the instance_type of their class is returned
+  # An error is raised if the symbol/object can not be resolved
   def self.resolve_type( object , compiler )
     object = object.type if object.is_a?(RegisterValue)
     case object
@@ -205,7 +209,8 @@ module Risc
   # Third arg, compiler, is only needed to resolve receiver/arguments/frame
   def self.resolve_to_index(object , variable_name ,compiler = nil)
     return variable_name if variable_name.is_a?(Integer) or variable_name.is_a?(RegisterValue)
-    type = resolve_type(object , compiler)
+    type = compiler.resolve_type( object) if compiler
+    type = resolve_type(object , compiler) unless type
     index = type.variable_index(variable_name)
     raise "Index not found for #{variable_name} in #{object} of type #{type}" unless index
     return index

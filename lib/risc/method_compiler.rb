@@ -69,6 +69,21 @@ module Risc
       ret
     end
 
+    # resolve a symbol to a type. Allowed symbols are :frame , :receiver and arguments
+    # which return the respective types, otherwise nil
+    def resolve_type( name )
+      case name
+      when :frame
+        return @method.frame_type
+      when :arguments
+        return @method.arguments_type
+      when :receiver
+        return @method.self_type
+      else
+        return nil
+      end
+    end
+
     # convert the given mom instruction to_risc and then add it (see add_code)
     # continue down the instruction chain unti depleted
     # (adding moves the insertion point so the whole mom chain is added as a risc chain)
