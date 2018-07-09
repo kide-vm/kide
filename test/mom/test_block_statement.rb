@@ -13,10 +13,10 @@ module Vool
       assert_equal Mom::MomCompiler , @ret.class
     end
     def test_has_method
-      assert_equal Parfait::CallableMethod , @ret.method_compilers.first.method.class
+      assert_equal Parfait::CallableMethod , @ret.method_compilers.first.get_method.class
     end
     def test_method_has_block
-      assert @ret.method_compilers.first.method.blocks , "No block created"
+      assert @ret.method_compilers.first.get_method.blocks , "No block created"
     end
   end
   class TestBlockCreated < MiniTest::Test
@@ -24,7 +24,7 @@ module Vool
     def setup
       Parfait.boot!
       @ret = compile_mom( as_test_main("self.main {|elem| local = 5 } "))
-      @block = @ret.method_compilers.first.method.blocks
+      @block = @ret.method_compilers.first.get_method.blocks
     end
     def test_block_arg_type
       assert_equal Parfait::Type, @block.arguments_type.class
@@ -44,7 +44,7 @@ module Vool
     def setup
       Parfait.boot!
       @ret = compile_mom( as_test_main("arg.each {|elem| arg = 5 } "))
-      @block = @ret.method_compilers.first.method.blocks
+      @block = @ret.method_compilers.first.get_method.blocks
     end
     def test_block_arg_type
       assert_equal Parfait::Type, @block.arguments_type.class

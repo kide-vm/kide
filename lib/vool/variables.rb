@@ -11,12 +11,8 @@ module Vool
   class LocalVariable < Expression
     include Named
     def slot_definition(compiler)
-      if compiler.method.arguments_type.variable_index(@name)
-        type = :arguments
-      else
-        type = :frame
-      end
-      Mom::SlotDefinition.new(:message , [type , @name])
+      slot_def = compiler.slot_type_for(@name)
+      Mom::SlotDefinition.new(:message , slot_def)
     end
     def to_s
       name.to_s

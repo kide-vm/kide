@@ -9,7 +9,7 @@ module Risc
         # (this method returns a new method off course, like all builtin)
         def get_internal_word( context )
           compiler = compiler_for(:Object , :get_internal_word ,{at: :Integer})
-          builder = compiler.compiler_builder(compiler.method)
+          builder = compiler.compiler_builder(compiler.source)
           source = "get_internal_word"
           me , index = builder.self_and_int_arg(source)
           # reduce me to me[index]
@@ -25,7 +25,7 @@ module Risc
         def set_internal_word( context )
           compiler = compiler_for(:Object , :set_internal_word , {at: :Integer, :value => :Object} )
           source = "set_internal_word"
-          builder = compiler.compiler_builder(compiler.method)
+          builder = compiler.compiler_builder(compiler.source)
           me , index = builder.self_and_int_arg(source)
           value = builder.load_int_arg_at(source , 1)
           # do the set
@@ -38,7 +38,7 @@ module Risc
         # Even if it's just this one, sys_exit (later raise)
         def _method_missing( context )
           compiler = compiler_for(:Object,:method_missing ,{})
-          emit_syscall( compiler.compiler_builder(compiler.method) , :exit )
+          emit_syscall( compiler.compiler_builder(compiler.source) , :exit )
           return compiler
         end
 
@@ -48,7 +48,7 @@ module Risc
         def __init__ context
           compiler = MethodCompiler.compiler_for_class(:Object,:__init__ ,
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
-          builder = compiler.compiler_builder(compiler.method)
+          builder = compiler.compiler_builder(compiler.source)
           builder.build do
             space << Parfait.object_space
             message << space[:next_message]
@@ -63,7 +63,7 @@ module Risc
             message[:receiver] << space
           end
 
-          exit_label = Risc.label(compiler.method , "#{compiler.method.self_type.object_class.name}.#{compiler.method.name}" )
+          exit_label = Risc.label(compiler.source , "#{compiler.resolve_type(:receiver).object_class.name}.#{compiler.source.name}" )
           ret_tmp = compiler.use_reg(:Label)
           builder.build do
             add_load_constant("__init__ load return", exit_label , ret_tmp)
@@ -87,7 +87,7 @@ module Risc
 
         def exit( context )
           compiler = compiler_for(:Object,:exit ,{})
-          builder = compiler.compiler_builder(compiler.method)
+          builder = compiler.compiler_builder(compiler.source)
           exit_sequence(builder)
           return compiler
         end

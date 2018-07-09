@@ -21,8 +21,15 @@ module Risc
       @constants = []
       @block_compilers = []
     end
-    attr_reader :method , :risc_instructions , :constants
+    attr_reader :risc_instructions , :constants
 
+    def get_method
+      @method
+    end
+    # sometimes the method is used as source (tb reviewed)
+    def source
+      @method
+    end
     # helper method for builtin mainly
     # the class_name is a symbol, which is resolved to the instance_type of that class
     #
@@ -34,6 +41,13 @@ module Risc
       compiler_for_type( clazz.instance_type , method_name , args , frame)
     end
 
+    def add_method_to( target )
+      target.add_method( @method )
+    end
+
+    def create_block(arg_type , frame_type)
+      @method.create_block(arg_type ,frame_type)
+    end
     # create a method for the given type ( Parfait type object)
     # method_name is a Symbol
     # args a hash that will be converted to a type

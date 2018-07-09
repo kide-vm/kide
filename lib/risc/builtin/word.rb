@@ -6,7 +6,7 @@ module Risc
 
         def putstring( context)
           compiler = compiler_for(:Word , :putstring ,{})
-          builder = compiler.compiler_builder(compiler.method)
+          builder = compiler.compiler_builder(compiler.source)
           builder.add_slot_to_reg( "putstring" , :message , :receiver , :new_message )
           index = Parfait::Word.get_length_index
           reg = RegisterValue.new(:r2 , :Integer)
@@ -21,7 +21,7 @@ module Risc
         def get_internal_byte( context)
           compiler = compiler_for(:Word , :get_internal_byte , {at: :Integer})
           source = "get_internal_byte"
-          builder = compiler.compiler_builder(compiler.method)
+          builder = compiler.compiler_builder(compiler.source)
           me , index = builder.self_and_int_arg(source)
           builder.reduce_int( source + " fix arg", index )
           # reduce me to me[index]
@@ -39,7 +39,7 @@ module Risc
         def set_internal_byte( context )
           compiler = compiler_for(:Word, :set_internal_byte , {at: :Integer , :value => :Integer} )
           source = "set_internal_byte"
-          builder = compiler.compiler_builder(compiler.method)
+          builder = compiler.compiler_builder(compiler.source)
           me , index = builder.self_and_int_arg(source)
           value = builder.load_int_arg_at(source , 1 )
           builder.reduce_int( source + " fix me", value )

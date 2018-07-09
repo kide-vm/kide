@@ -135,7 +135,7 @@ module Risc
     def add_known(name)
       case name
       when :receiver
-        ret = compiler.use_reg compiler.method.self_type
+        ret = compiler.use_reg compiler.resolve_type(:receiver)
         add_slot_to_reg(" load self" , :message , :receiver , ret )
         return ret
       when :space

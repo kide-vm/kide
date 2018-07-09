@@ -47,12 +47,12 @@ module Risc
 
     def self.compiler_for( type , mod , name)
       compiler = mod.send(name , nil)
-      type.add_method( compiler.method )
+      compiler.add_method_to(type)
       compiler
     end
     def self.operator_compiler(int_type , op)
       compiler = Integer.operator_method(op)
-      int_type.add_method(compiler.method)
+      compiler.add_method_to(int_type)
       compiler
     end
   end

@@ -21,7 +21,7 @@ module Vool
     # to the method compiler for further processing
     def to_mom( compiler )
       parfait_block = self.parfait_block(compiler)
-      block_compiler = Risc::BlockCompiler.new( parfait_block , compiler.method )
+      block_compiler = Risc::BlockCompiler.new( parfait_block , compiler.get_method )
       compiler.add_block_compiler(block_compiler)
       head = body.to_mom( block_compiler )
       #block_compiler.add_mom(head)
@@ -41,7 +41,7 @@ module Vool
     #  to CallableMethod)
     def parfait_block(compiler)
       return @parfait_block if @parfait_block
-      @parfait_block = compiler.method.create_block( make_arg_type , make_frame(compiler))
+      @parfait_block = compiler.create_block( make_arg_type , make_frame(compiler))
     end
 
     private
