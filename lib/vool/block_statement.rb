@@ -23,9 +23,8 @@ module Vool
       parfait_block = self.parfait_block(compiler)
       block_compiler = Risc::BlockCompiler.new( parfait_block , compiler.method )
       compiler.add_block_compiler(block_compiler)
-      puts "BODY #{body}"
       head = body.to_mom( block_compiler )
-      block_compiler.add_mom(head)
+      #block_compiler.add_mom(head)
       block_compiler
     end
 
@@ -42,7 +41,7 @@ module Vool
     #  to CallableMethod)
     def parfait_block(compiler)
       return @parfait_block if @parfait_block
-      @parfait_block = compiler.method.create_block( make_arg_type , make_frame)
+      @parfait_block = compiler.method.create_block( make_arg_type , make_frame(compiler))
     end
 
     private
@@ -51,10 +50,11 @@ module Vool
       @args.each {|arg| type_hash[arg] = :Object }
       Parfait::NamedList.type_for( type_hash )
     end
-    def make_frame
+    def make_frame(compiler)
       type_hash = {}
       @body.each do |node|
         next unless node.is_a?(LocalVariable) or node.is_a?(LocalAssignment)
+        next if compiler.in_scope?(node.name)
         type_hash[node.name] = :Object
       end
       Parfait::NamedList.type_for( type_hash )

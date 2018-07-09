@@ -7,7 +7,7 @@ module Vool
 
     def setup
       Parfait.boot!
-      @ret = compile_mom( as_test_main("self.main {|elem| elem } "))
+      @ret = compile_mom( as_test_main("self.main {|elem| elem = 5 } "))
     end
     def test_is_compiler
       assert_equal Mom::MomCompiler , @ret.class
@@ -37,6 +37,17 @@ module Vool
     end
     def test_block_frame_type_name
       assert_equal 1, @block.frame_type.variable_index(:local)
+    end
+  end
+  class TestBlockMethod < MiniTest::Test
+    include MomCompile
+    def setup
+      Parfait.boot!
+      @ret = compile_mom( as_test_main("arg.each {|elem| arg = 5 } "))
+      @block = @ret.method_compilers.first.method.blocks
+    end
+    def test_block_arg_type
+      assert_equal Parfait::Type, @block.arguments_type.class
     end
   end
 end

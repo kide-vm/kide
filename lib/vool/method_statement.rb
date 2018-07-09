@@ -47,8 +47,14 @@ module Vool
     private
 
     def make_frame
+      nodes = []
+      @body.each { |node| nodes << node }
+      nodes.dup.each do |node|
+        next unless node.is_a?(BlockStatement)
+        node.each {|block_scope| nodes.delete(block_scope)}
+      end
       type_hash = {}
-      @body.each do |node|
+      nodes.each do |node|
         next unless node.is_a?(LocalVariable) or node.is_a?(LocalAssignment)
         type_hash[node.name] = :Object
       end
