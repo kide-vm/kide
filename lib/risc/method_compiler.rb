@@ -47,8 +47,26 @@ module Risc
       self.new(method)
     end
 
+    # determine how given name need to be accsessed.
+    # For methods the options are args or frame
+    def slot_type_for(name)
+      if @method.arguments_type.variable_index(name)
+        type = :arguments
+      else
+        type = :frame
+      end
+      [type , name]
+    end
+
     def add_block_compiler(compiler)
       @block_compilers << compiler
+    end
+
+    # return true or false if the given name is in scope (arg/local)
+    def in_scope?(name)
+      ret = true if @method.arguments_type.variable_index(name)
+      ret = @method.frame_type.variable_index(name) unless ret
+      ret
     end
 
     # convert the given mom instruction to_risc and then add it (see add_code)
