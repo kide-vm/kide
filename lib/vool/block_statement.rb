@@ -24,7 +24,7 @@ module Vool
       block_compiler = Risc::BlockCompiler.new( parfait_block , compiler.get_method )
       compiler.add_block_compiler(block_compiler)
       head = body.to_mom( block_compiler )
-      #block_compiler.add_mom(head)
+      block_compiler.add_mom(head)
       block_compiler
     end
 

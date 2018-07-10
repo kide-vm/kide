@@ -10,8 +10,8 @@ module VoolBlocks
       @ins = compile_first_block( "local = 5")
     end
 
-    def test_class_compiles
-      #assert_equal Mom::SlotLoad , @ins.class , @ins
+    def test_block_compiles
+      assert_equal Mom::SlotLoad , @ins.class , @ins
     end
     def pest_slot_is_set
       assert @ins.left

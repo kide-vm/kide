@@ -2,19 +2,18 @@ module Risc
 
   # A BlockCompiler is much like a Mehtodcompiler, exept for blocks
   #
-  class BlockCompiler
+  class BlockCompiler < CallableCompiler
 
     attr_reader :block , :risc_instructions , :constants
 
     def initialize( block , method)
       @method = method
-      @regs = []
       @block = block
-      name = "#{method.self_type.name}.init"
-      @risc_instructions = Risc.label(name, name)
-      @risc_instructions << Risc.label( name, "unreachable")
-      @current = @risc_instructions
-      @constants = []
+      super()
+    end
+
+    def source_name
+      "#{@method.self_type.name}.init"
     end
 
     # determine how given name need to be accsessed.
@@ -33,6 +32,21 @@ module Risc
         raise "no variable #{name} , need to resolve at runtime"
       end
       slot_def << name
+    end
+
+    # resolve a symbol to a type. Allowed symbols are :frame , :receiver and arguments
+    # which return the respective types, otherwise nil
+    def resolve_type( name )
+      case name
+      when :frame
+        return @block.frame_type
+      when :arguments
+        return @block.arguments_type
+      when :receiver
+        return @block.self_type
+      else
+        return nil
+      end
     end
 
   end
