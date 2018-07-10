@@ -1,93 +1,24 @@
 module Risc
 
-  # MethodCompiler (old name) is used to generate risc instructions for methods
-  # and to instantiate the methods correctly. Most of the init is typed layer stuff,
-  # but there is some logic too.
+  # CallableCompiler is used to generate risc instructions. It is an abstact base
+  # class shared by BlockCompiler and MethodCompiler
 
-  class MethodCompiler < CallableCompiler
+  # - risc_instructions: The sequence of risc level instructions that mom was compiled to
+  # - cpu_instructions: The sequence of cpu specific instructions that the
+  #                      risc_instructions was compiled to
+  #                 Instructions derive from class Instruction and form a linked list
 
-    def initialize( method )
-      @method = method
-      super()
-    end
+  class CallableCompiler
 
-    def source_name
-      "#{@method.self_type.name}.#{@method.name}"
+    def initialize( )
+      @regs = []
+      @risc_instructions = Risc.label(source_name, source_name)
+      @risc_instructions << Risc.label( source_name, "unreachable")
+      @current = @risc_instructions
+      @constants = []
+      @block_compilers = []
     end
-    def get_method
-      @method
-    end
-    # sometimes the method is used as source (tb reviewed)
-    def source
-      @method
-    end
-    # helper method for builtin mainly
-    # the class_name is a symbol, which is resolved to the instance_type of that class
-    #
-    # return compiler_for_type with the resolved type
-    #
-    def self.compiler_for_class( class_name , method_name , args , frame )
-      raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
-      clazz = Parfait.object_space.get_class_by_name! class_name
-      compiler_for_type( clazz.instance_type , method_name , args , frame)
-    end
-
-    def add_method_to( target )
-      target.add_method( @method )
-    end
-
-    def create_block(arg_type , frame_type)
-      @method.create_block(arg_type ,frame_type)
-    end
-    # create a method for the given type ( Parfait type object)
-    # method_name is a Symbol
-    # args a hash that will be converted to a type
-    # the created method is set as the current and the given type too
-    # return the compiler
-    def self.compiler_for_type( type , method_name , args , frame)
-      raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
-      raise "Args must be Type #{args}" unless args.is_a?(Parfait::Type)
-      raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
-      method = type.create_method( method_name , args , frame)
-      self.new(method)
-    end
-
-    # determine how given name need to be accsessed.
-    # For methods the options are args or frame
-    def slot_type_for(name)
-      if @method.arguments_type.variable_index(name)
-        type = :arguments
-      else
-        type = :frame
-      end
-      [type , name]
-    end
-
-    def add_block_compiler(compiler)
-      @block_compilers << compiler
-    end
-
-    # return true or false if the given name is in scope (arg/local)
-    def in_scope?(name)
-      ret = true if @method.arguments_type.variable_index(name)
-      ret = @method.frame_type.variable_index(name) unless ret
-      ret
-    end
-
-    # resolve a symbol to a type. Allowed symbols are :frame , :receiver and arguments
-    # which return the respective types, otherwise nil
-    def resolve_type( name )
-      case name
-      when :frame
-        return @method.frame_type
-      when :arguments
-        return @method.arguments_type
-      when :receiver
-        return @method.self_type
-      else
-        return nil
-      end
-    end
+    attr_reader :risc_instructions , :constants , :block_compilers
 
     # convert the given mom instruction to_risc and then add it (see add_code)
     # continue down the instruction chain unti depleted
