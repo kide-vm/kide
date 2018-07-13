@@ -16,7 +16,7 @@ module Risc
     end
     # test hack to in place change object type
     def add_space_field(name,type)
-      class_type = Parfait.object_space.get_class_by_name(:Space).instance_type
+      class_type = Parfait.object_space.get_type_by_class_name(:Space)
       class_type.send(:private_add_instance_variable, name , type)
     end
     def produce_body

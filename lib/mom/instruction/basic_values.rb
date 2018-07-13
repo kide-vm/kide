@@ -27,7 +27,7 @@ module Mom
       value
     end
     def ct_type
-      Parfait.object_space.get_class_by_name(:Integer).instance_type
+      Parfait.object_space.get_type_by_class_name(:Integer)
     end
   end
   class FloatConstant < Constant
@@ -44,7 +44,7 @@ module Mom
       Parfait.object_space.true_object
     end
     def ct_type
-      Parfait.object_space.get_class_by_name(:TrueClass).instance_type
+      Parfait.object_space.get_type_by_class_name(:TrueClass)
     end
   end
   class FalseConstant < Constant
@@ -52,7 +52,7 @@ module Mom
       Parfait.object_space.false_object
     end
     def ct_type
-      Parfait.object_space.get_class_by_name(:FalseClass).instance_type
+      Parfait.object_space.get_type_by_class_name(:FalseClass)
     end
   end
   class NilConstant < Constant
@@ -60,7 +60,7 @@ module Mom
       Parfait.object_space.nil_object
     end
     def ct_type
-      Parfait.object_space.get_class_by_name(:NilClass).instance_type
+      Parfait.object_space.get_type_by_class_name(:NilClass)
     end
   end
   class StringConstant < Constant
@@ -74,12 +74,12 @@ module Mom
       value
     end
     def ct_type
-      Parfait.object_space.get_class_by_name(:Word).instance_type
+      Parfait.object_space.get_type_by_class_name(:Word)
     end
   end
   class SymbolConstant < Constant
     def ct_type
-      Parfait.object_space.get_class_by_name(:Word).instance_type
+      Parfait.object_space.get_type_by_class_name(:Word)
     end
   end
 end

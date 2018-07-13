@@ -24,18 +24,18 @@ module Risc
         compilers << compiler_for( space_type   , Space , :main)
       end
 
-      obj_type = space.get_class_by_name(:Object).instance_type
+      obj_type = space.get_type_by_class_name(:Object)
       [ :get_internal_word , :set_internal_word , :_method_missing,
         :exit , :__init__].each do |f|
         compilers << compiler_for( obj_type , Object , f)
       end
 
-      word_type = space.get_class_by_name(:Word).instance_type
+      word_type = space.get_type_by_class_name(:Word)
       [:putstring , :get_internal_byte , :set_internal_byte ].each do |f|
         compilers << compiler_for( word_type , Word , f)
       end
 
-      int_type = space.get_class_by_name(:Integer).instance_type
+      int_type = space.get_type_by_class_name(:Integer)
       Risc.operators.each do |op|
         compilers << operator_compiler( int_type , op)
       end

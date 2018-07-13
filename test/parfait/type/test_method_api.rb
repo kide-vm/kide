@@ -14,15 +14,15 @@ module Parfait
     end
     def foo_method( for_class = :Try)
       args = Parfait::Type.for_hash( @try_class , { bar: :Integer})
-      ::Parfait::CallableMethod.new( @space.get_class_by_name(for_class).instance_type , :foo , args,empty_frame)
+      ::Parfait::CallableMethod.new( @space.get_type_by_class_name(for_class) , :foo , args,empty_frame)
     end
     def add_foo_to( clazz = :Try )
       foo = foo_method( clazz )
-      assert_equal foo , @space.get_class_by_name(clazz).instance_type.add_method(foo)
+      assert_equal foo , @space.get_type_by_class_name(clazz).add_method(foo)
       foo
     end
     def object_type
-      @space.get_class_by_name(:Object).instance_type
+      @space.get_type_by_class_name(:Object)
     end
     def test_new_methods
       assert_equal Parfait::List , @try_type.method_names.class
@@ -59,7 +59,7 @@ module Parfait
     end
     def test_get_instance
       foo = foo_method :Object
-      type = @space.get_class_by_name(:Object).instance_type
+      type = @space.get_type_by_class_name(:Object)
       type.add_method(foo)
       assert_equal :foo , type.get_method(:foo).name
     end

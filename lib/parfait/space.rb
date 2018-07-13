@@ -113,6 +113,11 @@ module Parfait
       object.instance_type.get_method :__init__
     end
 
+    # get the current instance_typ of the class with the given name
+    def get_type_by_class_name(name)
+      get_class_by_name(name).instance_type
+    end
+
     # get a class by name (symbol)
     # return nili if no such class. Use bang version if create should be implicit
     def get_class_by_name( name )
@@ -137,7 +142,7 @@ module Parfait
       raise "create_class #{name.class}" unless name.is_a? Symbol
       superclass = :Object unless superclass
       raise "create_class #{superclass.class}" unless superclass.is_a? Symbol
-      type = get_class_by_name(superclass).instance_type
+      type = get_type_by_class_name(superclass)
       c = Class.new(name , superclass , type )
       @classes[name] = c
     end

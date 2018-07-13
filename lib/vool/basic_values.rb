@@ -14,7 +14,7 @@ module Vool
       return Mom::SlotDefinition.new(Mom::IntegerConstant.new(@value) , [])
     end
     def ct_type
-      Parfait.object_space.get_class_by_name(:Integer).instance_type
+      Parfait.object_space.get_type_by_class_name(:Integer)
     end
     def to_s
       value.to_s
@@ -33,7 +33,7 @@ module Vool
   end
   class TrueConstant < Constant
     def ct_type
-      Parfait.object_space.get_class_by_name(:True).instance_type
+      Parfait.object_space.get_type_by_class_name(:True)
     end
     def slot_definition(compiler)
       return Mom::SlotDefinition.new(Parfait.object_space.true_object , [])
@@ -44,7 +44,7 @@ module Vool
   end
   class FalseConstant < Constant
     def ct_type
-      Parfait.object_space.get_class_by_name(:False).instance_type
+      Parfait.object_space.get_type_by_class_name(:False)
     end
     def slot_definition(compiler)
       return Mom::SlotDefinition.new(Parfait.object_space.false_object , [])
@@ -55,7 +55,7 @@ module Vool
   end
   class NilConstant < Constant
     def ct_type
-      Parfait.object_space.get_class_by_name(:Nil).instance_type
+      Parfait.object_space.get_type_by_class_name(:Nil)
     end
     def slot_definition(compiler)
       return Mom::SlotDefinition.new(Parfait.object_space.nil_object , [])
@@ -94,7 +94,7 @@ module Vool
       return Mom::SlotDefinition.new(Mom::StringConstant.new(@value),[])
     end
     def ct_type
-      Parfait.object_space.get_class_by_name(:Word).instance_type
+      Parfait.object_space.get_type_by_class_name(:Word)
     end
     def to_s(depth = 0)
       "'#{@value}'"
@@ -102,7 +102,7 @@ module Vool
   end
   class SymbolConstant < StringConstant
     def ct_type
-      Parfait.object_space.get_class_by_name(:Word).instance_type
+      Parfait.object_space.get_type_by_class_name(:Word)
     end
   end
 end
