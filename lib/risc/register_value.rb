@@ -15,6 +15,47 @@ module Risc
       @value = value
     end
 
+    # using the registers type, resolve the slot to an index
+    # Using the index and the register, add a SlotToReg to the instruction
+    def resolve_and_add(slot , instruction , compiler)
+      index = resolve_index( slot )
+      new_left = get_new_left( slot , compiler )
+      instruction << Risc::SlotToReg.new( "SlotLoad #{type}[#{slot}]" , @symbol ,index, new_left)
+      new_left
+    end
+
+    # resolve the given slot name (instance variable name) to an index using the type
+    # RegisterValue has the current type, so we just look up the index in the type
+    def resolve_index(slot)
+      #puts "TYPE #{type} obj:#{object} var:#{slot} comp:#{compiler}"
+      type = Parfait.object_space.get_type_by_class_name(@type)
+      index = type.variable_index(slot)
+      raise "Index not found for #{slot} in #{type} of type #{@type}" unless index
+      return index
+    end
+
+    # when following variables in resolve_and_add, get a new RegisterValue
+    # that represents the new value.
+    # Ie in "normal case" a the same register, with the type of the slot
+    #  (the not normal case, the first reduction, uses a new register, as we don't
+    #   overwrite the message)
+    # We get the type with resolve_new_type
+    def get_new_left(slot, compiler)
+      new_type = resolve_new_type(slot , compiler)
+      if( @symbol == :r0 )
+        new_left = compiler.use_reg( new_type )
+      else
+        new_left = RegisterValue.new( @symbol , new_type)
+      end
+      new_left
+    end
+
+    # resolve the type of the slot, by inferring from it's name
+    # Currently this is implemented in Risc.resolve_type , but code shoudl be moved here
+    def resolve_new_type(slot, compiler)
+      Risc.resolve_type(slot , compiler)
+    end
+
     def to_s
       s = "#{symbol}:#{type}"
       s += ":#{value}" if value
