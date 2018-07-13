@@ -180,17 +180,13 @@ module Risc
     object = object.type if object.is_a?(RegisterValue)
     case object
     when :name
-      type = Parfait.object_space.get_class_by_name( :Word ).instance_type
-    when :frame
-      type = compiler.method.frame_type
+      type = Parfait.object_space.get_type_by_class_name( :Word )
+    when :frame , :arguments , :receiver
+      type = compiler.resolve_type(object)
     when :message , :next_message , :caller
-      type = Parfait.object_space.get_class_by_name(:Message).instance_type
-    when :arguments
-      type = compiler.method.arguments_type
-    when :receiver
-      type = compiler.method.self_type
+      type = Parfait.object_space.get_type_by_class_name(:Message)
     when Parfait::Object
-      type = Parfait.object_space.get_class_by_name( object.class.name.split("::").last.to_sym).instance_type
+      type = Parfait.object_space.get_type_by_class_name( object.class.name.split("::").last.to_sym)
     when Symbol
       object = object.to_s.camelise.to_sym
       clazz = Parfait.object_space.get_class_by_name(object)
@@ -211,6 +207,7 @@ module Risc
     return variable_name if variable_name.is_a?(Integer) or variable_name.is_a?(RegisterValue)
     type = compiler.resolve_type( object) if compiler
     type = resolve_type(object , compiler) unless type
+    #puts "TYPE #{type} obj:#{object} var:#{variable_name} comp:#{compiler}"
     index = type.variable_index(variable_name)
     raise "Index not found for #{variable_name} in #{object} of type #{type}" unless index
     return index
