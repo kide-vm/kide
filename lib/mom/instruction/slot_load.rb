@@ -58,7 +58,7 @@ module Mom
     end
 
     def sym_to_risc(compiler , const)
-      left_slots = @left.slots
+      left_slots = @left.slots.dup
       raise "Not Message #{object}" unless @left.known_object == :message
       left = Risc.message_reg
       slot = left_slots.shift

@@ -45,37 +45,53 @@ module Mom
         "unknown"
       end
     end
-    def to_register(compiler, instruction)
+    def to_register(compiler, source)
       type = known_object.respond_to?(:ct_type) ? known_object.ct_type : :Object
       right = compiler.use_reg( type )
       case known_object
       when Constant
         parfait = known_object.to_parfait(compiler)
-        const  = Risc.load_constant(instruction, parfait , right)
+        const  = Risc.load_constant(source, parfait , right)
         raise "Can't have slots into Constants" if slots.length > 0
       when Parfait::Object , Risc::Label
-        const  = Risc.load_constant(instruction, known_object , right)
+        const  = Risc.load_constant(source, known_object , right)
         if slots.length > 0
           # desctructively replace the existing value to be loaded if more slots
           index = Risc.resolve_to_index(known_object , slots[0] ,compiler)
-          const << Risc::SlotToReg.new( instruction , right ,index, right)
+          const << Risc::SlotToReg.new( source , right ,index, right)
         end
       when Symbol
-        const = Risc::SlotToReg.new( instruction , Risc.resolve_to_register(known_object) ,
-                              Risc.resolve_to_index(:message , slots[0]), right)
+        return sym_to_risc(compiler , source)
       else
         raise "We have a #{self} #{known_object}"
       end
       if slots.length > 1
         # desctructively replace the existing value to be loaded if more slots
         index = Risc.resolve_to_index(slots[0] , slots[1] ,compiler)
-        const << Risc::SlotToReg.new( instruction , right ,index, right)
+        const << Risc::SlotToReg.new( source , right ,index, right)
         if slots.length > 2
           raise "3 slots only for type #{slots}" unless slots[2] == :type
-          const << Risc::SlotToReg.new( instruction , right , Parfait::TYPE_INDEX, right)
+          const << Risc::SlotToReg.new( source , right , Parfait::TYPE_INDEX, right)
         end
       end
       const
     end
+
+    # resolve the slots one by one to slot_to_reg instructions using the
+    # type information inferred from their names / type hierachy
+    def sym_to_risc(compiler , source)
+      #label just to collect the instructions
+      # (they should be added to the compiler/builder anyway)
+      instructions = Risc.label( "" , "tmp")
+      slots = @slots.dup
+      raise "Not Message #{object}" unless @known_object == :message
+      left = Risc.message_reg
+      left = left.resolve_and_add( slots.shift , instructions , compiler)
+      while( !slots.empty? )
+        left = left.resolve_and_add( slots.shift , instructions , compiler)
+      end
+      return instructions.next
+    end
+
   end
 end
