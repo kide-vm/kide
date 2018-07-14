@@ -72,5 +72,11 @@ module Parfait
       type = @mess.get_type
       assert_equal type , @mess.get_internal_word(0)
     end
+    def test_to_s
+      assert @type.to_s.include?(@type.object_class.name.to_s)
+    end
+    def test_class_name
+      assert_equal :Message , @type.class_name
+    end
   end
 end

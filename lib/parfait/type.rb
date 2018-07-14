@@ -63,8 +63,12 @@ module Parfait
       end
     end
 
+    def class_name
+      @object_class.name
+    end
+
     def to_s
-      "#{@object_class.name}-#{@names.inspect}"
+      "#{class_name}-#{@names.inspect}"
     end
 
     def method_names
