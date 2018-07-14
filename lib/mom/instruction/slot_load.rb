@@ -62,35 +62,13 @@ module Mom
       raise "Not Message #{object}" unless @left.known_object == :message
       left = Risc.message_reg
       slot = left_slots.shift
-      left = left.resolve_and_add( slot , const , compiler)
-
-      #left_index = Risc.resolve_to_index(@left.known_object , left_slots.first)
-
-      const << Risc.reg_to_slot(original_source, const.register , left, left_index)
-    end
-
-    def old_sym_to_risc(compiler , const)
-      left = Risc.message_reg
-      left_slots = @left.slots
-      left_index = Risc.resolve_to_index(@left.known_object , left_slots.first)
-      if left_slots.length > 1
-        # swap the existing target (with a new reg) and update the index
-        new_left = compiler.use_reg( :Object )
-        const << Risc::SlotToReg.new( original_source , left ,left_index, new_left)
-        left = new_left
-        left_index = Risc.resolve_to_index(left_slots[0] , left_slots[1] ,compiler)
-        if left_slots.length > 2
-          #same again, once more updating target
-          new_left = compiler.use_reg( :Object )
-          const << Risc::SlotToReg.new( original_source , left ,left_index, new_left)
-          left = new_left
-          left_index = Risc.resolve_to_index(left_slots[1] , left_slots[2] ,compiler)
-        end
-        raise "more slots not implemented #{left_slots}" if left_slots.length > 3
+      while( !left_slots.empty? )
+        left = left.resolve_and_add( slot , const , compiler)
+        slot = left_slots.shift
       end
+      left_index = left.resolve_index( slot )
       const << Risc.reg_to_slot(original_source, const.register , left, left_index)
     end
-
 
   end
 

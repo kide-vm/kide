@@ -20,7 +20,7 @@ module Risc
     def resolve_and_add(slot , instruction , compiler)
       index = resolve_index( slot )
       new_left = get_new_left( slot , compiler )
-      instruction << Risc::SlotToReg.new( "SlotLoad #{type}[#{slot}]" , @symbol ,index, new_left)
+      instruction << Risc::SlotToReg.new( "SlotLoad #{type}[#{slot}]" , self ,index, new_left)
       new_left
     end
 
@@ -43,9 +43,9 @@ module Risc
     def get_new_left(slot, compiler)
       new_type = resolve_new_type(slot , compiler)
       if( @symbol == :r0 )
-        new_left = compiler.use_reg( new_type )
+        new_left = compiler.use_reg( new_type.class_name )
       else
-        new_left = RegisterValue.new( @symbol , new_type)
+        new_left = RegisterValue.new( @symbol , new_type.class_name)
       end
       new_left
     end
