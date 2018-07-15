@@ -19,17 +19,17 @@ module Risc
     def test_alloc_space
       reg = @builder.space
       assert_equal RegisterValue , reg.class
-      assert_equal :Space , reg.type
+      assert_equal :Space , reg.type.class_name
     end
     def test_next_message
       reg = @builder.next_message
       assert_equal :r1 , reg.symbol
-      assert_equal :Message , reg.type
+      assert_equal :Message , reg.type.class_name
     end
     def test_message
       reg = @builder.message
       assert_equal :r0 , reg.symbol
-      assert_equal :Message , reg.type
+      assert_equal :Message , reg.type.class_name
     end
     def test_returns_built
       r1 = RegisterValue.new(:r1 , :Space)
@@ -95,7 +95,7 @@ module Risc
       op = @builder.build {space - callable_method}
       assert_equal OperatorInstruction , op.class
       assert_equal :- , op.operator
-      assert_equal :Space , op.left.type
+      assert_equal :Space , op.left.type.class_name
     end
   end
   class TestCompilerBuilder < MiniTest::Test

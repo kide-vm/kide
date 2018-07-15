@@ -1,15 +1,23 @@
 module Risc
 
-  # RegisterValue is like a variable name, a storage location. The location is a register off course.
-
+  # RegisterValue is like a variable name, a storage location.
+  # The location is a register off course.
+  # The type is always known, and sometimes the value too
+  #
+  # When participating in the builder dsl, a builder may be set to get the
+  # results of dsl operations (like <<) back to the builder
   class RegisterValue
 
     attr_reader :symbol , :type , :value
 
     attr_accessor :builder
 
+    # The first arg is a symbol :r0 - :r12
+    # Second arg is the type, which may be given as the symbol of the class name
+    # (internally we store the actual type instance, resolving any symbols)
     def initialize( reg , type , value = nil)
       raise "not reg #{reg}" unless self.class.look_like_reg( reg )
+      type = Parfait.object_space.get_type_by_class_name(type) if type.is_a?(Symbol)
       @type = type
       @symbol = reg
       @value = value
@@ -28,7 +36,6 @@ module Risc
     # RegisterValue has the current type, so we just look up the index in the type
     def resolve_index(slot)
       #puts "TYPE #{type} obj:#{object} var:#{slot} comp:#{compiler}"
-      type = Parfait.object_space.get_type_by_class_name(@type)
       index = type.variable_index(slot)
       raise "Index not found for #{slot} in #{type} of type #{@type}" unless index
       return index
@@ -43,9 +50,9 @@ module Risc
     def get_new_left(slot, compiler)
       new_type = resolve_new_type(slot , compiler)
       if( @symbol == :r0 )
-        new_left = compiler.use_reg( new_type.class_name )
+        new_left = compiler.use_reg( new_type )
       else
-        new_left = RegisterValue.new( @symbol , new_type.class_name)
+        new_left = RegisterValue.new( @symbol , new_type)
       end
       new_left
     end
@@ -53,7 +60,18 @@ module Risc
     # resolve the type of the slot, by inferring from it's name
     # Currently this is implemented in Risc.resolve_type , but code shoudl be moved here
     def resolve_new_type(slot, compiler)
-      Risc.resolve_type(slot , compiler)
+      case slot
+      when :frame , :arguments , :receiver
+        type = compiler.resolve_type(slot)
+      when :name
+        type = Parfait.object_space.get_type_by_class_name( :Word )
+      when Symbol
+        type = @type.type_for(slot)
+        raise "Not found object #{slot}: in #{@type}" unless type
+      else
+        raise "Not implemented object #{slot}:#{slot.class}"
+      end
+      return type
     end
 
     def to_s
@@ -145,7 +163,7 @@ module Risc
     # itself (the slot) and the register given
     def <<( reg )
       raise "not reg #{reg}" unless reg.is_a?(RegisterValue)
-      reg_to_slot = Risc.reg_to_slot("#{reg.type} -> #{register.type}[#{index}]" , reg , register, index)
+      reg_to_slot = Risc.reg_to_slot("#{reg.type.class_name} -> #{register.type.class_name}[#{index}]" , reg , register, index)
       builder.add_code(reg_to_slot) if builder
       reg_to_slot
     end

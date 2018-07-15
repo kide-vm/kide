@@ -26,7 +26,7 @@ module Risc
       assert_raises {@r0.resolve_index(:something)}
     end
     def test_revolve_new_type_0
-      assert_equal "Message_Type",  @r0.resolve_new_type(:caller , @compiler).name
+      assert_equal :Message,  @r0.resolve_new_type(:caller , @compiler)
     end
     def test_revolve_new_type_1
       # returned by FakeCompiler , not real
@@ -39,10 +39,10 @@ module Risc
       assert_equal :r1 , @r0.get_new_left(:caller , @compiler).symbol
     end
     def test_get_new_left_1
-      assert_equal RegisterValue , @r1.get_new_left(:caller , @compiler).class
+      assert_equal RegisterValue , @r0.get_new_left(:caller , @compiler).class
     end
     def test_get_new_left_1_reg
-      assert_equal :r1 , @r1.get_new_left(:caller , @compiler).symbol
+      assert_equal :r1 , @r0.get_new_left(:caller , @compiler).symbol
     end
   end
 end
