@@ -15,7 +15,7 @@ module Risc
           # reduce me to me[index]
           builder.add_slot_to_reg( source , me , index , me)
           # and put it back into the return value
-          builder.add_reg_to_slot( source , me , :message , :return_value)
+          builder.add_reg_to_slot( source , me , Risc.message_reg , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
@@ -67,7 +67,7 @@ module Risc
           ret_tmp = compiler.use_reg(:Label)
           builder.build do
             add_load_constant("__init__ load return", exit_label , ret_tmp)
-            add_reg_to_slot("__init__ store return", ret_tmp , :message , :return_address)
+            add_reg_to_slot("__init__ store return", ret_tmp , Risc.message_reg , :return_address)
             add_function_call( "__init__ issue call" ,  Parfait.object_space.get_main)
             add_code exit_label
           end
@@ -80,8 +80,8 @@ module Risc
         # Used by exit and __init__ (so it doesn't have to call it)
         def exit_sequence(builder)
           save_message( builder )
-          builder.add_slot_to_reg "get return" , :message , :return_value , :message
-          builder.reduce_int( "reduce return" , :message)
+          builder.add_slot_to_reg "get return" , Risc.message_reg , :return_value , Risc.message_reg
+          builder.reduce_int( "reduce return" , Risc.message_reg)
           builder.add_code Syscall.new("emit_syscall(exit)", :exit )
         end
 
@@ -120,7 +120,7 @@ module Risc
           int = builder.compiler.use_reg(:Integer)
           builder.add_new_int(source , return_tmp , int )
           # save the return value into the message
-          builder.add_code Risc.reg_to_slot( source , int , :message , :return_value )
+          builder.add_code Risc.reg_to_slot( source , int , Risc.message_reg , :return_value )
         end
 
       end

@@ -36,7 +36,7 @@ module Mom
       return_label = Risc.label(self, "continue_#{object_id}")
       save_return =  SlotLoad.new([:message,:next_message,:return_address],[return_label],self)
       moves = save_return.to_risc(compiler)
-      moves << Risc.slot_to_reg(self, :message , :next_message , Risc.message_reg)
+      moves << Risc.slot_to_reg(self, Risc.message_reg , :next_message , Risc.message_reg)
       moves <<  Risc.load_constant( self , @cache_entry , reg )
       method_index = Risc.resolve_to_index(:cache_entry , :cached_method)
       moves << Risc::SlotToReg.new( self , reg ,method_index, reg)

@@ -15,7 +15,7 @@ module Risc
           builder.add_load_data( source , 2 , two )
           builder.add_code Risc.op( source , :>> , me , two)
           builder.add_new_int(source,me , two)
-          builder.add_reg_to_slot( source , two , :message , :return_value)
+          builder.add_reg_to_slot( source , two , Risc.message_reg , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
@@ -52,7 +52,7 @@ module Risc
           builder.add_code false_label
           builder.add_load_constant("#{operator} new int", Parfait.object_space.false_object , other)
           builder.add_code merge_label
-          builder.add_reg_to_slot( "#{operator} save ret" , other , :message , :return_value)
+          builder.add_reg_to_slot( "#{operator} save ret" , other , Risc.message_reg , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
@@ -69,7 +69,7 @@ module Risc
           builder.reduce_int( op_sym.to_s + " fix arg", other )
           builder.add_code Risc.op( op_sym.to_s + " operator", op_sym , me , other)
           builder.add_new_int(op_sym.to_s + " new int", me , other)
-          builder.add_reg_to_slot( op_sym.to_s + "save ret" , other , :message , :return_value)
+          builder.add_reg_to_slot( op_sym.to_s + "save ret" , other , Risc.message_reg , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
@@ -131,7 +131,7 @@ module Risc
           builder.add_code Risc.op( s , :+ , q , tmp )
 
           builder.add_new_int(s,q , tmp)
-          builder.add_reg_to_slot( s , tmp , :message , :return_value)
+          builder.add_reg_to_slot( s , tmp , Risc.message_reg , :return_value)
 
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
