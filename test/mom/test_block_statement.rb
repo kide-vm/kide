@@ -39,7 +39,7 @@ module Vool
       assert_equal 1, @block.frame_type.variable_index(:local)
     end
   end
-  class TestBlockMethod < MiniTest::Test
+  class TestBlockMethod #< MiniTest::Test
     include MomCompile
     def setup
       Parfait.boot!
