@@ -64,8 +64,17 @@ module Parfait
       assert_equal 55 , @mess.get_internal_word(message_ind)
     end
 
-    def test_instance_type
-      assert_equal 1 , @mess.get_type.variable_index(:next_message)
+    def test_variable_index
+      assert_equal 1 , @type.variable_index(:next_message)
+    end
+    def test_name_at
+      assert_equal :next_message , @type.name_at(1)
+    end
+    def test_type_at
+      assert_equal :Message , @type.type_at(1)
+    end
+    def test_type_for
+      assert_equal :Message , @type.type_for(:next_message)
     end
 
     def test_remove_me

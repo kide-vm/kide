@@ -205,6 +205,12 @@ module Parfait
       @types.get(index)
     end
 
+    def type_for( name )
+      index = variable_index(name)
+      return nil unless index
+      type_at(index)
+    end
+
     def inspect
       "Type[#{names.inspect}]"
     end
