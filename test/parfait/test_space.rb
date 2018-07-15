@@ -28,6 +28,9 @@ module Parfait
     def test_get_type_by_class_name
       assert_equal Parfait::Type , Parfait.object_space.get_type_by_class_name(:Space).class
     end
+    def test_get_type_by_class_name_nil
+      assert_nil Parfait.object_space.get_type_by_class_name(:Spac)
+    end
     def test_get_integer_instance
       int = @space.get_integer
       assert_equal Integer , int.class

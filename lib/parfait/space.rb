@@ -115,7 +115,9 @@ module Parfait
 
     # get the current instance_typ of the class with the given name
     def get_type_by_class_name(name)
-      get_class_by_name(name).instance_type
+      clazz = get_class_by_name(name)
+      return nil unless clazz
+      clazz.instance_type
     end
 
     # get a class by name (symbol)
