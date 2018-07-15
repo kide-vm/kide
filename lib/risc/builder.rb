@@ -108,7 +108,7 @@ module Risc
     # Load the first argument, assumed to be integer
     def load_int_arg_at( source , at)
       int_arg = compiler.use_reg :Integer
-      add_slot_to_reg(source , :message , :arguments , int_arg )
+      add_slot_to_reg(source , Risc.message_reg , :arguments , int_arg )
       add_slot_to_reg(source , int_arg , at + 1, int_arg ) #1 for type
       return int_arg
     end
@@ -135,8 +135,10 @@ module Risc
     def add_known(name)
       case name
       when :receiver
-        ret = compiler.use_reg compiler.resolve_type(:receiver)
-        add_slot_to_reg(" load self" , :message , :receiver , ret )
+        message = Risc.message_reg
+        ret_type = message.resolve_new_type(:receiver, compiler)
+        ret = compiler.use_reg( ret_type )
+        add_slot_to_reg(" load self" , message , :receiver , ret )
         return ret
       when :space
         space = Parfait.object_space

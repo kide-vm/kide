@@ -7,10 +7,11 @@ module Risc
         def putstring( context)
           compiler = compiler_for(:Word , :putstring ,{})
           builder = compiler.compiler_builder(compiler.source)
-          builder.add_slot_to_reg( "putstring" , :message , :receiver , :new_message )
+          new_message = Risc.message_reg.get_new_left(:receiver , compiler)
+          builder.add_slot_to_reg( "putstring" , Risc.message_reg , :receiver , new_message )
           index = Parfait::Word.get_length_index
-          reg = RegisterValue.new(:r2 , :Integer)
-          builder.add_slot_to_reg( "putstring" , :new_message , index , reg )
+          index_reg = RegisterValue.new(:r2 , :Integer)
+          builder.add_slot_to_reg( "putstring" , new_message , index , index_reg )
           Risc::Builtin::Object.emit_syscall( builder , :putstring )
           compiler.add_mom( Mom::ReturnSequence.new)
           compiler
@@ -28,7 +29,7 @@ module Risc
           builder.add_byte_to_reg( source , me , index , me)
           builder.add_new_int(source, me , index)
           # and put it back into the return value
-          builder.add_reg_to_slot( source , index , :message , :return_value)
+          builder.add_reg_to_slot( source , index , Risc.message_reg , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
@@ -46,7 +47,7 @@ module Risc
           builder.reduce_int( source + " fix arg", index )
           builder.add_reg_to_byte( source , value , me , index)
           value = builder.load_int_arg_at(source , 1 )
-          builder.add_reg_to_slot( source , value , :message , :return_value)
+          builder.add_reg_to_slot( source , value , Risc.message_reg , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end

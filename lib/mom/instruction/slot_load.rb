@@ -66,8 +66,7 @@ module Mom
         left = left.resolve_and_add( slot , const , compiler)
         slot = left_slots.shift
       end
-      left_index = left.resolve_index( slot )
-      const << Risc.reg_to_slot(original_source, const.register , left, left_index)
+      const << Risc.reg_to_slot(original_source, const.register , left, slot)
     end
 
   end

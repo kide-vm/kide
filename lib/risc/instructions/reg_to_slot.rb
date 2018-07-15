@@ -14,13 +14,11 @@ module Risc
   end
 
   # Produce a RegToSlot instruction.
-  # From and to are registers or symbols that can be transformed to a register by resolve_to_register
-  #     (which are precisely the symbols :message or :new_message. or a register)
-  # index resolves with resolve_to_index.
-  def self.reg_to_slot( source , from_reg , to , index )
-    from = resolve_to_register from_reg
-    index = resolve_to_index( to , index)
-    to = resolve_to_register to
+  # From and to are registers
+  # index may be a Symbol in which case is resolves with resolve_index.
+  def self.reg_to_slot( source , from , to , index )
+    raise "Not register #{to}" unless RegisterValue.look_like_reg(to)
+    index = to.resolve_index(index) if index.is_a?(Symbol)
     RegToSlot.new( source, from , to , index)
   end
 

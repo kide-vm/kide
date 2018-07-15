@@ -14,12 +14,11 @@ module Risc
   end
 
   # Produce a SlotToReg instruction.
-  # Array and to are registers or symbols that can be transformed to a register by resolve_to_register
-  # index resolves with resolve_to_index.
+  # Array and to are registers
+  # index may be a Symbol in which case is resolves with resolve_index.
   def self.slot_to_reg( source , array , index , to)
-    index = resolve_to_index( array , index)
-    array = resolve_to_register( array )
-    to = resolve_to_register( to )
+    raise "Not register #{array}" unless RegisterValue.look_like_reg(array)
+    index = array.resolve_index(index) if index.is_a?(Symbol)
     SlotToReg.new( source , array , index , to)
   end
 end
