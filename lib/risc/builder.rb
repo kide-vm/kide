@@ -170,22 +170,6 @@ module Risc
 
   end
 
-  # if a symbol is given, it may be the message or the new_message.
-  # These are mapped to register references.
-  # The valid symbols (:message,:new_message) are the same that are returned
-  # by the slots. All data (at any time) is in one of the instance variables of these two
-  # objects. Risc defines module methods with the same names (and _reg)
-  def self.resolve_to_register( reference )
-    return reference if reference.is_a?(RegisterValue)
-    case reference
-    when :message
-      return message_reg
-    when :new_message
-      return new_message_reg
-    else
-      raise "not recognized register reference #{reference} #{reference.class}"
-    end
-  end
 
   class CodeBuilder < Builder
 
