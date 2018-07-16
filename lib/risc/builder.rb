@@ -183,8 +183,12 @@ module Risc
     case object
     when :name
       type = Parfait.object_space.get_type_by_class_name( :Word )
-    when :frame , :arguments , :receiver
-      type = compiler.resolve_type(object)
+    when :frame
+      type = compiler.frame_type
+    when :arguments
+      type = compiler.arg_type
+    when :receiver
+      type = compiler.receiver_type
     when :message , :next_message , :caller
       type = Parfait.object_space.get_type_by_class_name(:Message)
     when Parfait::Object
@@ -207,7 +211,14 @@ module Risc
   # Third arg, compiler, is only needed to resolve receiver/arguments/frame
   def self.resolve_to_index(object , variable_name ,compiler = nil)
     return variable_name if variable_name.is_a?(Integer) or variable_name.is_a?(RegisterValue)
-    type = compiler.resolve_type( object) if compiler
+    case object
+    when :frame
+      type = compiler.frame_type
+    when :arguments
+      type = compiler.arg_type
+    when :receiver
+      type = compiler.receiver_type
+    end if compiler
     type = resolve_type(object , compiler) unless type
     #puts "TYPE #{type} obj:#{object} var:#{variable_name} comp:#{compiler}"
     index = type.variable_index(variable_name)

@@ -21,7 +21,7 @@ module Risc
     # or then the methods arg or frame
     def slot_type_for(name)
       if @block.arguments_type.variable_index(name)
-        slot_def = [ :arguments]
+        slot_def = [:arguments]
       elsif @block.frame_type.variable_index(name)
         slot_def = [:frame]
       elsif @method.arguments_type.variable_index(name)
@@ -34,19 +34,17 @@ module Risc
       slot_def << name
     end
 
-    # resolve a symbol to a type. Allowed symbols are :frame , :receiver and arguments
-    # which return the respective types, otherwise nil
-    def resolve_type( name )
-      case name
-      when :frame
-        return @block.frame_type
-      when :arguments
-        return @block.arguments_type
-      when :receiver
-        return @block.self_type
-      else
-        return nil
-      end
+    # return the frame type, ie the blocks frame type
+    def frame_type
+      @block.frame_type
+    end
+    # return the frame type, ie the blocks arguments type
+    def arg_type
+      @block.arguments_type
+    end
+    # return the frame type, ie the blocks self_type
+    def receiver_type
+      @block.self_type
     end
 
   end

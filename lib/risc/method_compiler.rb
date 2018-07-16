@@ -74,19 +74,18 @@ module Risc
       ret
     end
 
-    # resolve a symbol to a type. Allowed symbols are :frame , :receiver and arguments
-    # which return the respective types, otherwise nil
-    def resolve_type( name )
-      case name
-      when :frame
-        return @method.frame_type
-      when :arguments
-        return @method.arguments_type
-      when :receiver
-        return @method.self_type
-      else
-        return nil
-      end
+
+    # return the frame type, ie the method frame type
+    def frame_type
+      @method.frame_type
+    end
+    # return the frame type, ie the method arguments type
+    def arg_type
+      @method.arguments_type
+    end
+    # return the frame type, ie the method self_type
+    def receiver_type
+      @method.self_type
     end
 
     # convert the given mom instruction to_risc and then add it (see add_code)

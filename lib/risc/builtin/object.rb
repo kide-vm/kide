@@ -63,7 +63,7 @@ module Risc
             message[:receiver] << space
           end
 
-          exit_label = Risc.label(compiler.source , "#{compiler.resolve_type(:receiver).object_class.name}.#{compiler.source.name}" )
+          exit_label = Risc.label(compiler.source , "#{compiler.receiver_type.object_class.name}.#{compiler.source.name}" )
           ret_tmp = compiler.use_reg(:Label)
           builder.build do
             add_load_constant("__init__ load return", exit_label , ret_tmp)

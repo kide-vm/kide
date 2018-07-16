@@ -69,8 +69,12 @@ module Risc
     # scope related slots are resolved by the compiler by methood/block
     def slot_type( slot , type)
       case slot
-      when :frame , :arguments , :receiver
-        new_type = self.resolve_type(slot)
+      when :frame
+        new_type = self.frame_type
+      when :arguments
+        new_type = self.arg_type
+      when :receiver
+        new_type = self.receiver_type
       when Symbol
         new_type = type.type_for(slot)
         raise "Not found object #{slot}: in #{type}" unless new_type

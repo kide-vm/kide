@@ -70,7 +70,7 @@ module Vool
       @my_type = type
     end
     def slot_definition(compiler)
-      @my_type = compiler.resolve_type(:receiver)
+      @my_type = compiler.receiver_type
       Mom::SlotDefinition.new(:message , [:receiver])
     end
     def ct_type
