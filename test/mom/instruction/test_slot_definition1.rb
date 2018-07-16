@@ -5,7 +5,7 @@ module Mom
   class TestSlotDefinitionConstant < MiniTest::Test
     def setup
       Parfait.boot!
-      @compiler = CompilerMock.new
+      @compiler = Risc::FakeCompiler.new
       @definition = SlotDefinition.new(StringConstant.new("hi") , [])
       @instruction = @definition.to_register(@compiler , InstructionMock.new)
     end

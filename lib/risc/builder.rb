@@ -136,7 +136,7 @@ module Risc
       case name
       when :receiver
         message = Risc.message_reg
-        ret_type = message.resolve_new_type(:receiver, compiler)
+        ret_type = compiler.slot_type(:receiver, message.type)
         ret = compiler.use_reg( ret_type )
         add_slot_to_reg(" load self" , message , :receiver , ret )
         return ret

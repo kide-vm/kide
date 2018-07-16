@@ -11,11 +11,11 @@ module Mom
     end
     def test_fail_on_right
       @load = SlotLoad.new( [:message, :caller] , [:receiver,:type] )
-      assert_raises {@load.to_risc(CompilerMock.new)}
+      assert_raises {@load.to_risc(Risc::FakeCompiler.new)}
     end
     def test_fail_on_left_long
       @load = SlotLoad.new( [:message, :caller , :type] , [:receiver,:type] )
-      assert_raises {@load.to_risc(CompilerMock.new)}
+      assert_raises {@load.to_risc(Risc::FakeCompiler.new)}
     end
   end
 end

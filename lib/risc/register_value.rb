@@ -22,6 +22,7 @@ module Risc
     def initialize( reg , type , extra = {})
       raise "Not Hash #{extra}"  unless extra.is_a?(Hash)
       raise "not reg #{reg}" unless self.class.look_like_reg( reg )
+      raise "No type " unless type
       type = Parfait.object_space.get_type_by_class_name(type) if type.is_a?(Symbol)
       @type = type
       @symbol = reg
@@ -53,29 +54,13 @@ module Risc
     #   overwrite the message)
     # We get the type with resolve_new_type
     def get_new_left(slot, compiler)
-      new_type = resolve_new_type(slot , compiler)
+      new_type = compiler.slot_type(slot , type)
       if( @symbol == :r0 )
         new_left = compiler.use_reg( new_type )
       else
         new_left = RegisterValue.new( @symbol , new_type)
       end
       new_left
-    end
-
-    # resolve the type of the slot, by inferring from it's name, using the type
-    # scope related slots are resolved by the compiler
-    def resolve_new_type(slot, compiler)
-      case slot
-      when :frame , :arguments , :receiver
-        type = compiler.resolve_type(slot)
-      when Symbol
-        type = @type.type_for(slot)
-        raise "Not found object #{slot}: in #{@type}" unless type
-      else
-        raise "Not implemented object #{slot}:#{slot.class}"
-      end
-      #puts "RESOLVE in #{@type.class_name} #{slot}->#{type}"
-      return type
     end
 
     def to_s

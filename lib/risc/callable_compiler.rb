@@ -65,6 +65,22 @@ module Risc
       return reg
     end
 
+    # resolve the type of the slot, by inferring from it's name, using the type
+    # scope related slots are resolved by the compiler by methood/block
+    def slot_type( slot , type)
+      case slot
+      when :frame , :arguments , :receiver
+        new_type = self.resolve_type(slot)
+      when Symbol
+        new_type = type.type_for(slot)
+        raise "Not found object #{slot}: in #{type}" unless new_type
+      else
+        raise "Not implemented object #{slot}:#{slot.class}"
+      end
+      #puts "RESOLVE in #{@type.class_name} #{slot}->#{type}"
+      return new_type
+    end
+
     def copy( reg , source )
       copied = use_reg reg.type
       add_code Register.transfer( source , reg , copied )

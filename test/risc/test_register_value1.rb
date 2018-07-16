@@ -1,15 +1,6 @@
 require_relative "../helper"
 
 module Risc
-  class FakeCompiler
-    def resolve_type(name)
-      Parfait.object_space.types.values.first
-    end
-    def use_reg(type)
-      RegisterValue.new(:r1 , type)
-    end
-  end
-
   class TestRegisterValue < MiniTest::Test
 
     def setup
@@ -24,13 +15,6 @@ module Risc
     end
     def test_resolves_index_fail
       assert_raises {@r0.resolve_index(:something)}
-    end
-    def test_revolve_new_type_0
-      assert_equal :Message,  @r0.resolve_new_type(:caller , @compiler)
-    end
-    def test_revolve_new_type_1
-      # returned by FakeCompiler , not real
-      assert_equal "BinaryCode_Type", @r1.resolve_new_type(:receiver , @compiler).name
     end
     def test_get_new_left_0
       assert_equal RegisterValue , @r0.get_new_left(:caller , @compiler).class
