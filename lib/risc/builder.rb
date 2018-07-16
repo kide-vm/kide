@@ -39,12 +39,26 @@ module Risc
         reg = Risc.label( @source , "#{name}_#{object_id}")
         @source_used = true
       else
-        type = Risc.resolve_type(name , @compiler) #checking
+        type = infer_type(name )
         reg = @compiler.use_reg( type.object_class.name )
         reg.builder = self
       end
       @names[name] = reg
       reg
+    end
+
+    # infer the type from a symbol. In the simplest case the sybbol is the class name
+    # But in building sometimes variations are needed, so next_message or caller work
+    # too (and return Message)
+    # An error is raised if the symbol/object can not be inferred
+    def infer_type( name )
+      name = :word if name == :name
+      name = :message if name == :next_message
+      name = :message if name == :caller
+      sym = name.to_s.camelise.to_sym
+      clazz = Parfait.object_space.get_class_by_name(sym)
+      raise "Not implemented/found object #{name}:#{sym}" unless clazz
+      return clazz.instance_type
     end
 
     def if_zero( label )
@@ -171,59 +185,6 @@ module Risc
     else
       raise "not recognized register reference #{reference} #{reference.class}"
     end
-  end
-
-  # resolve a symbol to a type. In the simplest case the sybbol is the class name
-  # But in building sometimes variations are needed, so next_message or caller work
-  # too (and return Message)
-  # Also objects work, in which case the instance_type of their class is returned
-  # An error is raised if the symbol/object can not be resolved
-  def self.resolve_type( object , compiler )
-    object = object.type if object.is_a?(RegisterValue)
-    case object
-    when :name
-      type = Parfait.object_space.get_type_by_class_name( :Word )
-    when :frame
-      type = compiler.frame_type
-    when :arguments
-      type = compiler.arg_type
-    when :receiver
-      type = compiler.receiver_type
-    when :message , :next_message , :caller
-      type = Parfait.object_space.get_type_by_class_name(:Message)
-    when Parfait::Object
-      type = Parfait.object_space.get_type_by_class_name( object.class.name.split("::").last.to_sym)
-    when Symbol
-      object = object.to_s.camelise.to_sym
-      clazz = Parfait.object_space.get_class_by_name(object)
-      raise "Not implemented/found object #{object}:#{object.class}" unless clazz
-      type = clazz.instance_type
-    else
-      raise "Not implemented/found object #{object}:#{object.class}"
-    end
-    return type
-  end
-
-  # The first arg is a class name (possibly lowercase) and the second an instance variable name.
-  # By looking up the class and the type for that class, we can resolve the instance
-  # variable name to an index.
-  # The class can be mapped to a register, and so we get a memory address (reg+index)
-  # Third arg, compiler, is only needed to resolve receiver/arguments/frame
-  def self.old_resolve_to_index(object , variable_name , compiler)
-    return variable_name if variable_name.is_a?(Integer) or variable_name.is_a?(RegisterValue)
-    case object
-    when :frame
-      type = compiler.frame_type
-    when :arguments
-      type = compiler.arg_type
-    when :receiver
-      type = compiler.receiver_type
-    end if compiler
-    type = resolve_type(object , compiler) unless type
-    #puts "TYPE #{type} obj:#{object} var:#{variable_name} comp:#{compiler}"
-    index = type.variable_index(variable_name)
-    raise "Index not found for #{variable_name} in #{object} of type #{type}" unless index
-    return index
   end
 
   class CodeBuilder < Builder
