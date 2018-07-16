@@ -46,7 +46,13 @@ module Mom
       end
     end
     def to_register(compiler, source)
-      type = known_object.respond_to?(:ct_type) ? known_object.ct_type : :Object
+      if known_object.respond_to?(:ct_type)
+        type = known_object.ct_type
+      elsif(known_object.respond_to?(:get_type))
+        type = known_object.get_type
+      else
+        type = :Object
+      end
       right = compiler.use_reg( type )
       case known_object
       when Constant
@@ -57,8 +63,7 @@ module Mom
         const  = Risc.load_constant(source, known_object , right)
         if slots.length > 0
           # desctructively replace the existing value to be loaded if more slots
-          index = Risc.resolve_to_index(known_object , slots[0] ,compiler)
-          const << Risc::SlotToReg.new( source , right ,index, right)
+          const << Risc.slot_to_reg( source , right ,slots[0], right)
         end
       when Symbol
         return sym_to_risc(compiler , source)

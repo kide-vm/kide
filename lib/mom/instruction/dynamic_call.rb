@@ -32,15 +32,14 @@ module Mom
     # a target (not a label)
     def to_risc(compiler)
       compiler.add_constant( @cache_entry )
-      reg = compiler.use_reg( :Object )
+      entry = compiler.use_reg( :CacheEntry )
       return_label = Risc.label(self, "continue_#{object_id}")
       save_return =  SlotLoad.new([:message,:next_message,:return_address],[return_label],self)
       moves = save_return.to_risc(compiler)
       moves << Risc.slot_to_reg(self, Risc.message_reg , :next_message , Risc.message_reg)
-      moves <<  Risc.load_constant( self , @cache_entry , reg )
-      method_index = Risc.resolve_to_index(:cache_entry , :cached_method)
-      moves << Risc::SlotToReg.new( self , reg ,method_index, reg)
-      moves << Risc::DynamicJump.new(self, reg )
+      moves <<  Risc.load_constant( self , @cache_entry , entry )
+      moves << Risc.slot_to_reg( self , entry ,:cached_method , entry)
+      moves << Risc::DynamicJump.new(self, entry )
       moves << return_label
     end
   end

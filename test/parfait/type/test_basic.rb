@@ -56,14 +56,6 @@ module Parfait
       assert_equal 55 , @mess.receiver
     end
 
-    # not really parfait test, but related and no other place currently
-    def test_reg_index
-      message_ind = Risc.resolve_to_index( :message , :receiver )
-      assert_equal 2 , message_ind
-      @mess.set_receiver( 55)
-      assert_equal 55 , @mess.get_internal_word(message_ind)
-    end
-
     def test_variable_index
       assert_equal 1 , @type.variable_index(:next_message)
     end

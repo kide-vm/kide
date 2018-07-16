@@ -46,10 +46,9 @@ module Mom
       when Symbol
         sym_to_risc(compiler , const)
       when Parfait::CacheEntry
-        left = compiler.use_reg( :Object )
+        left = compiler.use_reg( :CacheEntry )
         const << Risc.load_constant(original_source, @left.known_object , left)
-        left_index = Risc.resolve_to_index(:cache_entry , left_slots.first)
-        const << Risc.reg_to_slot(original_source, const.register , left, left_index)
+        const << Risc.reg_to_slot(original_source, const.register , left, left_slots.first)
       else
         raise "We have left #{@left.known_object}"
       end

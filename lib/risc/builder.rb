@@ -89,10 +89,10 @@ module Risc
       source += "add_new_int "
       space = compiler.use_reg(:Space)
       int = compiler.use_reg(:Integer)
-      space_i = Risc.resolve_to_index(:Space, :next_integer)
+      space_i = space.resolve_index(:next_integer)
       add_load_constant( source + "space" , Parfait.object_space , space  )
       add_slot_to_reg( source + "next_i1" , space , space_i , to)
-      add_slot_to_reg( source + "next_i2" , to , Risc.resolve_to_index(:Integer, :next_integer) , int)
+      add_slot_to_reg( source + "next_i2" , to , int.resolve_index(:next_integer) , int)
       add_reg_to_slot( source + "store link" , int , space , space_i  )
       add_reg_to_slot( source + "store value" , from , to , Parfait::Integer.integer_index)
     end
@@ -209,7 +209,7 @@ module Risc
   # variable name to an index.
   # The class can be mapped to a register, and so we get a memory address (reg+index)
   # Third arg, compiler, is only needed to resolve receiver/arguments/frame
-  def self.resolve_to_index(object , variable_name ,compiler = nil)
+  def self.old_resolve_to_index(object , variable_name , compiler)
     return variable_name if variable_name.is_a?(Integer) or variable_name.is_a?(RegisterValue)
     case object
     when :frame

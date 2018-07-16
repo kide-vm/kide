@@ -22,13 +22,12 @@ module Mom
     def to_risc(compiler)
       return_move = SlotLoad.new( [:message , :caller,:return_value] , [:message , :return_value],self)
       moves = return_move.to_risc(compiler)
-      return_address = compiler.use_reg(:Object)
       compiler.reset_regs
-      caller_index = Risc.resolve_to_index(:message , :caller)
-      return_index = Risc.resolve_to_index(:message , :return_address)
-      moves << Risc::SlotToReg.new(self, Risc.message_reg, return_index , return_address)
-      moves << Risc::SlotToReg.new( self , return_address , Parfait::Integer.integer_index , return_address)
-      moves << Risc::SlotToReg.new(self, Risc.message_reg , caller_index , Risc.message_reg)
+      return_address = compiler.use_reg(:ReturnAddress)
+      message = Risc.message_reg
+      moves << Risc.slot_to_reg(self,message, :return_address , return_address)
+      moves << Risc.slot_to_reg(self,return_address , Parfait::Integer.integer_index , return_address)
+      moves << Risc.slot_to_reg(self,message , :caller , message)
       moves << Risc::FunctionReturn.new(self, return_address)
     end
 
