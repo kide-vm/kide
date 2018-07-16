@@ -8,7 +8,7 @@ module Mom
         return nil
     end
     def use_reg( type )
-      Risc.tmp_reg(type , nil)
+      Risc.tmp_reg(type )
     end
     def reset_regs
 

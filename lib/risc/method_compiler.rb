@@ -122,12 +122,12 @@ module Risc
     end
 
     # require a (temporary) register. code must give this back with release_reg
-    def use_reg( type , value = nil )
+    def use_reg( type , extra = {} )
       raise "Not type #{type.inspect}" unless type.is_a?(Symbol) or type.is_a?(Parfait::Type)
       if @regs.empty?
-        reg = Risc.tmp_reg(type , value)
+        reg = Risc.tmp_reg(type , extra)
       else
-        reg = @regs.last.next_reg_use(type , value)
+        reg = @regs.last.next_reg_use(type , extra)
       end
       @regs << reg
       return reg

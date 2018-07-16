@@ -3,6 +3,7 @@ module Risc
   # RegisterValue is like a variable name, a storage location.
   # The location is a register off course.
   # The type is always known, and sometimes the value too
+  # Or something about the value, like some instances types
   #
   # When participating in the builder dsl, a builder may be set to get the
   # results of dsl operations (like <<) back to the builder
@@ -15,12 +16,16 @@ module Risc
     # The first arg is a symbol :r0 - :r12
     # Second arg is the type, which may be given as the symbol of the class name
     # (internally we store the actual type instance, resolving any symbols)
-    def initialize( reg , type , value = nil)
+    # A third value may give extra information. This is a hash, where keys may
+    # be :value, or :value_XX or :type_XX to indicate value or type information
+    # for an XX instance
+    def initialize( reg , type , extra = {})
+      raise "Not Hash #{extra}"  unless extra.is_a?(Hash)
       raise "not reg #{reg}" unless self.class.look_like_reg( reg )
       type = Parfait.object_space.get_type_by_class_name(type) if type.is_a?(Symbol)
       @type = type
       @symbol = reg
-      @value = value
+      @value = extra
     end
 
     # using the registers type, resolve the slot to an index
@@ -57,20 +62,19 @@ module Risc
       new_left
     end
 
-    # resolve the type of the slot, by inferring from it's name
-    # Currently this is implemented in Risc.resolve_type , but code shoudl be moved here
+    # resolve the type of the slot, by inferring from it's name, using the type
+    # scope related slots are resolved by the compiler
     def resolve_new_type(slot, compiler)
       case slot
       when :frame , :arguments , :receiver
         type = compiler.resolve_type(slot)
-      when :name
-        type = Parfait.object_space.get_type_by_class_name( :Word )
       when Symbol
         type = @type.type_for(slot)
         raise "Not found object #{slot}: in #{@type}" unless type
       else
         raise "Not implemented object #{slot}:#{slot.class}"
       end
+      #puts "RESOLVE in #{@type.class_name} #{slot}->#{type}"
       return type
     end
 
@@ -183,8 +187,8 @@ module Risc
 
   # The first scratch register. There is a next_reg_use to get a next and next.
   # Current thinking is that scratch is schatch between instructions
-  def self.tmp_reg( type , value = nil)
-    RegisterValue.new :r1 , type , value
+  def self.tmp_reg( type , extra = {})
+    RegisterValue.new :r1 , type , extra
   end
 
 end

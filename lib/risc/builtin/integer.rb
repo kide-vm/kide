@@ -11,7 +11,7 @@ module Risc
           builder = compiler.compiler_builder(compiler.source)
           me = builder.add_known( :receiver )
           builder.reduce_int( source , me )
-          two = compiler.use_reg :fixnum , 2
+          two = compiler.use_reg :fixnum , value: 2
           builder.add_load_data( source , 2 , two )
           builder.add_code Risc.op( source , :>> , me , two)
           builder.add_new_int(source,me , two)
@@ -84,7 +84,7 @@ module Risc
           builder.reduce_int( s , me )
           builder.reduce_int( s , tmp )
           builder.reduce_int( s , q )
-          const = compiler.use_reg :fixnum , 1
+          const = compiler.use_reg :fixnum , value: 1
           builder.add_load_data( s , 1 , const )
           # int tmp = self >> 1
           builder.add_code Risc.op( s , :>> , tmp , const)
