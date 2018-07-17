@@ -6,7 +6,7 @@ module Risc
     def resolve_type(name)
       Parfait.object_space.types.values.first
     end
-    def use_reg(type)
+    def use_reg(type , extra = {})
       RegisterValue.new(:r1 , type)
     end
     def reset_regs

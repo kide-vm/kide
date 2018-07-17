@@ -66,7 +66,7 @@ module Risc
     end
 
     # resolve the type of the slot, by inferring from it's name, using the type
-    # scope related slots are resolved by the compiler by methood/block
+    # scope related slots are resolved by the compiler by method/block
     def slot_type( slot , type)
       case slot
       when :frame

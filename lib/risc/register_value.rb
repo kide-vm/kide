@@ -9,7 +9,7 @@ module Risc
   # results of dsl operations (like <<) back to the builder
   class RegisterValue
 
-    attr_reader :symbol , :type , :value
+    attr_reader :symbol , :type , :extra
 
     attr_accessor :builder
 
@@ -20,13 +20,14 @@ module Risc
     # be :value, or :value_XX or :type_XX to indicate value or type information
     # for an XX instance
     def initialize( reg , type , extra = {})
+      extra = {} unless extra
       raise "Not Hash #{extra}"  unless extra.is_a?(Hash)
       raise "not reg #{reg}" unless self.class.look_like_reg( reg )
       raise "No type " unless type
       type = Parfait.object_space.get_type_by_class_name(type) if type.is_a?(Symbol)
       @type = type
       @symbol = reg
-      @value = extra
+      @extra = extra
     end
 
     # using the registers type, resolve the slot to an index
@@ -54,18 +55,19 @@ module Risc
     #   overwrite the message)
     # We get the type with resolve_new_type
     def get_new_left(slot, compiler)
-      new_type = compiler.slot_type(slot , type)
+      new_type = extra["type_#{slot}".to_sym]
+      new_type , extra = compiler.slot_type(slot , type) unless new_type
       if( @symbol == :r0 )
-        new_left = compiler.use_reg( new_type )
+        new_left  = compiler.use_reg( new_type , extra)
       else
-        new_left = RegisterValue.new( @symbol , new_type)
+        new_left = RegisterValue.new( @symbol , new_type , extra)
       end
       new_left
     end
 
     def to_s
       s = "#{symbol}:#{type}"
-      s += ":#{value}" if value
+      s += ":#{extra}" unless extra.empty?
       s
     end
 
@@ -93,11 +95,11 @@ module Risc
     end
 
     #helper method to calculate with register symbols
-    def next_reg_use( type , value = nil )
+    def next_reg_use( type , extra = {} )
       int = @symbol[1,3].to_i
       raise "No more registers #{self}" if int > 11
       sym = "r#{int + 1}".to_sym
-      RegisterValue.new( sym , type, value)
+      RegisterValue.new( sym , type, extra)
     end
 
     def rxf_reference_name

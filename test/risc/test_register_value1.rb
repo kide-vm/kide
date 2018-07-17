@@ -19,6 +19,9 @@ module Risc
     def test_get_new_left_0
       assert_equal RegisterValue , @r0.get_new_left(:caller , @compiler).class
     end
+    def test_get_new_left_no_extra
+      assert @r0.get_new_left(:caller , @compiler).extra.empty?
+    end
     def test_get_new_left_0_reg
       assert_equal :r1 , @r0.get_new_left(:caller , @compiler).symbol
     end
@@ -27,6 +30,11 @@ module Risc
     end
     def test_get_new_left_1_reg
       assert_equal :r1 , @r0.get_new_left(:caller , @compiler).symbol
+    end
+    def test_get_left_uses_extra
+      @r1 = RegisterValue.new(:r1 , :Space , type_arguments: @r0.type)
+      # works with nil as compiler, because extra is used
+      assert_equal :Message , @r1.get_new_left(:arguments , nil).type.class_name
     end
   end
 end

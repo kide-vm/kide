@@ -15,6 +15,7 @@ module Arm
   end
   module ArmHelper
     def setup
+      Parfait.boot!
       @machine = Arm::ArmMachine
       @binary = FakeBin.new
       Risc::Position.clear_positions

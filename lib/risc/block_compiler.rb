@@ -16,6 +16,20 @@ module Risc
       "#{@method.self_type.name}.init"
     end
 
+    # resolve the type of the slot, by inferring from it's name, using the type
+    # scope related slots are resolved by the compiler by method/block
+    #
+    # This mainly calls super, and only for :caller adds extra info
+    # Using the info, means assuming that the block is not passed around (FIXME in 2020)
+    def slot_type( slot , type)
+      new_type = super
+      if slot == :caller
+        extra_info = { type_frame: @method.frame_type ,
+                       type_arguments: @method.arguments_type ,
+                       type_self: @method.self_type}
+      end
+      return new_type , extra_info
+    end
     # determine how given name need to be accsessed.
     # For blocks the options are args or frame
     # or then the methods arg or frame
