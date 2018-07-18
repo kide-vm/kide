@@ -1,14 +1,14 @@
 require_relative "helper"
 
-module Vool
-  class TestConditionIfMom < MiniTest::Test
+module VoolBlocks
+  class TestConditionIfMom #< MiniTest::Test
     include MomCompile
     include Mom
 
     def setup
       Parfait.boot!
       Risc::Builtin.boot_functions
-      @ins = compile_first_method( "if(5.div4) ; @a = 6 ; else; @a = 5 ; end")
+      @ins = compile_first_block( "if(5.div4) ; @a = 6 ; else; @a = 5 ; end")
     end
 
     def test_condition
