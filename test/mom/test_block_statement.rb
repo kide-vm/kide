@@ -2,7 +2,7 @@
 require_relative "helper"
 
 module Vool
-  class TestBlockStatement < MiniTest::Test
+  class TestBlockArg < MiniTest::Test
     include MomCompile
 
     def setup
@@ -19,7 +19,7 @@ module Vool
       assert @ret.method_compilers.first.get_method.blocks , "No block created"
     end
   end
-  class TestBlockCreated < MiniTest::Test
+  class TestBlockLocal < MiniTest::Test
     include MomCompile
     def setup
       Parfait.boot!
@@ -39,15 +39,19 @@ module Vool
       assert_equal 1, @block.frame_type.variable_index(:local)
     end
   end
-  class TestBlockMethod < MiniTest::Test
+  class TestBlockMethodArg < MiniTest::Test
     include MomCompile
+
     def setup
       Parfait.boot!
-      @ret = compile_mom( as_test_main("arg.each {|elem| arg = 5 } "))
-      @block = @ret.method_compilers.first.get_method.blocks
     end
-    def test_block_arg_type
-      assert_equal Parfait::Type, @block.arguments_type.class
+    def test_method_arg_compiles
+      ret = compile_mom( as_test_main("self.main {|elem| arg = 5 } "))
+      assert ret
+    end
+    def test_method_local_compiles
+      ret = compile_mom( as_test_main("local = 5 ; self.main {|elem| local = 10 } "))
+      assert ret
     end
   end
 end

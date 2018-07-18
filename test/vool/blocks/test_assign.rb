@@ -13,22 +13,22 @@ module VoolBlocks
     def test_block_compiles
       assert_equal Mom::SlotLoad , @ins.class , @ins
     end
-    def pest_slot_is_set
+    def test_slot_is_set
       assert @ins.left
     end
-    def pest_slot_starts_at_message
+    def test_slot_starts_at_message
       assert_equal :message , @ins.left.known_object
     end
-    def pest_slot_gets_self
+    def test_slot_gets_self
       assert_equal :frame , @ins.left.slots[0]
     end
-    def pest_slot_assigns_to_local
-      assert_equal :main_local , @ins.left.slots[-1]
+    def test_slot_assigns_to_local
+      assert_equal :local , @ins.left.slots[-1]
     end
-    def pest_slot_assigns_something
+    def test_slot_assigns_something
       assert @ins.right
     end
-    def pest_slot_assigns_int
+    def test_slot_assigns_int
       assert_equal Mom::IntegerConstant ,  @ins.right.known_object.class
     end
   end
@@ -38,10 +38,10 @@ module VoolBlocks
     include MomCompile
     def setup
       Parfait.boot!
-      @ins = compile_first_method( "@a = 5 ; local = @a")
+      @ins = compile_first_block( "local = @a" , "@a = 5")
     end
-    def pest_class_compiles
-      assert_equal Mom::SlotLoad , @ins.next.class , @ins
+    def test_class_compiles
+      assert_equal Mom::SlotLoad , @ins.class , @ins
     end
   end
 

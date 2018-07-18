@@ -37,8 +37,8 @@ module MomCompile
     assert_equal Risc::MethodCompiler , compiler.class
     @method.source.to_mom( compiler )
   end
-  def compile_first_block( block_input )
-    source =  "main_local = 5 ; self.main{|val| #{block_input}}"
+  def compile_first_block( block_input , method_input = "main_local = 5")
+    source =  "#{method_input} ; self.main{|val| #{block_input}}"
     vool = RubyX::RubyCompiler.compile( as_test_main(source) ).normalize
     mom_c = vool.to_mom(nil)
     compiler = mom_c.method_compilers.find{|c| c.get_method.name == :main and c.get_method.self_type.object_class.name == :Test}
