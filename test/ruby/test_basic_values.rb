@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Ruby
-  class TestBasicValuesX < MiniTest::Test
+  class TestBasicValues < MiniTest::Test
     include RubyTests
 
     def test_self
@@ -47,7 +47,7 @@ module Ruby
       assert_equal 1 , lst.statements.first.value
     end
   end
-  class TestBasicTypesX < MiniTest::Test
+  class TestBasicTypes < MiniTest::Test
     include RubyTests
 
     def setup
@@ -55,26 +55,26 @@ module Ruby
     end
     def compile_ct( input )
       lst = compile( input )
-      lst.ct_type
+      lst.ct_type.class_name
     end
     def test_integer
-      assert_equal "Integer_Type" , compile_ct( "123").name
+      assert_equal :Integer , compile_ct( "123")
     end
     def test_string
-      assert_equal "Word_Type" , compile_ct( "'string'").name
+      assert_equal :Word , compile_ct( "'string'")
     end
     def test_sym
-      assert_equal "Word_Type" , compile_ct( ":symbol").name
+      assert_equal :Word , compile_ct( ":symbol")
     end
     # classes fot these are not implemented in parfait yet
     def pest_nil
-      assert_equal "Nil_Type" , compile_ct( "nil").name
+      assert_equal :Nil , compile_ct( "nil")
     end
     def pest_false
-      assert_equal "False_Type" , compile_ct( "false").name
+      assert_equal :False , compile_ct( "false")
     end
     def pest_true
-      assert_equal "True_Type" , compile_ct( "true").name
+      assert_equal :True , compile_ct( "true")
     end
   end
 end

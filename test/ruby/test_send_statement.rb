@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Ruby
-  class TestSendX < MiniTest::Test
+  class TestSend < MiniTest::Test
     include RubyTests
 
     def test_simple

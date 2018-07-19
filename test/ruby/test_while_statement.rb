@@ -1,7 +1,7 @@
 require_relative 'helper'
 
 module Ruby
-  class TestWhileStatementX < MiniTest::Test
+  class TestWhileStatement < MiniTest::Test
     include RubyTests
 
     def basic_while

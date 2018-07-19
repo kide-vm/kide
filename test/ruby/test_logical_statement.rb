@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Ruby
-  class TestLogicalX < MiniTest::Test
+  class TestLogical < MiniTest::Test
     include RubyTests
 
     def simple

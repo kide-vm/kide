@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Ruby
-  class TestReturnStatementX < MiniTest::Test
+  class TestReturnStatement < MiniTest::Test
     include RubyTests
 
     def test_return_const

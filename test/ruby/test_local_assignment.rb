@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Ruby
-  class TestLocalAssignmentX < MiniTest::Test
+  class TestLocalAssignment < MiniTest::Test
     include RubyTests
 
     def test_local

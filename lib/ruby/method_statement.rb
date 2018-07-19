@@ -8,14 +8,8 @@ module Ruby
       @clazz = clazz
     end
 
-
     def to_vool
       MethodStatement.new( @name , @args , @body.normalize)
-    end
-
-    def has_yield?
-      each{|statement| return true if statement.is_a?(YieldStatement)}
-      return false
     end
 
     def to_s(depth = 0)

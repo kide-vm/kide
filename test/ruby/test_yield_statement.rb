@@ -1,24 +1,18 @@
 require_relative "helper"
 
 module Ruby
-  class TestYieldStatementX < MiniTest::Test
+  class TestYieldStatement < MiniTest::Test
     include RubyTests
 
     def setup()
-      input = "def plus_one; yield(0) ; end "
+      input = "yield(0) "
       @lst = compile( input )
     end
-    def test_method
-      assert_equal MethodStatement , @lst.class
-    end
     def test_block
-      assert_equal YieldStatement , @lst.body.class
+      assert_equal YieldStatement , @lst.class
     end
     def test_block_args
-      assert_equal IntegerConstant , @lst.body.arguments.first.class
-    end
-    def test_method_yield?
-      assert_equal true , @lst.has_yield?
+      assert_equal IntegerConstant , @lst.arguments.first.class
     end
   end
 end

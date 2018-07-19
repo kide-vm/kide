@@ -1,11 +1,11 @@
 require_relative "helper"
 
 module Ruby
-  class TestVariablesX < MiniTest::Test
+  class TestVariables < MiniTest::Test
     include RubyTests
 
     # "free standing" local can not be tested as it will result in send
-    # in other words ther is no way of knowing if a name is variable or method
+    # in other words there is no way of knowing if a name is variable or method
     # one needs an assignemnt first, to "tell" the parser it's a local
     def test_local_basic
       lst = compile( "foo = 1 ; foo")

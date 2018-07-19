@@ -1,7 +1,7 @@
 require_relative 'helper'
 
 module Ruby
-  class TestIfStatementX < MiniTest::Test
+  class TestIfStatement < MiniTest::Test
     include RubyTests
 
     def basic_if

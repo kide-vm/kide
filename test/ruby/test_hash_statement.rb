@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Ruby
-  class HashArrayX < MiniTest::Test
+  class HashArray < MiniTest::Test
     include RubyTests
 
     def test_empty
