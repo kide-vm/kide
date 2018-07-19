@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-module Vool
+module Ruby
   class TestWhileStatementX < MiniTest::Test
     include RubyTests
 

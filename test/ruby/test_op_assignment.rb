@@ -1,6 +1,6 @@
 require_relative "helper"
 
-module Vool
+module Ruby
   module OpAss
     def test_local_name
       assert_equal :foo , @lst.name
