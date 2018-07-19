@@ -17,8 +17,8 @@ module Ruby
     end
 
     def to_vool
-      meths = body.statements.collect{|meth| meth.normalize}
-      ClassStatement.new(@name , @super_class_name, Statements.new(meths) )
+      meths = body.statements.collect{|meth| meth.to_vool}
+      Vool::ClassStatement.new(@name , @super_class_name, Vool::Statements.new(meths) )
     end
 
     def to_s(depth = 0)

@@ -1,6 +1,27 @@
 require_relative "helper"
 
 module Ruby
+  class TestClassStatementVool < MiniTest::Test
+    include RubyTests
+
+    def setup
+      input = "class Tryout < Base;def meth; a = 5 ;end; end"
+      @vool = compile( input ).to_vool
+    end
+    def test_class
+      assert_equal Vool::ClassStatement , @vool.class
+    end
+    def test_body
+      assert_equal Vool::Statements , @vool.body.class
+    end
+    def test_compile_class_name
+      assert_equal :Tryout , @vool.name
+    end
+    def test_compile_class_super
+      assert_equal :Base , @vool.super_class_name
+    end
+
+  end
   class TestEmptyClassStatement < MiniTest::Test
     include RubyTests
 
@@ -12,15 +33,12 @@ module Ruby
     def test_compile_class
       assert_equal ClassStatement , @lst.class
     end
-
     def test_compile_class_name
       assert_equal :Tryout , @lst.name
     end
-
     def test_compile_class_super
       assert_equal :Base , @lst.super_class_name
     end
-
     def test_compile_class_body
       assert @lst.body.empty?
     end

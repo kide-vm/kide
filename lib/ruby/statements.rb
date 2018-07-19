@@ -28,20 +28,12 @@ module Ruby
       self
     end
 
-    # create mom instructions
-    def to_mom( compiler )
-      raise "Empty list ? #{statements.length}" if empty?
-      stats = @statements.dup
-      flat = stats.shift.to_mom(compiler)
-      while( nekst = stats.shift )
-        flat.append nekst.to_mom(compiler)
+    def to_vool
+      if( single? )
+       first.to_vool
+      else
+       vool_brother.new(@statements.collect{|s| s.to_vool})
       end
-      flat
-    end
-
-    def each(&block)
-      block.call(self)
-      @statements.each{|a| a.each(&block)}
     end
 
     def to_s(depth = 0)
