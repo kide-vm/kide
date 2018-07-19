@@ -9,7 +9,7 @@ module Ruby
     end
 
     def to_vool
-      MethodStatement.new( @name , @args , @body.normalize)
+      Vool::MethodStatement.new( @name , @args.dup , @body.to_vool)
     end
 
     def to_s(depth = 0)
