@@ -1,12 +1,11 @@
-module Vool
+module Ruby
 
   class BlockStatement < Statement
-    attr_reader :args , :body , :clazz
+    attr_reader :send ,  :args , :body
 
-    def initialize( args , body , something_really_else)
-      @args , @body = args , body
+    def initialize( send , args , body )
+      @send , @args , @body = send , args , body
       raise "no bod" unless @body
-      @clazz = clazz
     end
 
     def to_vool

@@ -41,8 +41,7 @@ module Ruby
       sendd = process(block_node.children[0])
       args = process(block_node.children[1])
       body = process(block_node.children[2])
-      sendd.add_block BlockStatement.new(args , body)
-      sendd
+      BlockStatement.new(sendd , args , body)
     end
 
     def on_yield(node)
@@ -177,7 +176,7 @@ module Ruby
       IfStatement.new( process(condition) , if_true , if_false )
     end
 
-    def on_send statement
+    def on_send( statement )
       kids = statement.children.dup
       receiver = process(kids.shift) || SelfExpression.new
       name = kids.shift
