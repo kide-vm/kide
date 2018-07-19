@@ -1,19 +1,10 @@
 module Vool
   class ReturnStatement < Statement
-    include Normalizer
 
     attr_reader :return_value
 
     def initialize(value)
       @return_value = value
-    end
-
-    def normalize
-      val , rest = *normalize_name(@return_value)
-      me = ReturnStatement.new(val)
-      return me unless rest
-      rest << me
-      rest
     end
 
     def each(&block)

@@ -33,10 +33,6 @@ module Vool
       @body.each(&block)
     end
 
-    def normalize
-      BlockStatement.new( @args , @body.normalize)
-    end
-
     # create the parfait block (parfait representation of the block, a Callable similar
     #  to CallableMethod)
     def parfait_block(compiler)

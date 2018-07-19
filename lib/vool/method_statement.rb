@@ -23,10 +23,6 @@ module Vool
       @body.each(&block)
     end
 
-    def normalize
-      MethodStatement.new( @name , @args , @body.normalize)
-    end
-
     def has_yield?
       each{|statement| return true if statement.is_a?(YieldStatement)}
       return false

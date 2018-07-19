@@ -6,36 +6,6 @@ module Vool
       @name , @value = name , value
     end
 
-    def normalize()
-      raise "not named left #{name.class}" unless name.is_a?(Symbol)
-      case value
-      when Named , Constant
-        return copy
-      when SendStatement
-        return normalize_send
-      else
-        raise "unsupported right #{value}"
-      end
-    end
-
-    def copy(value = nil)
-      value ||= @value
-      self.class.new(name,value)
-    end
-
-    def normalize_send
-      statements = value.normalize()
-      return copy( statements ) if statements.is_a?(SendStatement)
-      assign = statements.statements.pop
-      statements << copy(assign)
-      statements
-    end
-
-    def chain_assign(assign , compiler)
-      return assign unless @value.is_a?(SendStatement)
-      @value.to_mom(compiler) << assign
-    end
-
     def each(&block)
       block.call(self)
       @value.each(&block)
@@ -48,11 +18,6 @@ module Vool
   end
 
   class IvarAssignment < Assignment
-
-    def normalize()
-      super()
-      return IvarAssignment.new(@name , @value)
-    end
 
     def to_mom( compiler )
       to = Mom::SlotDefinition.new(:message ,[ :receiver , @name])

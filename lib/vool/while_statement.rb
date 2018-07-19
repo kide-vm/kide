@@ -1,19 +1,12 @@
-require_relative "normalizer"
 
 module Vool
   class WhileStatement < Statement
-    include Normalizer
     attr_reader :condition , :body , :hoisted
 
     def initialize( condition , body , hoisted = nil)
       @hoisted = hoisted
       @condition = condition
       @body = body
-    end
-
-    def normalize
-      cond , rest = *normalize_name(@condition)
-      WhileStatement.new(cond , @body.normalize , rest)
     end
 
     def to_mom( compiler )

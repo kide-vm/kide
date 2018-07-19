@@ -44,13 +44,6 @@ module Vool
       @statements.each{|a| a.each(&block)}
     end
 
-    def normalize
-      if( single? )
-        first.normalize
-      else
-        Statements.new(@statements.collect{|s| s.normalize})
-      end
-    end
     def to_s(depth = 0)
       at_depth(depth , *@statements.collect{|st| st.to_s(depth)})
     end
@@ -58,12 +51,5 @@ module Vool
   end
 
   class ScopeStatement < Statements
-    def normalize
-      if( single? )
-        first.normalize
-      else
-        ScopeStatement.new(@statements.collect{|s| s.normalize})
-      end
-    end
   end
 end

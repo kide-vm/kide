@@ -17,11 +17,6 @@ module Vool
       end
     end
 
-    def normalize
-      meths = body.statements.collect{|meth| meth.normalize}
-      ClassStatement.new(@name , @super_class_name, Statements.new(meths) )
-    end
-
     def to_mom( _ )
       create_class_object
       method_compilers =  body.statements.collect do |node|

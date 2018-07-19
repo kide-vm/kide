@@ -1,5 +1,3 @@
-require_relative "ruby_compiler"
-
 module RubyX
   class RubyXCompiler
     attr_reader :source
@@ -9,8 +7,8 @@ module RubyX
     end
 
     def ruby_to_vool
-      vool = RubyCompiler.compile( source )
-      vool = vool.normalize
+      ruby = Ruby::RubyCompiler.compile( source )
+      vool = ruby.to_vool
       vool
     end
 

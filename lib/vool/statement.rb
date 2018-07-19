@@ -25,12 +25,6 @@ module Vool
   #
   class Statement
 
-    # after creation vool normalizes to ensure valid syntax and simplify
-    # also throw errors if violation
-    def normalize()
-      raise self.class.name
-    end
-
     def to_mom( _ )
       # temporary warning to find unimplemented kids
       raise "Not implemented for #{self}"

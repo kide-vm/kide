@@ -1,7 +1,6 @@
-require_relative "normalizer"
+
 module Vool
   class IfStatement < Statement
-    include Normalizer
 
     attr_reader :condition , :if_true , :if_false
 
@@ -9,15 +8,6 @@ module Vool
       @condition = cond
       @if_true = if_true
       @if_false = if_false
-    end
-
-    def normalize
-      cond , rest = *normalize_name(@condition)
-      fals = @if_false ? @if_false.normalize : nil
-      me = IfStatement.new(cond , @if_true.normalize, fals)
-      return me unless rest
-      rest << me
-      rest
     end
 
     def to_mom( compiler )

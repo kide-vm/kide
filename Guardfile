@@ -23,7 +23,7 @@ guard :minitest , all_on_start: false do   # with Minitest::Unit
   watch(%r{^lib/parfait/type.rb}) { Dir["test/parfait/type/test_*.rb"] }
 
   # ruby compiler tests have a whole directory
-  watch(%r{^lib/rubyx/ruby_compiler.rb}) { Dir["test/rubyx/ruby_compiler/test_*.rb"] }
+  watch(%r{^lib/ruby/ruby_compiler.rb}) { Dir["test/ruby/test_*.rb"] }
 
   watch(%r{^lib/vool/statements/send_statement.rb}) {
     [ Dir["test/vool/send/test_*.rb"] ] }
