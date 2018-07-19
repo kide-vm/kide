@@ -8,7 +8,7 @@ module Ruby
       @arguments ||= []
     end
 
-    def normalize
+    def to_vool
       statements = Statements.new([])
       arguments = []
       @arguments.each_with_index do |arg , index |
@@ -22,7 +22,7 @@ module Ruby
       end
     end
 
-    def normalize_arg(arg , arguments , statements)
+    def to_vool_arg(arg , arguments , statements)
       if arg.respond_to?(:slot_definition) and !arg.is_a?(SendStatement)
         arguments << arg
         return

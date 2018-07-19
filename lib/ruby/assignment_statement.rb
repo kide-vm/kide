@@ -6,7 +6,7 @@ module Ruby
       @name , @value = name , value
     end
 
-    def normalize()
+    def to_vool()
       raise "not named left #{name.class}" unless name.is_a?(Symbol)
       case value
       when Named , Constant
@@ -23,17 +23,12 @@ module Ruby
       self.class.new(name,value)
     end
 
-    def normalize_send
+    def to_vool_send
       statements = value.normalize()
       return copy( statements ) if statements.is_a?(SendStatement)
       assign = statements.statements.pop
       statements << copy(assign)
       statements
-    end
-
-    def chain_assign(assign , compiler)
-      return assign unless @value.is_a?(SendStatement)
-      @value.to_mom(compiler) << assign
     end
 
     def to_s(depth = 0)
@@ -44,10 +39,14 @@ module Ruby
 
   class IvarAssignment < Assignment
 
-    def normalize()
+    def to_vool()
       super()
       return IvarAssignment.new(@name , @value)
     end
+  end
+
+  class LocalAssignment < Assignment
 
   end
+
 end

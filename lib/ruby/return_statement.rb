@@ -8,7 +8,7 @@ module Ruby
       @return_value = value
     end
 
-    def normalize
+    def to_vool
       val , rest = *normalize_name(@return_value)
       me = ReturnStatement.new(val)
       return me unless rest

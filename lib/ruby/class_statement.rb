@@ -16,7 +16,7 @@ module Ruby
       end
     end
 
-    def normalize
+    def to_vool
       meths = body.statements.collect{|meth| meth.normalize}
       ClassStatement.new(@name , @super_class_name, Statements.new(meths) )
     end

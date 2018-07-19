@@ -9,7 +9,7 @@ module Ruby
     end
 
 
-    def normalize
+    def to_vool
       MethodStatement.new( @name , @args , @body.normalize)
     end
 

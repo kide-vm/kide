@@ -8,7 +8,7 @@ module Ruby
     # but if(tmp_123) is with tmp_123 = @var % 5 hoisted above the if
     #
     # also constants count, though they may not be so useful in ifs, but returns
-    def normalize_name( condition )
+    def to_vool_name( condition )
       if( condition.is_a?(ScopeStatement) and condition.single?)
         condition = condition.first
       end

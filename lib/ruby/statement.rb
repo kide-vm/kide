@@ -16,7 +16,7 @@ module Ruby
 
   class Expression
 
-    def normalize
+    def to_vool
       raise "should not be normalized #{self}"
     end
 

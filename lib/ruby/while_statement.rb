@@ -11,7 +11,7 @@ module Ruby
       @body = body
     end
 
-    def normalize
+    def to_vool
       cond , rest = *normalize_name(@condition)
       WhileStatement.new(cond , @body.normalize , rest)
     end

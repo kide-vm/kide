@@ -9,7 +9,7 @@ module Vool
       @clazz = clazz
     end
 
-    def normalize
+    def to_vool
       BlockStatement.new( @args , @body.normalize)
     end
 

@@ -20,9 +20,5 @@ module Ruby
     def test_method_yield?
       assert_equal true , @lst.has_yield?
     end
-    def test_method_args
-      Parfait.boot!
-      assert_equal 2 , @lst.make_arg_type.get_length
-    end
   end
 end

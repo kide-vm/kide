@@ -12,7 +12,7 @@ module Ruby
       @if_false = if_false
     end
 
-    def normalize
+    def to_vool
       cond , rest = *normalize_name(@condition)
       fals = @if_false ? @if_false.normalize : nil
       me = IfStatement.new(cond , @if_true.normalize, fals)
