@@ -12,6 +12,12 @@ module Ruby
       strings.collect{|str| prefix + str}.join("\n")
     end
 
+    def vool_brother
+      eval "Vool::#{class_name}"
+    end
+    def class_name
+      self.class.name.split("::").last
+    end
   end
 
   class Expression
