@@ -10,7 +10,7 @@ module Ruby
       raise "not named left #{name.class}" unless name.is_a?(Symbol)
       case value
       when Named , Constant
-        return copy
+        return self.vool_brother.new(name,@value.to_vool)
       when SendStatement
         return normalize_send
       else
@@ -18,17 +18,21 @@ module Ruby
       end
     end
 
-    def copy(value = nil)
-      value ||= @value
-      self.vool_brother.new(name,value)
-    end
-
+    # sends may have complex args that get hoisted in vool:ing them
+    # in which case we have to assign the simplified, otherwise the
+    # plain send
     def normalize_send
       statements = value.to_vool
-      return copy( statements ) if statements.is_a?(Vool::SendStatement)
-      assign = statements.statements.pop
-      statements << copy(assign)
+      return assignment( statements ) if statements.is_a?(Vool::SendStatement)
+      # send has hoisted assigns, so we make an assign out of the "pure" send
+      statements << assignment(statements.statements.pop)
       statements
+    end
+
+    # create same type assignment with the value (a send)
+    def assignment(value)
+      value ||= @value
+      self.vool_brother.new(name,value)
     end
 
     def to_s(depth = 0)

@@ -25,28 +25,40 @@ module Ruby
       assert_equal IvarAssignment , lst.class
     end
   end
-  class TestAssignmentVool < MiniTest::Test
+  class TestAssignmentVoolBar < MiniTest::Test
     include RubyTests
-
+    def setup
+      @lst = compile( "foo = bar").to_vool
+    end
     def test_local
-      lst = compile( "foo = bar").to_vool
-      assert_equal Vool::LocalAssignment , lst.class
+      assert_equal Vool::LocalAssignment , @lst.class
+    end
+    def test_bar
+      assert_equal Vool::SendStatement , @lst.value.class
     end
     def test_local_name
-      lst = compile( "foo = bar").to_vool
-      assert_equal :foo , lst.name
+      assert_equal :foo , @lst.name
+    end
+  end
+  class TestAssignmentVoolInst < MiniTest::Test
+    include RubyTests
+    def setup
+      @lst = compile( "@foo = bar").to_vool
     end
     def test_instance
-      lst = compile( "@foo = bar").to_vool
-      assert_equal Vool::IvarAssignment , lst.class
+      assert_equal Vool::IvarAssignment , @lst.class
     end
     def test_instance_name
-      lst = compile( "@foo = bar").to_vool
-      assert_equal :foo , lst.name
+      assert_equal :foo , @lst.name
+    end
+  end
+  class TestAssignmentVoolConst < MiniTest::Test
+    include RubyTests
+    def setup
+      @lst = compile( "foo = 5").to_vool
     end
     def test_const
-      lst = compile( "@foo = 5").to_vool
-      assert_equal Vool::IvarAssignment , lst.class
+      assert_equal Vool::IntegerConstant , @lst.value.class
     end
   end
 end
