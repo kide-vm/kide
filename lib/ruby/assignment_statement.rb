@@ -23,8 +23,8 @@ module Ruby
       self.vool_brother.new(name,value)
     end
 
-    def to_vool_send
-      statements = value.normalize()
+    def normalize_send
+      statements = value.to_vool
       return copy( statements ) if statements.is_a?(Vool::SendStatement)
       assign = statements.statements.pop
       statements << copy(assign)
