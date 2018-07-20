@@ -26,8 +26,7 @@ module Ruby
     def <<(o)
       @statements << o
       self
-    end
-
+    end    
     def to_vool
       if( single? )
        first.to_vool

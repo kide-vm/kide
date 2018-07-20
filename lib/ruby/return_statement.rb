@@ -10,10 +10,9 @@ module Ruby
 
     def to_vool
       val , rest = *normalize_name(@return_value)
-      me = Vool::ReturnStatement.new(val)
+      me = Vool::ReturnStatement.new(val.to_vool)
       return me unless rest
-      rest << me
-      rest
+      Vool::Statements.new([ rest.to_vool , me])
     end
 
     def to_s(depth = 0)
