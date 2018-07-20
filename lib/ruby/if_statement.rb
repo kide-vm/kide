@@ -14,8 +14,8 @@ module Ruby
 
     def to_vool
       cond , rest = *normalize_name(@condition)
-      fals = @if_false ? @if_false.normalize : nil
-      me = IfStatement.new(cond , @if_true.normalize, fals)
+      fals = @if_false ? @if_false.to_vool : nil
+      me = Vool::IfStatement.new(cond , @if_true.to_vool, fals)
       return me unless rest
       rest << me
       rest
