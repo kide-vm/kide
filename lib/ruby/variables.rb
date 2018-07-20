@@ -6,6 +6,9 @@ module Ruby
     end
     def each(&block)
     end
+    def to_vool
+      vool_brother.new(@name)
+    end
   end
 
   class LocalVariable < Statement

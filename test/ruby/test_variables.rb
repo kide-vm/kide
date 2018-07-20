@@ -55,4 +55,40 @@ module Ruby
       assert_raises {compile( "M::Module" ) }
     end
   end
+  class TestVariablesVool < MiniTest::Test
+    include RubyTests
+    def test_local_basic
+      lst = compile( "foo = 1 ; foo").to_vool
+      assert_equal Vool::LocalVariable , lst.statements[1].class
+    end
+
+    def test_instance_basic
+      lst = compile( "@var" ).to_vool
+      assert_equal Vool::InstanceVariable , lst.class
+      assert_equal :var , lst.name
+    end
+
+    def test_instance_return
+      lst = compile( "return @var" ).to_vool
+      assert_equal InstanceVariable , lst.return_value.class
+    end
+
+    def test_class_basic
+      lst = compile( "@@var" ).to_vool
+      assert_equal Vool::ClassVariable , lst.class
+      assert_equal :var , lst.name
+    end
+
+    def test_class_return
+      lst = compile( "return @@var" ).to_vool
+      assert_equal ClassVariable , lst.return_value.class
+    end
+
+    def test_module_basic
+      lst = compile( "Module" ).to_vool
+      assert_equal Vool::ModuleName , lst.class
+      assert_equal :Module , lst.name
+    end
+
+  end
 end

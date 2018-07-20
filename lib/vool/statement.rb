@@ -61,7 +61,7 @@ module Vool
 end
 
 
-require_relative "assign_statement"
+require_relative "assignment"
 require_relative "array_statement"
 require_relative "basic_values"
 require_relative "block_statement"
@@ -69,6 +69,7 @@ require_relative "class_statement"
 require_relative "hash_statement"
 require_relative "if_statement"
 require_relative "logical_statement"
+require_relative "ivar_assignment"
 require_relative "local_assignment"
 require_relative "method_statement"
 require_relative "return_statement"
