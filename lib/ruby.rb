@@ -9,7 +9,7 @@ end
 
 require_relative "ruby/statement"
 require_relative "ruby/statements"
-require_relative "ruby/assignment_statement"
+require_relative "ruby/assignment"
 require_relative "ruby/array_statement"
 require_relative "ruby/block_statement"
 require_relative "ruby/if_statement"

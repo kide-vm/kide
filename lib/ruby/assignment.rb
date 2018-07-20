@@ -39,10 +39,6 @@ module Ruby
 
   class IvarAssignment < Assignment
 
-    def to_vool()
-      super()
-      return Vool::IvarAssignment.new(@name , @value)
-    end
   end
 
   class LocalAssignment < Assignment
