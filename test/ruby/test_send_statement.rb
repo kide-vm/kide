@@ -1,43 +1,44 @@
 require_relative "helper"
 
 module Ruby
-  class TestSend < MiniTest::Test
+  class TestSendFoo < MiniTest::Test
     include RubyTests
-
-    def test_simple
-      lst = compile( "foo")
-      assert_equal SendStatement , lst.class
+    def setup
+      @lst = compile( "foo")
+    end
+    def test_simple_class
+      assert_equal SendStatement , @lst.class
     end
     def test_simple_name
-      lst = compile( "foo")
-      assert_equal :foo , lst.name
+      assert_equal :foo , @lst.name
     end
     def test_simple_receiver
-      lst = compile( "foo")
-      assert_equal SelfExpression , lst.receiver.class
+      assert_equal SelfExpression , @lst.receiver.class
     end
     def test_simple_args
-      lst = compile( "foo")
-      assert_equal [] , lst.arguments
+      assert_equal [] , @lst.arguments
     end
-
+  end
+  class TestSendBar < MiniTest::Test
+    include RubyTests
+    def setup
+      @lst = compile( "bar(1)")
+    end
     def test_one_arg
-      lst = compile( "bar(1)")
-      assert_equal SendStatement , lst.class
+      assert_equal SendStatement , @lst.class
     end
     def test_one_arg_name
-      lst = compile( "bar(1)")
-      assert_equal :bar , lst.name
+      assert_equal :bar , @lst.name
     end
     def test_one_arg_receiver
-      lst = compile( "bar(1)")
-      assert_equal SelfExpression , lst.receiver.class
+      assert_equal SelfExpression , @lst.receiver.class
     end
     def test_one_arg_args
-      lst = compile( "bar(1)")
-      assert_equal 1 , lst.arguments.first.value
+      assert_equal 1 , @lst.arguments.first.value
     end
-
+  end
+  class TestSendSuper < MiniTest::Test
+    include RubyTests
     def test_super0_receiver
       lst = compile( "super")
       assert_equal SuperExpression , lst.receiver.class

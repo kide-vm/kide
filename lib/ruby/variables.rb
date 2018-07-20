@@ -8,14 +8,14 @@ module Ruby
     end
   end
 
-  class LocalVariable < Expression
+  class LocalVariable < Statement
     include Named
     def to_s
       name.to_s
     end
   end
 
-  class InstanceVariable < Expression
+  class InstanceVariable < Statement
     include Named
     # used to collect type information
     def add_ivar( array )
@@ -26,11 +26,11 @@ module Ruby
     end
   end
 
-  class ClassVariable < Expression
+  class ClassVariable < Statement
     include Named
   end
 
-  class ModuleName < Expression
+  class ModuleName < Statement
     include Named
   end
 end

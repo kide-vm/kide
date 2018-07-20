@@ -1,28 +1,27 @@
 module Ruby
-  class Constant < Expression
-    #gobble it up
-    def each(&block)
+  class Constant < Statement
+    def to_vool
+      vool_brother.new
     end
   end
-
-  class IntegerConstant < Constant
+  class ValueConstant < Constant
     attr_reader :value
     def initialize(value)
       @value = value
     end
-    def slot_definition(compiler)
-      return Mom::SlotDefinition.new(Mom::IntegerConstant.new(@value) , [])
+    def to_vool
+      vool_brother.new(@value)
     end
+  end
+  class IntegerConstant < ValueConstant
     def ct_type
       Parfait.object_space.get_type_by_class_name(:Integer)
     end
     def to_s
       value.to_s
     end
-    def each(&block)
-    end
   end
-  class FloatConstant < Constant
+  class FloatConstant < ValueConstant
     attr_reader :value
     def initialize(value)
       @value = value
@@ -35,9 +34,6 @@ module Ruby
     def ct_type
       Parfait.object_space.get_type_by_class_name(:True)
     end
-    def slot_definition(compiler)
-      return Mom::SlotDefinition.new(Parfait.object_space.true_object , [])
-    end
     def to_s(depth = 0)
       "true"
     end
@@ -45,9 +41,6 @@ module Ruby
   class FalseConstant < Constant
     def ct_type
       Parfait.object_space.get_type_by_class_name(:False)
-    end
-    def slot_definition(compiler)
-      return Mom::SlotDefinition.new(Parfait.object_space.false_object , [])
     end
     def to_s(depth = 0)
       "false"
@@ -57,25 +50,11 @@ module Ruby
     def ct_type
       Parfait.object_space.get_type_by_class_name(:Nil)
     end
-    def slot_definition(compiler)
-      return Mom::SlotDefinition.new(Parfait.object_space.nil_object , [])
-    end
     def to_s(depth = 0)
       "nil"
     end
   end
-  class SelfExpression < Expression
-    attr_reader :my_type
-    def initialize(type = nil)
-      @my_type = type
-    end
-    def slot_definition(compiler)
-      @my_type = compiler.receiver_type
-      Mom::SlotDefinition.new(:message , [:receiver])
-    end
-    def ct_type
-      @my_type
-    end
+  class SelfExpression < Constant
     def to_s(depth = 0)
       "self"
     end
@@ -84,14 +63,14 @@ module Ruby
     def to_s(depth = 0)
       "super"
     end
+    def to_vool
+      vool_brother.new
+    end
   end
-  class StringConstant < Constant
+  class StringConstant < ValueConstant
     attr_reader :value
     def initialize(value)
       @value = value
-    end
-    def slot_definition(compiler)
-      return Mom::SlotDefinition.new(Mom::StringConstant.new(@value),[])
     end
     def ct_type
       Parfait.object_space.get_type_by_class_name(:Word)

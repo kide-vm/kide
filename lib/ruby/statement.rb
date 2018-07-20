@@ -20,12 +20,4 @@ module Ruby
     end
   end
 
-  class Expression
-
-    def to_vool
-      raise "should not be normalized #{self}"
-    end
-
-  end
-
 end
