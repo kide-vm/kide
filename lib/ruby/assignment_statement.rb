@@ -20,12 +20,12 @@ module Ruby
 
     def copy(value = nil)
       value ||= @value
-      self.class.new(name,value)
+      self.vool_brother.new(name,value)
     end
 
     def to_vool_send
       statements = value.normalize()
-      return copy( statements ) if statements.is_a?(SendStatement)
+      return copy( statements ) if statements.is_a?(Vool::SendStatement)
       assign = statements.statements.pop
       statements << copy(assign)
       statements
@@ -41,7 +41,7 @@ module Ruby
 
     def to_vool()
       super()
-      return IvarAssignment.new(@name , @value)
+      return Vool::IvarAssignment.new(@name , @value)
     end
   end
 

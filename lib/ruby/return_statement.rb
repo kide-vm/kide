@@ -10,7 +10,7 @@ module Ruby
 
     def to_vool
       val , rest = *normalize_name(@return_value)
-      me = ReturnStatement.new(val)
+      me = Vool::ReturnStatement.new(val)
       return me unless rest
       rest << me
       rest
