@@ -25,23 +25,16 @@ module Ruby
       @lst = compile( "bar(1)").to_vool
     end
     def test_class
-      assert_equal Vool::Statements , @lst.class
-      assert_equal 2 , @lst.length
-    end
-    def test_first
-      assert_equal Vool::LocalAssignment , @lst.first.class
-    end
-    def test_last
-      assert_equal Vool::SendStatement , @lst.last.class
+      assert_equal Vool::SendStatement , @lst.class
     end
     def test_name
-      assert_equal :bar , @lst.last.name
+      assert_equal :bar , @lst.name
     end
     def test_receiver
-      assert_equal Vool::SelfExpression , @lst.last.receiver.class
+      assert_equal Vool::SelfExpression , @lst.receiver.class
     end
     def test_args
-      assert @lst.last.arguments.first.name.to_s.start_with?("tmp")
+      assert_equal Vool::IntegerConstant ,  @lst.arguments.first.class
     end
   end
   class TestSendSuperVool < MiniTest::Test
@@ -60,21 +53,14 @@ module Ruby
     def setup
       @lst = compile( "super(1)").to_vool
     end
-    def test_super_args_class
-      assert_equal Vool::Statements , @lst.class
-      assert_equal 2 , @lst.length
-    end
-    def test_super_args_first
-      assert_equal Vool::LocalAssignment , @lst.first.class
-    end
-    def test_super_args_last
-      assert_equal Vool::SendStatement , @lst.last.class
+    def test_super_class
+      assert_equal Vool::SendStatement , @lst.class
     end
     def test_super_receiver
-      assert_equal Vool::SuperExpression , @lst.last.receiver.class
+      assert_equal Vool::SuperExpression , @lst.receiver.class
     end
     def test_super_name #is nil
-      assert_nil @lst.last.name
+      assert_nil @lst.name
     end
   end
   class TestSendReceiverTypeVool < MiniTest::Test

@@ -15,7 +15,7 @@ module Ruby
         normalize_arg(arg , arguments , statements)
       end
       if statements.empty?
-        return Vool::SendStatement.new(@name, @receiver.to_vool , @arguments)
+        return Vool::SendStatement.new(@name, @receiver.to_vool , arguments)
       else
         statements << Vool::SendStatement.new(@name, @receiver.to_vool , arguments)
         return statements
@@ -23,8 +23,8 @@ module Ruby
     end
 
     def normalize_arg(arg , arguments , statements)
-      if arg.respond_to?(:slot_definition) and !arg.is_a?(SendStatement)
-        arguments << arg
+      if arg.respond_to?(:ct_type) and !arg.is_a?(SendStatement)
+        arguments << arg.to_vool
         return
       end
       assign = Vool::LocalAssignment.new( "tmp_#{arg.object_id}".to_sym, arg)
