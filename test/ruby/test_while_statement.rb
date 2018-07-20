@@ -19,7 +19,6 @@ module Ruby
       lst = compile( basic_while )
       assert_equal TrueConstant , lst.body.class
     end
-
     def reverse_while
       "true while(false)"
     end

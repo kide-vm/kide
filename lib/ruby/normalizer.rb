@@ -12,11 +12,10 @@ module Ruby
       if( condition.is_a?(ScopeStatement) and condition.single?)
         condition = condition.first
       end
-      return [condition.to_vool] if condition.is_a?(Named) or condition.is_a?(Constant)
-      condition = condition.to_vool
+      return [condition] if condition.is_a?(Named) or condition.is_a?(Constant)
       local = "tmp_#{object_id}".to_sym
-      assign = Vool::Statements.new [Vool::LocalAssignment.new( local , condition)]
-      [Vool::LocalVariable.new(local) , assign]
+      assign = LocalAssignment.new( local , condition)
+      [LocalVariable.new(local) , assign]
     end
   end
 end

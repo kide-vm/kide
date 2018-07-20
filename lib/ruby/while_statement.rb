@@ -13,7 +13,7 @@ module Ruby
 
     def to_vool
       cond , rest = *normalize_name(@condition)
-      WhileStatement.new(cond , @body.normalize , rest)
+      Vool::WhileStatement.new(cond.to_vool , @body.to_vool , rest&.to_vool)
     end
 
     def to_s(depth = 0)

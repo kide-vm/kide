@@ -14,11 +14,9 @@ module Ruby
 
     def to_vool
       cond , rest = *normalize_name(@condition)
-      fals = @if_false ? @if_false.to_vool : nil
-      me = Vool::IfStatement.new(cond , @if_true.to_vool, fals)
+      me = Vool::IfStatement.new(cond.to_vool , @if_true.to_vool, @if_false&.to_vool)
       return me unless rest
-      rest << me
-      rest
+      Vool::Statements.new([ rest.to_vool , me])
     end
 
     def has_false?
