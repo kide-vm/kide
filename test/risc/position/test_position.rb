@@ -14,6 +14,7 @@ module Risc
       assert !@pos.valid?
     end
     def test_next_slot
+      Parfait.boot!
       mov = Arm::ArmMachine.mov(:r1 , :r1)
       position = Position.new(mov ).set(0)
       assert_equal 4, position.next_slot

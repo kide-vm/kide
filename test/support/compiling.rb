@@ -39,7 +39,7 @@ module MomCompile
   end
   def compile_first_block( block_input , method_input = "main_local = 5")
     source =  "#{method_input} ; self.main{|val| #{block_input}}"
-    vool = RubyX::RubyCompiler.compile( as_test_main(source) ).normalize
+    vool = Ruby::RubyCompiler.compile( as_test_main(source) ).to_vool
     mom_c = vool.to_mom(nil)
     compiler = mom_c.method_compilers.find{|c| c.get_method.name == :main and c.get_method.self_type.object_class.name == :Test}
     block = nil
