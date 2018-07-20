@@ -70,7 +70,7 @@ module Ruby
 
     def test_instance_return
       lst = compile( "return @var" ).to_vool
-      assert_equal InstanceVariable , lst.return_value.class
+      assert_equal Vool::InstanceVariable , lst.return_value.class
     end
 
     def test_class_basic
@@ -81,7 +81,7 @@ module Ruby
 
     def test_class_return
       lst = compile( "return @@var" ).to_vool
-      assert_equal ClassVariable , lst.return_value.class
+      assert_equal Vool::ClassVariable , lst.return_value.class
     end
 
     def test_module_basic

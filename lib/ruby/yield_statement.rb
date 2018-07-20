@@ -27,7 +27,7 @@ module Ruby
         arguments << arg
         return
       end
-      assign = LocalAssignment.new( "tmp_#{arg.object_id}".to_sym, arg)
+      assign = LocalAssignment.new( "tmp_#{arg.object_id}".to_sym, arg.to_vool)
       statements << assign
       arguments << LocalVariable.new(assign.name)
     end

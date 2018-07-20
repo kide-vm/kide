@@ -27,6 +27,9 @@ module Vool
       @statements << o
       self
     end
+    def prepend(o)
+      @statements = [o] + @statements
+    end
 
     # create mom instructions
     def to_mom( compiler )

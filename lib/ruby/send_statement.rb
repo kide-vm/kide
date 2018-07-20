@@ -27,7 +27,7 @@ module Ruby
         arguments << arg.to_vool
         return
       end
-      assign = Vool::LocalAssignment.new( "tmp_#{arg.object_id}".to_sym, arg)
+      assign = Vool::LocalAssignment.new( "tmp_#{arg.object_id}".to_sym, arg.to_vool)
       statements << assign
       arguments << Vool::LocalVariable.new(assign.name)
     end
