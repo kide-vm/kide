@@ -1,25 +1,24 @@
 module Ruby
-  module Named
+  class Variable < Statement
     attr_reader :name
+
     def initialize name
       @name = name
     end
-    def each(&block)
-    end
+
     def to_vool
       vool_brother.new(@name)
     end
   end
 
-  class LocalVariable < Statement
-    include Named
+  class LocalVariable < Variable
     def to_s
       name.to_s
     end
   end
 
-  class InstanceVariable < Statement
-    include Named
+  class InstanceVariable < Variable
+
     # used to collect type information
     def add_ivar( array )
       array << @name
@@ -29,11 +28,9 @@ module Ruby
     end
   end
 
-  class ClassVariable < Statement
-    include Named
+  class ClassVariable < Variable
   end
 
-  class ModuleName < Statement
-    include Named
+  class ModuleName < Variable
   end
 end

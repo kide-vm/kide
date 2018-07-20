@@ -9,7 +9,7 @@ module Ruby
     def to_vool()
       raise "not named left #{name.class}" unless name.is_a?(Symbol)
       case value
-      when Named , Constant
+      when Variable , Constant
         return self.vool_brother.new(name,@value.to_vool)
       when SendStatement
         return normalize_send

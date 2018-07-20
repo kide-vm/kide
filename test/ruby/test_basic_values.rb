@@ -53,28 +53,27 @@ module Ruby
     def setup
       Parfait.boot!
     end
-    def compile_ct( input )
+    def compile_const( input )
       lst = compile( input )
-      lst.ct_type.class_name
+      lst.class
     end
     def test_integer
-      assert_equal :Integer , compile_ct( "123")
+      assert_equal IntegerConstant , compile_const( "123")
     end
     def test_string
-      assert_equal :Word , compile_ct( "'string'")
+      assert_equal StringConstant , compile_const( "'string'")
     end
     def test_sym
-      assert_equal :Word , compile_ct( ":symbol")
+      assert_equal SymbolConstant , compile_const( ":symbol")
     end
-    # classes fot these are not implemented in parfait yet
-    def pest_nil
-      assert_equal :Nil , compile_ct( "nil")
+    def test_nil
+      assert_equal NilConstant , compile_const( "nil")
     end
-    def pest_false
-      assert_equal :False , compile_ct( "false")
+    def test_false
+      assert_equal FalseConstant , compile_const( "false")
     end
-    def pest_true
-      assert_equal :True , compile_ct( "true")
+    def test_true
+      assert_equal TrueConstant , compile_const( "true")
     end
   end
 end
