@@ -6,7 +6,6 @@ module Vool
 
     def setup
       Parfait.boot!
-      Risc::Builtin.boot_functions
       @ins = compile_first_method( "local = 5")
     end
 

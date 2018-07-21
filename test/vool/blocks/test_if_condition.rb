@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module VoolBlocks
-  class TestConditionIfMom #< MiniTest::Test
+  class TestConditionIfMom < MiniTest::Test
     include MomCompile
     include Mom
 

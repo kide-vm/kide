@@ -6,7 +6,6 @@ module VoolBlocks
 
     def setup
       Parfait.boot!
-      Risc::Builtin.boot_functions
       @ins = compile_first_block( "local = 5")
     end
 
@@ -72,12 +71,12 @@ module VoolBlocks
       Parfait.boot!
     end
     def test_assigns_const
-      @ins = compile_first_method( "@a = 5")
+      @ins = compile_first_block( "@a = 5")
       assert_equal Mom::SlotLoad , @ins.class , @ins
       assert_equal Mom::IntegerConstant , @ins.right.known_object.class , @ins
     end
     def test_assigns_move
-      @ins = compile_first_method( "@a = arg")
+      @ins = compile_first_block( "@a = arg")
       assert_equal Mom::SlotLoad , @ins.class , @ins
       assert_equal Mom::SlotDefinition , @ins.right.class , @ins
     end

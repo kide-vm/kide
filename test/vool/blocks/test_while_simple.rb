@@ -1,13 +1,13 @@
 require_relative "helper"
 
-module Vool
+module VoolBlocks
   class TestSimpleWhileMom < MiniTest::Test
     include MomCompile
     include Mom
 
     def setup
       Parfait.boot!
-      @ins = compile_first_method( "while(@a) ; @a = 5 ; end")
+      @ins = compile_first_block( "while(@a) ; @a = 5 ; end")
     end
 
     def test_compiles_as_while
