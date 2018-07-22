@@ -29,24 +29,23 @@ module Risc
              OperatorInstruction, IsZero, RegToSlot, Branch, LoadConstant,
              SlotToReg, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, Branch, RegToSlot, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant,
-             SlotToReg, Branch, DynamicJump, SlotToReg, SlotToReg,
-             LoadData, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg,
-             RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, Branch, SlotToReg, SlotToReg, SlotToReg,
-             FunctionReturn, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             RegToSlot, RegToSlot, Branch, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
+             SlotToReg, RegToSlot, SlotToReg, LoadConstant, SlotToReg,
+             DynamicJump, SlotToReg, SlotToReg, LoadData, OperatorInstruction,
+             LoadConstant, SlotToReg, SlotToReg, RegToSlot, RegToSlot,
+             RegToSlot, SlotToReg, SlotToReg, RegToSlot, Branch,
+             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
              SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, SlotToReg, Branch, FunctionReturn,
-             Transfer, SlotToReg, Branch, SlotToReg, Syscall,
-             NilClass]
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg,
+             Branch, Syscall, NilClass]
        assert_equal Fixnum , get_return.class
        assert_equal 1 , get_return
     end
 
     def test_call_main
-      call_ins = ticks(26)
+      call_ins = ticks(25)
       assert_equal FunctionCall , call_ins.class
       assert_equal  :main , call_ins.method.name
     end
@@ -57,17 +56,17 @@ module Risc
     end
 
     def test_dyn
-      cal = main_ticks(108)
+      cal = main_ticks(106)
       assert_equal DynamicJump ,  cal.class
     end
     def test_return
-      ret = main_ticks(140)
+      ret = main_ticks(137)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
       assert_equal Fixnum , link.class
     end
     def test_sys
-      sys = main_ticks(145)
+      sys = main_ticks(142)
       assert_equal Syscall ,  sys.class
     end
   end

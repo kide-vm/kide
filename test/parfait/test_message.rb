@@ -35,8 +35,8 @@ module Parfait
     def test_caller
       assert_nil @mess.caller
     end
-    def test_name
-      assert_nil @mess.name
+    def test_method
+      assert_nil @mess.method
     end
   end
 end

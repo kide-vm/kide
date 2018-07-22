@@ -10,9 +10,9 @@ module Risc
       @input = "5.div4"
       @expect = [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
                  SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-                 RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
-                 LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-                 RegToSlot, SlotToReg, FunctionCall, Label]
+                 RegToSlot, RegToSlot, SlotToReg, RegToSlot, LoadConstant,
+                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
+                 SlotToReg, FunctionCall, Label]
       @produced = produce_body
     end
 
@@ -66,22 +66,16 @@ module Risc
       sl = @produced.next( 10 )
       assert_reg_to_slot( sl , :r4  ,  :r5 ,  0 )
     end
-
-    def test_get_name
+    def test_store_method_in_message
       sl = @produced.next( 11 )
-      assert_slot_to_reg( sl , :r1 ,  1 ,  :r6 )
+      assert_reg_to_slot( sl , :r1  ,  :r3 ,  7 )
     end
-    def test_store_name_in_message
-      sl = @produced.next( 12 )
-      assert_reg_to_slot( sl , :r6  ,  :r3 ,  7 )
-    end
-
     def test_get_next_next #reduce onto itself
-      sl = @produced.next( 13 )
+      sl = @produced.next( 12 )
       assert_slot_to_reg( sl , :r3 ,  1 ,  :r3 )
     end
     def test_store_next_next_in_space
-      sl = @produced.next( 14 )
+      sl = @produced.next( 13 )
       assert_reg_to_slot( sl , :r3  ,  :r2 ,  3 )
     end
   end

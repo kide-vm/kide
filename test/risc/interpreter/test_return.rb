@@ -13,7 +13,7 @@ module Risc
       #show_main_ticks # get output of what is
       check_main_chain [LoadConstant, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
              SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer,
-             SlotToReg, Branch, SlotToReg, Syscall, NilClass]
+             SlotToReg, SlotToReg, Branch, Syscall, NilClass]
       assert_equal 5 , get_return
     end
 
@@ -44,7 +44,7 @@ module Risc
       assert_equal 5 , save.index
     end
     def test_return_reduce
-      save = main_ticks(13)
+      save = main_ticks(12)
       assert_equal SlotToReg ,  save.class
       assert_equal :r0 , save.register.symbol
       assert_equal 2 , save.index

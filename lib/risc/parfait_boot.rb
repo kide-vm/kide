@@ -154,7 +154,7 @@ module Parfait
       List: {indexed_length: :Integer , next_list: :List} ,
       Message: { next_message: :Message,   receiver: :Object, frame: :NamedList ,
                  return_address: :Integer, return_value: :Object,
-                 caller: :Message , name: :Word ,     arguments: :NamedList },
+                 caller: :Message , method: :TypedMethod ,     arguments: :NamedList },
       NamedList: {},
       NilClass: {},
       Object: {},

@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestYieldArgsSendMom < MiniTest::Test
+  class TestYieldArgsSendMom #< MiniTest::Test
     include MomCompile
     include Mom
 

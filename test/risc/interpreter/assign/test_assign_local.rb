@@ -14,7 +14,7 @@ module Risc
       check_main_chain [LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg,
-             Branch, SlotToReg, Syscall, NilClass]
+             SlotToReg, Branch, Syscall, NilClass]
       assert_equal 15 , get_return
     end
 

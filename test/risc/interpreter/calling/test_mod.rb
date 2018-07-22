@@ -13,27 +13,27 @@ module Risc
       #show_main_ticks # get output of what is
       check_main_chain [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, RegToSlot, Branch, SlotToReg,
-             RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, RegToSlot, SlotToReg, FunctionCall, SlotToReg,
-             SlotToReg, LoadData, OperatorInstruction, LoadConstant, SlotToReg,
-             SlotToReg, RegToSlot, RegToSlot, RegToSlot, SlotToReg,
-             SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg,
-             SlotToReg, FunctionReturn, SlotToReg, SlotToReg, RegToSlot,
-             Branch, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
-             FunctionReturn, Transfer, SlotToReg, Branch, SlotToReg,
-             Syscall, NilClass]
+             RegToSlot, RegToSlot, SlotToReg, Branch, RegToSlot,
+             LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+             RegToSlot, SlotToReg, FunctionCall, SlotToReg, SlotToReg,
+             LoadData, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg,
+             RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
+             RegToSlot, Branch, SlotToReg, SlotToReg, SlotToReg,
+             FunctionReturn, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             Branch, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
+             Transfer, SlotToReg, SlotToReg, Branch, Syscall,
+             NilClass]
        assert_equal 2 , get_return
     end
 
     def test_load
-      lod = main_ticks(17)
+      lod = main_ticks(16)
       assert_equal LoadConstant , lod.class
       assert_equal 9 , lod.constant.value
     end
     def test_fix # reduce self to fix
-      sl = main_ticks(26)
+      sl = main_ticks(25)
       assert_equal SlotToReg , sl.class
       assert_equal :r1 , sl.array.symbol
       assert_equal 2 , sl.index
@@ -42,7 +42,7 @@ module Risc
     end
 
     def test_sys
-      sys = main_ticks(61)
+      sys = main_ticks(60)
       assert_equal Syscall ,  sys.class
       assert_equal :exit ,  sys.name
     end

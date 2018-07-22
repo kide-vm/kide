@@ -9,9 +9,9 @@ module Risc
       @input = "5.div4"
       @expect = [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
                  SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-                 RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
-                 LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-                 RegToSlot, SlotToReg, FunctionCall, Label]
+                 RegToSlot, RegToSlot, SlotToReg, RegToSlot, LoadConstant,
+                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
+                 SlotToReg, FunctionCall, Label]
     end
 
     def test_send_instructions
@@ -19,24 +19,24 @@ module Risc
     end
     def test_load_5
       produced = produce_body
-      assert_equal 5 , produced.next(15).constant.value
+      assert_equal 5 , produced.next(14).constant.value
     end
     def test_load_label
       produced = produce_body
-      assert_equal Label , produced.next(18).constant.class
+      assert_equal Label , produced.next(17).constant.class
     end
     def test_call_reg_setup
       produced = produce_body
-      assert_equal :div4 , produced.next(22).method.name
+      assert_equal :div4 , produced.next(21).method.name
     end
     def test_function_call
       produced = produce_body
-      assert_equal FunctionCall , produced.next(22).class
-      assert_equal :div4 , produced.next(22).method.name
+      assert_equal FunctionCall , produced.next(21).class
+      assert_equal :div4 , produced.next(21).method.name
     end
     def test_check_continue
       produced = produce_body
-      assert produced.next(23).name.start_with?("continue_")
+      assert produced.next(22).name.start_with?("continue_")
     end
     #TODO check the message setup, type and frame moves
   end

@@ -9,10 +9,10 @@ module Risc
       @input = "5.get_internal_word(1)"
       @expect = [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
                  SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-                 RegToSlot, SlotToReg, RegToSlot, SlotToReg, RegToSlot,
-                 LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-                 SlotToReg, FunctionCall, Label]
+                 RegToSlot, RegToSlot, SlotToReg, RegToSlot, LoadConstant,
+                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg,
+                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
+                 FunctionCall, Label]
     end
 
     def test_send_instructions
@@ -20,16 +20,16 @@ module Risc
     end
     def test_load_5
       produced = produce_body
-      assert_equal 5 , produced.next(15).constant.value
+      assert_equal 5 , produced.next(14).constant.value
     end
     def base
-      18
+      17
     end
     def test_load_arg_const
       produced = produce_body
       assert_equal LoadConstant , produced.next(base).class
       assert_equal Parfait::Integer , produced.next(base).constant.class
-      assert_equal 1 , produced.next(18).constant.value
+      assert_equal 1 , produced.next(base).constant.value
     end
     def test_load_next_m
       produced = produce_body

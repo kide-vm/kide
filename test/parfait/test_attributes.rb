@@ -16,7 +16,7 @@ module Parfait
     def test_message_name_nil
       last = @type.names.last
       assert_equal :arguments , last , @type.names.inspect
-      assert_nil  @mess.name
+      assert_nil  @mess.method
     end
     def test_message_next_set
       @mess.next_message = :next_message

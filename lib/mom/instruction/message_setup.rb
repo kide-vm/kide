@@ -72,8 +72,7 @@ module Mom
         named_list << next_message[:frame]
         named_list[:type] << type
 
-        name << callable_method[:name]
-        next_message[:name] << name
+        next_message[:method] << callable_method
 
         #store next.next back into space
         #FIXME in a multithreaded future this should be done soon after getting

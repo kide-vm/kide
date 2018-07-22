@@ -18,7 +18,7 @@ module Parfait
     attr_accessor :next_message
     attr_reader   :receiver  , :frame
     attr_reader   :return_address, :return_value
-    attr_reader   :caller , :name , :arguments
+    attr_reader   :caller , :method , :arguments
 
     def initialize( next_m )
       @next_message = next_m
@@ -40,7 +40,7 @@ module Parfait
       get_at(index)
     end
     def to_s
-      "Message:#{name}(#{arguments.get_length})"
+      "Message:#{method&.name}(#{arguments.get_length})"
     end
   end
 end
