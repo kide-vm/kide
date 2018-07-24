@@ -26,7 +26,7 @@ module Risc
       assert @branch.precheck_called
     end
   end
-  class TestBranchListenerPositioned #< MiniTest::Test
+  class TestBranchListenerPositioned < MiniTest::Test
     def setup
       @machine = Risc.machine.boot
       @machine.translate(:interpreter)

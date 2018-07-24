@@ -55,6 +55,7 @@ module Risc
       name = :word if name == :name
       name = :message if name == :next_message
       name = :message if name == :caller
+      name = :named_list if name == :arguments
       sym = name.to_s.camelise.to_sym
       clazz = Parfait.object_space.get_class_by_name(sym)
       raise "Not implemented/found object #{name}:#{sym}" unless clazz

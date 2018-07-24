@@ -42,8 +42,13 @@ module Mom
           cache_entry << from
           callable_method << cache_entry[:cached_method]
         end
+      when Integer
+        builder.build do
+          arguments << message[:arguments]
+          callable_method << arguments[ from ]
+        end
       else
-        raise "unknown source #{method_source}"
+        raise "unknown source #{method_source.class}:#{method_source}"
       end
       build_message_data(builder)
       return builder.built

@@ -44,6 +44,14 @@ module Risc
     attr_reader :register
   end
 
+  # A Dynamic yield is very much like a DynamicJump, especially in it's idea
+  #
+  # The implentation differes slightly, as we use a chache entry in the DynamicJump
+  # but a block in the DynamicYield.
+  # Using means that we assume the register to be ready loaded with a Block
+  class DynamicYield < DynamicJump
+  end
+
   class IsZero < Branch
   end
 

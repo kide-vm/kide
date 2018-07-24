@@ -178,7 +178,7 @@ module Parfait
       end
     end
   end
-  class TestMethods #< ParfaitTest
+  class TestMethods < ParfaitTest
     def setup
       super
       Risc::Builtin.boot_functions

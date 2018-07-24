@@ -31,7 +31,7 @@ module Vool
     def make_arg_type(  )
       type_hash = {}
       @args.each {|arg| type_hash[arg] = :Object }
-      type_hash[:implicit_block] = :Object if has_yield?
+      type_hash[:implicit_block] = :Block if has_yield?
       Parfait::NamedList.type_for( type_hash )
     end
 
