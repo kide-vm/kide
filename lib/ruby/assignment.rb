@@ -13,9 +13,22 @@ module Ruby
         return self.vool_brother.new(name,@value.to_vool)
       when SendStatement
         return normalize_send
+      when BlockStatement
+        return normalize_block
       else
         raise "unsupported right #{value}"
       end
+    end
+
+    # Ruby BlockStatements have the block and the send. Normalize the send
+    # and assign it (it is the last in the list)
+    def normalize_block
+      statements = value.to_vool
+      index = statements.length - 1
+      snd = statements.statements[index]
+      raise "Expecting Send #{snd.class}:#{snd}" unless snd.is_a?( Vool::SendStatement)
+      statements.statements[index] = assignment( snd )
+      statements
     end
 
     # sends may have complex args that get hoisted in vool:ing them
