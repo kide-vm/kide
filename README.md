@@ -22,8 +22,9 @@ on blocks currently, see below.
 
 ### Ruby
 
-Ruby is input layer, we use whitequarks parser to parse ruby and transform it to
-Vool.
+Ruby is input layer, we use whitequarks parser to parse ruby. The untyped ast is then
+transformed into a typed version. The classes and fields follow the ast output pretty
+much one to one. The we transform to Vool, removing much of ruby's "fluff".
 
 ### Vool
 
@@ -33,8 +34,6 @@ it has semantics, and those are substantially simpler than ruby.
 Vool is Ruby without the fluff. No unless, no reverse if/while, no splats. Just simple
 oo. (Without this level the step down to the next layer was just too big)
 
-Also Vool has a typed syntax tree, unlike the AST from the parser gem. This is easier when writing conversion code: the code goes with the specific class
-(more oo than the visitor pattern, imho)
 
 ### Mom
 
@@ -51,7 +50,8 @@ is much smaller (easier to understand) and the mapping down to risc is quite str
 ### Risc
 
 The risc cpu architecture approach was a simplification of the cpu instruction set to a
-minimum. Arm, our main target is a risc architecture, and the next level down.
+minimum. Arm, our main target, is a risc architecture, and much like Vool uncrinkles
+Ruby, the Risc layer simplifies ARM.
 
 The Risc layer here abstracts the Arm in a minimal and independent way. It does not model
 any real RISC cpu instruction set, but rather implements what is needed for rubyx.
@@ -60,7 +60,7 @@ Instructions are derived from a base class, so the instruction set is extensible
 way additional functionality may be added by external code.
 
 Risc knows memory and has a small set of registers. It allows memory to register transfer
-and back and inter register transfer. But has no memory to memory transfer like Mom.
+and back, and inter register transfer. But has no memory to memory transfer like Mom.
 
 ### Arm
 
@@ -93,8 +93,9 @@ integer addition, or a instance variable access. These methods exists in any com
 and are called builtin here.
 
 Builtin methods are coded at the risc level with a dsl. Even though basically assembler,
-they are through the ruby magic quite readable
-([see init](https://github.com/ruby-x/rubyx/blob/2f07cc34f3f56c72d05c7d822f40fa6c15fd6a08/lib/risc/builtin/object.rb#L48))
+they are
+([quite readable](https://github.com/ruby-x/rubyx/blob/2f07cc34f3f56c72d05c7d822f40fa6c15fd6a08/lib/risc/builtin/object.rb#L48))
+through the ruby magic.
 
 ## Types and classes, static vs dynamic
 
@@ -152,6 +153,15 @@ Specifically here is a list of what works:
 Current work is on implicit blocks, which are surprisingly like static method calls
 and lambdas like dynamic dispatch.
 
+## Contributing to rubyx
+
+Probably best to talk to me, if it's not a typo or so.
+
+There is a todo, for inspiration, though actual tasks that result in pulls, should start
+their live as a github issue. There we can discuss details so that no work is done
+in vain. There are some small issues there already, just comment if you're interested.
+
+Fork and create a branch before sending pulls.
 
 ### Stary sky
 
@@ -168,21 +178,10 @@ Iterate:
 10. Also better string/arrays would be good.
 11. The minor point of threads and hopefully lock free primitives to deal with that.
 12. Other languages, python at least, maybe others
-13. translation of the vm instructions to another vm, say js
 
 And generally optimise and work towards that perfect world (we never seem to be able to attain).
 
-
-
-## Contributing to rubyx
-
-Probably best to talk to me, if it's not a typo or so.
-
-I do have a todo, for the adventurous.
-
-Fork and create a branch before sending pulls.
-
-== Copyright
+## Copyright
 
 Copyright (c) 2014-8 Torsten Ruger.
 
