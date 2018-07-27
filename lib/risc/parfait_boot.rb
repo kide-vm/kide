@@ -133,15 +133,15 @@ module Parfait
   # and all instance variable names. Really have to find a better way
   def self.type_names
      {BinaryCode: {next: :BinaryCode} ,
-      Block: {binary: :BinaryCode, next: :CallableMethod,
-                      arguments_type: :Type , self_type: :Type, frame_type: :Type } ,
+      Block: {binary: :BinaryCode, next: :Block,
+              arguments_type: :Type , self_type: :Type, frame_type: :Type } ,
 
       CacheEntry: {cached_type: :Type , cached_method: :CallableMethod  } ,
       Callable:   {binary: :BinaryCode,next: :Callable ,
                    arguments_type: :Type , self_type: :Type, frame_type: :Type  } ,
-      CallableMethod: {name: :Word, binary: :BinaryCode,
+      CallableMethod: {binary: :BinaryCode, next: :CallableMethod ,
                        arguments_type: :Type , self_type: :Type, frame_type: :Type ,
-                       next: :CallableMethod} ,
+                       name: :Word , blocks: :Block} ,
       Class: {instance_methods: :List, instance_type: :Type,
               name: :Word, super_class_name: :Word },
       DataObject: {},

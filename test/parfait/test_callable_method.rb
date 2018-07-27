@@ -99,5 +99,12 @@ module Parfait
       method = Parfait::CallableMethod.new( @obj , :other , @args , @frame)
       assert @method != method
     end
+    def test_create_block
+      @block = @method.create_block(@args , @frame)
+      assert_equal Block , @block.class
+    end
+    def test_has_block
+      assert_equal 7 , @method.get_type.variable_index( :blocks )
+    end
   end
 end

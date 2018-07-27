@@ -13,6 +13,14 @@ module Risc
     end
     alias :do_setup :setup
 
+    def yielder
+      "def yielder; yield ; end"
+    end
+
+    def block_main( main , extra = yielder)
+      in_Space("#{extra} ; def main(arg) ; #{main} ; end")
+    end
+
     # check the given array of instructions is what the interpreter actually does
     # possible second argument ignores the given amount, usually up until main
     def check_chain( should , start_at = 0 )
