@@ -64,7 +64,7 @@ module Vool
     # to call the block (that we know now to be the last arg),
     # we do a message setup, arg transfer and the a arg_yield (which is similar to dynamic_call)
     def yield_arg_block(compiler)
-      arg_index = compiler.get_method.arguments_type.get_length
+      arg_index = compiler.get_method.arguments_type.get_length - 1
       setup  = Mom::MessageSetup.new( arg_index )
       mom_receive = @receiver.slot_definition(compiler)
       arg_target = [:message , :next_message , :arguments]

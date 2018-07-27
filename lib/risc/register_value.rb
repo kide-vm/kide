@@ -66,7 +66,7 @@ module Risc
     end
 
     def to_s
-      s = "#{symbol}:#{type}"
+      s = "#{symbol}:#{type&.class_name}"
       s += ":#{extra}" unless extra.empty?
       s
     end

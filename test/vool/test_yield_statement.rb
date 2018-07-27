@@ -35,7 +35,7 @@ module Vool
     end
     def test_setup
       assert_equal MessageSetup, @ins.next(2).class
-      assert_equal 3, @ins.next(2).method_source
+      assert_equal 2, @ins.next(2).method_source
     end
     def test_transfer
       assert_equal ArgumentTransfer, @ins.next(3).class
@@ -53,7 +53,7 @@ module Vool
     end
     def test_yield
       assert_equal BlockYield, @ins.next(4).class
-      assert_equal 3, @ins.next(4).arg_index
+      assert_equal 2, @ins.next(4).arg_index
     end
   end
 end

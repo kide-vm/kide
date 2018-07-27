@@ -68,7 +68,17 @@ module Parfait
     end
 
     def to_s
-      "#{class_name}-#{@names.inspect}"
+      str = "#{class_name}-["
+      first = false
+      @names.each do |name|
+        unless(first)
+          first = true
+          str += ":#{name}"
+        else
+          str += ", :#{name}"
+        end
+      end
+      str + "]"
     end
 
     def method_names
