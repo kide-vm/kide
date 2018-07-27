@@ -36,16 +36,16 @@ module Mom
     def build_with(builder)
       case from = method_source
       when Parfait::CallableMethod
-        builder.build { callable_method << from }
+        builder.build { callable << from }
       when Parfait::CacheEntry
         builder.build do
           cache_entry << from
-          callable_method << cache_entry[:cached_method]
+          callable << cache_entry[:cached_method]
         end
       when Integer
         builder.build do
           arguments << message[:arguments]
-          callable_method << arguments[ from ]
+          callable << arguments[ from ]
         end
       else
         raise "unknown source #{method_source.class}:#{method_source}"
@@ -69,15 +69,15 @@ module Mom
         message[:next_message] << next_message
         next_message[:caller] << message
 
-        type << callable_method[:arguments_type]
+        type << callable[:arguments_type]
         named_list << next_message[:arguments]
         named_list[:type] << type
 
-        type << callable_method[:frame_type]
+        type << callable[:frame_type]
         named_list << next_message[:frame]
         named_list[:type] << type
 
-        next_message[:method] << callable_method
+        next_message[:method] << callable
 
         #store next.next back into space
         #FIXME in a multithreaded future this should be done soon after getting

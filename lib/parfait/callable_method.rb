@@ -42,8 +42,8 @@ module Parfait
     end
 
     def add_block(bl)
-      block = self.blocks
-      bl.set_next(block) if(block)
+      was = @blocks
+      bl.set_next(was) if(was)
       @blocks = bl
     end
 

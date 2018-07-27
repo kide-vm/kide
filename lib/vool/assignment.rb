@@ -15,7 +15,6 @@ module Vool
       at_depth(depth , "#{@name} = #{@value}")
     end
 
-
     def chain_assign(assign , compiler)
       return assign unless @value.is_a?(SendStatement)
       @value.to_mom(compiler) << assign
