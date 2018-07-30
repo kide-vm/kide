@@ -38,7 +38,7 @@ module Mom
       @linker.assemblers.each do |asm|
         all = []
         asm.instructions.each do |ins|
-          assert !all.include?(ins) , "Double in #{asm.method.name}:#{ins}"
+          assert !all.include?(ins) , "Double in #{asm.callable.name}:#{ins}"
           all << ins
         end
       end

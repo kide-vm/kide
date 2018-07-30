@@ -14,7 +14,7 @@ module Risc
     alias :do_setup :setup
 
     def yielder
-      "def yielder; yield ; end"
+      "def yielder; return yield ; end"
     end
 
     def block_main( main , extra = yielder)
@@ -42,7 +42,7 @@ module Risc
     end
 
     def get_return
-      assert_equal Parfait::Message , @interpreter.get_register(:r8).class
+      #assert_equal Parfait::Message , @interpreter.get_register(:r8).class
       @interpreter.get_register(:r0)
     end
 
