@@ -10,7 +10,8 @@ module Risc
 
   class CallableCompiler
 
-    def initialize( )
+    def initialize( callable )
+      @callable = callable
       @regs = []
       @risc_instructions = Risc.label(source_name, source_name)
       @risc_instructions << Risc.label( source_name, "unreachable")
@@ -18,7 +19,7 @@ module Risc
       @constants = []
       @block_compilers = []
     end
-    attr_reader :risc_instructions , :constants , :block_compilers
+    attr_reader :risc_instructions , :constants , :block_compilers , :callable
 
     # convert the given mom instruction to_risc and then add it (see add_code)
     # continue down the instruction chain unti depleted

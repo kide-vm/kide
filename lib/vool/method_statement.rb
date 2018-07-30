@@ -1,19 +1,19 @@
 module Vool
   class MethodStatement < Statement
-    attr_reader :name, :args , :body , :clazz
+    attr_reader :name, :args , :body
 
-    def initialize( name , args , body , clazz = nil)
+    def initialize( name , args , body )
       @name , @args , @body = name , args , body
       raise "no bod" unless @body
-      @clazz = clazz
     end
 
     def to_mom(clazz)
-      @clazz = clazz || raise( "no class in #{self}")
-      method = @clazz.add_method_for(name , make_arg_type , make_frame , body )
+      raise( "no class in #{self}") unless clazz
+      method = clazz.add_method_for(name , make_arg_type , make_frame , body )
       compiler = method.compiler_for(clazz.instance_type)
       each do |node| ## TODO: must account for nested blocks (someday)
-        node.to_mom(compiler) if node.is_a?(BlockStatement)
+        next unless node.is_a?(BlockStatement)
+        compiler.block_compilers << node.to_mom(compiler)
       end
       compiler
     end

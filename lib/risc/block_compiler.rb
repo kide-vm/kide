@@ -5,11 +5,11 @@ module Risc
   class BlockCompiler < CallableCompiler
 
     attr_reader :block , :risc_instructions , :constants
+    alias :block  :callable
 
     def initialize( block , method)
       @method = method
-      @block = block
-      super()
+      super(block)
     end
 
     def source_name
@@ -34,9 +34,9 @@ module Risc
     # For blocks the options are args or frame
     # or then the methods arg or frame
     def slot_type_for(name)
-      if @block.arguments_type.variable_index(name)
+      if @callable.arguments_type.variable_index(name)
         slot_def = [:arguments]
-      elsif @block.frame_type.variable_index(name)
+      elsif @callable.frame_type.variable_index(name)
         slot_def = [:frame]
       elsif @method.arguments_type.variable_index(name)
         slot_def = [:caller , :arguments ]
@@ -50,15 +50,15 @@ module Risc
 
     # return the frame type, ie the blocks frame type
     def frame_type
-      @block.frame_type
+      @callable.frame_type
     end
     # return the frame type, ie the blocks arguments type
     def arg_type
-      @block.arguments_type
+      @callable.arguments_type
     end
     # return the frame type, ie the blocks self_type
     def receiver_type
-      @block.self_type
+      @callable.self_type
     end
 
   end

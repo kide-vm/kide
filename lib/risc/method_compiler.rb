@@ -7,20 +7,22 @@ module Risc
   class MethodCompiler < CallableCompiler
 
     def initialize( method )
-      @method = method
-      super()
+      super(method)
     end
 
     def source_name
-      "#{@method.self_type.name}.#{@method.name}"
+      "#{@callable.self_type.name}.#{@callable.name}"
     end
+
     def get_method
-      @method
+      @callable
     end
+
     # sometimes the method is used as source (tb reviewed)
     def source
-      @method
+      @callable
     end
+
     # helper method for builtin mainly
     # the class_name is a symbol, which is resolved to the instance_type of that class
     #
@@ -33,12 +35,13 @@ module Risc
     end
 
     def add_method_to( target )
-      target.add_method( @method )
+      target.add_method( @callable )
     end
 
     def create_block(arg_type , frame_type)
-      @method.create_block(arg_type ,frame_type)
+      @callable.create_block(arg_type ,frame_type)
     end
+
     # create a method for the given type ( Parfait type object)
     # method_name is a Symbol
     # args a hash that will be converted to a type
@@ -55,7 +58,7 @@ module Risc
     # determine how given name need to be accsessed.
     # For methods the options are args or frame
     def slot_type_for(name)
-      if @method.arguments_type.variable_index(name)
+      if @callable.arguments_type.variable_index(name)
         type = :arguments
       else
         type = :frame
@@ -69,23 +72,23 @@ module Risc
 
     # return true or false if the given name is in scope (arg/local)
     def in_scope?(name)
-      ret = true if @method.arguments_type.variable_index(name)
-      ret = @method.frame_type.variable_index(name) unless ret
+      ret = true if @callable.arguments_type.variable_index(name)
+      ret = @callable.frame_type.variable_index(name) unless ret
       ret
     end
 
 
     # return the frame type, ie the method frame type
     def frame_type
-      @method.frame_type
+      @callable.frame_type
     end
     # return the frame type, ie the method arguments type
     def arg_type
-      @method.arguments_type
+      @callable.arguments_type
     end
     # return the frame type, ie the method self_type
     def receiver_type
-      @method.self_type
+      @callable.self_type
     end
 
     # convert the given mom instruction to_risc and then add it (see add_code)
