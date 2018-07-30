@@ -14,7 +14,7 @@ module Risc
       end
     end
     def test_one_main
-      mains = @linker.assemblers.find_all{|asm| asm.method.name == :main }
+      mains = @linker.assemblers.find_all{|asm| asm.callable.name == :main }
       assert_equal 1 , mains.length
     end
     def test_assembler_num

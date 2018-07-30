@@ -82,13 +82,13 @@ module Risc
     # start at code_start.
     def position_code(code_start)
       assemblers.each do |asm|
-        Position.log.debug "Method start #{code_start.to_s(16)} #{asm.method.name}"
-        code_pos = CodeListener.init(asm.method.binary, platform)
+        Position.log.debug "Method start #{code_start.to_s(16)} #{asm.callable.name}"
+        code_pos = CodeListener.init(asm.callable.binary, platform)
         instructions = asm.instructions
-        InstructionListener.init( instructions, asm.method.binary)
+        InstructionListener.init( instructions, asm.callable.binary)
         code_pos.position_listener( LabelListener.new(instructions))
         code_pos.set(code_start)
-        code_start = Position.get(asm.method.binary.last_code).next_slot
+        code_start = Position.get(asm.callable.binary.last_code).next_slot
       end
     end
 
@@ -109,7 +109,7 @@ module Risc
 
     def assemble
       assemblers.each do |asm|
-        writer = BinaryWriter.new(asm.method.binary)
+        writer = BinaryWriter.new(asm.callable.binary)
         writer.assemble(asm.instructions)
       end
     end
@@ -119,8 +119,8 @@ module Risc
     # risc_init is a branch to the __init__ method
     #
     def cpu_init_init
-      init = assemblers.find {|asm| asm.method.name == :__init__}
-      risc_init = Branch.new( "__initial_branch__" , init.method.binary )
+      init = assemblers.find {|asm| asm.callable.name == :__init__}
+      risc_init = Branch.new( "__initial_branch__" , init.callable.binary )
       @platform.translator.translate(risc_init)
     end
 

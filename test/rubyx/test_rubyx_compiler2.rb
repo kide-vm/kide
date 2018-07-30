@@ -14,7 +14,7 @@ module RubyX
       assert_equal Risc::Linker , @linker.class
     end
     def test_method
-      assert_equal :main , @linker.assemblers.first.method.name
+      assert_equal :main , @linker.assemblers.first.callable.name
     end
   end
 end

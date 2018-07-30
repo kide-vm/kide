@@ -60,7 +60,7 @@ module Risc
     # Really like any other object, it's just about the ordering
     def write_code
       @linker.assemblers.each do |asm|
-        asm.method.each_binary do |code|
+        asm.callable.each_binary do |code|
           write_any(code)
         end
       end

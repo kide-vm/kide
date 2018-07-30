@@ -24,7 +24,7 @@ module Elf
 
       # for debug add labels for labels
       @linker.assemblers.each do |asm|
-        meth = asm.method
+        meth = asm.callable
         asm.instructions.each do |label|
           next unless label.is_a?(Risc::Label)
           add_symbol "#{meth.self_type.name}@#{meth.name}:Label=#{label.name}" , Risc::Position.get(label).at
