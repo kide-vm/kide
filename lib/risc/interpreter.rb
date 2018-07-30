@@ -110,7 +110,10 @@ module Risc
     # Instruction interpretation starts here
     def execute_DynamicJump
       method =  get_register(@instruction.register)
-      pos = Position.get(method.binary).at + Parfait::BinaryCode.byte_offset
+      pos = Position.get(method.binary)
+      log.debug "Jump to binary at: #{pos} #{method.name}:#{method.binary.class}"
+      raise "Invalid position for #{method.name}" unless pos.valid?
+      pos = pos + Parfait::BinaryCode.byte_offset
       set_pc( pos )
       false
     end

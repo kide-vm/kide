@@ -49,16 +49,6 @@ module Risc
       assert_equal Vool::MethodStatement , clazz.body.first.class
     end
 
-    def test_method_statement_has_class
-      vool = in_test_vool("def meth; @ivar = 5;end")
-      assert vool.body.first.clazz
-    end
-
-    def test_parfait_class_creation
-      vool = in_test_vool("def meth; @ivar = 5;end")
-      assert_equal Parfait::Class , vool.body.first.clazz.class
-    end
-
     def test_callable_method_instance_type
       in_test_vool("def meth; @ivar = 5; @ibar = 4;end")
       test = Parfait.object_space.get_class_by_name(:Test)

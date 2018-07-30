@@ -54,7 +54,7 @@ module Risc
     end
     def test_pc1
       @interpreter.tick
-      assert_equal 22968 , @interpreter.pc
+      assert_equal 23736 , @interpreter.pc
     end
     def test_tick2
       @interpreter.tick
@@ -68,7 +68,7 @@ module Risc
     def test_pc2
       @interpreter.tick
       @interpreter.tick
-      assert_equal 22972 , @interpreter.pc
+      assert_equal 23740 , @interpreter.pc
     end
     def test_tick_14_jump
       14.times {@interpreter.tick}

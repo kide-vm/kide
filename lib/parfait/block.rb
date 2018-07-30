@@ -18,6 +18,5 @@ module Parfait
     def inspect
       "#{@self_type.object_class.name}(#{arguments_type.inspect})"
     end
-
   end
 end
