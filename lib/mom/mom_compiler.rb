@@ -27,10 +27,23 @@ module Mom
     def translate_methods(translator)
       method_compilers.collect do |compiler|
         #log.debug "Translate method #{compiler.method.name}"
-        translate_cpu(compiler , translator)
-      end
+        translate_method(compiler , translator)
+      end.flatten
     end
 
+    # translate one method, which means the method itself and all blocks inside it
+    # returns an array of assemblers
+    def translate_method( method_compiler , translator)
+      all = []
+      all << translate_cpu( method_compiler , translator )
+      method_compiler.block_compilers.each do |block_compiler|
+        all << translate_cpu(block_compiler , translator)
+      end
+      all
+    end
+
+    # compile the callable (method or block) to cpu
+    # return an Assembler that will then translate to binary
     def translate_cpu(compiler , translator)
       risc = compiler.risc_instructions
       cpu_instructions = risc.to_cpu(translator)
