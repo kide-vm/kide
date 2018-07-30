@@ -9,13 +9,8 @@ module Vool
   #
   # As cache key we must use the type of the object (which is the first word of _every_ object)
   # as that is constant, and function implementations depend on the type (not class)
-  class SendStatement < Statement
-    attr_reader :name , :receiver , :arguments , :block
-
-    def initialize(name , receiver , arguments )
-      @name , @receiver , @arguments = name , receiver , arguments
-      @arguments ||= []
-    end
+  class SendStatement < CallStatement
+    attr_reader :block
 
     def block
       return nil if arguments.empty?
@@ -27,15 +22,8 @@ module Vool
       @arguments << block
     end
 
-    def to_s
-      "#{receiver}.#{name}(#{arguments.join(', ')})"
-    end
     def each(&block)
-      block.call(self)
-      block.call(@receiver)
-      @arguments.each do |arg|
-        block.call(arg)
-      end
+      super
       self.block.each(&block) if self.block
     end
 
@@ -54,12 +42,6 @@ module Vool
       else
         cached_call(compiler)
       end
-    end
-
-    # When used as right hand side, this tells what data to move to get the result into
-    # a varaible. It is (off course) the return value of the message
-    def slot_definition(compiler)
-      Mom::SlotDefinition.new(:message ,[ :return_value])
     end
 
     def message_setup(compiler,called_method)

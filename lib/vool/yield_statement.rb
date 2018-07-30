@@ -1,34 +1,17 @@
 module Vool
 
-  class YieldStatement < Statement
-    attr_reader :arguments
+  # A Yield is a lot like a Send, which is why they share the base class CallStatement
+  # That means it has a receiver (self), arguments and an (implicitly assigned) name
+  #
+  # On the ruby side, normalisation works pretty much the same too.
+  #
+  # On the way down to Mom, small differences become abvious, as the block that is
+  # yielded to is an argument. Whereas in a send it is either statically known
+  # or resolved and cached. Here it is dynamic, but sort of known dynamic.
+  # All we do before calling it is check that it is the right type. 
+  class YieldStatement < CallStatement
 
-    def initialize(name , receiver , arguments)
-      @arguments = arguments
-      @receiver = receiver
-      @name = name
-      @arguments ||= []
-    end
-
-    def to_s
-      "#{receiver}.#{name}(#{arguments.join(', ')})"
-    end
-
-    def each(&block)
-      block.call(self)
-      block.call(@receiver)
-      @arguments.each do |arg|
-        block.call(arg)
-      end
-    end
-
-    # When used as right hand side, this tells what data to move to get the result into
-    # a varaible. It is (off course) the return value of the message
-    def slot_definition(compiler)
-      Mom::SlotDefinition.new(:message ,[ :return_value])
-    end
-
-    # A Send breaks down to 2 steps:
+    # A Yield breaks down to 2 steps:
     # - Setting up the next message, with receiver, arguments, and (importantly) return address
     # - a SimpleCall,
     def to_mom( compiler )
@@ -74,11 +57,6 @@ module Vool
       end
       setup << Mom::ArgumentTransfer.new( mom_receive , args )
       setup << Mom::BlockYield.new( arg_index )
-    end
-
-    def to_s(depth = 0)
-      sen = "#{receiver}.#{name}(#{@arguments.collect{|a| a.to_s}.join(', ')})"
-      at_depth(depth , sen)
     end
 
   end
