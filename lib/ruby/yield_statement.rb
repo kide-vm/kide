@@ -1,6 +1,6 @@
 module Ruby
 
-  class YieldStatement < Callable
+  class YieldStatement < CallStatement
 
     def initialize(arguments)
       super("yield_#{object_id}".to_sym , SelfExpression.new , arguments)

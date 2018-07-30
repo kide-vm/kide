@@ -1,6 +1,6 @@
 module Ruby
 
-  class Callable < Statement
+  class CallStatement < Statement
     attr_reader :name , :receiver , :arguments
 
     def initialize(name , receiver , arguments )

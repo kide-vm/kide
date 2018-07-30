@@ -11,7 +11,7 @@ module Ruby
       case value
       when Variable , Constant
         return self.vool_brother.new(name,@value.to_vool)
-      when SendStatement
+      when SendStatement , YieldStatement
         return normalize_send
       when BlockStatement
         return normalize_block
@@ -36,7 +36,7 @@ module Ruby
     # plain send
     def normalize_send
       statements = value.to_vool
-      return assignment( statements ) if statements.is_a?(Vool::SendStatement)
+      return assignment( statements ) if statements.is_a?(Vool::CallStatement)
       # send has hoisted assigns, so we make an assign out of the "pure" send
       statements << assignment(statements.statements.pop)
       statements
