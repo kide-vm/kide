@@ -42,7 +42,7 @@ module Risc
     end
 
     def get_return
-      #assert_equal Parfait::Message , @interpreter.get_register(:r8).class
+      assert_equal Parfait::Message , @interpreter.get_register(:r8).class
       @interpreter.get_register(:r0)
     end
 

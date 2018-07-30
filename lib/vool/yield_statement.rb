@@ -8,7 +8,7 @@ module Vool
   # On the way down to Mom, small differences become abvious, as the block that is
   # yielded to is an argument. Whereas in a send it is either statically known
   # or resolved and cached. Here it is dynamic, but sort of known dynamic.
-  # All we do before calling it is check that it is the right type. 
+  # All we do before calling it is check that it is the right type.
   class YieldStatement < CallStatement
 
     # A Yield breaks down to 2 steps:

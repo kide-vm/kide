@@ -16,7 +16,7 @@ module Vool
     end
 
     def chain_assign(assign , compiler)
-      return assign unless @value.is_a?(SendStatement)
+      return assign unless @value.is_a?(CallStatement)
       @value.to_mom(compiler) << assign
     end
   end

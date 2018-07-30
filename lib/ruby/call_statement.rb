@@ -23,7 +23,7 @@ module Ruby
     end
 
     def normalize_arg(arg , arguments , statements)
-      if arg.is_a?(Constant) and !arg.is_a?(SendStatement)
+      if arg.is_a?(Constant) and !arg.is_a?(CallStatement)
         arguments << arg.to_vool
         return
       end

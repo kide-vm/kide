@@ -19,8 +19,21 @@ module Risc
              RegToSlot, LoadConstant, Branch, SlotToReg, RegToSlot,
              SlotToReg, FunctionCall, LoadConstant, SlotToReg, OperatorInstruction,
              IsZero, SlotToReg, SlotToReg, LoadConstant, SlotToReg,
-             RegToSlot, RegToSlot, SlotToReg, SlotToReg]
-      assert_equal 15 , get_return.class
+             RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             Branch, SlotToReg, SlotToReg, RegToSlot, RegToSlot,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             LoadConstant, SlotToReg, RegToSlot, SlotToReg, Branch,
+             SlotToReg, SlotToReg, DynamicJump, LoadConstant, RegToSlot,
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             SlotToReg, FunctionReturn, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             RegToSlot, SlotToReg, Branch, SlotToReg, SlotToReg,
+             FunctionReturn, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             Branch, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
+             Transfer, SlotToReg, SlotToReg, Branch, Syscall,
+             NilClass]
+      assert_equal 15 , get_return
     end
 
     def est_call_main
