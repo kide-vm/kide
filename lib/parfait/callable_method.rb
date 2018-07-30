@@ -11,13 +11,6 @@ module Parfait
 
   class CallableMethod < Callable
 
-    attr_reader :name
-
-    def initialize( self_type , name , arguments_type , frame_type)
-      @name = name
-      super(self_type , arguments_type , frame_type)
-    end
-
     def ==(other)
       return false unless other.is_a?(CallableMethod)
       return false if @name != other.name
@@ -38,7 +31,8 @@ module Parfait
     end
 
     def create_block(args , frame)
-      add_block( Block.new(self_type , args , frame))
+      block_name = "#{@name}_block".to_sym #TODO with id, to distinguish
+      add_block( Block.new(block_name , self_type , args , frame))
     end
 
     def add_block(bl)

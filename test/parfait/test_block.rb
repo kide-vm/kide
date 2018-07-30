@@ -19,6 +19,11 @@ module Parfait
     def test_block_in_method
       assert @method.has_block( @method.create_block(@args , @frame ))
     end
-
+    def test_block_hash_name
+      assert_equal  :meth_block , @method.create_block( @args , @frame ).name
+    end
+    def test_type_name
+      assert_equal 6 , @method.create_block( @args , @frame ).get_type.variable_index(:name)
+    end
   end
 end

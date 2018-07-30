@@ -134,11 +134,13 @@ module Parfait
   def self.type_names
      {BinaryCode: {next: :BinaryCode} ,
       Block: {binary: :BinaryCode, next: :Block,
-              arguments_type: :Type , self_type: :Type, frame_type: :Type } ,
-
+              arguments_type: :Type , self_type: :Type, frame_type: :Type,
+              name: :Word  } ,
+              
       CacheEntry: {cached_type: :Type , cached_method: :CallableMethod  } ,
       Callable:   {binary: :BinaryCode,next: :Callable ,
-                   arguments_type: :Type , self_type: :Type, frame_type: :Type  } ,
+                   arguments_type: :Type , self_type: :Type, frame_type: :Type,
+                   name: :Word  } ,
       CallableMethod: {binary: :BinaryCode, next: :CallableMethod ,
                        arguments_type: :Type , self_type: :Type, frame_type: :Type ,
                        name: :Word , blocks: :Block} ,

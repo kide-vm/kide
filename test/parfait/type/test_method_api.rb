@@ -14,7 +14,7 @@ module Parfait
     end
     def foo_method( for_class = :Try)
       args = Parfait::Type.for_hash( @try_class , { bar: :Integer})
-      ::Parfait::CallableMethod.new( @space.get_type_by_class_name(for_class) , :foo , args,empty_frame)
+      ::Parfait::CallableMethod.new( :foo ,@space.get_type_by_class_name(for_class) , args,empty_frame)
     end
     def add_foo_to( clazz = :Try )
       foo = foo_method( clazz )

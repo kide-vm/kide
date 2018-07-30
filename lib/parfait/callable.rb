@@ -13,11 +13,14 @@ module Parfait
   class Callable < Object
 
     attr_reader :self_type , :arguments_type , :frame_type , :binary
-    attr_reader :blocks, :next
-    def initialize( self_type , arguments_type , frame_type)
+    attr_reader :blocks, :next , :name
+    
+    def initialize( name , self_type , arguments_type , frame_type)
       super()
       raise "No class #{self}" unless self_type
       raise "For type, not class #{self_type}" unless self_type.is_a?(Type)
+      raise "Mixup" unless name.is_a?(Symbol)
+      @name = name
       @self_type = self_type
       init(arguments_type, frame_type)
     end

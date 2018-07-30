@@ -101,7 +101,7 @@ module Parfait
         found.init(arguments , frame)
         return found
       else
-        add_method CallableMethod.new( self , method_name , arguments , frame )
+        add_method CallableMethod.new( method_name , self ,  arguments , frame )
       end
     end
 

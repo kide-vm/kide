@@ -96,7 +96,7 @@ module Parfait
       assert_equal @method , @method
     end
     def test_not_equal
-      method = Parfait::CallableMethod.new( @obj , :other , @args , @frame)
+      method = Parfait::CallableMethod.new( :other , @obj , @args , @frame)
       assert @method != method
     end
     def test_create_block
@@ -105,6 +105,9 @@ module Parfait
     end
     def test_has_block
       assert_equal 7 , @method.get_type.variable_index( :blocks )
+    end
+    def test_has_name
+      assert_equal 6 , @method.get_type.variable_index( :name )
     end
   end
 end
