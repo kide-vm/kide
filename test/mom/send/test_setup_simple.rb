@@ -3,7 +3,6 @@ require_relative "../helper"
 module Risc
   class TestMessageSetupSimple < MiniTest::Test
     include Statements
-    include Assertions
 
     def setup
       super

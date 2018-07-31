@@ -39,9 +39,9 @@ module Risc
       elsif @callable.frame_type.variable_index(name)
         slot_def = [:frame]
       elsif @method.arguments_type.variable_index(name)
-        slot_def = [:caller , :arguments ]
+        slot_def = [:caller , :caller ,:arguments ]
       elsif @method.frame_type.variable_index(name)
-        slot_def = [:caller , :frame ]
+        slot_def = [:caller ,:caller , :frame ]
       elsif
         raise "no variable #{name} , need to resolve at runtime"
       end
