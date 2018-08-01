@@ -16,7 +16,9 @@ module Risc
     def yielder
       "def yielder; return yield ; end"
     end
-
+    def tenner
+      "def tenner; return yield(10) ;end"
+    end
     def block_main( main , extra = yielder)
       in_Space("#{extra} ; def main(arg) ; #{main} ; end")
     end
