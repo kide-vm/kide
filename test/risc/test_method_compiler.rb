@@ -64,13 +64,20 @@ module Risc
       assert_equal 1 , method.frame_type.variable_index(:local)
       assert_equal 2 , method.frame_type.variable_index(:a)
     end
-    def test_has_constant
-      input = in_Test("def meth; return 'Hi';end")
-      mom = RubyX::RubyXCompiler.new(input).ruby_to_mom
+    def constant_setup(input)
+      mom = RubyX::RubyXCompiler.new(in_Test(input)).ruby_to_mom
       assert_equal Mom::MomCompiler , mom.class
       compiler = mom.method_compilers.first
       assert_equal MethodCompiler , compiler.class
+      compiler
+    end
+    def test_has_method_constant
+      compiler = constant_setup("def meth; return 'Hi';end")
       assert compiler.constants.include?("Hi")
+    end
+    def test_has_block_constant
+      compiler = constant_setup("def meth; meth{return 'Ho'};return 'Hi';end")
+      assert compiler.constants.include?("Ho")
     end
 
   end

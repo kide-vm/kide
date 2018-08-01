@@ -10,6 +10,11 @@ module Risc
       super(method)
     end
 
+    #include block_compilers constants
+    def constants
+      block_compilers.inject(@constants.dup){|all, compiler| all += compiler.constants}
+    end
+
     def source_name
       "#{@callable.self_type.name}.#{@callable.name}"
     end
@@ -104,12 +109,6 @@ module Risc
         #puts "adding risc #{risc.to_s}:#{risc.next.to_s}"
         instruction = instruction.next
       end
-    end
-
-    # add a constant (which get created during compilation and need to be linked)
-    def add_constant(const)
-      raise "Must be Parfait #{const}" unless const.is_a?(Parfait::Object)
-      @constants << const
     end
 
     # add a risc instruction after the current (insertion point)

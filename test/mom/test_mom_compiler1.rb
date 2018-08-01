@@ -6,7 +6,7 @@ module Mom
 
     def setup
       Parfait.boot!
-      @comp = compile_mom( "class Test ; def main(); return 'Hi'; end; end;")
+      @comp = compile_mom( "class Test ; def main(); main{return 'Ho'};return 'Hi'; end; end;")
       @linker = @comp.translate(:interpreter)
     end
 
@@ -21,6 +21,9 @@ module Mom
     end
     def test_linker_constants_contains_hi
       assert @linker.constants.include?("Hi")
+    end
+    def test_linker_constants_contains_ho
+      assert @linker.constants.include?("Ho")
     end
     def test_translate_platform
       assert_kind_of Risc::Platform , @linker.platform
