@@ -1,14 +1,15 @@
-# A CallableMethod is static object that primarily holds the executable code.
-# It is callable through it's binary code
-# Additionally to the base class it has a name
-#
-# It's relation to the method a ruby programmer knows (called VoolMethod) is many to one,
-# meaning one VoolMethod (untyped) has many CallableMethod implementations.
-# The VoolMethod only holds vool code, no binary.
-
-
 module Parfait
 
+  # A CallableMethod is static object that primarily holds the executable code.
+  # It is callable through it's binary code
+  #
+  # It's relation to the method a ruby programmer knows (called VoolMethod) is many to one,
+  # meaning one VoolMethod (untyped) has many CallableMethod implementations.
+  # The VoolMethod only holds vool code, no binary.
+  #
+  # CallableMethods are bound to a known type (self_type) and have known argument
+  # and local variables. All variable resolution inside the method is exact (static),
+  # only method resolution may be dynamic
   class CallableMethod < Callable
 
     def ==(other)

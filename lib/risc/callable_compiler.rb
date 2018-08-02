@@ -13,13 +13,27 @@ module Risc
     def initialize( callable )
       @callable = callable
       @regs = []
-      @risc_instructions = Risc.label(source_name, source_name)
-      @risc_instructions << Risc.label( source_name, "unreachable")
+      init_instructions
       @current = @risc_instructions
       @constants = []
       @block_compilers = []
     end
     attr_reader :risc_instructions , :constants , :block_compilers , :callable
+
+    def init_instructions
+      @risc_instructions = Risc.label(source_name, source_name)
+      @risc_instructions.append Risc.label( source_name, "return_label")
+      @risc_instructions.append Mom::ReturnSequence.new.to_risc(self)
+      @risc_instructions.append Risc.label( source_name, "unreachable")
+      reset_regs
+    end
+
+    def return_label
+      @risc_instructions.each do |ins|
+        next unless ins.is_a?(Label)
+        return ins if ins.name == "return_label"
+      end
+    end
 
     # convert the given mom instruction to_risc and then add it (see add_code)
     # continue down the instruction chain unti depleted

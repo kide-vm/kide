@@ -18,7 +18,7 @@ module Vool
     def to_mom( compiler )
       ret = Mom::SlotLoad.new( [:message , :return_value] ,
                         @return_value.slot_definition(compiler) )
-      ret << Mom::ReturnSequence.new
+      ret << Mom::ReturnJump.new
     end
 
     def to_s(depth = 0)
