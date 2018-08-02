@@ -11,7 +11,7 @@ module Risc
 
     def test_if
       #show_main_ticks # get output of what is in main
-      check_main_chain  [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
+      check_main_chain [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
              RegToSlot, RegToSlot, SlotToReg, Branch, RegToSlot,
              LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
@@ -22,7 +22,7 @@ module Risc
              RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
              LoadConstant, OperatorInstruction, IsZero, LoadConstant, RegToSlot,
-             SlotToReg, SlotToReg, RegToSlot, Branch, SlotToReg,
+             Branch, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg,
              SlotToReg, Branch, Syscall, NilClass]
       assert_equal 2 , get_return

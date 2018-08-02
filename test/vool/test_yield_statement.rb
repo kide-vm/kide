@@ -51,7 +51,7 @@ module Vool
       assert @ins.next(6).right.slots.last.to_s.start_with?("tmp_")
     end
     def test_return
-      assert_equal ReturnSequence, @ins.next(7).class
+      assert_equal ReturnJump, @ins.next(7).class
     end
   end
   class TestYieldArgsSendMom < MiniTest::Test
@@ -65,7 +65,7 @@ module Vool
 
     def test_array
       check_array [NotSameCheck, Label, MessageSetup, ArgumentTransfer, BlockYield ,
-                    SlotLoad, SlotLoad, ReturnSequence] , @ins
+                    SlotLoad, SlotLoad, ReturnJump] , @ins
     end
     def test_transfer
       assert_equal ArgumentTransfer, @ins.next(3).class
@@ -88,7 +88,7 @@ module Vool
     end
     def test_array
       check_array [NotSameCheck, Label, MessageSetup, ArgumentTransfer, BlockYield ,
-                    SlotLoad, SlotLoad, ReturnSequence] , @ins
+                    SlotLoad, SlotLoad, ReturnJump] , @ins
     end
     def test_transfer
       assert_equal ArgumentTransfer, @ins.next(3).class

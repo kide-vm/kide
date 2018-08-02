@@ -9,6 +9,7 @@ module Risc
       @input = "@ivar = 5"
       @expect = [LoadConstant, SlotToReg, RegToSlot]
     end
+
     def test_local_assign_instructions
       assert_nil msg = check_nil , msg
     end

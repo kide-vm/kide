@@ -20,10 +20,10 @@ module Risc
              RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
              RegToSlot, Branch, SlotToReg, SlotToReg, SlotToReg,
              FunctionReturn, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             Branch, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
-             Transfer, SlotToReg, SlotToReg, Branch, Syscall,
-             NilClass]
+             Branch, SlotToReg, RegToSlot, Branch, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
+             FunctionReturn, Transfer, SlotToReg, SlotToReg, Branch,
+             Syscall, NilClass]
        assert_equal 2 , get_return
     end
 
@@ -42,7 +42,7 @@ module Risc
     end
 
     def test_sys
-      sys = main_ticks(60)
+      sys = main_ticks(61)
       assert_equal Syscall ,  sys.class
       assert_equal :exit ,  sys.name
     end

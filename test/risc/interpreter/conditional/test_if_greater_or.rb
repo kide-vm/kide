@@ -22,14 +22,14 @@ module Risc
              RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
              LoadConstant, OperatorInstruction, IsZero, LoadConstant, OperatorInstruction,
-             IsZero, LoadConstant, RegToSlot, Branch, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
-             FunctionReturn, Transfer, SlotToReg, SlotToReg, Branch,
-             Syscall, NilClass]
+             IsZero, LoadConstant, RegToSlot, Branch, Branch,
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg,
+             Branch, Syscall, NilClass]
       assert_equal 1 , get_return
     end
     def test_exit
-      done = main_ticks(71)
+      done = main_ticks(72)
       assert_equal Syscall ,  done.class
     end
   end

@@ -15,10 +15,10 @@ module Risc
              LoadConstant, OperatorInstruction, IsZero, LoadConstant, OperatorInstruction,
              IsZero, LoadConstant, SlotToReg, Branch, RegToSlot,
              Branch, SlotToReg, SlotToReg, LoadConstant, OperatorInstruction,
-             IsZero, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
-             FunctionReturn, Transfer, SlotToReg, SlotToReg, Branch,
-             Syscall, NilClass]
+             IsZero, SlotToReg, SlotToReg, RegToSlot, Branch,
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg,
+             Branch, Syscall, NilClass]
       assert_kind_of Parfait::NilClass , get_return
     end
     def test_load_false_const
@@ -55,7 +55,7 @@ module Risc
       assert check.label.name.start_with?("merge_label") , check.label.name
     end
     def test_exit
-      done = main_ticks(36)
+      done = main_ticks(37)
       assert_equal Syscall ,  done.class
     end
   end

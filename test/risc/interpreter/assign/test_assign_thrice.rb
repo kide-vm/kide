@@ -34,10 +34,10 @@ module Risc
              SlotToReg, SlotToReg, RegToSlot, RegToSlot, RegToSlot,
              SlotToReg, Branch, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, Branch, SlotToReg,
-             SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg,
-             Branch, Syscall, NilClass]
+             RegToSlot, SlotToReg, SlotToReg, RegToSlot, Branch,
+             SlotToReg, SlotToReg, RegToSlot, Branch, SlotToReg,
+             SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg,
+             SlotToReg, Branch, Syscall, NilClass]
       assert_equal 15 , get_return
     end
 

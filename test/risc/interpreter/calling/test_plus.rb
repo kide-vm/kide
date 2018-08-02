@@ -21,10 +21,10 @@ module Risc
              SlotToReg, RegToSlot, RegToSlot, RegToSlot, SlotToReg,
              Branch, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
              SlotToReg, FunctionReturn, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
-             Transfer, SlotToReg, SlotToReg, Branch, Syscall,
-             NilClass]
+             SlotToReg, SlotToReg, RegToSlot, Branch, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
+             Branch, FunctionReturn, Transfer, SlotToReg, SlotToReg,
+             Branch, Syscall, NilClass]
        assert_equal 10 , get_return
     end
     def test_load_5
@@ -69,8 +69,8 @@ module Risc
       assert_equal OperatorInstruction , op.class
       assert_equal :r1 , op.left.symbol
       assert_equal :r2 , op.right.symbol
-      assert_equal 5 , @interpreter.get_register(:r2)
       assert_equal 10 , @interpreter.get_register(:r1)
+      assert_equal 5 , @interpreter.get_register(:r2)
     end
     def test_load_int_space
       cons = main_ticks(base + 6)
@@ -102,7 +102,7 @@ module Risc
       assert_equal :r4 , sl.register.symbol
     end
     def test_sys
-      sys = main_ticks(65)
+      sys = main_ticks(67)
       assert_equal Syscall ,  sys.class
       assert_equal :exit ,  sys.name
     end

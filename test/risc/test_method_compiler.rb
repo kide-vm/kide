@@ -79,6 +79,9 @@ module Risc
       compiler = constant_setup("def meth; meth{return 'Ho'};return 'Hi';end")
       assert compiler.constants.include?("Ho")
     end
-
+    def test_return_label
+      compiler = constant_setup("def meth; return 'Hi';end")
+      assert_equal "return_label",  compiler.return_label.name
+    end
   end
 end

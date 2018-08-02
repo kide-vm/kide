@@ -21,8 +21,7 @@ module Risc
                  SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
                  SlotToReg, RegToSlot, SlotToReg, LoadConstant, SlotToReg,
                  DynamicJump, Label, SlotToReg, SlotToReg, RegToSlot,
-                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-                 RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn]
+                 SlotToReg, SlotToReg, RegToSlot, Branch]
     end
 
     def test_return_instructions
@@ -30,9 +29,9 @@ module Risc
     end
     def test_function_return
       produced = produce_body
-      assert_equal FunctionReturn , produced.next(79).class
+      assert_equal Branch , produced.next(73).class
     end
-    def test_cache_check
+    def est_cache_check
       produced = produce_body
       assert_equal IsZero , produced.next(6).class
     end

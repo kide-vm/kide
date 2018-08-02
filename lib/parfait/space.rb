@@ -38,7 +38,7 @@ module Parfait
         add_type(cl.instance_type)
       end
       101.times { @integers = Integer.new(0,@integers) }
-      300.times { @addresses = ReturnAddress.new(0,@addresses) }
+      400.times { @addresses = ReturnAddress.new(0,@addresses) }
       message = Message.new(nil)
       50.times do
         @messages = Message.new message

@@ -21,10 +21,10 @@ module Risc
              SlotToReg, RegToSlot, RegToSlot, RegToSlot, SlotToReg,
              Branch, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
              SlotToReg, FunctionReturn, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
-             Transfer, SlotToReg, SlotToReg, Branch, Syscall,
-             NilClass]
+             SlotToReg, SlotToReg, RegToSlot, Branch, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
+             Branch, FunctionReturn, Transfer, SlotToReg, SlotToReg,
+             Branch, Syscall, NilClass]
        assert_equal 1 , get_return
     end
     def test_load_5
@@ -38,17 +38,17 @@ module Risc
       assert_equal OperatorInstruction , op.class
       assert_equal :r1 , op.left.symbol
       assert_equal :r2 , op.right.symbol
-      assert_equal 5 , @interpreter.get_register(:r2)
       assert_equal 1 , @interpreter.get_register(:r1)
+      assert_equal 5 , @interpreter.get_register(:r2)
     end
     def test_return
-      ret = main_ticks(60)
+      ret = main_ticks(62)
       assert_equal FunctionReturn ,  ret.class
       assert_equal :r1 ,  ret.register.symbol
-      assert_equal 24160 ,  @interpreter.get_register(ret.register)
+      assert_equal 25824 ,  @interpreter.get_register(ret.register)
     end
     def test_sys
-      sys = main_ticks(65)
+      sys = main_ticks(67)
       assert_equal Syscall ,  sys.class
       assert_equal :exit ,  sys.name
     end

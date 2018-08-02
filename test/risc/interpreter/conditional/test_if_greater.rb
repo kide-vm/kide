@@ -22,7 +22,7 @@ module Risc
              RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
              SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
              LoadConstant, OperatorInstruction, IsZero, LoadConstant, RegToSlot,
-             SlotToReg, SlotToReg, RegToSlot, Branch, SlotToReg,
+             Branch, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg,
              SlotToReg, Branch, Syscall, NilClass]
       assert_equal 2 , get_return

@@ -114,7 +114,7 @@ module Parfait
         count += 1
         addr = addr.next_integer
       end
-      assert_equal 300, count
+      assert_equal 400, count
     end
 
     def test_messages

@@ -20,7 +20,7 @@ module Vool
       assert_equal 2 ,  @inst.length
     end
     def test_second_is_return
-      assert_equal ReturnSequence,  @inst.last.class
+      assert_equal ReturnJump,  @inst.last.class
     end
     def test_slot_starts_at_message
       assert_equal :message , @inst.left.known_object
@@ -49,10 +49,10 @@ module Vool
     end
 
     def test_return_is_last
-      assert_equal ReturnSequence , @ins.last.class
+      assert_equal ReturnJump , @ins.last.class
     end
     def test_array
-      check_array [MessageSetup,ArgumentTransfer,SimpleCall,SlotLoad,SlotLoad,ReturnSequence] , @ins
+      check_array [MessageSetup,ArgumentTransfer,SimpleCall,SlotLoad,SlotLoad,ReturnJump] , @ins
     end
   end
 end

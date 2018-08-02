@@ -21,9 +21,9 @@ module Risc
              SlotToReg, Branch, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
              RegToSlot, SlotToReg, Branch, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg,
-             Branch, Syscall, NilClass]
+             Branch, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+             SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg,
+             SlotToReg, Branch, Syscall, NilClass]
        assert_equal "Hello again" , @interpreter.stdout
        assert_equal 11 , get_return #bytes written
     end
