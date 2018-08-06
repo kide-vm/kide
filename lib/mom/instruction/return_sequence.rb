@@ -20,15 +20,23 @@ module Mom
   #
   class ReturnSequence < Instruction
     def to_risc(compiler)
-      return_move = SlotLoad.new( [:message , :caller,:return_value] , [:message , :return_value],self)
-      moves = return_move.to_risc(compiler)
       compiler.reset_regs
-      return_address = compiler.use_reg(:ReturnAddress)
-      message = Risc.message_reg
-      moves << Risc.slot_to_reg(self,message, :return_address , return_address)
-      moves << Risc.slot_to_reg(self,return_address , Parfait::Integer.integer_index , return_address)
-      moves << Risc.slot_to_reg(self,message , :caller , message)
-      moves << Risc::FunctionReturn.new(self, return_address)
+      builder = compiler.code_builder(self)
+      builder.build do
+        #space << Parfait.object_space
+        #next_message << space[:next_message]
+        object << message[:return_value]
+        caller_reg << message[:caller]
+        caller_reg[:return_value] << object
+      end
+      compiler.reset_regs
+      builder.build do
+        return_address << message[:return_address]
+        return_address << return_address[ Parfait::Integer.integer_index]
+        message << message[:caller]
+        return_address.function_return
+      end
+      builder.built
     end
 
     def to_s
