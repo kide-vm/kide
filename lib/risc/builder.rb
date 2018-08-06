@@ -50,13 +50,20 @@ module Risc
     # infer the type from a symbol. In the simplest case the sybbol is the class name
     # But in building sometimes variations are needed, so next_message or caller work
     # too (and return Message)
+    # A general "_reg" or "_obj" at the end of the name will be removed
     # An error is raised if the symbol/object can not be inferred
     def infer_type( name )
-      name = :word if name == :name
-      name = :message if name == :next_message
-      name = :message if name == :caller
-      name = :named_list if name == :arguments
-      sym = name.to_s.camelise.to_sym
+      as_string = name.to_s
+      parts = as_string.split("_")
+      if(parts.last == "reg" or parts.last == "obj")
+        parts.pop
+        as_string = parts.join("_")
+      end
+      as_string = "word" if as_string == "name"
+      as_string = "message" if as_string == "next_message"
+      as_string = "message" if as_string == "caller"
+      as_string = "named_list" if as_string == "arguments"
+      sym = as_string.camelise.to_sym
       clazz = Parfait.object_space.get_class_by_name(sym)
       raise "Not implemented/found object #{name}:#{sym}" unless clazz
       return clazz.instance_type
