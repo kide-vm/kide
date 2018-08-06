@@ -18,22 +18,19 @@ module Risc
              SlotToReg, FunctionCall, SlotToReg, SlotToReg, SlotToReg,
              SlotToReg, ByteToReg, LoadConstant, SlotToReg, SlotToReg,
              RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-             Branch, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
-             FunctionReturn, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, SlotToReg, Branch,
-             FunctionReturn, Transfer, SlotToReg, SlotToReg, Branch,
-             Syscall, NilClass]
+             Branch, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
+             RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+             RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
+             LoadConstant, SlotToReg, RegToSlot, Branch, RegToSlot,
+             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer,
+             SlotToReg, SlotToReg, Branch, Syscall, NilClass]
        assert_equal "H".ord , get_return
     end
     def test_byte_to_reg
       done = main_ticks(32)
       assert_equal ByteToReg ,  done.class
       assert_equal "H".ord ,  @interpreter.get_register(done.register)
-    end
-    def test_exit
-      done = main_ticks(66)
-      assert_equal Syscall ,  done.class
     end
   end
 end

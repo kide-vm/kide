@@ -18,12 +18,14 @@ module Risc
              RegToSlot, SlotToReg, FunctionCall, SlotToReg, SlotToReg,
              LoadData, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg,
              RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, Branch, SlotToReg, SlotToReg, SlotToReg,
-             FunctionReturn, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-             Branch, SlotToReg, RegToSlot, Branch, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
-             FunctionReturn, Transfer, SlotToReg, SlotToReg, Branch,
-             Syscall, NilClass]
+             RegToSlot, Branch, LoadConstant, SlotToReg, RegToSlot,
+             RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
+             SlotToReg, SlotToReg, RegToSlot, SlotToReg, Branch,
+             SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg,
+             RegToSlot, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
+             SlotToReg, SlotToReg, SlotToReg, Branch, FunctionReturn,
+             Transfer, SlotToReg, SlotToReg, Branch, Syscall,
+             NilClass]
        assert_equal 2 , get_return
     end
 
@@ -39,12 +41,6 @@ module Risc
       assert_equal 2 , sl.index
       assert_equal :r1 , sl.register.symbol
       assert_equal 9 , @interpreter.get_register(:r1)
-    end
-
-    def test_sys
-      sys = main_ticks(61)
-      assert_equal Syscall ,  sys.class
-      assert_equal :exit ,  sys.name
     end
 
   end

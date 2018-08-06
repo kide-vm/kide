@@ -10,27 +10,8 @@ module Risc
     end
 
     def test_if
-      #show_main_ticks # get output of what is in main
-      check_main_chain [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, RegToSlot, SlotToReg, Branch, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             SlotToReg, FunctionCall, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, SlotToReg, OperatorInstruction, IsMinus, LoadConstant,
-             Branch, RegToSlot, SlotToReg, SlotToReg, Branch,
-             RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             LoadConstant, OperatorInstruction, IsZero, LoadConstant, OperatorInstruction,
-             IsZero, LoadConstant, RegToSlot, Branch, Branch,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg,
-             Branch, Syscall, NilClass]
+      run_all
       assert_equal 1 , get_return
-    end
-    def test_exit
-      done = main_ticks(72)
-      assert_equal Syscall ,  done.class
     end
   end
 end

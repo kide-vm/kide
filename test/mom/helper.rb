@@ -12,8 +12,9 @@ module Risc
       [ Label ]
     end
     def postamble
-      [Label, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-        SlotToReg, SlotToReg, FunctionReturn, Label]
+      [Label, SlotToReg, SlotToReg, RegToSlot, LoadConstant ,
+        SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
+        SlotToReg , FunctionReturn, Label]
     end
     # test hack to in place change object type
     def add_space_field(name,type)

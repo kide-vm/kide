@@ -9,7 +9,7 @@ module Risc
       super
     end
 
-    def test_pest_chain
+    def test_chain
       #show_main_ticks # get output of what is
       check_main_chain [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
              RegToSlot, LoadConstant, LoadConstant, SlotToReg, RegToSlot,
@@ -26,37 +26,40 @@ module Risc
              RegToSlot, SlotToReg, Branch, SlotToReg, SlotToReg,
              DynamicJump, LoadConstant, SlotToReg, SlotToReg, SlotToReg,
              RegToSlot, LoadConstant, RegToSlot, Branch, SlotToReg,
-             SlotToReg, RegToSlot, SlotToReg, SlotToReg, Branch,
-             SlotToReg, FunctionReturn, SlotToReg, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, RegToSlot, Branch, SlotToReg,
+             SlotToReg, RegToSlot, LoadConstant, SlotToReg, Branch,
+             RegToSlot, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
+             FunctionReturn, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
              SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg,
-             SlotToReg, FunctionReturn, SlotToReg, SlotToReg, RegToSlot,
-             Branch, SlotToReg, SlotToReg, Branch, RegToSlot,
-             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer,
-             SlotToReg, SlotToReg, Branch, Syscall, NilClass]
+             RegToSlot, Branch, LoadConstant, SlotToReg, RegToSlot,
+             RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
+             SlotToReg, SlotToReg, RegToSlot, Branch, SlotToReg,
+             SlotToReg, Branch, RegToSlot, LoadConstant, SlotToReg,
+             RegToSlot, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
+             FunctionReturn, Transfer, SlotToReg, SlotToReg, Branch,
+             Syscall, NilClass]
       assert_equal 10 , get_return
     end
 
-    def test_pest_block_jump
+    def test_block_jump
       load_ins = main_ticks(66)
       assert_equal DynamicJump ,  load_ins.class
       assert_equal Parfait::Block , @interpreter.get_register(load_ins.register).class
     end
-    def test_pest_block_load
+    def test_block_load
       load_ins = main_ticks(67)
       assert_load load_ins , Parfait::Integer , :r1
       assert_equal 10 , @interpreter.get_register(load_ins.register).value
     end
-    def test_pest_block_slot1
+    def test_block_slot1
       assert_slot_to_reg main_ticks(68) ,:r0 , 6 , :r2
     end
-    def test_pest_block_slot2
+    def test_block_slot2
       assert_slot_to_reg main_ticks(69) ,:r2 , 6 , :r2
     end
-    def test_pest_block_slot3
+    def test_block_slot3
       assert_slot_to_reg main_ticks(70) ,:r2 , 3 , :r2
     end
-    def test_pest_block_reg
+    def test_block_reg
       assert_reg_to_slot main_ticks(71) ,:r1 , :r2 , 1
     end
   end

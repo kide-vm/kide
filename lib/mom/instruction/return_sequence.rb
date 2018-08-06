@@ -23,11 +23,13 @@ module Mom
       compiler.reset_regs
       builder = compiler.code_builder(self)
       builder.build do
-        #space << Parfait.object_space
-        #next_message << space[:next_message]
         object << message[:return_value]
         caller_reg << message[:caller]
         caller_reg[:return_value] << object
+        space << Parfait.object_space
+        next_message << space[:next_message]
+        message[:next_message] << next_message
+        space[:next_message] << message
       end
       compiler.reset_regs
       builder.build do

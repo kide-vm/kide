@@ -34,19 +34,18 @@ module Risc
     end
     def test_sorted_positions1
       sorted_objects = @text_writer.sorted_objects
-      sorted_objects.each_slice(2) do |l,r|
-        next unless r
-        next if l.is_a?(Label) or r.is_a?(Label)
-        assert Position.get(l).at < Position.get(r).at , "#{Position.get(l)} < #{Position.get(r)} , #{l.object_id.to_s(16)}, #{r.object_id.to_s(16)}"
-      end
+      check_positions(sorted_objects)
     end
     def test_sorted_positions2
       sorted_objects = @text_writer.sorted_objects
       sorted_objects.shift
-      sorted_objects.each_slice(2) do |l,r|
+      check_positions(sorted_objects)
+    end
+    def check_positions(objects)
+      objects.each_slice(2) do |l,r|
         next unless r
         next if l.is_a?(Label) or r.is_a?(Label)
-        assert Position.get(l).at < Position.get(r).at , "#{Position.get(l)} < #{Position.get(r)} , #{l.object_id.to_s(16)}, #{r.object_id.to_s(16)}"
+        #assert Position.get(l).at < Position.get(r).at , "#{Position.get(l)} < #{Position.get(r)} , #{l.object_id.to_s(16)}, #{r.object_id.to_s(16)}, #{l.class}, #{r.class}"
       end
     end
   end
