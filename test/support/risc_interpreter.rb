@@ -106,6 +106,7 @@ module Risc
     end
     def run_all
       @interpreter.tick while(@interpreter.instruction)
+      @interpreter.clock
     end
 
     # for chaning the tests quickly output all instructions that are executed
