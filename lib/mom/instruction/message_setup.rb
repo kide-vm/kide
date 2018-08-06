@@ -6,7 +6,7 @@ module Mom
   # MessageSetup does Setup before a call can be made, acquiring and filling the message
   # basically.Only after MessageSetup is the next_message safe to use.
   #
-  # The space keeps a linked list of Messages, from which we take and currenty also return.
+  # The Space keeps a linked list of Messages, from which we take and currenty also return.
   #
   # Message setup set the name to the called method's name, and also set the arg and local
   # types on the new message, currently for debugging but later for dynamic checking

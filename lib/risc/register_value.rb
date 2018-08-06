@@ -134,6 +134,14 @@ module Risc
       op
     end
 
+    # generate a Function return instruction
+    # using the register as the parameter where the return address is passed
+    def function_return
+      ret = Risc::FunctionReturn.new("return", self)
+      builder.add_code(ret) if builder
+      ret
+    end
+
     # just capture the values in an intermediary object (RValue)
     # The RValue then gets used in a RegToSlot ot SlotToReg, where
     # the values are unpacked to call Risc.reg_to_slot or Risc.slot_to_reg

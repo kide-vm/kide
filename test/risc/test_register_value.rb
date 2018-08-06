@@ -41,6 +41,11 @@ module Risc
       assert_equal :next_message , message.index
       assert_equal @r0 , message.register
     end
+    def test_return
+      ret = @r0.function_return
+      assert_equal FunctionReturn , ret.class
+      assert_equal @r0 , ret.register
+    end
     def test_slot_to_reg
       instr = @r0 << @r1[:next_message]
       assert_equal SlotToReg , instr.class
