@@ -1,3 +1,4 @@
+ENV["TEST_ALL"] = "true"
 require_relative "helper"
 
 Dir["test/**/test_*.rb"].each { |f|
