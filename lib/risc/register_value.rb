@@ -116,6 +116,8 @@ module Risc
       case right
       when Parfait::Object , Symbol
         ins = Risc.load_constant("#{right.class} to #{self.type}" , right , self)
+      when Fixnum
+        ins = Risc.load_data("#{right.class} to #{self.type}" , right , self)
       when RegisterValue
         ins = Risc.transfer("#{right.type} to #{self.type}" , right , self)
       when RValue
@@ -137,11 +139,18 @@ module Risc
     # generate a Function return instruction
     # using the register as the parameter where the return address is passed
     def function_return
-      ret = Risc::FunctionReturn.new("return", self)
+      ret = Risc.function_return("return", self)
       builder.add_code(ret) if builder
       ret
     end
 
+    # create operator instruction for self and add
+    # doesn't read quite as smoothly as one would like, but better than the compiler version
+    def op( operator , right)
+      ret = Risc.op( "operator #{operator}" , :>> , self , right)
+      builder.add_code(ret) if builder
+      ret
+    end
     # just capture the values in an intermediary object (RValue)
     # The RValue then gets used in a RegToSlot ot SlotToReg, where
     # the values are unpacked to call Risc.reg_to_slot or Risc.slot_to_reg
