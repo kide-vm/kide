@@ -6,16 +6,15 @@ module Risc
         include CompileHelper
 
         def div4(context)
-          source = "div4"
           compiler = compiler_for(:Integer,:div4 ,{})
-          builder = compiler.compiler_builder(compiler.source)
-          me = builder.add_known( :receiver )
-          builder.reduce_int( source , me )
-          two = compiler.use_reg :fixnum , value: 2
-          builder.add_load_data( source , 2 , two )
-          builder.add_code Risc.op( source , :>> , me , two)
-          builder.add_new_int(source,me , two)
-          builder.add_reg_to_slot( source , two , Risc.message_reg , :return_value)
+          compiler.compiler_builder(compiler.source).build do
+            integer << message[:receiver]
+            integer << integer[Parfait::Integer.integer_index]
+            integer_reg << 2
+            integer.op :>> , integer_reg
+            add_new_int("div4", integer , integer_reg)
+            message[:return_value] << integer_reg
+          end
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
