@@ -14,7 +14,7 @@ module Risc
       end
       def test_minus_neg
         run_main_return "5 - 15"
-        assert_equal -10 , get_return
+        assert_equal( -10 , get_return)
       end
       def test_rshift
         run_main_return "#{2**8} >> 3"
