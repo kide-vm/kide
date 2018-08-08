@@ -30,6 +30,10 @@ module Risc
       @extra = extra
     end
 
+    def class_name
+      return :fixnum unless @type
+      @type.class_name
+    end
     # using the registers type, resolve the slot to an index
     # Using the index and the register, add a SlotToReg to the instruction
     def resolve_and_add(slot , instruction , compiler)
@@ -66,7 +70,7 @@ module Risc
     end
 
     def to_s
-      s = "#{symbol}:#{type&.class_name}"
+      s = "#{symbol}:#{class_name}"
       s += ":#{extra}" unless extra.empty?
       s
     end
@@ -171,7 +175,7 @@ module Risc
     # itself (the slot) and the register given
     def <<( reg )
       raise "not reg #{reg}" unless reg.is_a?(RegisterValue)
-      reg_to_slot = Risc.reg_to_slot("#{reg.type.class_name} -> #{register.type.class_name}[#{index}]" , reg , register, index)
+      reg_to_slot = Risc.reg_to_slot("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg , register, index)
       builder.add_code(reg_to_slot) if builder
       reg_to_slot
     end

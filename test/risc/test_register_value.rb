@@ -14,6 +14,12 @@ module Risc
       @r0 = RegisterValue.new(:r0 , :Message)
       @r1 = RegisterValue.new(:r1 , :Space)
     end
+    def test_class_name_type
+      assert_equal :Message , @r0.class_name
+    end
+    def test_class_name_fix
+      assert_equal :fixnum , RegisterValue.new(:r0 , :fixnum).class_name
+    end
     def test_r0
       assert_equal :r0 , @r0.symbol
     end
