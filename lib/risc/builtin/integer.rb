@@ -33,28 +33,27 @@ module Risc
         def comparison( operator  )
           compiler = compiler_for(:Integer, operator ,{other: :Integer})
           builder = compiler.compiler_builder(compiler.source)
-          me , other = builder.self_and_int_arg("#{operator} load receiver and arg")
-          false_label = Risc.label(compiler.source , "false_label_#{builder.object_id.to_s(16)}")
-          merge_label = Risc.label(compiler.source , "merge_label_#{builder.object_id.to_s(16)}")
-          builder.reduce_int( "#{operator} fix me", me )
-          builder.reduce_int( "#{operator} fix arg", other )
-          if(operator.to_s.start_with?('<') )
-            me , other = other , me
+          builder.build do
+            integer << message[:receiver]
+            integer_reg << message[:arguments]
+            integer_reg << integer_reg[ 1]
+            integer.reduce_int
+            integer_reg.reduce_int
+            swap_names(:integer , :integer_reg) if(operator.to_s.start_with?('<') )
+            integer.op :- , integer_reg
+            if_minus false_label
+            if_zero( false_label ) if operator.to_s.length == 1
+            object << Parfait.object_space.true_object
+            branch merge_label
+            add_code false_label
+            object << Parfait.object_space.false_object
+            add_code merge_label
+            message[:return_value] << object
           end
-          builder.add_code Risc.op( "#{operator} operator", :- , me , other)
-          builder.add_code IsMinus.new( "#{operator} if", false_label)
-          if(operator.to_s.length == 1)
-            builder.add_code IsZero.new( "#{operator} if", false_label)
-          end
-          builder.add_load_constant("#{operator} new int", Parfait.object_space.true_object , other)
-          builder.add_code Risc::Branch.new("jump over false", merge_label)
-          builder.add_code false_label
-          builder.add_load_constant("#{operator} new int", Parfait.object_space.false_object , other)
-          builder.add_code merge_label
-          builder.add_reg_to_slot( "#{operator} save ret" , other , Risc.message_reg , :return_value)
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
+
         def putint(context)
           compiler = compiler_for(:Integer,:putint ,{})
           compiler.add_mom( Mom::ReturnSequence.new)

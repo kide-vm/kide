@@ -77,11 +77,26 @@ module Risc
       @source_used = true
       add_code Risc::IsNotZero.new(@source , label)
     end
+    def if_minus( label )
+      @source_used = true
+      add_code Risc::IsMinus.new(@source , label)
+    end
     def branch( label )
       @source_used = true
       add_code Risc::Branch.new(@source, label)
     end
 
+    # to avoid many an if, it can be candy to swap variable names.
+    # but since the names in the builder are not variables, we need this method
+    # as it says, swap the two names around. Names must exist
+    def swap_names(left , right)
+      l = @names[left]
+      r = @names[right]
+      raise "No such name #{left}" unless l
+      raise "No such name #{right}" unless r
+      @names[left] = r
+      @names[right] = l
+    end
     # build code using dsl (see __init__ or MessageSetup for examples)
     # names (that ruby would resolve to a variable/method) are converted
     # to registers. << means assignment and [] is supported both on
