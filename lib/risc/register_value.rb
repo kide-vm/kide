@@ -52,6 +52,13 @@ module Risc
       return index
     end
 
+    # reduce integer to fixnum and add instruction if builder is used
+    def reduce_int
+      reduce = Risc.slot_to_reg( "int -> fix" , self , Parfait::Integer.integer_index , self)
+      builder.add_code(reduce) if builder
+      reduce
+    end
+
     # when following variables in resolve_and_add, get a new RegisterValue
     # that represents the new value.
     # Ie in "normal case" a the same register, with the type of the slot
@@ -151,7 +158,7 @@ module Risc
     # create operator instruction for self and add
     # doesn't read quite as smoothly as one would like, but better than the compiler version
     def op( operator , right)
-      ret = Risc.op( "operator #{operator}" , :>> , self , right)
+      ret = Risc.op( "operator #{operator}" , operator , self , right)
       builder.add_code(ret) if builder
       ret
     end

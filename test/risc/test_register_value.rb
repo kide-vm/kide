@@ -57,6 +57,7 @@ module Risc
       assert_equal OperatorInstruction , ret.class
       assert_equal @r0 , ret.left
       assert_equal @r1 , ret.right
+      assert_equal :<< , ret.operator
     end
     def test_slot_to_reg
       instr = @r0 << @r1[:next_message]

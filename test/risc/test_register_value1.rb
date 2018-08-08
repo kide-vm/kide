@@ -16,6 +16,11 @@ module Risc
     def test_resolves_index_fail
       assert_raises {@r0.resolve_index(:something)}
     end
+    def test_reduce_int
+      ins = @r0.reduce_int
+      assert_equal SlotToReg , ins.class
+      assert_equal Parfait::Integer.integer_index , ins.index
+    end
     def test_get_new_left_0
       assert_equal RegisterValue , @r0.get_new_left(:caller , @compiler).class
     end
