@@ -31,8 +31,7 @@ module Risc
     end
     def test_load_5
       lod = main_ticks( 19 )
-      assert_equal LoadConstant , lod.class
-      assert_equal Parfait::Integer , lod.constant.class
+      assert_load( lod , Parfait::Integer , :r1)
       assert_equal 5 , lod.constant.value
     end
     def base
@@ -40,35 +39,30 @@ module Risc
     end
     def test_slot_receiver #load receiver from message
       sl = main_ticks( base )
-      assert_equal SlotToReg , sl.class
-      assert_equal :r0 , sl.array.symbol #load from message
-      assert_equal 2 , sl.index
-      assert_equal :r1 , sl.register.symbol
+      assert_slot_to_reg( sl , :r0 , 2 , :r1)
     end
     def test_slot_args #load args from message
       sl = main_ticks( base + 1 )
-      assert_equal SlotToReg , sl.class
-      assert_equal :r0 , sl.array.symbol #load from message
-      assert_equal 8 , sl.index
-      assert_equal :r2 , sl.register.symbol
+      assert_slot_to_reg( sl , :r0 , 8 , :r2)
     end
-    def test_slot_arg #load arg 1, destructively from args
+    def test_slot_arg_int #load arg 1, destructively from args
       sl = main_ticks( base + 2 )
-      assert_equal SlotToReg , sl.class
-      assert_equal :r2 , sl.array.symbol #load from message
-      assert_equal 1 , sl.index
-      assert_equal :r2 , sl.register.symbol
+      assert_slot_to_reg( sl , :r2 , 1 , :r2)
     end
     def test_slot_int1 #load int from object
       sl = main_ticks( base + 3 )
-      assert_equal SlotToReg , sl.class
-      assert_equal :r1 , sl.array.symbol #load from message
-      assert_equal 2 , sl.index
-      assert_equal :r1 , sl.register.symbol
+      assert_slot_to_reg( sl , :r1 , 2 , :r1)
+      assert_equal 5 , @interpreter.get_register(:r1)
+    end
+    def test_slot_int2 #load int from object
+      sl = main_ticks( base + 4 )
+      assert_slot_to_reg( sl , :r2 , 2 , :r2)
+      assert_equal 5 , @interpreter.get_register(:r2)
     end
     def test_op
       op = main_ticks(base + 5)
       assert_equal OperatorInstruction , op.class
+      assert_equal :+ , op.operator
       assert_equal :r1 , op.left.symbol
       assert_equal :r2 , op.right.symbol
       assert_equal 10 , @interpreter.get_register(:r1)
@@ -76,37 +70,21 @@ module Risc
     end
     def test_load_int_space
       cons = main_ticks(base + 6)
-      assert_equal LoadConstant , cons.class
-      assert_equal Parfait::Space , cons.constant.class
-      assert_equal :r3 , cons.register.symbol
+      assert_load( cons , Parfait::Space , :r3)
     end
     def test_load_int_next_space
       sl = main_ticks(base + 7)
-      assert_equal SlotToReg , sl.class
-      assert_equal :r3 , sl.array.symbol #load from space
-      assert_equal 5 , sl.index
-      assert_equal :r2 , sl.register.symbol
+      assert_slot_to_reg( sl , :r3 , 5 , :r2)
       assert_equal Parfait::Integer , @interpreter.get_register(:r2).class
     end
     def test_load_int_next_int
       sl = main_ticks(base + 8)
-      assert_equal SlotToReg , sl.class
-      assert_equal :r2 , sl.array.symbol #load from next_int
-      assert_equal 1 , sl.index
-      assert_equal :r4 , sl.register.symbol
+      assert_slot_to_reg( sl , :r2 , 1 , :r4)
       assert_equal Parfait::Integer , @interpreter.get_register(:r4).class
     end
     def test_load_int_next_int2
       sl = main_ticks(base + 9)
-      assert_equal RegToSlot , sl.class
-      assert_equal :r3 , sl.array.symbol #store to space
-      assert_equal  5 , sl.index
-      assert_equal :r4 , sl.register.symbol
-    end
-    def test_sys
-      sys = main_ticks(75)
-      assert_equal Syscall ,  sys.class
-      assert_equal :exit ,  sys.name
+      assert_reg_to_slot( sl , :r4 , :r3 , 5)
     end
   end
 end

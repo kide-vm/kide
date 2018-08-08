@@ -117,6 +117,14 @@ module Risc
       add_slot_to_reg( source + "next_i2" , to , int.resolve_index(:next_integer) , int)
       add_reg_to_slot( source + "store link" , int , space , space_i  )
       add_reg_to_slot( source + "store value" , from , to , Parfait::Integer.integer_index)
+      # build do
+      #   space << Parfait.object_space
+      #   to << space[:next_integer]
+      #   integer << to[:next_integer]
+      #   space[:next_integer] << integer
+      #   to[Parfait::Integer.integer_index] << from
+      # end
+
     end
 
     # load receiver and the first argument (int)

@@ -9,7 +9,7 @@ module Risc
           compiler = compiler_for(:Integer,:div4 ,{})
           compiler.compiler_builder(compiler.source).build do
             integer << message[:receiver]
-            integer << integer[Parfait::Integer.integer_index]
+            integer.reduce_int
             integer_reg << 2
             integer.op :>> , integer_reg
             add_new_int("div4", integer , integer_reg)
@@ -63,12 +63,16 @@ module Risc
         def operator_method( op_sym )
           compiler = compiler_for(:Integer, op_sym ,{other: :Integer})
           builder = compiler.compiler_builder(compiler.source)
-          me , other = builder.self_and_int_arg(op_sym.to_s + "load receiver and arg")
-          builder.reduce_int( op_sym.to_s + " fix me", me )
-          builder.reduce_int( op_sym.to_s + " fix arg", other )
-          builder.add_code Risc.op( op_sym.to_s + " operator", op_sym , me , other)
-          builder.add_new_int(op_sym.to_s + " new int", me , other)
-          builder.add_reg_to_slot( op_sym.to_s + "save ret" , other , Risc.message_reg , :return_value)
+          builder.build do
+            integer << message[:receiver]
+            integer_reg << message[:arguments]
+            integer_reg << integer_reg[ 1]
+            integer.reduce_int
+            integer_reg.reduce_int
+            integer.op op_sym , integer_reg
+            add_new_int op_sym.to_s , integer , integer_reg
+            message[:return_value] << integer_reg
+          end
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
