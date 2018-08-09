@@ -21,15 +21,16 @@ module Risc
         # return (and word sized int) is stored in return_value
         def get_internal_byte( context)
           compiler = compiler_for(:Word , :get_internal_byte , {at: :Integer})
-          source = "get_internal_byte"
-          builder = compiler.compiler_builder(compiler.source)
-          me , index = builder.self_and_int_arg(source)
-          builder.reduce_int( source + " fix arg", index )
-          # reduce me to me[index]
-          builder.add_byte_to_reg( source , me , index , me)
-          builder.add_new_int(source, me , index)
-          # and put it back into the return value
-          builder.add_reg_to_slot( source , index , Risc.message_reg , :return_value)
+          compiler.compiler_builder(compiler.source).build do
+            object << message[:receiver]
+            integer << message[:arguments]
+            integer << integer[1]
+            integer.reduce_int
+            object <= object[integer]
+            add_new_int("get_internal_byte", object , integer)
+            message[:return_value] << integer
+          end
+
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
@@ -39,15 +40,18 @@ module Risc
         # return self
         def set_internal_byte( context )
           compiler = compiler_for(:Word, :set_internal_byte , {at: :Integer , :value => :Integer} )
-          source = "set_internal_byte"
-          builder = compiler.compiler_builder(compiler.source)
-          me , index = builder.self_and_int_arg(source)
-          value = builder.load_int_arg_at(source , 1 )
-          builder.reduce_int( source + " fix me", value )
-          builder.reduce_int( source + " fix arg", index )
-          builder.add_reg_to_byte( source , value , me , index)
-          value = builder.load_int_arg_at(source , 1 )
-          builder.add_reg_to_slot( source , value , Risc.message_reg , :return_value)
+          compiler.compiler_builder(compiler.source).build do
+            word << message[:receiver]
+            integer << message[:arguments]
+            integer << integer[1]
+            integer_reg << message[:arguments]
+            integer_obj << integer_reg[2]
+            integer_reg << integer_reg[2]
+            integer.reduce_int
+            integer_reg.reduce_int
+            word[integer] <= integer_reg
+            message[:return_value] << integer_obj
+          end
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end

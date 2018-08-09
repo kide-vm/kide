@@ -59,12 +59,26 @@ module Risc
       assert_equal @r1 , ret.right
       assert_equal :<< , ret.operator
     end
+    def test_byte_to_reg
+      instr = @r0 <= @r1[1]
+      assert_equal ByteToReg , instr.class
+      assert_equal @r1 , instr.array
+      assert_equal @r0 , instr.register
+      assert_equal 1 , instr.index
+    end
     def test_slot_to_reg
       instr = @r0 << @r1[:next_message]
       assert_equal SlotToReg , instr.class
       assert_equal @r1 , instr.array
       assert_equal @r0 , instr.register
       assert_equal 3 , instr.index
+    end
+    def test_reg_to_byte
+      instr = @r1[1] <= @r0
+      assert_equal RegToByte , instr.class
+      assert_equal @r1 , instr.array
+      assert_equal @r0 , instr.register
+      assert_equal 1 , instr.index
     end
     def test_reg_to_slot
       instr = @r1[:next_message] << @r0

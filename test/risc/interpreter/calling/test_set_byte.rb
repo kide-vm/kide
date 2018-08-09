@@ -18,19 +18,19 @@ module Risc
              SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg,
              RegToSlot, LoadConstant, Branch, SlotToReg, RegToSlot,
              SlotToReg, FunctionCall, SlotToReg, SlotToReg, SlotToReg,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToByte,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             Branch, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, Branch, SlotToReg, SlotToReg, Branch,
-             RegToSlot, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
-             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer,
-             SlotToReg, SlotToReg, Branch, Syscall, NilClass]
+             SlotToReg, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
+             RegToByte, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             Branch, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
+             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
+             SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+             Branch, SlotToReg, SlotToReg, Branch, RegToSlot,
+             LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg,
+             SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg,
+             SlotToReg, Branch, Syscall, NilClass]
        assert_equal "K".ord , get_return
     end
     def test_reg_to_byte
-      done = main_ticks(40)
+      done = main_ticks(41)
       assert_equal RegToByte ,  done.class
       assert_equal "K".ord ,  @interpreter.get_register(done.register)
     end

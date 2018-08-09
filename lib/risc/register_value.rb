@@ -140,6 +140,15 @@ module Risc
       return ins
     end
 
+    # similar to above (<< which produces slot_to_reg), this produces byte_to_reg
+    # since << covers all other cases, this must have a RValue as the right
+    def <=( right )
+      raise "not implemented for #{right.class}:#{right}" unless right.is_a?( RValue )
+      ins = Risc.byte_to_reg("#{right.register.type}[#{right.index}] -> #{self.type}" , right.register , right.index , self)
+      builder.add_code(ins) if builder
+      return ins
+    end
+
     def -( right )
       raise "operators only on registers, not #{right.class}" unless right.is_a? RegisterValue
       op = Risc.op("#{self.type} - #{right.type}", :- , self , right )
@@ -185,6 +194,15 @@ module Risc
       reg_to_slot = Risc.reg_to_slot("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg , register, index)
       builder.add_code(reg_to_slot) if builder
       reg_to_slot
+    end
+
+    # similar to above (<< which produces reg_to_slot), this produces reg_to_byte
+    # from itself (the slot) and the register given
+    def <=( reg )
+      raise "not reg #{reg}" unless reg.is_a?(RegisterValue)
+      reg_to_byte = Risc.reg_to_byte("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg , register, index)
+      builder.add_code(reg_to_byte) if builder
+      reg_to_byte
     end
 
   end
