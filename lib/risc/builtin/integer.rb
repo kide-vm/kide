@@ -75,17 +75,24 @@ module Risc
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
+
+        def add_receiver(builder)
+          message = Risc.message_reg
+          ret_type = builder.compiler.receiver_type
+          ret = builder.compiler.use_reg( ret_type )
+          builder.add_slot_to_reg(" load self" , message , :receiver , ret )
+          builder.add_slot_to_reg(  "int -> fix" , ret , Parfait::Integer.integer_index , ret)
+          return ret
+        end
+
         def div10( context )
           s = "div_10 "
           compiler = compiler_for(:Integer,:div10 ,{})
           builder = compiler.compiler_builder(compiler.source)
           #FIX: this could load receiver once, reduce and then transfer twice
-          me = builder.add_known( :receiver )
-          tmp = builder.add_known( :receiver )
-          q = builder.add_known( :receiver )
-          builder.reduce_int( s , me )
-          builder.reduce_int( s , tmp )
-          builder.reduce_int( s , q )
+          me = add_receiver( builder )
+          tmp = add_receiver( builder )
+          q = add_receiver( builder )
           const = compiler.use_reg :fixnum , value: 1
           builder.add_load_data( s , 1 , const )
           # int tmp = self >> 1

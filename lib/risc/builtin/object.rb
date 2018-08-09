@@ -84,8 +84,9 @@ module Risc
         # Used by exit and __init__ (so it doesn't have to call it)
         def exit_sequence(builder)
           save_message( builder )
-          builder.add_slot_to_reg "get return" , Risc.message_reg , :return_value , Risc.message_reg
-          builder.reduce_int( "reduce return" , Risc.message_reg)
+          message = Risc.message_reg
+          builder.add_slot_to_reg "get return" , message , :return_value , message
+          builder.add_slot_to_reg( "reduce return" , message , Parfait::Integer.integer_index , message)
           builder.add_code Syscall.new("emit_syscall(exit)", :exit )
         end
 

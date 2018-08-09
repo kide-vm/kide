@@ -142,27 +142,6 @@ module Risc
 
     end
 
-    # load receiver and the first argument (int)
-    # return both registers
-    def self_and_int_arg( source )
-      me = add_known( :receiver )
-      int_arg = load_int_arg_at(source , 0 )
-      return me , int_arg
-    end
-
-    # Load the first argument, assumed to be integer
-    def load_int_arg_at( source , at)
-      int_arg = compiler.use_reg :Integer
-      add_slot_to_reg(source , Risc.message_reg , :arguments , int_arg )
-      add_slot_to_reg(source , int_arg , at + 1, int_arg ) #1 for type
-      return int_arg
-    end
-
-    # assumed Integer in given register is replaced by the fixnum that it is holding
-    def reduce_int( source , register )
-      add_slot_to_reg( source + "int -> fix" , register , Parfait::Integer.integer_index , register)
-    end
-
     # for computationally building code (ie writing assembler) these short cuts
     # help to instantiate risc instructions and add them immediately
     [:label, :reg_to_slot , :slot_to_reg , :load_constant, :load_data,
@@ -174,28 +153,6 @@ module Risc
           @source_used = true
         end
         add_code Risc.send( method , *args )
-      end
-    end
-
-    def add_known(name)
-      case name
-      when :receiver
-        message = Risc.message_reg
-        ret_type = compiler.slot_type(:receiver, message.type)
-        ret = compiler.use_reg( ret_type )
-        add_slot_to_reg(" load self" , message , :receiver , ret )
-        return ret
-      when :space
-        space = Parfait.object_space
-        reg = compiler.use_reg :Space , space
-        add_load_constant( "load space", space , reg )
-        return reg
-      when :message
-        reg = compiler.use_reg :Message
-        add_transfer( "load message", Risc.message_reg , reg )
-        return reg
-      else
-        raise "Unknow expression #{name}"
       end
     end
 
