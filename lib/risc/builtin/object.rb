@@ -9,13 +9,14 @@ module Risc
         # (this method returns a new method off course, like all builtin)
         def get_internal_word( context )
           compiler = compiler_for(:Object , :get_internal_word ,{at: :Integer})
-          builder = compiler.compiler_builder(compiler.source)
-          source = "get_internal_word"
-          me , index = builder.self_and_int_arg(source)
-          # reduce me to me[index]
-          builder.add_slot_to_reg( source , me , index , me)
-          # and put it back into the return value
-          builder.add_reg_to_slot( source , me , Risc.message_reg , :return_value)
+          compiler.compiler_builder(compiler.source).build do
+            object << message[:receiver]
+            integer << message[:arguments]
+            integer << integer_reg[1]
+            integer.reduce_int
+            object << object[integer]
+            message[:return_value] << object
+          end
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
@@ -24,12 +25,15 @@ module Risc
         # no return
         def set_internal_word( context )
           compiler = compiler_for(:Object , :set_internal_word , {at: :Integer, :value => :Object} )
-          source = "set_internal_word"
-          builder = compiler.compiler_builder(compiler.source)
-          me , index = builder.self_and_int_arg(source)
-          value = builder.load_int_arg_at(source , 1)
-          # do the set
-          builder.add_reg_to_slot( source , value , me , index)
+          compiler.compiler_builder(compiler.source).build do
+            object << message[:receiver]
+            integer << message[:arguments]
+            object_reg << integer[ 2]
+            integer << integer[ 1]
+            integer.reduce_int
+            object[integer] << object_reg
+            message[:return_value] << object_reg
+          end
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end

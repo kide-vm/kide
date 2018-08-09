@@ -137,6 +137,7 @@ module Parfait
     def range_correct_index( at )
       index = at
 #      index = self.length + at if at < 0
+      raise "index not integer #{at.class}" unless at.is_a?(Fixnum)
       raise "index must be positive , not #{at}" if (index < 0)
       raise "index too large #{at} > #{self.length}" if (index >= self.length )
       return index + 11
