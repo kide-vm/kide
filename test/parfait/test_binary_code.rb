@@ -18,14 +18,14 @@ module Parfait
       assert_equal 2 , @code.get_instance_variables.get_length
     end
     def test_var_next
-      assert_equal :next , @code.get_instance_variables[1]
+      assert_equal :next_code , @code.get_instance_variables[1]
     end
     def test_next_nil
-      assert_nil @code.next
+      assert_nil @code.next_code
     end
     def test_ensure_next
       assert BinaryCode , @code.ensure_next.class
-      assert @code.next
+      assert @code.next_code
     end
     def test_data_length
       assert_equal 13 , @code.data_length
@@ -42,8 +42,8 @@ module Parfait
     end
     def test_next_not_nil
       @code = BinaryCode.new(16)
-      assert @code.next
-      assert_nil @code.next.next
+      assert @code.next_code
+      assert_nil @code.next_code.next_code
     end
     def test_set_char1
       assert @code.set_char(1 , 1)
@@ -74,19 +74,19 @@ module Parfait
     end
     def test_extend
       @code.extend_to(20)
-      assert @code.next
-      assert_nil @code.next.next
+      assert @code.next_code
+      assert_nil @code.next_code.next_code
     end
     def test_auto_extend #extend by seting word
-      assert_nil @code.next
+      assert_nil @code.next_code
       @code.set_word(20 , 1)
-      assert @code.next
+      assert @code.next_code
     end
     def test_extend_extended
       @code.extend_to(20)
       @code.extend_to(30)
-      assert @code.next.next
-      assert_nil @code.next.next.next
+      assert @code.next_code.next_code
+      assert_nil @code.next_code.next_code.next_code
     end
     def test_each_word
       len = 0
@@ -104,7 +104,7 @@ module Parfait
       @code.each_word(false){ |w| all << w}
       assert_equal 0 , all.first
       assert_equal 12 , all.last
-      assert_nil @code.next
+      assert_nil @code.next_code
     end
     def test_set_word
       assert_equal 1 , @code.set_word(1 , 1)
@@ -120,12 +120,12 @@ module Parfait
     def test_set_12
       @code.set_word(12 , 12)
       assert_equal 0 , @code.get_last
-      assert_nil @code.next
+      assert_nil @code.next_code
       assert_equal 12 , @code.get_word(12)
     end
     def test_set_last_no_extend
       @code.set_last(1)
-      assert_nil @code.next
+      assert_nil @code.next_code
     end
     def test_set_last_and_get
       @code.set_last(1)
@@ -138,9 +138,9 @@ module Parfait
     end
     def test_step_13
       @code.set_word(13,13)
-      assert @code.next
+      assert @code.next_code
       assert_equal 13, @code.get_word(13)
-      assert_equal 13, @code.next.get_word(0)
+      assert_equal 13, @code.next_code.get_word(0)
     end
   end
 end

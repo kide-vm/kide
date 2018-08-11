@@ -11,7 +11,7 @@ module Parfait
       assert_equal 9 , @mess.get_type.instance_length , @mess.get_type.inspect
     end
     def test_attribute_set
-      @mess.set_receiver( 55)
+      @mess.set_receiver( 55 ) # 55 is not parfait, hance not actually allowed
       assert_equal 55 , @mess.receiver
     end
     def test_indexed

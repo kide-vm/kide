@@ -58,7 +58,6 @@ module Parfait
 
     space = Space.new( classes )
     Parfait.set_object_space( space )
-
   end
 
   # types is where the snake bites its tail. Every chain ends at a type and then it
@@ -94,6 +93,7 @@ module Parfait
   # and off cource we can't use space.create_class , but still they need to go there
   def self.boot_classes(types)
     classes = Dictionary.new
+    classes.type = types[:Dictionary]
     type_names.each do |name , vars|
       super_c = super_class_names[name] || :Object
       clazz = Class.new(name , super_c , types[name] )
@@ -132,16 +132,16 @@ module Parfait
   # unfortuantely that constant condenses every detail about the system, class names
   # and all instance variable names. Really have to find a better way
   def self.type_names
-     {BinaryCode: {next: :BinaryCode} ,
-      Block: {binary: :BinaryCode, next: :Block,
+     {BinaryCode: {next_code: :BinaryCode} ,
+      Block: {binary: :BinaryCode, next_callable: :Block,
               arguments_type: :Type , self_type: :Type, frame_type: :Type,
               name: :Word  } ,
-              
+
       CacheEntry: {cached_type: :Type , cached_method: :CallableMethod  } ,
-      Callable:   {binary: :BinaryCode,next: :Callable ,
+      Callable:   {binary: :BinaryCode,next_callable: :Callable ,
                    arguments_type: :Type , self_type: :Type, frame_type: :Type,
                    name: :Word  } ,
-      CallableMethod: {binary: :BinaryCode, next: :CallableMethod ,
+      CallableMethod: {binary: :BinaryCode, next_callable: :CallableMethod ,
                        arguments_type: :Type , self_type: :Type, frame_type: :Type ,
                        name: :Word , blocks: :Block} ,
       Class: {instance_methods: :List, instance_type: :Type,
@@ -150,7 +150,7 @@ module Parfait
       Data4: {},
       Data8: {},
       Data16: {},
-      Dictionary: {keys: :List , values: :List  } ,
+      Dictionary: {i_keys: :List , i_values: :List  } ,
       Integer: {next_integer: :Integer},
       FalseClass: {},
       List: {indexed_length: :Integer , next_list: :List} ,

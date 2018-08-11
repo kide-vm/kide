@@ -12,7 +12,7 @@ module Parfait
       @list.push((@list.data_length + 1).to_s)
     end
     def test_next
-      assert_nil @list.next
+      assert_nil @list.next_list
     end
     def test_setup_len
       assert_equal List.data_length , @list.get_length

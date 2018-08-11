@@ -3,7 +3,7 @@ require_relative "../helper"
 module Risc
   class TestFakeMemory < MiniTest::Test
     def setup
-      @fake = FakeMemory.new(2,16)
+      @fake = FakeMemory.new(1 , 2,16)
     end
     def test_init
       assert @fake
@@ -16,9 +16,6 @@ module Risc
     end
     def test_access_fail_big
       assert_raises {@fake.set(20 , 12)}
-    end
-    def test_access_fail_small
-      assert_raises {@fake.set(1 , 12)}
     end
     def test_access_fail_minus
       assert_raises {@fake.set(-1 , 12)}
