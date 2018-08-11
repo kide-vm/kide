@@ -9,8 +9,9 @@ module Risc
   # Parfait really does everything else, apart from the internal_get/set
   # And our fake memory (other than hte previously used array, does bound check)
   class FakeMemory
-    attr_reader :min
-    def initialize(from , size)
+    attr_reader :min , :object
+    def initialize(object,from , size)
+      @object = object
       @min = from
       @memory = Array.new(size)
       raise "only multiples of 2 !#{size}" unless size == 2**(Math.log2(size).to_i)
@@ -33,8 +34,8 @@ module Risc
     end
 
     def range_check(index)
-      raise "index too low #{index} < #{min}" if index < min
-      raise "index too big #{index} >= #{size}" if index >= size
+      raise "index too low #{index} < #{min} in #{object.class}" if index < 0
+      raise "index too big #{index} >= #{size} #{object.class}" if index >= size
     end
   end
 end

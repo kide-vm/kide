@@ -1,26 +1,61 @@
 require_relative "fake_memory"
 
 module Parfait
-  class DataObject < Object
+  def self.variable_index(clazz_name , name)
+    clazz = clazz_name.split("::").last.to_sym
+    type = self.type_names[clazz]
+    i = type.keys.index(name)
+    raise "no #{name} for #{clazz}" unless i
+    i + 1
+  end
+  class Object
 
     def self.allocate
       r = super
-      r.instance_variable_set(:@memory , Risc::FakeMemory.new(self.type_length , self.memory_size))
+      r.instance_variable_set(:@memory , Risc::FakeMemory.new(r ,self.type_length , self.memory_size))
       r
     end
 
     # 0 -based index
     def get_internal_word(index)
-      return super if index < self.class.type_length
       @memory[index]
     end
 
     # 0 -based index
     def set_internal_word(index , value)
-      return super if index < self.class.type_length
-      raise "Word[#{index}] = nil" if( value.nil? and self.class != List)
       @memory[index] = value
       value
+    end
+
+    def self.attr( *attributes )
+      attributes = [attributes] unless attributes.is_a?(Array)
+      attributes.each do |name|
+        define_getter(name)
+        define_setter(name)
+      end
+    end
+
+    def self.define_getter(name)
+      define_method(name) do
+        #puts "GETTING #{name} for #{self.class.name} in #{object_id.to_s(16)}"
+        if(name == :type)
+          return @memory[0]
+        end
+        index = Parfait.variable_index(self.class.name, name)
+        get_internal_word(index)
+      end
+    end
+
+    def self.define_setter(name)
+      define_method("#{name}=".to_sym ) do |value|
+        #puts "SETTING #{name}= for #{self.class.name} in #{object_id.to_s(16)}"
+        if(name == :type)
+          @memory[0] = value
+          return value
+        end
+        index = Parfait.variable_index(self.class.name, name)
+        set_internal_word(index , value)
+      end
     end
   end
 
