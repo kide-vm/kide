@@ -10,6 +10,6 @@
 
 module Parfait
   class Page < Object
-
+    attr :type
   end
 end

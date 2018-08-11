@@ -11,12 +11,12 @@
 module Parfait
   # Make the object space globally available
   def self.object_space
-    @@object_space
+    @object_space
   end
 
   # TODO Must get rid of the setter (move the boot process ?)
   def self.set_object_space( space )
-    @@object_space = space
+    @object_space = space
   end
 
   # The Space contains all objects for a program. In functional terms it is a program, but in oo
@@ -31,51 +31,58 @@ module Parfait
 
   class Space < Object
 
+    attr  :type, :classes , :types , :next_message , :next_integer , :next_address
+    attr  :messages, :integers , :addresses
+    attr  :true_object , :false_object , :nil_object
+
     def initialize( classes )
-      @classes = classes
-      @types = Dictionary.new
-      @classes.each do |name , cl|
+      self.classes = classes
+      self.types = Dictionary.new
+      classes.each do |name , cl|
         add_type(cl.instance_type)
       end
-      101.times { @integers = Integer.new(0,@integers) }
-      400.times { @addresses = ReturnAddress.new(0,@addresses) }
+      101.times { self.integers = Integer.new(0,self.integers) }
+      400.times { self.addresses = ReturnAddress.new(0,self.addresses) }
       message = Message.new(nil)
       50.times do
-        @messages = Message.new message
-        message.set_caller @messages
-        message = @messages
+        self.messages = Message.new( message )
+        message.set_caller( self.messages )
+        message = self.messages
       end
-      @next_message = @messages
-      @next_integer = @integers
-      @next_address = @addresses
-      @true_object = Parfait::TrueClass.new
-      @false_object = Parfait::FalseClass.new
-      @nil_object = Parfait::NilClass.new
+      self.next_message = self.messages
+      self.next_integer = self.integers
+      self.next_address = self.addresses
+      self.true_object = Parfait::TrueClass.new
+      self.false_object = Parfait::FalseClass.new
+      self.nil_object = Parfait::NilClass.new
     end
 
-    attr_reader  :classes , :types , :next_message , :next_integer , :next_address
-    attr_reader  :messages, :integers , :addresses
-    attr_reader  :true_object , :false_object , :nil_object
+    def self.type_length
+      12
+    end
+    def self.memory_size
+      16
+    end
 
     # hand out one of the preallocated ints for use as constant
     # the same code is hardcoded as risc instructions for "normal" use, to
     # avoid the method call at runtime. But at compile time we want to keep
     # the number of integers known (fixed).
     def get_integer
-      int = @next_integer
-      @next_integer = @next_integer.next_integer
+      int = self.next_integer
+      self.next_integer = next_integer.next_integer
       int
     end
 
     # hand out a return address for use as constant the address is added
     def get_address
-      addr = @next_address
-      @next_address = @next_address.next_integer
+      addr = next_address
+      next_address = next_address.next_integer
       addr
     end
 
     def each_type
-      @types.values.each do |type|
+      types.values.each do |type|
         yield(type)
       end
     end
@@ -83,13 +90,13 @@ module Parfait
     def add_type( type )
       hash = type.hash
       raise "upps #{hash} #{hash.class}" unless hash.is_a?(Fixnum)
-      was = @types[hash]
+      was = types[hash]
       return was if was
-      @types[hash] = type
+      types[hash] = type
     end
 
     def get_type_for( hash )
-      @types[hash]
+      types[hash]
     end
 
     # all methods form all types
@@ -124,8 +131,8 @@ module Parfait
     # return nili if no such class. Use bang version if create should be implicit
     def get_class_by_name( name )
       raise "get_class_by_name #{name}.#{name.class}" unless name.is_a?(Symbol)
-      c = @classes[name]
-      #puts "MISS, no class #{name} #{name.class}" unless c # " #{@classes}"
+      c = classes[name]
+      #puts "MISS, no class #{name} #{name.class}" unless c # " #{classes}"
       #puts "CLAZZ, #{name} #{c.get_type.get_length}" if c
       c
     end
@@ -146,7 +153,7 @@ module Parfait
       raise "create_class #{superclass.class}" unless superclass.is_a? Symbol
       type = get_type_by_class_name(superclass)
       c = Class.new(name , superclass , type )
-      @classes[name] = c
+      classes[name] = c
     end
 
     def rxf_reference_name

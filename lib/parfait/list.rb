@@ -7,29 +7,31 @@
 
 module Parfait
   class List < Data16
-    attr_reader :indexed_length , :next
+    attr :type, :indexed_length , :next_list
 
     def self.type_length
       3    # 0 type , 1 length , 2 - next_list
     end
-    def self.get_length_index
-      1
-    end
     def self.data_length
-      self.memory_size - self.type_length - 1 #one for the jump
+      self.memory_size - self.type_length - 1
     end
+
+    def initialize
+      super
+      self.indexed_length = 0
+    end
+    
     def data_length
       self.class.data_length
     end
-
     def get_length
-      r = @indexed_length
+      r = indexed_length
       r.nil? ? 0 : r
     end
 
     def ensure_next
-      @next = List.new unless @next
-      @next
+      self.next_list = List.new unless next_list
+      self.next_list
     end
 
     # set the value at index.
@@ -41,7 +43,7 @@ module Parfait
       end
       if index >= data_length
         ensure_next
-        @next.set( index - data_length , value)
+        next_list.set( index - data_length , value)
       else
         set_internal_word( index + self.class.type_length, value)
       end
@@ -52,8 +54,8 @@ module Parfait
     def get( index )
       raise "Only positive indexes, #{index}" if index < 0
       if index >= data_length
-        return nil unless @next
-        return @next.get( index - data_length)
+        return nil unless next_list
+        return next_list.get( index - data_length)
       else
         ret = nil
         if(index < get_length)
@@ -78,9 +80,9 @@ module Parfait
       internal_set_length( len)
     end
 
-    def indexed_length
-      get_length()
-    end
+    # def indexed_length
+    #   get_length()
+    # end
 
     # include? means non nil index
     def include?( item )
@@ -262,7 +264,7 @@ module Parfait
     end
     private
     def internal_set_length( i )
-      @indexed_length = i
+      self.indexed_length = i
     end
   end
 

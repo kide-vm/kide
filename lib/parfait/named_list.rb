@@ -23,6 +23,8 @@
 module Parfait
   class NamedList < Object
 
+    attr :type
+
     def to_s
       str  = "NamedList len= #{get_length}"
       str += " at #{Risc::Position.get(self)}" if Risc::Position.set?(self)

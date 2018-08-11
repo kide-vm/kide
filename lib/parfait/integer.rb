@@ -9,12 +9,13 @@
 module Parfait
   class Integer < Data4
 
+    attr :type, :next_integer
+
     def initialize(value , next_i = nil)
       super()
-      @next_integer = next_i
+      self.next_integer = next_i
       set_internal_word(Integer.integer_index, value)
     end
-    attr_reader :next_integer
 
     def value
       get_internal_word(Integer.integer_index)
@@ -28,7 +29,7 @@ module Parfait
     end
 
     def to_s
-      "Integer #{@value}"
+      "Integer #{value}"
     end
     # compile time method to set the actual value.
     # this should not really be part of parfait, as ints are immutable at runtime.
@@ -38,12 +39,12 @@ module Parfait
 
     # :integer?, :odd?, :even?, :upto, :downto, :times, :succ, :next, :pred, :chr, :ord, :to_i, :to_int, :floor,
     # :ceil, :truncate, :round, :gcd, :lcm, :gcdlcm, :numerator, :denominator, :to_r, :rationalize,
-    # :singleton_method_added, :coerce, :i, :+@, :-@, :fdiv, :div, :divmod, :%, :modulo, :remainder, :abs, :magnitude,
+    # :singleton_method_added, :coerce, :i, :+, :-, :fdiv, :div, :divmod, :%, :modulo, :remainder, :abs, :magnitude,
     # :real?, :zero?, :nonzero?, :step, :quo, :to_c, :real, :imaginary, :imag, :abs2, :arg, :angle, :phase,
     # :rectangular, :rect, :polar, :conjugate, :conj, :>, :>=, :<, :<=, :between?
     #
     # Numeric
-    # :singleton_method_added, :coerce, :i, :+@, :-@, :fdiv, :div, :divmod, :%, :modulo, :remainder, :abs, :magnitude,
+    # :singleton_method_added, :coerce, :i, :+, :-, :fdiv, :div, :divmod, :%, :modulo, :remainder, :abs, :magnitude,
     # :to_int, :real?, :integer?, :zero?, :nonzero?, :floor, :ceil, :round, :truncate, :step, :numerator, :denominator,
     # :quo, :to_c, :real, :imaginary, :imag, :abs2, :arg, :angle, :phase, :rectangular, :rect, :polar, :conjugate, :conj,
     # :>, :>=, :<, :<=, :between?

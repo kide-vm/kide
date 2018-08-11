@@ -7,7 +7,7 @@ module Parfait
   # and as the last code of each link is a jump to the next link.
   #
   class BinaryCode < Data16
-    attr_reader :next
+    attr :type, :next_code
 
     def self.type_length
       2 #type + next (could get from space, maybe later)
@@ -27,35 +27,36 @@ module Parfait
 
     def initialize(total_size)
       super()
+      self.next_code = nil
       extend_to(total_size )
       (0 ... data_length).each{ |index| set_word(index , 0) }
       set_last(0)
     end
     def extend_to(total_size)
       return if total_size < data_length
-      extend_one() unless @next
-      @next.extend_to(total_size - data_length)
+      extend_one() unless next_code
+      next_code.extend_to(total_size - data_length)
     end
 
     def extend_one()
-      @next = BinaryCode.new(1)
+      self.next_code = BinaryCode.new(1)
       Risc::Position.get(self).trigger_inserted if Risc::Position.set?(self)
     end
 
     def ensure_next
-      extend_one unless @next
-      @next
+      extend_one unless next_code
+      next_code
     end
 
     def last_code
       last = self
-      last = last.next while(last.next)
+      last = last.next_code while(last.next_code)
       last
     end
 
     def each_block( &block )
       block.call( self )
-      @next.each_block( &block ) if @next
+      next_code.each_block( &block ) if next_code
     end
 
     def to_s
@@ -74,9 +75,9 @@ module Parfait
     def set_word(index , word)
       raise "invalid index #{index}" if index < 0
       if index >= data_length
-        #raise "invalid index #{index}" unless @next
+        #raise "invalid index #{index}" unless next
         extend_to( index )
-        @next.set_word( index - data_length , word)
+        next_code.set_word( index - data_length , word)
       else
         set_internal_word(index + BinaryCode.type_length , word)
       end
@@ -90,15 +91,15 @@ module Parfait
     def get_word(index)
       raise "invalid index #{index}" if index < 0
       if index >= data_length
-        raise "invalid index #{index}" unless @next
-        return @next.get_word( index - data_length)
+        raise "invalid index #{index}" unless next_code
+        return next_code.get_word( index - data_length)
       end
       get_internal_word(index + BinaryCode.type_length)
     end
     def set_char(index , char)
       if index >= byte_length
-        #puts "Pass it on #{index} for #{self.object_id}:#{@next.object_id}"
-        return @next.set_char( index - byte_length ,  char )
+        #puts "Pass it on #{index} for #{self.object_id}:#{next_code.object_id}"
+        return next_code.set_char( index - byte_length ,  char )
       end
       word_index = (index - 1) / 4 + 2
       old = get_internal_word( word_index )
@@ -107,8 +108,8 @@ module Parfait
     end
     def total_byte_length(start = 0 )
       start += self.byte_length
-      return start unless self.next
-      self.next.total_byte_length(start)
+      return start unless self.next_code
+      self.next_code.total_byte_length(start)
     end
   end
 end

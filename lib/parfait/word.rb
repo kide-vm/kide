@@ -13,7 +13,7 @@ module Parfait
   # Object length is measured in non-type cells though
 
   class Word < Data8
-    attr_reader :char_length
+    attr :type, :char_length
 
     def self.type_length
       2    # 0 type , 1 char_length
@@ -26,7 +26,7 @@ module Parfait
     # Risc provides methods to create Parfait objects from ruby
     def initialize( len )
       super()
-      @char_length = 0
+      self.char_length = 0
       raise "Must init with int, not #{len.class}" unless len.kind_of? Fixnum
       raise "Must init with positive, not #{len}" if len < 0
       set_length( len , 32 ) unless len == 0 #32 being ascii space
@@ -47,7 +47,7 @@ module Parfait
 
     # return the number of characters
     def length()
-      obj_len = @char_length
+      obj_len = char_length
       return obj_len
     end
 
@@ -75,9 +75,9 @@ module Parfait
     #
     def set_length(len , fill_char)
       return if len <= 0
-      old = @char_length
+      old = char_length
       return if old >= len
-      @char_length = len
+      self.char_length = len
       check_length
       fill_from_with( old + 1 , fill_char )
     end
@@ -169,7 +169,7 @@ module Parfait
     def to_string
       string = ""
       index = 0
-      while( index < @char_length)
+      while( index < char_length)
         char = get_char(index)
         string += char ? char.chr : "*"
         index = index + 1
@@ -183,12 +183,12 @@ module Parfait
     end
 
     def padded_length
-      Padding.padded( 4 * get_type().instance_length + @char_length  )
+      Padding.padded( 4 * get_type().instance_length + char_length  )
     end
 
     private
     def check_length
-      raise "Length out of bounds #{@char_length}" if @char_length > 1000
+      raise "Length out of bounds #{char_length}" if char_length > 1000
     end
   end
 

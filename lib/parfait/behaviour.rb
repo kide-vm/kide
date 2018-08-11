@@ -7,13 +7,13 @@ module Parfait
 
     def initialize
       super()
-      @instance_methods = List.new
+      instance_methods = List.new
     end
 
     def methods
-      m = @instance_methods
+      m = instance_methods
       return m if m
-      @instance_methods = List.new
+      instance_methods = List.new
     end
 
     def method_names
@@ -45,7 +45,7 @@ module Parfait
       raise "resolve_method #{m_name}.#{m_name.class}" unless m_name.is_a?(Symbol)
       method = get_instance_method(m_name)
       return method if method
-      if( @super_class_name != :Object )
+      if( super_class_name != :Object )
         method = self.super_class.resolve_method(m_name)
       end
       method

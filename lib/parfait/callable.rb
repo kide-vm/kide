@@ -8,34 +8,39 @@ module Parfait
   # - frame_type:  A type object describing the local variables that the method has
   # - binary:  The binary (jumpable) code that instructions get assembled into
   # - blocks: linked list of blocks inside this method/block
-  # - next: next block/method at same level
+  # - next_callable: next block/method at same level
   #
   class Callable < Object
 
-    attr_reader :self_type , :arguments_type , :frame_type , :binary
-    attr_reader :blocks, :next , :name
-    
+    attr :type, :self_type , :arguments_type , :frame_type , :binary
+    attr :blocks , :name
+    attr :next_callable
+
+    def self.type_length
+      8
+    end
+
     def initialize( name , self_type , arguments_type , frame_type)
       super()
       raise "No class #{self}" unless self_type
       raise "For type, not class #{self_type}" unless self_type.is_a?(Type)
       raise "Mixup" unless name.is_a?(Symbol)
-      @name = name
-      @self_type = self_type
+      self.name = name
+      self.self_type = self_type
       init(arguments_type, frame_type)
     end
 
     def ==(other)
-      @self_type == other.self_type
+      self_type == other.self_type
     end
 
     # (re) init with given args and frame types
     def init(arguments_type, frame_type)
       raise "Wrong argument type, expect Type not #{arguments_type.class}" unless arguments_type.is_a? Type
       raise "Wrong frame type, expect Type not #{frame_type.class}" unless frame_type.is_a? Type
-      @arguments_type = arguments_type
-      @frame_type = frame_type
-      @binary = BinaryCode.new(0)
+      self.arguments_type = arguments_type
+      self.frame_type = frame_type
+      self.binary = BinaryCode.new(0)
     end
 
     # determine if method has a local variable or tmp (anonymous local) by given name
@@ -47,19 +52,19 @@ module Parfait
     def add_local( name , type )
       index = has_local( name )
       return index if index
-      @frame_type = @frame_type.add_instance_variable(name,type)
+      self.frame_type = frame_type.add_instance_variable(name,type)
     end
 
     def each_binary( &block )
       bin = binary
       while(bin) do
         block.call( bin )
-        bin = bin.next
+        bin = bin.next_callable
       end
     end
 
     def set_next( method )
-      @next = method
+      self.next_callable = method
     end
 
   end

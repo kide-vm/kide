@@ -15,28 +15,35 @@ module Parfait
     # :return_address => :Integer, :return_value => :Integer,
     # :caller => :Message , :name => :Word , :arguments => :NamedList
 
-    attr_accessor :next_message
-    attr_reader   :receiver  , :frame
-    attr_reader   :return_address, :return_value
-    attr_reader   :caller , :method , :arguments
+    attr   :type, :next_message
+    attr   :receiver  , :frame
+    attr   :return_address, :return_value
+    attr   :caller , :method , :arguments
+
+    def self.type_length
+      9
+    end
+    def self.memory_size
+      16
+    end
 
     def initialize( next_m )
-      @next_message = next_m
-      @frame = NamedList.new()
-      @arguments = NamedList.new()
       super()
+      self.next_message = next_m
+      self.frame = NamedList.new()
+      self.arguments = NamedList.new()
     end
 
     def set_receiver(rec)
-      @receiver = rec
+      self.receiver = rec
     end
 
     def set_caller(caller)
-      @caller = caller
+      caller = caller
     end
 
     def get_type_for(name)
-      index = @type.get_index(name)
+      index = type.get_index(name)
       get_at(index)
     end
     def to_s

@@ -21,9 +21,7 @@
 # A marker class
 module Parfait
   class DataObject < Object
-    def initialize
-      super
-    end
+
     def self.integer_index
       type_length
     end
