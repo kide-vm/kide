@@ -18,16 +18,22 @@ module Risc
     end
     def set(index , value)
       range_check(index)
+      _set(index,value)
+    end
+    alias :[]=  :set
+    def _set(index , value)
       @memory[index] = value
       value
     end
-    alias :[]=  :set
-
     def get(index)
       range_check(index)
-      @memory[index]
+      _get(index)
     end
     alias :[] :get
+
+    def _get(index)
+      @memory[index]
+    end
 
     def size
       @memory.length

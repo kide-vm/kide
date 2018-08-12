@@ -1,13 +1,6 @@
 require_relative "fake_memory"
 
 module Parfait
-  def self.variable_index(clazz_name , name)
-    clazz = clazz_name.split("::").last.to_sym
-    type = self.type_names[clazz]
-    i = type.keys.index(name)
-    raise "no #{name} for #{clazz}" unless i
-    i + 1
-  end
   class Object
 
     def self.allocate
@@ -35,26 +28,30 @@ module Parfait
       end
     end
 
+    def self.variable_index( name)
+      if(name == :type)
+        return Parfait::TYPE_INDEX
+      end
+      clazz = self.name.split("::").last.to_sym
+      type = Parfait.type_names[clazz]
+      i = type.keys.index(name)
+      raise "no #{name} for #{clazz}:#{type.keys}" unless i
+      i + 1
+    end
+
     def self.define_getter(name)
+      index = variable_index(name)
       define_method(name) do
         #puts "GETTING #{name} for #{self.class.name} in #{object_id.to_s(16)}"
-        if(name == :type)
-          return @memory[0]
-        end
-        index = Parfait.variable_index(self.class.name, name)
-        get_internal_word(index)
+        @memory._get(index)
       end
     end
 
     def self.define_setter(name)
+      index = variable_index(name)
       define_method("#{name}=".to_sym ) do |value|
         #puts "SETTING #{name}= for #{self.class.name} in #{object_id.to_s(16)}"
-        if(name == :type)
-          @memory[0] = value
-          return value
-        end
-        index = Parfait.variable_index(self.class.name, name)
-        set_internal_word(index , value)
+        @memory._set(index , value)
       end
     end
   end
