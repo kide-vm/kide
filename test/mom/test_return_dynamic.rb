@@ -15,13 +15,12 @@ module Risc
                  Branch, Label, Transfer, Syscall, Transfer,
                  Transfer, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
                  RegToSlot, RegToSlot, Label, RegToSlot, Label,
-                 LoadConstant, SlotToReg, LoadConstant, SlotToReg, RegToSlot,
-                 RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-                 SlotToReg, RegToSlot, RegToSlot, SlotToReg, RegToSlot,
-                 SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
-                 SlotToReg, RegToSlot, SlotToReg, LoadConstant, SlotToReg,
-                 DynamicJump, Label, SlotToReg, SlotToReg, RegToSlot,
-                 SlotToReg, SlotToReg, RegToSlot, Branch]
+                 LoadConstant, SlotToReg, LoadConstant, SlotToReg, SlotToReg,
+                 RegToSlot, RegToSlot, RegToSlot, RegToSlot, SlotToReg,
+                 SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+                 RegToSlot, SlotToReg, LoadConstant, SlotToReg, DynamicJump,
+                 Label, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
+                 SlotToReg, RegToSlot, Branch]
     end
 
     def test_return_instructions
@@ -29,9 +28,9 @@ module Risc
     end
     def test_function_return
       produced = produce_body
-      assert_equal Branch , produced.next(73).class
+      assert_equal Branch , produced.next(67).class
     end
-    def est_cache_check
+    def test_cache_check
       produced = produce_body
       assert_equal IsZero , produced.next(6).class
     end

@@ -25,7 +25,7 @@ module Risc
       assert_equal 0 ,  Position.get(@linker.cpu_init).at
     end
     def test_cpu_at
-      assert_equal "0x72ec" ,  Position.get(@linker.cpu_init.first).to_s
+      assert_equal "0x74cc" ,  Position.get(@linker.cpu_init.first).to_s
     end
     def test_cpu_label
       assert_equal Position ,  Position.get(@linker.cpu_init.first).class
@@ -35,7 +35,7 @@ module Risc
       assert 0 != bin.get_word(Parfait::BinaryCode.data_length) , "index 0 is 0 #{bin.inspect}"
     end
     def test_second_binary_first
-      bin = Parfait.object_space.get_init.binary.next
+      bin = Parfait.object_space.get_init.binary.next_code
       assert 0 != bin.get_word(0) , "index 0 is 0 #{bin.inspect}"
     end
     def test_positions_set

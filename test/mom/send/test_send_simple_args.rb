@@ -7,12 +7,11 @@ module Risc
     def setup
       super
       @input = "5.get_internal_word(1)"
-      @expect = [LoadConstant, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
-                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-                 RegToSlot, RegToSlot, SlotToReg, RegToSlot, LoadConstant,
-                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg,
-                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
-                 FunctionCall, Label]
+      @expect = [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+                 RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg,
+                 RegToSlot, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+                 LoadConstant, SlotToReg, RegToSlot, SlotToReg, FunctionCall,
+                 Label]
     end
 
     def test_send_instructions
@@ -20,64 +19,45 @@ module Risc
     end
     def test_load_5
       produced = produce_body
-      assert_equal 5 , produced.next(14).constant.value
+      assert_equal LoadConstant , produced.next(8).class
+      assert_equal 5 , produced.next(8).constant.value
     end
     def base
-      17
+      11
     end
     def test_load_arg_const
       produced = produce_body
-      assert_equal LoadConstant , produced.next(base).class
-      assert_equal Parfait::Integer , produced.next(base).constant.class
+      assert_load( produced.next(base) , Parfait::Integer )
       assert_equal 1 , produced.next(base).constant.value
     end
     def test_load_next_m
-      produced = produce_body
-      assert_equal SlotToReg , produced.next(base+1).class
-      assert_equal :r2 , produced.next(base+1).register.symbol
-      assert_equal :r0 , produced.next(base+1).array.symbol
-      assert_equal 1 , produced.next(base+1).index
+      produced = produce_body.next(base+1)
+      assert_slot_to_reg( produced ,:r0 ,1 , :r2 )
     end
     def test_load_args
-      produced = produce_body
-      assert_equal SlotToReg , produced.next(base+2).class
-      assert_equal :r2 , produced.next(base+2).register.symbol
-      assert_equal :r2 , produced.next(base+2).array.symbol
-      assert_equal 8 , produced.next(base+2).index
+      produced = produce_body.next(base+2)
+      assert_slot_to_reg( produced ,:r2 ,8 , :r2 )
     end
     def test_store_arg_at
-      produced = produce_body
-      assert_equal RegToSlot , produced.next(base+3).class
-      assert_equal :r1 , produced.next(base+3).register.symbol
-      assert_equal :r2 , produced.next(base+3).array.symbol
-      assert_equal  1 , produced.next(base+3).index , "first arg must have index 1"
+      produced = produce_body.next(base+3)
+      assert_reg_to_slot( produced ,:r1 ,:r2 , 1 )
     end
     def test_load_label
-      produced = produce_body
-      assert_equal LoadConstant , produced.next(base+4).class
-      assert_equal Label , produced.next(base+4).constant.class
+      produced = produce_body.next(base+4)
+      assert_load( produced , Label )
     end
     def test_load_some
-      produced = produce_body
-      assert_equal SlotToReg , produced.next(base+5).class
-      assert_equal :r0 , produced.next(base+5).array.symbol
-      assert_equal :r2 , produced.next(base+5).register.symbol
-      assert_equal 1 , produced.next(base+5).index
+      produced = produce_body.next(base+5)
+      assert_slot_to_reg( produced ,:r0 ,1 , :r2 )
     end
     def test_store_
-      produced = produce_body
-      assert_equal RegToSlot , produced.next(base+6).class
-      assert_equal :r2 , produced.next(base+6).array.symbol
-      assert_equal :r1 , produced.next(base+6).register.symbol
-      assert_equal 4 , produced.next(base+6).index
+      produced = produce_body.next(base+6)
+      assert_reg_to_slot( produced ,:r1 ,:r2 , 4 )
     end
 
     def test_swap_messages
-      produced = produce_body
-      assert_equal SlotToReg , produced.next(base+7).class
-      assert_equal :r0 , produced.next(base+7).array.symbol
-      assert_equal :r0 , produced.next(base+7).register.symbol
-      assert_equal 1 , produced.next(base+7).index
+      produced = produce_body.next(base+7)
+      assert_slot_to_reg( produced ,:r0 ,1 , :r0 )
     end
 
     def test_function_call
@@ -89,6 +69,5 @@ module Risc
       produced = produce_body
       assert produced.next(base+9).name.start_with?("continue_")
     end
-    #TODO check the message setup, type and frame moves
   end
 end

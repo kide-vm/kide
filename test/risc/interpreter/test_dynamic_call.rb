@@ -27,27 +27,26 @@ module Risc
              OperatorInstruction, IsZero, Branch, SlotToReg, Branch,
              LoadConstant, SlotToReg, OperatorInstruction, IsZero, SlotToReg,
              OperatorInstruction, IsZero, RegToSlot, Branch, LoadConstant,
-             SlotToReg, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
-             SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, RegToSlot, Branch, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
-             SlotToReg, RegToSlot, SlotToReg, LoadConstant, SlotToReg,
-             DynamicJump, SlotToReg, SlotToReg, LoadData, OperatorInstruction,
-             LoadConstant, SlotToReg, SlotToReg, RegToSlot, RegToSlot,
-             RegToSlot, SlotToReg, SlotToReg, RegToSlot, Branch,
-             LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg,
-             SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg,
-             RegToSlot, SlotToReg, SlotToReg, RegToSlot, Branch,
+             SlotToReg, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+             RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
+             SlotToReg, RegToSlot, Branch, LoadConstant, SlotToReg,
+             RegToSlot, SlotToReg, LoadConstant, SlotToReg, DynamicJump,
+             SlotToReg, SlotToReg, LoadData, OperatorInstruction, LoadConstant,
+             SlotToReg, SlotToReg, RegToSlot, RegToSlot, RegToSlot,
+             SlotToReg, SlotToReg, RegToSlot, Branch, LoadConstant,
+             SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
+             SlotToReg, FunctionReturn, SlotToReg, SlotToReg, RegToSlot,
+             SlotToReg, SlotToReg, RegToSlot, Branch, Branch,
              SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-             RegToSlot, Branch, RegToSlot, SlotToReg, SlotToReg,
-             SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg,
-             Branch, Syscall, NilClass]
+             RegToSlot, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
+             FunctionReturn, Transfer, SlotToReg, SlotToReg, Syscall,
+             NilClass]
        assert_equal Fixnum , get_return.class
        assert_equal 1 , get_return
     end
 
     def test_call_main
-      call_ins = ticks(25)
+      call_ins = ticks(main_at)
       assert_equal FunctionCall , call_ins.class
       assert_equal  :main , call_ins.method.name
     end
@@ -58,17 +57,17 @@ module Risc
     end
 
     def test_dyn
-      cal = main_ticks(106)
+      cal = main_ticks(100)
       assert_equal DynamicJump ,  cal.class
     end
     def test_return
-      ret = main_ticks(147)
+      ret = main_ticks(141)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
       assert_equal Fixnum , link.class
     end
     def test_sys
-      sys = main_ticks(152)
+      sys = main_ticks(145)
       assert_equal Syscall ,  sys.class
     end
   end

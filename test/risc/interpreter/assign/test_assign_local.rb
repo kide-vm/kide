@@ -15,7 +15,7 @@ module Risc
              RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
              LoadConstant, SlotToReg, RegToSlot, Branch, RegToSlot,
              SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer,
-             SlotToReg, SlotToReg, Branch, Syscall, NilClass]
+             SlotToReg, SlotToReg, Syscall, NilClass]
       assert_equal 15 , get_return
     end
 
@@ -41,7 +41,7 @@ module Risc
       assert_equal Transfer ,  transfer.class
     end
     def test_sys
-      sys = main_ticks(24)
+      sys = main_ticks(23)
       assert_equal Syscall ,  sys.class
     end
   end
