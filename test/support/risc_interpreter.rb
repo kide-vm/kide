@@ -40,7 +40,7 @@ module Risc
     # how many instruction up until the main starts, ie
     # ticks(main_at) will be the label for main
     def main_at
-      25
+      19
     end
 
     def get_return
@@ -122,9 +122,14 @@ module Risc
     end
 
     def output_classes(classes)
-      str = classes.to_s.gsub("Risc::","")
-      all = str.split(",").each_slice(5).collect {|line| "            " + line.join(",")}
-      puts all.join(",\n")
+      str = "            ["
+      classes.each_with_index do |clazz , index|
+        str += "\n            " if ((index)%5) == 0 and index != 0
+        str += clazz.name.split("::").last
+        str += ", "
+        str += "# #{index+1}" if ((index + 1)%10) == 0 and index != 0
+      end
+      puts "#{str}]"
       puts "length = #{classes.length}"
       exit(1)
     end
