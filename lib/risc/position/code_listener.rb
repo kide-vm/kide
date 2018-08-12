@@ -16,17 +16,17 @@ module Risc
 
     def position_inserted(position)
       Position.log.debug "extending one at #{position}"
-      pos = CodeListener.init( position.object.next , @platform)
+      pos = CodeListener.init( position.object.next_code , @platform)
       raise "HI #{position}" unless position.valid?
       return unless position.valid?
-      Position.log.debug "insert #{position.object.next.object_id.to_s(16)}"
+      Position.log.debug "insert #{position.object.next_code.object_id.to_s(16)}"
       pos.set( position + position.object.padded_length)
       set_jump_for(position)
     end
 
     def position_changed(position)
       Position.log.debug "Code changed #{position}"
-      nekst = position.object.next
+      nekst = position.object.next_code
       if( nekst )
         nekst_pos = Position.get(nekst)
         Position.log.debug "Code changed, setting next #{position}"
@@ -47,8 +47,8 @@ module Risc
     def set_jump_for(position)
       at = position.at
       code = position.object
-      return unless code.next #dont jump beyond and
-      jump = Branch.new("BinaryCode #{at.to_s(16)}" , code.next)
+      return unless code.next_code #dont jump beyond and
+      jump = Branch.new("BinaryCode #{at.to_s(16)}" , code.next_code)
       translator = @platform.translator
       cpu_jump = translator.translate(jump)
       pos = at + code.padded_length - cpu_jump.byte_length
@@ -66,7 +66,7 @@ module Risc
         position = Position.get_or_create(code)
         first = position unless first
         position.position_listener(CodeListener.new(platform))
-        code = code.next
+        code = code.next_code
       end
       first
     end

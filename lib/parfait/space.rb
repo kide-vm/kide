@@ -77,7 +77,7 @@ module Parfait
     # hand out a return address for use as constant the address is added
     def get_address
       addr = next_address
-      next_address = next_address.next_integer
+      self.next_address = next_address.next_integer
       addr
     end
 

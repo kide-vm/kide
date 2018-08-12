@@ -127,16 +127,16 @@ module Parfait
     def remove_method( method_name )
       raise "No such method #{method_name} in #{self.name}" unless methods
       if( methods.name == method_name)
-        self.methods = methods.next
+        self.methods = methods.next_callable
         return true
       end
       method = methods
-      while(method && method.next)
-        if( method.next.name == method_name)
-          method.set_next( method.next.next )
+      while(method && method.next_callable)
+        if( method.next_callable.name == method_name)
+          method.set_next( method.next_callable.next_callable )
           return true
         else
-          method = method.next
+          method = method.next_callable
         end
       end
       raise "No such method #{method_name} in #{self.name}"

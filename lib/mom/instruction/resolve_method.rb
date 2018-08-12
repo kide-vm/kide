@@ -55,7 +55,7 @@ module Mom
 
         if_zero ok_label
 
-        callable_method << callable_method[:next]
+        callable_method << callable_method[:next_callable]
         branch  while_start_label
 
         add_code exit_label
