@@ -61,29 +61,28 @@ module Mom
 
     # get the next message from space and unlink it there
     # also put it into next_message of current message (and reverse)
-    # set name and type data in the message, from the method loaded
+    # set the method into the message
     def build_message_data( builder )
       builder.build do
         space << Parfait.object_space
         next_message << space[:next_message]
+
+        #FIXME in a multithreaded future this should be done using lock free compare and swap.
+        next_message_reg << next_message[:next_message]
+        space[:next_message] << next_message_reg
+
         message[:next_message] << next_message
         next_message[:caller] << message
-
-        type << callable[:arguments_type]
-        named_list << next_message[:arguments]
-        named_list[:type] << type
-
-        type << callable[:frame_type]
-        named_list << next_message[:frame]
-        named_list[:type] << type
-
         next_message[:method] << callable
 
-        #store next.next back into space
-        #FIXME in a multithreaded future this should be done soon after getting
-        #   the first_message, using lock free compare and swap. Now saving regs
-        next_message << next_message[:next_message]
-        space[:next_message] << next_message
+        # type << callable[:arguments_type]
+        # named_list << next_message[:arguments]
+        # named_list[:type] << type
+        #
+        # type << callable[:frame_type]
+        # named_list << next_message[:frame]
+        # named_list[:type] << type
+
       end
     end
   end
