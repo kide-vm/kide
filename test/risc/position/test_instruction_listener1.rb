@@ -18,7 +18,7 @@ module Risc
       assert_equal 72 , Position.get(@instruction.last).at
     end
     def test_next
-      assert @binary.next
+      assert @binary.next_code
     end
     def test_insert_initializes
       @instruction.insert DummyInstruction.new

@@ -168,7 +168,7 @@ module Risc
 
     def write_BinaryCode( code )
       write_ref_for( code.get_type )
-      write_ref_for( code.next )
+      write_ref_for( code.next_code )
       code.each_word do |word|
         @stream.write_unsigned_int_32( word || 0 )
       end

@@ -59,7 +59,7 @@ module Parfait
       bin = binary
       while(bin) do
         block.call( bin )
-        bin = bin.next_callable
+        bin = bin.next_code
       end
     end
 

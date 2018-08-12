@@ -12,18 +12,19 @@ module Parfait
   #
   class VoolMethod < Object
 
-    attr :type, :name , :args_type , :frame_type , :source
-
+    attr :type, :name , :args_type , :frame_type
+    attr_reader :source
+    
     def initialize(name , args_type , frame_type , source )
       self.name = name
       self.args_type = args_type
       self.frame_type = frame_type
-      self.source = source
+      @source = source
       raise "Name must be symbol" unless name.is_a?(Symbol)
       raise "args_type must be type" unless args_type.is_a?(Parfait::Type)
       raise "frame_type must be type" unless frame_type.is_a?(Parfait::Type)
       raise "source must be vool" unless source.is_a?(Vool::Statement)
-      raise "Empty bod" if(source.is_a?(Vool::Statements) and source.empty?)
+      raise "Empty bod" if(@source.is_a?(Vool::Statements) and @source.empty?)
     end
 
     def create_callable_method( type )
@@ -34,7 +35,7 @@ module Parfait
     def compiler_for(self_type)
       callable_method = create_callable_method(self_type)
       compiler = Risc::MethodCompiler.new( callable_method )
-      head = source.to_mom( compiler )
+      head = @source.to_mom( compiler )
       compiler.add_mom(head)
       compiler
     end
