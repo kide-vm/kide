@@ -34,6 +34,14 @@ module Risc
        assert_equal 2 , get_return
     end
 
+    def test_load_space
+      load_ins = main_ticks 55
+      assert_load load_ins, Parfait::Space
+    end
+    def test_load_to
+      to = main_ticks 56
+      assert_slot_to_reg to , :r5 , 5 ,:r2
+    end
     def test_load_25
       load_ins = main_ticks 9
       assert_equal LoadConstant ,  load_ins.class

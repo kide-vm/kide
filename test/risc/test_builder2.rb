@@ -25,6 +25,9 @@ module Risc
     def test_caller_reg
       assert_equal :Message , @builder.infer_type(:caller_reg).class_name
     end
+    def test_caller_tmp
+      assert_equal :Message , @builder.infer_type(:caller_tmp).class_name
+    end
     def test_caller_obj
       assert_equal :Message , @builder.infer_type(:caller_obj).class_name
     end

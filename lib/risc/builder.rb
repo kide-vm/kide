@@ -50,12 +50,12 @@ module Risc
     # infer the type from a symbol. In the simplest case the sybbol is the class name
     # But in building sometimes variations are needed, so next_message or caller work
     # too (and return Message)
-    # A general "_reg" or "_obj" at the end of the name will be removed
+    # A general "_reg"/"_obj" or "_tmp" at the end of the name will be removed
     # An error is raised if the symbol/object can not be inferred
     def infer_type( name )
       as_string = name.to_s
       parts = as_string.split("_")
-      if(parts.last == "reg" or parts.last == "obj")
+      if(parts.last == "reg"  or parts.last == "obj" or parts.last == "tmp")
         parts.pop
         as_string = parts.join("_")
       end
@@ -97,6 +97,7 @@ module Risc
       @names[left] = r
       @names[right] = l
     end
+
     # build code using dsl (see __init__ or MessageSetup for examples)
     # names (that ruby would resolve to a variable/method) are converted
     # to registers. << means assignment and [] is supported both on
@@ -123,23 +124,15 @@ module Risc
     # move a machine int from register "from" to a Parfait::Integer in register "to"
     # have to grab an integer from space and stick it in the "to" register first.
     def add_new_int( source , from, to )
-      source += "add_new_int "
-      space = compiler.use_reg(:Space)
-      int = compiler.use_reg(:Integer)
-      space_i = space.resolve_index(:next_integer)
-      add_load_constant( source + "space" , Parfait.object_space , space  )
-      add_slot_to_reg( source + "next_i1" , space , space_i , to)
-      add_slot_to_reg( source + "next_i2" , to , int.resolve_index(:next_integer) , int)
-      add_reg_to_slot( source + "store link" , int , space , space_i  )
-      add_reg_to_slot( source + "store value" , from , to , Parfait::Integer.integer_index)
-      # build do
-      #   space << Parfait.object_space
-      #   to << space[:next_integer]
-      #   integer << to[:next_integer]
-      #   space[:next_integer] << integer
-      #   to[Parfait::Integer.integer_index] << from
-      # end
-
+      to.builder = self    # esecially div10 comes in without having used builder
+      from.builder = self  # not named regs, different regs ==> silent errors
+      build do
+        space << Parfait.object_space
+        to << space[:next_integer]
+        integer_tmp << to[:next_integer]
+        space[:next_integer] << integer_tmp
+        to[Parfait::Integer.integer_index] << from
+      end
     end
 
     # for computationally building code (ie writing assembler) these short cuts
