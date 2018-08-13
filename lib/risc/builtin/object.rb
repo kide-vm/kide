@@ -111,21 +111,18 @@ module Risc
         #
         def save_message(builder)
           r8 = RegisterValue.new( :r8 , :Message)
-          builder.add_code Risc.transfer("save_message", Risc.message_reg , r8 )
+          builder.add_transfer("save_message", Risc.message_reg , r8 )
         end
 
         def restore_message(builder)
           r8 = RegisterValue.new( :r8 , :Message)
-          return_tmp = builder.compiler.use_reg :fixnum
-          source = "_restore_message"
-          # get the sys return out of the way
-          builder.add_code Risc.transfer(source, Risc.message_reg , return_tmp )
-          # load the stored message into the base register
-          builder.add_code Risc.transfer(source, r8 , Risc.message_reg )
           int = builder.compiler.use_reg(:Integer)
-          builder.add_new_int(source , return_tmp , int )
-          # save the return value into the message
-          builder.add_code Risc.reg_to_slot( source , int , Risc.message_reg , :return_value )
+          builder.build do
+            integer_reg << message
+            message << r8
+            add_new_int( "_restore_message", integer_reg , int )
+            message[:return_value] << int
+          end
         end
 
       end

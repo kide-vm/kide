@@ -45,8 +45,8 @@ module Risc
       sl = main_ticks(22)
       assert_equal Transfer , sl.class
       assert_equal :r0 , sl.from.symbol
-      assert_equal :r2 , sl.to.symbol
-      assert_equal 11 , @interpreter.get_register(:r2)
+      assert_equal :r3 , sl.to.symbol
+      assert_equal 11 , @interpreter.get_register(:r3)
     end
     def test_restore_message
       sl = main_ticks(23)
@@ -58,8 +58,8 @@ module Risc
     def test_save_sys_return
       sl = main_ticks(28)
       assert_equal RegToSlot , sl.class
-      assert_equal :r2 , sl.register.symbol #return
-      assert_equal :r3 , sl.array.symbol #parfait integer
+      assert_equal :r3 , sl.register.symbol #return
+      assert_equal :r2 , sl.array.symbol #parfait integer
       assert_equal  2 , sl.index
     end
     def test_return
