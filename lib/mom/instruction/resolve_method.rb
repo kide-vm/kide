@@ -37,20 +37,20 @@ module Mom
       cache_entry_ = @cache_entry
       builder = compiler.code_builder(self)
       builder.build do
-        word << name_
-        cache_entry << cache_entry_
+        word! << name_
+        cache_entry! << cache_entry_
 
-        type << cache_entry[:cached_type]
-        callable_method << type[:methods]
+        type! << cache_entry[:cached_type]
+        callable_method! << type[:methods]
 
         add_code while_start_label
 
-        space << Parfait.object_space
+        space! << Parfait.object_space
         space << space[:nil_object]
         space - callable_method
         if_zero exit_label
 
-        name << callable_method[:name]
+        name! << callable_method[:name]
         name - word
 
         if_zero ok_label

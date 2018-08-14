@@ -36,16 +36,16 @@ module Mom
     def build_with(builder)
       case from = method_source
       when Parfait::CallableMethod
-        builder.build { callable << from }
+        builder.build { callable! << from }
       when Parfait::CacheEntry
         builder.build do
-          cache_entry << from
-          callable << cache_entry[:cached_method]
+          cache_entry! << from
+          callable! << cache_entry[:cached_method]
         end
       when Integer
         builder.build do
-          arguments << message[:arguments]
-          callable << arguments[ from ]
+          arguments! << message[:arguments]
+          callable! << arguments[ from ]
         end
       else
         raise "unknown source #{method_source.class}:#{method_source}"
@@ -64,11 +64,11 @@ module Mom
     # set the method into the message
     def build_message_data( builder )
       builder.build do
-        space << Parfait.object_space
-        next_message << space[:next_message]
+        space! << Parfait.object_space
+        next_message! << space[:next_message]
 
         #FIXME in a multithreaded future this should be done using lock free compare and swap.
-        next_message_reg << next_message[:next_message]
+        next_message_reg! << next_message[:next_message]
         space[:next_message] << next_message_reg
 
         message[:next_message] << next_message

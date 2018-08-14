@@ -9,9 +9,9 @@ module Risc
         def get_internal_word( context )
           compiler = compiler_for(:Object , :get_internal_word ,{at: :Integer})
           compiler.compiler_builder(compiler.source).build do
-            object << message[:receiver]
-            integer << message[:arguments]
-            integer << integer_reg[1]
+            object! << message[:receiver]
+            integer! << message[:arguments]
+            integer << integer[1]
             integer.reduce_int
             object << object[integer]
             message[:return_value] << object
@@ -25,10 +25,10 @@ module Risc
         def set_internal_word( context )
           compiler = compiler_for(:Object , :set_internal_word , {at: :Integer, :value => :Object} )
           compiler.compiler_builder(compiler.source).build do
-            object << message[:receiver]
-            integer << message[:arguments]
-            object_reg << integer[ 2]
-            integer << integer[ 1]
+            object! << message[:receiver]
+            integer! << message[:arguments]
+            object_reg! << integer[ 2]
+            integer << integer[1]
             integer.reduce_int
             object[integer] << object_reg
             message[:return_value] << object_reg
@@ -56,9 +56,9 @@ module Risc
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
           builder = compiler.compiler_builder(compiler.source)
           builder.build do
-            space << Parfait.object_space
+            space! << Parfait.object_space
             message << space[:next_message]
-            next_message << message[:next_message]
+            next_message! << message[:next_message]
             space[:next_message] << next_message
           end
 
@@ -128,7 +128,7 @@ module Risc
           r8 = RegisterValue.new( :r8 , :Message)
           int = builder.compiler.use_reg(:Integer)
           builder.build do
-            integer_reg << message
+            integer_reg! << message
             message << r8
             add_new_int( "_restore_message", integer_reg , int )
             message[:return_value] << int

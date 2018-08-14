@@ -28,17 +28,21 @@ module Risc
     # make the magic: convert incoming names into registers that have the
     # type set according to the name (using resolve_type)
     # anmes are stored, so subsequent calls use the same register
-    def method_missing(*args)
-      super if args.length != 1
-      name = args[0]
+    def method_missing(name , *args)
+      super if args.length != 0
+      name = name.to_s
       return @names[name] if @names.has_key?(name)
-      if name == :message
+      if name == "message"
         reg = Risc.message_reg
         reg.builder = self
-      elsif name.to_s.index("label")
+        return reg
+      end
+      if name.index("label")
         reg = Risc.label( @source , "#{name}_#{object_id}")
         @source_used = true
       else
+        raise "Must create (with !) before using #{name}" unless name[-1] == "!"
+        name = name[0 ... -1]
         type = infer_type(name )
         reg = @compiler.use_reg( type.object_class.name )
         reg.builder = self
@@ -90,6 +94,7 @@ module Risc
     # but since the names in the builder are not variables, we need this method
     # as it says, swap the two names around. Names must exist
     def swap_names(left , right)
+      left , right = left.to_s , right.to_s
       l = @names[left]
       r = @names[right]
       raise "No such name #{left}" unless l
@@ -127,9 +132,9 @@ module Risc
       to.builder = self    # esecially div10 comes in without having used builder
       from.builder = self  # not named regs, different regs ==> silent errors
       build do
-        space << Parfait.object_space
+        space! << Parfait.object_space
         to << space[:next_integer]
-        integer_tmp << to[:next_integer]
+        integer_tmp! << to[:next_integer]
         space[:next_integer] << integer_tmp
         to[Parfait::Integer.integer_index] << from
       end

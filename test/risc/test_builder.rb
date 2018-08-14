@@ -17,12 +17,15 @@ module Risc
       assert_nil @builder.built
     end
     def test_alloc_space
-      reg = @builder.space
+      reg = @builder.space!
       assert_equal RegisterValue , reg.class
       assert_equal :Space , reg.type.class_name
     end
+    def test_not_alloc_space
+      assert_raises {@builder.space}
+    end
     def test_next_message
-      reg = @builder.next_message
+      reg = @builder.next_message!
       assert_equal :r1 , reg.symbol
       assert_equal :Message , reg.type.class_name
     end
@@ -33,31 +36,31 @@ module Risc
     end
     def test_returns_built
       r1 = RegisterValue.new(:r1 , :Space)
-      built = @builder.build{ space << r1 }
+      built = @builder.build{ space! << r1 }
       assert_equal Transfer , built.class
     end
     def test_returns_two
       r1 = RegisterValue.new(:r1 , :Space)
-      built = @builder.build{ space << r1 ; space << r1}
+      built = @builder.build{ space! << r1 ; space << r1}
       assert_equal Transfer , built.next.class
     end
     def test_returns_slot
       r2 = RegisterValue.new(:r2 , :Message)
       r2.builder = @builder
-      built = @builder.build{ r2 << space[:next_message] }
+      built = @builder.build{ r2 << space![:next_message] }
       assert_equal SlotToReg , built.class
       assert_equal :r1 , built.array.symbol
     end
     def test_returns_slot_reverse
       r2 = RegisterValue.new(:r2 , :Message)
       r2.builder = @builder
-      built = @builder.build{ r2 << space[:next_message] }
+      built = @builder.build{ r2 << space![:next_message] }
       assert_equal SlotToReg , built.class
       assert_equal :r1 , built.array.symbol
     end
     def test_reuses_names
       r1 = RegisterValue.new(:r1 , :Space)
-      built = @builder.build{ space << r1 ; space << r1}
+      built = @builder.build{ space! << r1 ; space << r1}
       assert_equal built.to.symbol , built.next.to.symbol
     end
     def test_uses_message_as_message
@@ -92,7 +95,7 @@ module Risc
       assert_equal @label , ret.label
     end
     def test_minus
-      op = @builder.build {space - callable_method}
+      op = @builder.build {space! - callable_method!}
       assert_equal OperatorInstruction , op.class
       assert_equal :- , op.operator
       assert_equal :Space , op.left.type.class_name

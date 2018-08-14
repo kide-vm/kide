@@ -12,17 +12,17 @@ module Risc
     end
     def test_inserts_built
       r1 = RegisterValue.new(:r1 , :Space)
-      @builder.build{ space << r1 }
+      @builder.build{ space! << r1 }
       assert_equal Transfer , @compiler.risc_instructions.next.class
       assert_equal RegisterValue ,  @builder.space.class
     end
     def test_loads
-      @builder.build{ space << Parfait.object_space }
+      @builder.build{ space! << Parfait.object_space }
       assert_equal LoadConstant , @compiler.risc_instructions.next.class
       assert_equal RegisterValue ,  @builder.space.class
     end
     def test_two
-      @builder.build{ space << Parfait.object_space ; integer << 1}
+      @builder.build{ space! << Parfait.object_space ; integer! << 1}
       assert_equal LoadConstant , @compiler.risc_instructions.next.class
       assert_equal LoadData , @compiler.risc_instructions.next(2).class
     end

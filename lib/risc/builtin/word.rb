@@ -28,8 +28,8 @@ module Risc
         def get_internal_byte( context)
           compiler = compiler_for(:Word , :get_internal_byte , {at: :Integer})
           compiler.compiler_builder(compiler.source).build do
-            object << message[:receiver]
-            integer << message[:arguments]
+            object! << message[:receiver]
+            integer! << message[:arguments]
             integer << integer[1]
             integer.reduce_int
             object <= object[integer]
@@ -46,11 +46,11 @@ module Risc
         def set_internal_byte( context )
           compiler = compiler_for(:Word, :set_internal_byte , {at: :Integer , :value => :Integer} )
           compiler.compiler_builder(compiler.source).build do
-            word << message[:receiver]
-            integer << message[:arguments]
+            word! << message[:receiver]
+            integer! << message[:arguments]
             integer << integer[1]
-            integer_reg << message[:arguments]
-            integer_obj << integer_reg[2]
+            integer_reg! << message[:arguments]
+            integer_obj! << integer_reg[2]
             integer_reg << integer_reg[2]
             integer.reduce_int
             integer_reg.reduce_int

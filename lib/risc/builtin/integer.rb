@@ -14,9 +14,9 @@ module Risc
         def div4(context)
           compiler = compiler_for(:Integer,:div4 ,{})
           compiler.compiler_builder(compiler.source).build do
-            integer << message[:receiver]
+            integer! << message[:receiver]
             integer.reduce_int
-            integer_reg << 2
+            integer_reg! << 2
             integer.op :>> , integer_reg
             add_new_int("div4", integer , integer_reg)
             message[:return_value] << integer_reg
@@ -52,8 +52,8 @@ module Risc
           compiler = compiler_for(:Integer, operator ,{other: :Integer})
           builder = compiler.compiler_builder(compiler.source)
           builder.build do
-            integer << message[:receiver]
-            integer_reg << message[:arguments]
+            integer! << message[:receiver]
+            integer_reg! << message[:arguments]
             integer_reg << integer_reg[ 1]
             integer.reduce_int
             integer_reg.reduce_int
@@ -61,7 +61,7 @@ module Risc
             integer.op :- , integer_reg
             if_minus false_label
             if_zero( false_label ) if operator.to_s.length == 1
-            object << Parfait.object_space.true_object
+            object! << Parfait.object_space.true_object
             branch merge_label
             add_code false_label
             object << Parfait.object_space.false_object
@@ -89,8 +89,8 @@ module Risc
           compiler = compiler_for(:Integer, op_sym ,{other: :Integer})
           builder = compiler.compiler_builder(compiler.source)
           builder.build do
-            integer << message[:receiver]
-            integer_reg << message[:arguments]
+            integer! << message[:receiver]
+            integer_reg! << message[:arguments]
             integer_reg << integer_reg[ 1]
             integer.reduce_int
             integer_reg.reduce_int
