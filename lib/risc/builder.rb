@@ -33,9 +33,7 @@ module Risc
       name = name.to_s
       return @names[name] if @names.has_key?(name)
       if name == "message"
-        reg = Risc.message_reg
-        reg.builder = self
-        return reg
+        return Risc.message_reg.set_builder(self)
       end
       if name.index("label")
         reg = Risc.label( @source , "#{name}_#{object_id}")
@@ -44,8 +42,7 @@ module Risc
         raise "Must create (with !) before using #{name}" unless name[-1] == "!"
         name = name[0 ... -1]
         type = infer_type(name )
-        reg = @compiler.use_reg( type.object_class.name )
-        reg.builder = self
+        reg = @compiler.use_reg( type.object_class.name ).set_builder(self)
       end
       @names[name] = reg
       reg
@@ -129,8 +126,8 @@ module Risc
     # move a machine int from register "from" to a Parfait::Integer in register "to"
     # have to grab an integer from space and stick it in the "to" register first.
     def add_new_int( source , from, to )
-      to.builder = self    # esecially div10 comes in without having used builder
-      from.builder = self  # not named regs, different regs ==> silent errors
+      to.set_builder( self )    # esecially div10 comes in without having used builder
+      from.set_builder( self )  # not named regs, different regs ==> silent errors
       build do
         space! << Parfait.object_space
         to << space[:next_integer]

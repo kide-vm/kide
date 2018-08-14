@@ -11,7 +11,7 @@ module Risc
 
     attr_reader :symbol , :type , :extra
 
-    attr_accessor :builder
+    attr_reader :builder
 
     # The first arg is a symbol :r0 - :r12
     # Second arg is the type, which may be given as the symbol of the class name
@@ -34,6 +34,15 @@ module Risc
       return :fixnum unless @type
       @type.class_name
     end
+
+    # allows to set the builder, which is mainly done by the builder
+    # but sometimes, eg in exit, one nneds to create the reg by hand and set
+    # return the RegisterValue for chaining in assignment
+    def set_builder( builder )
+      @builder = builder
+      self
+    end
+
     # using the registers type, resolve the slot to an index
     # Using the index and the register, add a SlotToReg to the instruction
     def resolve_and_add(slot , instruction , compiler)

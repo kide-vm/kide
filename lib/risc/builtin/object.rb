@@ -117,8 +117,8 @@ module Risc
         # This relies on linux to save and restore all registers
         #
         def save_message(builder)
-          r8 = RegisterValue.new( :r8 , :Message)
-          builder.add_transfer("save_message", Risc.message_reg , r8 )
+          r8 = RegisterValue.new( :r8 , :Message).set_builder(builder)
+          builder.build {r8 << message}
         end
 
         # restore the message that we save in r8

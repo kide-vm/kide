@@ -35,9 +35,14 @@ module Risc
       transfer = @r0 << @r1
       assert_equal Transfer , transfer.class
     end
+    def test_set_builder
+      reg = @r0.set_builder(FakeBuilder.new)
+      assert_equal RegisterValue , reg.class
+      assert reg.builder
+    end
     def test_calls_builder
       builder = FakeBuilder.new
-      @r0.builder = builder
+      @r0.set_builder( builder )
       @r0 << @r1
       assert_equal Transfer , builder.built.class
     end
