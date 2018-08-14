@@ -1,10 +1,16 @@
-#integer related kernel functions
 module Risc
   module Builtin
+    # integer related kernel functions
+    # all these functions (return the functione they implement) assume interger input
+    #
+    # This means they will have to be renamed at some point and wrapped
     module Integer
       module ClassMethods
         include CompileHelper
 
+        # div by 4, ie shift two left
+        # Mostly created for testing at this point, as it is short
+        # return new int with result
         def div4(context)
           compiler = compiler_for(:Integer,:div4 ,{})
           compiler.compiler_builder(compiler.source).build do
@@ -18,18 +24,30 @@ module Risc
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
+        # implemented by the comparison
         def >( context )
           comparison( :> )
         end
+        # implemented by the comparison
         def <( context )
           comparison( :< )
         end
+        # implemented by the comparison
         def <=( context )
           comparison( :<= )
         end
+        # implemented by the comparison
         def >=( context )
           comparison( :>= )
         end
+
+        # all (four) comparison operation are quite similar and implemented here
+        # - reduce the ints (assume int as input)
+        # - subtract the fixnums
+        # - check for minus ( < and > )
+        # - also check for zero (<= and >=)
+        # - load true or false object into return, depending on check
+        # - return
         def comparison( operator  )
           compiler = compiler_for(:Integer, operator ,{other: :Integer})
           builder = compiler.compiler_builder(compiler.source)
@@ -54,11 +72,19 @@ module Risc
           return compiler
         end
 
+        # not implemented, would need a itos and that needs "new" (wip)
         def putint(context)
           compiler = compiler_for(:Integer,:putint ,{})
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
+
+        # implemented all known binary operators that map straight to machine codes
+        # this function (similar to comparison):
+        # - unpacks the intergers to fixnum
+        # - applies the operator (at a risc level)
+        # - gets a new integer and stores the result
+        # - returns the new int
         def operator_method( op_sym )
           compiler = compiler_for(:Integer, op_sym ,{other: :Integer})
           builder = compiler.compiler_builder(compiler.source)
@@ -76,6 +102,7 @@ module Risc
           return compiler
         end
 
+        # old helper function for div10 (which doesn't use builder yet)
         def add_receiver(builder)
           message = Risc.message_reg
           ret_type = builder.compiler.receiver_type

@@ -6,7 +6,6 @@ module Risc
 
         # self[index] basically. Index is the first arg
         # return is stored in return_value
-        # (this method returns a new method off course, like all builtin)
         def get_internal_word( context )
           compiler = compiler_for(:Object , :get_internal_word ,{at: :Integer})
           compiler.compiler_builder(compiler.source).build do
@@ -22,7 +21,7 @@ module Risc
         end
 
         # self[index] = val basically. Index is the first arg , value the second
-        # no return
+        # return the value passed in
         def set_internal_word( context )
           compiler = compiler_for(:Object , :set_internal_word , {at: :Integer, :value => :Object} )
           compiler.compiler_builder(compiler.source).build do
@@ -48,8 +47,11 @@ module Risc
 
         # this is the really really first place the machine starts (apart from the jump here)
         # it isn't really a function, ie it is jumped to (not called), exits and may not return
-        # so it is responsible for initial setup
-        def __init__ context
+        # so it is responsible for initial setup:
+        # - load fist message, set up Space as receiver
+        # - call main, ie set up message for that etc
+        # - exit (exit_sequence) which passes a machine int out to c
+        def __init__( context )
           compiler = MethodCompiler.compiler_for_class(:Object,:__init__ ,
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
           builder = compiler.compiler_builder(compiler.source)
@@ -82,6 +84,7 @@ module Risc
 
         # a sort of inline version of exit method.
         # Used by exit and __init__ (so it doesn't have to call it)
+        # Assumes int return value and extracts the fixnum for process exit code
         def exit_sequence(builder)
           save_message( builder )
           message = Risc.message_reg
@@ -90,6 +93,8 @@ module Risc
           builder.add_code Syscall.new("emit_syscall(exit)", :exit )
         end
 
+        # the exit function
+        # mainly calls exit_sequence
         def exit( context )
           compiler = compiler_for(:Object,:exit ,{})
           builder = compiler.compiler_builder(compiler.source)
@@ -97,6 +102,8 @@ module Risc
           return compiler
         end
 
+        # emit the syscall with given name
+        # there is a Syscall instruction, but the message has to be saved and restored
         def emit_syscall( builder , name )
           save_message( builder )
           builder.add_code Syscall.new("emit_syscall(#{name})", name )
@@ -114,6 +121,9 @@ module Risc
           builder.add_transfer("save_message", Risc.message_reg , r8 )
         end
 
+        # restore the message that we save in r8
+        # get a new int and save the c return into it
+        # tht int gets retured, ie is the return_value of the message
         def restore_message(builder)
           r8 = RegisterValue.new( :r8 , :Message)
           int = builder.compiler.use_reg(:Integer)

@@ -1,4 +1,3 @@
-
 module Risc
   module Builtin
     class Space

@@ -4,6 +4,12 @@ module Risc
       module ClassMethods
         include CompileHelper
 
+        # wrapper for the syscall
+        # io/file currently hardcoded to stdout
+        # set up registers for syscall, ie
+        # - pointer in r1
+        # - length in r2
+        # - emit_syscall (which does the return of an integer, see there)
         def putstring( context)
           compiler = compiler_for(:Word , :putstring ,{})
           builder = compiler.compiler_builder(compiler.source)
@@ -18,7 +24,7 @@ module Risc
         end
 
         # self[index] basically. Index is the first arg > 0
-        # return (and word sized int) is stored in return_value
+        # return a word sized new int, in return_value
         def get_internal_byte( context)
           compiler = compiler_for(:Word , :get_internal_byte , {at: :Integer})
           compiler.compiler_builder(compiler.source).build do
@@ -30,14 +36,13 @@ module Risc
             add_new_int("get_internal_byte", object , integer)
             message[:return_value] << integer
           end
-
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
 
         # self[index] = val basically. Index is the first arg ( >0),
         # value the second
-        # return self
+        # return value
         def set_internal_byte( context )
           compiler = compiler_for(:Word, :set_internal_byte , {at: :Integer , :value => :Integer} )
           compiler.compiler_builder(compiler.source).build do

@@ -14,9 +14,12 @@ of the system, see below. The overhaul is done and rubyx produces working binari
 
 Processing goes through layers: Ruby --> Vool --> Mom --> Risc --> Arm --> binary .
 
-Currently most functional constructs work to some (usable) degree, ie if, while,
-assignment, ivars, calling and dynamic dispatch all work. Work continues
-on blocks currently, see below.
+Currently most basic constructs work to some (usable) degree, ie if, while,
+assignment, ivars, calling and dynamic dispatch all work. Simple blocks, those
+that ruby passes implicitly also work (lambdas not).
+
+Work continues on memory management, which turns out to be pretty basic to do just about
+anything, even counting to a million.
 
 ## Layers
 
@@ -149,37 +152,21 @@ Specifically here is a list of what works:
 - assignment (local/args/ivar)
 - static calling (where method is determined at compile time)
 - dynamic dispatch with caching
+- implicit blocks, ie the ones that ruby passes implicitly and are used in enumerating
 
-Current work is on implicit blocks, which are surprisingly like static method calls
-and lambdas like dynamic dispatch.
 
 ## Contributing to rubyx
 
 Probably best to talk to me, if it's not a typo or so.
 
-There is a todo, for inspiration, though actual tasks that result in pulls, should start
-their live as a github issue. There we can discuss details so that no work is done
-in vain. There are some small issues there already, just comment if you're interested.
+I've started to put some github issues out, some basic some not so. Also there is a todo
+for the adventurous (bigger things, no BIG things).
+
+Actual tasks that result in pulls, should start their life as a github issue.
+There we can discuss details so that no work is done
+in vain. If you're interested in an existing issues, just comment on it.
 
 Fork and create a branch before sending pulls.
-
-### Stary sky
-
-Iterate:
-
-1. more cpus (ie intel)
-2. more systems (ie mac)
-3. more syscalls, there are after all some hundreds
-5. A lot of modern cpu's functionality has to be mapped to ruby and implemented in assembler to be useful
-6. Different sized machines, with different register types ?
-7.  on 64bit, there would be 8 bits for types and thus allow for rational, complex, and whatnot
-8. Housekeeping (the superset of gc) is abundant
-9. Any amount of time could be spent on a decent digital tree (see judy). Or possibly Dr.Cliffs hash.
-10. Also better string/arrays would be good.
-11. The minor point of threads and hopefully lock free primitives to deal with that.
-12. Other languages, python at least, maybe others
-
-And generally optimise and work towards that perfect world (we never seem to be able to attain).
 
 ## Copyright
 
