@@ -106,7 +106,7 @@ module Risc
         def add_receiver(builder)
           message = Risc.message_reg
           ret_type = builder.compiler.receiver_type
-          ret = builder.compiler.use_reg( ret_type )
+          ret = builder.compiler.use_reg( ret_type ).set_builder(builder)
           builder.add_slot_to_reg(" load self" , message , :receiver , ret )
           builder.add_slot_to_reg(  "int -> fix" , ret , Parfait::Integer.integer_index , ret)
           return ret
@@ -167,7 +167,7 @@ module Risc
           builder.add_code Risc.op( s , :+ , q , tmp )
 
           builder.add_new_int(s,q , tmp)
-          builder.add_reg_to_slot( s , tmp , Risc.message_reg , :return_value)
+          builder.build{ message[:return_value] << tmp  }
 
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler

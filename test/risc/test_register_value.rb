@@ -31,6 +31,11 @@ module Risc
       move = @r1 << :puts
       assert_equal LoadConstant , move.class
     end
+    def test_load_label
+      label = Risc::Label.new("HI","ho" , FakeAddress.new(0))
+      move = @r1 << label
+      assert_equal LoadConstant , move.class
+    end
     def test_transfer
       transfer = @r0 << @r1
       assert_equal Transfer , transfer.class
