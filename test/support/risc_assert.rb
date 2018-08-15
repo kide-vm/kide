@@ -17,5 +17,10 @@ module Minitest
       assert_equal( clazz , load.constant.class) if clazz
       assert_equal( register , load.register.symbol, "wrong destination register") if register
     end
+    def assert_transfer( transfer , from , to)
+      assert_equal Risc::Transfer , transfer.class
+      assert_equal from , transfer.from.symbol
+      assert_equal to , transfer.to.symbol
+    end
   end
 end

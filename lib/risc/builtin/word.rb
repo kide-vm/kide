@@ -13,11 +13,10 @@ module Risc
         def putstring( context)
           compiler = compiler_for(:Word , :putstring ,{})
           builder = compiler.compiler_builder(compiler.source)
-          new_message = Risc.message_reg.get_new_left(:receiver , compiler)
-          builder.add_slot_to_reg( "putstring" , Risc.message_reg , :receiver , new_message )
-          index = Parfait::Word.get_length_index
-          index_reg = RegisterValue.new(:r2 , :Integer)
-          builder.add_slot_to_reg( "putstring" , new_message , index , index_reg )
+          builder.build do
+            word! << message[:receiver]
+            integer! << word[Parfait::Word.get_length_index]
+          end
           Risc::Builtin::Object.emit_syscall( builder , :putstring )
           compiler.add_mom( Mom::ReturnSequence.new)
           compiler

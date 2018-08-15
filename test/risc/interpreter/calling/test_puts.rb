@@ -43,26 +43,19 @@ module Risc
     end
     def test_move_sys_return
       sl = main_ticks(22)
-      assert_equal Transfer , sl.class
-      assert_equal :r0 , sl.from.symbol
-      assert_equal :r3 , sl.to.symbol
-      assert_equal 11 , @interpreter.get_register(:r3)
+      assert_transfer(sl, :r0 ,:r4)
+      assert_equal 11 , @interpreter.get_register(:r4)
     end
-    def test_restore_message
+    def pest_restore_message
       sl = main_ticks(23)
-      assert_equal Transfer , sl.class
-      assert_equal :r8 , sl.from.symbol
-      assert_equal :r0 , sl.to.symbol
+      assert_transfer(sl, :r8 ,:r0)
       assert_equal Parfait::Message , @interpreter.get_register(:r0).class
     end
-    def test_save_sys_return
+    def pest_save_sys_return
       sl = main_ticks(28)
-      assert_equal RegToSlot , sl.class
-      assert_equal :r3 , sl.register.symbol #return
-      assert_equal :r2 , sl.array.symbol #parfait integer
-      assert_equal  2 , sl.index
+      assert_reg_to_slot( sl , :r3 ,:r2 , 2)
     end
-    def test_return
+    def pest_return
       done = main_ticks(60)
       assert_equal FunctionReturn ,  done.class
     end
