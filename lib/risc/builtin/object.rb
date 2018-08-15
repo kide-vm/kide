@@ -87,10 +87,11 @@ module Risc
         # Assumes int return value and extracts the fixnum for process exit code
         def exit_sequence(builder)
           save_message( builder )
-          message = Risc.message_reg
-          builder.add_slot_to_reg "get return" , message , :return_value , message
-          builder.add_slot_to_reg( "reduce return" , message , Parfait::Integer.integer_index , message)
-          builder.add_code Syscall.new("emit_syscall(exit)", :exit )
+          builder.build do
+            message << message[:return_value]
+            message.reduce_int
+            add_code Syscall.new("emit_syscall(exit)", :exit )
+          end
         end
 
         # the exit function

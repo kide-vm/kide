@@ -137,20 +137,6 @@ module Risc
         to[Parfait::Integer.integer_index] << from
       end
     end
-
-    # for computationally building code (ie writing assembler) these short cuts
-    # help to instantiate risc instructions and add them immediately
-    [ :slot_to_reg , :load_constant, :load_data,
-       :transfer  ].each do |method|
-      define_method("add_#{method}".to_sym) do |*args|
-        if not @source_used
-          args[0] = @source
-          @source_used = true
-        end
-        add_code Risc.send( method , *args )
-      end
-    end
-
   end
 
 
