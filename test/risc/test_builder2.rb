@@ -25,6 +25,17 @@ module Risc
     def test_caller_reg
       assert_equal :Message , @builder.infer_type(:caller_reg).class_name
     end
+    def test_define_twice
+      @builder.caller_reg!
+      assert_raises{ @builder.caller_reg! }
+    end
+    def test_define_conditionally_first
+      assert_equal :r1 , @builder.caller_reg?.symbol
+    end
+    def test_define_conditionally_again
+      first = @builder.caller_reg!
+      assert_equal first , @builder.caller_reg?
+    end
     def test_caller_tmp
       assert_equal :Message , @builder.infer_type(:caller_tmp).class_name
     end

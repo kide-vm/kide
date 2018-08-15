@@ -39,9 +39,16 @@ module Risc
         reg = Risc.label( @source , "#{name}_#{object_id}")
         @source_used = true
       else
-        raise "Must create (with !) before using #{name}" unless name[-1] == "!"
+        last_char = name[-1]
         name = name[0 ... -1]
-        #raise "name exists before being created #{name}" if @names.has_key?(name)
+        if last_char == "!" or last_char == "?"
+          if @names.has_key?(name)
+            return @names[name] if last_char == "?"
+            raise "Name exists before creating it #{name}#{last_char}"
+          end
+        else
+          raise "Must create (with ! or ?) before using #{name}#{last_char}"
+        end
         type = infer_type(name )
         reg = @compiler.use_reg( type.object_class.name ).set_builder(self)
       end
@@ -130,7 +137,7 @@ module Risc
       to.set_builder( self )    # esecially div10 comes in without having used builder
       from.set_builder( self )  # not named regs, different regs ==> silent errors
       build do
-        space! << Parfait.object_space
+        space? << Parfait.object_space
         to << space[:next_integer]
         integer_2! << to[:next_integer]
         space[:next_integer] << integer_2

@@ -64,8 +64,8 @@ module Mom
     # set the method into the message
     def build_message_data( builder )
       builder.build do
-        space! << Parfait.object_space
-        next_message! << space[:next_message]
+        space? << Parfait.object_space
+        next_message? << space[:next_message]
 
         #FIXME in a multithreaded future this should be done using lock free compare and swap.
         next_message_reg! << next_message[:next_message]
@@ -74,14 +74,6 @@ module Mom
         message[:next_message] << next_message
         next_message[:caller] << message
         next_message[:method] << callable
-
-        # type << callable[:arguments_type]
-        # named_list << next_message[:arguments]
-        # named_list[:type] << type
-        #
-        # type << callable[:frame_type]
-        # named_list << next_message[:frame]
-        # named_list[:type] << type
 
       end
     end
