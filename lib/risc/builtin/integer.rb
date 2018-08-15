@@ -119,58 +119,54 @@ module Risc
             integer_self.reduce_int
             integer_tmp! << integer_self
             integer_reg! << integer_self
-          end
-          me = builder.integer_self
-          tmp = builder.integer_tmp
-          q = builder.integer_reg
-          const = compiler.use_reg :fixnum , value: 1
-          builder.add_load_data( s , 1 , const )
-          # int tmp = self >> 1
-          builder.add_code Risc.op( s , :>> , tmp , const)
-          # int q = self >> 2
-          builder.add_load_data( s , 2 , const)
-          builder.add_code Risc.op( s , :>> , q , const)
-          # q = q + tmp
-          builder.add_code Risc.op( s , :+ , q , tmp )
-          # tmp = q >> 4
-          builder.add_load_data( s , 4 , const)
-          builder.add_transfer( s, q , tmp)
-          builder.add_code Risc.op( s , :>> , tmp , const)
-          # q = q + tmp
-          builder.add_code Risc.op( s , :+ , q , tmp )
-          # tmp = q >> 8
-          builder.add_load_data( s , 8 , const)
-          builder.add_transfer( s, q , tmp)
-          builder.add_code Risc.op( s , :>> , tmp , const)
-          # q = q + tmp
-          builder.add_code Risc.op( s , :+ , q , tmp )
-          # tmp = q >> 16
-          builder.add_load_data( s , 16 , const)
-          builder.add_transfer( s, q , tmp)
-          builder.add_code Risc.op( s , :>> , tmp , const)
-          # q = q + tmp
-          builder.add_code Risc.op( s , :+ , q , tmp )
-          # q = q >> 3
-          builder.add_load_data( s , 3 , const)
-          builder.add_code Risc.op( s , :>> , q , const)
-          # tmp = q * 10
-          builder.add_load_data( s , 10 , const)
-          builder.add_transfer( s, q , tmp)
-          builder.add_code Risc.op( s , :* , tmp , const)
-          # tmp = self - tmp
-          builder.add_code Risc.op( s , :- , me , tmp )
-          builder.add_transfer( s , me , tmp)
-          # tmp = tmp + 6
-          builder.add_load_data( s , 6 , const)
-          builder.add_code Risc.op( s , :+ , tmp , const )
-          # tmp = tmp >> 4
-          builder.add_load_data( s , 4 , const)
-          builder.add_code Risc.op( s , :>> , tmp , const )
-          # return q + tmp
-          builder.add_code Risc.op( s , :+ , q , tmp )
 
-          builder.add_new_int(s,q , tmp)
-          builder.build{ message[:return_value] << tmp  }
+            integer_const! << 1
+            integer_tmp.op :>> , integer_const
+
+            integer_const << 2
+            integer_reg.op :>> , integer_const
+            integer_reg.op :+ , integer_tmp
+
+            integer_const << 4
+            integer_tmp << integer_reg
+            integer_reg.op :>> , integer_tmp
+
+            integer_reg.op :+ , integer_tmp
+
+            integer_const << 8
+            integer_tmp << integer_reg
+            integer_tmp.op :>> , integer_const
+
+            integer_reg.op :+ , integer_tmp
+
+            integer_const << 16
+            integer_tmp << integer_reg
+            integer_tmp.op :>> , integer_const
+
+            integer_reg.op :+ , integer_tmp
+
+            integer_const << 3
+            integer_reg.op :>> , integer_const
+
+            integer_const << 10
+            integer_tmp << integer_reg
+            integer_tmp.op :* , integer_const
+
+            integer_self.op :- , integer_tmp
+            integer_tmp << integer_self
+
+            integer_const << 6
+            integer_tmp.op :+ , integer_const
+
+            integer_const << 4
+            integer_tmp.op :>> , integer_const
+
+            integer_reg.op :+ , integer_tmp
+
+            add_new_int(s,integer_reg , integer_tmp)
+            message[:return_value] << integer_tmp
+
+          end
 
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler

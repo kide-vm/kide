@@ -41,6 +41,7 @@ module Risc
       else
         raise "Must create (with !) before using #{name}" unless name[-1] == "!"
         name = name[0 ... -1]
+        #raise "name exists before being created #{name}" if @names.has_key?(name)
         type = infer_type(name )
         reg = @compiler.use_reg( type.object_class.name ).set_builder(self)
       end
@@ -131,8 +132,8 @@ module Risc
       build do
         space! << Parfait.object_space
         to << space[:next_integer]
-        integer_tmp! << to[:next_integer]
-        space[:next_integer] << integer_tmp
+        integer_2! << to[:next_integer]
+        space[:next_integer] << integer_2
         to[Parfait::Integer.integer_index] << from
       end
     end
