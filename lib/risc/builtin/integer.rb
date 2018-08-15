@@ -102,24 +102,27 @@ module Risc
           return compiler
         end
 
-        # old helper function for div10 (which doesn't use builder yet)
-        def add_receiver(builder)
-          message = Risc.message_reg
-          ret_type = builder.compiler.receiver_type
-          ret = builder.compiler.use_reg( ret_type ).set_builder(builder)
-          builder.add_slot_to_reg(" load self" , message , :receiver , ret )
-          builder.add_slot_to_reg(  "int -> fix" , ret , Parfait::Integer.integer_index , ret)
-          return ret
-        end
-
+        # as the name suggests, this devides the integer (self) by ten
+        #
+        # This version is lifted from some arm assembler tricks and is _much_
+        # faster than the general div versions. I think it was about three
+        # times less instructions. Useful for itos
+        #
+        # In fact it is possible to generate specific div function for any given
+        # integer and some are even more faster (as eg div4).
         def div10( context )
           s = "div_10 "
           compiler = compiler_for(:Integer,:div10 ,{})
           builder = compiler.compiler_builder(compiler.source)
-          #FIX: this could load receiver once, reduce and then transfer twice
-          me = add_receiver( builder )
-          tmp = add_receiver( builder )
-          q = add_receiver( builder )
+          builder.build do
+            integer_self! << message[:receiver]
+            integer_self.reduce_int
+            integer_tmp! << integer_self
+            integer_reg! << integer_self
+          end
+          me = builder.integer_self
+          tmp = builder.integer_tmp
+          q = builder.integer_reg
           const = compiler.use_reg :fixnum , value: 1
           builder.add_load_data( s , 1 , const )
           # int tmp = self >> 1

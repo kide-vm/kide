@@ -56,7 +56,7 @@ module Risc
     def infer_type( name )
       as_string = name.to_s
       parts = as_string.split("_")
-      if(parts.last == "reg"  or parts.last == "obj" or parts.last == "tmp")
+      if( ["reg" , "obj" , "tmp" , "self" , "const", "1" , "2"].include?( parts.last ) )
         parts.pop
         as_string = parts.join("_")
       end
