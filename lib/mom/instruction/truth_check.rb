@@ -20,17 +20,18 @@ module Mom
 
     def to_risc(compiler)
       false_label = @false_jump.to_risc(compiler)
-      left = @condition.to_register(compiler,self)
-      false_load = SlotDefinition.new( FalseConstant.new , [] ).to_register(compiler,self)
-      left << false_load
-      left << Risc.op( self , :- , left.register , false_load.register)
-      left << Risc::IsZero.new( self, false_label)
-      nil_load = SlotDefinition.new( NilConstant.new , [] ).to_register(compiler,self)
-      left << nil_load
-      left << Risc.op( self , :- , left.register , nil_load.register)
-      left << Risc::IsZero.new( self, false_label)
-
-      left
+      builder = compiler.code_builder("TruthCheck")
+      condition_code = @condition.to_register(compiler,self)
+      condition = condition_code.register#.set_builder(builder)
+      built = builder.build do
+        object! << Parfait.object_space.false_object
+        object.op :- , condition
+        if_zero false_label
+        object << Parfait.object_space.nil_object
+        object.op :- , condition
+        if_zero false_label
+      end
+      condition_code << built
     end
 
   end

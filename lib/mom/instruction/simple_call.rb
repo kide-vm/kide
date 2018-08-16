@@ -23,14 +23,16 @@ module Mom
     # For returning, we add a label after the call, and load it's address into the
     # return_address of the next_message, for the ReturnSequence to pick it up.
     def to_risc(compiler)
+      method = @method
       return_label = Risc.label(self,"continue_#{object_id}")
-      save_return =  SlotLoad.new([:message,:next_message,:return_address],[return_label],self)
-      moves = save_return.to_risc(compiler)
-      moves << Risc.slot_to_reg(self, Risc.message_reg , :next_message , Risc.message_reg)
-
-      moves << Risc::FunctionCall.new(self, method )
-
-      moves << return_label
+      compiler.build("SimpleCall") do
+        return_address! << return_label
+        next_message! << message[:next_message]
+        next_message[:return_address] << return_address
+        message << message[:next_message]
+        add_code Risc::FunctionCall.new("SimpleCall", method )
+        add_code return_label
+      end
     end
 
   end
