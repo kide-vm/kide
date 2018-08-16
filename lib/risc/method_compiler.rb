@@ -155,8 +155,8 @@ module Risc
     end
 
     # Build with builder (see there), adding the created instructions
-    def build(&block)
-      builder.build(&block)
+    def build(source , &block)
+      code_builder(source).build(&block)
     end
 
     # return a new code builder that uses this compiler

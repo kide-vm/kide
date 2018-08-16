@@ -1,7 +1,7 @@
 require_relative "../helper"
 
 module Risc
-  class BloclAssignOuter < MiniTest::Test
+  class BlockAssignOuter < MiniTest::Test
     include Ticker
 
     def setup
@@ -20,7 +20,7 @@ module Risc
             SlotToReg, OperatorInstruction, IsZero, SlotToReg, SlotToReg,
             LoadConstant, SlotToReg, SlotToReg, RegToSlot, RegToSlot, # 40
             RegToSlot, RegToSlot, Branch, SlotToReg, SlotToReg,
-            RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, # 50
+            RegToSlot, SlotToReg, LoadConstant, RegToSlot, SlotToReg, # 50
             SlotToReg, SlotToReg, DynamicJump, LoadConstant, SlotToReg,
             SlotToReg, SlotToReg, RegToSlot, LoadConstant, RegToSlot, # 60
             Branch, SlotToReg, SlotToReg, RegToSlot, LoadConstant,

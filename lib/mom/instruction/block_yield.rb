@@ -15,16 +15,20 @@ module Mom
     end
 
     def to_risc(compiler)
-      block = compiler.use_reg( :Block )
-      return_label = Risc.label(self, "continue_#{object_id}")
-      save_return =  SlotLoad.new([:message,:next_message,:return_address],[return_label],self)
-      moves = save_return.to_risc(compiler)
-      moves << Risc.slot_to_reg( self , Risc.message_reg ,:arguments , block)
-      moves << Risc.slot_to_reg( self , block ,arg_index , block)
+      return_label = Risc.label("block_yield", "continue_#{object_id}")
+      index = arg_index
+      compiler.build("BlockYield") do
+        next_message! << message[:next_message]
+        return_address! << return_label
+        next_message[:return_address] << return_address
 
-      moves << Risc.slot_to_reg(self, Risc.message_reg , :next_message , Risc.message_reg)
-      moves << Risc::DynamicJump.new(self, block )
-      moves << return_label
+        block_reg! << message[:arguments]
+        block_reg << block_reg[index]
+
+        message << message[:next_message]
+        add_code Risc::DynamicJump.new("block_yield", block_reg )
+        add_code return_label
+      end
     end
   end
 

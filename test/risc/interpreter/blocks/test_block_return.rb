@@ -12,32 +12,32 @@ module Risc
     def test_chain
       #show_main_ticks # get output of what is
       check_main_chain [LoadConstant, SlotToReg, RegToSlot, LoadConstant, LoadConstant,
-             SlotToReg, SlotToReg, RegToSlot, RegToSlot, RegToSlot,
-             RegToSlot, SlotToReg, SlotToReg, Branch, RegToSlot,
-             SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, SlotToReg, FunctionCall,
-             LoadConstant, SlotToReg, OperatorInstruction, IsZero, SlotToReg,
-             SlotToReg, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
-             RegToSlot, RegToSlot, RegToSlot, Branch, SlotToReg,
-             SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-             SlotToReg, SlotToReg, SlotToReg, DynamicJump, LoadConstant,
-             RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg,
-             SlotToReg, SlotToReg, Branch, FunctionReturn, SlotToReg,
-             SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg,
-             RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg,
-             SlotToReg, Branch, SlotToReg, FunctionReturn, SlotToReg,
-             SlotToReg, Branch, RegToSlot, SlotToReg, SlotToReg,
-             RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
-             LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg,
-             Branch, SlotToReg, SlotToReg, FunctionReturn, Transfer,
-             SlotToReg, SlotToReg, Syscall, NilClass]
+            SlotToReg, SlotToReg, RegToSlot, RegToSlot, RegToSlot, # 10
+            RegToSlot, SlotToReg, SlotToReg, Branch, RegToSlot,
+            SlotToReg, SlotToReg, SlotToReg, SlotToReg, RegToSlot, # 20
+            LoadConstant, SlotToReg, RegToSlot, SlotToReg, FunctionCall,
+            LoadConstant, SlotToReg, OperatorInstruction, IsZero, SlotToReg, # 30
+            SlotToReg, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+            RegToSlot, RegToSlot, RegToSlot, Branch, SlotToReg, # 40
+            SlotToReg, RegToSlot, SlotToReg, LoadConstant, RegToSlot,
+            SlotToReg, SlotToReg, SlotToReg, DynamicJump, LoadConstant, # 50
+            RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
+            LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg, # 60
+            SlotToReg, SlotToReg, Branch, FunctionReturn, SlotToReg,
+            SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, # 70
+            RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
+            LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg, # 80
+            SlotToReg, Branch, SlotToReg, FunctionReturn, SlotToReg,
+            SlotToReg, Branch, RegToSlot, SlotToReg, SlotToReg, # 90
+            RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
+            LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg, # 100
+            Branch, SlotToReg, SlotToReg, FunctionReturn, Transfer,
+            SlotToReg, SlotToReg, Syscall, NilClass, ]
       assert_equal 15 , get_return
     end
 
     def test_load_return
-      load_ins = main_ticks(43)
+      load_ins = main_ticks(44)
       assert_equal LoadConstant ,  load_ins.class
       assert_equal Parfait::ReturnAddress , @interpreter.get_register(load_ins.register).class
     end
