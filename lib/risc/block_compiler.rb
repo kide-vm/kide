@@ -48,18 +48,6 @@ module Risc
       slot_def << name
     end
 
-    # return the frame type, ie the blocks frame type
-    def frame_type
-      @callable.frame_type
-    end
-    # return the frame type, ie the blocks arguments type
-    def arg_type
-      @callable.arguments_type
-    end
-    # return the frame type, ie the blocks self_type
-    def receiver_type
-      @callable.self_type
-    end
 
   end
 end

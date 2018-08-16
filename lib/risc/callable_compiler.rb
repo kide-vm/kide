@@ -100,6 +100,19 @@ module Risc
       return new_type
     end
 
+    # return the frame type, ie the blocks frame type
+    def frame_type
+      @callable.frame_type
+    end
+    # return the frame type, ie the blocks arguments type
+    def arg_type
+      @callable.arguments_type
+    end
+    # return the frame type, ie the blocks self_type
+    def receiver_type
+      @callable.self_type
+    end
+
     def copy( reg , source )
       copied = use_reg reg.type
       add_code Register.transfer( source , reg , copied )
@@ -121,8 +134,8 @@ module Risc
     end
 
     # Build with builder (see there), adding the created instructions
-    def build(&block)
-      builder.build(&block)
+    def build(source , &block)
+      code_builder(source).build(&block)
     end
 
     # return a new code builder that uses this compiler

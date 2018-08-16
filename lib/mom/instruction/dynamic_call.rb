@@ -31,16 +31,19 @@ module Mom
     # Instead we need a DynamicJump instruction that explicitly takes a register as
     # a target (not a label)
     def to_risc(compiler)
-      compiler.add_constant( @cache_entry )
-      entry = compiler.use_reg( :CacheEntry )
+      entry = @cache_entry
+      compiler.add_constant( entry )
       return_label = Risc.label(self, "continue_#{object_id}")
-      save_return =  SlotLoad.new([:message,:next_message,:return_address],[return_label],self)
-      moves = save_return.to_risc(compiler)
-      moves << Risc.slot_to_reg(self, Risc.message_reg , :next_message , Risc.message_reg)
-      moves <<  Risc.load_constant( self , @cache_entry , entry )
-      moves << Risc.slot_to_reg( self , entry ,:cached_method , entry)
-      moves << Risc::DynamicJump.new(self, entry )
-      moves << return_label
+      compiler.build("DynamicCall") do
+        return_address! << return_label
+        next_message! << message[:next_message]
+        next_message[:return_address] << return_address
+        message << message[:next_message]
+        cache_entry! << entry
+        cache_entry << cache_entry[:cached_method]
+        add_code Risc::DynamicJump.new("DynamicCall", cache_entry )
+        add_code return_label
+      end
     end
   end
 
