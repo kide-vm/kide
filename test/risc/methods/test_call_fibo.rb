@@ -21,7 +21,7 @@ HERE
       assert_equal 1 , get_return
     end
 
-    def est_fibo
+    def test_fibo
       run_space <<HERE
       def fibo_r( n )
         if( n <  2 )
@@ -34,7 +34,7 @@ HERE
       end
 
       def main(arg)
-        return fibo_r(8)
+        return fibo_r(6)
       end
 HERE
       assert_equal 8 , get_return
