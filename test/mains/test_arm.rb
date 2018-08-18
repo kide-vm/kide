@@ -39,7 +39,7 @@ module Mains
     def compile(input , file , scp)
       Risc.boot!
       puts "Compiling test/#{file}.o" if DEBUG
-      RubyX::RubyXCompiler.ruby_to_binary( "class Space;def main(arg);#{input};end;end" )
+      RubyX::RubyXCompiler.ruby_to_binary( input )
       writer = Elf::ObjectWriter.new(Risc.machine)
       writer.save "test/#{file}.o"
       object_file = "/tmp/#{file}.o"
