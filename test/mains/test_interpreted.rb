@@ -16,7 +16,7 @@ module Mains
         tests << method_name
         input = File.read(file_name)
         self.send(:define_method, method_name ) do
-          ticks = run_main(input)
+          ticks = run_input(input)
           #puts "Ticks for #{method_name}=#{ticks}"
           assert_equal stdout , @interpreter.stdout , "Wrong stdout #{name}"
           assert_equal exit_code , get_return.to_s , "Wrong exit code #{name}"

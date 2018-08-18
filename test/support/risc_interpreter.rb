@@ -92,8 +92,16 @@ module Risc
     def get_message_return
       @interpreter.get_register(:r8).return_value
     end
+
+    # wrap the input so it is a main, compile and run it
     def run_main(input)
-      @string_input = as_main(input)
+      run_input as_main(input)
+    end
+
+    # use the input as it, compile and run it
+    # input muts contain a Space.main, but may contain more classes and methods
+    def run_input(input)
+      @string_input = input
       do_setup
       run_all
     end
