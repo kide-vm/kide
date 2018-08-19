@@ -8,7 +8,7 @@ module Mom
   class ReturnJump < Instruction
 
     def to_risc(compiler)
-      Risc::Branch.new(self , compiler.return_label)
+      compiler.add_code Risc::Branch.new(self , compiler.return_label)
     end
   end
 

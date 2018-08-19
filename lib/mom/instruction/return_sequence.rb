@@ -21,7 +21,7 @@ module Mom
   class ReturnSequence < Instruction
     def to_risc(compiler)
       compiler.reset_regs
-      builder = compiler.code_builder(self)
+      builder = compiler.builder(self)
       builder.build do
         object! << message[:return_value]
         caller_reg! << message[:caller]
@@ -38,7 +38,6 @@ module Mom
         message << message[:caller]
         return_address.function_return
       end
-      builder.built
     end
 
     def to_s

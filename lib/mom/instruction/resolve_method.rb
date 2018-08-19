@@ -35,7 +35,7 @@ module Mom
     def to_risc( compiler )
       name_ = @name
       cache_entry_ = @cache_entry
-      builder = compiler.code_builder(self)
+      builder = compiler.builder(self)
       builder.build do
         word! << name_
         cache_entry! << cache_entry_
@@ -64,7 +64,6 @@ module Mom
         add_code ok_label
         cache_entry[:cached_method] << callable_method
       end
-      return builder.built
     end
 
   end

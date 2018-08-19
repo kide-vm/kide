@@ -12,7 +12,8 @@ module Mom
       @label = label
     end
     def to_risc(compiler)
-      Risc::Branch.new(self , @label.to_risc(compiler))
+      label = @label.to_risc(compiler)
+      compiler.add_code Risc::Branch.new(self , label)
     end
   end
 

@@ -23,11 +23,10 @@ module Mom
     # basically move both left and right values into register
     # subtract them and see if IsZero comparison
     def to_risc(compiler)
-      l_val = left.to_register(compiler, self)
-      r_val = right.to_register(compiler, self)
-      check = Risc.op( self , :- , l_val.register , r_val.register)
-      check << Risc::IsZero.new( self, false_jump.to_risc(compiler))
-      l_val << r_val << check
+      l_reg = left.to_register(compiler, self)
+      r_reg = right.to_register(compiler, self)
+      compiler.add_code Risc.op( self , :- , l_reg , r_reg)
+      compiler.add_code Risc::IsZero.new( self, false_jump.to_risc(compiler))
     end
   end
 end

@@ -27,8 +27,7 @@ module Mom
     # Move method name, frame and arguemnt types from the method to the next_message
     # Get the message from Space and link it.
     def to_risc(compiler)
-      builder = compiler.code_builder(self)
-      build_with(builder)
+      build_with(compiler.builder(self))
     end
 
     # directly called by to_risc
