@@ -16,10 +16,11 @@ module Risc
       @constants = []
       @block_compilers = []
       @risc_instructions = Risc.label(source_name, source_name)
-      @current = @risc_instructions
+      @current = start = @risc_instructions
       add_code Risc.label( source_name, "return_label")
       Mom::ReturnSequence.new.to_risc(self)
       add_code Risc.label( source_name, "unreachable")
+      @current = start
       reset_regs
     end
     attr_reader :risc_instructions , :constants , :block_compilers , :callable , :current

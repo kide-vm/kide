@@ -50,5 +50,10 @@ module Risc
       sl = @produced.next( 7 )
       assert_reg_to_slot( sl , :r1  ,  :r3 ,  7 )
     end
+    def test_label
+      sl = @produced.next( 17 )
+      assert_equal Risc::Label , sl.class
+      assert_equal "return_label" , sl.name
+    end
   end
 end

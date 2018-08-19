@@ -8,6 +8,19 @@ module Mom
   #
   # A Label has a name which is mainly used for debugging.
   #
+  # A Mom::Label converts one2one to a Risc::Label. So in a way it could not be more
+  # simple.
+  # Alas, since almost by definition several roads lead to this label, all those
+  # several converted instructions must also point to the identical label on the
+  # risc level.
+  #
+  # This is achieved by caching the created Risc::Label in an instance variable.
+  # All branches that lead to this label can thus safely call the to_risc and
+  # whoever calls first triggers the labels creation, but all get the same label.
+  #
+  # Off course some specific place still has to be responsible for actually
+  # adding the label to the instruction list (usually an if/while)
+
   class Label < Instruction
     attr_reader :name
     def initialize(name)
@@ -18,20 +31,20 @@ module Mom
       "Label: #{name}"
     end
 
-    # A Mom::Label converts one2one to a Risc::Label. So in a way it could not be more
-    # simple.
-    # Alas, since almost by definition several roads lead to this label, all those
-    # several converted instructions must also point to the identical label on the
-    # risc level.
-    #
-    # This is achieved by caching the created Risc::Label in an instance variable.
-    # All branches that lead to this label can thus safely call the to_risc and
-    # whoever calls first triggers the labels creation, but all get the same label.
-    #
-    # Off course some specific place still has to be responsible for actually
-    # adding the label to the instruction list (usually an if/while)
-    def to_risc(compiler)
+    # generate the risc label lazily
+    def risc_label
       @risc_label ||= Risc.label(self,name)
+    end
+
+    # add the risc_label to the compiler (instruction flow)
+    # should only be called once
+    def to_risc(compiler)
+      if( @added )
+        raise "added already #{@added}"
+      else
+        @added = true
+        compiler.add_code( risc_label )
+      end
     end
   end
 end

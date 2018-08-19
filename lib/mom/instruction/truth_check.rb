@@ -19,7 +19,7 @@ module Mom
     end
 
     def to_risc(compiler)
-      false_label = @false_jump.to_risc(compiler)
+      false_label = @false_jump.risc_label
       builder = compiler.builder("TruthCheck")
       condition_reg = @condition.to_register(compiler,self)
       builder.build do
