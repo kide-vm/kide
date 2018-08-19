@@ -6,7 +6,8 @@ module Mom
       Parfait.boot!
       @compiler = Risc::FakeCompiler.new
       @definition = SlotDefinition.new(:message , :caller)
-      @instruction = @definition.to_register(@compiler , InstructionMock.new)
+      @register = @definition.to_register(@compiler , "fake source")
+      @instruction = @compiler.instructions.first
     end
     def test_def_class
       assert_equal Risc::SlotToReg , @instruction.class
@@ -18,7 +19,7 @@ module Mom
       assert_equal :r0 , @instruction.array.symbol
     end
     def test_def_register # to next free register r1
-      assert_equal :r1 , @instruction.register.symbol
+      assert_equal :r1 , @register.symbol
     end
     def test_def_index # at caller index 6
       assert_equal 6 , @instruction.index

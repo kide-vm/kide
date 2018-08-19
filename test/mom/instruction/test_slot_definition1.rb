@@ -7,7 +7,8 @@ module Mom
       Parfait.boot!
       @compiler = Risc::FakeCompiler.new
       @definition = SlotDefinition.new(StringConstant.new("hi") , [])
-      @instruction = @definition.to_register(@compiler , InstructionMock.new)
+      @register = @definition.to_register(@compiler , InstructionMock.new)
+      @instruction = @compiler.instructions.first
     end
     def test_def_class
       assert_equal Risc::LoadConstant , @instruction.class
