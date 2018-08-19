@@ -1,5 +1,15 @@
 module Risc
   class FakeCompiler
+    attr_reader :instructions
+    def initialize
+      @instructions = []
+    end
+    def add_code(c)
+      @instructions << c
+    end
+    def current
+      @instructions.last
+    end
     def slot_type(slot,type)
       type.type_for(slot)
     end

@@ -5,34 +5,35 @@ module Mom
 
     def setup
       Parfait.boot!
-      @load = SlotLoad.new( [:message, :caller] , [:message,:type] )
+      load = SlotLoad.new( [:message, :caller] , [:message,:type] )
       @compiler = Risc::FakeCompiler.new
-      @instruction = @load.to_risc(@compiler)
+      load.to_risc(@compiler)
+      @instructions = @compiler.instructions
     end
 
     def test_ins_class
-      assert_equal Risc::SlotToReg , @instruction.class
+      assert_equal Risc::SlotToReg , @instructions[0].class
     end
     def test_ins_next_class
-      assert_equal Risc::RegToSlot , @instruction.next.class
+      assert_equal Risc::RegToSlot , @instructions[1].class
     end
     def test_ins_arr
-      assert_equal :r0 , @instruction.array.symbol
+      assert_equal :r0 , @instructions[0].array.symbol
     end
     def test_ins_reg
-      assert_equal :r1 , @instruction.register.symbol
+      assert_equal :r1 , @instructions[0].register.symbol
     end
     def test_ins_index
-      assert_equal 0 , @instruction.index
+      assert_equal 0 , @instructions[0].index
     end
     def test_ins_next_reg
-      assert_equal :r1 , @instruction.next.register.symbol
+      assert_equal :r1 , @instructions[1].register.symbol
     end
     def test_ins_next_arr
-      assert_equal :r0 , @instruction.next.array.symbol
+      assert_equal :r0 , @instructions[1].array.symbol
     end
     def test_ins_next_index
-      assert_equal 6 , @instruction.next.index
+      assert_equal 6 , @instructions[1].index
     end
   end
 end

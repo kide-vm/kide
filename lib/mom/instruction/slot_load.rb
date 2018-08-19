@@ -40,32 +40,31 @@ module Mom
 
     def to_risc(compiler)
       #puts "RISC #{self}"
-      const = @right.to_register(compiler , original_source)
+      const_reg = @right.to_register(compiler , original_source)
       left_slots = @left.slots
       case @left.known_object
       when Symbol
-        sym_to_risc(compiler , const)
+        sym_to_risc(compiler , const_reg)
       when Parfait::CacheEntry
         left = compiler.use_reg( :CacheEntry )
-        const << Risc.load_constant(original_source, @left.known_object , left)
-        const << Risc.reg_to_slot(original_source, const.register , left, left_slots.first)
+        compiler.add_code Risc.load_constant(original_source, @left.known_object , left)
+        compiler.add_code Risc.reg_to_slot(original_source, const.register , left, left_slots.first)
       else
         raise "We have left #{@left.known_object}"
       end
       compiler.reset_regs
-      return const
     end
 
-    def sym_to_risc(compiler , const)
+    def sym_to_risc(compiler , const_reg)
       left_slots = @left.slots.dup
       raise "Not Message #{object}" unless @left.known_object == :message
       left = Risc.message_reg
       slot = left_slots.shift
       while( !left_slots.empty? )
-        left = left.resolve_and_add( slot , const , compiler)
+        left = left.resolve_and_add( slot , compiler)
         slot = left_slots.shift
       end
-      const << Risc.reg_to_slot(original_source, const.register , left, slot)
+      compiler.add_code Risc.reg_to_slot(original_source, const_reg , left, slot)
     end
 
   end
