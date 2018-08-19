@@ -11,12 +11,14 @@ module Mom
       @instructions = @compiler.instructions
     end
 
-    def test_ins_next_class
+    def test_ins_next_classes
+      assert_equal Risc::SlotToReg , @instructions[0].class
       assert_equal Risc::SlotToReg , @instructions[1].class
       assert_equal Risc::SlotToReg , @instructions[2].class
     end
     def test_ins_next_next_class
       assert_equal Risc::RegToSlot , @instructions[3].class
+      assert_equal NilClass , @instructions[4].class
     end
 
     def test_ins_next_reg

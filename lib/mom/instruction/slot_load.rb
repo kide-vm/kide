@@ -39,7 +39,6 @@ module Mom
     end
 
     def to_risc(compiler)
-      #puts "RISC #{self}"
       const_reg = @right.to_register(compiler , original_source)
       left_slots = @left.slots
       case @left.known_object
@@ -48,7 +47,7 @@ module Mom
       when Parfait::CacheEntry
         left = compiler.use_reg( :CacheEntry )
         compiler.add_code Risc.load_constant(original_source, @left.known_object , left)
-        compiler.add_code Risc.reg_to_slot(original_source, const.register , left, left_slots.first)
+        compiler.add_code Risc.reg_to_slot(original_source, const_reg , left, left_slots.first)
       else
         raise "We have left #{@left.known_object}"
       end

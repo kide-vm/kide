@@ -65,8 +65,8 @@ module Mom
         compiler.add_code const
         raise "Can't have slots into Constants" if slots.length > 0
       when Parfait::Object , Risc::Label
-        const = Risc::SlotToReg.new( source , right ,index, right)
-        compiler.add_code const Risc.load_constant(source, known_object , right)
+        const = const  = Risc.load_constant(source, known_object , right)
+        compiler.add_code const
         if slots.length > 0
           # desctructively replace the existing value to be loaded if more slots
           compiler.add_code Risc.slot_to_reg( source , right ,slots[0], right)
