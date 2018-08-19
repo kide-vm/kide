@@ -38,7 +38,7 @@ module Vool
       runtime_method = Mom::SlotDefinition.new( :message , [ :method] )
       check = Mom::NotSameCheck.new(compile_method , runtime_method, ok_label)
       # TODO? Maybe create mom instructions for this
-      #builder = compiler.code_builder("yield")
+      #builder = compiler.builder("yield")
       #Risc::Builtin::Object.exit_sequence(builder)
       #check << builder.built
       check << ok_label

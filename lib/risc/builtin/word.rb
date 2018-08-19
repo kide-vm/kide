@@ -12,7 +12,7 @@ module Risc
         # - emit_syscall (which does the return of an integer, see there)
         def putstring( context)
           compiler = compiler_for(:Word , :putstring ,{})
-          builder = compiler.compiler_builder(compiler.source)
+          builder = compiler.builder(compiler.source)
           builder.build do
             word! << message[:receiver]
             integer! << word[Parfait::Word.get_length_index]
@@ -26,7 +26,7 @@ module Risc
         # return a word sized new int, in return_value
         def get_internal_byte( context)
           compiler = compiler_for(:Word , :get_internal_byte , {at: :Integer})
-          compiler.compiler_builder(compiler.source).build do
+          compiler.builder(compiler.source).build do
             object! << message[:receiver]
             integer! << message[:arguments]
             integer << integer[1]
@@ -44,7 +44,7 @@ module Risc
         # return value
         def set_internal_byte( context )
           compiler = compiler_for(:Word, :set_internal_byte , {at: :Integer , :value => :Integer} )
-          compiler.compiler_builder(compiler.source).build do
+          compiler.builder(compiler.source).build do
             word! << message[:receiver]
             integer! << message[:arguments]
             integer << integer[1]

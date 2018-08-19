@@ -13,7 +13,7 @@ module Risc
         # return new int with result
         def div4(context)
           compiler = compiler_for(:Integer,:div4 ,{})
-          compiler.compiler_builder(compiler.source).build do
+          compiler.builder(compiler.source).build do
             integer! << message[:receiver]
             integer.reduce_int
             integer_reg! << 2
@@ -50,7 +50,7 @@ module Risc
         # - return
         def comparison( operator  )
           compiler = compiler_for(:Integer, operator ,{other: :Integer})
-          builder = compiler.compiler_builder(compiler.source)
+          builder = compiler.builder(compiler.source)
           builder.build do
             integer! << message[:receiver]
             integer_reg! << message[:arguments]
@@ -87,7 +87,7 @@ module Risc
         # - returns the new int
         def operator_method( op_sym )
           compiler = compiler_for(:Integer, op_sym ,{other: :Integer})
-          builder = compiler.compiler_builder(compiler.source)
+          builder = compiler.builder(compiler.source)
           builder.build do
             integer! << message[:receiver]
             integer_reg! << message[:arguments]
@@ -113,7 +113,7 @@ module Risc
         def div10( context )
           s = "div_10 "
           compiler = compiler_for(:Integer,:div10 ,{})
-          builder = compiler.compiler_builder(compiler.source)
+          builder = compiler.builder(compiler.source)
           builder.build do
             integer_self! << message[:receiver]
             integer_self.reduce_int

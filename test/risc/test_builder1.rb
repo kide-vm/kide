@@ -8,7 +8,7 @@ module Risc
       Risc.boot!
       @init = Parfait.object_space.get_init
       @compiler = Risc::MethodCompiler.new( @init )
-      @builder  = @compiler.compiler_builder(@init)
+      @builder  = @compiler.builder(@init)
     end
     def test_inserts_built
       r1 = RegisterValue.new(:r1 , :Space)

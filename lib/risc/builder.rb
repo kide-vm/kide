@@ -2,14 +2,7 @@ module Risc
 
   # A Builder is used to generate code, either by using it's api, or dsl
   #
-  # There are two subclasses of Builder, depending of what one wants to do with the
-  # generated code.
-  #
-  # CompilerBuilder: The code is added to the method_compiler.
-  # This is used to generate the builtin methods.
-  #
-  # CodeBuilder: The code can be stored up and returned.
-  #              This is used in Mom::to_risc methods
+  # The code is added to the method_compiler.
   #
   class Builder
 
@@ -19,6 +12,7 @@ module Risc
     # second arg determines weather instructions are added (default true)
     # call build with a block to build
     def initialize(compiler, for_source)
+      raise "no compiler" unless compiler
       @compiler = compiler
       @source = for_source
       @source_used = false
@@ -119,16 +113,16 @@ module Risc
     #  space << Parfait.object_space # load constant
     #  message[:receiver] << space  #make current message (r0) receiver the space
     #
-    # build result is available as built, but also gets added to compiler, if the
-    # builder is created with default args
+    # build result is added to compiler directly
     #
     def build(&block)
       instance_eval(&block)
-      @built
     end
 
+    # add code straight to the compiler
     def add_code(ins)
-      raise "Must be implemented in subclass #{self}"
+      @compiler.add_code(ins)
+      return ins
     end
 
     # move a machine int from register "from" to a Parfait::Integer in register "to"
@@ -143,41 +137,6 @@ module Risc
         space[:next_integer] << integer_2
         to[Parfait::Integer.integer_index] << from
       end
-    end
-  end
-
-
-  class CodeBuilder < Builder
-
-    attr_reader :built
-    def initialize(compiler, for_source)
-      super
-      @built = nil
-    end
-
-    def build(&block)
-      super
-      @built
-    end
-
-    # CodeBuilder stores the code.
-    # The code can be access through the @built instance, and is returned
-    # from build method
-    def add_code(ins)
-      if(@built)
-        @built << ins
-      else
-        @built = ins
-      end
-    end
-  end
-
-  # A CompilerBuilder adds the generated code to the MethodCompiler.
-  #
-  class CompilerBuilder < Builder
-    # add code straight to the compiler
-    def add_code(ins)
-      return @compiler.add_code(ins)
     end
   end
 

@@ -7,8 +7,12 @@ module Risc
       Parfait.boot!
       Risc.boot!
       init = Parfait.object_space.get_init
-      @builder = Risc::MethodCompiler.new( init ).code_builder(init)
+      @builder = Risc::MethodCompiler.new( init ).builder(init)
       @label = Risc.label("source","name")
+      @start = @builder.compiler.current
+    end
+    def built
+      @start.next
     end
     def test_has_build
       assert @builder.respond_to?(:build)
@@ -36,34 +40,34 @@ module Risc
     end
     def test_returns_built
       r1 = RegisterValue.new(:r1 , :Space)
-      built = @builder.build{ space! << r1 }
+      @builder.build{ space! << r1 }
       assert_equal Transfer , built.class
     end
     def test_returns_two
       r1 = RegisterValue.new(:r1 , :Space)
-      built = @builder.build{ space! << r1 ; space << r1}
+      @builder.build{ space! << r1 ; space << r1}
       assert_equal Transfer , built.next.class
     end
     def test_returns_slot
       r2 = RegisterValue.new(:r2 , :Message).set_builder( @builder )
-      built = @builder.build{ r2 << space![:next_message] }
+      @builder.build{ r2 << space![:next_message] }
       assert_equal SlotToReg , built.class
       assert_equal :r1 , built.array.symbol
     end
     def test_returns_slot_reverse
       r2 = RegisterValue.new(:r2 , :Message).set_builder( @builder )
-      built = @builder.build{ r2 << space![:next_message] }
+      @builder.build{ r2 << space![:next_message] }
       assert_equal SlotToReg , built.class
       assert_equal :r1 , built.array.symbol
     end
     def test_reuses_names
       r1 = RegisterValue.new(:r1 , :Space)
-      built = @builder.build{ space! << r1 ; space << r1}
+      @builder.build{ space! << r1 ; space << r1}
       assert_equal built.to.symbol , built.next.to.symbol
     end
     def test_uses_message_as_message
       r1 = RegisterValue.new(:r1 , :Space)
-      built = @builder.build{ message[:receiver] << r1}
+      @builder.build{ message[:receiver] << r1}
       assert_equal RegToSlot , built.class
       assert_equal :r0 , built.array.symbol
     end

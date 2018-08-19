@@ -13,20 +13,16 @@ module Risc
     def initialize( callable )
       @callable = callable
       @regs = []
-      init_instructions
-      @current = @risc_instructions
       @constants = []
       @block_compilers = []
-    end
-    attr_reader :risc_instructions , :constants , :block_compilers , :callable
-
-    def init_instructions
       @risc_instructions = Risc.label(source_name, source_name)
-      @risc_instructions.append Risc.label( source_name, "return_label")
-      @risc_instructions.append Mom::ReturnSequence.new.to_risc(self)
-      @risc_instructions.append Risc.label( source_name, "unreachable")
+      @current = @risc_instructions
+      add_code Risc.label( source_name, "return_label")
+      Mom::ReturnSequence.new.to_risc(self)
+      add_code Risc.label( source_name, "unreachable")
       reset_regs
     end
+    attr_reader :risc_instructions , :constants , :block_compilers , :callable , :current
 
     def return_label
       @risc_instructions.each do |ins|
@@ -42,8 +38,7 @@ module Risc
       while( instruction )
         raise "whats this a #{instruction}" unless instruction.is_a?(Mom::Instruction)
         #puts "adding mom #{instruction.to_s}:#{instruction.next.to_s}"
-        risc = instruction.to_risc( self )
-        add_code(risc)
+        instruction.to_risc( self )
         reset_regs
         #puts "adding risc #{risc.to_s}:#{risc.next.to_s}"
         instruction = instruction.next
@@ -135,19 +130,12 @@ module Risc
 
     # Build with builder (see there), adding the created instructions
     def build(source , &block)
-      code_builder(source).build(&block)
+      builder(source).build(&block)
     end
 
-    # return a new code builder that uses this compiler
-    # CodeBuilder returns code after building
-    def code_builder( source)
-      CodeBuilder.new(self , source)
-    end
-
-    # return a CompilerBuilder
-    # CompilerBuilder adds the generated code to the compiler
-    def compiler_builder( source)
-      CompilerBuilder.new(self , source)
+    # return a Builder, that adds the generated code to this compiler
+    def builder( source)
+      Builder.new(self , source)
     end
   end
 end

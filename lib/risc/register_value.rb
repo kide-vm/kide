@@ -45,10 +45,10 @@ module Risc
 
     # using the registers type, resolve the slot to an index
     # Using the index and the register, add a SlotToReg to the instruction
-    def resolve_and_add(slot , instruction , compiler)
+    def resolve_and_add(slot , compiler)
       index = resolve_index( slot )
       new_left = get_new_left( slot , compiler )
-      instruction << Risc::SlotToReg.new( "SlotLoad #{type}[#{slot}]" , self ,index, new_left)
+      compiler.add_code Risc::SlotToReg.new( "SlotLoad #{type}[#{slot}]" , self ,index, new_left)
       new_left
     end
 

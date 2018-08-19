@@ -8,7 +8,7 @@ module Risc
         # return is stored in return_value
         def get_internal_word( context )
           compiler = compiler_for(:Object , :get_internal_word ,{at: :Integer})
-          compiler.compiler_builder(compiler.source).build do
+          compiler.builder(compiler.source).build do
             object! << message[:receiver]
             integer! << message[:arguments]
             integer << integer[1]
@@ -24,7 +24,7 @@ module Risc
         # return the value passed in
         def set_internal_word( context )
           compiler = compiler_for(:Object , :set_internal_word , {at: :Integer, :value => :Object} )
-          compiler.compiler_builder(compiler.source).build do
+          compiler.builder(compiler.source).build do
             object! << message[:receiver]
             integer! << message[:arguments]
             object_reg! << integer[ 2]
@@ -41,7 +41,7 @@ module Risc
         # Even if it's just this one, sys_exit (later raise)
         def _method_missing( context )
           compiler = compiler_for(:Object,:method_missing ,{})
-          emit_syscall( compiler.compiler_builder(compiler.source) , :exit )
+          emit_syscall( compiler.builder(compiler.source) , :exit )
           return compiler
         end
 
@@ -54,7 +54,7 @@ module Risc
         def __init__( context )
           compiler = MethodCompiler.compiler_for_class(:Object,:__init__ ,
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
-          builder = compiler.compiler_builder(compiler.source)
+          builder = compiler.builder(compiler.source)
           builder.build do
             space! << Parfait.object_space
             message << space[:next_message]
@@ -98,7 +98,7 @@ module Risc
         # mainly calls exit_sequence
         def exit( context )
           compiler = compiler_for(:Object,:exit ,{})
-          builder = compiler.compiler_builder(compiler.source)
+          builder = compiler.builder(compiler.source)
           exit_sequence(builder)
           return compiler
         end
