@@ -3,6 +3,7 @@ module Parfait
 end
 
 require_relative "parfait/object"
+require_relative "parfait/factory"
 require_relative "parfait/data_object"
 require_relative "parfait/integer"
 require_relative "parfait/behaviour"

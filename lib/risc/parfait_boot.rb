@@ -160,6 +160,8 @@ module Parfait
       NamedList: {},
       NilClass: {},
       Object: {},
+      Factory: { for_type: :Type , next_object: :Object , last_object: :Object ,
+              reserve: :Object , attribute_name: :Word },
       ReturnAddress: {next_integer: :ReturnAddress},
       Space: {classes: :Dictionary , types: :Dictionary ,
               next_message: :Message , messages: :Message ,
