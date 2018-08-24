@@ -9,10 +9,11 @@ And a large part of that functionality must actually be used at compile time too
 We reuse the Parfait code at compile-time, to create the data for the compiled code.
 To do this the compiler (re) defines the object memory (in parfait_adapter).
 
-A work in progress that started from here : http://ruby-x.org/2014/06/10/more-clarity.html
-went on here http://ruby-x.org/2014/07/05/layers-vs-passes.html
+A work in progress that started from here : http://ruby-x.org/blog/more-clarity
+went on here http://ruby-x.org/blog/layers-vs-passes.html
+and is now documented here http://ruby-x.org/rubyx/parfait.html
 
-A step back:  the code (program) we compile runs at run - time.
+A step back: the code (program) we compile runs at run - time.
 And so does parfait. So all we have to do is compile it with the program.
 
 And thus parfait can be used at run-time.

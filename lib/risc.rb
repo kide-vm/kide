@@ -12,7 +12,7 @@ class Class
   end
 end
 
-# The RiscMachine, is an abstract machine with registers. Think of it as an arm machine with
+# The Risc Machine, is an abstract machine with registers. Think of it as an arm machine with
 # normal instruction names. It is not however an abstraction of existing hardware, but only
 # of that subset that we need.
 # See risc/Readme

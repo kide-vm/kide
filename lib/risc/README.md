@@ -1,6 +1,6 @@
 # Risc Machine
 
-The RiscMachine, is an abstract machine with registers. Think of it as an arm machine with
+The Risc Machine, is an abstract machine with registers. Think of it as an arm machine with
 normal instruction names. It is not however an abstraction of existing hardware, but only
 of that subset that we need.
 
@@ -9,7 +9,7 @@ Our primary objective is to compile typed code to this level, so the register ma
 - object load
 - object oriented call semantics
 - extended (and extensible) branching
-- normal integer operators (but no sub word instructions)
+- normal integer operators
 
 All data is in objects.
 
@@ -18,7 +18,7 @@ express call semantics.
 
 ## Calls and syscalls
 
-The RiscMachine only uses 1 fixed register, the currently worked on Message. (and assumes a
+The Risc Machine only uses 1 fixed register, the currently worked on Message. (and assumes a
 program counter and flags, neither of which are directly manipulated)
 
 There is no stack, rather messages form a linked list, and preparing to call, the data is
@@ -30,7 +30,7 @@ the meaning or number of syscalls. This is implemented by the level below, eg th
 
 ## Interpreter
 
-There is an interpreter that can interpret compiled register machine programs.
+There is an interpreter that can interpret programs compiled to the risc instruction set.
 This is very handy for debugging (and nothing else).
 
 Even more handy is the graphical interface for the interpreter, which is in it's own repository:
