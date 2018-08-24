@@ -68,11 +68,11 @@ module Risc
     end
     def test_load_int_space
       cons = main_ticks(base + 6)
-      assert_load( cons , Parfait::Space , :r3)
+      assert_load( cons , Parfait::Factory , :r3)
     end
     def test_load_int_next_space
       sl = main_ticks(base + 7)
-      assert_slot_to_reg( sl , :r3 , 5 , :r2)
+      assert_slot_to_reg( sl , :r3 , 2 , :r2)
       assert_equal Parfait::Integer , @interpreter.get_register(:r2).class
     end
     def test_load_int_next_int
@@ -82,7 +82,7 @@ module Risc
     end
     def test_load_int_next_int2
       sl = main_ticks(base + 9)
-      assert_reg_to_slot( sl , :r4 , :r3 , 5)
+      assert_reg_to_slot( sl , :r4 , :r3 , 2)
     end
   end
 end

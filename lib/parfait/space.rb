@@ -31,8 +31,9 @@ module Parfait
 
   class Space < Object
 
-    attr  :type, :classes , :types , :next_message , :next_integer , :next_address
-    attr  :messages, :integers , :addresses
+    attr  :type, :classes , :types , :factories
+    attr  :next_message , :next_address
+    attr  :messages, :addresses
     attr  :true_object , :false_object , :nil_object
 
     def initialize( classes )
@@ -41,7 +42,8 @@ module Parfait
       classes.each do |name , cl|
         add_type(cl.instance_type)
       end
-      101.times { self.integers = Integer.new(0,self.integers) }
+      self.factories = Dictionary.new
+      factories[ :Integer ] = Factory.new( classes[:Integer].instance_type)
       400.times { self.addresses = ReturnAddress.new(0,self.addresses) }
       message = Message.new(nil)
       50.times do
@@ -50,7 +52,6 @@ module Parfait
         message = self.messages
       end
       self.next_message = self.messages
-      self.next_integer = self.integers
       self.next_address = self.addresses
       self.true_object = Parfait::TrueClass.new
       self.false_object = Parfait::FalseClass.new
@@ -64,14 +65,16 @@ module Parfait
       16
     end
 
-    # hand out one of the preallocated ints for use as constant
-    # the same code is hardcoded as risc instructions for "normal" use, to
-    # avoid the method call at runtime. But at compile time we want to keep
-    # the number of integers known (fixed).
-    def get_integer
-      int = self.next_integer
-      self.next_integer = next_integer.next_integer
-      int
+    # return the factory for the given type
+    # or more exactly the type that has a class_name "name"
+    def get_factory_for(name)
+      factories[name]
+    end
+
+    # use the factory of given name to generate next_object
+    # just a shortcut basically
+    def get_next_for(name)
+      factories[name].get_next_object
     end
 
     # hand out a return address for use as constant the address is added
@@ -81,12 +84,14 @@ module Parfait
       addr
     end
 
+    # yield each type in the space
     def each_type
       types.values.each do |type|
         yield(type)
       end
     end
 
+    # add a type, meaning the instance given must be a valid type
     def add_type( type )
       hash = type.hash
       raise "upps #{hash} #{hash.class}" unless hash.is_a?(Fixnum)
@@ -95,6 +100,7 @@ module Parfait
       types[hash] = type
     end
 
+    # get a type by the type hash (the hash is what uniquely identifies the type)
     def get_type_for( hash )
       types[hash]
     end
@@ -110,11 +116,13 @@ module Parfait
       methods
     end
 
+    # shortcut to get the main method. main is defined on Space
     def get_main
       space = get_class_by_name :Space
       space.instance_type.get_method :main
     end
 
+    # shortcut to get the __init__ method, which is defined on Object
     def get_init
       object = get_class_by_name :Object
       object.instance_type.get_method :__init__

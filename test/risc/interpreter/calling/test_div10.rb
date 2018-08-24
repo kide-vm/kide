@@ -35,11 +35,11 @@ module Risc
 
     def test_load_space
       load_ins = main_ticks 53
-      assert_load load_ins, Parfait::Space
+      assert_load load_ins, Parfait::Factory
     end
     def test_load_to
       to = main_ticks 54
-      assert_slot_to_reg to , :r5 , 5 ,:r2
+      assert_slot_to_reg to , :r5 , 2 ,:r2
     end
     def test_load_25
       load_ins = main_ticks 9

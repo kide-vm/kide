@@ -131,10 +131,10 @@ module Risc
       to.set_builder( self )    # esecially div10 comes in without having used builder
       from.set_builder( self )  # not named regs, different regs ==> silent errors
       build do
-        space? << Parfait.object_space
-        to << space[:next_integer]
+        factory! << Parfait.object_space.get_factory_for(:Integer)
+        to << factory[:next_object]
         integer_2! << to[:next_integer]
-        space[:next_integer] << integer_2
+        factory[:next_object] << integer_2
         to[Parfait::Integer.integer_index] << from
       end
     end

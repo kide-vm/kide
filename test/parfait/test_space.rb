@@ -11,7 +11,7 @@ module Parfait
     end
 
     def test_space_length
-      assert_equal 12 , @space.get_type.instance_length , @space.get_type.inspect
+      assert_equal 11 , @space.get_type.instance_length , @space.get_type.inspect
     end
     def test_singletons
       assert @space.true_object , "No truth"
@@ -21,7 +21,6 @@ module Parfait
     def test_global_space
       assert_equal Parfait::Space , Parfait.object_space.class
     end
-
     def test_get_class_by_name
       assert_equal Parfait::Class , Parfait.object_space.get_class_by_name(:Space).class
     end
@@ -30,10 +29,6 @@ module Parfait
     end
     def test_get_type_by_class_name_nil
       assert_nil Parfait.object_space.get_type_by_class_name(:Spac)
-    end
-    def test_get_integer_instance
-      int = @space.get_integer
-      assert_equal Integer , int.class
     end
     def test_classes_class
       classes.each do |name|
@@ -93,12 +88,26 @@ module Parfait
         end
       end
     end
+    def test_has_factory
+      assert_equal Dictionary , @space.factories.class
+    end
+    def test_factory_length
+      assert_equal 1 , @space.factories.length
+    end
+    def test_has_integer_factory
+      ints = @space.get_factory_for(:Integer)
+      assert_equal Factory , ints.class
+      assert_equal :Integer , ints.for_type.class_name
+    end
     def test_has_integers
-      assert_equal Parfait::Integer , @space.next_integer.class
-      assert_equal 0 , @space.next_integer.value
+      nekst = @space.get_next_for(:Integer)
+      assert_equal Parfait::Integer , nekst.class
+      assert_nil nekst.value
     end
     def test_has_next_integer
-      assert_equal Parfait::Integer , @space.next_integer.next_integer.class
+      nekst = @space.get_next_for(:Integer)
+      nekst = @space.get_next_for(:Integer)
+      assert_equal Parfait::Integer , nekst.class
     end
     def test_has_addresses
       assert_equal Parfait::ReturnAddress , @space.next_address.class
@@ -116,7 +125,6 @@ module Parfait
       end
       assert_equal 400, count
     end
-
     def test_messages
       mess = @space.messages
       all = []

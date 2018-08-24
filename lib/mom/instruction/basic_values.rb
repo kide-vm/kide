@@ -21,7 +21,7 @@ module Mom
       @value = value
     end
     def to_parfait(compiler)
-      value = Parfait.object_space.get_integer
+      value = Parfait.object_space.get_factory_for(:Integer).get_next_object
       value.set_value(@value)
       compiler.add_constant(value)
       value

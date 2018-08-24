@@ -68,11 +68,6 @@ module Parfait
       type
     end
 
-    # return the metaclass
-    def meta
-      MetaClass.new self
-    end
-
     def get_instance_variables
       type.names
     end

@@ -28,7 +28,7 @@ module Risc
     end
     def test_load_first_message #from space (ie r2)
       sl = @produced.next( 2 )
-      assert_slot_to_reg( sl , :r2 ,  3 ,  :r3 )
+      assert_slot_to_reg( sl , :r2 ,  4 ,  :r3 )
     end
     def test_get_next_next #reduce onto itself
       sl = @produced.next( 3 )
@@ -36,7 +36,7 @@ module Risc
     end
     def test_store_next_next_in_space
       sl = @produced.next( 4 )
-      assert_reg_to_slot( sl , :r4  ,  :r2 ,  3 )
+      assert_reg_to_slot( sl , :r4  ,  :r2 ,  4 )
     end
     def test_store_message_in_current
       sl = @produced.next( 5 )
