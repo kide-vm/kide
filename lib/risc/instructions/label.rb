@@ -65,7 +65,7 @@ module Risc
   # An integer is plucked from object_space abd added to the machine constant pool
   # if none was given
   def self.label( source , name , position = nil , nekst = nil)
-    position = Parfait.object_space.get_address unless position
+    position = Parfait.object_space.get_next_for(:ReturnAddress) unless position
     Label.new( source , name , position, nekst )
   end
 end

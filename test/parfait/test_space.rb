@@ -11,7 +11,7 @@ module Parfait
     end
 
     def test_space_length
-      assert_equal 11 , @space.get_type.instance_length , @space.get_type.inspect
+      assert_equal 9 , @space.get_type.instance_length , @space.get_type.inspect
     end
     def test_singletons
       assert @space.true_object , "No truth"
@@ -92,7 +92,7 @@ module Parfait
       assert_equal Dictionary , @space.factories.class
     end
     def test_factory_length
-      assert_equal 1 , @space.factories.length
+      assert_equal 2 , @space.factories.length
     end
     def test_has_integer_factory
       ints = @space.get_factory_for(:Integer)
@@ -110,20 +110,21 @@ module Parfait
       assert_equal Parfait::Integer , nekst.class
     end
     def test_has_addresses
-      assert_equal Parfait::ReturnAddress , @space.next_address.class
-      assert_equal 0 , @space.next_address.value
+      ret = @space.get_next_for(:ReturnAddress)
+      assert_equal Parfait::ReturnAddress , ret.class
+      assert_nil ret.value
     end
     def test_has_next_address
-      assert_equal Parfait::ReturnAddress , @space.next_address.next_integer.class
+      assert_equal Parfait::ReturnAddress , @space.get_next_for(:ReturnAddress).class
     end
     def test_address_count
-      addr = @space.addresses
+      addr = @space.get_next_for(:ReturnAddress)
       count = 0
       while(addr)
         count += 1
         addr = addr.next_integer
       end
-      assert_equal 400, count
+      assert_equal 1014, count
     end
     def test_messages
       mess = @space.messages

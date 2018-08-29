@@ -1,13 +1,12 @@
 
-# A Space is a collection of pages. It stores objects, the data for the objects,
-# not references. See Page for more detail.
-
-# Pages are stored by the object size they represent in a hash.
-
-# Space and Page work together in making *new* objects available.
-# "New" is slightly misleading in that normal operation only ever
-# recycles objects.
-
+# The Space is the root object we work off, the only singleton in the parfait world
+#
+# Space stores the types, classes, factories and singleton objects (true/false/nil)
+#
+# The Space is booted at compile time, a process outside the scope of Parfait(in parfait_boot)
+# Then it is used during compilation and later serialized into the resulting binary
+#
+# 
 module Parfait
   # Make the object space globally available
   def self.object_space
@@ -32,8 +31,7 @@ module Parfait
   class Space < Object
 
     attr  :type, :classes , :types , :factories
-    attr  :next_message , :next_address
-    attr  :messages, :addresses
+    attr  :next_message , :messages
     attr  :true_object , :false_object , :nil_object
 
     def initialize( classes )
@@ -43,8 +41,8 @@ module Parfait
         add_type(cl.instance_type)
       end
       self.factories = Dictionary.new
-      factories[ :Integer ] = Factory.new( classes[:Integer].instance_type)
-      400.times { self.addresses = ReturnAddress.new(0,self.addresses) }
+      factories[ :Integer ] = Factory.new( classes[:Integer].instance_type).get_more
+      factories[ :ReturnAddress ] = Factory.new( classes[:ReturnAddress].instance_type).get_more
       message = Message.new(nil)
       50.times do
         self.messages = Message.new( message )
@@ -52,7 +50,6 @@ module Parfait
         message = self.messages
       end
       self.next_message = self.messages
-      self.next_address = self.addresses
       self.true_object = Parfait::TrueClass.new
       self.false_object = Parfait::FalseClass.new
       self.nil_object = Parfait::NilClass.new
@@ -75,13 +72,6 @@ module Parfait
     # just a shortcut basically
     def get_next_for(name)
       factories[name].get_next_object
-    end
-
-    # hand out a return address for use as constant the address is added
-    def get_address
-      addr = next_address
-      self.next_address = next_address.next_integer
-      addr
     end
 
     # yield each type in the space
