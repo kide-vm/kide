@@ -6,7 +6,9 @@ module Risc
   module Collector
     def self.collect_space(linker)
       keep Parfait.object_space , 0
-      linker.constants.each {|obj| keep(obj,0)}
+      linker.constants.each do |obj|
+        keep(obj,0)
+      end
       Position.positions
     end
 

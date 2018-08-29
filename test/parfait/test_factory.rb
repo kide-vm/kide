@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Parfait
-  class TestPage < ParfaitTest
+  class TestFactory < ParfaitTest
 
     def setup
       super
@@ -18,11 +18,14 @@ module Parfait
     end
     def test_no_next
       assert_nil @factory.next_object
-      assert_nil @factory.last_object
       assert_nil @factory.reserve
     end
     def test_get_next_object
       assert_equal Parfait::Integer ,  @factory.get_next_object.class
+    end
+    def test_first_is_reserve
+      @factory.get_next_object
+      assert_equal Parfait::Integer , @factory.reserve.class
     end
     def test_chain_length
       count = 0

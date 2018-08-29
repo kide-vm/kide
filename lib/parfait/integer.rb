@@ -1,12 +1,10 @@
-
-# Integer class for representing maths on Integers
-# Integers are Objects, specifically DataObjects
-# - they have fixed value
-# - they are immutable
-# (both by implementation, not design.
-# Ie it would be possible to change the value, we just don't support that)
-
 module Parfait
+  # Integer class for representing maths on Integers
+  # Integers are Objects, specifically DataObjects
+  # - they have fixed value
+  # - they are immutable
+  # (both by implementation, not design.
+  # Ie it would be possible to change the value, we just don't support that)
   class Integer < Data4
 
     attr :type, :next_integer
@@ -55,6 +53,10 @@ module Parfait
   #
   # But the integer (address) needs to be adjusted by load address.
   class ReturnAddress < Integer
+
+    def to_s
+      "ReturnAddress 0x#{object_id.to_s(16)}:#{value}"
+    end
   end
 
   # adding other base classes in here for now:

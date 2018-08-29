@@ -13,7 +13,7 @@ module Parfait
   # factory when the next (not current) is nil.
   # This is btw just as easy a check, as the next needs to be gotten to swap the list.
   class Factory < Object
-    attr :type , :for_type , :next_object , :last_object , :reserve , :attribute_name
+    attr :type , :for_type , :next_object , :reserve , :attribute_name
 
     PAGE_SIZE = 1024
     RESERVE = 10
@@ -50,8 +50,8 @@ module Parfait
     # and rebuilt the reserve (get_next already instantiates the reserve)
     #
     def get_more
-      chain = get_chain
-      link = chain
+      first_object = get_chain
+      link = first_object
       count = RESERVE
       while(count > 0)
         link = get_next_for(link)
@@ -59,7 +59,8 @@ module Parfait
       end
       self.next_object = get_next_for(link)
       set_next_for( link , nil )
-      self.reserve = chain
+      self.reserve = first_object
+      self
     end
 
     # this initiates the syscall to get more memory.
@@ -111,6 +112,7 @@ module Parfait
       r_class = eval( "Parfait::#{type.object_class.name}" )
       obj = r_class.allocate
       obj.set_type(type)
+      #puts "Factory #{type.object_class.name} at 0x#{obj.object_id.to_s(16)}"
       obj
     end
   end
