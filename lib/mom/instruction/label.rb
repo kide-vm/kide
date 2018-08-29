@@ -32,19 +32,16 @@ module Mom
     end
 
     # generate the risc label lazily
-    def risc_label
+    def risc_label(comiler)
       @risc_label ||= Risc.label(self,name)
+      comiler.add_constant(@risc_label.address)
+      @risc_label
     end
 
     # add the risc_label to the compiler (instruction flow)
     # should only be called once
     def to_risc(compiler)
-      if( @added )
-        raise "added already #{@added}"
-      else
-        @added = true
-        compiler.add_code( risc_label )
-      end
+      compiler.add_code( risc_label(compiler) )
     end
   end
 end

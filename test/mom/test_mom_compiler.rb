@@ -22,7 +22,7 @@ module Mom
       assert_equal Array , @comp.constants.class
     end
     def test_has_constant
-      assert_equal  "Hi" , @comp.constants.first.to_string
+      assert_equal  "Hi" , @comp.constants[1].to_string
     end
     def test_has_translate
       assert @comp.translate(:interpreter)

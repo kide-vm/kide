@@ -134,8 +134,14 @@ module Risc
     # - an RValue, resulting in an SlotToReg
     def <<( right )
       case right
-      when Parfait::Object , Symbol , Label
+      when Symbol
         ins = Risc.load_constant("#{right.class} to #{self.type}" , right , self)
+      when Parfait::Object
+        ins = Risc.load_constant("#{right.class} to #{self.type}" , right , self)
+        builder.compiler.add_constant(right) if builder
+      when Label
+        ins = Risc.load_constant("#{right.class} to #{self.type}" , right , self)
+        builder.compiler.add_constant(right.address) if builder
       when Fixnum
         ins = Risc.load_data("#{right.class} to #{self.type}" , right , self)
       when RegisterValue

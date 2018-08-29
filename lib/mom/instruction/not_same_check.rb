@@ -26,7 +26,7 @@ module Mom
       l_reg = left.to_register(compiler, self)
       r_reg = right.to_register(compiler, self)
       compiler.add_code Risc.op( self , :- , l_reg , r_reg)
-      compiler.add_code Risc::IsZero.new( self, false_jump.risc_label)
+      compiler.add_code Risc::IsZero.new( self, false_jump.risc_label(compiler))
     end
   end
 end
