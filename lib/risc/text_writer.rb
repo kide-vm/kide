@@ -138,7 +138,8 @@ module Risc
     def write_return_address( addr )
       write_ref_for( addr.get_type )
       write_ref_for( addr.next_integer )
-      write_ref_for( addr.value + @linker.platform.loaded_at )
+      val = addr.value ? addr.value + @linker.platform.loaded_at : Parfait.object_space.nil_object
+      write_ref_for( val )
       write_ref_for( 0 )
       log.debug "Integer witten stream 0x#{@stream.length.to_s(16)}"
     end
