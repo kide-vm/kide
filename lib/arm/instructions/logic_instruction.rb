@@ -62,21 +62,25 @@ module Arm
     # happen, and so they are split into two instructions. An exeption is thrown, that triggers
     # some position handling and an @extra add instruction generated.
     def handle_numeric(right)
-      if (right.fits_u8?)
-        operand = right # no shifting needed
-      elsif (op_with_rot = calculate_u8_with_rr(right))
-        operand = op_with_rot
-      else
-        unless @extra
-          @extra = 1
-          # puts "RELINK L at #{Risc::Position.get(self)}"
-          # use sub for sub and add for add, ie same as opcode
-          insert ArmMachine.send( opcode ,  result , result , 0 ) #noop
-        end
+      return right if (right.fits_u8?)  # no shifting needed
+      if (op_with_rot = calculate_u8_with_rr(right))
+        return op_with_rot
+      end
+      unless @extra
+        # puts "RELINK L at #{Risc::Position.get(self)}"
+        # use sub for sub and add for add, ie same as opcode
+        insert ArmMachine.send( opcode ,  result , result , 0 ) #noop
+        @extra = @next
+      end
+      shift = 0xFF
+      operand = nil
+      until( operand )
+        mask = 0xFFFFFFFF ^ shift
         # now we can do the actual breaking of instruction, by splitting the operand
-        operand = calculate_u8_with_rr( right & 0xFFFFFF00 )
-        raise "no fit for #{right} in #{self}" unless operand
-        @next.set_value(right & 0xFF )
+        operand = calculate_u8_with_rr( right & mask )
+        @next.set_value(right & shift )
+        raise "internal #{shift} for #{self}" if shift > 0xFFFFFF
+        shift = (shift << 8) + 0xFF
       end
       return operand
     end
@@ -97,9 +101,12 @@ module Arm
         right = Risc::Position.get(left) - 8
         right -= Risc::Position.get(self).at
         if( (right < 0) && ((opcode == :add) || (opcode == :sub)) )
+          puts "Inverting, was #{right} , new #{-1*right}"
+          puts "left #{left.class} #{Risc::Position.get(left)}"
+          puts "self  #{Risc::Position.get(self)}"
           right *= -1   # this works as we never issue sub only add
           set_opcode :sub  # so (as we can't change the sign permanently) we can change the opcode
-        end                         # and the sign even for sub (becuase we created them)
+        end                         # and the sign even for sub (beucase we created them)
         raise "No negatives implemented #{self} #{right} " if right < 0
         return :pc , right
       else

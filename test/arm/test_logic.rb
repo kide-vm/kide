@@ -76,17 +76,23 @@ module Arm
       code = @machine.add( :r1 , :r2 , :r3 ,  shift_lsr: 8)
       assert_code code , :add , [0x23,0x14,0x92,0xe0] #e0 92 14 23
     end
-    def test_big_add
+    def test_add_big
       code = @machine.add	 :r1 , :r1, 0x220
       assert_code code , :add , [0x22,0x1e,0x91,0xe2] #e2 91 1e 22
     end
-    def test_too_big_add
+    def test_add_2ins
       code = @machine.add	 :r1 , :r1, 0x222
       Risc::Position.create(code).set(0)
       # add 0x02 (first instruction) and then 0x220 shifted
       assert_code code , :add , [0x02,0x1c,0x91,0xe2] #e2 91 1e 02
       # added extra instruction to add "extra"
       assert_code code.next , :add , [0x22,0x10,0x91,0xe2] #e2 91 10 22
+    end
+    def test_add_3ins
+      code = @machine.add	 :r1 , :r1, 0x29d84
+      assert_code code , :add , [0x02,0x18,0x91,0xe2]
+      assert_code code.next , :add , [0x9d,0x1c,0x91,0xe2]
+      assert_code code.next.next , :add , [0x84,0x10,0x91,0xe2]
     end
 
     def label( pos = 0x22 + 8)
