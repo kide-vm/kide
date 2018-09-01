@@ -164,7 +164,6 @@ module Parfait
               reserve: :Object , attribute_name: :Word },
       ReturnAddress: {next_integer: :ReturnAddress},
       Space: {classes: :Dictionary , types: :Dictionary , factories: :Dictionary,
-              next_message: :Message , messages: :Message ,
               true_object: :TrueClass, false_object: :FalseClass , nil_object: :NilClass},
       TrueClass: {},
       Type: {names: :List , types: :List  ,

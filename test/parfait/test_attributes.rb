@@ -5,7 +5,7 @@ module Parfait
 
     def setup
       super
-      @mess = @space.next_message
+      @mess = @space.get_next_for(:Message)
       @type = @mess.get_type
     end
 

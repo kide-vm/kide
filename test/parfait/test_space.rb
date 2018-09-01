@@ -11,7 +11,7 @@ module Parfait
     end
 
     def test_space_length
-      assert_equal 9 , @space.get_type.instance_length , @space.get_type.inspect
+      assert_equal 7 , @space.get_type.instance_length , @space.get_type.inspect
     end
     def test_singletons
       assert @space.true_object , "No truth"
@@ -92,7 +92,7 @@ module Parfait
       assert_equal Dictionary , @space.factories.class
     end
     def test_factory_length
-      assert_equal 2 , @space.factories.length
+      assert_equal 3 , @space.factories.length
     end
     def test_has_integer_factory
       ints = @space.get_factory_for(:Integer)
@@ -126,23 +126,27 @@ module Parfait
       end
       assert_equal 1014, count
     end
-    def test_messages
-      mess = @space.messages
-      all = []
-      while mess
-        all << mess
+    def test_has_message_factory
+      ints = @space.get_factory_for(:Message)
+      assert_equal Factory , ints.class
+      assert_equal :Message , ints.for_type.class_name
+    end
+    def test_has_messages
+      nekst = @space.get_next_for(:Message)
+      assert_equal Parfait::Message , nekst.class
+    end
+    def test_has_next_message
+      assert_equal Parfait::Message , @space.get_next_for(:Message).class
+    end
+    def test_message_count
+      mess = @space.get_next_for(:Message)
+      count = 0
+      while(mess)
+        count += 1
         assert mess.frame
         mess = mess.next_message
       end
-      assert_equal all.length , all.uniq.length
-      # there is a 5.times in space, but one Message gets created before
-      assert_equal  50 + 1 , all.length
-    end
-    def test_message_vars
-      mess = @space.next_message
-      all = mess.get_instance_variables
-      assert all
-      assert all.include?(:next_message)
+      assert_equal 1014, count
     end
     def test_create_class
       assert @space.create_class( :NewClass )

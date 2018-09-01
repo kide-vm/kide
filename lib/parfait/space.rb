@@ -6,7 +6,7 @@
 # The Space is booted at compile time, a process outside the scope of Parfait(in parfait_boot)
 # Then it is used during compilation and later serialized into the resulting binary
 #
-# 
+#
 module Parfait
   # Make the object space globally available
   def self.object_space
@@ -31,7 +31,6 @@ module Parfait
   class Space < Object
 
     attr  :type, :classes , :types , :factories
-    attr  :next_message , :messages
     attr  :true_object , :false_object , :nil_object
 
     def initialize( classes )
@@ -41,15 +40,11 @@ module Parfait
         add_type(cl.instance_type)
       end
       self.factories = Dictionary.new
-      factories[ :Integer ] = Factory.new( classes[:Integer].instance_type).get_more
-      factories[ :ReturnAddress ] = Factory.new( classes[:ReturnAddress].instance_type).get_more
-      message = Message.new(nil)
-      50.times do
-        self.messages = Message.new( message )
-        message.set_caller( self.messages )
-        message = self.messages
+      [:Integer , :ReturnAddress , :Message].each do |fact_name|
+        factories[ fact_name ] = Factory.new( classes[fact_name].instance_type).get_more
       end
-      self.next_message = self.messages
+      init_message_chain( factories[ :Message ].reserve  )
+      init_message_chain( factories[ :Message ].next_object  )
       self.true_object = Parfait::TrueClass.new
       self.false_object = Parfait::FalseClass.new
       self.nil_object = Parfait::NilClass.new
@@ -62,6 +57,12 @@ module Parfait
       16
     end
 
+    def init_message_chain( message )
+      while(message)
+        message.initialize
+        message = message.next_message
+      end
+    end
     # return the factory for the given type
     # or more exactly the type that has a class_name "name"
     def get_factory_for(name)

@@ -5,7 +5,7 @@ module Parfait
 
     def setup
       super
-      @mess = @space.next_message
+      @mess = @space.get_next_for(:Message)
     end
     def test_length
       assert_equal 9 , @mess.get_type.instance_length , @mess.get_type.inspect

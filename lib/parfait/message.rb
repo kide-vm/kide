@@ -27,12 +27,12 @@ module Parfait
       16
     end
 
-    def initialize( next_m )
+    def initialize(  )
       super()
-      self.next_message = next_m
       self.frame = NamedList.new()
       self.arguments = NamedList.new()
     end
+    public :initialize
 
     def set_receiver(rec)
       self.receiver = rec
