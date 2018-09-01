@@ -26,10 +26,10 @@ module Mom
         object! << message[:return_value]
         caller_reg! << message[:caller]
         caller_reg[:return_value] << object
-        space! << Parfait.object_space
-        next_message! << space[:next_message]
+        factory? << Parfait.object_space.get_factory_for(:Message)
+        next_message! << factory[:next_object]
         message[:next_message] << next_message
-        space[:next_message] << message
+        factory[:next_object] << message
       end
       compiler.reset_regs
       builder.build do

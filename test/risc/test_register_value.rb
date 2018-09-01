@@ -13,6 +13,7 @@ module Risc
       Parfait.boot!
       @r0 = RegisterValue.new(:r0 , :Message)
       @r1 = RegisterValue.new(:r1 , :Space)
+      @r2 = RegisterValue.new(:r1 , :Factory)
     end
     def test_class_name_type
       assert_equal :Message , @r0.class_name
@@ -77,11 +78,11 @@ module Risc
       assert_equal 1 , instr.index
     end
     def test_slot_to_reg
-      instr = @r0 << @r1[:next_message]
+      instr = @r0 << @r2[:next_object]
       assert_equal SlotToReg , instr.class
       assert_equal @r1 , instr.array
       assert_equal @r0 , instr.register
-      assert_equal 4 , instr.index
+      assert_equal 2 , instr.index
     end
     def test_reg_to_byte
       instr = @r1[1] <= @r0
@@ -91,11 +92,11 @@ module Risc
       assert_equal 1 , instr.index
     end
     def test_reg_to_slot
-      instr = @r1[:next_message] << @r0
+      instr = @r2[:next_object] << @r0
       assert_equal RegToSlot , instr.class
       assert_equal @r1 , instr.array
       assert_equal @r0 , instr.register
-      assert_equal 4 , instr.index
+      assert_equal 2 , instr.index
     end
   end
 end

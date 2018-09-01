@@ -63,12 +63,12 @@ module Mom
     # set the method into the message
     def build_message_data( builder )
       builder.build do
-        space? << Parfait.object_space
-        next_message? << space[:next_message]
+        factory? << Parfait.object_space.get_factory_for(:Message)
+        next_message? << factory[:next_object]
 
         #FIXME in a multithreaded future this should be done using lock free compare and swap.
         next_message_reg! << next_message[:next_message]
-        space[:next_message] << next_message_reg
+        factory[:next_object] << next_message_reg
 
         message[:next_message] << next_message
         next_message[:caller] << message

@@ -12,9 +12,9 @@ module Risc
     def test_chain
       #show_main_ticks # get output of what is
       check_main_chain [LoadConstant, RegToSlot, Branch, SlotToReg, SlotToReg,
-             RegToSlot, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
-             SlotToReg, SlotToReg, SlotToReg, Branch, FunctionReturn,
-             Transfer, SlotToReg, SlotToReg, Syscall, NilClass]
+            RegToSlot, LoadConstant, SlotToReg, RegToSlot, RegToSlot, # 10
+            SlotToReg, SlotToReg, SlotToReg, Branch, FunctionReturn,
+            Transfer, SlotToReg, SlotToReg, Syscall, NilClass, ] # 20
       assert_equal 5 , get_return
     end
 

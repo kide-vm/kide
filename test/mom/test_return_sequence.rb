@@ -33,16 +33,16 @@ module Risc
     end
 
     def test_load_space
-      assert_load( instruction(4) , Parfait::Space )
+      assert_load( instruction(4) , Parfait::Factory )
     end
     def test_get_next
-      assert_slot_to_reg( instruction( 5 ) , :r3 ,  4 , :r4 )
+      assert_slot_to_reg( instruction( 5 ) , :r3 ,  2 , :r4 )
     end
     def test_save_next
       assert_reg_to_slot( instruction( 6 ) , :r4  ,  :r0 ,  1 )
     end
     def test_save_this
-      assert_reg_to_slot( instruction( 7 ) , :r0  ,  :r3 ,  4 )
+      assert_reg_to_slot( instruction( 7 ) , :r0  ,  :r3 ,  2 )
     end
 
     def test_save_addr

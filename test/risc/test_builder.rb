@@ -50,13 +50,13 @@ module Risc
     end
     def test_returns_slot
       r2 = RegisterValue.new(:r2 , :Message).set_builder( @builder )
-      @builder.build{ r2 << space![:next_message] }
+      @builder.build{ r2 << factory![:next_object] }
       assert_equal SlotToReg , built.class
       assert_equal :r1 , built.array.symbol
     end
     def test_returns_slot_reverse
       r2 = RegisterValue.new(:r2 , :Message).set_builder( @builder )
-      @builder.build{ r2 << space![:next_message] }
+      @builder.build{ r2 << factory![:next_object] }
       assert_equal SlotToReg , built.class
       assert_equal :r1 , built.array.symbol
     end

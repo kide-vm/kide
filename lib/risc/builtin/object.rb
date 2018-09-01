@@ -56,16 +56,17 @@ module Risc
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
           builder = compiler.builder(compiler.source)
           builder.build do
-            space! << Parfait.object_space
-            message << space[:next_message]
+            factory! << Parfait.object_space.get_factory_for(:Message)
+            message << factory[:next_object]
             next_message! << message[:next_message]
-            space[:next_message] << next_message
+            factory[:next_object] << next_message
           end
 
           Mom::MessageSetup.new(Parfait.object_space.get_main).build_with( builder )
 
           builder.build do
             message << message[:next_message]
+            space? << Parfait.object_space
             message[:receiver] << space
           end
 
