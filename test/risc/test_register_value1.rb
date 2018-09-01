@@ -1,7 +1,7 @@
 require_relative "../helper"
 
 module Risc
-  class TestRegisterValue < MiniTest::Test
+  class TestRegisterValue1 < MiniTest::Test
 
     def setup
       Parfait.boot!

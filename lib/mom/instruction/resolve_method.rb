@@ -45,9 +45,8 @@ module Mom
 
         add_code while_start_label
 
-        space! << Parfait.object_space
-        space << space[:nil_object]
-        space - callable_method
+        object! << Parfait.object_space.nil_object
+        object - callable_method
         if_zero exit_label
 
         name! << callable_method[:name]

@@ -101,9 +101,6 @@ module Arm
         right = Risc::Position.get(left) - 8
         right -= Risc::Position.get(self).at
         if( (right < 0) && ((opcode == :add) || (opcode == :sub)) )
-          puts "Inverting, was #{right} , new #{-1*right}"
-          puts "left #{left.class} #{Risc::Position.get(left)}"
-          puts "self  #{Risc::Position.get(self)}"
           right *= -1   # this works as we never issue sub only add
           set_opcode :sub  # so (as we can't change the sign permanently) we can change the opcode
         end                         # and the sign even for sub (beucase we created them)

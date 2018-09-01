@@ -103,7 +103,9 @@ module Risc
 
     def prerun
       assemblers.each do |asm|
-        asm.instructions.each {|i| i.precheck }
+        asm.instructions.each do |ins|
+          ins.precheck
+        end
       end
     end
 

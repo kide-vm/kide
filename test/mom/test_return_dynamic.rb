@@ -10,17 +10,17 @@ module Risc
       @expect = [LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
                  OperatorInstruction, IsZero, SlotToReg, SlotToReg, SlotToReg,
                  LoadConstant, RegToSlot, LoadConstant, LoadConstant, SlotToReg,
-                 SlotToReg, Label, LoadConstant, SlotToReg, OperatorInstruction,
-                 IsZero, SlotToReg, OperatorInstruction, IsZero, SlotToReg,
-                 Branch, Label, Transfer, Syscall, Transfer,
-                 Transfer, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
-                 RegToSlot, RegToSlot, Label, RegToSlot, Label,
-                 LoadConstant, SlotToReg, LoadConstant, SlotToReg, SlotToReg,
-                 RegToSlot, RegToSlot, RegToSlot, RegToSlot, SlotToReg,
-                 SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-                 RegToSlot, SlotToReg, LoadConstant, SlotToReg, DynamicJump,
-                 Label, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-                 SlotToReg, RegToSlot, Branch]
+                 SlotToReg, Label, LoadConstant, OperatorInstruction, IsZero,
+                 SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch,
+                 Label, Transfer, Syscall, Transfer, Transfer,
+                 LoadConstant, SlotToReg, SlotToReg, RegToSlot, RegToSlot,
+                 RegToSlot, Label, RegToSlot, Label, LoadConstant,
+                 SlotToReg, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+                 RegToSlot, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
+                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
+                 SlotToReg, LoadConstant, SlotToReg, DynamicJump, Label,
+                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+                 RegToSlot, Branch]
     end
 
     def test_return_instructions
@@ -28,7 +28,7 @@ module Risc
     end
     def test_function_return
       produced = produce_body
-      assert_equal Branch , produced.next(67).class
+      assert_equal Branch , produced.next(66).class
     end
     def test_cache_check
       produced = produce_body
