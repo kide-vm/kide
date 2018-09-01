@@ -21,7 +21,7 @@ module Vool
 
   class InstanceVariable < Expression
     include Named
-    def slot_definition(compiler)
+    def slot_definition(_)
       Mom::SlotDefinition.new(:message , [ :receiver , @name] )
     end
     # used to collect type information

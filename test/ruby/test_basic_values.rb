@@ -60,6 +60,9 @@ module Ruby
     def test_integer
       assert_equal IntegerConstant , compile_const( "123")
     end
+    def test_float
+      assert_equal FloatConstant , compile_const( "123.1")
+    end
     def test_string
       assert_equal StringConstant , compile_const( "'string'")
     end
@@ -74,6 +77,38 @@ module Ruby
     end
     def test_true
       assert_equal TrueConstant , compile_const( "true")
+    end
+  end
+  class TestBasicTypesVool < MiniTest::Test
+    include RubyTests
+
+    def setup
+      Parfait.boot!
+    end
+    def compile_const( input )
+      lst = compile( input )
+      lst.to_vool.to_s
+    end
+    def test_integer
+      assert_equal "123" , compile_const( "123")
+    end
+    def test_float
+      assert_equal "123.0" , compile_const( "123.0")
+    end
+    def test_string
+      assert_equal "'string'" , compile_const( "'string'")
+    end
+    def test_sym
+      assert_equal "'symbol'" , compile_const( ":symbol")
+    end
+    def test_nil
+      assert_equal "nil" , compile_const( "nil")
+    end
+    def test_false
+      assert_equal "false" , compile_const( "false")
+    end
+    def test_true
+      assert_equal "true" , compile_const( "true")
     end
   end
 end

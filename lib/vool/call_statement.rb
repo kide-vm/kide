@@ -10,7 +10,7 @@ module Vool
 
     # When used as right hand side, this tells what data to move to get the result into
     # a varaible. It is (off course) the return value of the message
-    def slot_definition(compiler)
+    def slot_definition(_)
       Mom::SlotDefinition.new(:message ,[ :return_value])
     end
 

@@ -18,6 +18,9 @@ module Ruby
     def test_simple_args
       assert_equal [] , @lst.arguments
     end
+    def test_tos
+      assert_equal "self.foo()" , @lst.to_s
+    end
   end
   class TestSendBar < MiniTest::Test
     include RubyTests

@@ -28,5 +28,8 @@ module Ruby
     def test_block_args
       assert_equal IntegerConstant , @lst.arguments.first.class
     end
+    def test_tos
+      assert_equal "yield(0)" , @lst.to_s
+    end
   end
 end

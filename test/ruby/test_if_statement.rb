@@ -37,5 +37,9 @@ module Ruby
       assert_equal TrueConstant , lst.if_true.class
       assert_equal FalseConstant, lst.if_false.class
     end
+    def test_to_s
+      lst = compile( double_if )
+      assert_equal "if(false);true;else;false;end" , lst.to_s.gsub("\n",";")
+    end
   end
 end

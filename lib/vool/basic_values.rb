@@ -1,16 +1,18 @@
 module Vool
+  #Marker class for different constants
   class Constant < Expression
     #gobble it up
     def each(&block)
     end
   end
 
+  # An integer at the vool level
   class IntegerConstant < Constant
     attr_reader :value
     def initialize(value)
       @value = value
     end
-    def slot_definition(compiler)
+    def slot_definition(_)
       return Mom::SlotDefinition.new(Mom::IntegerConstant.new(@value) , [])
     end
     def ct_type
@@ -22,6 +24,7 @@ module Vool
     def each(&block)
     end
   end
+  # An float at the vool level
   class FloatConstant < Constant
     attr_reader :value
     def initialize(value)
@@ -30,40 +33,48 @@ module Vool
     def ct_type
       true
     end
+    def to_s
+      value.to_s
+    end
   end
+  # True at the vool level
   class TrueConstant < Constant
     def ct_type
       Parfait.object_space.get_type_by_class_name(:True)
     end
-    def slot_definition(compiler)
+    def slot_definition(_)
       return Mom::SlotDefinition.new(Parfait.object_space.true_object , [])
     end
     def to_s(depth = 0)
       "true"
     end
   end
+  # False at the vool level
   class FalseConstant < Constant
     def ct_type
       Parfait.object_space.get_type_by_class_name(:False)
     end
-    def slot_definition(compiler)
+    def slot_definition(_)
       return Mom::SlotDefinition.new(Parfait.object_space.false_object , [])
     end
     def to_s(depth = 0)
       "false"
     end
   end
+  # Nil at the vool level
   class NilConstant < Constant
     def ct_type
       Parfait.object_space.get_type_by_class_name(:Nil)
     end
-    def slot_definition(compiler)
+    def slot_definition(_)
       return Mom::SlotDefinition.new(Parfait.object_space.nil_object , [])
     end
     def to_s(depth = 0)
       "nil"
     end
   end
+
+  # Self at the vool level
   class SelfExpression < Expression
     attr_reader :my_type
     def initialize(type = nil)
@@ -90,7 +101,7 @@ module Vool
     def initialize(value)
       @value = value
     end
-    def slot_definition(compiler)
+    def slot_definition(_)
       return Mom::SlotDefinition.new(Mom::StringConstant.new(@value),[])
     end
     def ct_type

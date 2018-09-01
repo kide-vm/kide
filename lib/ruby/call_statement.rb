@@ -1,5 +1,14 @@
 module Ruby
 
+  # A CallStatement is the abstraction of Send and Yield. The two are really
+  # much more similar than different.
+  #
+  # A CallStatement has a name, receiver and arguments
+  #
+  # Using the "vool_brother" we can create the right Vool class for it.
+  # Arguments in vool must be simple, so any complex expressions get
+  # hoisted and assigned to temporary variables.
+  #
   class CallStatement < Statement
     attr_reader :name , :receiver , :arguments
 
