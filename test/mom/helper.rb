@@ -4,8 +4,6 @@ module Risc
   module Statements
 
     def setup
-      Parfait.boot!
-      Risc::Builtin.boot_functions
     end
 
     def preamble
@@ -31,7 +29,7 @@ module Risc
     end
     def produce_instructions
       assert @expect , "No output given"
-      linker = RubyX::RubyXCompiler.new(as_test_main).ruby_to_risc(:interpreter)
+      linker = RubyX::RubyXCompiler.new.ruby_to_risc(as_test_main,:interpreter)
       compiler = linker.assemblers.find{|c| c.callable.name == :main and c.callable.self_type.object_class.name == :Test}
       compiler.instructions
     end

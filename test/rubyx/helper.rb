@@ -3,20 +3,18 @@ require_relative "../helper"
 module RubyX
   module RubyXHelper
     def setup
-      Parfait.boot!
-      Risc.boot!
     end
     def ruby_to_risc(input , platform)
       mom = ruby_to_mom(input)
       mom.translate(platform)
     end
     def ruby_to_vool(input)
-      RubyXCompiler.new(input).ruby_to_vool
+      RubyXCompiler.new.ruby_to_vool(input)
     end
     def ruby_to_mom(input)
-      RubyXCompiler.new(input).ruby_to_mom
+      RubyXCompiler.new.ruby_to_mom(input)
     end
-    def compile_in_test input
+    def compile_in_test( input )
       vool = ruby_to_vool in_Test(input)
       vool.to_mom(nil)
       itest = Parfait.object_space.get_class_by_name(:Test)

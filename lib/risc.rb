@@ -17,6 +17,11 @@ end
 # of that subset that we need.
 # See risc/Readme
 module Risc
+  # module method to reset, and init
+  def self.boot!
+    Position.clear_positions
+    Builtin.boot_functions
+  end
 end
 
 require_relative "risc/padding"

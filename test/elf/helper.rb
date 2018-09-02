@@ -8,8 +8,6 @@ module Elf
     DEBUG = false
 
     def setup
-      Parfait.boot!
-      Risc.boot!
     end
 
     def in_space(input)
@@ -19,7 +17,7 @@ module Elf
       in_space("def main(arg);#{input};end")
     end
     def check(input, file)
-      linker = RubyX::RubyXCompiler.new(input).ruby_to_binary( :arm )
+      linker = RubyX::RubyXCompiler.new.ruby_to_binary( input , :arm )
       writer = Elf::ObjectWriter.new(linker)
       writer.save "test/#{file}.o"
     end

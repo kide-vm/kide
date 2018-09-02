@@ -5,11 +5,10 @@ module Risc
     include ScopeHelper
 
     def setup
-      Parfait.boot!
     end
 
     def in_test_vool(str)
-      vool = RubyX::RubyXCompiler.new(in_Test(str)).ruby_to_vool
+      vool = RubyX::RubyXCompiler.new.ruby_to_vool(in_Test(str))
       vool.to_mom(nil)
       vool
     end
@@ -65,7 +64,7 @@ module Risc
       assert_equal 2 , method.frame_type.variable_index(:a)
     end
     def constant_setup(input)
-      mom = RubyX::RubyXCompiler.new(in_Test(input)).ruby_to_mom
+      mom = RubyX::RubyXCompiler.new.ruby_to_mom(in_Test(input))
       assert_equal Mom::MomCompiler , mom.class
       compiler = mom.method_compilers.first
       assert_equal MethodCompiler , compiler.class

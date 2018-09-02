@@ -22,7 +22,7 @@ module MomCompile
   include ScopeHelper
 
   def compile_method(input)
-    statements = RubyX::RubyXCompiler.new(input).ruby_to_vool
+    statements = RubyX::RubyXCompiler.new.ruby_to_vool(input)
     assert statements.is_a?(Vool::ClassStatement)
     ret = statements.to_mom(nil)
     assert_equal Parfait::Class , statements.clazz.class , statements
@@ -50,8 +50,7 @@ module MomCompile
     block.body.to_mom(block_c)
   end
   def compile_mom(input)
-    Risc.boot!
-    RubyX::RubyXCompiler.new(input).ruby_to_mom
+    RubyX::RubyXCompiler.new.ruby_to_mom(input)
   end
 
   def check_array( should , is )

@@ -15,13 +15,6 @@ module RubyX
       assert itest.instance_type.names.include?(:trivar) , itest.instance_type.names.inspect
     end
 
-    def test_doesnt_create_existing_clas
-      space_class = Parfait.object_space.get_class_by_name(:Space)
-      ruby_to_vool "class Space ; end"
-      clazz = Parfait.object_space.get_class_by_name(:Space)
-      assert_equal clazz , space_class
-    end
-
     def test_class_body_is_scope
       clazz = ruby_to_vool in_Test("def meth; @ivar = 5 ;end")
       assert_equal Vool::Statements , clazz.body.class
@@ -29,15 +22,17 @@ module RubyX
     end
 
     def test_space_is_unchanged_by_compile
+      compiler = RubyXCompiler.new
       space1 = Parfait.object_space.get_class_by_name(:Space)
-      ruby_to_vool  "class Space ;end"
+      compiler.ruby_to_vool  "class Space ;end"
       space2 = Parfait.object_space.get_class_by_name(:Space)
       assert_equal space1 , space2
     end
 
     def test_space_type_is_unchanged_by_compile
+      compiler = RubyXCompiler.new
       space1 = Parfait.object_space.get_type_by_class_name(:Space)
-      ruby_to_vool  "class Space ;end"
+      compiler.ruby_to_vool  "class Space ;end"
       space2 = Parfait.object_space.get_type_by_class_name(:Space)
       assert_equal space1 , space2
     end

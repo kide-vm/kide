@@ -6,7 +6,7 @@ module Elf
 
     def setup
       super
-      @linker = RubyX::RubyXCompiler.new(as_main("return 1")).ruby_to_risc(:arm)
+      @linker = RubyX::RubyXCompiler.new.ruby_to_risc(as_main("return 1"),:arm)
       @linker.position_all
       @linker.create_binary
     end

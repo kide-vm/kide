@@ -19,7 +19,7 @@ module Risc
   end
   class TestLinkerInit < MiniTest::Test
     def setup
-      @linker = RubyX::RubyXCompiler.new("class Space;def main;return 1;end;end").ruby_to_binary(:arm)
+      @linker = RubyX::RubyXCompiler.new.ruby_to_binary("class Space;def main;return 1;end;end",:arm)
     end
     def test_pos_cpu
       assert_equal 0 ,  Position.get(@linker.cpu_init).at

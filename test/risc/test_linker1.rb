@@ -3,9 +3,8 @@ require_relative "helper"
 module Risc
   class TestMachinePos < MiniTest::Test
     def setup
-      Parfait.boot!
-      Risc.boot!
-      @linker = RubyX::RubyXCompiler.new("class Space; def main(arg);a = 1;return a;end;end").ruby_to_risc(:arm)
+      code = "class Space; def main(arg);a = 1;return a;end;end"
+      @linker = RubyX::RubyXCompiler.new.ruby_to_risc(code,:arm)
       @linker.position_all
     end
     def test_positions_set

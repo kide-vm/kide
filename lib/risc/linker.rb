@@ -125,13 +125,5 @@ module Risc
       risc_init = Branch.new( "__initial_branch__" , init.callable.binary )
       @platform.translator.translate(risc_init)
     end
-
   end
-
-  # module method to reset, and init
-  def self.boot!
-    Position.clear_positions
-    Builtin.boot_functions
-  end
-
 end

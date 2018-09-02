@@ -1,31 +1,29 @@
 module RubyX
   class RubyXCompiler
-    attr_reader :source
 
-    def initialize(source)
-      @source = source
+    def initialize
+      Parfait.boot!
+      Risc.boot!
     end
 
-    def ruby_to_vool
-      ruby = Ruby::RubyCompiler.compile( source )
-      vool = ruby.to_vool
-      vool
+    def ruby_to_vool(ruby_source)
+      ruby_tree = Ruby::RubyCompiler.compile( ruby_source )
+      vool_tree = ruby_tree.to_vool
+      vool_tree
     end
 
-    def ruby_to_mom
-      vool = ruby_to_vool
-      vool.to_mom(nil)
+    def ruby_to_mom(ruby)
+      vool_tree = ruby_to_vool(ruby)
+      vool_tree.to_mom(nil)
     end
 
-    def ruby_to_risc(platform)
-      mom = ruby_to_mom
+    def ruby_to_risc(ruby, platform)
+      mom = ruby_to_mom(ruby)
       mom.translate(platform)
     end
 
-    def ruby_to_binary(platform)
-      Parfait.boot!
-      Risc.boot!
-      linker = ruby_to_risc(platform)
+    def ruby_to_binary(ruby , platform)
+      linker = ruby_to_risc(ruby, platform)
       linker.position_all
       linker.create_binary
       linker
