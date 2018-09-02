@@ -15,6 +15,7 @@ end
 require "minitest/color"
 require "minitest/autorun"
 require "minitest/fail_fast" unless ENV["TEST_ALL"]
+require 'minitest/profile'
 #require "minitest/reporters"
 #Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 

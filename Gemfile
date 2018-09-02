@@ -13,6 +13,7 @@ group :test do
   gem "simplecov"
   gem "minitest-color"
   gem 'minitest-fail-fast'
+  gem 'minitest-profile'
   #gem "minitest-reporters"
   gem "net-ssh"
 end

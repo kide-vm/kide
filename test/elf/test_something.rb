@@ -18,7 +18,7 @@ module Elf
       	return result
       end
       def main(arg)
-        return fibo(20)
+        return fibo(8)
       end
 HERE
       @exit_code = 4
