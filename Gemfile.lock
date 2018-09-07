@@ -51,6 +51,7 @@ GEM
       minitest (~> 5)
     minitest-fail-fast (0.1.0)
       minitest (~> 5)
+    minitest-parallel_fork (1.1.2)
     minitest-profile (0.0.2)
     nenv (0.3.0)
     net-scp (1.2.1)
@@ -99,6 +100,7 @@ DEPENDENCIES
   guard-minitest
   minitest-color
   minitest-fail-fast
+  minitest-parallel_fork
   minitest-profile
   net-ssh
   rake
