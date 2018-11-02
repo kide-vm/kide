@@ -1,14 +1,44 @@
 module Mom
+  # The Compiler for the Mom level is a collection of Risc level Method compilers,
+  # plus functions to translate from the risc to cpu specific code.
+  #
+  # Builtin functions are created here, lazily, when translate is called.
+  # Instantiating builtin functions results in a MethodCompiler for that function, and
+  # to avoid confusion, these should be instantiated only once.
+  #
+  # As RubyCompiler pools source at the vool level, when several classes are compiled
+  # from vool to mom, several MomCompilers get instantiated. They must be merged before
+  # proceeding with translate. Thus we have a append method.
+  #
   class MomCompiler
     attr_reader :method_compilers
 
+    # Initialize with an array of risc MethodCompilers
     def initialize(compilers = [])
-      @method_compilers = compilers + Risc::Builtin.boot_functions
+      @method_compilers = compilers
+    end
+
+    # lazily instantiate the compilers for boot functions
+    # (in the hope of only booting the functions once)
+    def boot_compilers
+      @boot_compilers ||= Risc::Builtin.boot_functions
+    end
+
+    # Return all compilers, namely the MethodCompilers passed in, plus the
+    # boot_function's compilers (boot_compilers)
+    def compilers
+      @method_compilers + boot_compilers
     end
 
     # collects constants from all compilers into one array
     def constants
-      @method_compilers.inject([]){|sum ,comp| sum + comp.constants }
+      compilers.inject([]){|sum ,comp| sum + comp.constants }
+    end
+
+    # Append another MomCompilers method_compilers to this one.
+    def append(mom_compiler)
+      @method_compilers += mom_compiler.method_compilers
+      self
     end
 
     # Translate code to whatever cpu is specified.
@@ -25,7 +55,7 @@ module Mom
 
     # go through all methods and translate them to cpu, given the translator
     def translate_methods(translator)
-      method_compilers.collect do |compiler|
+      compilers.collect do |compiler|
         #log.debug "Translate method #{compiler.method.name}"
         translate_method(compiler , translator)
       end.flatten

@@ -13,10 +13,13 @@ module Mom
       assert_equal MomCompiler , @comp.class
     end
     def test_compilers
-      assert_equal 23 , @comp.method_compilers.length
+      assert_equal 23 , @comp.compilers.length
+    end
+    def test_boot_compilers
+      assert_equal 22 , @comp.boot_compilers.length
     end
     def test_compilers_bare
-      assert_equal 22 , MomCompiler.new.method_compilers.length
+      assert_equal 22 , MomCompiler.new.compilers.length
     end
     def test_returns_constants
       assert_equal Array , @comp.constants.class
@@ -26,6 +29,12 @@ module Mom
     end
     def test_has_translate
       assert @comp.translate(:interpreter)
+    end
+    def test_append_class
+      assert_equal MomCompiler,  (@comp.append @comp).class
+    end
+    def test_append_length
+      assert_equal 2 ,  @comp.append(@comp).method_compilers.length
     end
   end
 end
