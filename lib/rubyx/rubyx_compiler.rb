@@ -83,7 +83,14 @@ module RubyX
     # ruby_to_vool compiles the ruby to ast, and then to vool
     def ruby_to_vool(ruby_source)
       ruby_tree = Ruby::RubyCompiler.compile( ruby_source )
-      @vool = ruby_tree.to_vool
+      unless(@vool)
+        @vool = ruby_tree.to_vool
+        return @vool
+      end
+      unless(@vool.is_a?(Vool::ScopeStatement))
+        @vool = Vool::ScopeStatement.new([@vool])
+      end
+      @vool << ruby_tree.to_vool
     end
 
 
