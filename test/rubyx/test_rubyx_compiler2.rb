@@ -16,5 +16,8 @@ module RubyX
     def test_method
       assert_equal :main , @linker.assemblers.first.callable.name
     end
+    def test_asm_len
+      assert_equal 23 , @linker.assemblers.length
+    end
   end
 end

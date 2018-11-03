@@ -87,6 +87,8 @@ module RubyX
         @vool = ruby_tree.to_vool
         return @vool
       end
+      # TODO: should check if this works with reopening classes
+      # or whether we need to unify the vool for a class
       unless(@vool.is_a?(Vool::ScopeStatement))
         @vool = Vool::ScopeStatement.new([@vool])
       end

@@ -28,8 +28,9 @@ module RubyX
       compiler = RubyXCompiler.new
       compiler.ruby_to_vool(space_source_for("main"))
       compiler.ruby_to_vool(space_source_for("twain"))
-#      linker = compiler.to_binary(:interpreter)
-#      assert_equal Vool::ScopeStatement , linker.class
+      linker = compiler.to_binary(:interpreter)
+      assert_equal Risc::Linker , linker.class
+      assert_equal 24 , linker.assemblers.length
     end
   end
 end

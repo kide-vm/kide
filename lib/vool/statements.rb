@@ -31,15 +31,19 @@ module Vool
       @statements = [o] + @statements
     end
 
-    # create mom instructions
+    # to_mom all the statements. Append subsequent ones to the first, and return the
+    # first.
+    #
+    # For ClassStatements this creates and returns a MomCompiler
+    #
     def to_mom( compiler )
       raise "Empty list ? #{statements.length}" if empty?
       stats = @statements.dup
-      flat = stats.shift.to_mom(compiler)
+      first = stats.shift.to_mom(compiler)
       while( nekst = stats.shift )
-        flat.append nekst.to_mom(compiler)
+        first.append nekst.to_mom(compiler)
       end
-      flat
+      first
     end
 
     def each(&block)
