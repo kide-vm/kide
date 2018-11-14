@@ -31,6 +31,9 @@ module Mom
     def to_s
       "ArgumentTransfer " + ([@receiver] + @arguments).join(",")
     end
+
+    # load receiver and then each arg into the new message
+    # delegates to SlotLoad for receiver and to the actual args.to_risc
     def to_risc(compiler)
       transfer = SlotLoad.new([:message , :next_message , :receiver] , @receiver, self).to_risc(compiler)
       compiler.reset_regs

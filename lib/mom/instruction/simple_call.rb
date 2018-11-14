@@ -17,6 +17,7 @@ module Mom
     def to_s
       "SimpleCall #{@method.name}"
     end
+
     # Calling a Method is basically jumping to the Binary (+ offset).
     # We just swap in the new message and go.
     #

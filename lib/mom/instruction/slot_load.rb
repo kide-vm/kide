@@ -25,7 +25,9 @@ module Mom
   # original_source: optinally another mom instruction that wil be passed down to created
   #   risc instructions. (Because SlotLoad is often used internally in mom)
   class SlotLoad < Instruction
+
     attr_reader :left , :right , :original_source
+
     def initialize(left , right, original_source = nil)
       @left , @right = left , right
       @left = SlotDefinition.new(@left.shift , @left) if @left.is_a? Array
@@ -38,6 +40,9 @@ module Mom
       "SlotLoad #{right} -> #{left}"
     end
 
+    # resolve the SlotLoad to the respective risc Instructions.
+    # calls sym_to_risc for most (symbols), and ConstantLoad for CacheEntry
+    # after loading the right into register
     def to_risc(compiler)
       const_reg = @right.to_register(compiler , original_source)
       left_slots = @left.slots
@@ -54,6 +59,11 @@ module Mom
       compiler.reset_regs
     end
 
+    # load the data in const_reg into the slot that is named by left symbols
+    # left may usually be only 3 long, as the first is known, then the second is loaded
+    # with type known type (as it comes from message)
+    #
+    # actual lifting is done by RegisterValue resolve_and_add
     def sym_to_risc(compiler , const_reg)
       left_slots = @left.slots.dup
       raise "Not Message #{object}" unless @left.known_object == :message
