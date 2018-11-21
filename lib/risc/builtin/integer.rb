@@ -1,25 +1,28 @@
 module Risc
   module Builtin
     # integer related kernel functions
-    # all these functions (return the functione they implement) assume interger input
+    # all these functions (return the function they implement) assume interger input
+    # Also the returned integer object has to be passed in to avoid having to allocate it.
     #
-    # This means they will have to be renamed at some point and wrapped
+    # This means the methods will have to be renamed at some point and wrapped
     module Integer
       module ClassMethods
         include CompileHelper
 
-        # div by 4, ie shift two left
+        # div by 4, ie shift right by 2
         # Mostly created for testing at this point, as it is short
         # return new int with result
         def div4(context)
           compiler = compiler_for(:Integer,:div4 ,{})
-          compiler.builder(compiler.source).build do
-            integer! << message[:receiver]
-            integer.reduce_int
-            integer_reg! << 2
-            integer.op :>> , integer_reg
-            add_new_int("div4", integer , integer_reg)
-            message[:return_value] << integer_reg
+          builder = compiler.builder(compiler.source)
+          integer_tmp = builder.allocate_int
+          builder.build do
+            integer_self! << message[:receiver]
+            integer_self.reduce_int
+            integer_1! << 2
+            integer_self.op :>> , integer_1
+            integer_tmp[Parfait::Integer.integer_index] << integer_self
+            message[:return_value] << integer_tmp
           end
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
@@ -49,13 +52,13 @@ module Risc
         # - load true or false object into return, depending on check
         # - return
         def comparison( operator  )
-          compiler = compiler_for(:Integer, operator ,{other: :Integer})
+          compiler = compiler_for(:Integer, operator ,{other: :Integer })
           builder = compiler.builder(compiler.source)
           builder.build do
             integer! << message[:receiver]
-            integer_reg! << message[:arguments]
-            integer_reg << integer_reg[ 1]
             integer.reduce_int
+            integer_reg! << message[:arguments]
+            integer_reg << integer_reg[Parfait::NamedList.type_length + 0] #"other" is at index 0
             integer_reg.reduce_int
             swap_names(:integer , :integer_reg) if(operator.to_s.start_with?('<') )
             integer.op :- , integer_reg
@@ -86,17 +89,18 @@ module Risc
         # - gets a new integer and stores the result
         # - returns the new int
         def operator_method( op_sym )
-          compiler = compiler_for(:Integer, op_sym ,{other: :Integer})
+          compiler = compiler_for(:Integer, op_sym ,{other: :Integer })
           builder = compiler.builder(compiler.source)
+          integer_tmp = builder.allocate_int
           builder.build do
             integer! << message[:receiver]
-            integer_reg! << message[:arguments]
-            integer_reg << integer_reg[ 1]
             integer.reduce_int
+            integer_reg! << message[:arguments]
+            integer_reg << integer_reg[Parfait::NamedList.type_length + 0] #"other" is at index 0
             integer_reg.reduce_int
             integer.op op_sym , integer_reg
-            add_new_int op_sym.to_s , integer , integer_reg
-            message[:return_value] << integer_reg
+            integer_tmp[Parfait::Integer.integer_index] << integer
+            message[:return_value] << integer_tmp
           end
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
@@ -114,56 +118,57 @@ module Risc
           s = "div_10 "
           compiler = compiler_for(:Integer,:div10 ,{})
           builder = compiler.builder(compiler.source)
+          integer_tmp = builder.allocate_int
           builder.build do
             integer_self! << message[:receiver]
             integer_self.reduce_int
-            integer_tmp! << integer_self
+            integer_1! << integer_self
             integer_reg! << integer_self
 
             integer_const! << 1
-            integer_tmp.op :>> , integer_const
+            integer_1.op :>> , integer_const
 
             integer_const << 2
             integer_reg.op :>> , integer_const
-            integer_reg.op :+ , integer_tmp
+            integer_reg.op :+ , integer_1
 
             integer_const << 4
-            integer_tmp << integer_reg
-            integer_reg.op :>> , integer_tmp
+            integer_1 << integer_reg
+            integer_reg.op :>> , integer_1
 
-            integer_reg.op :+ , integer_tmp
+            integer_reg.op :+ , integer_1
 
             integer_const << 8
-            integer_tmp << integer_reg
-            integer_tmp.op :>> , integer_const
+            integer_1 << integer_reg
+            integer_1.op :>> , integer_const
 
-            integer_reg.op :+ , integer_tmp
+            integer_reg.op :+ , integer_1
 
             integer_const << 16
-            integer_tmp << integer_reg
-            integer_tmp.op :>> , integer_const
+            integer_1 << integer_reg
+            integer_1.op :>> , integer_const
 
-            integer_reg.op :+ , integer_tmp
+            integer_reg.op :+ , integer_1
 
             integer_const << 3
             integer_reg.op :>> , integer_const
 
             integer_const << 10
-            integer_tmp << integer_reg
-            integer_tmp.op :* , integer_const
+            integer_1 << integer_reg
+            integer_1.op :* , integer_const
 
-            integer_self.op :- , integer_tmp
-            integer_tmp << integer_self
+            integer_self.op :- , integer_1
+            integer_1 << integer_self
 
             integer_const << 6
-            integer_tmp.op :+ , integer_const
+            integer_1.op :+ , integer_const
 
             integer_const << 4
-            integer_tmp.op :>> , integer_const
+            integer_1.op :>> , integer_const
 
-            integer_reg.op :+ , integer_tmp
+            integer_reg.op :+ , integer_1
 
-            add_new_int(s,integer_reg , integer_tmp)
+            integer_tmp[Parfait::Integer.integer_index] << integer_reg
             message[:return_value] << integer_tmp
 
           end

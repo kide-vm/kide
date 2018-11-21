@@ -22,6 +22,11 @@ module Parfait
     def self.type_length
       2    # 0 type, 1 next_i
     end
+    # index at which the next integer reference is. Used in risc reneration
+    def self.next_index
+      1
+    end
+    # index at which the actual integer is. Used in risc reneration
     def self.integer_index
       type_length
     end

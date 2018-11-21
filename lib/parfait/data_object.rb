@@ -22,9 +22,6 @@
 module Parfait
   class DataObject < Object
 
-    def self.integer_index
-      type_length
-    end
     def self.type_length
       raise "called #{self}"
     end

@@ -7,7 +7,12 @@ module Parfait
       super
       @int = Integer.new(10)
     end
-
+    def test_index
+      assert_equal 2 , Integer.integer_index
+    end
+    def test_next_index
+      assert_equal 1 , Integer.next_index
+    end
     def test_class
       assert_equal :Integer, @int.get_type.object_class.name
     end

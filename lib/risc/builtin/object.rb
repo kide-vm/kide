@@ -11,7 +11,7 @@ module Risc
           compiler.builder(compiler.source).build do
             object! << message[:receiver]
             integer! << message[:arguments]
-            integer << integer[1]
+            integer << integer[Parfait::NamedList.type_length + 0] #"at" is at index 0
             integer.reduce_int
             object << object[integer]
             message[:return_value] << object
@@ -23,12 +23,12 @@ module Risc
         # self[index] = val basically. Index is the first arg , value the second
         # return the value passed in
         def set_internal_word( context )
-          compiler = compiler_for(:Object , :set_internal_word , {at: :Integer, :value => :Object} )
+          compiler = compiler_for(:Object , :set_internal_word , {at: :Integer, value: :Object} )
           compiler.builder(compiler.source).build do
             object! << message[:receiver]
             integer! << message[:arguments]
-            object_reg! << integer[ 2]
-            integer << integer[1]
+            object_reg! << integer[Parfait::NamedList.type_length + 1] #"value" is at index 1
+            integer << integer[Parfait::NamedList.type_length + 0] #"at" is at index 0
             integer.reduce_int
             object[integer] << object_reg
             message[:return_value] << object_reg
@@ -125,7 +125,7 @@ module Risc
 
         # restore the message that we save in r8
         # get a new int and save the c return into it
-        # tht int gets retured, ie is the return_value of the message
+        # the int gets retured, ie is the return_value of the message
         def restore_message(builder)
           r8 = RegisterValue.new( :r8 , :Message)
           int = builder.compiler.use_reg(:Integer)

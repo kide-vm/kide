@@ -24,37 +24,39 @@ module Risc
 
         # self[index] basically. Index is the first arg > 0
         # return a word sized new int, in return_value
+        #
+        # Note: no index (or type) checking. Method should be internal and check before.
+        #       Which means the returned integer could be passed in, instead of allocated.
         def get_internal_byte( context)
           compiler = compiler_for(:Word , :get_internal_byte , {at: :Integer})
-          compiler.builder(compiler.source).build do
+          builder = compiler.builder(compiler.source)
+          integer_tmp = builder.allocate_int
+          builder.build do
             object! << message[:receiver]
             integer! << message[:arguments]
-            integer << integer[1]
+            integer << integer[Parfait::NamedList.type_length + 0] #"at" is at index 0
             integer.reduce_int
             object <= object[integer]
-            add_new_int("get_internal_byte", object , integer)
-            message[:return_value] << integer
+            integer_tmp[Parfait::Integer.integer_index] << object
+            message[:return_value] << integer_tmp
           end
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
 
-        # self[index] = val basically. Index is the first arg ( >0),
-        # value the second
-        # return value
+        # self[index] = val basically. Index is the first arg ( >0 , unchecked),
+        # value the second, which is also returned
         def set_internal_byte( context )
-          compiler = compiler_for(:Word, :set_internal_byte , {at: :Integer , :value => :Integer} )
+          compiler = compiler_for(:Word, :set_internal_byte , {at: :Integer , value: :Integer} )
           compiler.builder(compiler.source).build do
             word! << message[:receiver]
             integer! << message[:arguments]
-            integer << integer[1]
-            integer_reg! << message[:arguments]
-            integer_obj! << integer_reg[2]
-            integer_reg << integer_reg[2]
+            integer_reg! << integer[Parfait::NamedList.type_length + 1] #"value" is at index 1
+            message[:return_value] << integer_reg
+            integer << integer[Parfait::NamedList.type_length + 0] #"at" is at index 0
             integer.reduce_int
             integer_reg.reduce_int
             word[integer] <= integer_reg
-            message[:return_value] << integer_obj
           end
           compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
