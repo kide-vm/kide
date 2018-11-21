@@ -71,6 +71,9 @@ module Mom
         next_message_reg! << next_message[:next_message]
         factory[:next_object] << next_message_reg
 
+        # FIXME: Also we relink used messages at the moment. This will have to stop
+        #        when implementing continuations (or block passing/bindings)
+        #        then we may run out and that means cheking and maybe getting more
         message[:next_message] << next_message
         next_message[:caller] << message
         next_message[:method] << callable

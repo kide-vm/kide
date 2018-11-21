@@ -28,6 +28,11 @@ module Risc
     def test_not_alloc_space
       assert_raises {@builder.space}
     end
+    def test_reset
+      assert_equal :r1 , @builder.integer!.symbol
+      @builder.reset_names
+      assert_equal :r1 , @builder.integer!.symbol  # would raise if it existed
+    end
     def test_next_message
       reg = @builder.next_message!
       assert_equal :r1 , reg.symbol

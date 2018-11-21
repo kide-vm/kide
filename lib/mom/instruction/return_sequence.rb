@@ -27,6 +27,8 @@ module Mom
         caller_reg! << message[:caller]
         caller_reg[:return_value] << object
         factory? << Parfait.object_space.get_factory_for(:Message)
+        # here we return the current message to the list of messages
+        # which is only correct without blocks or real continuations
         next_message! << factory[:next_object]
         message[:next_message] << next_message
         factory[:next_object] << message

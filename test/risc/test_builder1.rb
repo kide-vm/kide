@@ -32,5 +32,13 @@ module Risc
       assert_equal :Integer ,  @builder.space.type.class_name
       assert_equal :Space ,  @builder.integer.type.class_name
     end
+    def test_allocate_returns
+      int = @builder.allocate_int
+      assert_equal :r1 , int.symbol
+    end
+    def test_allocate_len
+      int = @builder.allocate_int
+      assert_equal 41 , @builder.compiler.risc_instructions.length
+    end
   end
 end

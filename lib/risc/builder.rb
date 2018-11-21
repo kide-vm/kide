@@ -21,7 +21,7 @@ module Risc
 
     # make the magic: convert incoming names into registers that have the
     # type set according to the name (using resolve_type)
-    # anmes are stored, so subsequent calls use the same register
+    # names are stored, so subsequent calls use the same register
     def method_missing(name , *args)
       super if args.length != 0
       name = name.to_s
@@ -50,10 +50,10 @@ module Risc
       reg
     end
 
-    # infer the type from a symbol. In the simplest case the sybbol is the class name
-    # But in building sometimes variations are needed, so next_message or caller work
-    # too (and return Message)
-    # A general "_reg"/"_obj" or "_tmp" at the end of the name will be removed
+    # Infer the type from a symbol. In the simplest case the sybbol is the class name.
+    # But in building, sometimes variations are needed, so next_message or caller work
+    # too (and both return "Message")
+    # A general "_reg"/"_obj"/"_const" or "_tmp" at the end of the name will be removed
     # An error is raised if the symbol/object can not be inferred
     def infer_type( name )
       as_string = name.to_s
@@ -89,9 +89,9 @@ module Risc
       add_code Risc::Branch.new(@source, label)
     end
 
-    # to avoid many an if, it can be candy to swap variable names.
-    # but since the names in the builder are not variables, we need this method
-    # as it says, swap the two names around. Names must exist
+    # To avoid many an if, it can be handy to swap variable names.
+    # But since the names in the builder are not variables, we need this method.
+    # As it says, swap the two names around. Names must exist
     def swap_names(left , right)
       left , right = left.to_s , right.to_s
       l = @names[left]
@@ -102,7 +102,19 @@ module Risc
       @names[right] = l
     end
 
-    # build code using dsl (see __init__ or MessageSetup for examples)
+    # Reset the names stored by the builder. The names are sort of variables names
+    # that can be used in the build block due to method_missing magic.
+    #
+    # But just as the compiler has reset_regs, the builder has this reset button, to
+    # start fresh. Quite crude for now, and only used in allocate_int
+    #
+    # Compiler regs are reset as well
+    def reset_names
+      @names = {}
+      compiler.reset_regs
+    end
+
+    # Build code using dsl (see __init__ or MessageSetup for examples)
     # names (that ruby would resolve to a variable/method) are converted
     # to registers. << means assignment and [] is supported both on
     # L and R values (but only one at a time). R values may also be constants.
@@ -125,8 +137,63 @@ module Risc
       return ins
     end
 
-    # move a machine int from register "from" to a Parfait::Integer in register "to"
-    # have to grab an integer from space and stick it in the "to" register first.
+    # allocate int fetches a new int, for sure. It is a builder method, rather than
+    # an inbuilt one, to avoid call overhead for 99.9%
+    # The factories allocate in 1k, so only when that runs out do we really need a call.
+    # Note:
+    #   Unfortunately (or so me thinks), this creates code bloat, as the calling is
+    #   included in 100%, but only needed in 0.1. Risc-levelBlocks or Macros may be needed.
+    #   as the calling in (the same) 30-40 instructions for every basic int op.
+    #
+    # The method
+    # - grabs a Integer instance from the Integer factory
+    # - checks for nil and calls (get_more) for more if needed
+    # - returns the RiscValue (Regster) where the object is found
+    #
+    # The implicit condition is that the method is called at the entry of a method.
+    # It uses a fair few registers and resets all at the end. The returned object
+    # will always be in r1, because the method resets, and all others will be clobbered
+    def allocate_int
+      compiler.reset_regs
+      integer = self.integer!
+      build do
+        factory! << Parfait.object_space.get_factory_for(:Integer)
+        integer << factory[:next_object]
+        object! << Parfait.object_space.nil_object
+        object - integer
+        if_not_zero cont_label
+        integer_2! << factory[:reserve]
+        factory[:next_object] << integer_2
+        call_get_more
+        integer << factory[:next_object]
+        add_code cont_label
+        integer_2 << integer[:next_integer]
+        factory[:next_object] << integer_2
+      end
+      reset_names
+      integer_tmp!
+    end
+
+    # Call_get_more calls the method get_more on the factory (see there).
+    # From the callers perspective the method ensures there is a next_object.
+    #
+    # Calling is three step process
+    # - setting up the next message
+    # - moving receiver (factory) and arguments (none)
+    # - issuing the call
+    # These steps shadow the MomInstructions MessageSetup, ArgumentTransfer and SimpleCall
+    def call_get_more
+      factory = Parfait.object_space.get_factory_for( :Integer )
+      calling = factory.get_type.get_method( :get_more )
+      calling = Parfait.object_space.get_main #until we actually parse Factory
+      Mom::MessageSetup.new( calling ).build_with( self )
+      self.build do
+        factory_reg! << factory
+        message[:receiver] << factory_reg
+      end
+      Mom::SimpleCall.new(calling).to_risc(compiler)
+    end
+
     def add_new_int( source , from, to )
       to.set_builder( self )    # esecially div10 comes in without having used builder
       from.set_builder( self )  # not named regs, different regs ==> silent errors

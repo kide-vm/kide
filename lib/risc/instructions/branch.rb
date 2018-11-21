@@ -6,6 +6,7 @@ module Risc
   class Branch < Instruction
     def initialize( source , label )
       super(source)
+      raise "not label #{label}:#{label.class}" unless label.is_a?(Label) or label.is_a?(Parfait::BinaryCode)
       @label = label
     end
     attr_reader :label

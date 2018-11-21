@@ -55,7 +55,7 @@ module Risc
     # add a risc instruction after the current (insertion point)
     # the added instruction will become the new insertion point
     def add_code( instruction )
-      raise "Not an instruction:#{instruction.to_s}" unless  instruction.is_a?(Risc::Instruction)
+      raise "Not an instruction:#{instruction.to_s}:#{instruction.class.name}" unless  instruction.is_a?(Risc::Instruction)
       raise instruction.to_s if( instruction.class.name.split("::").first == "Arm")
       new_current = instruction.last #after insertion this point is lost
       @current.insert(instruction) #insert after current
