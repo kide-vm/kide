@@ -38,7 +38,7 @@ module Risc
         if last_char == "!" or last_char == "?"
           if @names.has_key?(name)
             return @names[name] if last_char == "?"
-            raise "Name exists before creating it #{name}#{last_char}"
+            raise "Name exists (#{@names.keys})before creating it #{name}#{last_char}"
           end
         else
           raise "Must create (with ! or ?) before using #{name}#{last_char}"
@@ -50,7 +50,7 @@ module Risc
       reg
     end
 
-    # Infer the type from a symbol. In the simplest case the sybbol is the class name.
+    # Infer the type from a symbol. In the simplest case the symbol is the class name.
     # But in building, sometimes variations are needed, so next_message or caller work
     # too (and both return "Message")
     # A general "_reg"/"_obj"/"_const" or "_tmp" at the end of the name will be removed
@@ -114,8 +114,8 @@ module Risc
       compiler.reset_regs
     end
 
-    # Build code using dsl (see __init__ or MessageSetup for examples)
-    # names (that ruby would resolve to a variable/method) are converted
+    # Build code using dsl (see __init__ or MessageSetup for examples).
+    # Names (that ruby would resolve to a variable/method) are converted
     # to registers. << means assignment and [] is supported both on
     # L and R values (but only one at a time). R values may also be constants.
     #
@@ -123,7 +123,7 @@ module Risc
     # Transfer instructions with extremely readable code.
     # example:
     #  space << Parfait.object_space # load constant
-    #  message[:receiver] << space  #make current message (r0) receiver the space
+    #  message[:receiver] << space  #make current message's (r0) receiver the space
     #
     # build result is added to compiler directly
     #
@@ -137,22 +137,37 @@ module Risc
       return ins
     end
 
+    # for some methods that return an integer it is beneficial to pre allocate the
+    # integer and store it in the return value. That is what this function does.
+    #
+    # Those (builtin) methods, mostly syscall wrappers then go on to do this and that
+    # clobbering registers and so the allocate and even move would be difficult.
+    # We sidestep all that by pre-allocating.
+    def prepare_int_return
+      integer_tmp = allocate_int
+      build do
+        message[:return_value] << integer_tmp
+      end
+    end
+
     # allocate int fetches a new int, for sure. It is a builder method, rather than
     # an inbuilt one, to avoid call overhead for 99.9%
     # The factories allocate in 1k, so only when that runs out do we really need a call.
     # Note:
     #   Unfortunately (or so me thinks), this creates code bloat, as the calling is
-    #   included in 100%, but only needed in 0.1. Risc-levelBlocks or Macros may be needed.
-    #   as the calling in (the same) 30-40 instructions for every basic int op.
+    #   included in 100%, but only needed in 0.1. Risc-level Blocks or Macros may be needed.
+    #   as the calling in (the same) 40-50 instructions for every basic int op.
     #
     # The method
     # - grabs a Integer instance from the Integer factory
     # - checks for nil and calls (get_more) for more if needed
-    # - returns the RiscValue (Regster) where the object is found
+    # - returns the RiscValue (Register) where the object is found
     #
     # The implicit condition is that the method is called at the entry of a method.
     # It uses a fair few registers and resets all at the end. The returned object
-    # will always be in r1, because the method resets, and all others will be clobbered
+    # will always be in r1, because the method resets, and all others will be clobbered.
+    #
+    # Return RegisterValue(:r1) that will be named integer_tmp
     def allocate_int
       compiler.reset_regs
       integer = self.integer!
@@ -194,17 +209,6 @@ module Risc
       Mom::SimpleCall.new(calling).to_risc(compiler)
     end
 
-    def add_new_int( source , from, to )
-      to.set_builder( self )    # esecially div10 comes in without having used builder
-      from.set_builder( self )  # not named regs, different regs ==> silent errors
-      build do
-        factory! << Parfait.object_space.get_factory_for(:Integer)
-        to << factory[:next_object]
-        integer_2! << to[:next_integer]
-        factory[:next_object] << integer_2
-        to[Parfait::Integer.integer_index] << from
-      end
-    end
   end
 
 end

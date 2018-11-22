@@ -13,6 +13,7 @@ module Risc
         def putstring( context)
           compiler = compiler_for(:Word , :putstring ,{})
           builder = compiler.builder(compiler.source)
+          builder.prepare_int_return # makes integer_tmp variable as return
           builder.build do
             word! << message[:receiver]
             integer! << word[Parfait::Word.get_length_index]

@@ -41,7 +41,9 @@ module Risc
         # Even if it's just this one, sys_exit (later raise)
         def _method_missing( context )
           compiler = compiler_for(:Object,:method_missing ,{})
-          emit_syscall( compiler.builder(compiler.source) , :exit )
+          builder = compiler.builder(compiler.source)
+          builder.prepare_int_return # makes integer_tmp variable as return
+          emit_syscall( builder , :exit )
           return compiler
         end
 
@@ -83,6 +85,16 @@ module Risc
           return compiler
         end
 
+        # the exit function
+        # mainly calls exit_sequence
+        def exit( context )
+          compiler = compiler_for(:Object,:exit ,{})
+          builder = compiler.builder(compiler.source)
+          builder.prepare_int_return # makes integer_tmp variable as return
+          exit_sequence(builder)
+          return compiler
+        end
+
         # a sort of inline version of exit method.
         # Used by exit and __init__ (so it doesn't have to call it)
         # Assumes int return value and extracts the fixnum for process exit code
@@ -93,15 +105,6 @@ module Risc
             message.reduce_int
             add_code Syscall.new("emit_syscall(exit)", :exit )
           end
-        end
-
-        # the exit function
-        # mainly calls exit_sequence
-        def exit( context )
-          compiler = compiler_for(:Object,:exit ,{})
-          builder = compiler.builder(compiler.source)
-          exit_sequence(builder)
-          return compiler
         end
 
         # emit the syscall with given name
@@ -128,12 +131,10 @@ module Risc
         # the int gets retured, ie is the return_value of the message
         def restore_message(builder)
           r8 = RegisterValue.new( :r8 , :Message)
-          int = builder.compiler.use_reg(:Integer)
           builder.build do
             integer_reg! << message
             message << r8
-            add_new_int( "_restore_message", integer_reg , int )
-            message[:return_value] << int
+            integer_tmp[Parfait::Integer.integer_index] << integer_reg
           end
         end
 
