@@ -127,14 +127,17 @@ module Risc
         end
 
         # restore the message that we save in r8
-        # get a new int and save the c return into it
-        # the int gets retured, ie is the return_value of the message
+        # before th restore, the syscall return, a fixnum, is saved
+        # The caller of this method is assumed to caal prepare_int_return
+        # so that the return value already has an integer instance
+        # This instance is filled with os return value
         def restore_message(builder)
           r8 = RegisterValue.new( :r8 , :Message)
           builder.build do
             integer_reg! << message
             message << r8
-            integer_tmp[Parfait::Integer.integer_index] << integer_reg
+            integer_2! << message[:return_value]
+            integer_2[Parfait::Integer.integer_index] << integer_reg
           end
         end
 

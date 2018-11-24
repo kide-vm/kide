@@ -64,7 +64,9 @@ module Risc
       str = all.collect{|i| i.class.name}.join(", ").gsub("Risc::","")
       str = "[#{str}]"
       all = str.split(",").each_slice(5).collect { |line| "                " + line.join(",")}
-      all.join(",\n")
+      res = ""
+      all.each_with_index { |line,index| res += "#{line}, ##{index*5 + 4}\n"}
+      res
     end
   end
 end

@@ -15,16 +15,17 @@ module Risc
             RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, # 10
             RegToSlot, LoadConstant, SlotToReg, Branch, SlotToReg,
             RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, # 20
-            FunctionCall, SlotToReg, SlotToReg, SlotToReg, SlotToReg,
-            SlotToReg, OperatorInstruction, LoadConstant, SlotToReg, SlotToReg, # 30
-            RegToSlot, RegToSlot, RegToSlot, SlotToReg, Branch,
-            SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, # 40
-            RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
-            SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, # 50
-            RegToSlot, Branch, Branch, SlotToReg, SlotToReg,
-            RegToSlot, LoadConstant, SlotToReg, RegToSlot, RegToSlot, # 60
-            SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer,
-            SlotToReg, SlotToReg, Syscall, NilClass, ]
+            FunctionCall, LoadConstant, SlotToReg, LoadConstant, OperatorInstruction,
+            IsNotZero, SlotToReg, RegToSlot, SlotToReg, Branch, # 30
+            SlotToReg, SlotToReg, SlotToReg, SlotToReg, OperatorInstruction,
+            RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot, # 40
+            LoadConstant, SlotToReg, RegToSlot, Branch, RegToSlot,
+            SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, # 50
+            SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+            Branch, Branch, SlotToReg, SlotToReg, RegToSlot, # 60
+            LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg,
+            SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg, # 70
+            SlotToReg, Syscall, NilClass, ]
        assert_equal 0 , get_return
     end
     def test_zero
@@ -32,15 +33,15 @@ module Risc
       assert @interpreter.flags[:zero]
     end
     def test_op
-      op = main_ticks(27)
+      op = main_ticks(35)
       assert_equal OperatorInstruction , op.class
-      assert_equal :r1 , op.left.symbol
-      assert_equal :r2 , op.right.symbol
-      assert_equal 0 , @interpreter.get_register(:r1)
-      assert_equal 2**31 , @interpreter.get_register(:r2)
+      assert_equal :r2 , op.left.symbol
+      assert_equal :r3 , op.right.symbol
+      assert_equal 0 , @interpreter.get_register(:r2)
+      assert_equal 2**31 , @interpreter.get_register(:r3)
     end
     def test_overflow
-      main_ticks( 28 )
+      main_ticks( 36 )
       assert @interpreter.flags[:overflow]
     end
   end

@@ -12,7 +12,7 @@ module Risc
       assert @branch.to_s.include?("test")
     end
     def test_branch_tos2
-      branch = Branch.new(nil ,nil)
+      branch = Branch.new(nil ,@label)
       assert branch.to_s.include?("Branch")
     end
     def test_label_tos1

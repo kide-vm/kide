@@ -145,6 +145,7 @@ module Risc
     # We sidestep all that by pre-allocating.
     def prepare_int_return
       integer_tmp = allocate_int
+      reset_names
       build do
         message[:return_value] << integer_tmp
       end

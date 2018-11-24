@@ -32,6 +32,10 @@ module Risc
       assert_equal :Integer ,  @builder.space.type.class_name
       assert_equal :Space ,  @builder.integer.type.class_name
     end
+    def test_prepare_int
+      int = @builder.prepare_int_return
+      assert_raises { @builder.integer_tmp}
+    end
     def test_allocate_returns
       int = @builder.allocate_int
       assert_equal :r1 , int.symbol

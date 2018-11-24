@@ -14,16 +14,17 @@ module Risc
       check_main_chain [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
             RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, # 10
             RegToSlot, LoadConstant, SlotToReg, Branch, RegToSlot,
-            SlotToReg, FunctionCall, SlotToReg, SlotToReg, Transfer, # 20
-            Syscall, Transfer, Transfer, LoadConstant, SlotToReg,
-            SlotToReg, RegToSlot, RegToSlot, RegToSlot, SlotToReg, # 30
-            Branch, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-            RegToSlot, RegToSlot, SlotToReg, SlotToReg, SlotToReg, # 40
-            FunctionReturn, SlotToReg, SlotToReg, RegToSlot, SlotToReg,
-            SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, # 50
-            RegToSlot, Branch, LoadConstant, SlotToReg, RegToSlot,
-            RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, # 60
-            Transfer, SlotToReg, SlotToReg, Syscall, NilClass, ]
+            SlotToReg, FunctionCall, LoadConstant, SlotToReg, LoadConstant, # 20
+            OperatorInstruction, IsNotZero, SlotToReg, RegToSlot, RegToSlot,
+            Branch, SlotToReg, SlotToReg, Transfer, Syscall, # 30
+            Transfer, Transfer, SlotToReg, RegToSlot, SlotToReg,
+            SlotToReg, RegToSlot, LoadConstant, SlotToReg, Branch, # 40
+            RegToSlot, RegToSlot, SlotToReg, SlotToReg, SlotToReg,
+            FunctionReturn, SlotToReg, SlotToReg, RegToSlot, SlotToReg, # 50
+            SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg,
+            RegToSlot, Branch, LoadConstant, SlotToReg, RegToSlot, # 60
+            RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
+            Transfer, SlotToReg, SlotToReg, Syscall, NilClass, ] # 70
        assert_equal "Hello again" , @interpreter.stdout
        assert_equal 11 , get_return #bytes written
     end
@@ -34,7 +35,7 @@ module Risc
     end
 
     def test_putstring_sys
-      done = main_ticks(21)
+      done = main_ticks(30)
       assert_equal Syscall ,  done.class
       assert_equal "Hello again" , @interpreter.stdout
       assert_equal 11 , @interpreter.get_register(:r0)
@@ -42,21 +43,21 @@ module Risc
       assert_equal "Hello again" , @interpreter.get_register(:r1).to_string
     end
     def test_move_sys_return
-      sl = main_ticks(22)
-      assert_transfer(sl, :r0 ,:r4)
-      assert_equal 11 , @interpreter.get_register(:r4)
+      sl = main_ticks(31)
+      assert_transfer(sl, :r0 ,:r3)
+      assert_equal 11 , @interpreter.get_register(:r3)
     end
     def test_restore_message
-      sl = main_ticks(23)
+      sl = main_ticks(32)
       assert_transfer(sl, :r8 ,:r0)
       assert_equal Parfait::Message , @interpreter.get_register(:r0).class
     end
-    def test_save_sys_return
-      sl = main_ticks(28)
-      assert_reg_to_slot( sl , :r4 ,:r3 , 2)
+    def test_move_sys_return
+      sl = main_ticks(37)
+      assert_reg_to_slot( sl , :r1 ,:r2 , 5)
     end
     def test_return
-      done = main_ticks(60)
+      done = main_ticks(65)
       assert_equal FunctionReturn ,  done.class
     end
 
