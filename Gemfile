@@ -2,6 +2,8 @@ source "https://rubygems.org"
 
 gem "rubyx" , :path => "."
 
+gem "thor"
+
 gem "rake"
 gem "rye"
 
@@ -19,7 +21,6 @@ group :test do
 end
 
 group :development do
-  gem "thor" , "0.19.1"
   gem 'guard' # NOTE: this is necessary in newer versions
   gem 'guard-minitest'
   gem "rb-readline"
