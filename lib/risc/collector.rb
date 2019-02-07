@@ -34,7 +34,7 @@ module Risc
     # Objects are data and get assembled after functions
     def self.add_object( objekt , depth)
       return false if Position.set?(objekt)
-      return true if objekt.is_a? Fixnum
+      return true if objekt.is_a? ::Integer
       return true if objekt.is_a?( Risc::Label)
       #puts message(objekt , depth)
       #puts "ADD #{objekt.inspect}, #{objekt.name}" if objekt.is_a? Parfait::CallableMethod

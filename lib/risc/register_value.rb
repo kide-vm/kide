@@ -142,7 +142,7 @@ module Risc
       when Label
         ins = Risc.load_constant("#{right.class} to #{self.type}" , right , self)
         builder.compiler.add_constant(right.address) if builder
-      when Fixnum
+      when ::Integer
         ins = Risc.load_data("#{right.class} to #{self.type}" , right , self)
       when RegisterValue
         ins = Risc.transfer("#{right.type} to #{self.type}" , right , self)

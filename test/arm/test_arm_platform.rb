@@ -12,7 +12,7 @@ module Arm
       assert_equal Arm::Translator , @arm.translator.class
     end
     def test_platform_loaded_class
-      assert_equal Fixnum , @arm.loaded_at.class
+      assert_equal ::Integer , @arm.loaded_at.class
     end
   end
 end

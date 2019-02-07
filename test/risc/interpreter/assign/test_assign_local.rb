@@ -34,7 +34,7 @@ module Risc
       ret = main_ticks(19)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
-      assert_equal Fixnum , link.class
+      assert_equal ::Integer , link.class
     end
     def test_transfer
       transfer = main_ticks(20)

@@ -12,7 +12,7 @@ module Risc
       assert_equal Risc::IdentityTranslator , @inter.translator.class
     end
     def test_platform_loaded_class
-      assert_equal Fixnum , @inter.loaded_at.class
+      assert_equal ::Integer , @inter.loaded_at.class
     end
     def test_translator
       assert IdentityTranslator.new

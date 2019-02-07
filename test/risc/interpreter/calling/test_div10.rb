@@ -47,7 +47,7 @@ module Risc
       ret = main_ticks(93)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
-      assert_equal Fixnum , link.class
+      assert_equal ::Integer , link.class
     end
   end
 end

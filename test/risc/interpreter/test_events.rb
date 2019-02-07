@@ -47,7 +47,7 @@ module Risc
             RegToSlot, LoadConstant, SlotToReg, RegToSlot, RegToSlot, # 30
             SlotToReg, SlotToReg, SlotToReg, Branch, FunctionReturn,
             Transfer, SlotToReg, SlotToReg, Syscall, NilClass, ]
-      assert_equal Fixnum , get_return.class
+      assert_equal ::Integer , get_return.class
       assert_equal 5 , get_return
     end
     def test_length

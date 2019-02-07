@@ -63,7 +63,7 @@ module Arm
       if r_name.is_a? ::Risc::RegisterValue
         r_name = r_name.symbol
       end
-      if r_name.is_a? Fixnum
+      if r_name.is_a? ::Integer
         r_name = "r#{r_name}"
       end
       r = REGISTERS[r_name.to_s]

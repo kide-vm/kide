@@ -27,7 +27,7 @@ module Parfait
     def initialize( len )
       super()
       self.char_length = 0
-      raise "Must init with int, not #{len.class}" unless len.kind_of? Fixnum
+      raise "Must init with int, not #{len.class}" unless len.kind_of? ::Integer
       raise "Must init with positive, not #{len}" if len < 0
       set_length( len , 32 ) unless len == 0 #32 being ascii space
       #puts "type #{self.get_type} #{self.object_id.to_s(16)}"
@@ -87,7 +87,7 @@ module Parfait
     # the index starts at one, but may be negative to count from the end
     # indexes out of range will raise an error
     def set_char( at , char )
-      raise "char not fixnum #{char.class}" unless char.kind_of? Fixnum
+      raise "char not fixnum #{char.class}" unless char.kind_of? ::Integer
       index = range_correct_index(at)
       set_internal_byte( index , char)
     end
@@ -137,7 +137,7 @@ module Parfait
     def range_correct_index( at )
       index = at
 #      index = self.length + at if at < 0
-      raise "index not integer #{at.class}" unless at.is_a?(Fixnum)
+      raise "index not integer #{at.class}" unless at.is_a?(::Integer)
       raise "index must be positive , not #{at}" if (index < 0)
       raise "index too large #{at} > #{self.length}" if (index >= self.length )
       return index + 11

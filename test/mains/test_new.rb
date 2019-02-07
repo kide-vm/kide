@@ -10,7 +10,7 @@ module Mains
     end
     def test_chain # max 1011 iterations on 1014 integers (1024 - 10 reserve)
       run_all
-      assert_equal Fixnum , get_return.class , " "
+      assert_equal ::Integer , get_return.class , " "
       assert_equal 0 , get_return , " "
     end
 

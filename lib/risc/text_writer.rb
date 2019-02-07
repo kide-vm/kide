@@ -206,7 +206,7 @@ module Risc
       case object
       when nil
         @stream.write_signed_int_32(0)
-      when Fixnum
+      when ::Integer
         @stream.write_signed_int_32(object)
       else
         @stream.write_signed_int_32(Position.get(object) + @linker.platform.loaded_at)

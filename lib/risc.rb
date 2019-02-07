@@ -36,7 +36,7 @@ require_relative "risc/method_compiler"
 require_relative "risc/block_compiler"
 require_relative "risc/assembler"
 
-class Fixnum
+class Integer
   def fits_u8?
     self >= 0 and self <= 255
   end

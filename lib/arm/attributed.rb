@@ -19,7 +19,7 @@ module Arm
 
     # for the shift handling that makes the arm so unique
     def shift val , by
-      raise "Not integer #{val}:#{val.class} #{inspect}" unless val.is_a? Fixnum
+      raise "Not integer #{val}:#{val.class} #{inspect}" unless val.is_a? ::Integer
       val << by
     end
 

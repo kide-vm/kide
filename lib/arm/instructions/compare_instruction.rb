@@ -5,7 +5,7 @@ module Arm
       super(nil)
       @attributes = attributes
       @left = left
-      @right = right.is_a?(Fixnum) ? IntegerConstant.new(right) : right
+      @right = right.is_a?(::Integer) ? IntegerConstant.new(right) : right
       @attributes[:condition_code] = :al if @attributes[:condition_code] == nil
       @operand = 0
       @attributes[:update_status] = 1

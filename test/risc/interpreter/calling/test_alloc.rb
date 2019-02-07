@@ -51,7 +51,7 @@ module Risc
       assert_equal :- , op.operator
       assert_equal :r3 , op.left.symbol
       assert_equal :r1 , op.right.symbol
-      assert_equal Fixnum , @interpreter.get_register(:r3).class
+      assert_equal ::Integer , @interpreter.get_register(:r3).class
       assert 0 != @interpreter.get_register(:r3)
     end
     def test_branch

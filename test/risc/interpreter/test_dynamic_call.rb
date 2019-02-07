@@ -40,7 +40,7 @@ module Risc
             RegToSlot, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer, # 140
             SlotToReg, SlotToReg, Syscall, NilClass, ]
-       assert_equal Fixnum , get_return.class
+       assert_equal ::Integer , get_return.class
        assert_equal 1 , get_return
     end
 
@@ -63,7 +63,7 @@ module Risc
       ret = main_ticks(139)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
-      assert_equal Fixnum , link.class
+      assert_equal ::Integer , link.class
     end
     def test_sys
       sys = main_ticks(143)

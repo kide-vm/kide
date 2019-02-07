@@ -85,7 +85,7 @@ module Parfait
     # add a type, meaning the instance given must be a valid type
     def add_type( type )
       hash = type.hash
-      raise "upps #{hash} #{hash.class}" unless hash.is_a?(Fixnum)
+      raise "upps #{hash} #{hash.class}" unless hash.is_a?(::Integer)
       was = types[hash]
       return was if was
       types[hash] = type

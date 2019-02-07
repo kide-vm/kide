@@ -73,7 +73,7 @@ module Risc
 
     def set_register( reg , val )
       old = get_register( reg ) # also ensures format
-      if val.is_a? Fixnum
+      if val.is_a? ::Integer
         @flags[:zero] = (val == 0)
         @flags[:plus] = (val >= 0)
         @flags[:minus] = (val < 0)
@@ -190,7 +190,7 @@ module Risc
       end
       raise "Unsupported action, must convert symbol to word:#{object}" if object.is_a?(Symbol)
       value = object.get_char( index )
-      #value = value.object_id unless value.is_a? Fixnum
+      #value = value.object_id unless value.is_a? ::Integer
       set_register( @instruction.register , value )
       true
     end

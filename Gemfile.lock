@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ruby-x/rx-file
-  revision: c1de10352d8af105fe532008ceafcdd30b5fbdab
+  revision: 7c4a5546136d1bad065803da91778b209c18cb4d
   specs:
     rx-file (0.3.0)
 

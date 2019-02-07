@@ -53,7 +53,7 @@ module Parfait
     def test_types_hashes
       types = @space.instance_variable_ged("@types")
       types.each do |has , type|
-        assert has.is_a?(Fixnum) , has.inspect
+        assert has.is_a?(::Integer) , has.inspect
       end
     end
     def test_classes_types_in_space_types
