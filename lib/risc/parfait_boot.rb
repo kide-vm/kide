@@ -49,13 +49,16 @@ module Parfait
   # - create the Class objects and assign them to the types
   # - flesh out the types , create the real space
   # - and finally load the methods
-  def self.boot!
+  def self.boot!(options)
     Parfait.set_object_space( nil )
     types = boot_types
     boot_boot_space( types )
     classes = boot_classes( types )
     fix_types( types , classes )
-
+    if( page = options[:page_size])
+      Factory.page_size = page
+      PUTS "PAGE #{page}"
+    end
     space = Space.new( classes )
     Parfait.set_object_space( space )
   end

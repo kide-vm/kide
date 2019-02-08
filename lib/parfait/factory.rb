@@ -15,8 +15,9 @@ module Parfait
   class Factory < Object
     attr :type , :for_type , :next_object , :reserve , :attribute_name
 
-    PAGE_SIZE = 1024
-    RESERVE = 10
+    @page_size = 1024
+    @reserve_size = 10
+    class << self; attr_accessor :page_size ; attr :reserve_size end
 
     # initialize for a given type (for_type). The attribute that is used to create the
     # list is the first that starts with next_ . "next" itself would have been nice and general
@@ -52,7 +53,7 @@ module Parfait
     def get_more
       first_object = get_chain
       link = first_object
-      count = RESERVE
+      count = Factory.reserve_size
       while(count > 0)
         link = get_next_for(link)
         count -= 1
@@ -67,9 +68,9 @@ module Parfait
     # it creates objects from the mem and link them into a chain
     def get_chain
       raise "type is nil" unless self.for_type
-      first = sys_mem( for_type , PAGE_SIZE)
+      first = sys_mem( for_type , Factory.page_size)
       chain = first
-      counter = PAGE_SIZE
+      counter = Factory.page_size
       while( counter > 0)
         nekst = get_next_raw( chain )
         set_next_for(chain,  nekst)
@@ -102,7 +103,7 @@ module Parfait
 
     # return more memory from the system.
     # Or to be more precise (as that is not really possible), allocate memory
-    # for PAGE_SIZE objects, and return the first object.
+    # for Factory.page_size objects, and return the first object.
     # ( the object has a type as first member, that type will be the for_type of this factory)
     # This implementation will be moved to the adapter, as the real thing needs to be coded
     # in risc
