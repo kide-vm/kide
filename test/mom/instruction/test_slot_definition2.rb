@@ -3,7 +3,7 @@ require_relative "helper"
 module Mom
   class TestSlotDefinitionKnown1 < MiniTest::Test
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       @compiler = Risc::FakeCompiler.new
       @definition = SlotDefinition.new(:message , :caller)
       @register = @definition.to_register(@compiler , "fake source")

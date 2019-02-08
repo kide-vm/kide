@@ -10,7 +10,7 @@ module Risc
   class TestRegisterValue < MiniTest::Test
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       @r0 = RegisterValue.new(:r0 , :Message)
       @r1 = RegisterValue.new(:r1 , :Space)
       @r2 = RegisterValue.new(:r1 , :Factory)

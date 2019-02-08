@@ -8,12 +8,12 @@ module Risc
     end
 
     def in_test_vool(str)
-      vool = RubyX::RubyXCompiler.new.ruby_to_vool(in_Test(str))
+      vool = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_vool(in_Test(str))
       vool.to_mom(nil)
       vool
     end
     def in_test_mom(str)
-      RubyX::RubyXCompiler.new(in_Test(str)).ruby_to_mom()
+      FIXMERubyX::RubyXCompiler.new(in_Test(str)).ruby_to_mom()
     end
     def create_method(body = "@ivar = 5")
       in_test_vool("def meth; #{body};end")
@@ -64,7 +64,7 @@ module Risc
       assert_equal 2 , method.frame_type.variable_index(:a)
     end
     def constant_setup(input)
-      mom = RubyX::RubyXCompiler.new.ruby_to_mom(in_Test(input))
+      mom = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(in_Test(input))
       assert_equal Mom::MomCompiler , mom.class
       compiler = mom.method_compilers.first
       assert_equal MethodCompiler , compiler.class

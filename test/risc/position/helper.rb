@@ -21,7 +21,7 @@ module Risc
   end
   class DummyPlatform
     def self.boot
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
     end
     def translator

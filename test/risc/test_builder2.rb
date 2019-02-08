@@ -4,7 +4,7 @@ module Risc
   class TestBuilderInfer < MiniTest::Test
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
       @init = Parfait.object_space.get_init
       @compiler = Risc::MethodCompiler.new( @init )

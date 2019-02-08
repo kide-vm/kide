@@ -2,7 +2,7 @@ module Parfait
   class ParfaitTest < MiniTest::Test
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       @space = Parfait.object_space
     end
     def make_method

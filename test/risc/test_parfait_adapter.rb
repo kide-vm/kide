@@ -4,7 +4,7 @@ module Parfait
   class TestAdapter < MiniTest::Test
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
     end
 
     def test_list_create_from_array

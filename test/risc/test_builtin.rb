@@ -4,7 +4,7 @@ module Risc
   class TestBuiltinFunction < MiniTest::Test
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
     end
     def test_has_boot_function
       assert Builtin.boot_functions

@@ -3,7 +3,7 @@ require_relative "helper"
 module Risc
   class TestPositionTranslated < MiniTest::Test
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
       @binary = Parfait::BinaryCode.new(1)
       @method = Parfait.object_space.types.values.first.methods

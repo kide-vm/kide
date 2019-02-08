@@ -4,7 +4,7 @@ module Mom
   class TestSlotLoad1 < MiniTest::Test
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       load = SlotLoad.new( [:message, :caller] , [:message,:type] )
       @compiler = Risc::FakeCompiler.new
       load.to_risc(@compiler)

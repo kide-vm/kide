@@ -3,7 +3,7 @@ require_relative "helper"
 module Risc
   class TestInterpreterBasics < MiniTest::Test
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
       @linker = Mom::MomCompiler.new.translate(:interpreter)
     end

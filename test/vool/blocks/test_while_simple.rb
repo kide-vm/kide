@@ -6,7 +6,7 @@ module VoolBlocks
     include Mom
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       @ins = compile_first_block( "while(@a) ; @a = 5 ; end")
     end
 

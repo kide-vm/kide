@@ -3,7 +3,7 @@ require_relative "helper"
 module Risc
   class TestMachinePositions < MiniTest::Test
     def setup_for(platform)
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
       @linker = Mom::MomCompiler.new.translate(platform)
       @linker.position_all

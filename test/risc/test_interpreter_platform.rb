@@ -21,7 +21,7 @@ module Risc
   class TestIdentityTranslator < MiniTest::Test
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
       @translator = IdentityTranslator.new
     end

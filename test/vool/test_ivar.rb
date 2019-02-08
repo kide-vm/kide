@@ -5,7 +5,7 @@ module Vool
     include MomCompile
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       @ins = compile_first_method( "@a = 5")
     end
 

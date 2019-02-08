@@ -67,7 +67,7 @@ module Ruby
     include RubyTests
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
     end
 
     def test_int_receiver

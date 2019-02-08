@@ -3,7 +3,7 @@ require_relative "helper"
 module Risc
   class TestInstructionListener < MiniTest::Test
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       @binary = Parfait::BinaryCode.new(1)
       @bin_pos = Position.new(@binary).set(0)
       @instruction = DummyInstruction.new(DummyInstruction.new)

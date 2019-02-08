@@ -19,8 +19,8 @@ module RubyX
     attr_reader :vool
 
     # initialize boots Parfait and Risc (ie load Builin)
-    def initialize
-      Parfait.boot!
+    def initialize(options)
+      Parfait.boot!(options)
       Risc.boot!
     end
 
@@ -96,8 +96,8 @@ module RubyX
     end
 
 
-    def self.ruby_to_binary( ruby , platform)
-      compiler = RubyXCompiler.new
+    def self.ruby_to_binary( ruby , platform , options)
+      compiler = RubyXCompiler.new(options)
       compiler.ruby_to_vool(ruby)
 
       # integrate other sources into vool tree

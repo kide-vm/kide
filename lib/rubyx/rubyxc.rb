@@ -22,7 +22,7 @@ class RubyXC < Thor
     end
     puts "compiling #{file}"
 
-    linker = ::RubyX::RubyXCompiler.new.ruby_to_binary( ruby , :arm )
+    linker = ::RubyX::RubyXCompiler.new({}).ruby_to_binary( ruby , :arm )
     writer = Elf::ObjectWriter.new(linker)
 
     outfile = file.split("/").last.gsub(".rb" , ".o")

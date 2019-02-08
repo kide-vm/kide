@@ -4,7 +4,7 @@ module Risc
   class TestTextWriter < MiniTest::Test
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
       @linker = Mom::MomCompiler.new.translate(:arm)
     end
@@ -19,7 +19,7 @@ module Risc
   class TestTextWriterPositions < MiniTest::Test
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
       @linker = Mom::MomCompiler.new.translate(:arm)
       @linker.position_all

@@ -4,7 +4,7 @@ module Risc
   class TestLinkerObjects < MiniTest::Test
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
       @linker = Mom::MomCompiler.new.translate(:arm)
     end
@@ -19,7 +19,7 @@ module Risc
   end
   class TestLinkerInit < MiniTest::Test
     def setup
-      @linker = RubyX::RubyXCompiler.new.ruby_to_binary("class Space;def main;return 1;end;end",:arm)
+      @linker = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_binary("class Space;def main;return 1;end;end",:arm)
     end
     def test_pos_cpu
       assert_equal 0 ,  Position.get(@linker.cpu_init).at

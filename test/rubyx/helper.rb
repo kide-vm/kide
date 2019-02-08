@@ -1,6 +1,7 @@
 require_relative "../helper"
 
 module RubyX
+
   module RubyXHelper
     def setup
     end
@@ -9,10 +10,10 @@ module RubyX
       mom.translate(platform)
     end
     def ruby_to_vool(input)
-      RubyXCompiler.new.ruby_to_vool(input)
+      RubyXCompiler.new(RubyX.default_test_options).ruby_to_vool(input)
     end
     def ruby_to_mom(input)
-      RubyXCompiler.new.ruby_to_mom(input)
+      RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(input)
     end
     def compile_in_test( input )
       vool = ruby_to_vool in_Test(input)

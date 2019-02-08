@@ -5,7 +5,7 @@ module Mom
     include MomCompile
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       @comp = compile_mom( "class Test ; def main(); main{return 'Ho'};return 'Hi'; end; end;")
       @linker = @comp.translate(:interpreter)
     end

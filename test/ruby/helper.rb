@@ -3,14 +3,14 @@ require_relative "../helper"
 module Ruby
   module RubyTests
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
     end
     def compile(input)
       RubyCompiler.compile(input)
     end
 
     def ruby_to_vool(input)
-      RubyXCompiler.new(input).ruby_to_vool
+      FIXMERubyXCompiler.new(input).ruby_to_vool
     end
 
   end

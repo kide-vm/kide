@@ -59,7 +59,7 @@ module Vool
     include YieldBasics
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       @ins = compile_first_method( "return yield(1)" )
     end
 
@@ -83,7 +83,7 @@ module Vool
     include Mom
     include YieldBasics
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       @ins = compile_first_method( "return yield" )
     end
     def test_array

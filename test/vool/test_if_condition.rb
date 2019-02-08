@@ -6,7 +6,7 @@ module Vool
     include Mom
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       Risc::Builtin.boot_functions
       @ins = compile_first_method( "if(5.div4) ; @a = 6 ; else; @a = 5 ; end")
     end

@@ -4,7 +4,7 @@ module Risc
   class TestPadding < MiniTest::Test
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
     end
 
     def test_small

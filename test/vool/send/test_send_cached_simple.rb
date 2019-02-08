@@ -6,7 +6,7 @@ module Vool
     include Mom
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       @ins = compile_first_method( "a = 5; a.div4")
     end
     def test_check_type

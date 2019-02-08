@@ -4,7 +4,7 @@ module Parfait
   class TestEmptyWord < ParfaitTest
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       @word = Parfait::Word.new(0)
     end
     def test_word_create

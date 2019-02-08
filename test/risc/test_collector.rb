@@ -4,7 +4,7 @@ module Risc
   class TestCollector < MiniTest::Test
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
       @linker = Mom::MomCompiler.new.translate(:arm)
     end

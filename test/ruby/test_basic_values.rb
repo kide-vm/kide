@@ -51,7 +51,7 @@ module Ruby
     include RubyTests
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
     end
     def compile_const( input )
       lst = compile( input )
@@ -83,7 +83,7 @@ module Ruby
     include RubyTests
 
     def setup
-      Parfait.boot!
+      Parfait.boot!(Parfait.default_test_options)
     end
     def compile_const( input )
       lst = compile( input )

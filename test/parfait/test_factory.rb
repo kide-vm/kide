@@ -23,6 +23,16 @@ module Parfait
     def test_get_next_object
       assert_equal Parfait::Integer ,  @factory.get_next_object.class
     end
+    def test_default_page
+      assert_equal 1024 , Factory.page_size
+    end
+    def test_default_reserve
+      assert_equal 10 , Factory.reserve_size
+    end
+    def test_set_page
+      assert_equal 10 , Factory.page_size = 10
+      Factory.page_size = 1024
+    end
     def test_first_is_reserve
       @factory.get_next_object
       assert_equal Parfait::Integer , @factory.reserve.class
