@@ -20,7 +20,7 @@ module RubyX
 
     # initialize boots Parfait and Risc (ie load Builin)
     def initialize(options)
-      Parfait.boot!(options)
+      Parfait.boot!(options[:parfait] || {})
       Risc.boot!
     end
 

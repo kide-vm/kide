@@ -23,8 +23,8 @@ module Parfait
     def test_get_next_object
       assert_equal Parfait::Integer ,  @factory.get_next_object.class
     end
-    def test_default_page
-      assert_equal 1024 , Factory.page_size
+    def test_default_test_page
+      assert_equal 20 , Factory.page_size
     end
     def test_default_reserve
       assert_equal 10 , Factory.reserve_size
@@ -37,15 +37,6 @@ module Parfait
       @factory.get_next_object
       assert_equal Parfait::Integer , @factory.reserve.class
     end
-    def test_chain_length
-      count = 0
-      start = @factory.get_next_object
-      while( start )
-        start = start.next_integer
-        count += 1
-      end
-      assert_equal 1024 - 10 , count
-    end
     def test_reserve_length
       count = 0
       start = @factory.get_next_object
@@ -55,6 +46,24 @@ module Parfait
         count += 1
       end
       assert_equal 11 , count
+    end
+    class BigFactoryTest < BigParfaitTest
+      def setup
+        super
+        @factory = Factory.new Parfait.object_space.get_type_by_class_name(:Integer)
+      end
+      def test_chain_length
+        count = 0
+        start = @factory.get_next_object
+        while( start )
+          start = start.next_integer
+          count += 1
+        end
+        assert_equal 1024 - 10 , count
+      end
+      def test_default_page
+        assert_equal 1024 , Factory.page_size
+      end
     end
   end
 end

@@ -7,7 +7,7 @@ module Risc
     include ScopeHelper
 
     def setup
-      compiler = RubyX::RubyXCompiler.new(RubyX.default_test_options)
+      compiler = RubyX::RubyXCompiler.new(RubyX.interpreter_test_options)
       @linker = compiler.ruby_to_binary(@string_input, :interpreter)
       @interpreter = Interpreter.new(@linker)
       @interpreter.start_program

@@ -12,4 +12,10 @@ module Parfait
       @method = Parfait::CallableMethod.new( :meth , @obj , @args , @frame)
     end
   end
+  class BigParfaitTest < ParfaitTest
+    def setup
+      Parfait.boot!(Parfait.full_test_options)
+      @space = Parfait.object_space
+    end
+  end
 end

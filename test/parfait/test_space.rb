@@ -117,15 +117,6 @@ module Parfait
     def test_has_next_address
       assert_equal Parfait::ReturnAddress , @space.get_next_for(:ReturnAddress).class
     end
-    def test_address_count
-      addr = @space.get_next_for(:ReturnAddress)
-      count = 0
-      while(addr)
-        count += 1
-        addr = addr.next_integer
-      end
-      assert_equal 1014, count
-    end
     def test_has_message_factory
       ints = @space.get_factory_for(:Message)
       assert_equal Factory , ints.class
@@ -137,16 +128,6 @@ module Parfait
     end
     def test_has_next_message
       assert_equal Parfait::Message , @space.get_next_for(:Message).class
-    end
-    def test_message_count
-      mess = @space.get_next_for(:Message)
-      count = 0
-      while(mess)
-        count += 1
-        assert mess.frame
-        mess = mess.next_message
-      end
-      assert_equal 1014, count
     end
     def test_create_class
       assert @space.create_class( :NewClass )
@@ -191,4 +172,26 @@ module Parfait
       end
     end
   end
+  class BigTestSpace < BigParfaitTest
+    def test_address_count
+      addr = @space.get_next_for(:ReturnAddress)
+      count = 0
+      while(addr)
+        count += 1
+        addr = addr.next_integer
+      end
+      assert_equal 1014, count
+    end
+    def test_message_count
+      mess = @space.get_next_for(:Message)
+      count = 0
+      while(mess)
+        count += 1
+        assert mess.frame
+        mess = mess.next_message
+      end
+      assert_equal 1014, count
+    end
+  end
+
 end

@@ -55,10 +55,8 @@ module Parfait
     boot_boot_space( types )
     classes = boot_classes( types )
     fix_types( types , classes )
-    if( page = options[:page_size])
-      Factory.page_size = page
-      PUTS "PAGE #{page}"
-    end
+    page = options[:factory] || 1024
+    Factory.page_size = page
     space = Space.new( classes )
     Parfait.set_object_space( space )
   end

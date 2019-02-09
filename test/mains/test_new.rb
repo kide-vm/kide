@@ -5,7 +5,7 @@ module Mains
     include Risc::Ticker
 
     def setup
-      @string_input = as_main("a = 1011 ; while(a>0) ; a = a - 1 ; end ; return a")
+      @string_input = as_main("a = 37 ; while(a>0) ; a = a - 1 ; end ; return a")
       super
     end
     def test_chain # max 1011 iterations on 1014 integers (1024 - 10 reserve)
