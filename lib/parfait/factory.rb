@@ -1,4 +1,3 @@
-module Parfait
   # A factory has the one job of handing out new instances
   #
   # A factory is for a specific type (currently, may change by size at some point)
@@ -117,4 +116,3 @@ module Parfait
       obj
     end
   end
-end

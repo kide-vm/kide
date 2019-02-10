@@ -12,28 +12,9 @@
 # The Type also defines the class of the object
 # The Type is **always** the first entry (index 0) in an object
 
-module Parfait
-  TYPE_INDEX  = 0
 
   class Object
     attr :type
-
-    def self.memory_size
-      8
-    end
-    def self.type_length
-      1
-    end
-
-    def self.new( *args )
-      object = self.allocate
-      # have to grab the class, because we are in the ruby class not the parfait one
-      cl = Parfait.object_space.get_class_by_name( self.name.split("::").last.to_sym)
-      # and have to set the type before we let the object do anything. otherwise boom
-      object.set_type cl.instance_type
-      object.send :initialize , *args
-      object
-    end
 
     def == other
       self.object_id == other.object_id
@@ -52,7 +33,7 @@ module Parfait
 
     # private
     def set_type(typ)
-      raise "not type #{typ.class} in #{object_id.to_s(16)}" unless typ.is_a?(Type)
+      raise "not type" + typ.class.to_s + "in " + object_id.to_s(16) unless typ.is_a?(Type)
       self.type = typ
     end
 
@@ -62,7 +43,7 @@ module Parfait
     end
 
     def get_type()
-      raise "No type #{self.object_id.to_s(16)}:#{self.class} " unless has_type?
+      raise "No type " + self.object_id.to_s(16) + ":" + self.class.name unless has_type?
       type
     end
 
@@ -94,15 +75,15 @@ module Parfait
     # parfait versions are deliberately called different, so we "relay"
     # have to put the "" on the names for rfx to take them off again
     def instance_variables
-      get_instance_variables.to_a.collect{ |n| "#{n}".to_sym }
+      get_instance_variables.to_a.collect{ |n| n.to_s.to_sym }
     end
 
     # name comes in as a ruby var name
-    def instance_variable_ged name
-      var = get_instance_variable name.to_s[1 .. -1].to_sym
+    def instance_variable_ged( name )
+      #TODO the [] shoud be a range, but currenly that is not processed in RubyCompiler
+      var = get_instance_variable name.to_s[1 , name.to_s.length - 1].to_sym
       #puts "getting #{name}  #{var}"
       var
     end
 
   end
-end
