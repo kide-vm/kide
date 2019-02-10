@@ -1,4 +1,19 @@
 module Ruby
+  class ProcessError < Exception
+    attr_reader :node
+
+    def initialize(msg , node)
+      super(msg)
+      @node = node
+    end
+    def message
+      super + node_tos
+    end
+    def node_tos
+      return "" unless @node
+      @node.to_s[0 ... 200]
+    end
+  end
   # This RubyCompiler compiles incoming ruby (string) into a typed
   # version of theast, with the help of the parser gem.
   # The parser outputs an abstract ast (nodes)
@@ -10,16 +25,22 @@ module Ruby
   # simpler, and then finally to compile
   # to the next level down, MOM (Minimal Object Machine)
   class RubyCompiler < AST::Processor
-  include AST::Sexp
+    include AST::Sexp
 
     def self.compile(input)
       ast = Parser::Ruby22.parse( input )
       self.new.process(ast)
     end
 
+    # raise a ProcessError. This means ruby-x doesn't know how to handle it.
+    # Parser itself throws SyntaxError
+    def not_implemented(node)
+      raise ProcessError.new("Not implemented #{node.type}", node)
+    end
+
     # default to error, so non implemented stuff shows early
     def handler_missing(node)
-      raise "Not implemented #{node.type} #{node}"
+      not_implemented(node)
     end
 
     def on_class( statement )
@@ -83,8 +104,8 @@ module Ruby
     end
     alias  :on_string :on_str
 
-    def on_dstr expression
-      raise "Not implemented dynamic strings (with interpolation)"
+    def on_dstr( expression )
+      not_implemented(expression)
     end
     alias  :on_xstr :on_dstr
 
@@ -93,8 +114,8 @@ module Ruby
     end
     alias  :on_string :on_str
 
-    def on_dsym
-      raise "Not implemented dynamix symbols (with interpolation)"
+    def on_dsym(expression)
+      not_implemented(expression)
     end
     def on_kwbegin statement
       ScopeStatement.new process_all( statement.children )
@@ -131,7 +152,7 @@ module Ruby
     def on_const expression
       scope = expression.children.first
       if scope
-        raise "Only unscoped Names implemented #{scope}" unless scope.type == :cbase
+        not_implemented(expression) unless scope.type == :cbase
       end
       ModuleName.new(expression.children[1])
     end
@@ -213,7 +234,7 @@ module Ruby
     end
 
     def handler_missing(node)
-      raise "Handler missing #{node}"
+      not_implemented(node)
     end
 
     private

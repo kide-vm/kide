@@ -51,9 +51,6 @@ module Ruby
       assert_equal ModuleName , lst.class
       assert_equal :Module , lst.name
     end
-    def test_module_module_scoped
-      assert_raises {compile( "M::Module" ) }
-    end
   end
   class TestVariablesVool < MiniTest::Test
     include RubyTests

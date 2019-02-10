@@ -33,8 +33,8 @@ module Ruby
       assert_equal SymbolConstant , lst.class , lst.inspect
     end
     def test_dstr
-      assert_raises RuntimeError do
-        compile( '"dstr#{self}"')
+      assert_raises Ruby::ProcessError do
+        compile( '"interpolate #{self}"')
       end
     end
 
