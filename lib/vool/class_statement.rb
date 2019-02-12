@@ -38,6 +38,9 @@ module Vool
         #existing class, don't overwrite type (parfait only?)
       else
         @clazz = Parfait.object_space.create_class(@name , @super_class_name )
+        #TODO this should start from Object Type and add one name at a time.
+        # So the "trail" of types leading to this one exists.
+        # Also the Class always has a valid type.
         ivar_hash = {}
         self.each do |node|
           next unless node.is_a?(InstanceVariable) or node.is_a?(IvarAssignment)

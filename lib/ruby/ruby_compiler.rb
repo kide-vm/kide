@@ -54,6 +54,13 @@ module Ruby
       MethodStatement.new( name , arg_array , process(body) )
     end
 
+    def on_defs( statement )
+      me , name , args , body = *statement
+      raise "only class method implemented, not #{me.type}" unless me.type == :self
+      arg_array = process_all( args )
+      ClassMethodStatement.new( name , arg_array , process(body) )
+    end
+
     def on_arg( arg )
       arg.first
     end

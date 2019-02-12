@@ -53,4 +53,18 @@ module Ruby
       assert_equal LocalAssignment , lst.body.class
     end
   end
+  class TestClassMethodStatement < MiniTest::Test
+    include RubyTests
+
+    def test_basic_method
+      input = "def self.tryout() ; return true ; end "
+      @lst = compile( input )
+      assert_equal Ruby::ClassMethodStatement , @lst.class
+    end
+    def test_method_arg
+      input = "def self.tryout(arg) ; arg = true ; return arg ; end "
+      @lst = compile( input )
+      assert_equal Ruby::ClassMethodStatement , @lst.class
+    end
+  end
 end
