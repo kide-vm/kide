@@ -16,5 +16,8 @@ module Parfait
       assert_equal @object.get_type ,  @object.set_internal_word(0, @object.get_type)
     end
 
+    def test_type
+      assert_equal "Parfait::Type" ,  @object.get_internal_word( 0 ).class.name
+    end
   end
 end

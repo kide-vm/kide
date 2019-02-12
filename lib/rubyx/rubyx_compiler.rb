@@ -95,15 +95,19 @@ module RubyX
       @vool << ruby_tree.to_vool
     end
 
+    def load_parfait
+      parfait = ["object"]
+      parfait.each do |file|
+        path = File.expand_path("../../parfait/#{file}.rb",__FILE__)
+        ruby_to_vool(File.read(path))
+      end
+    end
 
     def self.ruby_to_binary( ruby , platform , options)
       compiler = RubyXCompiler.new(options)
+#      compiler.load_parfait
       compiler.ruby_to_vool(ruby)
-
-      # integrate other sources into vool tree
-
       compiler.to_binary(platform)
-
     end
   end
 end
