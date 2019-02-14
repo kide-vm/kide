@@ -1,23 +1,6 @@
 require_relative "helper"
 
 module Ruby
-  class TestMethodStatementTrans < MiniTest::Test
-    include RubyTests
-
-    def setup()
-      input = "def tryout(arg1, arg2) ; a = arg1 ; end "
-      @lst = compile( input ).to_vool
-    end
-    def test_method
-      assert_equal Vool::MethodStatement , @lst.class
-    end
-    def test_method_args
-      assert_equal [:arg1, :arg2] , @lst.args
-    end
-    def test_body_is_scope_zero_statement
-      assert_equal Vool::LocalAssignment , @lst.body.class
-    end
-  end
   class TestMethodStatement < MiniTest::Test
     include RubyTests
 
@@ -53,18 +36,21 @@ module Ruby
       assert_equal LocalAssignment , lst.body.class
     end
   end
-  class TestClassMethodStatement < MiniTest::Test
-    include RubyTests
 
-    def test_basic_method
-      input = "def self.tryout() ; return true ; end "
-      @lst = compile( input )
-      assert_equal Ruby::ClassMethodStatement , @lst.class
+  class TestMethodStatementTrans < MiniTest::Test
+    include RubyTests
+    def setup()
+      input = "def tryout(arg1, arg2) ; a = arg1 ; end "
+      @lst = compile( input ).to_vool
     end
-    def test_method_arg
-      input = "def self.tryout(arg) ; arg = true ; return arg ; end "
-      @lst = compile( input )
-      assert_equal Ruby::ClassMethodStatement , @lst.class
+    def test_method
+      assert_equal Vool::MethodStatement , @lst.class
+    end
+    def test_method_args
+      assert_equal [:arg1, :arg2] , @lst.args
+    end
+    def test_body_is_scope_zero_statement
+      assert_equal Vool::LocalAssignment , @lst.body.class
     end
   end
 end
