@@ -20,15 +20,9 @@ module Vool
       @body.each(&block)
     end
 
-    def has_yield?
-      each{|statement| return true if statement.is_a?(YieldStatement)}
-      return false
-    end
-
     def make_arg_type(  )
       type_hash = {}
       @args.each {|arg| type_hash[arg] = :Object }
-      type_hash[:implicit_block] = :Block if has_yield?
       Parfait::NamedList.type_for( type_hash )
     end
 
@@ -42,10 +36,6 @@ module Vool
     def make_frame
       nodes = []
       @body.each { |node| nodes << node }
-      nodes.dup.each do |node|
-        next unless node.is_a?(BlockStatement)
-        node.each {|block_scope| nodes.delete(block_scope)}
-      end
       type_hash = {}
       nodes.each do |node|
         next unless node.is_a?(LocalVariable) or node.is_a?(LocalAssignment)
