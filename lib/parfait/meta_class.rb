@@ -1,45 +1,49 @@
-# Class is mainly a list of methods with a name.
-# The methods are untyped, sis VoolMethod.
+#
+# In many respects a MetaClass is like a Class. We haven't gone to the full ruby/oo level
+# yet, where the metaclass is actually a class instance, but someday.
 
-# The memory layout of an object is determined by the Type (see there).
-# The class carries the "current" type, ie the type an object would be if you
-# created an instance of the class.
-# Note that this changes over time and so many types share the same class.
+# A Class in general can be viewed as a way to generate methods for a group of objects.
 
-# For dynamic OO it is essential that the class (the object defining the class)
-# can carry methods. It does so in an instance variable methods.
+# A MetaClass serves the same function, but just for one object, the class object that
+# is the meta_class of.
+# This is slightnly different in the way that the type of the class must actually
+# change, whereas for a class the instance type changes and only objects generated
+# henceafter have a different type.
 
-# An Object carries the data for the instance variables it has.
-# The Type lists the names of the instance variables
-# The Class keeps a list of instance methods, these have a name and (vool) code
-# Each type in turn has a list of CallableMethods that hold binary code
+# This is still a first version, this change is not implemeted, also classes at boot don't
+# have metaclasses yet, so still a bit TODO
+
+# Another current difference is that a metaclass has no superclass. Also no name.
+# There is a one to one relationship between a class instance and it's meta_class instance.
 
 module Parfait
-  class Class < Object
+  class MetaClass < Object
     include Behaviour
 
-    attr :type, :instance_type , :name , :instance_methods
-    attr :super_class_name , :meta_class
+    attr :type, :instance_type , :instance_methods , :clazz
 
     def self.type_length
-      6
+      4
     end
 
-    def initialize( name , superclass , instance_type)
+    def initialize( clazz )
       super()
-      self.name = name
-      self.super_class_name = superclass
+      self.clazz = clazz
       self.instance_methods = List.new
-      set_instance_type( instance_type )
-      self.meta_class = MetaClass.new( self )
+      set_instance_type( clazz.get_type() )
     end
 
     def rxf_reference_name
-      name
+      clazz.name
     end
 
     def inspect
-      "Class(#{name})"
+      "MetaClass(#{clazz.name})"
+    end
+
+    # no superclass, return nil to signal
+    def super_class_name
+      nil
     end
 
     def add_method_for(name , type , frame , body )

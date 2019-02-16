@@ -16,8 +16,12 @@ module VoolBlocks
       begin
         vool.to_mom(nil)
       rescue => err
-        assert err.message.include?("Blocks")
+        assert err.message.include?("Blocks") , err.message
       end
+    end
+    def test_assign_compiles
+      vool = Ruby::RubyCompiler.compile( as_class_method("val = 0") ).to_vool
+      assert_equal Mom::MomCompiler , vool.to_mom(nil).class
     end
   end
 end
