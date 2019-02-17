@@ -70,6 +70,9 @@ module Parfait
       end
       assert_equal 2 , counter
     end
+    def test_to_s
+      assert_equal "[one ,two ,three , ]" , @list.to_s
+    end
     def test_to_a
       arr = @list.to_a
       assert_equal Array , arr.class

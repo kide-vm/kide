@@ -20,7 +20,7 @@ module Parfait
       super
       self.indexed_length = 0
     end
-    
+
     def data_length
       self.class.data_length
     end
@@ -253,6 +253,15 @@ module Parfait
       list
     end
 
+    def to_s
+      res = "["
+      each do |item|
+        res = res + item.to_s
+        res = res + " ,"
+      end
+      res = res + " ]"
+      return res
+    end
     def to_a
       array = []
       index = 0

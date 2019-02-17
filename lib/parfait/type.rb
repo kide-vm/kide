@@ -153,7 +153,7 @@ module Parfait
 
     # resolve according to normal oo logic, ie look up in superclass if not present
     # NOTE: this will probably not work in future as the code for the superclass
-    # method, being bound to t adifferent type, will assume that types (not the run-time
+    # method, being bound to a different type, will assume that types (not the run-time
     # actual types) layout. Either need to enforce some c++ style upwards compatibility (buuh)
     # or copy the methods and recompile them for the actual type. (maybe still later dynamically)
     # But for now we walk up, as it should really just be to object
