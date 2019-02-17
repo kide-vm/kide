@@ -41,11 +41,6 @@ module Parfait
       "MetaClass(#{clazz.name})"
     end
 
-    # no superclass, return nil to signal
-    def super_class_name
-      nil
-    end
-
     def add_method_for(name , type , frame , body )
       method = Parfait::VoolMethod.new(name , type , frame , body )
       add_method( method )
@@ -73,35 +68,15 @@ module Parfait
       self.instance_type = type
     end
 
-    # return the super class, but raise exception if either the super class name
-    # or the super classs is nil.
-    # Use only for non Object base class
-    def super_class!
-      raise "No super_class for class #{name}" unless super_class_name
-      s = super_class
-      raise "superclass not found for class #{name} (#{super_class_name})" unless s
-      s
-    end
-
-    # return the super class
-    # we only store the name, and so have to resolve.
-    # Nil name means no superclass, and so nil is a valid return value
+    # Nil name means no superclass, and so nil returned
     def super_class
-      return nil unless super_class_name
-      Parfait.object_space.get_class_by_name(super_class_name)
+      return nil
     end
 
-    # ruby 2.1 list (just for reference, keep at bottom)
-    #:allocate, :new, :superclass
-
-    # + modules
-    # :<, :<=, :>, :>=, :included_modules, :include?, :name, :ancestors, :instance_methods, :public_instance_methods,
-    # :protected_instance_methods, :private_instance_methods, :constants, :const_get, :const_set, :const_defined?,
-    # :const_missing, :class_variables, :remove_class_variable, :class_variable_get, :class_variable_set,
-    # :class_variable_defined?, :public_constant, :private_constant, :singleton_class?, :include, :prepend,
-    # :module_exec, :class_exec, :module_eval, :class_eval, :method_defined?, :public_method_defined?,
-    # :private_method_defined?, :protected_method_defined?, :public_class_method, :private_class_method, :autoload,
-    # :autoload?, :instance_method, :public_instance_method
+    # no superclass, return nil to signal
+    def super_class_name
+      nil
+    end
 
   end
 end

@@ -18,11 +18,17 @@ module Parfait
       assert @space.false_object , "No lies"
       assert @space.nil_object , "No nothing"
     end
+    def space_class
+      Parfait.object_space.get_class_by_name(:Space)
+    end
     def test_global_space
       assert_equal Parfait::Space , Parfait.object_space.class
     end
     def test_get_class_by_name
-      assert_equal Parfait::Class , Parfait.object_space.get_class_by_name(:Space).class
+      assert_equal Parfait::Class , space_class.class
+    end
+    def test_get_meta_class
+      assert_equal Parfait::MetaClass , space_class.meta_class.class
     end
     def test_get_type_by_class_name
       assert_equal Parfait::Type , Parfait.object_space.get_type_by_class_name(:Space).class
@@ -86,6 +92,11 @@ module Parfait
           assert_equal mname , method.name
           assert_equal name , method.for_class.name
         end
+      end
+    end
+    def test_all_meta
+      @space.classes.each do |name , clazz|
+        assert clazz.meta_class , clazz.name
       end
     end
     def test_has_factory
