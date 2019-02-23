@@ -2,14 +2,17 @@ require_relative "helper"
 
 module Vool
   class TestSendClassMom < MiniTest::Test
-    include SimpleSendHarness
+    include ClassHarness
     include Mom
 
     def send_method
       "Object.get_internal_word(0)"
     end
+
     def test_receiver
       assert_equal SlotDefinition,  @ins.next.receiver.class
+      assert_equal Parfait::Class,  @ins.next.receiver.known_object.class
+      assert_equal :Object ,  @ins.next.receiver.known_object.name
     end
     def test_arg_one
       assert_equal SlotLoad,  @ins.next(1).arguments[0].class

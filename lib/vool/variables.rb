@@ -40,7 +40,7 @@ module Vool
   class ModuleName < Expression
     include Named
     def ct_type
-      get_named_class.instance_type
+      get_named_class.meta_class.instance_type
     end
     def slot_definition(_)
       return Mom::SlotDefinition.new( get_named_class, [])
