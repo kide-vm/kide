@@ -1,5 +1,5 @@
 class Space
   def main(arg)
-    return 2 +2
+    return 2 + 2
   end
 end
