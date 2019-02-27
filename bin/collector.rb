@@ -1,12 +1,24 @@
-require "risc/interpreter"
-require "parser/ruby22"
+require 'rubygems'
+require 'bundler'
+Bundler.setup(:default, :test)
+
+require "rubyx"
+require "parser/current"
 require "yaml"
 
 # An experiment to find out how much ruby there is to achieve bootstrap
 #
-# currently (jan/2017) just under 150 classes, 1.5k methods , 10k sends, only 10 yields
-# 1 retry and redo (to be avoided), 4 ensure , 5 rescue
-#
+# currently (feb/2019) just over
+# 173 classes
+# 1.8k methods
+# 13k sends
+# 13 yields (250 blocks)
+# 1 redo (to be avoided)
+# 4 ensure
+# 6 rescue
+# 38 singleton classes (not in rubyx)
+# 14 evals (different versions , and all problematic)
+# and a whole list of every other possible ruby feature
 class Walker < AST::Processor
   def initialize collector
     @collector = collector
@@ -47,7 +59,7 @@ end
 class Collector
 
   def initialize
-    @parser = Parser::Ruby22
+    @parser = Parser::CurrentRuby
     @paths = Bundler.load.specs.collect { |s| s.gem_dir + "/lib/" }
     @class_defs = []
     @const_uses = Hash.new(0)
@@ -89,7 +101,7 @@ class Collector
   def print
     @class_defs.uniq!
     @files.uniq!
-    puts "Types #{@types.to_yaml}"
+    puts "Types #{@types.sort.to_h.to_yaml}"
     puts "Class defs #{@class_defs.length}"
     puts "Class defs #{@class_defs}"
     puts "evals=#{@evals.length} #{@evals.uniq}"
