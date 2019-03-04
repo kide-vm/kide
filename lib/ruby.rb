@@ -1,4 +1,4 @@
-require "parser/ruby22"
+require "parser/current"
 require "ast"
 
 AST::Node.class_eval do

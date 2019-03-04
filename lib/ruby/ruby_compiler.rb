@@ -29,8 +29,17 @@ module Ruby
     include AST::Sexp
 
     def self.compile(input)
-      ast = Parser::Ruby22.parse( input )
-      self.new.process(ast)
+      begin
+        ast = Parser::CurrentRuby.parse( input )
+      rescue => e
+        puts "Error parsing #{input}"
+      end
+      begin
+        self.new.process(ast)
+      rescue => e
+        puts "Error processing #{ast}"
+        raise e
+      end
     end
 
     # raise a ProcessError. This means ruby-x doesn't know how to handle it.
