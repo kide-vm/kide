@@ -30,6 +30,7 @@ module RubyX
   def self.interpreter_test_options
      {
        parfait: Parfait.interpreter_test_options,
+       load_parfait: false ,
        platform: :interpreter
      }
   end

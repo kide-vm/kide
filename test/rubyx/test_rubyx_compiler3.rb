@@ -8,8 +8,13 @@ module RubyX
     def space_source_for( name )
       "class Space ; def #{name}(arg);return arg;end; end"
     end
+    def test_platform_option
+      options = RubyX.interpreter_test_options
+      options.delete(:platform)
+      assert_raises{ RubyXCompiler.ruby_to_binary(space_source_for("main"), options)}
+    end
     def test_return_linker
-      @linker = RubyXCompiler.ruby_to_binary(space_source_for("main"), :interpreter , RubyX.default_test_options)
+      @linker = RubyXCompiler.ruby_to_binary(space_source_for("main"), RubyX.interpreter_test_options)
       assert_equal Risc::Linker , @linker.class
     end
     def test_one_vool_call

@@ -8,7 +8,7 @@ module RubyX
     def setup
       super
       code = "class Space ; def main(arg);return arg;end; end"
-      @linker = ruby_to_risc(code, :interpreter)
+      @linker = ruby_to_risc(code)
     end
     def test_to_risc
       assert_equal Risc::Linker , @linker.class

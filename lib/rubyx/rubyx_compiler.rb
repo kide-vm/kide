@@ -103,10 +103,12 @@ module RubyX
       end
     end
 
-    def self.ruby_to_binary( ruby , platform , options)
+    def self.ruby_to_binary( ruby , options)
       compiler = RubyXCompiler.new(options)
 #      compiler.load_parfait
       compiler.ruby_to_vool(ruby)
+      platform = options[:platform]
+      raise "No platform given" unless platform
       compiler.to_binary(platform)
     end
   end
