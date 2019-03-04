@@ -54,6 +54,14 @@ module Parfait
         @memory._set(index , value)
       end
     end
+
+    def self.cattr( *names )
+      names.each do |ca|
+        class_eval "@@#{ca} = 0"
+        class_eval "def self.#{ca}; return @#{ca};end"
+        class_eval "def self.#{ca}=(val); @#{ca} = val;end"
+      end
+    end
   end
 
   # new list from ruby array to be precise

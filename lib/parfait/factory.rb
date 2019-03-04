@@ -16,7 +16,7 @@
 
     @page_size = 1024
     @reserve_size = 10
-    class << self; attr_accessor :page_size ; attr :reserve_size end
+    cattr :page_size , :reserve_size
 
     # initialize for a given type (for_type). The attribute that is used to create the
     # list is the first that starts with next_ . "next" itself would have been nice and general
