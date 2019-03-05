@@ -5,20 +5,32 @@ module Ruby
     def initialize( name , supe , body)
       @name , @super_class_name = name , supe
       case body
-      when MethodStatement
+      when MethodStatement , SendStatement
         @body = Statements.new([body])
       when Statements
         @body = body
       when nil
         @body = Statements.new([])
       else
-        raise "what body #{body}"
+        raise "what body #{body.class}:#{body}"
       end
     end
 
     def to_vool
-      meths = body.statements.collect{|meth| meth.to_vool}
+      meths = body.statements.collect do |meth|
+        meth.is_a?(MethodStatement) ?  meth.to_vool : tranform_statement(meth)
+      end
       Vool::ClassStatement.new(@name , @super_class_name, Vool::Statements.new(meths) )
+    end
+
+    def tranform_statement( class_send )
+      unless class_send.is_a?(SendStatement)
+        raise "Other than methods, only class methods allowed, not #{class_send.class}"
+      end
+      unless class_send.name == :attr
+        raise "Only remapping attr and cattr, not #{class_send.name}"
+      end
+      raise "todo"
     end
 
     def to_s(depth = 0)
