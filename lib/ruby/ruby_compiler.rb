@@ -16,7 +16,7 @@ module Ruby
   end
 
   # This RubyCompiler compiles incoming ruby (string) into a typed
-  # version of theast, with the help of the parser gem.
+  # version of the ast, with the help of the parser gem.
   # The parser outputs an abstract ast (nodes)
   # that get transformed into concrete, specific classes.
   #

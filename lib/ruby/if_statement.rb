@@ -23,7 +23,7 @@ module Ruby
 
     def to_vool
       cond , rest = *normalize_name(@condition)
-      me = Vool::IfStatement.new(cond.to_vool , @if_true.to_vool, @if_false&.to_vool)
+      me = Vool::IfStatement.new(cond.to_vool , @if_true&.to_vool, @if_false&.to_vool)
       return me unless rest
       Vool::Statements.new([ rest.to_vool , me])
     end
@@ -37,7 +37,8 @@ module Ruby
     end
 
     def to_s(depth = 0)
-      parts = ["if(#{@condition})" , @if_true.to_s(depth + 1) ]
+      parts = ["if(#{@condition})" ]
+      parts << @if_true.to_s(depth + 1) if(@if_true)
       parts += ["else" ,  @if_false.to_s(depth + 1)] if(@if_false)
       parts << "end"
       at_depth(depth , *parts )
