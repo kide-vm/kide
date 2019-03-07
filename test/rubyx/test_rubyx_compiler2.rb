@@ -30,7 +30,7 @@ module RubyX
       @comp = RubyXCompiler.ruby_to_binary(code , load_parfait: true , platform: :interpreter)
     end
 
-    def test_load
+    def pest_load
       object = Parfait.object_space.get_class_by_name(:Object)
       assert_equal Parfait::Class , object.class
       object = object.instance_type

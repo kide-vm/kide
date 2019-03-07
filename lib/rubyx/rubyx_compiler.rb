@@ -99,13 +99,14 @@ module RubyX
       parfait = ["object"]
       parfait.each do |file|
         path = File.expand_path("../../parfait/#{file}.rb",__FILE__)
+        puts "Loading #{path}"
         ruby_to_vool(File.read(path))
       end
     end
 
     def self.ruby_to_binary( ruby , options)
       compiler = RubyXCompiler.new(options)
-#      compiler.load_parfait
+      compiler.load_parfait if options[:load_parfait]
       compiler.ruby_to_vool(ruby)
       platform = options[:platform]
       raise "No platform given" unless platform

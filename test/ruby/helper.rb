@@ -20,4 +20,17 @@ module Ruby
       $stdout = orig_stdout
     end
   end
+  module AttributeTests
+    include RubyTests
+    def setup
+      super
+      @vool = compile( "class Tryout < Base; #{attr_def};end" ).to_vool
+    end
+    def getter
+      @vool.body.statements.first
+    end
+    def setter
+      @vool.body.statements.last
+    end
+  end
 end

@@ -42,8 +42,12 @@ module Ruby
       unless class_send.name == :attr
         raise "Only remapping attr and cattr, not #{class_send.name}"
       end
-      attr = class_send.arguments.first.value
-      [ getter_for(attr) , setter_for(attr) ]
+      methods = []
+      class_send.arguments.each do |attr|
+        methods << getter_for(attr.value)
+        methods << setter_for(attr.value)
+      end
+      methods
     end
 
     # creates a getter method for the given instance name (sym)
