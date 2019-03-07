@@ -32,5 +32,20 @@ module Ruby
     def setter
       @vool.body.statements.last
     end
+    def test_class
+      assert_equal Vool::ClassStatement , @vool.class
+    end
+    def test_body
+      assert_equal Vool::Statements , @vool.body.class
+    end
+    def test_getter
+      assert_equal Vool::MethodStatement , getter.class
+    end
+    def test_getter_return
+      assert_equal Vool::ReturnStatement , getter.body.class
+    end
+    def test_getter_name
+      assert_equal :page , getter.name
+    end
   end
 end

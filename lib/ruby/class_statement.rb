@@ -39,13 +39,15 @@ module Ruby
       unless class_send.is_a?(SendStatement)
         raise "Other than methods, only class methods allowed, not #{class_send.class}"
       end
-      unless class_send.name == :attr
-        raise "Only remapping attr and cattr, not #{class_send.name}"
+      allowed = [:attr , :attr_reader]
+      attr_name = class_send.name
+      unless allowed.include?(attr_name)
+        raise "Only remapping #{allowed}, not #{attr_name}"
       end
       methods = []
       class_send.arguments.each do |attr|
         methods << getter_for(attr.value)
-        methods << setter_for(attr.value)
+        methods << setter_for(attr.value) if attr_name == :attr
       end
       methods
     end

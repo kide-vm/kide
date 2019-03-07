@@ -8,23 +8,8 @@ module Ruby
       "attr :page"
     end
 
-    def test_class
-      assert_equal Vool::ClassStatement , @vool.class
-    end
-    def test_body
-      assert_equal Vool::Statements , @vool.body.class
-    end
     def test_method_len
       assert_equal 2 , @vool.body.length , "setter, getter"
-    end
-    def test_getter
-      assert_equal Vool::MethodStatement , getter.class
-    end
-    def test_getter_return
-      assert_equal Vool::ReturnStatement , getter.body.class
-    end
-    def test_getter_name
-      assert_equal :page , getter.name
     end
     def test_setter
       assert_equal Vool::MethodStatement , setter.class
@@ -44,5 +29,15 @@ module Ruby
       assert_equal [:val] , setter.args
     end
   end
+  class TestClassStatementTransformReader < MiniTest::Test
+    include AttributeTests
 
+    def attr_def
+      "attr_reader :page"
+    end
+    def test_method_len
+      assert_equal 1 , @vool.body.length , "setter, getter"
+    end
+
+  end
 end
