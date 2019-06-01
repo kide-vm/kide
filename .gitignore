@@ -12,6 +12,7 @@ doc
 # bundler
 .bundle
 *.gem
+vendor
 
 # jeweler generated
 pkg
