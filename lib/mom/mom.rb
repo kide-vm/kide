@@ -16,3 +16,4 @@ end
 
 require_relative "instruction/instruction.rb"
 require_relative "mom_compiler"
+require_relative "callable_compiler"

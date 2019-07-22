@@ -14,7 +14,7 @@ module Parfait
 
     attr :type, :name , :args_type , :frame_type
     attr_reader :source
-    
+
     def initialize(name , args_type , frame_type , source )
       self.name = name
       self.args_type = args_type
@@ -34,7 +34,7 @@ module Parfait
 
     def compiler_for(self_type)
       callable_method = create_callable_method(self_type)
-      compiler = Risc::MethodCompiler.new( callable_method )
+      compiler = Mom::CallableCompiler.new( callable_method )
       head = @source.to_mom( compiler )
       compiler.add_mom(head)
       compiler
