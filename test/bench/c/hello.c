@@ -2,8 +2,7 @@
 
 int main(void)
 {
-	setbuf(stdout, NULL); /* to make it equivalent to the typed version, otherwise it caches */
-	int counter = 100352 - 352;
+  int counter = 100000;
 	while(counter--) {
     printf("Hello there\n");
 	}

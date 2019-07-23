@@ -17,11 +17,10 @@ int fibo(int n){
 
 int main(void)
 {
-	int counter = 100352 - 352;
-	int counter2 = counter;
-	int level = 40;
+  int counter = 100000;
 	int fib ;
-	while(counter--) {
-		fib = fibo(level);
+	while(counter) {
+		fib += fibo(20);
+    counter -= 1;
 	}
 }

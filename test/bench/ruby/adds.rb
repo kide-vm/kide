@@ -14,6 +14,6 @@ end
  counter = 100000
 
 while(counter > 0) do
-	fibo(40)
+	fibo(20)
   counter -= 1
 end

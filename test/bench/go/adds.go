@@ -20,6 +20,6 @@ func main() {
   sum := 1
   for sum < 100000 {
     sum += 1
-    fibo( 40 )
+    fibo( 20 )
   }
 }

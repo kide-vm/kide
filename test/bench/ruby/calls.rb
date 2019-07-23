@@ -8,9 +8,9 @@ def fibo_r( n )
 end
 
 
- counter = 1000
+ counter = 100
 
  while(counter > 0) do
-   fibo_r(20)
+   fibo_r(10)
    counter -= 1
  end

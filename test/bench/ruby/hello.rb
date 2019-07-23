@@ -1,7 +1,6 @@
 
-counter = 100352 - 352;
+counter = 100000;
 while(counter > 0) do
   puts "Hello there"
-  STDOUT.flush
   counter = counter - 1
 end
