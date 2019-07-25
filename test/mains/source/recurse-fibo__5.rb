@@ -11,6 +11,6 @@ class Space
   end
 
   def main(arg)
-    return fibo_r(10)
+    return fibo_r(5)
   end
 end

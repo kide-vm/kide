@@ -1,5 +1,5 @@
 class Space
   def main(arg)
-    return "Hello-there".putstring
+    return 0
   end
 end

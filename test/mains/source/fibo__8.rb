@@ -1,6 +1,6 @@
 class Space
   def main(arg)
-    n = 10
+    n = 6
     a = 0
     b = 1
     i = 1
