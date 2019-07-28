@@ -11,7 +11,7 @@ module Risc
 
     def test_simple_collect
       objects = Collector.collect_space(@linker)
-      assert ((400 < objects.length) or (450 > objects.length)) , objects.length.to_s
+      assert_equal 600 ,  objects.length , objects.length.to_s
     end
 
     def test_collect_all_types
@@ -34,5 +34,40 @@ module Risc
         assert !position.valid?
       end
     end
+    def test_integer_positions
+      objects = Collector.collect_space(@linker)
+      int = Parfait.object_space.get_next_for(:Integer)
+      while(int)
+        assert Position.set?(int) , "INt #{int.object_id}"
+        int = int.next_integer
+      end
+    end
+  end
+  class TestBigCollector < MiniTest::Test
+
+    def setup
+      opt = Parfait.default_test_options
+      opt[:factory] = 4000
+      Parfait.boot!(opt)
+      Risc.boot!
+      @linker = Mom::MomCompiler.new.translate(:arm)
+    end
+
+    def test_simple_collect
+      objects = Collector.collect_space(@linker)
+      assert_equal 20329, objects.length , objects.length.to_s
+    end
+
+    def test_integer_positions
+      objects = Collector.collect_space(@linker)
+      int = Parfait.object_space.get_next_for(:Integer)
+      count = 0
+      while(int)
+        count += 1
+        assert Position.set?(int) , "INT #{int.object_id} , count #{count}"
+        int = int.next_integer
+      end
+    end
+
   end
 end
