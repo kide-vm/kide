@@ -1,19 +1,22 @@
 class Space
 
   def fibo_i(fib)
+    n = fib
     a = 0
-    b = fib
-    while( a < b )
-      a = a + 1
-      b = b - 1
+    b = 1
+    i = 1
+    while( i < n )
+      result = a + b
+      a = b
+      b = result
+      i = i + 1
     end
-    return a
+    return result
   end
 
-  # ran with --parfait=100000
-  # (time - noop) * 25 + noop
+  # ran with --parfait=40000
   def main(arg)
-    b = 4000
+    b = 1000
     while( b >= 1 )
       b = b - 1
       fibo_i(20)

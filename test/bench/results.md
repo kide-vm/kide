@@ -2,10 +2,10 @@
 
 hello - output hello world to measure kernel calls
 add   - run integer adds by linear fibonacci of 20
-call  - exercise calling by recursive fibonacci of 10
+call  - exercise calling by recursive fibonacci of 20
 noop  - a baseline that does nothing
 
-All programs (apart from noop) run 100k times to minimize startup impact.
+Hello and add run 100k times, calls 1k, to minimize startup impact.
 
 C was linked statically as dynamic linked influences times.
 Output was sent to /dev/null, so as to measure the calling and not the terminal.
@@ -22,8 +22,8 @@ Results (in ms) should be seen as relative, not absolute.
 
 
 language  |  noop   |  hello   |  add   |  call        
-c         |    45   |  3480    |   72   |   591
-go        |    53   |  4000    |   64   |   624
-rubyx     |    47   |  1660    |  800   |  2000
-ruby      |  1570   |  8240    | 2700   | 12370
-mruby     |   108   | 11210    | 1580   | 23400
+c         |    45   |  3480    |  150   |  1400
+go        |    53   |  4000    |   64   |   740
+rubyx     |    43   |  1560    | 1800   | 16500
+ruby      |  1570   |  8240    | 2290   | 17800
+mruby     |    86   | 11210    | 1580   | 26500

@@ -1,27 +1,22 @@
 class Space
 
-  def fibo_r(fib)
-    n = fib
-    a = 0
-    b = 1
-    i = 1
-    while( i < n )
-      result = a + b
-      a = b
-      b = result
-      i = i + 1
-    end
-    return result
+  def fibo_r( n )
+     if( n <  2 )
+       return n
+     end
+     a = fibo_r(n - 1)
+     d = fibo_r(n - 2)
+     return a + d
   end
 
-  # ran with --parfait=80000
-  # (time - noop) * 50 + noop
+  # ran with --parfait=70000
   def main(arg)
-    b = 2000
+    b = 2
+    res = 0
     while( b >= 1 )
       b = b - 1
-      fibo_r(20)
+      res = fibo_r(20)
     end
-    return b
+    return res
   end
 end

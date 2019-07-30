@@ -10,8 +10,8 @@ func fib(n uint) uint {
 
 func main() {
   sum := 1
-  for sum < 100000 {
+  for sum < 1000 {
     sum += 1
-    fib( 10 )
+    fib( 20 )
   }
 }
