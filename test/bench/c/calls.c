@@ -10,7 +10,7 @@ int fibo_r(int n)
 
 int main(void)
 {
-	int counter = 1000;
+	int counter = 100;
 	int fib ;
 	while(counter--) {
 		fib += fibo_r(20);

@@ -14,12 +14,12 @@ class Space
     return result
   end
 
-  # ran with --parfait=40000
+  # ran with --parfait=80000
   def main(arg)
     b = 1000
     while( b >= 1 )
       b = b - 1
-      fibo_i(20)
+      fibo_i(40)
     end
     return b
   end

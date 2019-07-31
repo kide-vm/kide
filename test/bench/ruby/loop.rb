@@ -1,5 +1,5 @@
 
-counter = 100000
+counter = 1000000
 while(counter > 0) do
-  counter = counter - 1
+  counter -= 1
 end

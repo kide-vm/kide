@@ -18,8 +18,10 @@ func fibo(n int ) int {
 
 func main() {
   sum := 1
-  for sum < 100000 {
+  res := 0
+  for sum < 50000 {
     sum += 1
-    fibo( 20 )
+    res = fibo( 40 )
   }
+  res += 1
 }

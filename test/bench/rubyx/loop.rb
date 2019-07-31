@@ -1,10 +1,10 @@
 class Space
-  # ran with --parfait=25000
+
+  # ran with --parfait=101000
   def main(arg)
-    b = 10000
+    b = 100000
     while( b >= 1 )
       b = b - 1
-      "Hello-there\n".putstring
     end
     return b
   end

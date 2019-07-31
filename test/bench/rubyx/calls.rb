@@ -5,8 +5,8 @@ class Space
        return n
      end
      a = fibo_r(n - 1)
-     d = fibo_r(n - 2)
-     return a + d
+     b = fibo_r(n - 2)
+     return a + b
   end
 
   # ran with --parfait=70000

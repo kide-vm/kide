@@ -17,7 +17,7 @@ class Stats
   def show
     #puts "no    per   var"
 
-    puts "#{@n}    #{@mean}   #{@variance / @n}"
+    puts "#{@n}    #{(@mean*1000).truncate(1)}   #{((@variance / @n)*100).truncate(2)}"
   end
 end
 class Runner
