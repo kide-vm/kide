@@ -50,16 +50,15 @@
     # and rebuilt the reserve (get_next already instantiates the reserve)
     #
     def get_more
-      first_object = get_chain
-      link = first_object
+      self.reserve = get_chain
+      last_link = self.reserve
       count = Factory.reserve_size
       while(count > 0)
-        link = get_next_for(link)
+        last_link = get_next_for(last_link)
         count -= 1
       end
-      self.next_object = get_next_for(link)
-      set_next_for( link , nil )
-      self.reserve = first_object
+      self.next_object = get_next_for(last_link)
+      set_next_for( last_link , nil )
       self
     end
 

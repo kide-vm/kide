@@ -13,3 +13,4 @@ class Space
     return result
   end
 end
+#Space.new.main(1)

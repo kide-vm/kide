@@ -11,7 +11,7 @@ def fibo( n)
 	return result
 end
 
- counter = 100000
+ counter = 50000
 
 while(counter > 0) do
 	fibo(40)

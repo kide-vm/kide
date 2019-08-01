@@ -8,7 +8,8 @@ module Risc
   # will be executed by method execute_SlotToReg
   #
   # The Interpreter (a bit like a cpu) has a state flag, a current instruction and registers
-  # We collect the stdout (as a hack not to interpret the OS)
+  # We collect the stdout (as a hack not to interpret the OS) in a string. It can also be passed
+  # in to the init, as an IO
   #
   class Interpreter
     # fire events for changed pc and register contents
@@ -18,11 +19,13 @@ module Risc
 
     attr_reader :instruction , :clock , :pc  # current instruction and pc
     attr_reader :registers     # the registers, 16 (a hash, sym -> contents)
-    attr_reader :stdout,  :state , :flags  # somewhat like the lags on a cpu, hash  sym => bool (zero .. . )
+    attr_reader :stdout,  :state , :flags  # somewhat like the flags on a cpu, hash  sym => bool (zero .. . )
 
-    #start in state :stopped and set registers to unknown
-    def initialize( linker )
-      @stdout , @clock , @pc , @state = "", 0 , 0 , :stopped
+    # start in state :stopped and set registers to unknown
+    # Linker gives the state of the program
+    # Passing a stdout in (an IO, only << called) can be used to get output immediately.
+    def initialize( linker , stdout = "")
+      @stdout , @clock , @pc , @state = stdout, 0 , 0 , :stopped
       @registers = {}
       @flags = {  :zero => false , :plus => false ,
                   :minus => false , :overflow => false }
@@ -32,8 +35,7 @@ module Risc
       @linker = linker
     end
 
-    def start_program(linker = nil)
-      initialize(linker || @linker)
+    def start_program()
       init = @linker.cpu_init
       set_state(:running)
       set_pc( Position.get(init).at )
@@ -249,10 +251,12 @@ module Risc
       str = get_register( :r1 ) # should test length, ie r2
       case str
       when Symbol
-        @stdout += str.to_s
+        @stdout << str.to_s
+        @stdout.flush if @stdout.respond_to?(:flush)
         return str.to_s.length
       when Parfait::Word
-        @stdout += str.to_string
+        @stdout << str.to_string
+        @stdout.flush if @stdout.respond_to?(:flush)
         return str.char_length
       else
         raise "NO string for putstring #{str.class}:#{str.object_id}" unless str.is_a?(Symbol)

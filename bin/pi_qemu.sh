@@ -1,1 +1,1 @@
-qemu-system-arm -kernel pi/kernel-qemu-4.9.59-stretch -dtb pi/versatile-pb.dtb -cpu arm1176 -m 256 -M versatilepb -no-reboot -serial stdio -append 'root=/dev/sda2 panic=1 rootfstype=ext4 rw' -hda pi/raspbian-stretch-lite.qcow -net nic -net user,hostfwd=tcp::2222-:22
+qemu-system-arm -kernel pi/kernel-qemu-4.19.50-buster -dtb pi/versatile-pb.dtb -cpu arm1176 -m 256 -M versatilepb -no-reboot -serial stdio -append 'root=/dev/sda2 panic=1 rootfstype=ext4 rw' -hda pi/raspbian-buster-lite.qcow -net nic -net user,hostfwd=tcp::2222-:22
