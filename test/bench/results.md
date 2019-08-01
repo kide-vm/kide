@@ -16,7 +16,7 @@ Also output was unbuffered, because that is what rubyx implements.
 # Results
 
 Results were measured by a ruby script. Mean and variance was measured until variance was low,
-always under one percent. Noop showed that program startup is a factor, so all programs loop from 10 to 50k.
+always under one percent. Noop showed that program startup is a factor, so all programs loop somewhere from 1M to 100, depending on how intensive.
 
 The machine was a virtual arm (qemu) run on a acer swift 5 (i5 8265 3.9GHz), performance roughly equivalent to a raspberry pi.
 Results (in ms) should be seen as relative, not absolute.
