@@ -13,6 +13,17 @@ module Mom
   class Instruction
     include Util::List
 
+    def initialize( source , nekst = nil )
+      @source = source
+      @next = nekst
+      return unless source
+      unless source.is_a?(String) or
+             source.is_a?(Vool::Statement)
+          raise "Source must be string or Instruction, not #{source.class}"
+      end
+    end
+    attr_reader :source
+
     # to_risc, like the name says, converts the instruction to it's Risc equivalent.
     # The Risc machine is basically a simple register machine (kind of arm).
     # In other words Mom is the higher abstraction and so mom instructions convert
@@ -27,18 +38,18 @@ module Mom
 
 end
 
-require_relative "label"
-require_relative "check"
-require_relative "basic_values"
-require_relative "simple_call"
-require_relative "dynamic_call"
-require_relative "block_yield"
-require_relative "resolve_method"
-require_relative "truth_check"
-require_relative "not_same_check"
-require_relative "jump"
-require_relative "return_jump"
-require_relative "slot_load"
-require_relative "return_sequence"
-require_relative "message_setup"
-require_relative "argument_transfer"
+require_relative "instruction/label"
+require_relative "instruction/check"
+require_relative "instruction/basic_values"
+require_relative "instruction/simple_call"
+require_relative "instruction/dynamic_call"
+require_relative "instruction/block_yield"
+require_relative "instruction/resolve_method"
+require_relative "instruction/truth_check"
+require_relative "instruction/not_same_check"
+require_relative "instruction/jump"
+require_relative "instruction/return_jump"
+require_relative "instruction/slot_load"
+require_relative "instruction/return_sequence"
+require_relative "instruction/message_setup"
+require_relative "instruction/argument_transfer"

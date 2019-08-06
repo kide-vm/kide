@@ -14,6 +14,8 @@
 module Mom
 end
 
-require_relative "instruction/instruction.rb"
-require_relative "mom_compiler"
+require_relative "instruction.rb"
+require_relative "mom_collection"
 require_relative "callable_compiler"
+require_relative "method_compiler"
+require_relative "block_compiler"
