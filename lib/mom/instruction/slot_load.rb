@@ -22,7 +22,7 @@ module Mom
   #        SlotDefinition (see there)
   #
   # @right: A SlotDefinition with slots or a Mom::Constant
-  # original_source: optinally another mom instruction that wil be passed down to created
+  # original_source: optinally another mom instruction that will be passed down to created
   #   risc instructions. (Because SlotLoad is often used internally in mom)
   class SlotLoad < Instruction
 
