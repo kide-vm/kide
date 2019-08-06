@@ -4,6 +4,12 @@ module Risc
   #
   # The code is added to the method_compiler.
   #
+  # Basically this allows to many Risc instructions with extremely readable code.
+  # example:
+  #  space << Parfait.object_space # load constant
+  #  message[:receiver] << space  #make current message's (r0) receiver the space
+  # See http://ruby-x.org/rubyx/builder.html for details
+  # 
   class Builder
 
     attr_reader :built , :compiler

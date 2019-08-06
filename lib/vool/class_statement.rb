@@ -29,7 +29,7 @@ module Vool
           raise "Only methods for now #{node.class}:#{node}"
         end
       end
-      Mom::MomCompiler.new(method_compilers)
+      Mom::MomCollection.new(method_compilers)
     end
 
     def each(&block)

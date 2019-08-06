@@ -1,14 +1,15 @@
 module Parfait
 
-# An Object is really a hash like structure. It is dynamic and
+# An Object is conceptually a hash like structure. It is dynamic and
 # you want to store values by name (instance variable names).
 #
-# One could (like mri), store the names in each object, but that is wasteful in both time and space.
-# Instead we store only the values, and access them by index.
+# One could (like mri), store the names in each object, but that is wasteful in both
+# time and space.
+# Instead we store only the values, and access them by index (bit like c++).
 # The Type allows the mapping of names to index.
 
-# The Type of an object describes the memory layout of the object. In a c analogy, it is the
-# information defined in a struct.
+# The Type of an object describes the memory layout of the object. In a c analogy,
+# it is the information defined in a struct.
 # The Type is a list of the names of instance variables, and their value types (int etc).
 #
 # Every object has a Type to describe it, so it's *first* instance variable is **always**
@@ -21,14 +22,13 @@ module Parfait
 # But Objects must also be able to carry methods themselves (ruby calls singleton_methods)
 # and those too are stored in the Type (both type and class include behaviour)
 
-# The object is an List of values of length n
-
-# The Type is a list of n names and n types that describe the values stored in an actual object.
-
+# The object is an "List" (memory location) of values of length n
+# The Type is a list of n names and n types that describe the values stored in an
+# actual object.
 # Together they turn the object into a hash like structure
 
-# For types to be a useful concept, they have to be unique and immutable. Any "change", like adding
-# a name/type pair, will result in a new instance.
+# For types to be a useful concept, they have to be unique and immutable. Any "change",
+# like adding a name/type pair, will result in a new type instance.
 
 # The Type class carries a hash of types of the systems, which is used to ensure that
 # there is only one instance of every type. Hash and equality are defined on type

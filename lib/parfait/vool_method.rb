@@ -5,7 +5,7 @@ module Parfait
   # Type objects are already created for args and locals, but the main attribute
   # is the source, which is a Vool::Statement
   #
-  # Classes store VoolMethods, while Types store CallableMethod
+  # Classes store VoolMethods, while Types store Risc::CallableMethod
   # A Type referes to a Class , but a Class (interface) is implemented by many types
   # as it changes during the course of it's life. Types do not change. Objects have
   # type, and so only indirectly a class.

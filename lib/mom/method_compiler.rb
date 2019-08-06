@@ -1,6 +1,6 @@
-module Risc
+module Mom
 
-  # MethodCompiler is used to generate risc instructions for methods
+  # MethodCompiler is used to generate Mom instructions for methods
   # and to instantiate the methods correctly.
 
   class MethodCompiler < CallableCompiler
