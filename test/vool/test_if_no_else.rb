@@ -3,12 +3,12 @@ require_relative "helper"
 
 module Vool
   class TestIfNoElse < MiniTest::Test
-    include MomCompile
-    include Mom
+    include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @ins = compile_first_method( "if(@a) ; @a = 5 ; end")
+      @compiler = compile_first_method( "if(@a) ; @a = 5 ; end")
+      @ins = @compiler.mom_instructions.next
     end
 
     def test_condition_compiles_to_check
@@ -24,7 +24,8 @@ module Vool
       assert_equal Label , @ins.last.class , @ins
     end
     def test_array
-      check_array  [TruthCheck, Label, SlotLoad, Label], @ins
+      check_array  [TruthCheck, Label, SlotLoad, Label, Label ,
+                    ReturnSequence, Label], @ins
     end
   end
 end

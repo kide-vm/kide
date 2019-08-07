@@ -7,7 +7,8 @@ module Vool
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @ins = compile_first_method( "a = 5; a.div4")
+      @compiler = compile_first_method( "a = 5; a.div4")
+      @ins = @compiler.mom_instructions.next
     end
     def test_check_type
       assert_equal NotSameCheck , @ins.next.class , @ins

@@ -8,7 +8,8 @@ module Vool
     def setup
       Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
-      @ins = compile_first_method( "a = main(1 + 2)" )
+      @compiler = compile_first_method( "a = main(1 + 2)" )
+      @ins = @compiler.mom_instructions.next
     end
 
     def test_array

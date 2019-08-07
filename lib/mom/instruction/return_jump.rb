@@ -7,6 +7,7 @@ module Mom
   #
   class ReturnJump < Instruction
 
+    # the jump quite simple resolves to an uncondition risc Branch
     def to_risc(compiler)
       compiler.add_code Risc::Branch.new(self , compiler.return_label)
     end

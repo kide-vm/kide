@@ -2,11 +2,12 @@ require_relative "helper"
 
 module Vool
   class TestAssignMom < MiniTest::Test
-    include MomCompile
+    include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @ins = compile_first_method( "local = 5")
+      @compiler = compile_first_method( "local = 5")
+      @ins = @compiler.mom_instructions.next
     end
 
     def test_class_compiles
@@ -34,10 +35,11 @@ module Vool
 
   #otherwise as above, but assigning instance, so should get a SlotLoad
   class TestAssignMomInstanceToLocal < MiniTest::Test
-    include MomCompile
+    include VoolCompile
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @ins = compile_first_method( "@a = 5 ; local = @a")
+      @compiler = compile_first_method( "@a = 5 ; local = @a")
+      @ins = @compiler.mom_instructions.next
     end
     def test_class_compiles
       assert_equal Mom::SlotLoad , @ins.next.class , @ins
@@ -46,11 +48,12 @@ module Vool
 
   #compiling to an argument should result in different second parameter in the slot array
   class TestAssignToArg < MiniTest::Test
-    include MomCompile
+    include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @ins = compile_first_method( "arg = 5")
+      @compiler = compile_first_method( "arg = 5")
+      @ins = @compiler.mom_instructions.next
     end
 
     def test_class_compiles
@@ -71,17 +74,19 @@ module Vool
   end
 
   class TestAssignMomToInstance < MiniTest::Test
-    include MomCompile
+    include VoolCompile
     def setup
       Parfait.boot!(Parfait.default_test_options)
     end
     def test_assigns_const
-      @ins = compile_first_method( "@a = 5")
+      @compiler = compile_first_method( "@a = 5")
+      @ins = @compiler.mom_instructions.next
       assert_equal Mom::SlotLoad , @ins.class , @ins
       assert_equal Mom::IntegerConstant , @ins.right.known_object.class , @ins
     end
     def test_assigns_move
-      @ins = compile_first_method( "@a = arg")
+      @compiler = compile_first_method( "@a = arg")
+      @ins = @compiler.mom_instructions.next
       assert_equal Mom::SlotLoad , @ins.class , @ins
       assert_equal Mom::SlotDefinition , @ins.right.class , @ins
     end

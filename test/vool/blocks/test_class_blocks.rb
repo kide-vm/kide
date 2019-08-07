@@ -2,7 +2,6 @@ require_relative "../helper"
 
 module VoolBlocks
   class TestClassAssignMom < MiniTest::Test
-    include MomCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
@@ -21,7 +20,7 @@ module VoolBlocks
     end
     def test_assign_compiles
       vool = Ruby::RubyCompiler.compile( as_class_method("val = 0") ).to_vool
-      assert_equal Mom::MomCompiler , vool.to_mom(nil).class
+      assert_equal Mom::MomCollection , vool.to_mom(nil).class
     end
   end
 end

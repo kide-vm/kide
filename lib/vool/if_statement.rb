@@ -15,8 +15,8 @@ module Vool
     end
 
     def simple_if(compiler)
-      true_label  = Mom::Label.new( "true_label_#{object_id.to_s(16)}")
-      merge_label = Mom::Label.new( "merge_label_#{object_id.to_s(16)}")
+      true_label  = Mom::Label.new( self,"true_label_#{object_id.to_s(16)}")
+      merge_label = Mom::Label.new( self,"merge_label_#{object_id.to_s(16)}")
 
       head = Mom::TruthCheck.new(condition.slot_definition(compiler) , merge_label)
       head << true_label

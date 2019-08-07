@@ -3,7 +3,7 @@ require_relative "../helper"
 module Vool
   # relies on @ins and receiver_type method
   module SimpleSendHarness
-    include MomCompile
+    include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)

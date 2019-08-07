@@ -33,7 +33,7 @@ module Vool
     #      this needs run-time variable resolution, which is just not done.
     #      we brace ourselves with the check, and exit (later raise) if . . .
     def method_check(compiler)
-      ok_label = Mom::Label.new("method_ok_#{self.object_id}")
+      ok_label = Mom::Label.new(self,"method_ok_#{self.object_id}")
       compile_method = Mom::SlotDefinition.new( compiler.get_method , [])
       runtime_method = Mom::SlotDefinition.new( :message , [ :method] )
       check = Mom::NotSameCheck.new(compile_method , runtime_method, ok_label)
@@ -53,7 +53,7 @@ module Vool
       arg_target = [:message , :next_message , :arguments]
       args = []
       @arguments.each_with_index do |arg , index| # +1 because of type
-        args << Mom::SlotLoad.new( arg_target + [index + 1] , arg.slot_definition(compiler))
+        args << Mom::SlotLoad.new(self, arg_target + [index + 1] , arg.slot_definition(compiler))
       end
       setup << Mom::ArgumentTransfer.new( mom_receive , args )
       setup << Mom::BlockYield.new( arg_index )

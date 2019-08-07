@@ -2,7 +2,7 @@ require_relative "../helper"
 
 module VoolBlocks
   class TestAssignMom < MiniTest::Test
-    include MomCompile
+    include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
@@ -30,7 +30,7 @@ module VoolBlocks
   end
 
   class TestAssignMomInstanceToLocal < MiniTest::Test
-    include MomCompile
+    include VoolCompile
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @ins = compile_first_block( "local = @a" , "@a = 5") #second arg in method scope
@@ -47,7 +47,7 @@ module VoolBlocks
   end
 
   class TestAssignToArg < MiniTest::Test
-    include MomCompile
+    include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
@@ -66,7 +66,7 @@ module VoolBlocks
   end
 
   class TestAssignMomToInstance < MiniTest::Test
-    include MomCompile
+    include VoolCompile
     def setup
       Parfait.boot!(Parfait.default_test_options)
     end

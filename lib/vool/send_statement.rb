@@ -50,7 +50,7 @@ module Vool
       arg_target = [:message , :next_message , :arguments]
       args = []
       @arguments.each_with_index do |arg , index| # +1 because of type
-        args << Mom::SlotLoad.new( arg_target + [index + 1] , arg.slot_definition(compiler))
+        args << Mom::SlotLoad.new(self, arg_target + [index + 1] , arg.slot_definition(compiler))
       end
       setup << Mom::ArgumentTransfer.new( mom_receive , args )
     end
