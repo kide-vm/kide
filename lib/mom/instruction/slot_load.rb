@@ -28,7 +28,8 @@ module Mom
 
     attr_reader :left , :right , :original_source
 
-    def initialize(left , right, original_source = nil)
+    def initialize(source , left , right, original_source = nil)
+      super(source)
       @left , @right = left , right
       @left = SlotDefinition.new(@left.shift , @left) if @left.is_a? Array
       @right = SlotDefinition.new(@right.shift , @right) if @right.is_a? Array

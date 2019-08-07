@@ -13,16 +13,16 @@ module Mom
       @constants = []
       @block_compilers = []
       @mom_instructions = Label.new(source_name, source_name)
-      @current = start = @risc_instructions
+      @current = start = @mom_instructions
       add_code Label.new( source_name, "return_label")
-      add_code Mom::ReturnSequence.new
+      add_code Mom::ReturnSequence.new(source_name)
       add_code Label.new( source_name, "unreachable")
       @current = start
     end
-    attr_reader :risc_instructions , :constants , :block_compilers , :callable , :current
+    attr_reader :mom_instructions , :constants , :block_compilers , :callable , :current
 
     def return_label
-      @risc_instructions.each do |ins|
+      @mom_instructions.each do |ins|
         next unless ins.is_a?(Label)
         return ins if ins.name == "return_label"
       end

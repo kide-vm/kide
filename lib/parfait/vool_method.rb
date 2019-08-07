@@ -36,7 +36,7 @@ module Parfait
       callable_method = create_callable_method(self_type)
       compiler = Mom::MethodCompiler.new( callable_method )
       head = @source.to_mom( compiler )
-      compiler.add_mom(head)
+      compiler.add_code(head)
       compiler
     end
   end

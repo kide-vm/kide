@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Mom
-  class TestMomCompiler < MiniTest::Test
+  class TestCallableCompiler < MiniTest::Test
     include MomCompile
 
     def setup

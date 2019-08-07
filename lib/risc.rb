@@ -20,7 +20,7 @@ module Risc
   # module method to reset, and init
   def self.boot!
     Position.clear_positions
-    Builtin.boot_functions
+#    Builtin.boot_functions
   end
 end
 

@@ -23,7 +23,8 @@ module Mom
 
   class Label < Instruction
     attr_reader :name
-    def initialize(name)
+    def initialize(source , name)
+      super(source)
       @name = name
     end
 

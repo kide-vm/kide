@@ -10,13 +10,13 @@ module RubyX
       code = "class Space ; def main(arg);return arg;end; end"
       @linker = ruby_to_risc(code)
     end
-    def test_to_risc
+    def pest_to_risc
       assert_equal Risc::Linker , @linker.class
     end
-    def test_method
+    def pest_method
       assert_equal :main , @linker.assemblers.first.callable.name
     end
-    def test_asm_len
+    def pest_asm_len
       assert_equal 23 , @linker.assemblers.length
     end
   end
