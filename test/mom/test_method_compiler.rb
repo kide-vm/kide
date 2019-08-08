@@ -12,9 +12,6 @@ module Mom
       vool.to_mom(nil)
       vool
     end
-    def in_test_mom(str)
-      FIXMERubyX::RubyXCompiler.new(in_Test(str)).ruby_to_mom()
-    end
     def create_method(body = "@ivar = 5")
       in_test_vool("def meth; #{body};end")
       test = Parfait.object_space.get_class_by_name(:Test)

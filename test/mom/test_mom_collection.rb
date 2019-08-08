@@ -27,18 +27,26 @@ module Mom
     def test_has_constant_before
       assert_equal  [] , @comp.constants
     end
-    def test_has_constant_after
-#needs translating
-#      assert_equal  "Hi" , @comp.constants[0].to_string
-    end
-    def test_has_translate
-#      assert @comp.translate(:interpreter)
-    end
     def test_append_class
       assert_equal MomCollection,  (@comp.append @comp).class
     end
     def test_append_length
       assert_equal 2 ,  @comp.append(@comp).method_compilers.length
+    end
+  end
+  class TestMomCollectionToRisc < MiniTest::Test
+    include MomCompile
+
+    def setup
+      Parfait.boot!(Parfait.default_test_options)
+      @comp = compile_mom( "class Test ; def main(); return 'Hi'; end; end;")
+      @collection = @comp.to_risc()
+    end
+  def test_has_to_risc
+      assert_equal Risc::RiscCollection, @collection.class
+    end
+    def test_has_risc_compiler
+      assert_equal Risc::RiscCollection, @collection.method_compilers.first
     end
   end
 end

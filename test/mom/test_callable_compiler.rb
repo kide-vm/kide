@@ -1,40 +1,32 @@
 require_relative "helper"
-
+class FakeCallable
+end
 module Mom
+  class FakeCallableCompiler < CallableCompiler
+    def source_name
+      "luke"
+    end
+  end
   class TestCallableCompiler < MiniTest::Test
-    include MomCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
-      @comp = compile_mom( "class Test ; def main(); return 'Hi'; end; end;")
+      @compiler = FakeCallableCompiler.new(FakeCallable.new)
     end
-
-    def test_class
-      assert_equal MomCompiler , @comp.class
+    def test_ok
+      assert @compiler
     end
-    def test_compilers
-      assert_equal 23 , @comp.compilers.length
+    def test_current
+      assert @compiler.current
     end
-    def test_boot_compilers
-      assert_equal 22 , @comp.boot_compilers.length
+    def test_current_label
+      assert_equal Label , @compiler.current.class
+      assert_equal @compiler.source_name , @compiler.current.name
     end
-    def test_compilers_bare
-      assert_equal 22 , MomCompiler.new.compilers.length
+    def test_mom
+      assert @compiler.mom_instructions
     end
-    def test_returns_constants
-      assert_equal Array , @comp.constants.class
-    end
-    def test_has_constant
-      assert_equal  "Hi" , @comp.constants[1].to_string
-    end
-    def test_has_translate
-      assert @comp.translate(:interpreter)
-    end
-    def test_append_class
-      assert_equal MomCompiler,  (@comp.append @comp).class
-    end
-    def test_append_length
-      assert_equal 2 ,  @comp.append(@comp).method_compilers.length
+    def test_const
+      assert_equal Array , @compiler.constants.class
     end
   end
 end

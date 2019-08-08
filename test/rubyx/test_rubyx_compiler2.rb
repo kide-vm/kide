@@ -8,9 +8,10 @@ module RubyX
     def setup
       super
       code = "class Space ; def main(arg);return arg;end; end"
-      @linker = ruby_to_risc(code)
+      @comp = RubyXCompiler.new(load_parfait: true )
+      @linker = @comp.ruby_to_risc(code,:interpreter)
     end
-    def pest_to_risc
+    def test_to_risc
       assert_equal Risc::Linker , @linker.class
     end
     def pest_method

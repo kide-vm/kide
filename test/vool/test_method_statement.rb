@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestVoolMethod < MiniTest::Test
+  class TestMethodStatement < MiniTest::Test
     include VoolCompile
 
     def setup
@@ -25,8 +25,5 @@ module Vool
       assert_equal Parfait::VoolMethod , method.make_method(clazz).class
     end
 
-    #create CallableMethod
-
-    #create Compiler
   end
 end

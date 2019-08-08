@@ -3,6 +3,26 @@ require_relative "helper"
 
 module Vool
   class TestClassStatement < MiniTest::Test
+    include ScopeHelper
+    def setup
+      Parfait.boot!({})
+      ruby_tree = Ruby::RubyCompiler.compile( as_test_main("a = 5") )
+      @vool = ruby_tree.to_vool
+    end
+    def test_class
+      assert_equal ClassStatement , @vool.class
+    end
+    def test_method
+      assert_equal MethodStatement , @vool.body.first.class
+    end
+    def test_create_class
+      assert_equal Parfait::Class , @vool.create_class_object.class
+    end
+    def test_create_class
+      assert_equal :Test , @vool.create_class_object.name
+    end
+  end
+  class TestClassStatementCompile < MiniTest::Test
     include VoolCompile
 
     def setup

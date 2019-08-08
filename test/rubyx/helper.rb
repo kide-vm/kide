@@ -5,10 +5,6 @@ module RubyX
   module RubyXHelper
     def setup
     end
-    def ruby_to_risc(input , options = {})
-      mom = ruby_to_mom(input , options)
-      mom.translate(options[:platform] || :interpreter)
-    end
     def ruby_to_vool(input, options = {})
       options = RubyX.default_test_options.merge(options)
       RubyXCompiler.new(options).ruby_to_vool(input)
