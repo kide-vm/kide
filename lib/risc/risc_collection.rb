@@ -1,16 +1,8 @@
-module Mom
-  # The Compiler for the Mom level is a collection of Risc level Method compilers,
+module Risc
+  # The Collection for the Risc level is a collection of Risc level Method compilers,
   # plus functions to translate from the risc to cpu specific code.
   #
-  # Builtin functions are created here, lazily, when translate is called.
-  # Instantiating builtin functions results in a MethodCompiler for that function, and
-  # to avoid confusion, these should be instantiated only once.
-  #
-  # As RubyCompiler pools source at the vool level, when several classes are compiled
-  # from vool to mom, several MomCompilers get instantiated. They must be merged before
-  # proceeding with translate. Thus we have a append method.
-  #
-  class MomCompiler
+  class RiscCollection
     attr_reader :method_compilers
 
     # Initialize with an array of risc MethodCompilers

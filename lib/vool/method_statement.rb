@@ -9,13 +9,22 @@ module Vool
 
     def to_mom(clazz)
       raise( "no class in #{self}") unless clazz
-      method = clazz.add_method_for(name , make_arg_type , make_frame , body )
+      method = make_method(clazz)
       compiler = method.compiler_for(clazz.instance_type)
       each do |node| ## TODO: must account for nested blocks (someday)
         next unless node.is_a?(BlockStatement)
         compiler.block_compilers << node.to_mom(compiler)
       end
       compiler
+    end
+
+    # Class to be passed in is a Parfait class
+    # return VoolMethod
+    #
+    # extracted call to create the VoolMethod as this is the place
+    # where we have all the info. Used in testing.
+    def make_method(clazz)
+      clazz.add_method_for(name , make_arg_type , make_frame , body )
     end
 
     def each(&block)

@@ -35,6 +35,7 @@ require_relative "risc/callable_compiler"
 require_relative "risc/method_compiler"
 require_relative "risc/block_compiler"
 require_relative "risc/assembler"
+require_relative "risc/risc_collection"
 
 class Integer
   def fits_u8?

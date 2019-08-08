@@ -63,7 +63,7 @@ module RubyX
     # to generate binaries
     def to_risc(platform)
       mom = to_mom
-      mom.translate(platform)
+      mom.to_risc(platform)
     end
 
     # ruby_to_mom does exactly that, it transform the incoming ruby source (string)

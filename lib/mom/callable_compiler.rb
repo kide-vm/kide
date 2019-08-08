@@ -34,6 +34,12 @@ module Mom
       @constants << const
     end
 
+    # translate to Risc, ie a Risc level CallableCompiler
+    # abstract functon that needs to be implemented by Method/BlockCompiler
+    def to_risc
+      raise "abstract in #{self.class}"
+    end
+
     # add a risc instruction after the current (insertion point)
     # the added instruction will become the new insertion point
     def add_code( instruction )
