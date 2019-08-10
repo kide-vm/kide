@@ -5,8 +5,10 @@ module Risc
 
   class MethodCompiler < CallableCompiler
 
-    def initialize( method )
-      super(method)
+    # Methods starts with a Label, both in risc and mom.
+    # Pass in the callable(method) and the mom label that the method starts with
+    def initialize( method , mom_label)
+      super(method , mom_label)
     end
 
     #include block_compilers constants

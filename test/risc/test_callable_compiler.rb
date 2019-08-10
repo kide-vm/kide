@@ -3,8 +3,8 @@ module Risc
   class FakeCallable
   end
   class FakeCallableCompiler < CallableCompiler
-    def initialize(a,b,c)
-      super(a,b,c)
+    def initialize(a,c)
+      super(a,c)
     end
     def source_name
       "luke"
@@ -14,8 +14,8 @@ module Risc
 
     def setup
       Parfait.boot!({})
-      label = Risc.label("hi","ho")
-      @compiler = FakeCallableCompiler.new(FakeCallable.new , [] , label)
+      label = Mom::Label.new("hi","ho")
+      @compiler = FakeCallableCompiler.new(FakeCallable.new  , label)
     end
     def test_ok
       assert @compiler

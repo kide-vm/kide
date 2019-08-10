@@ -45,19 +45,6 @@ module Mom
       Risc::RiscCollection.new(riscs)
     end
 
-    # convert the given mom instruction to_risc and then add it (see add_code)
-    # continue down the instruction chain unti depleted
-    # (adding moves the insertion point so the whole mom chain is added as a risc chain)
-    def add_mom( instruction )
-      while( instruction )
-        raise "whats this a #{instruction}" unless instruction.is_a?(Mom::Instruction)
-        #puts "adding mom #{instruction.to_s}:#{instruction.next.to_s}"
-        instruction.to_risc( self )
-        reset_regs
-        #puts "adding risc #{risc.to_s}:#{risc.next.to_s}"
-        instruction = instruction.next
-      end
-    end
 
   end
 end

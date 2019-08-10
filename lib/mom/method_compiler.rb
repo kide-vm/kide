@@ -27,6 +27,21 @@ module Mom
       @callable
     end
 
+    # drop down to risc
+    def to_risc
+      risc_comp = Risc::MethodCompiler.new(@callable , mom_instructions)
+      instruction = mom_instructions.next
+      while( instruction )
+        raise "whats this a #{instruction}" unless instruction.is_a?(Mom::Instruction)
+        #puts "adding mom #{instruction.to_s}:#{instruction.next.to_s}"
+        instruction.to_risc( risc_comp )
+        risc_comp.reset_regs
+        #puts "adding risc #{risc.to_s}:#{risc.next.to_s}"
+        instruction = instruction.next
+      end
+      risc_comp
+    end
+
     # helper method for builtin mainly
     # the class_name is a symbol, which is resolved to the instance_type of that class
     #

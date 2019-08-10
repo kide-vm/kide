@@ -11,14 +11,14 @@ module Risc
   #
   class CallableCompiler
 
-    # Must pass the callable (method/block) and the constants that were parsed
+    # Must pass the callable (method/block)
     # Also start instuction, usually a label is mandatory
-    def initialize( callable , constants , start)
+    def initialize( callable  , mom_label)
       @callable = callable
       @regs = []
-      @constants = constants
+      @constants = []
       @block_compilers = []
-      @current = @risc_instructions = start
+      @current = @risc_instructions = mom_label.risc_label(self)
       reset_regs
     end
     attr_reader :risc_instructions , :constants , :block_compilers , :callable , :current
