@@ -52,7 +52,7 @@ module Vool
       @arguments.each_with_index do |arg , index| # +1 because of type
         args << Mom::SlotLoad.new(self, arg_target + [index + 1] , arg.slot_definition(compiler))
       end
-      setup << Mom::ArgumentTransfer.new( mom_receive , args )
+      setup << Mom::ArgumentTransfer.new(self, mom_receive , args )
     end
 
     def simple_call(compiler)

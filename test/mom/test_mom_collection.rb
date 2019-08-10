@@ -42,11 +42,19 @@ module Mom
       @comp = compile_mom( "class Test ; def main(); return 'Hi'; end; end;")
       @collection = @comp.to_risc()
     end
-  def test_has_to_risc
+    def compiler
+      @collection.method_compilers.first
+    end
+    def test_has_to_risc
       assert_equal Risc::RiscCollection, @collection.class
     end
     def test_has_risc_compiler
-      assert_equal Risc::RiscCollection, @collection.method_compilers.first
+      assert_equal Risc::MethodCompiler, compiler.class
+      assert_equal 1, @collection.method_compilers.length
+    end
+    def test_has_risc_instructions
+      assert_equal Risc::Label, compiler.risc_instructions.class
+      assert_equal 17, compiler.risc_instructions.length
     end
   end
 end

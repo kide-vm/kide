@@ -38,7 +38,9 @@ module Mom
     end
 
     def to_risc(  )
-      riscs = []
+      riscs = method_compilers.collect do | mom_c |
+        mom_c.to_risc
+      end
       # to_risc all compilers
       # for each suffling constnts and fist label, then all instructions (see below)
       # then create risc collection

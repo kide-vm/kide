@@ -11,10 +11,10 @@ module Vool
     end
 
     def test_return_class
-      assert_equal Mom::MomCompiler , @ret.class
+      assert_equal Mom::MomCollection , @ret.class
     end
     def test_has_compilers
-      assert_equal Risc::MethodCompiler , @ret.method_compilers.first.class
+      assert_equal Mom::MethodCompiler , @ret.method_compilers.first.class
     end
 
     def test_constant

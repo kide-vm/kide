@@ -1,17 +1,17 @@
 require_relative "helper"
 
-module Mom
+module Risc
   class TestMomCompilerTranslate < MiniTest::Test
     include MomCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @comp = compile_mom( "class Test ; def main(); main{return 'Ho'};return 'Hi'; end; end;")
-      @linker = @comp.translate(:interpreter)
+      @linker = @comp.to_risc.translate(:interpreter)
     end
 
     def test_translate_class
-      assert_equal Risc::Linker , @linker.class
+      assert_equal Linker , @linker.class
     end
     def test_linker_has_constants
       assert_equal Array , @linker.constants.class
@@ -26,16 +26,16 @@ module Mom
       assert @linker.constants.include?("Ho")
     end
     def test_translate_platform
-      assert_kind_of Risc::Platform , @linker.platform
+      assert_kind_of Platform , @linker.platform
     end
     def test_translate_assemblers
-      assert_equal Risc::Assembler , @linker.assemblers.first.class
+      assert_equal Assembler , @linker.assemblers.first.class
     end
     def test_assembler_code
-      assert_equal Risc::Label , @linker.assemblers.first.instructions.class
+      assert_equal Label , @linker.assemblers.first.instructions.class
     end
     def test_assembler_assembled
-      assert_equal Risc::LoadConstant , @linker.assemblers.first.instructions.next.class
+      assert_equal LoadConstant , @linker.assemblers.first.instructions.next.class
     end
     def test_no_loops_in_chain
       @linker.assemblers.each do |asm|

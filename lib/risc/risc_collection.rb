@@ -19,7 +19,7 @@ module Risc
     # Return all compilers, namely the MethodCompilers passed in, plus the
     # boot_function's compilers (boot_compilers)
     def compilers
-      @method_compilers + boot_compilers
+      @method_compilers #+ boot_compilers
     end
 
     # collects constants from all compilers into one array

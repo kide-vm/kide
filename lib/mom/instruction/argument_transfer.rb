@@ -22,7 +22,8 @@ module Mom
 
     # receiver is a slot_definition
     # arguments is an array of SlotLoads
-    def initialize( receiver,arguments )
+    def initialize( source , receiver,arguments )
+      super(source)
       @receiver , @arguments = receiver , arguments
       raise "Receiver not SlotDefinition #{@receiver}" unless @receiver.is_a?(SlotDefinition)
       @arguments.each{|a| raise "args not SlotLoad #{a}" unless a.is_a?(SlotLoad)}
@@ -35,7 +36,7 @@ module Mom
     # load receiver and then each arg into the new message
     # delegates to SlotLoad for receiver and to the actual args.to_risc
     def to_risc(compiler)
-      transfer = SlotLoad.new([:message , :next_message , :receiver] , @receiver, self).to_risc(compiler)
+      transfer = SlotLoad.new(self.source ,[:message , :next_message , :receiver] , @receiver, self).to_risc(compiler)
       compiler.reset_regs
       @arguments.each do |arg|
         arg.to_risc(compiler)
