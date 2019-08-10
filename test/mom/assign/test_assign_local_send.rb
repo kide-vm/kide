@@ -12,11 +12,11 @@ module Risc
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
                  FunctionCall, Label, SlotToReg, SlotToReg, RegToSlot]
     end
-    def test_local_assign_instructions
+    def pest_local_assign_instructions
       assert_nil msg = check_nil , msg
     end
 
-    def test_constant_load
+    def pest_constant_load
       produced = produce_body
       load = produced.next(8)
       assert_equal LoadConstant , load.class

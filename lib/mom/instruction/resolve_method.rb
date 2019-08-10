@@ -15,7 +15,11 @@ module Mom
   class ResolveMethod < Instruction
     attr :cache_entry , :name
 
-    def initialize(name , cache_entry)
+    # pass in source (VoolStatement)
+    # name of the method (don't knwow the actaual method)
+    # and the cache_entry
+    def initialize(source , name , cache_entry)
+      super(source)
       @name = name
       @cache_entry = cache_entry
     end

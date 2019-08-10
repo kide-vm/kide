@@ -53,17 +53,15 @@ module RubyX
     # translates those to the platform given
     #
     # After creating vool, we call to_risc
-    def ruby_to_risc(ruby, platform)
+    def ruby_to_risc(ruby)
       ruby_to_vool(ruby)
-      to_risc(platform)
+      to_risc()
     end
 
-    # Process previously stored vool source. First to mom, then to platform.
-    # Translating to platform returns a linker that is returned and can be used
-    # to generate binaries
-    def to_risc(platform)
+    # Process previously stored vool source. First to mom, then to risc.
+    def to_risc()
       mom = to_mom
-      mom.to_risc(platform)
+      mom.to_risc()
     end
 
     # ruby_to_mom does exactly that, it transform the incoming ruby source (string)

@@ -8,7 +8,7 @@ module Mom
       method = make_method
       @compiler = Risc::FakeCompiler.new
       @cache_entry = Parfait::CacheEntry.new(method.frame_type, method)
-      load = SlotLoad.new( [@cache_entry , :cached_type] , [:message, :type] )
+      load = SlotLoad.new("test", [@cache_entry , :cached_type] , [:message, :type] )
       load.to_risc(@compiler)
       @instructions = @compiler.instructions
     end

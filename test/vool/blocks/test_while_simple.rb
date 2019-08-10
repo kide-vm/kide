@@ -6,8 +6,7 @@ module VoolBlocks
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @compiler = compile_first_block( "while(@a) ; @a = 5 ; end")
-      @ins = @compiler.mom_instructions.next
+      @ins = compile_first_block( "while(@a) ; @a = 5 ; end")
     end
 
     def test_compiles_as_while

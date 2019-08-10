@@ -9,10 +9,13 @@ module RubyX
       super
       code = "class Space ; def main(arg);return arg;end; end"
       @comp = RubyXCompiler.new(load_parfait: true )
-      @linker = @comp.ruby_to_risc(code,:interpreter)
+      @collection = @comp.ruby_to_risc(code)
     end
     def test_to_risc
-      assert_equal Risc::Linker , @linker.class
+      assert_equal Risc::RiscCollection , @collection.class
+    end
+    def pest_linker
+      assert_equal Risc::Linker , @collection.translate(:interpreter).class
     end
     def pest_method
       assert_equal :main , @linker.assemblers.first.callable.name
