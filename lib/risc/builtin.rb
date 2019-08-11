@@ -37,9 +37,8 @@ module Risc
       end
 
       obj_type = space.get_type_by_class_name(:Object)
-      [ :get_internal_word , #:set_internal_word , :_method_missing,
-        #:exit , :__init__
-      ].each do |f|
+      [ :get_internal_word , :set_internal_word , :_method_missing,
+        :exit , :__init__ ].each do |f|
         compilers << compiler_for( obj_type , Object , f)
       end
 
