@@ -5,18 +5,19 @@ module Risc
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
+      @functions = Builtin.boot_functions
     end
     def test_has_boot_function
-      assert Builtin.boot_functions
+      assert @functions
     end
     def test_boot_function_type
-      assert_equal Array, Builtin.boot_functions.class
+      assert_equal Array, @functions.class
     end
     def test_boot_function_length
-      assert_equal 23, Builtin.boot_functions.length
+      assert_equal 2, @functions.length
     end
     def test_boot_function_first
-      assert_equal MethodCompiler, Builtin.boot_functions.first.class
+      assert_equal Mom::MethodCompiler, @functions.first.class
     end
   end
 end

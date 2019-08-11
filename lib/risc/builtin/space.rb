@@ -8,7 +8,6 @@ module Risc
         # defined here as empty, to be redefined
         def main(context)
           compiler = compiler_for(:Space , :main ,{args: :Integer})
-          compiler.add_mom( Mom::ReturnSequence.new)
           return compiler
         end
 

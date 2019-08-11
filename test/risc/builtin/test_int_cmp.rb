@@ -1,5 +1,6 @@
 require_relative "helper"
 
+# TODO move these to interpreter dir
 module Risc
   module Builtin
     class IntCmp < BuiltinTest

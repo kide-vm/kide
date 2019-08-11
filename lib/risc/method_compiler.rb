@@ -34,7 +34,7 @@ module Risc
     #
     # return compiler_for_type with the resolved type
     #
-    def self.compiler_for_class( class_name , method_name , args , frame )
+    def self.compiler_for_clazz( class_name , method_name , args , frame )
       raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
       clazz = Parfait.object_space.get_class_by_name! class_name
       compiler_for_type( clazz.instance_type , method_name , args , frame)
@@ -53,7 +53,7 @@ module Risc
     # args a hash that will be converted to a type
     # the created method is set as the current and the given type too
     # return the compiler
-    def self.compiler_for_type( type , method_name , args , frame)
+    def self.compiler_for_typez( type , method_name , args , frame)
       raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
       raise "Args must be Type #{args}" unless args.is_a?(Parfait::Type)
       raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol

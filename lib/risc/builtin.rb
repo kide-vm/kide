@@ -1,4 +1,16 @@
-require_relative "builtin/compile_helper"
+module Risc
+  module Builtin
+    module CompileHelper
+
+      def compiler_for( clazz_name , method_name , arguments , locals = {})
+        frame = Parfait::NamedList.type_for( locals )
+        args = Parfait::NamedList.type_for( arguments )
+        Mom::MethodCompiler.compiler_for_class(clazz_name , method_name , args, frame )
+      end
+    end
+  end
+end
+
 require_relative "builtin/space"
 require_relative "builtin/integer"
 require_relative "builtin/object"
@@ -25,22 +37,23 @@ module Risc
       end
 
       obj_type = space.get_type_by_class_name(:Object)
-      [ :get_internal_word , :set_internal_word , :_method_missing,
-        :exit , :__init__].each do |f|
+      [ :get_internal_word , #:set_internal_word , :_method_missing,
+        #:exit , :__init__
+      ].each do |f|
         compilers << compiler_for( obj_type , Object , f)
       end
 
       word_type = space.get_type_by_class_name(:Word)
       [:putstring , :get_internal_byte , :set_internal_byte ].each do |f|
-        compilers << compiler_for( word_type , Word , f)
+        #compilers << compiler_for( word_type , Word , f)
       end
 
       int_type = space.get_type_by_class_name(:Integer)
       Risc.operators.each do |op|
-        compilers << operator_compiler( int_type , op)
+        #compilers << operator_compiler( int_type , op)
       end
       [:putint, :div4, :div10 , :<,:<= , :>=, :>].each do |f|   #div4 is just a forward declaration
-        compilers << compiler_for( int_type , Integer , f)
+        #compilers << compiler_for( int_type , Integer , f)
       end
       compilers
     end

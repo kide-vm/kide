@@ -1,11 +1,12 @@
 require "rx-file"
 
 require "util/logging"
+require "util/list"
 require_relative "elf/object_writer"
+require_relative "mom/mom"
 require_relative "risc"
 require_relative "arm/arm_machine"
 require_relative "arm/arm_platform"
 require_relative "vool/statement"
 require_relative "ruby"
 require_relative "rubyx/rubyx_compiler"
-require_relative "mom/mom"
