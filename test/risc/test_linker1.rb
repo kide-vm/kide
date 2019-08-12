@@ -4,7 +4,7 @@ module Risc
   class TestMachinePos < MiniTest::Test
     def setup
       code = "class Space; def main(arg);a = 1;return a;end;end"
-      @linker = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_risc(code,:arm)
+      @linker = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_binary(code, :arm)
       @linker.position_all
     end
     def test_positions_set

@@ -5,7 +5,7 @@ module Risc
     def setup
       Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
-      @linker = Mom::MomCompiler.new.translate(:interpreter)
+      @linker = Mom::MomCollection.new.to_risc.translate(:interpreter)
       @binary = Parfait::BinaryCode.new(1)
       @method = Parfait.object_space.types.values.first.methods
       @label = Risc.label("hi","ho")

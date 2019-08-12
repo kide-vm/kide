@@ -5,9 +5,10 @@ module Risc
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
+      Mom.boot!
       Risc.boot!
       init = Parfait.object_space.get_init
-      @builder = Risc::MethodCompiler.new( init ).builder(init)
+      @builder = Risc::MethodCompiler.new( init ,Mom::Label.new( "source_name", "return_label")).builder(init)
       @label = Risc.label("source","name")
       @start = @builder.compiler.current
     end

@@ -6,7 +6,7 @@ module Mom
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @compiler = Risc::FakeCompiler.new
-      load = SlotLoad.new( [:message, :caller, :type] , [:message, :caller , :type] )
+      load = SlotLoad.new( "test",[:message, :caller, :type] , [:message, :caller , :type] )
       load.to_risc(@compiler)
       @instructions = @compiler.instructions
     end

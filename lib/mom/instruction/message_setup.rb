@@ -22,6 +22,7 @@ module Mom
     attr_reader :method_source
 
     def initialize(method_source)
+      raise "no nil" unless method_source
       @method_source = method_source
     end
 

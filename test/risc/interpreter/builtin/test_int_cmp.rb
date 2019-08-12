@@ -1,9 +1,9 @@
-require_relative "helper"
+require_relative "../helper"
 
 # TODO move these to interpreter dir
-module Mom
+module Risc
   module Builtin
-    class IntCmp < BuiltinTest
+    class IntCmp < Minitest::Test
       include Ticker
       def setup
       end

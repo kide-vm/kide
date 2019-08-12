@@ -4,8 +4,9 @@ module Risc
   class TestInterpreterBasics < MiniTest::Test
     def setup
       Parfait.boot!(Parfait.default_test_options)
+      Mom.boot!
       Risc.boot!
-      @linker = Mom::MomCompiler.new.translate(:interpreter)
+      @linker = Mom::MomCollection.new.to_risc.translate(:interpreter)
     end
 
     def test_class
@@ -54,7 +55,7 @@ module Risc
     end
     def test_pc1
       @interpreter.tick
-      assert_equal 23672 , @interpreter.pc
+      assert_equal 22856 , @interpreter.pc
     end
     def test_tick2
       @interpreter.tick
@@ -68,7 +69,7 @@ module Risc
     def test_pc2
       @interpreter.tick
       @interpreter.tick
-      assert_equal 23676 , @interpreter.pc
+      assert_equal 22860 , @interpreter.pc
     end
     def test_tick_14_jump
       14.times {@interpreter.tick}

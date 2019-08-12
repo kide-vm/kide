@@ -4,8 +4,9 @@ module Risc
   class TestMachinePositions < MiniTest::Test
     def setup_for(platform)
       Parfait.boot!(Parfait.default_test_options)
+      Mom.boot!
       Risc.boot!
-      @linker = Mom::MomCompiler.new.translate(platform)
+      @linker = Mom::MomCollection.new.to_risc.translate(platform)
       @linker.position_all
     end
     def test_cpu_init

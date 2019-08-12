@@ -65,7 +65,7 @@ module Mom
         # temporary, need to raise really.
         factory! << Parfait.object_space.get_factory_for(:Integer)
         integer_tmp! << factory[:reserve]
-        Risc::Builtin::Object.emit_syscall( builder , :exit ) #uses integer_tmp
+        Mom::Builtin.emit_syscall( builder , :exit ) #uses integer_tmp
 
         add_code ok_label
         cache_entry[:cached_method] << callable_method

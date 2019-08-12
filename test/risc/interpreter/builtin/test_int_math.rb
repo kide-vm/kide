@@ -1,8 +1,8 @@
-require_relative "helper"
+require_relative "../helper"
 
-module Mom
+module Risc
   module Builtin
-    class IntMath < BuiltinTest
+    class IntMath < Minitest::Test
       include Ticker
       def setup
       end
