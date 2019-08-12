@@ -49,7 +49,7 @@ module Risc
 
       int_type = space.get_type_by_class_name(:Integer)
       Risc.operators.each do |op|
-        #compilers << operator_compiler( int_type , op)
+        compilers << operator_compiler( int_type , op)
       end
       [ :div4, :<,:<= , :>=, :> , :div10 ].each do |f|   #div4 is just a forward declaration
         compilers << compiler_for( int_type , Integer , f)

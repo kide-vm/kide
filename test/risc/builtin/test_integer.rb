@@ -53,7 +53,7 @@ module Risc
         assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        assert_equal 27 , @method.to_risc.risc_instructions.length
+        assert_equal 28 , @method.to_risc.risc_instructions.length
       end
     end
     class TestIntComp2 < BootTest
@@ -72,6 +72,33 @@ module Risc
       end
       def test_risc_length
         assert_equal 27 , @method.to_risc.risc_instructions.length
+      end
+    end
+    class TestIntOperators < BootTest
+      def setup
+        super
+      end
+      def each_method &block
+        Risc.operators.each do |name|
+          method = get_compiler(name)
+          block.yield(method)
+        end
+      end
+      def test_has_get_internal
+        each_method do |method|
+          assert_equal Mom::MethodCompiler , method.class
+          assert_equal 5 , method.mom_instructions.length
+        end
+      end
+      def test_compile
+        each_method do |method|
+          assert_equal Risc::MethodCompiler , method.to_risc.class
+        end
+      end
+      def test_risc_length
+        each_method do |method|
+          assert_equal 49 , method.to_risc.risc_instructions.length
+        end
       end
     end
   end

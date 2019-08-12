@@ -14,7 +14,7 @@ module Risc
       assert_equal Array, @functions.class
     end
     def test_boot_function_length
-      assert_equal 15, @functions.length
+      assert_equal 22, @functions.length
     end
     def test_boot_function_first
       assert_equal Mom::MethodCompiler, @functions.first.class
