@@ -2,8 +2,7 @@ require_relative "helper"
 
 module Vool
   class TestSendArgsSendMom < MiniTest::Test
-    include MomCompile
-    include Mom
+    include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
@@ -14,7 +13,8 @@ module Vool
 
     def test_array
       check_array [MessageSetup, ArgumentTransfer, SimpleCall, SlotLoad, MessageSetup ,
-                    ArgumentTransfer, SimpleCall, SlotLoad] , @ins
+                    ArgumentTransfer, SimpleCall, SlotLoad ,Label, ReturnSequence ,
+                    Label] , @ins
     end
 
     def test_one_call

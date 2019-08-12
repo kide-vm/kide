@@ -3,7 +3,6 @@ require_relative "helper"
 module Vool
   class TestSendSelfMom < MiniTest::Test
     include SimpleSendHarness
-    include Mom
 
     def send_method
       "self.get_internal_word(0)"

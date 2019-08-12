@@ -2,34 +2,34 @@ require_relative "../helper"
 
 module Vool
   class TestSendCachedSimpleMom < MiniTest::Test
-    include MomCompile
-    include Mom
+    include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @compiler = compile_first_method( "a = 5; a.div4")
       @ins = @compiler.mom_instructions.next
     end
-    def pest_check_type
+    def test_check_type
       assert_equal NotSameCheck , @ins.next.class , @ins
     end
-    def pest_type_update
+    def test_type_update
       load =  @ins.next(2)
       assert_equal :message , load.right.known_object , load
       assert_equal :frame , load.right.slots[0] , load
       assert_equal :a , load.right.slots[1] , load
       assert_equal :type , load.right.slots[2] , load
     end
-    def pest_check_resolve_call
+    def test_check_resolve_call
       assert_equal ResolveMethod , @ins.next(3).class , @ins
     end
-    def pest_dynamic_call_last
-      assert_equal DynamicCall ,  @ins.last.class , @ins
+    def test_dynamic_call_last
+      assert_equal DynamicCall ,  @ins.next(7).class , @ins
     end
 
-    def pest_array
+    def test_array
       check_array [SlotLoad, NotSameCheck, SlotLoad, ResolveMethod, Label, MessageSetup ,
-                    ArgumentTransfer, DynamicCall] , @ins
+                    ArgumentTransfer, DynamicCall, Label, ReturnSequence ,
+                    Label] , @ins
     end
 
   end

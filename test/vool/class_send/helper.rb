@@ -4,12 +4,13 @@ module Vool
   # relies on @ins and receiver_type method
 
   module ClassHarness
-    include MomCompile
+    include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      #Risc::Builtin.boot_functions
-      @ins = compile_first_method( send_method )
+      Risc.boot!
+      @compiler = compile_first_method( send_method )
+      @ins = @compiler.mom_instructions.next
     end
 
     def test_first_not_array
@@ -19,7 +20,7 @@ module Vool
       assert_equal Mom::MessageSetup , @ins.class , @ins
     end
     def test_two_instructions_are_returned
-      assert_equal 3 ,  @ins.length , @ins
+      assert_equal 6 ,  @ins.length , @ins
     end
     def test_receiver_move_class
       assert_equal Mom::ArgumentTransfer,  @ins.next(1).class
@@ -37,7 +38,8 @@ module Vool
       assert_equal Parfait::CallableMethod,  @ins.next(2).method.class
     end
     def test_array
-      check_array [Mom::MessageSetup,Mom::ArgumentTransfer,Mom::SimpleCall] , @ins
+      check_array [MessageSetup,ArgumentTransfer,SimpleCall,Label,
+                  ReturnSequence , Label] , @ins
     end
   end
 

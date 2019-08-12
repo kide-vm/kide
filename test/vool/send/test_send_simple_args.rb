@@ -20,7 +20,8 @@ module Vool
       assert_equal 2,    @ins.next(1).arguments[1].right.known_object.value
     end
     def test_array
-      check_array [Mom::MessageSetup,Mom::ArgumentTransfer,Mom::SimpleCall] , @ins
+      check_array [MessageSetup,ArgumentTransfer,SimpleCall, Label, ReturnSequence ,
+                    Label] , @ins
     end
   end
 end
