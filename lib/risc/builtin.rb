@@ -51,8 +51,8 @@ module Risc
       Risc.operators.each do |op|
         #compilers << operator_compiler( int_type , op)
       end
-      [:putint, :div4, :div10 , :<,:<= , :>=, :>].each do |f|   #div4 is just a forward declaration
-        #compilers << compiler_for( int_type , Integer , f)
+      [ :div4, :<,:<= , :>=, :> , :div10 ].each do |f|   #div4 is just a forward declaration
+        compilers << compiler_for( int_type , Integer , f)
       end
       compilers
     end
