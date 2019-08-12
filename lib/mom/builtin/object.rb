@@ -1,3 +1,9 @@
+require_relative "get_internal_word"
+require_relative "set_internal_word"
+require_relative "method_missing"
+require_relative "init"
+require_relative "exit"
+
 module Mom
   module Builtin
     class Object
@@ -11,19 +17,6 @@ module Mom
           compiler.add_code GetInternalWord.new("get_internal_word")
           return compiler
         end
-        class GetInternalWord < ::Mom::Instruction
-          def to_risc(compiler)
-            compiler.builder(compiler.source).build do
-              object! << message[:receiver]
-              integer! << message[:arguments]
-              integer << integer[Parfait::NamedList.type_length + 0] #"at" is at index 0
-              integer.reduce_int
-              object << object[integer]
-              message[:return_value] << object
-            end
-          end
-        end
-
         # self[index] = val basically. Index is the first arg , value the second
         # return the value passed in
         def set_internal_word( context )
@@ -32,36 +25,12 @@ module Mom
           return compiler
         end
 
-        class SetInternalWord < ::Mom::Instruction
-          def to_risc(compiler)
-            compiler.builder(compiler.source).build do
-              object! << message[:receiver]
-              integer! << message[:arguments]
-              object_reg! << integer[Parfait::NamedList.type_length + 1] #"value" is at index 1
-              integer << integer[Parfait::NamedList.type_length + 0] #"at" is at index 0
-              integer.reduce_int
-              object[integer] << object_reg
-              message[:return_value] << object_reg
-            end
-            return compiler
-          end
-        end
-
         # every object needs a method missing.
         # Even if it's just this one, sys_exit (later raise)
         def _method_missing( context )
           compiler = compiler_for(:Object,:method_missing ,{})
           compiler.add_code MethodMissing.new("missing")
           return compiler
-        end
-
-        class MethodMissing < ::Mom::Instruction
-          def to_risc(compiler)
-            builder = compiler.builder(compiler.source)
-            builder.prepare_int_return # makes integer_tmp variable as return
-            Builtin.emit_syscall( builder , :exit )
-            return compiler
-          end
         end
 
         # this is the really really first place the machine starts (apart from the jump here)
@@ -77,38 +46,6 @@ module Mom
           return compiler
         end
 
-        class Init < ::Mom::Instruction
-          def to_risc(compiler)
-            builder = compiler.builder(compiler.source)
-            builder.build do
-              factory! << Parfait.object_space.get_factory_for(:Message)
-              message << factory[:next_object]
-              next_message! << message[:next_message]
-              factory[:next_object] << next_message
-            end
-
-            Mom::MessageSetup.new(Parfait.object_space.get_main).build_with( builder )
-
-            builder.build do
-              message << message[:next_message]
-              space? << Parfait.object_space
-              message[:receiver] << space
-            end
-
-            exit_label = Risc.label(compiler.source , "#{compiler.receiver_type.object_class.name}.#{compiler.source.name}" )
-            ret_tmp = compiler.use_reg(:Label).set_builder(builder)
-            builder.build do
-              ret_tmp << exit_label
-              message[:return_address] << ret_tmp
-              add_code Risc.function_call( "__init__ issue call" ,  Parfait.object_space.get_main)
-              add_code exit_label
-            end
-            compiler.reset_regs
-            exit_sequence(builder)
-            return compiler
-          end
-        end
-
         # the exit function
         # mainly calls exit_sequence
         def exit( context )
@@ -117,14 +54,6 @@ module Mom
           return compiler
         end
 
-        class Exit < ::Mom::Instruction
-          def to_risc(compiler)
-            builder = compiler.builder(compiler.source)
-            builder.prepare_int_return # makes integer_tmp variable as return
-            Builtin.exit_sequence(builder)
-            return compiler
-          end
-        end
       end
       extend ClassMethods
     end

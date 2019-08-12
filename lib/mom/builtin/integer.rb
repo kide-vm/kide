@@ -1,3 +1,8 @@
+require_relative "div4"
+require_relative "div10"
+require_relative "operator"
+require_relative "comparison"
+
 module Mom
   module Builtin
     # integer related kernel functions
@@ -16,21 +21,6 @@ module Mom
           compiler = compiler_for(:Integer,:div4 ,{})
           compiler.add_code Div4.new("div4")
           return compiler
-        end
-        class Div4 < ::Mom::Instruction
-          def to_risc(compiler)
-            builder = compiler.builder(compiler.source)
-            integer_tmp = builder.allocate_int
-            builder.build do
-              integer_self! << message[:receiver]
-              integer_self.reduce_int
-              integer_1! << 2
-              integer_self.op :>> , integer_1
-              integer_tmp[Parfait::Integer.integer_index] << integer_self
-              message[:return_value] << integer_tmp
-            end
-            return compiler
-          end
         end
 
         # implemented by the comparison
@@ -62,35 +52,6 @@ module Mom
           compiler.add_code Comparison.new("comparison" , operator)
           return compiler
         end
-        class Comparison < ::Mom::Instruction
-          attr_reader :operator
-          def initialize(name , operator)
-            super(name)
-            @operator = operator
-          end
-          def to_risc(compiler)
-            builder = compiler.builder(compiler.source)
-            operator = @operator # make accessible in block
-            builder.build do
-              integer! << message[:receiver]
-              integer.reduce_int
-              integer_reg! << message[:arguments]
-              integer_reg << integer_reg[Parfait::NamedList.type_length + 0] #"other" is at index 0
-              integer_reg.reduce_int
-              swap_names(:integer , :integer_reg) if(operator.to_s.start_with?('<') )
-              integer.op :- , integer_reg
-              if_minus false_label
-              if_zero( false_label ) if operator.to_s.length == 1
-              object! << Parfait.object_space.true_object
-              branch merge_label
-              add_code false_label
-              object << Parfait.object_space.false_object
-              add_code merge_label
-              message[:return_value] << object
-            end
-            return compiler
-          end
-        end
 
         # implemented all known binary operators that map straight to machine codes
         # this function (similar to comparison):
@@ -100,32 +61,8 @@ module Mom
         # - returns the new int
         def operator_method( op_sym )
           compiler = compiler_for(:Integer, op_sym ,{other: :Integer })
-          compiler.add_code OperatorInstruction.new("operator" , op_sym)
+          compiler.add_code Operator.new("operator" , op_sym)
           return compiler
-        end
-        class OperatorInstruction < ::Mom::Instruction
-          attr_reader :operator
-          def initialize(name , operator)
-            super(name)
-            @operator = operator
-          end
-
-          def to_risc(compiler)
-            builder = compiler.builder(compiler.source)
-            integer_tmp = builder.allocate_int
-            operator = @operator # make accessible in block
-            builder.build do
-              integer! << message[:receiver]
-              integer.reduce_int
-              integer_reg! << message[:arguments]
-              integer_reg << integer_reg[Parfait::NamedList.type_length + 0] #"other" is at index 0
-              integer_reg.reduce_int
-              integer.op operator , integer_reg
-              integer_tmp[Parfait::Integer.integer_index] << integer
-              message[:return_value] << integer_tmp
-            end
-            return compiler
-          end
         end
 
         # as the name suggests, this devides the integer (self) by ten
@@ -140,67 +77,6 @@ module Mom
           compiler = compiler_for(:Integer,:div10 ,{})
           compiler.add_code Div10.new("div10")
           return compiler
-        end
-        class Div10 < ::Mom::Instruction
-          def to_risc(compiler)
-            s = "div_10 "
-            builder = compiler.builder(compiler.source)
-            integer_tmp = builder.allocate_int
-            builder.build do
-              integer_self! << message[:receiver]
-              integer_self.reduce_int
-              integer_1! << integer_self
-              integer_reg! << integer_self
-
-              integer_const! << 1
-              integer_1.op :>> , integer_const
-
-              integer_const << 2
-              integer_reg.op :>> , integer_const
-              integer_reg.op :+ , integer_1
-
-              integer_const << 4
-              integer_1 << integer_reg
-              integer_reg.op :>> , integer_1
-
-              integer_reg.op :+ , integer_1
-
-              integer_const << 8
-              integer_1 << integer_reg
-              integer_1.op :>> , integer_const
-
-              integer_reg.op :+ , integer_1
-
-              integer_const << 16
-              integer_1 << integer_reg
-              integer_1.op :>> , integer_const
-
-              integer_reg.op :+ , integer_1
-
-              integer_const << 3
-              integer_reg.op :>> , integer_const
-
-              integer_const << 10
-              integer_1 << integer_reg
-              integer_1.op :* , integer_const
-
-              integer_self.op :- , integer_1
-              integer_1 << integer_self
-
-              integer_const << 6
-              integer_1.op :+ , integer_const
-
-              integer_const << 4
-              integer_1.op :>> , integer_const
-
-              integer_reg.op :+ , integer_1
-
-              integer_tmp[Parfait::Integer.integer_index] << integer_reg
-              message[:return_value] << integer_tmp
-
-            end
-            return compiler
-          end
         end
       end
       extend ClassMethods

@@ -13,12 +13,6 @@ module Mom
       def test_mom_length
         assert_equal 5 , @method.mom_instructions.length
       end
-      def test_compile
-        assert_equal Risc::MethodCompiler , @method.to_risc.class
-      end
-      def test_risc_length
-        assert_equal 50 , @method.to_risc.risc_instructions.length
-      end
     end
     class TestWordGet < BootTest
       def setup
@@ -31,12 +25,6 @@ module Mom
       def test_mom_length
         assert_equal 5 , @method.mom_instructions.length
       end
-      def test_compile
-        assert_equal Risc::MethodCompiler , @method.to_risc.class
-      end
-      def test_risc_length
-        assert_equal 48 , @method.to_risc.risc_instructions.length
-      end
     end
     class TestWordSet < BootTest
       def setup
@@ -48,12 +36,6 @@ module Mom
       end
       def test_mom_length
         assert_equal 5 , @method.mom_instructions.length
-      end
-      def test_compile
-        assert_equal Risc::MethodCompiler , @method.to_risc.class
-      end
-      def test_risc_length
-        assert_equal 22 , @method.to_risc.risc_instructions.length
       end
     end
   end

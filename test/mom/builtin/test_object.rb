@@ -2,7 +2,7 @@ require_relative "helper"
 
 module Mom
   module Builtin
-    class TestObjectFunctionGet < BootTest
+    class TestObjectGet < BootTest
       def setup
         super
         @method = get_compiler(:get_internal_word)
@@ -13,14 +13,8 @@ module Mom
       def test_mom_length
         assert_equal 5 , @method.mom_instructions.length
       end
-      def test_compile
-        assert_equal Risc::MethodCompiler , @method.to_risc.class
-      end
-      def test_risc_length
-        assert_equal 20 , @method.to_risc.risc_instructions.length
-      end
     end
-    class TestObjectFunctionSet < BootTest
+    class TestObjectSet < BootTest
       def setup
         super
         @method = get_compiler(:set_internal_word)
@@ -31,14 +25,8 @@ module Mom
       def test_mom_length
         assert_equal 5 , @method.mom_instructions.length
       end
-      def test_compile
-        assert_equal Risc::MethodCompiler , @method.to_risc.class
-      end
-      def test_risc_length
-        assert_equal 21 , @method.to_risc.risc_instructions.length
-      end
     end
-    class TestObjectFunctionMissing < BootTest
+    class TestObjectMissing < BootTest
       def setup
         super
         @method = get_compiler(:method_missing)
@@ -49,14 +37,8 @@ module Mom
       def test_mom_length
         assert_equal 5 , @method.mom_instructions.length
       end
-      def test_compile
-        assert_equal Risc::MethodCompiler , @method.to_risc.class
-      end
-      def test_risc_length
-        assert_equal 48 , @method.to_risc.risc_instructions.length
-      end
     end
-    class TestObjectFunctionExit < BootTest
+    class TestObjectExit < BootTest
       def setup
         super
         @method = get_compiler(:exit)
@@ -67,14 +49,8 @@ module Mom
       def test_mom_length
         assert_equal 5 , @method.mom_instructions.length
       end
-      def test_compile
-        assert_equal Risc::MethodCompiler , @method.to_risc.class
-      end
-      def test_risc_length
-        assert_equal 46 , @method.to_risc.risc_instructions.length
-      end
     end
-    class TestObjectFunctionInit < BootTest
+    class TestObjectInit < BootTest
       def setup
         super
         @method = get_compiler(:__init__)
@@ -84,12 +60,6 @@ module Mom
       end
       def test_mom_length
         assert_equal 5 , @method.mom_instructions.length
-      end
-      def test_compile
-        assert_equal Risc::MethodCompiler , @method.to_risc.class
-      end
-      def test_risc_length
-        assert_equal 48 , @method.to_risc.risc_instructions.length
       end
     end
   end

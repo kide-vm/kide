@@ -13,12 +13,6 @@ module Mom
       def test_mom_length
         assert_equal 5 , @method.mom_instructions.length
       end
-      def test_compile
-        assert_equal Risc::MethodCompiler , @method.to_risc.class
-      end
-      def test_risc_length
-        assert_equal 47 , @method.to_risc.risc_instructions.length
-      end
     end
     class TestIntDiv10 < BootTest
       def setup
@@ -30,12 +24,6 @@ module Mom
       end
       def test_mom_length
         assert_equal 5 , @method.mom_instructions.length
-      end
-      def test_compile
-        assert_equal Risc::MethodCompiler , @method.to_risc.class
-      end
-      def test_risc_length
-        assert_equal 76 , @method.to_risc.risc_instructions.length
       end
     end
     class TestIntComp1 < BootTest
@@ -49,12 +37,6 @@ module Mom
       def test_mom_length
         assert_equal 5 , @method.mom_instructions.length
       end
-      def test_compile
-        assert_equal Risc::MethodCompiler , @method.to_risc.class
-      end
-      def test_risc_length
-        assert_equal 28 , @method.to_risc.risc_instructions.length
-      end
     end
     class TestIntComp2 < BootTest
       def setup
@@ -66,12 +48,6 @@ module Mom
       end
       def test_mom_length
         assert_equal 5 , @method.mom_instructions.length
-      end
-      def test_compile
-        assert_equal Risc::MethodCompiler , @method.to_risc.class
-      end
-      def test_risc_length
-        assert_equal 27 , @method.to_risc.risc_instructions.length
       end
     end
     class TestIntOperators < BootTest
@@ -88,16 +64,6 @@ module Mom
         each_method do |method|
           assert_equal Mom::MethodCompiler , method.class
           assert_equal 5 , method.mom_instructions.length
-        end
-      end
-      def test_compile
-        each_method do |method|
-          assert_equal Risc::MethodCompiler , method.to_risc.class
-        end
-      end
-      def test_risc_length
-        each_method do |method|
-          assert_equal 49 , method.to_risc.risc_instructions.length
         end
       end
     end
