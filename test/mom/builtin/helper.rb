@@ -1,12 +1,7 @@
 require_relative "../helper"
 
-module Risc
+module Mom
   module Builtin
-    class BuiltinTest < MiniTest::Test
-      include Ticker
-      def setup
-      end
-    end
     class BootTest < MiniTest::Test
       def setup
         Parfait.boot!(Parfait.default_test_options)

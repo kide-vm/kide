@@ -1,4 +1,4 @@
-module Risc
+module Mom
   module Builtin
     class Space
       module ClassMethods

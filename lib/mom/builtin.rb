@@ -1,4 +1,4 @@
-  module Risc
+module Mom
   module Builtin
     module CompileHelper
 
@@ -16,7 +16,7 @@ require_relative "builtin/integer"
 require_relative "builtin/object"
 require_relative "builtin/word"
 
-module Risc
+module Mom
   module Builtin
     # classes have booted, now create a minimal set of functions
     # minimal means only that which can not be coded in ruby

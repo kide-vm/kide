@@ -1,11 +1,11 @@
 require_relative "helper"
 
-module Risc
+module Mom
   module Builtin
-    class TestIntDiv4 < BootTest
+    class TestObjectFunctionGet < BootTest
       def setup
         super
-        @method = get_compiler(:div4)
+        @method = get_compiler(:get_internal_word)
       end
       def test_has_get_internal
         assert_equal Mom::MethodCompiler , @method.class
@@ -17,13 +17,13 @@ module Risc
         assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        assert_equal 47 , @method.to_risc.risc_instructions.length
+        assert_equal 20 , @method.to_risc.risc_instructions.length
       end
     end
-    class TestIntDiv10 < BootTest
+    class TestObjectFunctionSet < BootTest
       def setup
         super
-        @method = get_compiler(:div10)
+        @method = get_compiler(:set_internal_word)
       end
       def test_has_get_internal
         assert_equal Mom::MethodCompiler , @method.class
@@ -35,13 +35,13 @@ module Risc
         assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        assert_equal 76 , @method.to_risc.risc_instructions.length
+        assert_equal 21 , @method.to_risc.risc_instructions.length
       end
     end
-    class TestIntComp1 < BootTest
+    class TestObjectFunctionMissing < BootTest
       def setup
         super
-        @method = get_compiler(:<)
+        @method = get_compiler(:method_missing)
       end
       def test_has_get_internal
         assert_equal Mom::MethodCompiler , @method.class
@@ -53,13 +53,13 @@ module Risc
         assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        assert_equal 28 , @method.to_risc.risc_instructions.length
+        assert_equal 48 , @method.to_risc.risc_instructions.length
       end
     end
-    class TestIntComp2 < BootTest
+    class TestObjectFunctionExit < BootTest
       def setup
         super
-        @method = get_compiler(:>=)
+        @method = get_compiler(:exit)
       end
       def test_has_get_internal
         assert_equal Mom::MethodCompiler , @method.class
@@ -71,34 +71,25 @@ module Risc
         assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        assert_equal 27 , @method.to_risc.risc_instructions.length
+        assert_equal 46 , @method.to_risc.risc_instructions.length
       end
     end
-    class TestIntOperators < BootTest
+    class TestObjectFunctionInit < BootTest
       def setup
         super
-      end
-      def each_method &block
-        Risc.operators.each do |name|
-          method = get_compiler(name)
-          block.yield(method)
-        end
+        @method = get_compiler(:__init__)
       end
       def test_has_get_internal
-        each_method do |method|
-          assert_equal Mom::MethodCompiler , method.class
-          assert_equal 5 , method.mom_instructions.length
-        end
+        assert_equal Mom::MethodCompiler , @method.class
+      end
+      def test_mom_length
+        assert_equal 5 , @method.mom_instructions.length
       end
       def test_compile
-        each_method do |method|
-          assert_equal Risc::MethodCompiler , method.to_risc.class
-        end
+        assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        each_method do |method|
-          assert_equal 49 , method.to_risc.risc_instructions.length
-        end
+        assert_equal 48 , @method.to_risc.risc_instructions.length
       end
     end
   end

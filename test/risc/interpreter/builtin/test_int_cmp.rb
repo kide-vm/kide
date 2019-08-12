@@ -1,9 +1,12 @@
 require_relative "helper"
 
 # TODO move these to interpreter dir
-module Risc
+module Mom
   module Builtin
     class IntCmp < BuiltinTest
+      include Ticker
+      def setup
+      end
 
       def test_smaller_true
         run_main_return "4 < 5"

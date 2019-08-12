@@ -1,8 +1,11 @@
 require_relative "helper"
 
-module Risc
+module Mom
   module Builtin
     class IntMath < BuiltinTest
+      include Ticker
+      def setup
+      end
 
       def test_add
         run_main_return "5 + 5"

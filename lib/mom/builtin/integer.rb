@@ -1,4 +1,4 @@
-module Risc
+module Mom
   module Builtin
     # integer related kernel functions
     # all these functions (return the function they implement) assume interger input

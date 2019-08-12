@@ -8,7 +8,7 @@ module Vool
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      Risc::Builtin.boot_functions
+      Mom.boot!
       @compiler = compile_first_method( send_method )
       @ins = @compiler.mom_instructions.next
     end

@@ -1,6 +1,6 @@
 require_relative "helper"
 
-module Risc
+module Mom
   module Builtin
     class TestWordPut < BootTest
       def setup

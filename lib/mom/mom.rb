@@ -12,6 +12,10 @@
 # Machine capabilities (instructions) for basic operations. Use of macros for higher level.
 
 module Mom
+  # boot bubiltin function (subject to change)
+  def self.boot!
+    Builtin.boot_functions
+  end
 end
 
 require_relative "instruction.rb"
@@ -19,3 +23,4 @@ require_relative "mom_collection"
 require_relative "callable_compiler"
 require_relative "method_compiler"
 require_relative "block_compiler"
+require_relative "builtin"

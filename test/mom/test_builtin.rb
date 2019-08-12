@@ -1,6 +1,6 @@
 require_relative "helper"
 
-module Risc
+module Mom
   class TestBuiltinFunction < MiniTest::Test
 
     def setup

@@ -1,4 +1,4 @@
-module Risc
+module Mom
   module Builtin
     module Word
       module ClassMethods
@@ -23,7 +23,7 @@ module Risc
               word! << message[:receiver]
               integer! << word[Parfait::Word.get_length_index]
             end
-            Risc::Builtin.emit_syscall( builder , :putstring )
+            Mom::Builtin.emit_syscall( builder , :putstring )
             compiler
           end
         end
