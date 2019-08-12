@@ -44,9 +44,9 @@ module RubyX
     # The biary the method name refers to is binary code in memory, or in BinaryCode
     # objects to be precise.
     def to_binary(platform)
-      linker = to_risc(platform)
+      linker = to_risc
       linker.position_all
-      linker.create_binary
+      linker.create_binary(platform)
       linker
     end
 

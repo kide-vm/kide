@@ -21,12 +21,12 @@ module Mom
     # classes have booted, now create a minimal set of functions
     # minimal means only that which can not be coded in ruby
     # Methods are grabbed from respective modules by sending the method name.
-    # This should return the implementation of the method (ie a method object),
+    # This should return the implementation of the method (ie a method compiler),
     # not actually try to implement it(as that's impossible in ruby)
     #
-    # When no main has been compiled, we will add an empty main (for testing)
-    #
-    def self.boot_functions(add_main = false)
+    # We create an empty main for init to jump to, if no code is compiled, that just returns
+    # See Builtin directory readme and module
+    def self.boot_functions()
       # TODO go through the virtual parfait layer and adjust function names
       #      to what they really are
       compilers = []
@@ -37,8 +37,8 @@ module Mom
       end
 
       obj_type = space.get_type_by_class_name(:Object)
-      [ :get_internal_word , :set_internal_word , :_method_missing,
-        :exit , :__init__ ].each do |f|
+      [ :__init__ , :exit ,  :_method_missing, :get_internal_word ,
+        :set_internal_word ].each do |f|
         compilers << compiler_for( obj_type , Object , f)
       end
 

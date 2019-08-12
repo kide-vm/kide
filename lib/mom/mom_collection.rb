@@ -17,13 +17,13 @@ module Mom
     # lazily instantiate the compilers for boot functions
     # (in the hope of only booting the functions once)
     def boot_compilers
-      @boot_compilers ||= Risc::Builtin.boot_functions
+      @boot_compilers ||= Mom::Builtin.boot_functions
     end
 
     # Return all compilers, namely the MethodCompilers passed in, plus the
     # boot_function's compilers (boot_compilers)
     def compilers
-      @method_compilers #+ boot_compilers
+      @method_compilers + boot_compilers
     end
 
     # collects constants from all compilers into one array
@@ -37,8 +37,8 @@ module Mom
       self
     end
 
-    def to_risc(  )
-      riscs = method_compilers.collect do | mom_c |
+    def to_risc( )
+      riscs = compilers.collect do | mom_c |
         mom_c.to_risc
       end
       # to_risc all compilers

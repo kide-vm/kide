@@ -10,21 +10,9 @@ module Risc
       @method_compilers = compilers
     end
 
-    # lazily instantiate the compilers for boot functions
-    # (in the hope of only booting the functions once)
-    def boot_compilers
-      @boot_compilers ||= Risc::Builtin.boot_functions
-    end
-
-    # Return all compilers, namely the MethodCompilers passed in, plus the
-    # boot_function's compilers (boot_compilers)
-    def compilers
-      @method_compilers #+ boot_compilers
-    end
-
     # collects constants from all compilers into one array
     def constants
-      compilers.inject([]){|sum ,comp| sum + comp.constants }
+      method_compilers.inject([]){|sum ,comp| sum + comp.constants }
     end
 
     # Append another MomCompilers method_compilers to this one.
@@ -47,7 +35,7 @@ module Risc
 
     # go through all methods and translate them to cpu, given the translator
     def translate_methods(translator)
-      compilers.collect do |compiler|
+      method_compilers.collect do |compiler|
         #log.debug "Translate method #{compiler.method.name}"
         translate_method(compiler , translator)
       end.flatten

@@ -5,6 +5,7 @@ module Risc
     include MomCompile
 
     def setup
+      Parfait.boot!(Parfait.default_test_options)
       @comp = compile_mom( "class Test ; def main(); main{return 'Ho'};return 'Hi'; end; end;")
       @linker = @comp.to_risc.translate(:interpreter)
     end

@@ -13,13 +13,13 @@ module Mom
       assert_equal MomCollection , @comp.class
     end
     def test_compilers
-      assert_equal 1 , @comp.compilers.length
+      assert_equal 22 , @comp.compilers.length
     end
     def test_boot_compilers
-#      assert_equal 22 , @comp.boot_compilers.length
+      assert_equal 21 , @comp.boot_compilers.length
     end
     def test_compilers_bare
-      assert_equal 0 , MomCollection.new.compilers.length
+      assert_equal 21 , MomCollection.new.compilers.length
     end
     def test_returns_constants
       assert_equal Array , @comp.constants.class
@@ -50,7 +50,7 @@ module Mom
     end
     def test_has_risc_compiler
       assert_equal Risc::MethodCompiler, compiler.class
-      assert_equal 1, @collection.method_compilers.length
+      assert_equal 22, @collection.method_compilers.length
     end
     def test_has_risc_instructions
       assert_equal Risc::Label, compiler.risc_instructions.class
