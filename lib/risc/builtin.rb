@@ -1,4 +1,4 @@
-module Risc
+  module Risc
   module Builtin
     module CompileHelper
 
@@ -44,7 +44,7 @@ module Risc
 
       word_type = space.get_type_by_class_name(:Word)
       [:putstring , :get_internal_byte , :set_internal_byte ].each do |f|
-        #compilers << compiler_for( word_type , Word , f)
+        compilers << compiler_for( word_type , Word , f)
       end
 
       int_type = space.get_type_by_class_name(:Integer)
