@@ -22,7 +22,8 @@ module VoolBlocks
     end
     def test_array
       check_array [MessageSetup, ArgumentTransfer, SimpleCall, SlotLoad, TruthCheck, Label ,
-                    SlotLoad, Jump, Label, SlotLoad, Label] , @ins
+                    SlotLoad, Jump, Label, SlotLoad, Label,
+                    Label, ReturnSequence, Label] , @ins
     end
 
   end

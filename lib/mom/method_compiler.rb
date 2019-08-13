@@ -4,7 +4,6 @@ module Mom
   # and to instantiate the methods correctly.
 
   class MethodCompiler < CallableCompiler
-    alias :callable  :method
 
     def initialize( method )
       super(method)
@@ -29,7 +28,6 @@ module Mom
       risc_compiler = Risc::MethodCompiler.new(@callable , mom_instructions)
       instructions_to_risc(risc_compiler)
       block_compilers.each do |m_comp|
-        puts "BLOCK #{m_comp}"
         risc_compiler.block_compilers << m_comp.to_risc(@callable)
       end
       risc_compiler

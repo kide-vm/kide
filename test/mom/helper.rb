@@ -45,12 +45,13 @@ module Risc
     end
     def produce_block
       linker = to_target
-      linker.assemblers.each {|c| puts c.callable.name}
-      linker.block_compilers.first.instructions
+      block = linker.assemblers.find {|c| c.callable.name == :main_block}
+      assert_equal Risc::Assembler , block.class
+      block.instructions
     end
     def check_nil( instructions = nil )
       produced = instructions || produce_instructions
-      compare_instructions( produced , @expect)
+      compare_instructions( produced , @expect )
     end
     def check_return
       was = check_nil

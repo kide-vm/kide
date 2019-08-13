@@ -1,7 +1,7 @@
 require_relative "../helper"
 
 module Risc
-  class TestBlockSetup < MiniTest::Test
+  class TestBlockSetupBlock < MiniTest::Test
     include Statements
 
     def setup

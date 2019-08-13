@@ -8,8 +8,7 @@ module Mom
         @functions = Builtin.boot_functions
       end
       def get_compiler( name )
-        @functions.each.find{|meth|
-          meth.callable.name == name}
+        @functions.each.find{|meth| meth.callable.name == name}
       end
     end
   end

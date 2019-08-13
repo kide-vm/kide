@@ -28,19 +28,21 @@ module VoolCompile
 
 
   def compile_first_method( input )
-    inut = as_test_main( input )
+    input = as_test_main( input )
     collection = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(input)
-    assert collection.is_a?(Mom::MomCollection)
+    assert collection.is_a?(Mom::MomCollection) , collection.class.name
     compiler = collection.compilers.first
     assert compiler.is_a?(Mom::MethodCompiler)
     assert_equal Mom::MethodCompiler , compiler.class
     compiler
   end
   def compile_first_block( block_input , method_input = "main_local = 5")
-    source =  "#{method_input} ; self.main{|val| #{block_input}}"
-    risc_col = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_risc( as_test_main(source) )
-    compiler = risc_col.method_compilers.find{|c| c.get_method.name.to_s.start_with?("implicit") }
-    assert_equal 1 , compiler.class
+    source =  as_test_main("#{method_input} ; self.main{|val| #{block_input}}")
+    mom_col = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom( source )
+    compiler = mom_col.method_compilers.find{|c| c.get_method.name.to_s.start_with?("main") }
+    block = compiler.block_compilers.first
+    assert block
+    block.mom_instructions.next
   end
   def check_array( should , is )
     index = 0
