@@ -89,6 +89,7 @@ module RubyX
     # transform stored vool to target code
     # return a linker
     def to_target(platform)
+      raise "No platform given" unless platform
       collection = to_risc
       collection.translate(platform)
     end
@@ -133,9 +134,7 @@ module RubyX
       compiler = RubyXCompiler.new(options)
       compiler.load_parfait if options[:load_parfait]
       compiler.ruby_to_vool(ruby)
-      platform = options[:platform]
-      raise "No platform given" unless platform
-      compiler.to_binary(platform)
+      compiler.to_binary(options[:platform])
     end
   end
 end

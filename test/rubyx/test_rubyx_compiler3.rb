@@ -13,7 +13,7 @@ module RubyX
       options.delete(:platform)
       assert_raises{ RubyXCompiler.ruby_to_binary(space_source_for("main"), options)}
     end
-    def pest_return_linker
+    def test_return_linker
       @linker = RubyXCompiler.ruby_to_binary(space_source_for("main"), RubyX.interpreter_test_options)
       assert_equal Risc::Linker , @linker.class
     end
@@ -29,13 +29,13 @@ module RubyX
       assert_equal Vool::ScopeStatement , compiler.vool.class
       assert_equal 2 , compiler.vool.length
     end
-    def pest_bin_two_sources
+    def test_bin_two_sources
       compiler = RubyXCompiler.new(RubyX.default_test_options)
       compiler.ruby_to_vool(space_source_for("main"))
       compiler.ruby_to_vool(space_source_for("twain"))
       linker = compiler.to_binary(:interpreter)
       assert_equal Risc::Linker , linker.class
-      assert_equal 24 , linker.assemblers.length
+      assert_equal 23 , linker.assemblers.length
     end
   end
 end

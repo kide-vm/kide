@@ -14,15 +14,15 @@ module Risc
                  SlotToReg, SlotToReg, RegToSlot, Branch]
     end
 
-    def pest_return_instructions
+    def test_return_instructions
       assert_nil msg = check_nil , msg
     end
-    def pest_function_return
+    def test_function_return
       produced = produce_body.next(23)
       assert_equal Branch , produced.class
       assert_equal "return_label" , produced.label.name
     end
-    def pest_load_5
+    def test_load_5
       produced = produce_body.next(8)
       assert_equal LoadConstant , produced.class
       assert_equal 5 , produced.constant.value

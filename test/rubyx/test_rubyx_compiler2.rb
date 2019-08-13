@@ -14,14 +14,16 @@ module RubyX
     def test_to_risc
       assert_equal Risc::RiscCollection , @collection.class
     end
-    def pest_linker
+    def test_linker
       assert_equal Risc::Linker , @collection.translate(:interpreter).class
     end
-    def pest_method
-      assert_equal :main , @linker.assemblers.first.callable.name
+    def test_method
+      linker = @collection.translate(:interpreter)
+      assert_equal :main , linker.assemblers.first.callable.name
     end
-    def pest_asm_len
-      assert_equal 23 , @linker.assemblers.length
+    def test_asm_len
+      linker = @collection.translate(:interpreter)
+      assert_equal 22 , linker.assemblers.length
     end
   end
   class TestRubyXCompilerParfait < MiniTest::Test
@@ -30,11 +32,14 @@ module RubyX
 
     def setup
       super
+
+#BETTER TEST for class method in VOOL
+
       code = "class Space ; def self.class_method; return 1; end;def main(arg);return Space.class_method;end; end"
       @comp = RubyXCompiler.ruby_to_binary(code , load_parfait: true , platform: :interpreter)
     end
 
-    def pest_load
+    def test_load
       object = Parfait.object_space.get_class_by_name(:Object)
       assert_equal Parfait::Class , object.class
       object = object.instance_type

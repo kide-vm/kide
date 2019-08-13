@@ -43,16 +43,16 @@ module Vool
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      Risc.boot!
       @compiler = compile_first_method( "return 5.div4")
       @ins = @compiler.mom_instructions.next
     end
 
-    def pest_return_is_last
-      assert_equal ReturnJump , @ins.last.class
+    def test_return_is_last
+      assert_equal ReturnJump , @ins.next(5).class
     end
-    def pest_array
-      check_array [MessageSetup,ArgumentTransfer,SimpleCall,SlotLoad,SlotLoad,ReturnJump] , @ins
+    def test_array
+      check_array [MessageSetup,ArgumentTransfer,SimpleCall,SlotLoad,
+            SlotLoad,ReturnJump, Label, ReturnSequence, Label] , @ins
     end
   end
 end
