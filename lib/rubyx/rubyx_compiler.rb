@@ -51,9 +51,9 @@ module RubyX
     #
     # After creating vool, we call to_target
     # Return a Linker
-    def ruby_to_target(ruby)
+    def ruby_to_target(ruby , platform)
       ruby_to_vool(ruby)
-      to_target()
+      to_target( platform )
     end
 
     # ruby_to_risc creates Risc instructions

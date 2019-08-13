@@ -4,14 +4,10 @@ module Mom
   # and to instantiate the methods correctly.
 
   class MethodCompiler < CallableCompiler
+    alias :callable  :method
 
     def initialize( method )
       super(method)
-    end
-
-    #include block_compilers constants
-    def constants
-      block_compilers.inject(@constants.dup){|all, compiler| all += compiler.constants}
     end
 
     def source_name
@@ -27,19 +23,16 @@ module Mom
       @callable
     end
 
-    # drop down to risc
+    # drop down to risc by converting this compilers instructions to risc.
+    # and the doing the same for any block_compilers
     def to_risc
-      risc_comp = Risc::MethodCompiler.new(@callable , mom_instructions)
-      instruction = mom_instructions.next
-      while( instruction )
-        raise "whats this a #{instruction}" unless instruction.is_a?(Mom::Instruction)
-        #puts "adding mom #{instruction.to_s}:#{instruction.next.to_s}"
-        instruction.to_risc( risc_comp )
-        risc_comp.reset_regs
-        #puts "adding risc #{risc.to_s}:#{risc.next.to_s}"
-        instruction = instruction.next
+      risc_compiler = Risc::MethodCompiler.new(@callable , mom_instructions)
+      instructions_to_risc(risc_compiler)
+      block_compilers.each do |m_comp|
+        puts "BLOCK #{m_comp}"
+        risc_compiler.block_compilers << m_comp.to_risc(@callable)
       end
-      risc_comp
+      risc_compiler
     end
 
     # helper method for builtin mainly

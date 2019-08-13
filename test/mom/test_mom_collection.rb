@@ -21,12 +21,6 @@ module Mom
     def test_compilers_bare
       assert_equal 21 , MomCollection.new.compilers.length
     end
-    def test_returns_constants
-      assert_equal Array , @comp.constants.class
-    end
-    def test_has_constant_before
-      assert_equal  [] , @comp.constants
-    end
     def test_append_class
       assert_equal MomCollection,  (@comp.append @comp).class
     end

@@ -4,7 +4,7 @@ module Mom
   #
   class BlockCompiler < CallableCompiler
 
-    attr_reader :block , :risc_instructions , :constants
+    attr_reader :block , :mom_instructions
     alias :block  :callable
 
     def initialize( block , method)
@@ -14,6 +14,13 @@ module Mom
 
     def source_name
       "#{@method.self_type.name}.init"
+    end
+
+    def to_risc(in_method)
+      risc_compiler = Risc::BlockCompiler.new(@callable , in_method , mom_instructions)
+      instructions_to_risc(risc_compiler)
+      #recursive blocks not done
+      risc_compiler
     end
 
     # resolve the type of the slot, by inferring from it's name, using the type

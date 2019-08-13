@@ -26,11 +26,6 @@ module Mom
       @method_compilers + boot_compilers
     end
 
-    # collects constants from all compilers into one array
-    def constants
-      compilers.inject([]){|sum ,comp| sum + comp.constants }
-    end
-
     # Append another MomCompilers method_compilers to this one.
     def append(mom_compiler)
       @method_compilers += mom_compiler.method_compilers

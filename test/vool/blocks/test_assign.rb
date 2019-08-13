@@ -6,25 +6,25 @@ module VoolBlocks
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @ins = compile_first_block( "local = 5")
+      @ins = compile_first_block(  "local = 5" )
     end
 
     def test_block_compiles
       assert_equal Mom::SlotLoad , @ins.class , @ins
     end
-    def test_slot_is_set
+    def pest_slot_is_set
       assert @ins.left
     end
-    def test_slot_starts_at_message
+    def pest_slot_starts_at_message
       assert_equal :message , @ins.left.known_object
     end
-    def test_slots_left
+    def pest_slots_left
       assert_equal [:frame , :local] , @ins.left.slots
     end
-    def test_slot_assigns_something
+    def pest_slot_assigns_something
       assert @ins.right
     end
-    def test_slot_assigns_int
+    def pest_slot_assigns_int
       assert_equal Mom::IntegerConstant ,  @ins.right.known_object.class
     end
   end
@@ -35,13 +35,13 @@ module VoolBlocks
       Parfait.boot!(Parfait.default_test_options)
       @ins = compile_first_block( "local = @a" , "@a = 5") #second arg in method scope
     end
-    def test_class_compiles
+    def pest_class_compiles
       assert_equal Mom::SlotLoad , @ins.class , @ins
     end
-    def test_slots_left
+    def pest_slots_left
       assert_equal [:frame, :local] , @ins.left.slots
     end
-    def test_slots_right
+    def pest_slots_right
       assert_equal [:receiver, :a] , @ins.right.slots
     end
   end
@@ -54,13 +54,13 @@ module VoolBlocks
       @ins = compile_first_block( "arg = 5")
     end
 
-    def test_class_compiles
+    def pest_class_compiles
       assert_equal Mom::SlotLoad , @ins.class , @ins
     end
-    def test_slot_is_set
+    def pest_slot_is_set
       assert @ins.left
     end
-    def test_slots_left
+    def pest_slots_left
       assert_equal [:caller,:caller, :arguments, :arg] , @ins.left.slots
     end
   end
@@ -70,12 +70,12 @@ module VoolBlocks
     def setup
       Parfait.boot!(Parfait.default_test_options)
     end
-    def test_assigns_const
+    def pest_assigns_const
       @ins = compile_first_block( "@a = 5")
       assert_equal Mom::SlotLoad , @ins.class , @ins
       assert_equal Mom::IntegerConstant , @ins.right.known_object.class , @ins
     end
-    def test_assigns_move
+    def pest_assigns_move
       @ins = compile_first_block( "@a = arg")
       assert_equal Mom::SlotLoad , @ins.class , @ins
       assert_equal Mom::SlotDefinition , @ins.right.class , @ins

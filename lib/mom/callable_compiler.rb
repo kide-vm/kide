@@ -84,5 +84,21 @@ module Mom
       @callable.self_type
     end
 
+    private
+
+    # convert al instruction to risc
+    # method is called by Method/BlockCompiler from to_risc 
+    def instructions_to_risc(risc_compiler)
+      instruction = mom_instructions.next
+      while( instruction )
+        raise "whats this a #{instruction}" unless instruction.is_a?(Mom::Instruction)
+        #puts "adding mom #{instruction.to_s}:#{instruction.next.to_s}"
+        instruction.to_risc( risc_compiler )
+        risc_compiler.reset_regs
+        #puts "adding risc #{risc.to_s}:#{risc.next.to_s}"
+        instruction = instruction.next
+      end
+    end
+
   end
 end

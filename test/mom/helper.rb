@@ -24,17 +24,32 @@ module Risc
       preamble.each{ produced = produced.next }
       produced
     end
+
+    def as_block( block_input , method_input = "main_local = 5")
+      "#{method_input} ; self.main{|val| #{block_input}}"
+    end
     def as_test_main
       "class Test; def main(arg);#{@input};end;end"
     end
-    def produce_instructions
+    def to_target
       assert @expect , "No output given"
-      linker = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_risc(as_test_main).translate(:interpreter)
-      compiler = linker.assemblers.find{|c| c.callable.name == :main and c.callable.self_type.object_class.name == :Test}
-      compiler.instructions
+      RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_target(as_test_main,:interpreter)
     end
-    def check_nil
-      produced = produce_instructions
+    def find_main
+      assert @expect , "No output given"
+      linker = to_target
+      linker.assemblers.find{|c| c.callable.name == :main and c.callable.self_type.object_class.name == :Test}
+    end
+    def produce_instructions
+      find_main.instructions
+    end
+    def produce_block
+      linker = to_target
+      linker.assemblers.each {|c| puts c.callable.name}
+      linker.block_compilers.first.instructions
+    end
+    def check_nil( instructions = nil )
+      produced = instructions || produce_instructions
       compare_instructions( produced , @expect)
     end
     def check_return
