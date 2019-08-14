@@ -4,23 +4,21 @@ module Risc
   # class shared by BlockCompiler and MethodCompiler
 
   # - risc_instructions: The sequence of risc level instructions that mom was compiled to
-  # - cpu_instructions: The sequence of cpu specific instructions that the
-  #                      risc_instructions was compiled to
   #                 Instructions derive from class Instruction and form a linked list
-
+  # - constants is an array of Parfait objects that need to be available
+  # - callable is a Method of Block
+  # - current instruction is where addidion happens
+  #
   class CallableCompiler
 
-    def initialize( callable )
+    # Must pass the callable (method/block)
+    # Also start instuction, usually a label is mandatory
+    def initialize( callable  , mom_label)
       @callable = callable
       @regs = []
       @constants = []
       @block_compilers = []
-      @risc_instructions = Risc.label(source_name, source_name)
-      @current = start = @risc_instructions
-      add_code Risc.label( source_name, "return_label")
-      Mom::ReturnSequence.new.to_risc(self)
-      add_code Risc.label( source_name, "unreachable")
-      @current = start
+      @current = @risc_instructions = mom_label.risc_label(self)
       reset_regs
     end
     attr_reader :risc_instructions , :constants , :block_compilers , :callable , :current
@@ -29,20 +27,6 @@ module Risc
       @risc_instructions.each do |ins|
         next unless ins.is_a?(Label)
         return ins if ins.name == "return_label"
-      end
-    end
-
-    # convert the given mom instruction to_risc and then add it (see add_code)
-    # continue down the instruction chain unti depleted
-    # (adding moves the insertion point so the whole mom chain is added as a risc chain)
-    def add_mom( instruction )
-      while( instruction )
-        raise "whats this a #{instruction}" unless instruction.is_a?(Mom::Instruction)
-        #puts "adding mom #{instruction.to_s}:#{instruction.next.to_s}"
-        instruction.to_risc( self )
-        reset_regs
-        #puts "adding risc #{risc.to_s}:#{risc.next.to_s}"
-        instruction = instruction.next
       end
     end
 

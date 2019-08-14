@@ -9,16 +9,14 @@ Possibly later other languages can compile to this level and use rx-file as code
 
 ## Syntax tree
 
-Vool is the layer of concrete syntax tree. The Parser gem is used to parse ruby. It creates
-an abstract syntax tree which is then transformed.
+Vool is a layer with concrete syntax tree, just like the ruby layer above.
+Vool is just simplified, without fluff, see below.
 
-The next layer down is the Mom, Minimal object Machine, which uses an instruction tree.
-That is on the way down we create instructions, but stays in tree format. Only the next step
-down to the Risc layer moves to an instruction stream.
+The next layer down is the Mom, Minimal object Machine, which uses an instruction list.
 
-The nodes of the syntax tree are all the things one would expect from a language, if statements
-and the like. There is no context yet, and actual objects, representing classes and
-methods, will be created on the way down.
+The nodes of the syntax tree are all the things one would expect from a language,
+if statements and the like. There is no context yet, and actual objects,
+representing classes and methods, will be created on the way down.
 
 ## Fluff
 
@@ -30,3 +28,9 @@ existence of until, which really means if not. Other examples, some more impactf
 - no case
 - no elseif (no unless, no ternary operator)
 - no global variables.
+
+## Parfait objects
+
+The compilation process ends up creating (parfait) objects to represent
+things like classes, types and constants. This is done in this layer,
+on the way down to MOM (ie not during init)

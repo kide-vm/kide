@@ -6,12 +6,12 @@ module Risc
     def setup
       Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
-      @linker = Mom::MomCompiler.new.translate(:arm)
+      @linker = Mom::MomCollection.new.to_risc.translate(:arm)
     end
 
     def test_simple_collect
       objects = Collector.collect_space(@linker)
-      assert_equal 600 ,  objects.length , objects.length.to_s
+      assert_equal 621 ,  objects.length , objects.length.to_s
     end
 
     def test_collect_all_types
@@ -47,15 +47,15 @@ module Risc
 
     def setup
       opt = Parfait.default_test_options
-      opt[:factory] = 4000
+      opt[:factory] = 400
       Parfait.boot!(opt)
       Risc.boot!
-      @linker = Mom::MomCompiler.new.translate(:arm)
+      @linker = Mom::MomCollection.new.to_risc.translate(:arm)
     end
 
     def test_simple_collect
       objects = Collector.collect_space(@linker)
-      assert_equal 20329, objects.length , objects.length.to_s
+      assert_equal 2421, objects.length , objects.length.to_s
     end
 
     def test_integer_positions

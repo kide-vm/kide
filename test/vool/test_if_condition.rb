@@ -2,13 +2,12 @@ require_relative "helper"
 
 module Vool
   class TestConditionIfMom < MiniTest::Test
-    include MomCompile
-    include Mom
+    include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      Risc::Builtin.boot_functions
-      @ins = compile_first_method( "if(5.div4) ; @a = 6 ; else; @a = 5 ; end")
+      @compiler = compile_first_method( "if(5.div4) ; @a = 6 ; else; @a = 5 ; end")
+      @ins = @compiler.mom_instructions.next
     end
 
     def test_condition
@@ -22,8 +21,9 @@ module Vool
       assert_equal :div4 , @ins.next(2).method.name
     end
     def test_array
-      check_array [MessageSetup, ArgumentTransfer, SimpleCall, SlotLoad, TruthCheck, Label ,
-                    SlotLoad, Jump, Label, SlotLoad, Label] , @ins
+      check_array [MessageSetup, ArgumentTransfer, SimpleCall, SlotLoad, TruthCheck,
+                  Label ,SlotLoad, Jump, Label, SlotLoad, Label,
+                  Label, ReturnSequence, Label ] , @ins
     end
 
   end

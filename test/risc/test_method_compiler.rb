@@ -12,9 +12,6 @@ module Risc
       vool.to_mom(nil)
       vool
     end
-    def in_test_mom(str)
-      FIXMERubyX::RubyXCompiler.new(in_Test(str)).ruby_to_mom()
-    end
     def create_method(body = "@ivar = 5")
       in_test_vool("def meth; #{body};end")
       test = Parfait.object_space.get_class_by_name(:Test)
@@ -65,18 +62,10 @@ module Risc
     end
     def constant_setup(input)
       mom = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(in_Test(input))
-      assert_equal Mom::MomCompiler , mom.class
+      assert_equal Mom::MomCollection , mom.class
       compiler = mom.method_compilers.first
-      assert_equal MethodCompiler , compiler.class
+      assert_equal Mom::MethodCompiler , compiler.class
       compiler
-    end
-    def test_has_method_constant
-      compiler = constant_setup("def meth; return 'Hi';end")
-      assert compiler.constants.include?("Hi")
-    end
-    def test_has_block_constant
-      compiler = constant_setup("def meth; meth{return 'Ho'};return 'Hi';end")
-      assert compiler.constants.include?("Ho")
     end
     def test_return_label
       compiler = constant_setup("def meth; return 'Hi';end")

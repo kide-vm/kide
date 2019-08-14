@@ -23,7 +23,8 @@ module Mom
 
   class Label < Instruction
     attr_reader :name
-    def initialize(name)
+    def initialize(source , name)
+      super(source)
       @name = name
     end
 
@@ -32,9 +33,9 @@ module Mom
     end
 
     # generate the risc label lazily
-    def risc_label(comiler)
+    def risc_label(compiler)
       @risc_label ||= Risc.label(self,name)
-      comiler.add_constant(@risc_label.address)
+      compiler.add_constant(@risc_label.address)
       @risc_label
     end
 

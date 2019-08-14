@@ -21,9 +21,9 @@ module Vool
     # to the method compiler for further processing
     def to_mom( compiler )
       parfait_block = self.parfait_block(compiler)
-      block_compiler = Risc::BlockCompiler.new( parfait_block , compiler.get_method )
+      block_compiler = Mom::BlockCompiler.new( parfait_block , compiler.get_method )
       head = body.to_mom( block_compiler )
-      block_compiler.add_mom(head)
+      block_compiler.add_code(head)
       block_compiler
     end
 

@@ -186,7 +186,7 @@ module Risc
     # populate the position caches (forward and revese) with the given position
     # forward caches object -> position
     # reverse caches position.at > position
-    # Labels do not participatein reverse cache
+    # Labels do not participate in reverse cache
     def self.set_cache( position , to)
       postest = Position.positions[position.object] unless to < 0
       raise "Mismatch #{position}" if postest and postest != position

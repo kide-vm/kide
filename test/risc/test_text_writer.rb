@@ -6,7 +6,7 @@ module Risc
     def setup
       Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
-      @linker = Mom::MomCompiler.new.translate(:arm)
+      @linker = Mom::MomCollection.new.to_risc.translate(:arm)
     end
     def test_init
       @text_writer = TextWriter.new(@linker)
@@ -21,7 +21,7 @@ module Risc
     def setup
       Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
-      @linker = Mom::MomCompiler.new.translate(:arm)
+      @linker = Mom::MomCollection.new.to_risc.translate(:arm)
       @linker.position_all
       @linker.create_binary
       @text_writer = TextWriter.new(@linker)

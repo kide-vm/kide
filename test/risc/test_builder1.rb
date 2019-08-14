@@ -5,9 +5,10 @@ module Risc
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
+      Mom.boot!
       Risc.boot!
       @init = Parfait.object_space.get_init
-      @compiler = Risc::MethodCompiler.new( @init )
+      @compiler = Risc::MethodCompiler.new( @init , Mom::Label.new( "source_name", "return_label"))
       @builder  = @compiler.builder(@init)
     end
     def test_inserts_built
@@ -42,7 +43,7 @@ module Risc
     end
     def test_allocate_len
       int = @builder.allocate_int
-      assert_equal 41 , @builder.compiler.risc_instructions.length
+      assert_equal 28 , @builder.compiler.risc_instructions.length
     end
   end
 end

@@ -4,16 +4,15 @@ module Risc
   #
   class BlockCompiler < CallableCompiler
 
-    attr_reader :block , :risc_instructions , :constants
-    alias :block  :callable
+    attr_reader :block , :risc_instructions , :constants , :in_method
 
-    def initialize( block , method)
-      @method = method
-      super(block)
+    def initialize( block , in_method , mom_label)
+      @in_method = in_method
+      super(block , mom_label)
     end
 
     def source_name
-      "#{@method.self_type.name}.init"
+      "#{@in_method.self_type.name}.init"
     end
 
     # resolve the type of the slot, by inferring from it's name, using the type
@@ -24,9 +23,9 @@ module Risc
     def slot_type( slot , type)
       new_type = super
       if slot == :caller
-        extra_info = { type_frame: @method.frame_type ,
-                       type_arguments: @method.arguments_type ,
-                       type_self: @method.self_type}
+        extra_info = { type_frame: @in_method.frame_type ,
+                       type_arguments: @in_method.arguments_type ,
+                       type_self: @in_method.self_type}
       end
       return new_type , extra_info
     end
@@ -38,9 +37,9 @@ module Risc
         slot_def = [:arguments]
       elsif @callable.frame_type.variable_index(name)
         slot_def = [:frame]
-      elsif @method.arguments_type.variable_index(name)
+      elsif @in_method.arguments_type.variable_index(name)
         slot_def = [:caller , :caller ,:arguments ]
-      elsif @method.frame_type.variable_index(name)
+      elsif @in_method.frame_type.variable_index(name)
         slot_def = [:caller ,:caller , :frame ]
       elsif
         raise "no variable #{name} , need to resolve at runtime"

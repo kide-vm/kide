@@ -2,8 +2,7 @@ require_relative "helper"
 
 module VoolBlocks
   class TestSimpleWhileMom < MiniTest::Test
-    include MomCompile
-    include Mom
+    include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
@@ -20,7 +19,8 @@ module VoolBlocks
       assert_equal SlotDefinition , @ins.next.condition.class , @ins
     end
     def test_array
-      check_array [Label, TruthCheck, SlotLoad, Jump, Label], @ins
+      check_array [Label, TruthCheck, SlotLoad, Jump, Label,
+        Label, ReturnSequence, Label], @ins
     end
   end
 end

@@ -2,7 +2,6 @@ require_relative "helper"
 
 module Vool
   class ClassSendHarness < MiniTest::Test
-    include MomCompile
     include ClassHarness
 
     def send_method

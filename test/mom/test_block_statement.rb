@@ -10,7 +10,7 @@ module Vool
       @ret = compile_mom( as_test_main("self.main {|elem| elem = 5 } "))
     end
     def test_is_compiler
-      assert_equal Mom::MomCompiler , @ret.class
+      assert_equal Mom::MomCollection , @ret.class
     end
     def test_has_method
       assert_equal Parfait::CallableMethod , @ret.method_compilers.first.get_method.class

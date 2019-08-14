@@ -12,15 +12,11 @@ class Class
   end
 end
 
-# The Risc Machine, is an abstract machine with registers. Think of it as an arm machine with
-# normal instruction names. It is not however an abstraction of existing hardware, but only
-# of that subset that we need.
 # See risc/Readme
 module Risc
   # module method to reset, and init
   def self.boot!
     Position.clear_positions
-    Builtin.boot_functions
   end
 end
 
@@ -35,6 +31,7 @@ require_relative "risc/callable_compiler"
 require_relative "risc/method_compiler"
 require_relative "risc/block_compiler"
 require_relative "risc/assembler"
+require_relative "risc/risc_collection"
 
 class Integer
   def fits_u8?
@@ -46,5 +43,4 @@ end
 require_relative "risc/instruction"
 require_relative "risc/register_value"
 require_relative "risc/text_writer"
-require_relative "risc/builtin"
 require_relative "risc/builder"

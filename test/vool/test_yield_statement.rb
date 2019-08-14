@@ -55,17 +55,19 @@ module Vool
     end
   end
   class TestYieldArgsSendMom < MiniTest::Test
-    include MomCompile
+    include VoolCompile
     include YieldBasics
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @ins = compile_first_method( "return yield(1)" )
+      @compiler = compile_first_method( "return yield(1)" )
+      @ins = @compiler.mom_instructions.next
     end
 
     def test_array
       check_array [NotSameCheck, Label, MessageSetup, ArgumentTransfer, BlockYield ,
-                    SlotLoad, SlotLoad, ReturnJump] , @ins
+                    SlotLoad, SlotLoad, ReturnJump, Label, ReturnSequence ,
+                    Label]  , @ins
     end
     def test_transfer
       assert_equal ArgumentTransfer, @ins.next(3).class
@@ -79,16 +81,17 @@ module Vool
     end
   end
   class TestYieldNoArgsSendMom < MiniTest::Test
-    include MomCompile
-    include Mom
+    include VoolCompile
     include YieldBasics
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @ins = compile_first_method( "return yield" )
+      @compiler = compile_first_method( "return yield" )
+      @ins = @compiler.mom_instructions.next
     end
     def test_array
       check_array [NotSameCheck, Label, MessageSetup, ArgumentTransfer, BlockYield ,
-                    SlotLoad, SlotLoad, ReturnJump] , @ins
+                    SlotLoad, SlotLoad, ReturnJump, Label, ReturnSequence ,
+                    Label] , @ins
     end
     def test_transfer
       assert_equal ArgumentTransfer, @ins.next(3).class

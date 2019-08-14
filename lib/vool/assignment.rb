@@ -3,6 +3,8 @@ module Vool
   class Assignment < Statement
     attr_reader :name , :value
     def initialize(name , value )
+      raise "Name nil #{self}" unless name
+      raise "Value nil #{self}" unless value
       @name , @value = name , value
     end
 

@@ -4,8 +4,7 @@ module Risc
   class TestMachinePos < MiniTest::Test
     def setup
       code = "class Space; def main(arg);a = 1;return a;end;end"
-      @linker = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_risc(code,:arm)
-      @linker.position_all
+      @linker = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_binary(code, :arm)
     end
     def test_positions_set
       @linker.object_positions.each do |obj , position|
@@ -17,7 +16,7 @@ module Risc
       assert_equal 1 , mains.length
     end
     def test_assembler_num
-      assert_equal 23 , @linker.assemblers.length
+      assert_equal 22 , @linker.assemblers.length
     end
   end
 end

@@ -6,7 +6,10 @@ module Mom
   class BlockYield < Instruction
     attr :arg_index
 
-    def initialize(index)
+    # pass in the source (vool statement) and the index.
+    # The index is the argument index of the block that we call
+    def initialize(source , index)
+      super(source)
       @arg_index = index
     end
 
@@ -14,6 +17,7 @@ module Mom
       "BlockYield[#{arg_index}] "
     end
 
+    # almost as simple as a SimpleCall, use a dynamic_jump to get there
     def to_risc(compiler)
       return_label = Risc.label("block_yield", "continue_#{object_id}")
       index = arg_index

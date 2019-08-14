@@ -15,7 +15,11 @@ module Mom
   class ResolveMethod < Instruction
     attr :cache_entry , :name
 
-    def initialize(name , cache_entry)
+    # pass in source (VoolStatement)
+    # name of the method (don't knwow the actaual method)
+    # and the cache_entry
+    def initialize(source , name , cache_entry)
+      super(source)
       @name = name
       @cache_entry = cache_entry
     end
@@ -61,7 +65,7 @@ module Mom
         # temporary, need to raise really.
         factory! << Parfait.object_space.get_factory_for(:Integer)
         integer_tmp! << factory[:reserve]
-        Risc::Builtin::Object.emit_syscall( builder , :exit ) #uses integer_tmp
+        Mom::Builtin.emit_syscall( builder , :exit ) #uses integer_tmp
 
         add_code ok_label
         cache_entry[:cached_method] << callable_method

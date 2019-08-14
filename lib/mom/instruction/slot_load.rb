@@ -22,13 +22,14 @@ module Mom
   #        SlotDefinition (see there)
   #
   # @right: A SlotDefinition with slots or a Mom::Constant
-  # original_source: optinally another mom instruction that wil be passed down to created
+  # original_source: optinally another mom instruction that will be passed down to created
   #   risc instructions. (Because SlotLoad is often used internally in mom)
   class SlotLoad < Instruction
 
     attr_reader :left , :right , :original_source
 
-    def initialize(left , right, original_source = nil)
+    def initialize(source , left , right, original_source = nil)
+      super(source)
       @left , @right = left , right
       @left = SlotDefinition.new(@left.shift , @left) if @left.is_a? Array
       @right = SlotDefinition.new(@right.shift , @right) if @right.is_a? Array

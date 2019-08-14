@@ -33,9 +33,10 @@ module RubyX
       compiler = RubyXCompiler.new(RubyX.default_test_options)
       compiler.ruby_to_vool(space_source_for("main"))
       compiler.ruby_to_vool(space_source_for("twain"))
+      assert_equal 2 , compiler.vool.length
       linker = compiler.to_binary(:interpreter)
       assert_equal Risc::Linker , linker.class
-      assert_equal 24 , linker.assemblers.length
+      assert_equal 23 , linker.assemblers.length
     end
   end
 end

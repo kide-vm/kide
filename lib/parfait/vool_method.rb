@@ -5,7 +5,7 @@ module Parfait
   # Type objects are already created for args and locals, but the main attribute
   # is the source, which is a Vool::Statement
   #
-  # Classes store VoolMethods, while Types store CallableMethod
+  # Classes store VoolMethods, while Types store Risc::CallableMethod
   # A Type referes to a Class , but a Class (interface) is implemented by many types
   # as it changes during the course of it's life. Types do not change. Objects have
   # type, and so only indirectly a class.
@@ -14,7 +14,7 @@ module Parfait
 
     attr :type, :name , :args_type , :frame_type
     attr_reader :source
-    
+
     def initialize(name , args_type , frame_type , source )
       self.name = name
       self.args_type = args_type
@@ -34,9 +34,9 @@ module Parfait
 
     def compiler_for(self_type)
       callable_method = create_callable_method(self_type)
-      compiler = Risc::MethodCompiler.new( callable_method )
+      compiler = Mom::MethodCompiler.new( callable_method )
       head = @source.to_mom( compiler )
-      compiler.add_mom(head)
+      compiler.add_code(head)
       compiler
     end
   end

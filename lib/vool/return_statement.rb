@@ -16,9 +16,9 @@ module Vool
     # - store the given return value, this is a SlotMove
     # - activate return sequence (reinstantiate old message and jump to return address)
     def to_mom( compiler )
-      ret = Mom::SlotLoad.new( [:message , :return_value] ,
+      ret = Mom::SlotLoad.new( self , [:message , :return_value] ,
                         @return_value.slot_definition(compiler) )
-      ret << Mom::ReturnJump.new
+      ret << Mom::ReturnJump.new(self , compiler.return_label )
     end
 
     def to_s(depth = 0)

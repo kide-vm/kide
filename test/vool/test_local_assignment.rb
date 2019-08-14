@@ -2,11 +2,12 @@ require_relative "helper"
 
 module Vool
   class TestLocalMom < MiniTest::Test
-    include MomCompile
+    include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @ins = compile_first_method( "a = 5")
+      @compiler = compile_first_method( "a = 5")
+      @ins = @compiler.mom_instructions.next
     end
 
     def test_compiles_not_array

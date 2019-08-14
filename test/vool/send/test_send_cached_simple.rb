@@ -2,12 +2,12 @@ require_relative "../helper"
 
 module Vool
   class TestSendCachedSimpleMom < MiniTest::Test
-    include MomCompile
-    include Mom
+    include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @ins = compile_first_method( "a = 5; a.div4")
+      @compiler = compile_first_method( "a = 5; a.div4")
+      @ins = @compiler.mom_instructions.next
     end
     def test_check_type
       assert_equal NotSameCheck , @ins.next.class , @ins
@@ -23,12 +23,13 @@ module Vool
       assert_equal ResolveMethod , @ins.next(3).class , @ins
     end
     def test_dynamic_call_last
-      assert_equal DynamicCall ,  @ins.last.class , @ins
+      assert_equal DynamicCall ,  @ins.next(7).class , @ins
     end
 
     def test_array
       check_array [SlotLoad, NotSameCheck, SlotLoad, ResolveMethod, Label, MessageSetup ,
-                    ArgumentTransfer, DynamicCall] , @ins
+                    ArgumentTransfer, DynamicCall, Label, ReturnSequence ,
+                    Label] , @ins
     end
 
   end
