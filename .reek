@@ -13,13 +13,15 @@ FeatureEnvy:
     - "Arm::Translator"
     - "Vm::ToCode"
 TooManyMethods:
+  max_methods: 30
   exclude:
     - "Vool::Compiler"
     - "RubyX::RubyCompiler"
+    - "Ruby::RubyCompiler"
     - "Risc::Interpreter"
     - "Risc::TextWriter"
     - "Arm::Translator"
-    - "Vm::ToCode"
+    - "Util::List"
 UtilityFunction:
   exclude:
     - "Vool::Compiler"

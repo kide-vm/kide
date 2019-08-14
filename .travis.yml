@@ -1,10 +1,11 @@
+before_install:
+  - sudo apt-get install -y qemu
 language: ruby
-sudo: false
 before_install: gem install bundler --version '2.0.1'
 script:
   - ruby test/test_all.rb
   - bundle exec codeclimate-test-reporter
 rvm:
-  - 2.4.5
-  - 2.5.3
-  - 2.6.1
+  - 2.4.6
+  - 2.5.5
+  - 2.6.3

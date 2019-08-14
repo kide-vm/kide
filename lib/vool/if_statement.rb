@@ -11,36 +11,23 @@ module Vool
     end
 
     def to_mom( compiler )
-      if_false ? full_if(compiler) : simple_if(compiler)
-    end
-
-    def simple_if(compiler)
-      true_label  = Mom::Label.new( self,"true_label_#{object_id.to_s(16)}")
-      merge_label = Mom::Label.new( self,"merge_label_#{object_id.to_s(16)}")
-
-      head = Mom::TruthCheck.new(condition.slot_definition(compiler) , merge_label)
-      head << true_label
-      head << if_true.to_mom(compiler)
-      head << merge_label
-    end
-
-    def full_if(compiler)
       true_label  = Mom::Label.new( self , "true_label_#{object_id.to_s(16)}")
       false_label = Mom::Label.new( self , "false_label_#{object_id.to_s(16)}")
       merge_label = Mom::Label.new( self , "merge_label_#{object_id.to_s(16)}")
 
       head = Mom::TruthCheck.new(condition.slot_definition(compiler) , false_label)
       head << true_label
-      head << if_true.to_mom(compiler)
-      head << Mom::Jump.new(merge_label)
+      head << if_true.to_mom(compiler)   if @if_true
+      head << Mom::Jump.new(merge_label) if @if_false
       head << false_label
-      head << if_false.to_mom(compiler)
-      head << merge_label
+      head << if_false.to_mom(compiler)  if @if_false
+      head << merge_label                if @if_false
+      head
     end
 
     def each(&block)
       block.call(condition)
-      @if_true.each(&block)
+      @if_true.each(&block) if @if_true
       @if_false.each(&block) if @if_false
     end
 
