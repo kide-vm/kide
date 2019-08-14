@@ -125,7 +125,6 @@ module RubyX
       parfait = ["object"]
       parfait.each do |file|
         path = File.expand_path("../../parfait/#{file}.rb",__FILE__)
-        puts "Loading #{path}"
         ruby_to_vool(File.read(path))
       end
     end

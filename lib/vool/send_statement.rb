@@ -36,12 +36,13 @@ module Vool
     # - Setting up the next message, with receiver, arguments, and (importantly) return address
     # - a CachedCall , or a SimpleCall, depending on wether the receiver type can be determined
     def to_mom( compiler )
+      puts "Compiling #{self.to_s}"
       @receiver = SelfExpression.new(compiler.receiver_type) if @receiver.is_a?(SelfExpression)
       if(@receiver.ct_type)
-        simple_call(compiler)
-      else
-        cached_call(compiler)
+        method = @receiver.ct_type.resolve_method(self.name)
+        return simple_call(compiler, method) if method
       end
+      cached_call(compiler)
     end
 
     def message_setup(compiler,called_method)
@@ -55,10 +56,7 @@ module Vool
       setup << Mom::ArgumentTransfer.new(self, mom_receive , args )
     end
 
-    def simple_call(compiler)
-      type = @receiver.ct_type
-      called_method = type.resolve_method(@name)
-      raise "No method #{@name} for #{type}" unless called_method
+    def simple_call(compiler, called_method)
       message_setup(compiler,called_method) << Mom::SimpleCall.new(called_method)
     end
 
