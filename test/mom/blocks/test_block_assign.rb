@@ -10,7 +10,7 @@ module Risc
       @expect =  [LoadConstant, SlotToReg, RegToSlot]
     end
     def test_send_instructions
-      assert_nil msg = check_nil(produce_block) , msg
+      assert_nil msg = check_nil(:main_block) , msg
     end
     def test_load_5
       produced = produce_block.next

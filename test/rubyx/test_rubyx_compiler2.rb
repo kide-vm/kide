@@ -26,17 +26,14 @@ module RubyX
       assert_equal 22 , linker.assemblers.length
     end
   end
-  class TestRubyXCompilerParfait < MiniTest::Test
+  class TestRubyXCompilerParfait #< MiniTest::Test
     include ScopeHelper
     include RubyXHelper
 
     def setup
       super
-
-#BETTER TEST for class method in VOOL
-
-      code = "class Space ; def self.class_method; return 1; end;def main(arg);return Space.class_method;end; end"
-      @comp = RubyXCompiler.ruby_to_binary(code , load_parfait: true , platform: :interpreter)
+      code = "class Space ; def self.class_method(); return 1; end;def main(arg);return Space.class_method;end; end"
+      @comp = RubyXCompiler.ruby_to_risc(code , load_parfait: true)# , platform: :interpreter)
     end
 
     def test_load

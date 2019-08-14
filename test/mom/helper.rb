@@ -14,13 +14,8 @@ module Risc
         SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
         SlotToReg , FunctionReturn, Label]
     end
-    # test hack to in place change object type
-    def add_space_field(name,type)
-      class_type = Parfait.object_space.get_type_by_class_name(:Space)
-      class_type.send(:private_add_instance_variable, name , type)
-    end
     def produce_body
-      produced = produce_instructions
+      produced = produce_main
       preamble.each{ produced = produced.next }
       produced
     end
@@ -29,28 +24,26 @@ module Risc
       "#{method_input} ; self.main{|val| #{block_input}}"
     end
     def as_test_main
-      "class Test; def main(arg);#{@input};end;end"
+      "class Test; #{@class_input if @class_input};def main(arg);#{@input};end;end"
     end
     def to_target
       assert @expect , "No output given"
       RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_target(as_test_main,:interpreter)
     end
-    def find_main
-      assert @expect , "No output given"
-      linker = to_target
-      linker.assemblers.find{|c| c.callable.name == :main and c.callable.self_type.object_class.name == :Test}
-    end
-    def produce_instructions
-      find_main.instructions
+    def produce_main
+      produce_target(:main)
     end
     def produce_block
+      produce_target(:main_block)
+    end
+    def produce_target(name = :main_block)
       linker = to_target
-      block = linker.assemblers.find {|c| c.callable.name == :main_block}
+      block = linker.assemblers.find {|c| c.callable.name == name }
       assert_equal Risc::Assembler , block.class
       block.instructions
     end
-    def check_nil( instructions = nil )
-      produced = instructions || produce_instructions
+    def check_nil( name = :main )
+      produced = produce_target( name )
       compare_instructions( produced , @expect )
     end
     def check_return

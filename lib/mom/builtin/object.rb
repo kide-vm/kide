@@ -42,7 +42,7 @@ module Mom
         def __init__( context )
           compiler = Mom::MethodCompiler.compiler_for_class(:Object,:__init__ ,
                             Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
-                            compiler.add_code MethodMissing.new("missing")
+          compiler.add_code Init.new("missing")
           return compiler
         end
 

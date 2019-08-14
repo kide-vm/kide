@@ -27,7 +27,7 @@ module Mom
           add_code exit_label
         end
         compiler.reset_regs
-        exit_sequence(builder)
+        Builtin.exit_sequence(builder)
         return compiler
       end
     end

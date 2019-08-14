@@ -6,9 +6,7 @@ module Elf
 
     def setup
       super
-      @linker = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_risc(as_main("return 1"),:arm)
-      @linker.position_all
-      @linker.create_binary
+      @linker = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_binary(as_main("return 1"),:arm)
     end
 
     def test_empty_translate

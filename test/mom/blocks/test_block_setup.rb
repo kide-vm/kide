@@ -16,8 +16,14 @@ module Risc
     end
 
     def test_send_instructions
-      assert_nil msg = check_nil , msg
+      assert_nil msg = check_nil(:main) , msg
     end
+    def test_load_5
+      produced = produce_block.next
+      assert_load( produced , Parfait::Integer)
+      assert_equal 5 , produced.constant.value
+    end
+
     def test_load_5
       produced = produce_body
       assert_load( produced , Parfait::Integer)
