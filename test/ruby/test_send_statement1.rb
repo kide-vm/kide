@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Ruby
-  class TestSendFooVool < MiniTest::Test
+  class TestSendNoArgVool < MiniTest::Test
     include RubyTests
     def setup
       @lst = compile( "foo").to_vool
@@ -19,7 +19,7 @@ module Ruby
       assert_equal [] , @lst.arguments
     end
   end
-  class TestSendBarVool < MiniTest::Test
+  class TestSendSimpleArgVool < MiniTest::Test
     include RubyTests
     def setup
       @lst = compile( "bar(1)").to_vool

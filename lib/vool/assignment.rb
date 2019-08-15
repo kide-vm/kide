@@ -5,6 +5,8 @@ module Vool
     def initialize(name , value )
       raise "Name nil #{self}" unless name
       raise "Value nil #{self}" unless value
+      raise "Value cant be Assignment #{value}" if value.is_a?(Assignment)
+      raise "Value cant be Statements #{value}" if value.is_a?(Statements)
       @name , @value = name , value
     end
 
@@ -19,6 +21,7 @@ module Vool
 
     def chain_assign(assign , compiler)
       return assign unless @value.is_a?(CallStatement)
+      raise "Move me to ruby layer"
       @value.to_mom(compiler) << assign
     end
   end

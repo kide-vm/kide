@@ -9,10 +9,6 @@ module Ruby
       RubyCompiler.compile(input)
     end
 
-    def ruby_to_vool(input)
-      FIXMERubyXCompiler.new(input).ruby_to_vool
-    end
-
     def assert_raises_muted &block
       orig_stdout = $stdout
       $stdout = StringIO.new

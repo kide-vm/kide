@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Ruby
-  class TestSendFoo < MiniTest::Test
+  class TestSendNoArg < MiniTest::Test
     include RubyTests
     def setup
       @lst = compile( "foo")
@@ -22,7 +22,7 @@ module Ruby
       assert_equal "self.foo()" , @lst.to_s
     end
   end
-  class TestSendBar < MiniTest::Test
+  class TestSendSimpleArg < MiniTest::Test
     include RubyTests
     def setup
       @lst = compile( "bar(1)")
@@ -62,6 +62,31 @@ module Ruby
     def test_super_name #is nil
       lst = compile( "super(1)")
       assert_nil lst.name
+    end
+    class TestSendSendArgs < MiniTest::Test
+      include RubyTests
+      def setup
+        @lst = compile( "call(arg1, arg2(more))")
+      end
+      def test_one_arg
+        assert_equal SendStatement , @lst.class
+      end
+      def test_one_arg_name
+        assert_equal :call , @lst.name
+      end
+      def test_one_arg_args
+        assert_equal SendStatement , @lst.arguments.first.class
+      end
+      def test_one_arg_args_args
+        assert_equal 0 , @lst.arguments.first.arguments.length
+      end
+      def test_two_arg_args
+        assert_equal SendStatement , @lst.arguments[1].class
+      end
+      def test_two_arg_args_args
+        assert_equal SendStatement , @lst.arguments[1].arguments.first.class
+        assert_equal :more , @lst.arguments[1].arguments.first.name
+      end
     end
   end
 end

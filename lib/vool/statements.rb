@@ -30,6 +30,9 @@ module Vool
     def prepend(o)
       @statements = [o] + @statements
     end
+    def shift
+      @statements.shift
+    end
 
     # to_mom all the statements. Append subsequent ones to the first, and return the
     # first.

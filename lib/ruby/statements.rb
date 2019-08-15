@@ -20,13 +20,16 @@ module Ruby
     def length
       @statements.length
     end
+    def shift
+      @statements.shift
+    end
     def [](i)
       @statements[i]
     end
     def <<(o)
       @statements << o
       self
-    end    
+    end
     def to_vool
       if( single? )
        first.to_vool

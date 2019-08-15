@@ -17,6 +17,7 @@ module Ruby
       @arguments ||= []
     end
 
+    # we "normalize" or flatten any complex argument expressions into a list
     def to_vool
       statements = Vool::Statements.new([])
       arguments = []
@@ -31,12 +32,23 @@ module Ruby
       end
     end
 
+    # this is called for each arg and if the arg is not constant or Variable
+    # we create a tmp variable and assign to that, hoising all the calls.
+    # the effect is of walking the call tree now,
+    # rather than using a stack to do that at runtime
     def normalize_arg(arg , arguments , statements)
-      if arg.is_a?(Constant) and !arg.is_a?(CallStatement)
-        arguments << arg.to_vool
+      vool_arg = arg.to_vool
+      if arg.is_a?(Constant)
+        arguments << vool_arg
         return
       end
-      assign = Vool::LocalAssignment.new( "tmp_#{arg.object_id}".to_sym, arg.to_vool)
+      if( vool_arg.is_a?(Vool::Statements))
+        while(vool_arg.length > 1)
+          statements << vool_arg.shift
+        end
+        vool_arg = vool_arg.shift
+      end
+      assign = Vool::LocalAssignment.new( "tmp_#{arg.object_id}".to_sym, vool_arg)
       statements << assign
       arguments << Vool::LocalVariable.new(assign.name)
     end
