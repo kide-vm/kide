@@ -12,8 +12,8 @@ module Ruby
     end
 
     def to_vool
-      cond , rest = *normalize_name(@condition)
-      Vool::WhileStatement.new(cond.to_vool , @body.to_vool , rest&.to_vool)
+      cond , hoisted = *normalized_vool(@condition)
+      Vool::WhileStatement.new(cond , @body.to_vool , hoisted)
     end
 
     def to_s(depth = 0)

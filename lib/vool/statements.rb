@@ -33,6 +33,9 @@ module Vool
     def shift
       @statements.shift
     end
+    def pop
+      @statements.pop
+    end
 
     # to_mom all the statements. Append subsequent ones to the first, and return the
     # first.

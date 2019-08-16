@@ -36,7 +36,6 @@ module Vool
     # - Setting up the next message, with receiver, arguments, and (importantly) return address
     # - a CachedCall , or a SimpleCall, depending on wether the receiver type can be determined
     def to_mom( compiler )
-      puts "Compiling #{self.to_s}"
       @receiver = SelfExpression.new(compiler.receiver_type) if @receiver.is_a?(SelfExpression)
       if(@receiver.ct_type)
         method = @receiver.ct_type.resolve_method(self.name)

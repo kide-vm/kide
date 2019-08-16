@@ -14,6 +14,7 @@ module Vool
       cond_label = Mom::Label.new(self, "cond_label_#{object_id.to_s(16)}")
       codes = cond_label
       codes << @hoisted.to_mom(compiler) if @hoisted
+      codes << @condition.to_mom(compiler) if @condition.is_a?(SendStatement)
       codes << Mom::TruthCheck.new(condition.slot_definition(compiler) , merge_label)
       codes << @body.to_mom(compiler)
       codes << Mom::Jump.new(cond_label)

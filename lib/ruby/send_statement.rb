@@ -4,8 +4,8 @@ module Ruby
   # The SendStatement really only provides to_s, so see CallStatement
   #
   class SendStatement < CallStatement
-    def to_s
-      "#{receiver}.#{name}(#{arguments.join(', ')})"
+    def to_s(depth = 0)
+      at_depth( depth , "#{receiver}.#{name}(#{arguments.join(', ')})")
     end
   end
 end

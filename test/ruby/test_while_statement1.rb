@@ -22,20 +22,20 @@ module Ruby
   class TestWhileStatementHoist < MiniTest::Test
     include RubyTests
     def setup
-      @lst = compile( "while(arg > 1) ; arg = 1 ; end" ).to_vool
+      @lst = compile( "while(call(arg > 1)) ; arg = 1 ; end" ).to_vool
     end
     def test_class
       assert_equal Vool::WhileStatement , @lst.class
       assert_equal Vool::LocalAssignment , @lst.body.class
     end
     def test_condition_class
-      assert_equal Vool::LocalVariable , @lst.condition.class
+      assert_equal Vool::SendStatement , @lst.condition.class
     end
     def test_hoist
-      assert_equal Vool::LocalAssignment , @lst.hoisted.class
+      assert_equal Vool::Statements , @lst.hoisted.class
     end
-    def test_hoist_is_cond
-      assert_equal @lst.hoisted.name , @lst.condition.name
+    def test_hoist_is_assi
+      assert_equal Vool::LocalAssignment , @lst.hoisted.first.class
     end
   end
 end

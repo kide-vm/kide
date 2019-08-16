@@ -12,13 +12,13 @@ module Vool
     end
 
     def test_condition_compiles_to_check
-      assert_equal TruthCheck , @ins.next(5).class
+      assert_equal TruthCheck , @ins.next(4).class
     end
     def test_condition_is_slot
-      assert_equal SlotDefinition , @ins.next(5).condition.class , @ins
+      assert_equal SlotDefinition , @ins.next(4).condition.class , @ins
     end
     def test_hoisetd
-      jump = @ins.next(9)
+      jump = @ins.next(8)
       assert_kind_of Jump , jump
       assert jump.label.name.start_with?("cond_label") , jump.label.name
     end
@@ -28,9 +28,9 @@ module Vool
       assert label.name.start_with?("cond_label") , label.name
     end
     def test_array
-      check_array [Label, MessageSetup, ArgumentTransfer, SimpleCall, SlotLoad ,
-                    TruthCheck, MessageSetup, ArgumentTransfer, SimpleCall, Jump ,
-                    Label, Label, ReturnSequence, Label] , @ins
+      check_array [Label, MessageSetup, ArgumentTransfer, SimpleCall, TruthCheck ,
+                    MessageSetup, ArgumentTransfer, SimpleCall, Jump, Label ,
+                    Label, ReturnSequence, Label] , @ins
     end
 
   end
