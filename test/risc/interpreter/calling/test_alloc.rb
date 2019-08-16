@@ -11,8 +11,8 @@ module Risc
     end
 
     def test_chain
-      #show_base_ticks # get output of what is
-      check_main_chain [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+      # show_main_ticks # get output of what is
+      check_main_chain   [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
             RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, # 10
             RegToSlot, LoadConstant, SlotToReg, Branch, SlotToReg,
             RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, # 20
@@ -22,11 +22,10 @@ module Risc
             RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot, # 40
             LoadConstant, SlotToReg, RegToSlot, Branch, RegToSlot,
             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, # 50
-            SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-            Branch, Branch, SlotToReg, SlotToReg, RegToSlot, # 60
-            LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg,
-            SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg, # 70
-            SlotToReg, Syscall, NilClass, ]
+            RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
+            Branch, LoadConstant, SlotToReg, RegToSlot, RegToSlot, # 60
+            SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer,
+            SlotToReg, SlotToReg, Syscall, NilClass, ]
        assert_equal 10 , get_return
     end
     def base_ticks(num)

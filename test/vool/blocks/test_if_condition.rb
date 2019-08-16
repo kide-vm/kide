@@ -11,18 +11,18 @@ module VoolBlocks
     end
 
     def test_condition
-      assert_equal TruthCheck , @ins.next(4).class
+      assert_equal TruthCheck , @ins.next(3).class
     end
     def test_condition_is_slot
-      assert_equal SlotDefinition , @ins.next(4).condition.class , @ins
+      assert_equal SlotDefinition , @ins.next(3).condition.class , @ins
     end
-    def test_hoisted_dynamic_call
+    def test_simple_call
       assert_equal SimpleCall , @ins.next(2).class
       assert_equal :div4 , @ins.next(2).method.name
     end
     def test_array
-      check_array [MessageSetup, ArgumentTransfer, SimpleCall, SlotLoad, TruthCheck, Label ,
-                    SlotLoad, Jump, Label, SlotLoad, Label,
+      check_array [MessageSetup, ArgumentTransfer, SimpleCall, TruthCheck, Label ,
+                    SlotLoad, Jump, Label, SlotLoad, Label ,
                     Label, ReturnSequence, Label] , @ins
     end
 

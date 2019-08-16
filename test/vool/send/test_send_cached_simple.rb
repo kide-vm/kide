@@ -5,12 +5,11 @@ module Vool
     include VoolCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @compiler = compile_first_method( "a = 5; a.div4")
       @ins = @compiler.mom_instructions.next
     end
     def test_check_type
-      assert_equal NotSameCheck , @ins.next.class , @ins
+      assert_equal NotSameCheck , @ins.next(1).class , @ins
     end
     def test_type_update
       load =  @ins.next(2)
@@ -27,9 +26,9 @@ module Vool
     end
 
     def test_array
-      check_array [SlotLoad, NotSameCheck, SlotLoad, ResolveMethod, Label, MessageSetup ,
-                    ArgumentTransfer, DynamicCall, Label, ReturnSequence ,
-                    Label] , @ins
+      check_array [SlotLoad, NotSameCheck, SlotLoad, ResolveMethod ,
+                    Label, MessageSetup, ArgumentTransfer, DynamicCall, Label ,
+                    ReturnSequence, Label]  , @ins
     end
 
   end

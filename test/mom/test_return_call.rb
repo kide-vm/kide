@@ -7,18 +7,17 @@ module Risc
     def setup
       super
       @input = "return 5.div4"
-      @expect = [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
-                 RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg,
-                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
-                 FunctionCall, Label, SlotToReg, SlotToReg, RegToSlot,
-                 SlotToReg, SlotToReg, RegToSlot, Branch]
+      @expect = [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot, #4
+                 RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, #9
+                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, #14
+                 FunctionCall, Label, SlotToReg, RegToSlot, Branch] #19
     end
 
     def test_return_instructions
       assert_nil msg = check_nil , msg
     end
     def test_function_return
-      produced = produce_body.next(23)
+      produced = produce_body.next(19)
       assert_equal Branch , produced.class
       assert_equal "return_label" , produced.label.name
     end

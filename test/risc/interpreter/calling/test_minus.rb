@@ -21,11 +21,10 @@ module Risc
             RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot, # 40
             LoadConstant, SlotToReg, RegToSlot, Branch, RegToSlot,
             SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, # 50
-            SlotToReg, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-            Branch, Branch, SlotToReg, SlotToReg, RegToSlot, # 60
-            LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg,
-            SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg, # 70
-            SlotToReg, Syscall, NilClass, ]
+            RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
+            Branch, LoadConstant, SlotToReg, RegToSlot, RegToSlot, # 60
+            SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer,
+            SlotToReg, SlotToReg, Syscall, NilClass, ]
        assert_equal 1 , get_return
     end
     def test_op
@@ -38,10 +37,10 @@ module Risc
       assert_equal 5 , @interpreter.get_register(:r3)
     end
     def test_return
-      ret = main_ticks(68)
+      ret = main_ticks(64)
       assert_equal FunctionReturn ,  ret.class
       assert_equal :r1 ,  ret.register.symbol
-      assert_equal 23196 ,  @interpreter.get_register(ret.register)
+      assert_equal 23004 ,  @interpreter.get_register(ret.register)
     end
   end
 end

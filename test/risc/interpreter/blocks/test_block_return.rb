@@ -24,15 +24,14 @@ module Risc
             RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
             LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg, # 60
             SlotToReg, SlotToReg, Branch, FunctionReturn, SlotToReg,
-            SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, # 70
-            RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
-            LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg, # 80
-            SlotToReg, Branch, SlotToReg, FunctionReturn, SlotToReg,
-            SlotToReg, Branch, RegToSlot, SlotToReg, SlotToReg, # 90
-            RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
-            LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg, # 100
-            Branch, SlotToReg, SlotToReg, FunctionReturn, Transfer,
-            SlotToReg, SlotToReg, Syscall, NilClass, ]
+            RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot, # 70
+            LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg,
+            SlotToReg, SlotToReg, FunctionReturn, SlotToReg, SlotToReg, # 80
+            Branch, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
+            Branch, SlotToReg, SlotToReg, RegToSlot, LoadConstant, # 90
+            SlotToReg, RegToSlot, RegToSlot, SlotToReg, Branch,
+            SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg, # 100
+            SlotToReg, Syscall, NilClass, ]
       assert_equal 15 , get_return
     end
 

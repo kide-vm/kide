@@ -48,11 +48,11 @@ module Vool
     end
 
     def test_return_is_last
-      assert_equal ReturnJump , @ins.next(5).class
+      assert_equal ReturnJump , @ins.next(4).class
     end
     def test_array
-      check_array [MessageSetup,ArgumentTransfer,SimpleCall,SlotLoad,
-            SlotLoad,ReturnJump, Label, ReturnSequence, Label] , @ins
+      check_array [MessageSetup, ArgumentTransfer, SimpleCall, SlotLoad, ReturnJump ,
+                    Label, ReturnSequence, Label] , @ins
     end
   end
 end
