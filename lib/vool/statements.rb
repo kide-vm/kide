@@ -2,7 +2,18 @@ module Vool
   class Statements < Statement
     attr_reader :statements
     def initialize(statements)
-      @statements = statements
+      case statements
+      when nil
+        @statements = []
+      when Array
+        @statements = statements
+      when Statement
+        @statements = statements.statements
+      when Statement
+        @statements = [statements]
+      else
+        raise "Invalid class, must be Statement or Array, not #{statements.class}"
+      end
     end
 
     def empty?
@@ -24,7 +35,11 @@ module Vool
       @statements[i]
     end
     def <<(o)
-      @statements << o
+      if(o.is_a?(Statements))
+        o.each {|s| @statements << s }
+      else
+        @statements << o
+      end
       self
     end
     def prepend(o)

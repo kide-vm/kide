@@ -1,12 +1,16 @@
 module Vool
 
+  # Local assignment really only differs in where the variable is actually stored,
+  # slot_position defines that
   class LocalAssignment < Assignment
 
-    def to_mom( compiler )
-      slot_def = compiler.slot_type_for(@name)
-      to = Mom::SlotDefinition.new(:message ,slot_def)
-      from = @value.slot_definition(compiler)
-      return chain_assign( Mom::SlotLoad.new(self,to,from) , compiler)
+    # We return the position where the local is stored. This is an array, giving the
+    # position relative to :message- A SlotLoad is constructed from this.
+    #
+    # Only snag is that we do not know this position, as only the compiler knows
+    # if the variable name is a local or an arg. So we delegate to the compiler.
+    def slot_position( compiler )
+      compiler.slot_type_for(@name)
     end
 
   end

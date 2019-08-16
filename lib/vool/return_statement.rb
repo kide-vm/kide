@@ -18,7 +18,7 @@ module Vool
     def to_mom( compiler )
       load = Mom::SlotLoad.new( self , [:message , :return_value] ,
                         @return_value.slot_definition(compiler) )
-      if @return_value.is_a?(SendStatement)
+      if @return_value.is_a?(CallStatement)
         ret = @return_value.to_mom(compiler)
         ret << load
       else
