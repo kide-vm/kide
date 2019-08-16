@@ -15,7 +15,8 @@ module Vool
       false_label = Mom::Label.new( self , "false_label_#{object_id.to_s(16)}")
       merge_label = Mom::Label.new( self , "merge_label_#{object_id.to_s(16)}")
 
-      head = Mom::TruthCheck.new(condition.slot_definition(compiler) , false_label)
+      head = @condition.to_mom(compiler) if @condition.is_a?(SendStatement)
+      head << Mom::TruthCheck.new(condition.slot_definition(compiler) , false_label)
       head << true_label
       head << if_true.to_mom(compiler)   if @if_true
       head << Mom::Jump.new(merge_label) if @if_false
@@ -40,8 +41,9 @@ module Vool
     end
 
     def to_s(depth = 0)
-      parts = ["if (#{@condition})" , @body.to_s(depth + 1) ]
-      parts += ["else" ,  "@if_false.to_s(depth + 1)"] if(@false)
+      parts = ["if (#{@condition.to_s(0)})" ]
+      parts << "  #{@if_true}" if @if_true
+      parts += [ "else" ,  "  #{@if_false}"] if(@false)
       parts << "end"
       at_depth(depth , *parts )
     end

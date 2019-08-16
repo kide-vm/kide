@@ -44,12 +44,9 @@ module Ruby
       "self"
     end
   end
-  class SuperExpression < Statement
+  class SuperExpression < Constant
     def to_s(depth = 0)
       "super"
-    end
-    def to_vool
-      vool_brother.new
     end
   end
   class StringConstant < ValueConstant

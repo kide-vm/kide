@@ -20,14 +20,15 @@ module Ruby
     # we "normalize" or flatten any complex argument expressions into a list
     def to_vool
       statements = Vool::Statements.new([])
+      receiver = normalize_arg(@receiver , statements)
       arguments = []
       @arguments.each_with_index do |arg , index |
-        normalize_arg(arg , arguments , statements)
+        arguments << normalize_arg(arg , statements)
       end
       if statements.empty?
-        return vool_brother.new(@name, @receiver.to_vool , arguments)
+        return vool_brother.new(@name, receiver , arguments)
       else
-        statements << vool_brother.new(@name, @receiver.to_vool , arguments)
+        statements << vool_brother.new(@name, receiver , arguments)
         return statements
       end
     end
@@ -36,11 +37,10 @@ module Ruby
     # we create a tmp variable and assign to that, hoising all the calls.
     # the effect is of walking the call tree now,
     # rather than using a stack to do that at runtime
-    def normalize_arg(arg , arguments , statements)
+    def normalize_arg(arg , statements)
       vool_arg = arg.to_vool
       if arg.is_a?(Constant)
-        arguments << vool_arg
-        return
+        return vool_arg
       end
       if( vool_arg.is_a?(Vool::Statements))
         while(vool_arg.length > 1)
@@ -50,7 +50,7 @@ module Ruby
       end
       assign = Vool::LocalAssignment.new( "tmp_#{arg.object_id}".to_sym, vool_arg)
       statements << assign
-      arguments << Vool::LocalVariable.new(assign.name)
+      return Vool::LocalVariable.new(assign.name)
     end
 
   end
