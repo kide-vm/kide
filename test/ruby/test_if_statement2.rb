@@ -24,7 +24,7 @@ module Ruby
     include RubyTests
 
     def setup
-        @lst = compile("if(a == 1) ; a = 1  end").to_vool
+        @lst = compile("if(foo() == 1) ; a = 1 ; end").to_vool
     end
 
     def test_class
@@ -40,8 +40,8 @@ module Ruby
       assert_equal Vool::LocalAssignment , @lst.last.if_true.class
     end
     def test_condition
-      assert_equal Vool::LocalVariable , @lst.last.condition.class
-      assert_equal @lst.first.name , @lst.last.condition.name
+      assert_equal Vool::SendStatement , @lst.last.condition.class
+      assert_equal :== , @lst.last.condition.name
     end
   end
 

@@ -22,10 +22,10 @@ module Ruby
     end
 
     def to_vool
-      cond , rest = *normalize_name(@condition)
-      me = Vool::IfStatement.new(cond.to_vool , @if_true&.to_vool, @if_false&.to_vool)
-      return me unless rest
-      Vool::Statements.new([ rest.to_vool , me])
+      cond , hoisted = *normalized_vool(@condition)
+      me = Vool::IfStatement.new(cond , @if_true&.to_vool, @if_false&.to_vool)
+      return me unless hoisted
+      Vool::Statements.new( hoisted ) << me
     end
 
     def has_false?

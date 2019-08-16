@@ -15,8 +15,13 @@ module Vool
       false_label = Mom::Label.new( self , "false_label_#{object_id.to_s(16)}")
       merge_label = Mom::Label.new( self , "merge_label_#{object_id.to_s(16)}")
 
-      head = @condition.to_mom(compiler) if @condition.is_a?(SendStatement)
-      head << Mom::TruthCheck.new(condition.slot_definition(compiler) , false_label)
+      check =  Mom::TruthCheck.new(condition.slot_definition(compiler) , false_label)
+      if @condition.is_a?(SendStatement)
+        head = @condition.to_mom(compiler)
+        head << check
+      else
+        head = check
+      end
       head << true_label
       head << if_true.to_mom(compiler)   if @if_true
       head << Mom::Jump.new(merge_label) if @if_false

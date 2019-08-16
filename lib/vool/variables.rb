@@ -28,8 +28,8 @@ module Vool
     def add_ivar( array )
       array << @name
     end
-    def to_s
-      "@#{name}"
+    def to_s(depth = 0)
+      at_depth(depth , "@#{name}")
     end
   end
 

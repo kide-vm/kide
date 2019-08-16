@@ -81,4 +81,37 @@ module Ruby
       assert_equal "Word_Type" , sent.receiver.ct_type.name
     end
   end
+  class TestSendReceiver < MiniTest::Test
+    include RubyTests
+    def setup
+      @lst = compile( "call.once.more").to_vool
+    end
+    def test_class
+      assert_equal Vool::Statements , @lst.class
+    end
+    def test_one
+      assert_equal Vool::LocalAssignment , @lst.first.class
+    end
+    def test_one_name
+      assert @lst[0].name.to_s.start_with?("tmp_")
+    end
+    def test_one_value
+      assert_equal :call , @lst[0].value.name
+    end
+    def test_two_name
+      assert @lst[1].name.to_s.start_with?("tmp_")
+    end
+    def test_two_value
+      assert_equal :once , @lst[1].value.name
+    end
+    def test_three_class
+      assert_equal Vool::SendStatement, @lst[2].class
+    end
+    def test_three_name
+      assert_equal :more , @lst[2].name
+    end
+    def test_three_self
+      assert @lst[2].receiver.name.to_s.start_with?("tmp_")
+    end
+  end
 end

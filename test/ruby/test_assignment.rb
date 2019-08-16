@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Ruby
-  class TestAssignment < MiniTest::Test
+  class TestAssignmentRuby < MiniTest::Test
     include RubyTests
 
     def test_local
@@ -25,10 +25,13 @@ module Ruby
       assert_equal IvarAssignment , lst.class
     end
   end
-  class TestAssignmentVoolBar < MiniTest::Test
+  class TestAssignmentVoolLocal < MiniTest::Test
     include RubyTests
     def setup
       @lst = compile( "foo = bar").to_vool
+    end
+    def test_tos
+      assert_equal "foo = self.bar()" , @lst.to_s
     end
     def test_local
       assert_equal Vool::LocalAssignment , @lst.class
@@ -44,6 +47,9 @@ module Ruby
     include RubyTests
     def setup
       @lst = compile( "@foo = bar").to_vool
+    end
+    def test_tos
+      assert_equal "@foo = self.bar()" , @lst.to_s
     end
     def test_instance
       assert_equal Vool::IvarAssignment , @lst.class

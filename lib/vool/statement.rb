@@ -56,6 +56,10 @@ module Vool
       raise "not iplemented in #{self}"
     end
 
+    def at_depth(depth , *strings)
+      prefix = " " * 2 * depth
+      strings.collect{|str| prefix + str}.join("\n")
+    end
   end
 
 end
