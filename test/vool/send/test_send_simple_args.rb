@@ -5,7 +5,7 @@ module Vool
     include SimpleSendHarness
 
     def send_method
-      "5.div4(1,2)"
+      "5.div4(1,2);return"
     end
 
     def receiver
@@ -20,8 +20,8 @@ module Vool
       assert_equal 2,    @ins.next(1).arguments[1].right.known_object.value
     end
     def test_array
-      check_array [MessageSetup,ArgumentTransfer,SimpleCall, Label, ReturnSequence ,
-                    Label] , @ins
+      check_array [MessageSetup,ArgumentTransfer,SimpleCall, SlotLoad, ReturnJump,
+                  Label, ReturnSequence , Label] , @ins
     end
   end
 end

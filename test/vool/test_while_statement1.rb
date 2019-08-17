@@ -7,7 +7,7 @@ module Vool
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @compiler = compile_first_method( "while(5.div4) ; 5.div4 ; end")
+      @compiler = compile_first_method( "while(5.div4) ; 5.div4 ; end;return")
       @ins = @compiler.mom_instructions.next
     end
 
@@ -30,7 +30,8 @@ module Vool
     def test_array
       check_array [Label, MessageSetup, ArgumentTransfer, SimpleCall, TruthCheck ,
                     MessageSetup, ArgumentTransfer, SimpleCall, Jump, Label ,
-                    Label, ReturnSequence, Label] , @ins
+                    SlotLoad, ReturnJump,Label, ReturnSequence, Label ,Label ,
+                    ReturnSequence, Label] , @ins
     end
 
   end

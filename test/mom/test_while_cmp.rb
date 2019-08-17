@@ -6,14 +6,15 @@ module Risc
 
     def setup
       super
-      @input = "while(5 > 0) ; @a = true; end"
+      @input = "while(5 > 0) ; @a = true; end;return"
       @expect = [Label, LoadConstant, LoadConstant, SlotToReg, SlotToReg, #4
                  RegToSlot, RegToSlot, RegToSlot, RegToSlot, LoadConstant, #9
                  SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg, #14
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, #19
                  FunctionCall, Label, SlotToReg, LoadConstant, OperatorInstruction, #24
                  IsZero, LoadConstant, OperatorInstruction, IsZero, LoadConstant, #29
-                 SlotToReg, RegToSlot, Branch, Label] #34
+                 SlotToReg, RegToSlot, Branch, Label, LoadConstant, #34
+                 RegToSlot, Branch] #34
     end
 
     def test_while_instructions

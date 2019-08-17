@@ -20,7 +20,7 @@ module Vool
       assert_equal Mom::MessageSetup , @ins.class , @ins
     end
     def test_two_instructions_are_returned
-      assert_equal 6 ,  @ins.length , @ins
+      assert_equal 8 ,  @ins.length , @ins
     end
     def test_receiver_move_class
       assert_equal Mom::ArgumentTransfer,  @ins.next(1).class
@@ -38,8 +38,8 @@ module Vool
       assert_equal Parfait::CallableMethod,  @ins.next(2).method.class
     end
     def test_array
-      check_array [MessageSetup,ArgumentTransfer,SimpleCall,Label,
-                  ReturnSequence , Label] , @ins
+      check_array [MessageSetup,ArgumentTransfer,SimpleCall,SlotLoad,
+                    ReturnJump,Label, ReturnSequence , Label] , @ins
     end
   end
 

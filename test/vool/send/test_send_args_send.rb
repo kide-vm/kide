@@ -7,14 +7,14 @@ module Vool
     def setup
       Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
-      @compiler = compile_first_method( "a = main(1 + 2)" )
+      @compiler = compile_first_method( "a = main(1 + 2);return a" )
       @ins = @compiler.mom_instructions.next
     end
 
     def test_array
       check_array [MessageSetup, ArgumentTransfer, SimpleCall, SlotLoad, MessageSetup ,
-                    ArgumentTransfer, SimpleCall, SlotLoad ,Label, ReturnSequence ,
-                    Label] , @ins
+                    ArgumentTransfer, SimpleCall, SlotLoad ,SlotLoad, ReturnJump,
+                    Label, ReturnSequence , Label] , @ins
     end
 
     def test_one_call

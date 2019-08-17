@@ -14,7 +14,7 @@ module Mom
       assert_nil Instruction.new("Hi").next
     end
     def test_raise
-      assert_raises {Instruction.new(5)}      
+      assert_raises {Instruction.new(5)}
     end
   end
 end

@@ -6,11 +6,12 @@ module Risc
 
     def setup
       super
-      @input = "r = 5.div4"
+      @input = "r = 5.div4;return"
       @expect = [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
                  RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg,
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
-                 FunctionCall, Label, SlotToReg, SlotToReg, RegToSlot]
+                 FunctionCall, Label, SlotToReg, SlotToReg, RegToSlot,
+                 LoadConstant, RegToSlot, Branch]
     end
     def test_local_assign_instructions
       assert_nil msg = check_nil , msg

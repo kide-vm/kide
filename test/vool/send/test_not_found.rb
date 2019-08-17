@@ -21,7 +21,8 @@ module Vool
 
     def test_array
       check_array [NotSameCheck, SlotLoad, ResolveMethod, Label, MessageSetup ,
-                    ArgumentTransfer, DynamicCall, Label, ReturnSequence, Label]  , @ins
+                    ArgumentTransfer, DynamicCall, SlotLoad, ReturnJump,
+                    Label, ReturnSequence, Label]  , @ins
     end
 
   end

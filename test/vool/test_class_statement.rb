@@ -67,7 +67,7 @@ module Vool
     include VoolCompile
 
     def setup
-      @compiler = compile_first_method( "if(@a) ; @a = 5 ; else; @a = 6 ; end")
+      @compiler = compile_first_method( "if(@a) ; @a = 5 ; else; @a = 6 ; end; return")
       @ins = @compiler.mom_instructions
     end
 
@@ -89,8 +89,8 @@ module Vool
     end
     def test_array
       check_array [Label, TruthCheck, Label, SlotLoad, Jump ,
-                    Label, SlotLoad, Label, Label, ReturnSequence ,
-                    Label] , @ins
+                    Label, SlotLoad, Label, SlotLoad, ReturnJump ,
+                    Label, ReturnSequence, Label]  , @ins
     end
   end
 end

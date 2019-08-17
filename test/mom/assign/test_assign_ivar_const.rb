@@ -6,8 +6,8 @@ module Risc
 
     def setup
       super
-      @input = "@ivar = 5"
-      @expect = [LoadConstant, SlotToReg, RegToSlot]
+      @input = "@ivar = 5;return"
+      @expect = [LoadConstant, SlotToReg, RegToSlot, LoadConstant, RegToSlot, Branch]
     end
 
     def test_local_assign_instructions

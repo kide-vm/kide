@@ -10,7 +10,7 @@ module Risc
       @expect = [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
                  RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg,
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
-                 FunctionCall, Label]
+                 FunctionCall, Label, SlotToReg, RegToSlot, Branch]
     end
 
     def test_send_instructions

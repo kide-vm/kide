@@ -6,7 +6,7 @@ module Vool
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @compiler = compile_first_method( "local = 5")
+      @compiler = compile_first_method( "local = 5;return")
       @ins = @compiler.mom_instructions.next
     end
 
@@ -38,7 +38,7 @@ module Vool
     include VoolCompile
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @compiler = compile_first_method( "@a = 5 ; local = @a")
+      @compiler = compile_first_method( "@a = 5 ; local = @a;return")
       @ins = @compiler.mom_instructions.next
     end
     def test_class_compiles
@@ -52,7 +52,7 @@ module Vool
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @compiler = compile_first_method( "arg = 5")
+      @compiler = compile_first_method( "arg = 5;return")
       @ins = @compiler.mom_instructions.next
     end
 
@@ -79,13 +79,13 @@ module Vool
       Parfait.boot!(Parfait.default_test_options)
     end
     def test_assigns_const
-      @compiler = compile_first_method( "@a = 5")
+      @compiler = compile_first_method( "@a = 5;return")
       @ins = @compiler.mom_instructions.next
       assert_equal Mom::SlotLoad , @ins.class , @ins
       assert_equal Mom::IntegerConstant , @ins.right.known_object.class , @ins
     end
     def test_assigns_move
-      @compiler = compile_first_method( "@a = arg")
+      @compiler = compile_first_method( "@a = arg;return")
       @ins = @compiler.mom_instructions.next
       assert_equal Mom::SlotLoad , @ins.class , @ins
       assert_equal Mom::SlotDefinition , @ins.right.class , @ins

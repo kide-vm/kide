@@ -5,7 +5,7 @@ module Vool
     include SimpleSendHarness
 
     def send_method
-      "5.div4"
+      "5.div4;return"
     end
     def receiver
       [Mom::IntegerConstant , 5]

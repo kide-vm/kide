@@ -6,10 +6,11 @@ module Risc
 
     def setup
       super
-      @input = "unless(@a) ; arg = 5 ; end"
+      @input = "unless(@a) ; arg = 5 ; end;return"
       @expect = [SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsZero, #4
                  LoadConstant, OperatorInstruction, IsZero, Label, Branch, #9
-                 Label, LoadConstant, SlotToReg, RegToSlot, Label] #14
+                 Label, LoadConstant, SlotToReg, RegToSlot, Label, LoadConstant, #34
+                 RegToSlot, Branch] #14
    end
 
     def test_if_instructions

@@ -7,12 +7,12 @@ module Risc
     def setup
       super
       @input = as_block("return 5")
-      @expect = [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #4
+      @expect =  [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #4
                  RegToSlot, LoadConstant, LoadConstant, SlotToReg, SlotToReg, #9
                  RegToSlot, RegToSlot, RegToSlot, RegToSlot, SlotToReg, #14
                  SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg, #19
                  SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, #24
-                 SlotToReg, FunctionCall, Label]
+                 SlotToReg, FunctionCall, Label] #29
     end
 
     def test_send_instructions

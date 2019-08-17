@@ -18,7 +18,7 @@ module Risc
                  SlotToReg, SlotToReg, RegToSlot, RegToSlot, RegToSlot, #44
                  RegToSlot, SlotToReg, SlotToReg, SlotToReg, RegToSlot, #49
                  LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant, #54
-                 SlotToReg, DynamicJump, Label]
+                 SlotToReg, DynamicJump, Label, SlotToReg, RegToSlot, Branch]
     end
 
     def test_send_instructions

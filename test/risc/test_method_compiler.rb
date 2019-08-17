@@ -12,7 +12,7 @@ module Risc
       vool.to_mom(nil)
       vool
     end
-    def create_method(body = "@ivar = 5")
+    def create_method(body = "@ivar = 5;return")
       in_test_vool("def meth; #{body};end")
       test = Parfait.object_space.get_class_by_name(:Test)
       test.get_method(:meth)
@@ -20,7 +20,7 @@ module Risc
 
     def test_method_has_source
       method = create_method
-      assert_equal Vool::IvarAssignment ,  method.source.class
+      assert_equal Vool::ScopeStatement ,  method.source.class
     end
 
     def test_method_has_no_locals
@@ -40,20 +40,20 @@ module Risc
     end
 
     def test_creates_method_statement_in_class
-      clazz = in_test_vool("def meth; @ivar = 5 ;end")
+      clazz = in_test_vool("def meth; @ivar = 5 ;return;end")
       assert_equal Vool::Statements , clazz.body.class
       assert_equal Vool::MethodStatement , clazz.body.first.class
     end
 
     def test_callable_method_instance_type
-      in_test_vool("def meth; @ivar = 5; @ibar = 4;end")
+      in_test_vool("def meth; @ivar = 5; @ibar = 4;return;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.instance_type.get_method(:meth)
       assert_equal 1, method.self_type.variable_index(:ivar)
       assert_equal 2, method.self_type.variable_index(:ibar)
     end
     def test_callable_method_has_one_local
-      in_test_vool("def meth; local = 5 ; a = 6;end")
+      in_test_vool("def meth; local = 5 ; a = 6;return;end")
       test = Parfait.object_space.get_class_by_name(:Test)
       method = test.get_method(:meth)
       assert_equal 3 , method.frame_type.instance_length

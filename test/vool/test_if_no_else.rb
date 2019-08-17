@@ -7,7 +7,7 @@ module Vool
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @compiler = compile_first_method( "if(@a) ; @a = 5 ; end")
+      @compiler = compile_first_method( "if(@a) ; @a = 5 ; end;return")
       @ins = @compiler.mom_instructions.next
     end
 
@@ -24,8 +24,8 @@ module Vool
       assert_equal Label , @ins.last.class , @ins
     end
     def test_array
-      check_array  [TruthCheck, Label, SlotLoad, Label, Label ,
-                    ReturnSequence, Label], @ins
+      check_array  [TruthCheck, Label, SlotLoad, Label, SlotLoad, ReturnJump,
+                    Label ,ReturnSequence, Label], @ins
     end
   end
 end

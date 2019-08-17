@@ -5,7 +5,7 @@ module Vool
     include SimpleSendHarness
 
     def send_method
-      "self.get_internal_word(0)"
+      "self.get_internal_word(0);return"
     end
     def test_receiver
       assert_equal SlotDefinition,  @ins.next.receiver.class

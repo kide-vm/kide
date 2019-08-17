@@ -6,7 +6,7 @@ module Vool
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @compiler = compile_first_method( "if(5.div4) ; @a = 6 ; else; @a = 5 ; end")
+      @compiler = compile_first_method( "if(5.div4) ; @a = 6 ; else; @a = 5 ; end;return")
       @ins = @compiler.mom_instructions.next
     end
 
@@ -23,7 +23,7 @@ module Vool
     def test_array
       check_array [MessageSetup, ArgumentTransfer, SimpleCall, TruthCheck, Label ,
                     SlotLoad, Jump, Label, SlotLoad, Label ,
-                    Label, ReturnSequence, Label] , @ins
+                    SlotLoad, ReturnJump,Label, ReturnSequence, Label] , @ins
     end
 
   end

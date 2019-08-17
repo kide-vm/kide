@@ -36,21 +36,4 @@ module Ruby
       assert_equal LocalAssignment , lst.body.class
     end
   end
-
-  class TestMethodStatementTrans < MiniTest::Test
-    include RubyTests
-    def setup()
-      input = "def tryout(arg1, arg2) ; a = arg1 ; end "
-      @lst = compile( input ).to_vool
-    end
-    def test_method
-      assert_equal Vool::MethodStatement , @lst.class
-    end
-    def test_method_args
-      assert_equal [:arg1, :arg2] , @lst.args
-    end
-    def test_body_is_scope_zero_statement
-      assert_equal Vool::LocalAssignment , @lst.body.class
-    end
-  end
 end

@@ -6,8 +6,9 @@ module Risc
 
     def setup
       super
-      @input = "local = arg"
-      @expect = [SlotToReg, SlotToReg, SlotToReg, RegToSlot]
+      @input = "local = arg; return local"
+      @expect =  [SlotToReg, SlotToReg, SlotToReg, RegToSlot, SlotToReg, #4
+                 SlotToReg, RegToSlot, Branch] #9
     end
     def test_local_assign_instructions
       assert_nil msg = check_nil , msg

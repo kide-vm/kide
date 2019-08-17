@@ -26,7 +26,6 @@ module VoolCompile
   include ScopeHelper
   include Mom
 
-
   def compile_first_method( input )
     input = as_test_main( input )
     collection = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(input)

@@ -7,7 +7,7 @@ module Mom
     def setup
     end
 
-    def in_test_vool(body = "@ivar = 5")
+    def in_test_vool(body = "@ivar = 5;return")
       code = in_Test("def meth; #{body};end")
       RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(code)
     end
@@ -30,7 +30,7 @@ module Mom
     def test_compiles_all_risc
       compiler = in_test_vool().compilers.first.to_risc
       assert_equal Risc::LoadConstant , compiler.risc_instructions.next.class
-      assert_equal 17 , compiler.risc_instructions.length
+      assert_equal 20 , compiler.risc_instructions.length
     end
   end
 end

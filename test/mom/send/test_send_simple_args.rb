@@ -11,7 +11,7 @@ module Risc
                  RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg,
                  RegToSlot, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
                  LoadConstant, SlotToReg, RegToSlot, SlotToReg, FunctionCall,
-                 Label]
+                 Label, SlotToReg, RegToSlot, Branch]
     end
 
     def test_send_instructions

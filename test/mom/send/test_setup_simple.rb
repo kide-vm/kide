@@ -6,11 +6,11 @@ module Risc
 
     def setup
       super
-      @input = "5.div4"
+      @input = "return 5.div4"
       @expect = [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
                  RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg,
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
-                 FunctionCall, Label]
+                 FunctionCall, Label, SlotToReg, RegToSlot, Branch]
       @produced = produce_body
     end
 
@@ -51,7 +51,7 @@ module Risc
       assert_reg_to_slot( sl , :r1  ,  :r3 ,  7 )
     end
     def test_label
-      sl = @produced.next( 17 )
+      sl = @produced.next( 20 )
       assert_equal Risc::Label , sl.class
       assert_equal "return_label" , sl.name
     end

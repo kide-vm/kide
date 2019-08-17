@@ -6,11 +6,11 @@ module Risc
 
     def setup
       super
-      @input = "5.div4"
+      @input = "return 5.div4"
       @expect = "something"
     end
-    def instruction(num) # 18 is the main, see length in test/mom/send/test_setup_simple.rb
-      produce_main.next( 18 + num)
+    def instruction(num) # 21 is the main, see length in test/mom/send/test_setup_simple.rb
+      produce_main.next( 21 + num)
     end
     def test_postamble_classes
       postamble.each_with_index do |ins , index|

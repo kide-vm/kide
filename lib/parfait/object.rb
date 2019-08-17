@@ -73,7 +73,7 @@
     def self.padded( len )
       a = 32 * (1 + ((len + 3)/32).floor )
       #puts "#{a} for #{len}"
-      a
+      return a
     end
 
     def self.padded_words( words )

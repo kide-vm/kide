@@ -5,7 +5,7 @@ module Vool
     include SimpleSendHarness
 
     def send_method
-      "'5'.get_internal_byte(1)"
+      "'5'.get_internal_byte(1) ; return "
     end
     def receiver
       [Mom::StringConstant , "5"]
