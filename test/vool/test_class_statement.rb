@@ -5,8 +5,8 @@ module Vool
   class TestClassStatement < MiniTest::Test
     include ScopeHelper
     def setup
-      Parfait.boot!({})
-      ruby_tree = Ruby::RubyCompiler.compile( as_test_main("a = 5") )
+      Parfait.boot!(Parfait.default_test_options)
+      ruby_tree = Ruby::RubyCompiler.compile( as_test_main("@a = 5") )
       @vool = ruby_tree.to_vool
     end
     def test_class
@@ -20,6 +20,47 @@ module Vool
     end
     def test_create_class
       assert_equal :Test , @vool.create_class_object.name
+    end
+    def test_class_instance
+      assert_equal :a , @vool.create_class_object.instance_type.names[1]
+    end
+  end
+  class TestClassStatementTypeCreation < MiniTest::Test
+    include ScopeHelper
+    def setup
+      Parfait.boot!(Parfait.default_test_options)
+    end
+    def assert_type_for(input)
+      ruby_tree = Ruby::RubyCompiler.compile( as_test_main(input) )
+      vool = ruby_tree.to_vool
+      assert_equal ClassStatement , vool.class
+      clazz = vool.create_class_object
+      assert_equal Parfait::Class , clazz.class
+      assert_equal :a , clazz.instance_type.names[1]
+    end
+    def test_while_cond
+      assert_type_for("while(@a) ; 1 == 1 ; end")
+    end
+    def test_while_cond_eq
+      assert_type_for("while(@a==1); 1 == 1 ; end")
+    end
+    def test_if_cond
+      assert_type_for("if(@a); 1 == 1 ; end")
+    end
+    def test_send_1
+      assert_type_for("@a.call")
+    end
+    def test_send_arg
+      assert_type_for("call(@a)")
+    end
+    def test_return
+      assert_type_for("return @a")
+    end
+    def test_return_call
+      assert_type_for("return call(@a)")
+    end
+    def test_return_rec
+      assert_type_for("return @a.call()")
     end
   end
   class TestClassStatementCompile < MiniTest::Test

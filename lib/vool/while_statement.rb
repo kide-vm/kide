@@ -23,7 +23,7 @@ module Vool
 
     def each(&block)
       block.call(self)
-      block.call(@condition)
+      @condition.each(&block)
       @hoisted.each(&block) if @hoisted
       @body.each(&block)
     end

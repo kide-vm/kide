@@ -17,6 +17,9 @@ module Vool
     def to_s
       name.to_s
     end
+    def each(&block)
+      block.call(self)
+    end
   end
 
   class InstanceVariable < Expression
@@ -31,10 +34,16 @@ module Vool
     def to_s(depth = 0)
       at_depth(depth , "@#{name}")
     end
+    def each(&block)
+      block.call(self)
+    end
   end
 
   class ClassVariable < Expression
     include Named
+    def each(&block)
+      block.call(self)
+    end
   end
 
   class ModuleName < Expression
@@ -47,6 +56,9 @@ module Vool
     end
     def get_named_class
       Parfait.object_space.get_class_by_name(self.name)
+    end
+    def each(&block)
+      block.call(self)
     end
   end
 end

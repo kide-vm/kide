@@ -8,7 +8,8 @@ module Vool
     end
 
     def each(&block)
-      block.call(@return_value)
+      block.call(self)
+      @return_value.each(&block)
     end
 
     # Since the return is normalized to only allow simple values it is simple.
