@@ -20,7 +20,6 @@ module Risc
   end
 end
 
-require_relative "risc/padding"
 require_relative "risc/position/position"
 require_relative "risc/platform"
 require_relative "risc/parfait_boot"

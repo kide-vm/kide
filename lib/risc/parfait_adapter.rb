@@ -99,7 +99,7 @@ class Symbol
     l
   end
   def padded_length
-    Padding.padded( to_s.length + 4)
+    Parfait::Object.padded( to_s.length + 4)
   end
 
 end

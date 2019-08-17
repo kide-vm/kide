@@ -68,8 +68,20 @@
       type.variable_index(name)
     end
 
+    # objects only come in lengths of multiple of 8 words / 32 bytes
+    # and there is a "hidden" 1 word that is used for debug/check memory corruption
+    def self.padded( len )
+      a = 32 * (1 + ((len + 3)/32).floor )
+      #puts "#{a} for #{len}"
+      a
+    end
+
+    def self.padded_words( words )
+      padded(words*4) # 4 == word length, a constant waiting for a home
+    end
+
     def padded_length
-      Padding.padded_words( type.instance_length )
+      Object.padded_words( type.instance_length )
     end
 
     # parfait versions are deliberately called different, so we "relay"

@@ -175,7 +175,7 @@ module Parfait
     # but additionally, the amount of data comes on top.
     # unfortuntely we can't just use super because of the Padding
     def padded_length
-      Padding.padded_words( get_type().instance_length +  get_length() )
+      Object.padded_words( get_type().instance_length +  get_length() )
     end
 
     def each

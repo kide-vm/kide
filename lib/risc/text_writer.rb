@@ -216,7 +216,7 @@ module Risc
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
     def pad_after( length )
       before = stream_position
-      pad = Padding.padding_for(length)
+      pad =  Parfait::Object.padded(length) - length  # for header, type
       pad.times do
         @stream.write_unsigned_int_8(0)
       end
