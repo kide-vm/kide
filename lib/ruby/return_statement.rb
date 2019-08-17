@@ -5,7 +5,7 @@ module Ruby
     attr_reader :return_value
 
     def initialize(value)
-      @return_value = value
+      @return_value = value || NilConstant.new 
     end
 
     def to_vool

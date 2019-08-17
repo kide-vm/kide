@@ -9,7 +9,29 @@ module Ruby
     end
 
     def to_vool
+      if @body.is_a?(Statements)
+          @body << replace_return( @body.pop )
+      else
+        @body = replace_return( @body )
+      end
       Vool::MethodStatement.new( @name , @args.dup , @body.to_vool)
+    end
+
+    def replace_return(statement)
+      case statement
+      when SendStatement , YieldStatement, Variable , Constant
+         return ReturnStatement.new( statement )
+      when IvarAssignment
+        ret = ReturnStatement.new( InstanceVariable.new(statement.name) )
+        return Statements.new([statement , ret])
+      when LocalAssignment
+        ret = ReturnStatement.new( LocalVariable.new(statement.name) )
+        return Statements.new([statement , ret])
+      when ReturnStatement , IfStatement , WhileStatement ,BlockStatement
+        return statement
+      else
+        raise "Not implemented implicit return #{statement.class}"
+      end
     end
 
     def to_s(depth = 0)

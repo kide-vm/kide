@@ -23,6 +23,9 @@ module Ruby
     def shift
       @statements.shift
     end
+    def pop
+      @statements.pop
+    end
     def [](i)
       @statements[i]
     end

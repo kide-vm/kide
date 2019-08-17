@@ -29,7 +29,9 @@ module Vool
     end
 
     def to_s(depth = 0)
-      at_depth(depth , "while (#{@condition})" , @body.to_s(depth + 1) , "end" )
+      lines =[ "while (#{@condition})" , @body.to_s(1) , "end"]
+      lines.unshift( @hoisted.to_s) if @hoisted
+      at_depth(depth , *lines )
     end
 
   end
