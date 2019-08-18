@@ -5,14 +5,14 @@ require 'net/scp'
 module Mains
   class TestArm < MiniTest::Test
     @Qemu = "qemu-arm"
-    @Linker = "arm-linux-gnuabi-ld"
+    @Linker = "arm-linux-gnueabi-ld"
     def self.Linker
       @Linker
     end
     def self.Qemu
       @Qemu
     end
-    DEBUG = false
+    DEBUG = true
 
     # runnable_methods is called by minitest to determine which tests to run
     def self.runnable_methods
@@ -30,14 +30,12 @@ module Mains
           assert_equal stdout , out , "Wrong stdout #{name}"
           assert_equal exit_code , code.to_s , "Wrong exit code #{name}"
         end
-        break
       end
       tests
     end
 
     def self.has_qemu
       if `uname -a`.include?("torsten")
-        qemu = "qemu-arm"
         @Linker = "arm-linux-gnu-ld"
         #return false
       end
