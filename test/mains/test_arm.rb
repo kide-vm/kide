@@ -28,10 +28,20 @@ module Mains
     end
 
     def self.has_qemu
-      `qemu-arm -version`
-      return false unless $?.exitstatus == 0
-      `arm-linux-gnu-ld -v`
-      return false unless $?.exitstatus == 0
+      qemu = "qemu-arm"
+      linker = "arm-linux-gnuabi-ld"
+      if `uname -a`.include?("torsten")
+        qemu = "qemu-arm"
+        linker = "arm-linux-gnu-ld"
+        #return false
+      end
+      begin
+        `#{qemu} -version`
+        `#{linker} -v`
+      rescue => e
+        puts e
+        return false
+      end
       true
     end
 
