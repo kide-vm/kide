@@ -63,7 +63,11 @@ module Mom
         parfait = known_object.to_parfait(compiler)
         const = Risc.load_constant(source, parfait , right)
         compiler.add_code const
-        raise "Can't have slots into Constants" if slots.length > 0
+        if slots.length == 1
+          raise "only type allowed for constants, not #{slots[0]}" unless slots[0] == :type
+          compiler.add_code Risc::SlotToReg.new( source , right , Parfait::TYPE_INDEX, right)
+        end
+        raise "Can't have slots into Constants #{slots}" if slots.length > 1
       when Parfait::Object , Risc::Label
         const = const  = Risc.load_constant(source, known_object , right)
         compiler.add_code const

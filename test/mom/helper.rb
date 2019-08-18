@@ -28,7 +28,9 @@ module Risc
     end
     def to_target
       assert @expect , "No output given"
-      RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_target(as_test_main,:interpreter)
+      compiler = RubyX::RubyXCompiler.new(RubyX.default_test_options)
+      vool = compiler.ruby_to_vool(as_test_main)
+      compiler.to_target(:interpreter)
     end
     def produce_main
       produce_target(:main)

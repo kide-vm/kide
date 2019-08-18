@@ -12,7 +12,7 @@ module Mains
     def self.Qemu
       @Qemu
     end
-    DEBUG = true
+    DEBUG = false
 
     # runnable_methods is called by minitest to determine which tests to run
     def self.runnable_methods
@@ -37,7 +37,7 @@ module Mains
     def self.has_qemu
       if `uname -a`.include?("torsten")
         @Linker = "arm-linux-gnu-ld"
-        #return false
+        return false
       end
       begin
         `#{@Qemu} -version`
