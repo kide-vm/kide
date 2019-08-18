@@ -17,8 +17,16 @@ module RubyX
       assert_equal :Object , vool.name
     end
     def test_mom
-      vool = compiler.ruby_to_mom source
-      assert_equal Mom::MomCollection , vool.class
+      mom = compiler.ruby_to_mom source
+      assert_equal Mom::MomCollection , mom.class
+    end
+    def test_risc
+      risc = compiler.ruby_to_risc source
+      assert_equal Risc::RiscCollection , risc.class
+    end
+    def test_binary
+      risc = compiler.ruby_to_binary source , :interpreter
+      assert_equal Risc::Linker , risc.class
     end
   end
 end
