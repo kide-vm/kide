@@ -17,5 +17,8 @@ module RubyX
       assert_output(/compiling/) {RubyXC.start(["compile" , "test/mains/source/add__4.rb"])}
       File.delete "add__4.o"
     end
+    def test_interpret
+      assert_output(/interpreting/) {RubyXC.start(["interpret" , "test/mains/source/add__4.rb"])}
+    end
   end
 end

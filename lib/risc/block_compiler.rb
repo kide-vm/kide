@@ -29,23 +29,6 @@ module Risc
       end
       return new_type , extra_info
     end
-    # determine how given name need to be accsessed.
-    # For blocks the options are args or frame
-    # or then the methods arg or frame
-    def slot_type_for(name)
-      if @callable.arguments_type.variable_index(name)
-        slot_def = [:arguments]
-      elsif @callable.frame_type.variable_index(name)
-        slot_def = [:frame]
-      elsif @in_method.arguments_type.variable_index(name)
-        slot_def = [:caller , :caller ,:arguments ]
-      elsif @in_method.frame_type.variable_index(name)
-        slot_def = [:caller ,:caller , :frame ]
-      elsif
-        raise "no variable #{name} , need to resolve at runtime"
-      end
-      slot_def << name
-    end
 
 
   end

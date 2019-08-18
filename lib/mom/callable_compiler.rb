@@ -50,35 +50,6 @@ module Mom
       self
     end
 
-    # resolve the type of the slot, by inferring from it's name, using the type
-    # scope related slots are resolved by the compiler by method/block
-    def slot_type( slot , type)
-      case slot
-      when :frame
-        new_type = self.frame_type
-      when :arguments
-        new_type = self.arg_type
-      when :receiver
-        new_type = self.receiver_type
-      when Symbol
-        new_type = type.type_for(slot)
-        raise "Not found object #{slot}: in #{type}" unless new_type
-      else
-        raise "Not implemented object #{slot}:#{slot.class}"
-      end
-      #puts "RESOLVE in #{@type.class_name} #{slot}->#{type}"
-      return new_type
-    end
-
-    # return the frame type, ie the blocks frame type
-    def frame_type
-      @callable.frame_type
-    end
-
-    # return the frame type, ie the blocks arguments type
-    def arg_type
-      @callable.arguments_type
-    end
     # return the frame type, ie the blocks self_type
     def receiver_type
       @callable.self_type
@@ -87,7 +58,7 @@ module Mom
     private
 
     # convert al instruction to risc
-    # method is called by Method/BlockCompiler from to_risc 
+    # method is called by Method/BlockCompiler from to_risc
     def instructions_to_risc(risc_compiler)
       instruction = mom_instructions.next
       while( instruction )

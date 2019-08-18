@@ -14,6 +14,12 @@ module Ruby
       @lst = compile( input )
       assert_equal Ruby::ClassMethodStatement , @lst.class
     end
+    def test_tos
+      input = "def self.tryout(arg) ; arg = true ; return arg ; end "
+      @str = compile( input ).to_s
+      assert @str.include?("def self.tryou"), @str
+      assert @str.include?("arg = true"), @str      
+    end
   end
   class TestClassMethodStatement2 < MiniTest::Test
     include RubyTests
