@@ -4,8 +4,6 @@ before_install:
   - gem install bundler --version '2.0.1'
 language: ruby
 script:
-  - qemu-arm -version
-  - arm-linux-gnu-ld -v
   - ruby test/test_all.rb
   - bundle exec codeclimate-test-reporter
 rvm:
