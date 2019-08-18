@@ -91,15 +91,14 @@ class RubyXC < Thor
 
   def execute(file)
     outfile = compile(file)
-    system "arm-linux-gnueabihf-ld -N #{outfile}"
+    system "arm-linux-gnueabi-ld -N #{outfile}"
     puts "Linked ok, now running #{file}"
-    system "qemu-arm ./a.out"
+    system "qemu-arm ./a.out ; echo $?"
   end
 
   private
   def extract_options
     opt = { factory: options[:parfait] || 1024 }
-    puts opt
     return {parfait: opt}
   end
 
