@@ -18,7 +18,7 @@ module Ruby
       input = "def self.tryout(arg) ; arg = true ; return arg ; end "
       @str = compile( input ).to_s
       assert @str.include?("def self.tryou"), @str
-      assert @str.include?("arg = true"), @str      
+      assert @str.include?("arg = true"), @str
     end
   end
   class TestClassMethodStatement2 < MiniTest::Test
@@ -43,7 +43,7 @@ module Ruby
       @lst = compile( input ).to_vool
     end
     def test_method
-      assert_equal Vool::ClassMethodStatement , @lst.class
+      assert_equal Vool::ClassMethodExpression , @lst.class
     end
     def test_method_args
       assert_equal [:arg1, :arg2] , @lst.args

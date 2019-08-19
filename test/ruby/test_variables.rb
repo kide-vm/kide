@@ -55,8 +55,8 @@ module Ruby
   class TestVariablesVool < MiniTest::Test
     include RubyTests
     def test_local_basic
-      lst = compile( "foo = 1 ; foo").to_vool
-      assert_equal Vool::LocalVariable , lst.statements[1].class
+      lst = compile( "foo = 1 ; return foo").to_vool
+      assert_equal Vool::LocalVariable , lst.statements[1].return_value.class
     end
 
     def test_instance_basic

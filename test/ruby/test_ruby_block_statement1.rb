@@ -41,7 +41,7 @@ module Ruby
       assert @lst.first.first.name.to_s.start_with?("implicit_block")
     end
     def test_block_assign_right
-      assert_equal Vool::LambdaStatement , @lst.first.first.value.class
+      assert_equal Vool::LambdaExpression , @lst.first.first.value.class
     end
     def test_a_assign
       assert_equal Vool::LocalAssignment , @lst.first.last.class

@@ -20,14 +20,12 @@ module Parfait
     end
 
   end
-  ["object" , "factory" ].each do |file_name|
+  ["object" , "data_object","integer","factory" ].each do |file_name|
     path = File.expand_path(  "../parfait/#{file_name}.rb" , __FILE__)
     module_eval( File.read path)
   end
 end
 
-require_relative "parfait/data_object"
-require_relative "parfait/integer"
 require_relative "parfait/behaviour"
 require_relative "parfait/class"
 require_relative "parfait/meta_class"

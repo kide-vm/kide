@@ -1,5 +1,5 @@
 module Vool
-  class LambdaStatement < Statement
+  class LambdaExpression < Expression
     attr_reader :args , :body , :clazz
 
     def initialize( args , body , clazz = nil)
@@ -13,7 +13,7 @@ module Vool
     #
     # This means we do the compiler here (rather than to_mom, which is in
     # fact never called)
-    def slot_definition(compiler)
+    def to_slot(compiler)
       return Mom::SlotDefinition.new(Mom::LambdaConstant.new(parfait_block(compiler)) , [])
     end
 

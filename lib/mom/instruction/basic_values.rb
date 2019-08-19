@@ -5,13 +5,13 @@ module Mom
   class Constant
   end
 
-  class BlockConstant < Constant
-    attr_reader :block
+  class LambdaConstant < Constant
+    attr_reader :lambda
     def initialize(bl)
-      @block = bl
+      @lambda = bl
     end
     def to_parfait(compiler)
-      @block
+      @lambda
     end
   end
 

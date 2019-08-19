@@ -12,7 +12,7 @@ module Ruby
       assert_equal 2 , @vool.body.length , "setter, getter"
     end
     def test_setter
-      assert_equal Vool::MethodStatement , setter.class
+      assert_equal Vool::MethodExpression , setter.class
     end
     def test_setter_assign
       assert_equal Vool::Statements , setter.body.class

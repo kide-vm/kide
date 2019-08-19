@@ -15,7 +15,7 @@ module Vool
       codes = cond_label
       codes << @hoisted.to_mom(compiler) if @hoisted
       codes << @condition.to_mom(compiler) if @condition.is_a?(SendStatement)
-      codes << Mom::TruthCheck.new(condition.slot_definition(compiler) , merge_label)
+      codes << Mom::TruthCheck.new(condition.to_slot(compiler) , merge_label)
       codes << @body.to_mom(compiler)
       codes << Mom::Jump.new(cond_label)
       codes << merge_label

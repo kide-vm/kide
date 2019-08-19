@@ -34,11 +34,12 @@ module Ruby
       self
     end
     def to_vool
-      if( single? )
-       first.to_vool
-      else
-       vool_brother.new(@statements.collect{|s| s.to_vool})
+      return first.to_vool if( single? )
+      brother = vool_brother.new(nil)
+      @statements.each do |s|
+        brother << s.to_vool
       end
+      brother
     end
 
     def to_s(depth = 0)

@@ -2,7 +2,7 @@ module Ruby
   class ClassMethodStatement < MethodStatement
 
     def to_vool
-      Vool::ClassMethodStatement.new( @name , @args.dup , @body.to_vool)
+      Vool::ClassMethodExpression.new( @name , @args.dup , @body.to_vool)
     end
 
     def to_s(depth = 0)

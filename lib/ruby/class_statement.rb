@@ -29,7 +29,7 @@ module Ruby
           meths += transform_statement(meth)
         end
       end
-      Vool::ClassStatement.new(@name , @super_class_name, Vool::Statements.new(meths) )
+      Vool::ClassExpression.new(@name , @super_class_name, Vool::Statements.new(meths) )
     end
 
     # We rewrite certain send statements (so raise error for all else)

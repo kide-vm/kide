@@ -38,7 +38,7 @@ module Ruby
     def test_first
       assert_equal Vool::LocalAssignment , @lst.first.class
       assert @lst.first.name.to_s.start_with?("implicit_block_")
-      assert_equal Vool::LambdaStatement , @lst.first.value.class
+      assert_equal Vool::LambdaExpression , @lst.first.value.class
     end
     def test_last_send
       assert_equal 2 , @lst.length

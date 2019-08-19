@@ -9,7 +9,7 @@ module Ruby
       @vool = compile( input ).to_vool
     end
     def test_class
-      assert_equal Vool::ClassStatement , @vool.class
+      assert_equal Vool::ClassExpression , @vool.class
     end
     def test_body
       assert_equal Vool::Statements , @vool.body.class

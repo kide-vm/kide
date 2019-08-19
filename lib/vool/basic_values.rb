@@ -1,9 +1,6 @@
 module Vool
   #Marker class for different constants
   class Constant < Expression
-    #gobble it up
-    def each(&block)
-    end
   end
 
   # An integer at the vool level
@@ -12,16 +9,14 @@ module Vool
     def initialize(value)
       @value = value
     end
-    def slot_definition(_)
+    def to_slot(_)
       return Mom::SlotDefinition.new(Mom::IntegerConstant.new(@value) , [])
     end
     def ct_type
       Parfait.object_space.get_type_by_class_name(:Integer)
     end
-    def to_s
+    def to_s(depth = 0)
       value.to_s
-    end
-    def each(&block)
     end
   end
   # An float at the vool level
@@ -33,7 +28,7 @@ module Vool
     def ct_type
       true
     end
-    def to_s
+    def to_s(depth = 0)
       value.to_s
     end
   end
@@ -42,7 +37,7 @@ module Vool
     def ct_type
       Parfait.object_space.get_type_by_class_name(:True)
     end
-    def slot_definition(_)
+    def to_slot(_)
       return Mom::SlotDefinition.new(Parfait.object_space.true_object , [])
     end
     def to_s(depth = 0)
@@ -54,7 +49,7 @@ module Vool
     def ct_type
       Parfait.object_space.get_type_by_class_name(:False)
     end
-    def slot_definition(_)
+    def to_slot(_)
       return Mom::SlotDefinition.new(Parfait.object_space.false_object , [])
     end
     def to_s(depth = 0)
@@ -66,7 +61,7 @@ module Vool
     def ct_type
       Parfait.object_space.get_type_by_class_name(:Nil)
     end
-    def slot_definition(_)
+    def to_slot(_)
       return Mom::SlotDefinition.new(Parfait.object_space.nil_object , [])
     end
     def to_s(depth = 0)
@@ -80,7 +75,7 @@ module Vool
     def initialize(type = nil)
       @my_type = type
     end
-    def slot_definition(compiler)
+    def to_slot(compiler)
       @my_type = compiler.receiver_type
       Mom::SlotDefinition.new(:message , [:receiver])
     end
@@ -101,7 +96,7 @@ module Vool
     def initialize(value)
       @value = value
     end
-    def slot_definition(_)
+    def to_slot(_)
       return Mom::SlotDefinition.new(Mom::StringConstant.new(@value),[])
     end
     def ct_type

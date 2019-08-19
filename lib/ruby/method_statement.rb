@@ -14,7 +14,7 @@ module Ruby
       else
         @body = replace_return( @body )
       end
-      Vool::MethodStatement.new( @name , @args.dup , @body.to_vool)
+      Vool::MethodExpression.new( @name , @args.dup , @body.to_vool)
     end
 
     def replace_return(statement)

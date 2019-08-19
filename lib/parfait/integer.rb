@@ -1,4 +1,3 @@
-module Parfait
   # Integer class for representing maths on Integers
   # Integers are Objects, specifically DataObjects
   # - they have fixed value
@@ -92,4 +91,3 @@ module Parfait
       1    # 0 type
     end
   end
-end

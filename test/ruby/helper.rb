@@ -29,13 +29,13 @@ module Ruby
       @vool.body.statements.last
     end
     def test_class
-      assert_equal Vool::ClassStatement , @vool.class
+      assert_equal Vool::ClassExpression , @vool.class
     end
     def test_body
       assert_equal Vool::Statements , @vool.body.class
     end
     def test_getter
-      assert_equal Vool::MethodStatement , getter.class
+      assert_equal Vool::MethodExpression , getter.class
     end
     def test_getter_return
       assert_equal Vool::ReturnStatement , getter.body.class

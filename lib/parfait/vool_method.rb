@@ -23,7 +23,7 @@ module Parfait
       raise "Name must be symbol" unless name.is_a?(Symbol)
       raise "args_type must be type" unless args_type.is_a?(Parfait::Type)
       raise "frame_type must be type" unless frame_type.is_a?(Parfait::Type)
-      raise "source must be vool" unless source.is_a?(Vool::Statement)
+      raise "source must be vool not#{source.class}" unless source.is_a?(Vool::Statement)
       raise "Empty bod" if(@source.is_a?(Vool::Statements) and @source.empty?)
     end
 

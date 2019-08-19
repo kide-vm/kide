@@ -8,14 +8,14 @@ module Vool
   #
   # The Parfait class gets created lazily on the way down to mom, ie the clazz
   # attribute will only be set after to_mom, or a direct call to create_class
-  class ClassStatement < Statement
+  class ClassExpression < Expression
     attr_reader :name, :super_class_name , :body
     attr_reader :clazz
 
     def initialize( name , supe , body)
       @name , @super_class_name = name , supe
       case body
-      when MethodStatement
+      when MethodExpression
         @body = Statements.new([body])
       when Statements
         @body = body

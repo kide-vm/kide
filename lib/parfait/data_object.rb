@@ -19,11 +19,10 @@
 # DataObjects still have a type, and so can have objects before the data starts
 #
 # A marker class
-module Parfait
   class DataObject < Object
 
     def self.type_length
-      raise "called #{self}"
+      raise "called " + self.to_s
     end
     def padded_length
       self.class.memory_size * 4
@@ -53,4 +52,3 @@ module Parfait
       32
     end
   end
-end

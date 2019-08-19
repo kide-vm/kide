@@ -10,7 +10,7 @@ module Ruby
     # Many statements exist in the vool layer in quite a similar arrangement
     # Especially for different types of assignment we can abstract the creation
     # of the vool, by using the right class to instantiate, the "vool_brother"
-    # Ie same class_name, but in the Vool module  
+    # Ie same class_name, but in the Vool module
     def vool_brother
       eval "Vool::#{class_name}"
     end

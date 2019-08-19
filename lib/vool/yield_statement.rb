@@ -49,11 +49,11 @@ module Vool
     def yield_arg_block(compiler)
       arg_index = compiler.get_method.arguments_type.get_length - 1
       setup  = Mom::MessageSetup.new( arg_index )
-      mom_receive = @receiver.slot_definition(compiler)
+      mom_receive = @receiver.to_slot(compiler)
       arg_target = [:message , :next_message , :arguments]
       args = []
       @arguments.each_with_index do |arg , index| # +1 because of type
-        args << Mom::SlotLoad.new(self, arg_target + [index + 1] , arg.slot_definition(compiler))
+        args << Mom::SlotLoad.new(self, arg_target + [index + 1] , arg.to_slot(compiler))
       end
       setup << Mom::ArgumentTransfer.new( self , mom_receive , args )
       setup << Mom::BlockYield.new( self , arg_index )

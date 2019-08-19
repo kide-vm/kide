@@ -36,13 +36,18 @@ module Vool
     end
     def <<(o)
       if(o.is_a?(Statements))
-        o.each {|s| @statements << s }
+        o.statements.each do |s|
+          raise "not a statement #{s}" unless s.is_a?(Statement)
+          @statements << s
+        end
       else
+        raise "not a statement #{o}" unless o.is_a?(Statement)
         @statements << o
       end
       self
     end
     def prepend(o)
+      raise "not a statement #{o}" unless o.is_a?(Statement)
       @statements = [o] + @statements
     end
     def shift
@@ -62,7 +67,12 @@ module Vool
       stats = @statements.dup
       first = stats.shift.to_mom(compiler)
       while( nekst = stats.shift )
-        first.append nekst.to_mom(compiler)
+        next_mom = nekst.to_mom(compiler)
+        if next_mom.is_a?(Mom::BlockCompiler)
+          compiler.block_compilers << next_mom
+        else
+          first.append next_mom
+        end
       end
       first
     end

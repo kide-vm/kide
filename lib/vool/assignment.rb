@@ -33,7 +33,7 @@ module Vool
     # Derived classes do not implement to_mom, only slot_position
     def to_mom(compiler)
       to = Mom::SlotDefinition.new(:message , self.slot_position(compiler))
-      from = @value.slot_definition(compiler)
+      from = @value.to_slot(compiler)
       assign = Mom::SlotLoad.new(self,to,from)
       return assign unless @value.is_a?(CallStatement)
       @value.to_mom(compiler) << assign
