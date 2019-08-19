@@ -14,14 +14,16 @@ module Vool
     # This means we do the compiler here (rather than to_mom, which is in
     # fact never called)
     def to_slot(compiler)
+      compile(compiler) unless @parfait_block
       return Mom::SlotDefinition.new(Mom::LambdaConstant.new(parfait_block(compiler)) , [])
     end
 
     # create a block, a compiler for it, comile the bock and add the compiler(code)
     # to the method compiler for further processing
-    def to_mom( compiler )
+    def compile( compiler )
       parfait_block = self.parfait_block(compiler)
       block_compiler = Mom::BlockCompiler.new( parfait_block , compiler.get_method )
+      compiler.add_block_compiler(block_compiler)
       head = body.to_mom( block_compiler )
       block_compiler.add_code(head)
       block_compiler

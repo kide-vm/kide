@@ -10,12 +10,11 @@ module Vool
   # As cache key we must use the type of the object (which is the first word of _every_ object)
   # as that is constant, and function implementations depend on the type (not class)
   class SendStatement < CallStatement
-    attr_reader :block
 
     def block
       return nil if arguments.empty?
       bl = arguments.last
-      bl.is_a?(BlockStatement) ? bl : nil
+      bl.is_a?(LambdaExpression) ? bl : nil
     end
 
     def add_block( block )

@@ -34,9 +34,9 @@ module Vool
       create_class_object
       method_compilers =  body.statements.collect do |node|
         case node
-        when MethodStatement
+        when MethodExpression
           node.to_mom(@clazz)
-        when ClassMethodStatement
+        when ClassMethodExpression
           node.to_mom(@clazz.meta_class)
         else
           raise "Only methods for now #{node.class}:#{node}"

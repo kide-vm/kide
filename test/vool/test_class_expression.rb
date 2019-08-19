@@ -10,10 +10,10 @@ module Vool
       @vool = ruby_tree.to_vool
     end
     def test_class
-      assert_equal ClassStatement , @vool.class
+      assert_equal ClassExpression , @vool.class
     end
     def test_method
-      assert_equal MethodStatement , @vool.body.first.class
+      assert_equal MethodExpression , @vool.body.first.class
     end
     def test_create_class
       assert_equal Parfait::Class , @vool.create_class_object.class
@@ -33,7 +33,7 @@ module Vool
     def assert_type_for(input)
       ruby_tree = Ruby::RubyCompiler.compile( as_test_main(input) )
       vool = ruby_tree.to_vool
-      assert_equal ClassStatement , vool.class
+      assert_equal ClassExpression , vool.class
       clazz = vool.create_class_object
       assert_equal Parfait::Class , clazz.class
       assert_equal :a , clazz.instance_type.names[1]

@@ -52,7 +52,7 @@ module Vool
       nodes = []
       @body.each { |node| nodes << node }
       nodes.dup.each do |node|
-        next unless node.is_a?(BlockStatement)
+        next unless node.is_a?(LambdaExpression)
         node.each {|block_scope| nodes.delete(block_scope)}
       end
       type_hash = {}
