@@ -26,22 +26,21 @@ module RubyX
       assert_equal 22 , linker.assemblers.length
     end
   end
-  class TestRubyXCompilerParfait #< MiniTest::Test
+  class TestRubyXCompilerParfait < MiniTest::Test
     include ScopeHelper
     include RubyXHelper
 
     def setup
       super
       code = "class Space ; def self.class_method(); return 1; end;def main(arg);return Space.class_method;end; end"
-      @comp = RubyXCompiler.ruby_to_risc(code , load_parfait: true)# , platform: :interpreter)
+      @comp = RubyXCompiler.ruby_to_binary(code , load_parfait: true , platform: :interpreter)
     end
 
     def test_load
       object = Parfait.object_space.get_class_by_name(:Object)
-      assert_equal Parfait::Class , object.class
-      object = object.instance_type
-      object.methods.each_method {|m| puts m.name}
-      assert_equal Parfait::Type , object.get_method(:set_type)
+      #object.methods.each_method {|m| puts m.name}
+      assert_equal Parfait::VoolMethod , object.get_method(:set_type).class
+      assert_equal Parfait::CallableMethod , object.instance_type.get_method(:set_type).class
     end
   end
 end

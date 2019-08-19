@@ -20,7 +20,7 @@ module Risc
 
     def test_method_has_source
       method = create_method
-      assert_equal Vool::ScopeStatement ,  method.source.class
+      assert_equal Vool::Statements ,  method.source.class
     end
 
     def test_method_has_no_locals

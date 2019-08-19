@@ -8,13 +8,17 @@ module Ruby
       @clazz = clazz
     end
 
+    # At the moment normalizing means creating implicit returns for some cases
+    # see replace_return for details.
+    def normalized_body
+      return replace_return( @body ) unless  @body.is_a?(Statements)
+      body = Statements.new( @body.statements.dup )
+      body << replace_return( body.pop )
+    end
+
     def to_vool
-      if @body.is_a?(Statements)
-          @body << replace_return( @body.pop )
-      else
-        @body = replace_return( @body )
-      end
-      Vool::MethodExpression.new( @name , @args.dup , @body.to_vool)
+      body = normalized_body
+      Vool::MethodExpression.new( @name , @args.dup , body.to_vool)
     end
 
     def replace_return(statement)

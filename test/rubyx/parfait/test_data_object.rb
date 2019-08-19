@@ -2,7 +2,7 @@ require_relative "helper"
 
 module RubyX
 
-  class TestDatObjectCompile #< MiniTest::Test
+  class TestDatObjectCompile < MiniTest::Test
     include ParfaitHelper
     def setup
       @compiler = compiler
@@ -17,23 +17,23 @@ module RubyX
     end
     def test_vool
       vool = @compiler.ruby_to_vool source
-      assert_equ Vool::ScopeStatement , vool.class
-      assert_equal Vool::ClassStatement , vool[0].class
-      assert_equal Vool::ScopeStatement , vool[1].class
-      assert_equal Vool::ClassStatement , vool[1][0].class
-      assert_equal :DataObject , vool[1][0].name
-      assert_equal :Data4 , vool[1][1].name
-      assert_equal :Data8 , vool[1][2].name
+      assert_equal Vool::ScopeStatement , vool.class
+      assert_equal Vool::ClassExpression , vool[0].class
+      assert_equal Vool::ClassExpression , vool[1].class
+      assert_equal Vool::ClassExpression , vool[2].class
+      assert_equal :DataObject , vool[1].name
+      assert_equal :Data4 , vool[2].name
+      assert_equal :Data8 , vool[3].name
     end
     def test_mom
       mom = @compiler.ruby_to_mom source
       assert_equal Mom::MomCollection , mom.class
     end
-    def qtest_risc
+    def test_risc
       risc = compiler.ruby_to_risc source
       assert_equal Risc::RiscCollection , risc.class
     end
-    def qtest_binary
+    def test_binary
       risc = compiler.ruby_to_binary source , :interpreter
       assert_equal Risc::Linker , risc.class
     end

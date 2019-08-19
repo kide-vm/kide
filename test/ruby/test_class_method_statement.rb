@@ -49,7 +49,26 @@ module Ruby
       assert_equal [:arg1, :arg2] , @lst.args
     end
     def test_body_is_scope_zero_statement
-      assert_equal Vool::LocalAssignment , @lst.body.class
+      assert_equal Vool::Statements , @lst.body.class
+    end
+    def test_body_is_scope_zero_statement
+      assert_equal Vool::LocalAssignment , @lst.body.first.class
+    end
+  end
+  class TestClassMethodStatementImplicitReturn < MiniTest::Test
+    include RubyTests
+    def setup()
+      input = "def self.tryout(arg1, arg2) ; arg1 ; end "
+      @lst = compile( input ).to_vool
+    end
+    def test_method
+      assert_equal Vool::ClassMethodExpression , @lst.class
+    end
+    def test_method_args
+      assert_equal [:arg1, :arg2] , @lst.args
+    end
+    def test_body_is_scope_zero_statement
+      assert_equal Vool::ReturnStatement , @lst.body.class
     end
   end
   class TestClassMethodStatement < MiniTest::Test
