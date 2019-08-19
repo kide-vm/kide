@@ -13,7 +13,7 @@ module Ruby
         return self.vool_brother.new(name,@value.to_vool)
       when SendStatement , YieldStatement
         return normalize_send
-      when BlockStatement
+      when RubyBlockStatement
         return normalize_block
       else
         raise "unsupported right #{value}"

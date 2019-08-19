@@ -20,7 +20,7 @@ module Ruby
     #
     def to_vool
       block_name = "implicit_block_#{object_id}".to_sym
-      block = Vool::BlockStatement.new( @args.dup , @body.to_vool)
+      block = Vool::LambdaStatement.new( @args.dup , @body.to_vool)
       assign = Vool::LocalAssignment.new( block_name , block)
       sendd = @send.to_vool
       if(sendd.is_a?(Vool::Statements))

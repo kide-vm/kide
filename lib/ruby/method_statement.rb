@@ -27,7 +27,7 @@ module Ruby
       when LocalAssignment
         ret = ReturnStatement.new( LocalVariable.new(statement.name) )
         return Statements.new([statement , ret])
-      when ReturnStatement , IfStatement , WhileStatement ,BlockStatement
+      when ReturnStatement , IfStatement , WhileStatement ,RubyBlockStatement
         return statement
       else
         raise "Not implemented implicit return #{statement.class}"

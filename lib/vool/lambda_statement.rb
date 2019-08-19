@@ -1,5 +1,5 @@
 module Vool
-  class BlockStatement < Statement
+  class LambdaStatement < Statement
     attr_reader :args , :body , :clazz
 
     def initialize( args , body , clazz = nil)
@@ -14,7 +14,7 @@ module Vool
     # This means we do the compiler here (rather than to_mom, which is in
     # fact never called)
     def slot_definition(compiler)
-      return Mom::SlotDefinition.new(Mom::BlockConstant.new(parfait_block(compiler)) , [])
+      return Mom::SlotDefinition.new(Mom::LambdaConstant.new(parfait_block(compiler)) , [])
     end
 
     # create a block, a compiler for it, comile the bock and add the compiler(code)
@@ -32,6 +32,9 @@ module Vool
       @body.each(&block)
     end
 
+    def to_s(depth=0)
+      "Block #{args} #{body}"
+    end
     # create the parfait block (parfait representation of the block, a Callable similar
     #  to CallableMethod)
     def parfait_block(compiler)

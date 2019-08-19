@@ -5,16 +5,13 @@ module Vool
     def initialize( name , args , body )
       @name , @args , @body = name , args , body
       raise "no bod" unless @body
+      raise "Not Vool #{@body}" unless @body.is_a?(Statement)
     end
 
     def to_mom(clazz)
       raise( "no class in #{self}") unless clazz
       method = make_method(clazz)
       compiler = method.compiler_for(clazz.instance_type)
-      each do |node| ## TODO: must account for nested blocks (someday)
-        next unless node.is_a?(BlockStatement)
-        compiler.block_compilers << node.to_mom(compiler)
-      end
       compiler
     end
 
