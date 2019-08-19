@@ -44,16 +44,16 @@ module Ruby
     include RubyTests
     def test_super0_receiver
       lst = compile( "super")
-      assert_equal SuperExpression , lst.receiver.class
+      assert_equal SelfExpression , lst.receiver.class
     end
     def test_super0
       lst = compile( "super")
-      assert_equal SendStatement , lst.class
+      assert_equal SuperStatement , lst.class
     end
 
     def test_super_receiver
       lst = compile( "super(1)")
-      assert_equal SuperExpression , lst.receiver.class
+      assert_equal SelfExpression , lst.receiver.class
     end
     def test_super_args
       lst = compile( "super(1)")
@@ -61,7 +61,7 @@ module Ruby
     end
     def test_super_name #is nil
       lst = compile( "super(1)")
-      assert_nil lst.name
+      assert_equal :super , lst.name
     end
     class TestSendSendArgs < MiniTest::Test
       include RubyTests

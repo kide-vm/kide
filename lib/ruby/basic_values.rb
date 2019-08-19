@@ -44,11 +44,6 @@ module Ruby
       "self"
     end
   end
-  class SuperExpression < Constant
-    def to_s(depth = 0)
-      "super"
-    end
-  end
   class StringConstant < ValueConstant
     attr_reader :value
     def initialize(value)

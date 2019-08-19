@@ -31,7 +31,7 @@
     end
 
     def to_s
-      "Integer #{value}"
+      "Integer " + value.to_s
     end
     # compile time method to set the actual value.
     # this should not really be part of parfait, as ints are immutable at runtime.
@@ -59,7 +59,7 @@
   class ReturnAddress < Integer
 
     def to_s
-      "ReturnAddress 0x#{object_id.to_s(16)}:#{value}"
+      "ReturnAddress 0x" + object_id.to_s(16) + ":" + value.to_s
     end
   end
 

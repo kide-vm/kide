@@ -8,4 +8,10 @@ module Ruby
       at_depth( depth , "#{receiver}.#{name}(#{arguments.join(', ')})")
     end
   end
+  class SuperStatement < SendStatement
+    def initialize(args)
+      super(:super , SelfExpression.new , args)
+    end
+  end
+
 end

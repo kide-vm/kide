@@ -86,11 +86,6 @@ module Vool
       "self"
     end
   end
-  class SuperExpression < Statement
-    def to_s(depth = 0)
-      "super"
-    end
-  end
   class StringConstant < Constant
     attr_reader :value
     def initialize(value)

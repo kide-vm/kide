@@ -74,6 +74,9 @@ module Ruby
     def on_arg( arg )
       arg.first
     end
+    def on_optarg(arg)
+      arg.first
+    end
 
     def on_block(block_node)
       sendd = process(block_node.children[0])
@@ -232,14 +235,14 @@ module Ruby
 
     # this is a call to super without args (z = zero arity)
     def on_zsuper exp
-      SendStatement.new( nil , SuperExpression.new , nil)
+      SuperStatement.new([])
     end
 
     # this is a call to super with args and
     # same name as current method, which is set later
     def on_super( statement )
       arguments = process_all(statement.children)
-      SendStatement.new( nil , SuperExpression.new , arguments)
+      SuperStatement.new( arguments)
     end
 
     def on_assignment statement
@@ -248,10 +251,6 @@ module Ruby
       w.name = process name
       w.value = process(value)
       w
-    end
-
-    def handler_missing(node)
-      not_implemented(node)
     end
 
     private
