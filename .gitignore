@@ -42,6 +42,7 @@ pkg
 log
 tmp
 a.out
+*.core
 
 #pi related files, like kernel an qemu
 pi

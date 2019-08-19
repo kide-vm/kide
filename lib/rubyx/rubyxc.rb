@@ -91,8 +91,8 @@ class RubyXC < Thor
 
   def execute(file)
     outfile = compile(file)
-    system "arm-linux-gnueabi-ld -N #{outfile}"
-    puts "Linked ok, now running #{file}"
+    system "arm-linux-gnu-ld -N #{outfile}"
+    puts "Linked ok, now running #{outfile}"
     system "qemu-arm ./a.out ; echo $?"
   end
 
