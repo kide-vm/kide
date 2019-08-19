@@ -42,7 +42,7 @@ module Risc
     def test_creates_method_statement_in_class
       clazz = in_test_vool("def meth; @ivar = 5 ;return;end")
       assert_equal Vool::Statements , clazz.body.class
-      assert_equal Vool::MethodStatement , clazz.body.first.class
+      assert_equal Vool::MethodExpression , clazz.body.first.class
     end
 
     def test_callable_method_instance_type

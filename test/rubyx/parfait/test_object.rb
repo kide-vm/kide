@@ -13,7 +13,7 @@ module RubyX
     end
     def test_vool
       vool = compiler.ruby_to_vool source
-      assert_equal Vool::ClassStatement , vool.class
+      assert_equal Vool::ClassExpression , vool.class
       assert_equal :Object , vool.name
     end
     def test_mom

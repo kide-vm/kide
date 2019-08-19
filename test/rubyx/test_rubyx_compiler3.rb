@@ -20,7 +20,7 @@ module RubyX
     def test_one_vool_call
       compiler = RubyXCompiler.new(RubyX.default_test_options)
       compiler.ruby_to_vool(space_source_for("main"))
-      assert_equal Vool::ClassStatement , compiler.vool.class
+      assert_equal Vool::ClassExpression , compiler.vool.class
     end
     def test_two_vool_calls
       compiler = RubyXCompiler.new(RubyX.default_test_options)

@@ -18,7 +18,7 @@ module RubyX
     def test_class_body_is_scope
       clazz = ruby_to_vool in_Test("def meth; @ivar = 5 ;end")
       assert_equal Vool::Statements , clazz.body.class
-      assert_equal Vool::MethodStatement , clazz.body.first.class
+      assert_equal Vool::MethodExpression , clazz.body.first.class
     end
 
     def test_space_is_unchanged_by_compile
