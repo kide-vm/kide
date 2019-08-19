@@ -2,7 +2,7 @@ require_relative "helper"
 
 module RubyX
 
-  class TestObjecCompile < MiniTest::Test
+  class TestObjectCompile < MiniTest::Test
     include ParfaitHelper
     def source
       load_parfait(:object)

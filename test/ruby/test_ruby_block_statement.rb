@@ -9,7 +9,7 @@ module Ruby
       @lst = compile( input )
     end
     def test_block
-      assert_equal BlockStatement , @lst.class
+      assert_equal RubyBlockStatement , @lst.class
     end
     def test_send
       assert_equal SendStatement , @lst.send.class

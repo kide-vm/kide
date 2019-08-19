@@ -5,7 +5,7 @@ module Ruby
   # A block is in essence quite like a method, so the block definition is like a
   # method definition, except it is not bound to the class direcly, but the enclosing
   # method. The enclosing method also provides the scope.
-  class BlockStatement < Statement
+  class RubyBlockStatement < Statement
     attr_reader :send ,  :args , :body
 
     def initialize( send , args , body )

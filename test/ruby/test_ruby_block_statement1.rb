@@ -15,7 +15,7 @@ module Ruby
       assert_equal LocalAssignment , @lst.first.class
     end
     def test_assign_right
-      assert_equal BlockStatement , @lst.first.value.class
+      assert_equal RubyBlockStatement , @lst.first.value.class
     end
     def test_method_name
       assert_equal :plus_one , @lst.first.value.send.name
