@@ -33,26 +33,19 @@ module Ruby
     def test_scope
       assert_equal Vool::ScopeStatement , @lst.class
     end
-    def test_first
-      assert_equal Vool::Statements , @lst.first.class
+    def test_assign
+      assert_equal Vool::LocalAssignment , @lst.first.class
+      assert_equal :a ,  @lst.first.name
     end
-    def test_block_assign
-      assert_equal Vool::LocalAssignment , @lst.first.first.class
-      assert @lst.first.first.name.to_s.start_with?("implicit_block")
+    def test_send
+      assert_equal Vool::SendStatement , @lst.first.value.class
+      assert_equal :plus_one , @lst.first.value.name
     end
-    def test_block_assign_right
-      assert_equal Vool::LambdaExpression , @lst.first.first.value.class
-    end
-    def test_a_assign
-      assert_equal Vool::LocalAssignment , @lst.first.last.class
-      assert_equal :a , @lst.first.last.name
-    end
-    def test_a_assign_val
-      assert_equal Vool::SendStatement , @lst.first.last.value.class
-      assert_equal :plus_one , @lst.first.last.value.name
+    def test_block_arg
+      assert_equal Vool::LambdaExpression , @lst.first.value.arguments.first.class
     end
     def test_ret
-      assert_equal Vool::ReturnStatement , @lst.last.class
+      assert_equal Vool::ReturnStatement , @lst[1].class
     end
   end
 end

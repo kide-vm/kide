@@ -39,9 +39,7 @@ module Ruby
     # rather than using a stack to do that at runtime
     def normalize_arg(arg , statements)
       vool_arg = arg.to_vool
-      if arg.is_a?(Variable) || arg.is_a?(Constant)
-        return vool_arg
-      end
+      return vool_arg if vool_arg.is_a?(Vool::Expression)
       if( vool_arg.is_a?(Vool::Statements))
         while(vool_arg.length > 1)
           statements << vool_arg.shift

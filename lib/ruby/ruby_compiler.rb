@@ -76,7 +76,6 @@ module Ruby
     end
 
     def on_block(block_node)
-      puts block_node.to_s
       sendd = process(block_node.children[0])
       args = process(block_node.children[1])
       body = process(block_node.children[2])

@@ -39,13 +39,14 @@ module Ruby
   end
   class TestSendSuperVool < MiniTest::Test
     include RubyTests
-    def test_super0_receiver
-      lst = compile( "super").to_vool
-      assert_equal Vool::SuperExpression , lst.receiver.class
-    end
     def test_super0
       lst = compile( "super").to_vool
-      assert_equal Vool::SendStatement , lst.class
+      assert_equal Vool::Statements , lst.class
+      assert_equal Vool::SendStatement , lst.last.class
+    end
+    def test_super0_receiver
+      lst = compile( "super").to_vool
+      assert_equal Vool::SuperExpression , lst.first.value.class
     end
   end
   class TestSendSuperArgsVool < MiniTest::Test
@@ -54,13 +55,14 @@ module Ruby
       @lst = compile( "super(1)").to_vool
     end
     def test_super_class
-      assert_equal Vool::SendStatement , @lst.class
+      assert_equal Vool::Statements , @lst.class
+      assert_equal Vool::SendStatement , @lst.last.class
     end
     def test_super_receiver
-      assert_equal Vool::SuperExpression , @lst.receiver.class
+      assert_equal Vool::SuperExpression , @lst.first.value.class
     end
-    def test_super_name #is nil
-      assert_nil @lst.name
+    def test_super_name
+      assert @lst.first.name.to_s.start_with?("tmp")
     end
   end
   class TestSendReceiverTypeVool < MiniTest::Test

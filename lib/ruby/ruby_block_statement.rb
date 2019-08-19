@@ -13,24 +13,17 @@ module Ruby
       raise "no bod" unless @body
     end
 
-    # In Vool we "hoist" the block definition through a local assignment, much
-    # as we would other complex args (bit like in the Normalizer)
-    # The block is then passed as a normal variable to the send. In other words, the
-    # BlockStatement resolves to a list of Statements, the last of which is the send
+    # This resolves to a Vool SendStatement, in fact that is mostly what it is.
+    #
+    # The implicitly passed block (in ruby) gets converted to the constant it is, and
+    # is passed as the last argument.
     #
     def to_vool
-      block_name = "implicit_block_#{object_id}".to_sym
-      block = Vool::LambdaExpression.new( @args.dup , @body.to_vool)
-      assign = Vool::LocalAssignment.new( block_name , block)
-      sendd = @send.to_vool
-      if(sendd.is_a?(Vool::Statements))
-        ret = sendd
-        sendd = sendd.last
-      else
-        ret = Vool::Statements.new([sendd])
-      end
-      sendd.arguments << LocalVariable.new(block_name).to_vool
-      ret.prepend(assign)
+      #block_name = "implicit_block_#{object_id}".to_sym
+      lambda = Vool::LambdaExpression.new( @args.dup , @body.to_vool)
+      ret = @send.to_vool
+      sendd = ret.is_a?(Vool::Statements) ? ret.last : ret
+      sendd.arguments << lambda
       ret
     end
 
