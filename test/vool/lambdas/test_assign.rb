@@ -60,7 +60,7 @@ module VoolBlocks
       assert @ins.left
     end
     def test_slots_left
-      assert_equal [:caller,:caller, :arguments, :arg] , @ins.left.slots
+      assert_equal [:caller,:caller, :arg1] , @ins.left.slots
     end
   end
 

@@ -10,7 +10,9 @@ module Vool
     # Only snag is that we do not know this position, as only the compiler knows
     # if the variable name is a local or an arg. So we delegate to the compiler.
     def slot_position( compiler )
-      compiler.slot_type_for(@name)
+      slot = compiler.slot_type_for(@name)
+      #puts "SLOT= #{slot}"
+      slot
     end
 
   end

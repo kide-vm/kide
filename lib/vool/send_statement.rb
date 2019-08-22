@@ -46,10 +46,10 @@ module Vool
     def message_setup(compiler,called_method)
       setup  = Mom::MessageSetup.new( called_method )
       mom_receive = @receiver.to_slot(compiler)
-      arg_target = [:message , :next_message , :arguments]
+      arg_target = [:message , :next_message ]
       args = []
       @arguments.each_with_index do |arg , index| # +1 because of type
-        args << Mom::SlotLoad.new(self, arg_target + [index + 1] , arg.to_slot(compiler))
+        args << Mom::SlotLoad.new(self, arg_target + ["arg#{index+1}".to_sym] , arg.to_slot(compiler))
       end
       setup << Mom::ArgumentTransfer.new(self, mom_receive , args )
     end

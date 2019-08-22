@@ -29,7 +29,7 @@ module Vool
       left = @ins.next(1).arguments[0].left
       assert_equal Symbol, left.known_object.class
       assert_equal :message, left.known_object
-      assert_equal [:next_message, :arguments, 1], left.slots
+      assert_equal [:next_message, :arg1], left.slots
     end
   end
 end

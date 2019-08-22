@@ -13,12 +13,12 @@ module Vool
 
     def test_args_one_move
       assert_equal :next_message, @ins.next.arguments[0].left.slots[0]
-      assert_equal :arguments,    @ins.next.arguments[0].left.slots[1]
+      assert_equal :arg1,    @ins.next.arguments[0].left.slots[1]
     end
     def test_args_one_str
       assert_equal Mom::IntegerConstant,    @ins.next.arguments[0].right.known_object.class
       assert_equal 1,    @ins.next.arguments[0].right.known_object.value
-      assert_equal [:next_message, :arguments, 1],    @ins.next.arguments[0].left.slots
+      assert_equal [:next_message, :arg1],    @ins.next.arguments[0].left.slots
     end
   end
 end
