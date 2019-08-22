@@ -26,8 +26,7 @@ module Mom
         return_address! << return_label
         next_message[:return_address] << return_address
 
-        block_reg! << message[:arguments]
-        block_reg << block_reg[index]
+        block_reg! << message["arg#{index}".to_sym]
 
         message << message[:next_message]
         add_code Risc::DynamicJump.new("block_yield", block_reg )

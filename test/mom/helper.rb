@@ -10,9 +10,9 @@ module Risc
       [ Label ]
     end
     def postamble
-      [Label, SlotToReg, SlotToReg, RegToSlot, LoadConstant ,
+      [Label, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
         SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-        SlotToReg , FunctionReturn, Label]
+        SlotToReg, FunctionReturn, Label]
     end
     def produce_body
       produced = produce_main

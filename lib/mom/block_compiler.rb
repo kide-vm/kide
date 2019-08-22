@@ -27,12 +27,12 @@ module Mom
     # For blocks the options are args or frame
     # or then the methods arg or frame
     def slot_type_for(name)
-      if @callable.arguments_type.variable_index(name)
-        slot_def = [:arguments]
+      if index = @callable.arguments_type.variable_index(name)
+        return ["arg#{index}".to_sym]
       elsif @callable.frame_type.variable_index(name)
         slot_def = [:frame]
-      elsif @method.arguments_type.variable_index(name)
-        slot_def = [:caller , :caller ,:arguments ]
+      elsif index = @method.arguments_type.variable_index(name)
+        return [:caller , :caller , "arg#{index}".to_sym]
       elsif @method.frame_type.variable_index(name)
         slot_def = [:caller ,:caller , :frame ]
       elsif

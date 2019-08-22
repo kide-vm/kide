@@ -13,6 +13,7 @@ module Mom
 
     def initialize(left, right , label)
       super(label)
+      raise right.to_s if right.to_s.include?("arguments")
       @left , @right  = left , right
     end
 

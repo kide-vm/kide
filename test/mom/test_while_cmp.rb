@@ -7,14 +7,14 @@ module Risc
     def setup
       super
       @input = "while(5 > 0) ; @a = true; end;return"
-      @expect = [Label, LoadConstant, LoadConstant, SlotToReg, SlotToReg, #4
+      @expect =  [Label, LoadConstant, LoadConstant, SlotToReg, SlotToReg, #4
                  RegToSlot, RegToSlot, RegToSlot, RegToSlot, LoadConstant, #9
-                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, SlotToReg, #14
-                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, #19
-                 FunctionCall, Label, SlotToReg, LoadConstant, OperatorInstruction, #24
-                 IsZero, LoadConstant, OperatorInstruction, IsZero, LoadConstant, #29
-                 SlotToReg, RegToSlot, Branch, Label, LoadConstant, #34
-                 RegToSlot, Branch] #34
+                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, #14
+                 LoadConstant, SlotToReg, RegToSlot, SlotToReg, FunctionCall, #19
+                 Label, SlotToReg, LoadConstant, OperatorInstruction, IsZero, #24
+                 LoadConstant, OperatorInstruction, IsZero, LoadConstant, SlotToReg, #29
+                 RegToSlot, Branch, Label, LoadConstant, RegToSlot, #34
+                 Branch] #39
     end
 
     def test_while_instructions
@@ -39,19 +39,19 @@ module Risc
     end
     def test_false_check
       produced = produce_body
-      assert_equal  Risc::IsZero , produced.next(25).class
-      assert produced.next(25).label.name.start_with?("merge_label") , produced.next(25).label.name
+      assert_equal  Risc::IsZero , produced.next(24).class
+      assert produced.next(24).label.name.start_with?("merge_label") , produced.next(24).label.name
     end
     def test_nil_load
       produced = produce_body
-      assert_equal Risc::LoadConstant , produced.next(29).class
-      assert_equal Parfait::TrueClass , produced.next(29).constant.class
+      assert_equal Risc::LoadConstant , produced.next(28).class
+      assert_equal Parfait::TrueClass , produced.next(28).constant.class
     end
 
     def test_back_jump # should jump back to condition label
       produced = produce_body
-      assert_equal Risc::Branch , produced.next(32).class
-      assert_equal produced.name , produced.next(32).label.name
+      assert_equal Risc::Branch , produced.next(31).class
+      assert_equal produced.name , produced.next(31).label.name
     end
 
   end

@@ -7,8 +7,9 @@ module Risc
     def setup
       super
       @input = "local = arg; return local"
-      @expect =  [SlotToReg, SlotToReg, SlotToReg, RegToSlot, SlotToReg, #4
-                 SlotToReg, RegToSlot, Branch] #9
+      @expect =[ SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #4
+                 RegToSlot, Branch] #9
+
     end
     def test_local_assign_instructions
       assert_nil msg = check_nil , msg
@@ -21,12 +22,12 @@ module Risc
     def test_load_args_from_message
       produced = produce_body
       assert_equal :r0 , produced.array.symbol , produced.next.to_rxf[0..200]
-      assert_equal 8 , produced.index , produced.next.to_rxf[0..200]
+      assert_equal 9 , produced.index , produced.next.to_rxf[0..200]
     end
     def test_load_frame_from_message
       produced = produce_body
-      assert_equal :r0 , produced.next(2).array.symbol , produced.next.to_rxf[0..200]
-      assert_equal 1 , produced.next.index , produced.next.to_rxf[0..200]
+      assert_equal :r3 , produced.next(2).array.symbol , produced.next.to_rxf[0..200]
+      assert_equal 3 , produced.next.index , produced.next.to_rxf[0..200]
     end
   end
 end

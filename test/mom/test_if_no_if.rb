@@ -9,8 +9,8 @@ module Risc
       @input = "unless(@a) ; arg = 5 ; end;return"
       @expect = [SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsZero, #4
                  LoadConstant, OperatorInstruction, IsZero, Label, Branch, #9
-                 Label, LoadConstant, SlotToReg, RegToSlot, Label, LoadConstant, #34
-                 RegToSlot, Branch] #14
+                 Label, LoadConstant, RegToSlot, Label, LoadConstant, #14
+                 RegToSlot, Branch] #19
    end
 
     def test_if_instructions
@@ -50,7 +50,8 @@ module Risc
     end
     def test_merge_label
       produced = produce_body
-      assert produced.next(14).name.start_with?("merge_label")
+      assert_equal Label , produced.next(13).class
+      assert produced.next(13).name.start_with?("merge_label")
     end
 
   end

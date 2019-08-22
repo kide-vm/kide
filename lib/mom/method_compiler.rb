@@ -68,12 +68,10 @@ module Mom
     # determine how given name need to be accsessed.
     # For methods the options are args or frame
     def slot_type_for(name)
-      if @callable.arguments_type.variable_index(name)
-        type = :arguments
-      else
-        type = :frame
+      if index = @callable.arguments_type.variable_index(name)
+        return ["arg#{index}".to_sym]
       end
-      [type , name]
+      [:frame , name]
     end
 
     def add_block_compiler(compiler)

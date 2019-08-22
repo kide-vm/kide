@@ -7,10 +7,10 @@ module Risc
     def setup
       super
       @input = "if(@a) ; arg = 5 ; end;return"
-      @expect = [SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsZero,
-                 LoadConstant, OperatorInstruction, IsZero, Label, LoadConstant,
-                 SlotToReg, RegToSlot, Label, LoadConstant, #34
-                 RegToSlot, Branch]
+      @expect =  [Label, SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, #4
+                 IsZero, LoadConstant, OperatorInstruction, IsZero, LoadConstant, #9
+                 RegToSlot, Branch, Label, LoadConstant, RegToSlot, #14
+                 Branch] #19
     end
 
     def test_if_instructions
@@ -28,10 +28,11 @@ module Risc
     end
     def test_false_label
       produced = produce_body
-      assert_equal Label , produced.next(12).class
+      assert_equal Label , produced.next(11).class
     end
     def test_false_check
       produced = produce_body
+      assert_equal IsZero , produced.next(12).class
       assert_equal produced.next(12) , produced.next(4).label
     end
     def test_nil_load

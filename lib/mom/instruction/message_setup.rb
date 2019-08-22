@@ -45,8 +45,7 @@ module Mom
         end
       when Integer
         builder.build do
-          arguments! << message[:arguments]
-          callable! << arguments[ from ]
+          callable! << message[ "arg#{from}".to_sym ]
         end
       else
         raise "unknown source #{method_source.class}:#{method_source}"

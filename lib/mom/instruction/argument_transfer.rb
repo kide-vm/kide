@@ -37,6 +37,7 @@ module Mom
     # delegates to SlotLoad for receiver and to the actual args.to_risc
     def to_risc(compiler)
       transfer = SlotLoad.new(self.source ,[:message , :next_message , :receiver] , @receiver, self).to_risc(compiler)
+      #TODO transfer the Number of arguments to :arguments_given (to be checked on entry)
       compiler.reset_regs
       @arguments.each do |arg|
         arg.to_risc(compiler)
