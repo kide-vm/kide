@@ -5,7 +5,7 @@ module Parfait
 
     def classes
       [:BinaryCode,:Block,:CacheEntry,:Callable,:CallableMethod,:Class,
-        :DataObject,:Data4,:Data8,:Data16,:Dictionary,:Factory, :Integer,:FalseClass,
+        :DataObject,:Data4,:Data8,:Data16,:Data32,:Dictionary,:Factory, :Integer,:FalseClass,
         :List,:Message, :MetaClass, :NamedList,:NilClass,:Object,:ReturnAddress,
         :Space,:TrueClass,:Type,:VoolMethod,:Word]
     end

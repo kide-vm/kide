@@ -6,8 +6,7 @@ module Mom
         integer_tmp = builder.allocate_int
         builder.build do
           object! << message[:receiver]
-          integer! << message[:arguments]
-          integer << integer[Parfait::NamedList.type_length + 0] #"at" is at index 0
+          integer! << message[:arg1] #"at" 
           integer.reduce_int
           object <= object[integer]
           integer_tmp[Parfait::Integer.integer_index] << object

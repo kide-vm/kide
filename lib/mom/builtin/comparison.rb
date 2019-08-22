@@ -12,8 +12,7 @@ module Mom
         builder.build do
           integer! << message[:receiver]
           integer.reduce_int
-          integer_reg! << message[:arguments]
-          integer_reg << integer_reg[Parfait::NamedList.type_length + 0] #"other" is at index 0
+          integer_reg! << message[:arg1] #"other" 
           integer_reg.reduce_int
           swap_names(:integer , :integer_reg) if(operator.to_s.start_with?('<') )
           integer.op :- , integer_reg

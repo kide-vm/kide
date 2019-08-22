@@ -15,22 +15,27 @@ module Parfait
     # :return_address => :Integer, :return_value => :Integer,
     # :caller => :Message , :name => :Word , :arguments => :NamedList
 
-    attr   :type, :next_message
-    attr   :receiver  , :frame
-    attr   :return_address, :return_value
-    attr   :caller , :method , :arguments
+    attr  :type, :next_message
+    attr  :receiver  , :frame
+    attr  :return_address, :return_value
+    attr  :caller , :method
+    attr  :arguments_given
+    attr  :arg1 , :arg2, :arg3, :arg4, :arg5, :arg6
 
     def self.type_length
-      9
+      16
     end
     def self.memory_size
-      16
+      32
+    end
+    def self.args_start_at
+      Parfait.object_space.get_type_by_class_name(:Message).variable_index(:arguments_given)
     end
 
     def initialize(  )
       super()
       self.frame = NamedList.new()
-      self.arguments = NamedList.new()
+      self.arguments_given = Parfait::Integer.new(0)
     end
     public :initialize
 

@@ -14,8 +14,7 @@ module Mom
         builder.build do
           integer! << message[:receiver]
           integer.reduce_int
-          integer_reg! << message[:arguments]
-          integer_reg << integer_reg[Parfait::NamedList.type_length + 0] #"other" is at index 0
+          integer_reg! << message[:arg1] #"other" 
           integer_reg.reduce_int
           integer.op operator , integer_reg
           integer_tmp[Parfait::Integer.integer_index] << integer

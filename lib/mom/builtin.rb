@@ -54,7 +54,7 @@ module Mom
       [ :div4, :<,:<= , :>=, :> , :div10 ].each do |f|   #div4 is just a forward declaration
         compilers << compiler_for( int_type , Integer , f)
       end
-      compilers
+      return compilers
     end
 
     def self.compiler_for( type , mod , name)
