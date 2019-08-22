@@ -120,7 +120,7 @@ module Parfait
        Data8: :DataObject ,
        Data16: :DataObject ,
        Data32: :DataObject ,
-       BinaryCode: :Data16 ,
+       BinaryCode: :Data32 ,
        Integer: :Data4 ,
        Word: :Data8 ,
        List: :Data16 ,

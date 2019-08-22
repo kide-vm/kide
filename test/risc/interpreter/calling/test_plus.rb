@@ -10,26 +10,24 @@ module Risc
     end
 
     def test_chain
-      # show_main_ticks # get output of what is
-      check_main_chain  [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+      check_main_chain [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
             RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, # 10
-            RegToSlot, LoadConstant, SlotToReg, Branch, SlotToReg,
-            RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, # 20
-            FunctionCall, LoadConstant, SlotToReg, LoadConstant, OperatorInstruction,
-            IsNotZero, SlotToReg, RegToSlot, SlotToReg, Branch, # 30
-            SlotToReg, SlotToReg, SlotToReg, SlotToReg, OperatorInstruction,
-            RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot, # 40
-            LoadConstant, SlotToReg, RegToSlot, Branch, RegToSlot,
-            SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, # 50
-            RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
-            Branch, LoadConstant, SlotToReg, RegToSlot, RegToSlot, # 60
-            SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer,
-            SlotToReg, SlotToReg, Syscall, NilClass, ]
-
+            RegToSlot, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+            LoadConstant, SlotToReg, RegToSlot, SlotToReg, FunctionCall, # 20
+            LoadConstant, SlotToReg, LoadConstant, OperatorInstruction, IsNotZero,
+            SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg, # 30
+            SlotToReg, Branch, SlotToReg, OperatorInstruction, RegToSlot,
+            RegToSlot, SlotToReg, SlotToReg, RegToSlot, LoadConstant, # 40
+            SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
+            SlotToReg, FunctionReturn, SlotToReg, RegToSlot, Branch, # 50
+            SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+            RegToSlot, Branch, RegToSlot, SlotToReg, SlotToReg, # 60
+            SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg,
+            Syscall, NilClass, ]
        assert_equal 10 , get_return
     end
     def base_ticks(num)
-      main_ticks(22 + num)
+      main_ticks(21 + num)
     end
     def test_load_5
       lod = main_ticks( 12 )
@@ -41,15 +39,15 @@ module Risc
       assert_slot_to_reg( sl , :r0 , 2 , :r2)
     end
     def test_reduce_receiver
-      sl = base_ticks( 9 )
+      sl = base_ticks( 8 )
       assert_slot_to_reg( sl , :r2 , 2 , :r2)
     end
     def test_slot_args #load args from message
-      sl = base_ticks( 10 )
+      sl = base_ticks( 9 )
       assert_slot_to_reg( sl , :r0 , 8 , :r3)
     end
     def test_slot_arg_int #load arg 1, destructively from args
-      sl = base_ticks( 11 )
+      sl = base_ticks( 10 )
       assert_slot_to_reg( sl , :r3 , 1 , :r3)
     end
     def test_reduce_arg

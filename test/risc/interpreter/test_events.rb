@@ -19,7 +19,7 @@ module Risc
       @instruction_events << was
     end
     def length
-      39
+      37
     end
     def test_state_change
       @interpreter.register_event :state_changed , self
@@ -41,12 +41,12 @@ module Risc
       #show_ticks # get output of what is
       check_chain [Branch, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
             LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot, # 10
-            RegToSlot, RegToSlot, RegToSlot, SlotToReg, Branch,
-            LoadConstant, RegToSlot, LoadConstant, RegToSlot, FunctionCall, # 20
-            LoadConstant, RegToSlot, Branch, SlotToReg, SlotToReg,
-            RegToSlot, LoadConstant, SlotToReg, RegToSlot, RegToSlot, # 30
-            SlotToReg, SlotToReg, SlotToReg, Branch, FunctionReturn,
-            Transfer, SlotToReg, SlotToReg, Syscall, NilClass, ]
+            RegToSlot, RegToSlot, RegToSlot, SlotToReg, LoadConstant,
+            RegToSlot, LoadConstant, RegToSlot, FunctionCall, LoadConstant, # 20
+            RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
+            LoadConstant, SlotToReg, RegToSlot, RegToSlot, SlotToReg, # 30
+            SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg,
+            SlotToReg, Syscall, NilClass, ]
       assert_equal ::Integer , get_return.class
       assert_equal 5 , get_return
     end

@@ -9,8 +9,8 @@ gem "rye"
 
 gem "rx-file" , git: "https://github.com/ruby-x/rx-file"
 #gem "rx-file" , path: "../rx-file"
-gem "minitest-parallel_fork"
 group :test do
+  gem "minitest-parallel_fork"
   gem "codeclimate-test-reporter" , require: false
   gem "simplecov"
   gem "minitest-color"

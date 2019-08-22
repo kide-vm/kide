@@ -55,7 +55,7 @@ module Risc
     end
     def test_pc1
       @interpreter.tick
-      assert_equal 22856 , @interpreter.pc
+      assert_equal 22888 , @interpreter.pc
     end
     def test_tick2
       @interpreter.tick
@@ -69,18 +69,18 @@ module Risc
     def test_pc2
       @interpreter.tick
       @interpreter.tick
-      assert_equal 22860 , @interpreter.pc
+      assert_equal 22892 , @interpreter.pc
     end
-    def test_tick_14_jump
-      14.times {@interpreter.tick}
+    def ttest_tick_14_jump
+      30.times { @interpreter.tick ;puts @interpreter.instruction.class}
       assert_equal Branch , @interpreter.instruction.class
     end
-    def test_tick_14_bin
-      13.times {@interpreter.tick}
+    def ttest_tick_14_bin
+      29.times {@interpreter.tick}
       binary_pos = binary_position
       @interpreter.tick #jump has no listener
       @interpreter.tick
-      assert binary_pos.at != binary_position.at , "#{binary_pos}!=#{binary_position}"
+      assert binary_pos.at != binary_position.at , "#{binary_pos} == #{binary_position}"
     end
     def binary_position
       pos = Position.get(@interpreter.instruction)
@@ -89,7 +89,7 @@ module Risc
       Position.get(list.binary)
     end
     def test_tick_15 #more than a binary code worth
-      15.times {@interpreter.tick}
+      31.times {@interpreter.tick}
     end
   end
 end

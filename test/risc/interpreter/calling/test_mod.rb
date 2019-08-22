@@ -13,22 +13,22 @@ module Risc
       # show_main_ticks # get output of what is
       check_main_chain [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
             RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, # 10
-            RegToSlot, LoadConstant, SlotToReg, Branch, RegToSlot,
-            SlotToReg, FunctionCall, LoadConstant, SlotToReg, LoadConstant, # 20
-            OperatorInstruction, IsNotZero, SlotToReg, RegToSlot, SlotToReg,
-            Branch, SlotToReg, LoadData, OperatorInstruction, RegToSlot, # 30
-            RegToSlot, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
-            SlotToReg, RegToSlot, RegToSlot, SlotToReg, Branch, # 40
-            SlotToReg, SlotToReg, FunctionReturn, SlotToReg, RegToSlot,
-            Branch, SlotToReg, SlotToReg, RegToSlot, LoadConstant, # 50
-            SlotToReg, RegToSlot, RegToSlot, Branch, SlotToReg,
-            SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg, # 60
-            SlotToReg, Syscall, NilClass, ]
+            RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
+            FunctionCall, LoadConstant, SlotToReg, LoadConstant, OperatorInstruction, # 20
+            IsNotZero, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
+            LoadData, OperatorInstruction, Branch, RegToSlot, RegToSlot, # 30
+            SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+            RegToSlot, RegToSlot, SlotToReg, SlotToReg, SlotToReg, # 40
+            FunctionReturn, SlotToReg, RegToSlot, Branch, SlotToReg,
+            SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, # 50
+            RegToSlot, SlotToReg, SlotToReg, SlotToReg, Branch,
+            FunctionReturn, Transfer, SlotToReg, SlotToReg, Syscall, # 60
+            NilClass, ]
        assert_equal 2 , get_return
     end
 
     def test_op
-      op = main_ticks(29)
+      op = main_ticks(27)
       assert_equal OperatorInstruction , op.class
       assert_equal :>> , op.operator
       assert_equal :r2 , op.left.symbol

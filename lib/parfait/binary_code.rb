@@ -6,7 +6,7 @@ module Parfait
   # in these. As Objects are fixed size (this one 16 words), we use  linked list
   # and as the last code of each link is a jump to the next link.
   #
-  class BinaryCode < Data16
+  class BinaryCode < Data32
     attr :type, :next_code
 
     def self.type_length

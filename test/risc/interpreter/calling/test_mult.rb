@@ -11,20 +11,20 @@ module Risc
 
     def test_mult
       #show_main_ticks # get output of what is
-      check_main_chain  [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+      check_main_chain [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
             RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, # 10
-            RegToSlot, LoadConstant, SlotToReg, Branch, SlotToReg,
-            RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, # 20
-            FunctionCall, LoadConstant, SlotToReg, LoadConstant, OperatorInstruction,
-            IsNotZero, SlotToReg, RegToSlot, SlotToReg, Branch, # 30
-            SlotToReg, SlotToReg, SlotToReg, SlotToReg, OperatorInstruction,
-            RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot, # 40
-            LoadConstant, SlotToReg, RegToSlot, Branch, RegToSlot,
-            SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, # 50
-            RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot,
-            Branch, LoadConstant, SlotToReg, RegToSlot, RegToSlot, # 60
-            SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer,
-            SlotToReg, SlotToReg, Syscall, NilClass, ]
+            RegToSlot, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+            LoadConstant, SlotToReg, RegToSlot, SlotToReg, FunctionCall, # 20
+            LoadConstant, SlotToReg, LoadConstant, OperatorInstruction, IsNotZero,
+            SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg, # 30
+            SlotToReg, Branch, SlotToReg, OperatorInstruction, RegToSlot,
+            RegToSlot, SlotToReg, SlotToReg, RegToSlot, LoadConstant, # 40
+            SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
+            SlotToReg, FunctionReturn, SlotToReg, RegToSlot, Branch, # 50
+            SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
+            RegToSlot, Branch, RegToSlot, SlotToReg, SlotToReg, # 60
+            SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg,
+            Syscall, NilClass, ]
        assert_equal 0 , get_return
     end
     def test_zero
@@ -32,7 +32,7 @@ module Risc
       assert @interpreter.flags[:zero]
     end
     def test_op
-      op = main_ticks(35)
+      op = main_ticks(34)
       assert_equal OperatorInstruction , op.class
       assert_equal :r2 , op.left.symbol
       assert_equal :r3 , op.right.symbol

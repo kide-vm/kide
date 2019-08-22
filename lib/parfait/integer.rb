@@ -1,9 +1,8 @@
   # Integer class for representing maths on Integers
   # Integers are Objects, specifically DataObjects
   # - they have fixed value
-  # - they are immutable
-  # (both by implementation, not design.
-  # Ie it would be possible to change the value, we just don't support that)
+  # - they are immutable fo rthe most part (or to the user)
+  #
   class Integer < Data4
 
     attr :type, :next_integer
