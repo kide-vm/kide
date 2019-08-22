@@ -5,7 +5,7 @@ module Mom
     class TestIntDiv4Risc < BootTest
       def setup
         super
-        @method = get_compiler(:div4)
+        @method = get_int_compiler(:div4)
       end
       def test_compile
         assert_equal Risc::MethodCompiler , @method.to_risc.class

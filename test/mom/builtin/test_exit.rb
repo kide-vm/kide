@@ -5,7 +5,7 @@ module Mom
     class TestObjectExitRisc < BootTest
       def setup
         super
-        @method = get_compiler(:exit)
+        @method = get_object_compiler(:exit)
       end
       def test_compile
         assert_equal Risc::MethodCompiler , @method.to_risc.class

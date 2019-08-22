@@ -8,7 +8,7 @@ module Mom
       end
       def each_method &block
         Risc.operators.each do |name|
-          method = get_compiler(name)
+          method = get_operator_compiler(name)
           block.yield(method)
         end
       end
@@ -19,7 +19,7 @@ module Mom
       end
       def test_risc_length
         each_method do |method|
-          assert_equal 49 , method.to_risc.risc_instructions.length
+          assert_equal 48 , method.to_risc.risc_instructions.length
         end
       end
     end

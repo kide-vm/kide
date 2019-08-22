@@ -5,7 +5,7 @@ module Mom
     class TestIntDiv4 < BootTest
       def setup
         super
-        @method = get_compiler(:div4)
+        @method = get_int_compiler(:div4)
       end
       def test_has_get_internal
         assert_equal Mom::MethodCompiler , @method.class
@@ -17,7 +17,7 @@ module Mom
     class TestIntDiv10 < BootTest
       def setup
         super
-        @method = get_compiler(:div10)
+        @method = get_int_compiler(:div10)
       end
       def test_has_get_internal
         assert_equal Mom::MethodCompiler , @method.class
@@ -29,7 +29,7 @@ module Mom
     class TestIntComp1 < BootTest
       def setup
         super
-        @method = get_compiler(:<)
+        @method = get_int_compiler(:<)
       end
       def test_has_get_internal
         assert_equal Mom::MethodCompiler , @method.class
@@ -41,7 +41,7 @@ module Mom
     class TestIntComp2 < BootTest
       def setup
         super
-        @method = get_compiler(:>=)
+        @method = get_int_compiler(:>=)
       end
       def test_has_get_internal
         assert_equal Mom::MethodCompiler , @method.class
@@ -56,7 +56,7 @@ module Mom
       end
       def each_method &block
         Risc.operators.each do |name|
-          method = get_compiler(name)
+          method = get_operator_compiler(name)
           block.yield(method)
         end
       end

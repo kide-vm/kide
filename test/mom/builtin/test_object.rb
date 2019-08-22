@@ -5,7 +5,7 @@ module Mom
     class TestObjectGet < BootTest
       def setup
         super
-        @method = get_compiler(:get_internal_word)
+        @method = get_object_compiler(:get_internal_word)
       end
       def test_has_get_internal
         assert_equal Mom::MethodCompiler , @method.class
@@ -17,7 +17,7 @@ module Mom
     class TestObjectSet < BootTest
       def setup
         super
-        @method = get_compiler(:set_internal_word)
+        @method = get_object_compiler(:set_internal_word)
       end
       def test_has_get_internal
         assert_equal Mom::MethodCompiler , @method.class
@@ -29,7 +29,7 @@ module Mom
     class TestObjectMissing < BootTest
       def setup
         super
-        @method = get_compiler(:method_missing)
+        @method = get_object_compiler(:_method_missing)
       end
       def test_has_get_internal
         assert_equal Mom::MethodCompiler , @method.class
@@ -41,7 +41,7 @@ module Mom
     class TestObjectExit < BootTest
       def setup
         super
-        @method = get_compiler(:exit)
+        @method = get_object_compiler(:exit)
       end
       def test_has_get_internal
         assert_equal Mom::MethodCompiler , @method.class
@@ -53,7 +53,7 @@ module Mom
     class TestObjectInit < BootTest
       def setup
         super
-        @method = get_compiler(:__init__)
+        @method = get_object_compiler(:__init__)
       end
       def test_has_get_internal
         assert_equal Mom::MethodCompiler , @method.class

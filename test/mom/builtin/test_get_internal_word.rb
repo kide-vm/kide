@@ -5,13 +5,13 @@ module Mom
     class TestWordGetRisc < BootTest
       def setup
         super
-        @method = get_compiler(:get_internal_byte)
+        @method = get_object_compiler(:get_internal_word)
       end
       def test_compile
         assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        assert_equal 48 , @method.to_risc.risc_instructions.length
+        assert_equal 19 , @method.to_risc.risc_instructions.length
       end
     end
   end

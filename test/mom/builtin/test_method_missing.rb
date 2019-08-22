@@ -5,7 +5,7 @@ module Mom
     class TestObjectMissingRisc < BootTest
       def setup
         super
-        @method = get_compiler(:method_missing)
+        @method = get_object_compiler(:_method_missing)
       end
       def test_compile
         assert_equal Risc::MethodCompiler , @method.to_risc.class
