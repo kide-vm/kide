@@ -11,7 +11,7 @@ module Risc
 
     def test_chain
       #show_main_ticks # get output of what is
-      check_main_chain  [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
+      check_main_chain [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
             RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, # 10
             RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
             FunctionCall, LoadConstant, SlotToReg, LoadConstant, OperatorInstruction, # 20

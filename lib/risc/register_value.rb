@@ -55,7 +55,7 @@ module Risc
     # resolve the given slot name (instance variable name) to an index using the type
     # RegisterValue has the current type, so we just look up the index in the type
     def resolve_index(slot)
-      #puts "TYPE #{type} obj:#{object} var:#{slot} comp:#{compiler}"
+      #puts "TYPE #{type} var:#{slot} "
       index = type.variable_index(slot)
       raise "Index not found for #{slot} in #{type} of type #{@type}" unless index
       return index

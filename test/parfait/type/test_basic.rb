@@ -22,7 +22,7 @@ module Parfait
     def test_length
       assert @mess
       assert @mess.get_type
-      assert_equal 9 , @mess.get_type.instance_length , @mess.get_type.inspect
+      assert_equal 15 , @mess.get_type.instance_length , @mess.get_type.inspect
     end
 
     def test_names
@@ -33,7 +33,7 @@ module Parfait
     end
 
     def test_type_length
-      assert_equal 9 , @mess.get_type.instance_length , @mess.get_type.inspect
+      assert_equal 15 , @mess.get_type.instance_length , @mess.get_type.inspect
     end
 
     def test_type_length_index
@@ -45,7 +45,7 @@ module Parfait
     def test_no_index_below_0
       type = @mess.get_type
       names = type.names
-      assert_equal 9 , names.get_length , names.inspect
+      assert_equal 15 , names.get_length , names.inspect
       names.each do |n|
         assert type.variable_index(n) >= 0
       end

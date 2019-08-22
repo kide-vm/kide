@@ -14,22 +14,21 @@ module Risc
       # show_main_ticks # get output of what is
       check_main_chain  [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
             RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, # 10
-            RegToSlot, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
-            LoadConstant, SlotToReg, RegToSlot, SlotToReg, FunctionCall, # 20
-            LoadConstant, SlotToReg, LoadConstant, OperatorInstruction, IsNotZero,
-            SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg, # 30
-            SlotToReg, Branch, SlotToReg, OperatorInstruction, RegToSlot,
-            RegToSlot, SlotToReg, SlotToReg, RegToSlot, LoadConstant, # 40
-            SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-            SlotToReg, FunctionReturn, SlotToReg, RegToSlot, Branch, # 50
-            SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-            RegToSlot, Branch, RegToSlot, SlotToReg, SlotToReg, # 60
-            SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg,
-            Syscall, NilClass, ]
+            RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
+            SlotToReg, RegToSlot, SlotToReg, FunctionCall, LoadConstant, # 20
+            SlotToReg, LoadConstant, OperatorInstruction, IsNotZero, SlotToReg,
+            RegToSlot, SlotToReg, SlotToReg, SlotToReg, SlotToReg, # 30
+            Branch, OperatorInstruction, RegToSlot, RegToSlot, SlotToReg,
+            SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, # 40
+            RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
+            SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, # 50
+            RegToSlot, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
+            Branch, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, # 60
+            Transfer, SlotToReg, SlotToReg, Syscall, NilClass, ]
        assert_equal 10 , get_return
     end
     def base_ticks(num)
-      main_ticks(21 + num)
+      main_ticks(20 + num)
     end
     def test_load_factory
       lod = base_ticks( 0 )

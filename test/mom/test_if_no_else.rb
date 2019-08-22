@@ -7,10 +7,9 @@ module Risc
     def setup
       super
       @input = "if(@a) ; arg = 5 ; end;return"
-      @expect =  [Label, SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, #4
-                 IsZero, LoadConstant, OperatorInstruction, IsZero, LoadConstant, #9
-                 RegToSlot, Branch, Label, LoadConstant, RegToSlot, #14
-                 Branch] #19
+      @expect =   [SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsZero, #4
+                 LoadConstant, OperatorInstruction, IsZero, Label, LoadConstant, #9
+                 RegToSlot, Label, LoadConstant, RegToSlot, Branch] #14
     end
 
     def test_if_instructions
@@ -22,9 +21,7 @@ module Risc
       assert_equal Parfait::FalseClass , produced.next(2).constant.class
     end
     def test_isnotzero
-      produced = produce_body
-      check = produced.next(4)
-      assert_equal IsZero , check.class
+      assert_equal IsZero , produce_body.next(4).class
     end
     def test_false_label
       produced = produce_body
@@ -32,17 +29,13 @@ module Risc
     end
     def test_false_check
       produced = produce_body
-      assert_equal IsZero , produced.next(12).class
-      assert_equal produced.next(12) , produced.next(4).label
+      assert_equal IsZero , produce_body.next(4).class
+      assert_equal Label , produced.next(11).class
+      assert_equal produced.next(11).name , produced.next(4).label.name
     end
     def test_nil_load
       produced = produce_body
       assert_equal Parfait::NilClass , produced.next(5).constant.class
-    end
-    def test_nil_check
-      produced = produce_body
-      assert_equal Label , produced.next(4).label.class
-      assert_equal produced.next(12) , produced.next(4).label
     end
     def test_true_label
       produced = produce_body

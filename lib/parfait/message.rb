@@ -52,7 +52,7 @@ module Parfait
       get_at(index)
     end
     def to_s
-      "Message:#{method&.name}(#{arguments.get_length})"
+      "Message:#{method&.name}(#{arguments_given})"
     end
   end
 end
