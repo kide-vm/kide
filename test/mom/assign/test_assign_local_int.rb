@@ -7,7 +7,7 @@ module Risc
     def setup
       super
       @input = "r = 5;return"
-      @expect = [LoadConstant,SlotToReg, RegToSlot, LoadConstant, RegToSlot, Branch]
+      @expect = [LoadConstant, RegToSlot, LoadConstant, RegToSlot, Branch]
     end
     def test_local_assign_instructions
       assert_nil msg = check_nil , msg
@@ -21,12 +21,11 @@ module Risc
     def test_frame_load
       produced = produce_body
       assert_equal :Message , produced.next(1).array.type.class_name
-      assert_equal 3 , produced.next(1).index # 4 is frame
+      assert_equal 16 , produced.next(1).index # 4 is frame
     end
     def test_value_load
       produced = produce_body
-      assert_equal produced.next(2).register , produced.register
-      assert_equal 1 , produced.next(2).index #type == 1 , r == 2
+      assert_equal produced.next(1).register , produced.register
     end
 
   end

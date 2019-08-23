@@ -22,11 +22,8 @@ module Vool
     def test_slot_starts_at_message
       assert_equal :message , @ins.left.known_object
     end
-    def test_slot_gets_frame
-      assert_equal :frame , @ins.left.slots[0]
-    end
-    def test_slot_assigns_to_local
-      assert_equal :a , @ins.left.slots[-1]
+    def test_slot_gets_local
+      assert_equal :local1 , @ins.left.slots[0]
     end
     def test_slot_assigns_something
       assert @ins.right

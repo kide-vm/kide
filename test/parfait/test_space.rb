@@ -198,7 +198,7 @@ module Parfait
       count = 0
       while(mess)
         count += 1
-        assert mess.frame
+        assert mess.locals_used
         mess = mess.next_message
       end
       assert_equal 1014, count

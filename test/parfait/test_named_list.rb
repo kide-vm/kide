@@ -3,18 +3,6 @@ require_relative "helper"
 module Parfait
   class TestNamedLists < ParfaitTest
 
-    def setup
-      super
-      @named_list = @space.get_next_for(:Message).frame
-      @type = @named_list.get_type
-    end
-
-    def test_named_list_get_type
-      assert_equal Type , @type.class
-      assert @type.names
-      assert @named_list.get_instance_variables
-    end
-
     def test_new
       list = NamedList.new
       assert list.get_type

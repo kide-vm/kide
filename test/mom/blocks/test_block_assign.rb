@@ -7,7 +7,7 @@ module Risc
     def setup
       super
       @input = as_block("a = 5")
-      @expect =  [LoadConstant, SlotToReg, RegToSlot]
+      @expect =  [LoadConstant, RegToSlot]
     end
     def test_send_instructions
       assert_nil msg = check_nil(:main_block) , msg

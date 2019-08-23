@@ -18,7 +18,7 @@ module VoolBlocks
       assert_equal :message , @ins.left.known_object
     end
     def test_slots_left
-      assert_equal [:frame , :local] , @ins.left.slots
+      assert_equal [:local1] , @ins.left.slots
     end
     def test_slot_assigns_something
       assert @ins.right
@@ -38,7 +38,7 @@ module VoolBlocks
       assert_equal Mom::SlotLoad , @ins.class , @ins
     end
     def test_slots_left
-      assert_equal [:frame, :local] , @ins.left.slots
+      assert_equal [:local1] , @ins.left.slots
     end
     def test_slots_right
       assert_equal [:receiver, :a] , @ins.right.slots
