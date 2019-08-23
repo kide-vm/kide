@@ -9,8 +9,8 @@ module Risc
       @input = "return 5.div4"
       @expect = "something"
     end
-    def instruction(num) # 21 is the main, see length in test/mom/send/test_setup_simple.rb
-      produce_main.next( 21 + num)
+    def instruction(num) # 15 is the main, see length in support/risc_interpreter.rb main_at
+      produce_main.next( 15 + num)
     end
     def test_postamble_classes
       postamble.each_with_index do |ins , index|
@@ -30,37 +30,23 @@ module Risc
     def test_save_ret
       assert_reg_to_slot( instruction( 3 ) , :r1  ,  :r2 ,  5 )
     end
-
-    def test_load_space
-      assert_load( instruction(4) , Parfait::Factory )
-    end
     def test_get_next
-      assert_slot_to_reg( instruction( 5 ) , :r3 ,  2 , :r4 )
+      assert_slot_to_reg( instruction( 4 ) , :r0 ,  4 , :r3 )
     end
-    def test_save_next
-      assert_reg_to_slot( instruction( 6 ) , :r4  ,  :r0 ,  1 )
-    end
-    def test_save_this
-      assert_reg_to_slot( instruction( 7 ) , :r0  ,  :r3 ,  2 )
-    end
-
     def test_save_addr
-      assert_slot_to_reg( instruction( 8 ) , :r0 ,  4 ,  :r1 )
-    end
-    def test_reduce_addr
-      assert_slot_to_reg( instruction( 9 ) , :r1 ,  2 ,  :r1 )
+      assert_slot_to_reg( instruction( 5 ) , :r3 ,  2 ,  :r3 )
     end
     def test_reduce_caller
-      assert_slot_to_reg( instruction( 10 ) , :r0 ,  6 ,  :r0 )
+      assert_slot_to_reg( instruction( 6 ) , :r0 ,  6 ,  :r0 )
     end
     def test_function_return
-      ret = instruction(11)
+      ret = instruction(7)
       assert_equal FunctionReturn , ret.class
-      assert_equal :r1 , ret.register.symbol
+      assert_equal :r3 , ret.register.symbol
     end
     def test_unreachable
-      assert_equal Label , instruction(12).class
-      assert_equal "unreachable" , instruction(12).name
+      assert_equal Label , instruction(8).class
+      assert_equal "unreachable" , instruction(8).name
     end
   end
 end

@@ -25,7 +25,7 @@ module Risc
     def test_load_frame_from_message
       produced = produce_body
       assert_equal 16 , produced.next.index , produced.next.to_rxf[0..200]
-      assert_equal :r0 , produced.next(2).array.symbol 
+      assert_equal :r0 , produced.next(2).array.symbol
     end
   end
 end

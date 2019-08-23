@@ -15,7 +15,6 @@ module Risc
     def test_if_instructions
       assert_nil msg = check_nil , msg
     end
-
     def test_false_load
       produced = produce_body
       assert_equal Parfait::FalseClass , produced.next(2).constant.class

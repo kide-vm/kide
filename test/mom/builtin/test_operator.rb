@@ -19,7 +19,7 @@ module Mom
       end
       def test_risc_length
         each_method do |method|
-          assert_equal 48 , method.to_risc.risc_instructions.length
+          assert_equal 38 , method.to_risc.risc_instructions.length
         end
       end
     end

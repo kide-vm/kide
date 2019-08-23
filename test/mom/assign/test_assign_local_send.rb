@@ -7,11 +7,10 @@ module Risc
     def setup
       super
       @input = "r = 5.div4;return"
-      @expect =  [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot, #4
-                 RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, #9
-                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, #14
-                 FunctionCall, Label, SlotToReg, RegToSlot, LoadConstant, #19
-                 RegToSlot, Branch] #2
+      @expect = [LoadConstant, RegToSlot, LoadConstant, SlotToReg, RegToSlot, #4
+                 LoadConstant, SlotToReg, RegToSlot, SlotToReg, FunctionCall, #9
+                 Label, SlotToReg, RegToSlot, LoadConstant, RegToSlot, #14
+                 Branch,] #19
     end
     def test_local_assign_instructions
       assert_nil msg = check_nil , msg
@@ -19,7 +18,7 @@ module Risc
 
     def test_constant_load
       produced = produce_body
-      load = produced.next(8)
+      load = produced.next(2)
       assert_equal LoadConstant , load.class
       assert_equal 5 , load.constant.value
     end

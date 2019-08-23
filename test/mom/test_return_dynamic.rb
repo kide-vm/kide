@@ -7,19 +7,17 @@ module Risc
     def setup
       super
       @input = "return @a.div4"
-      @expect = [LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg, #4
+      @expect =[LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg, #4
                  OperatorInstruction, IsZero, SlotToReg, SlotToReg, SlotToReg, #9
                  LoadConstant, RegToSlot, LoadConstant, LoadConstant, SlotToReg, #14
                  SlotToReg, Label, LoadConstant, OperatorInstruction, IsZero, #19
                  SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch, #24
                  Label, LoadConstant, SlotToReg, Transfer, Syscall, #29
                  Transfer, Transfer, SlotToReg, RegToSlot, Label, #34
-                 RegToSlot, Label, LoadConstant, SlotToReg, LoadConstant, #39
-                 SlotToReg, SlotToReg, RegToSlot, RegToSlot, RegToSlot, #44
-                 RegToSlot, SlotToReg, SlotToReg, SlotToReg, RegToSlot, #49
-                 LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant, #54
-                 SlotToReg, DynamicJump, Label, SlotToReg, RegToSlot, #59
-                 Branch] #64
+                 RegToSlot, Label, LoadConstant, SlotToReg, RegToSlot, #39
+                 SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant, #44
+                 SlotToReg, RegToSlot, SlotToReg, LoadConstant, SlotToReg, #49
+                 DynamicJump, Label, SlotToReg, RegToSlot, Branch,] #54
     end
 
     def test_return_instructions
@@ -27,7 +25,7 @@ module Risc
     end
     def test_function_return
       produced = produce_body
-      assert_equal Branch , produced.next(60).class
+      assert_equal Branch , produced.next(54).class
     end
     def test_cache_check
       produced = produce_body

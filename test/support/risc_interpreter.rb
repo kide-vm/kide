@@ -5,6 +5,7 @@ require_relative "compiling"
 module Risc
   module Ticker
     include ScopeHelper
+    include Output
 
     def setup
       compiler = RubyX::RubyXCompiler.new(RubyX.interpreter_test_options)
@@ -41,7 +42,7 @@ module Risc
     # how many instruction up until the main starts, ie
     # ticks(main_at) will be the label for main
     def main_at
-      19
+      13
     end
 
     def get_return
@@ -131,15 +132,7 @@ module Risc
     end
 
     def output_classes(classes)
-      str = "            ["
-      classes.each_with_index do |clazz , index|
-        str += "\n            " if ((index)%5) == 0 and index != 0
-        str += clazz.name.split("::").last
-        str += ", "
-        str += "# #{index+1}" if ((index + 1)%10) == 0 and index != 0
-      end
-      puts "#{str}]"
-      puts "length = #{classes.length}"
+      puts class_list(classes)
       exit(1)
     end
   end

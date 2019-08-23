@@ -14,11 +14,10 @@ module Risc
                  SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch, #24
                  Label, LoadConstant, SlotToReg, Transfer, Syscall, #29
                  Transfer, Transfer, SlotToReg, RegToSlot, Label, #34
-                 RegToSlot, Label, LoadConstant, SlotToReg, LoadConstant, #39
-                 SlotToReg, SlotToReg, RegToSlot, RegToSlot, RegToSlot, #44
-                 RegToSlot, SlotToReg, SlotToReg, SlotToReg, RegToSlot, #49
-                 LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant, #54
-                 SlotToReg, DynamicJump, Label, SlotToReg, RegToSlot, Branch]
+                 RegToSlot, Label, LoadConstant, SlotToReg, RegToSlot, #39
+                 SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant, #44
+                 SlotToReg, RegToSlot, SlotToReg, LoadConstant, SlotToReg, #49
+                 DynamicJump, Label, SlotToReg, RegToSlot, Branch,] #54
     end
 
     def test_send_instructions
@@ -31,12 +30,12 @@ module Risc
     end
     def test_load_address
       produced = produce_body
-      assert_equal LoadConstant , produced.next(39).class
-      assert_equal Parfait::Factory , produced.next(39).constant.class
+      assert_equal LoadConstant , produced.next(26).class
+      assert_equal Parfait::Factory , produced.next(26).constant.class
     end
     def test_function_call
       produced = produce_body
-      assert_equal DynamicJump , produced.next(56).class
+      assert_equal DynamicJump , produced.next(50).class
     end
     def test_cache_check
       produced = produce_body

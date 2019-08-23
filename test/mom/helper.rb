@@ -2,7 +2,7 @@ require_relative '../helper'
 
 module Risc
   module Statements
-
+    include Output
     def setup
     end
 
@@ -10,9 +10,8 @@ module Risc
       [ Label ]
     end
     def postamble
-      [Label, SlotToReg, SlotToReg, RegToSlot, LoadConstant,
-        SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-        SlotToReg, FunctionReturn, Label]
+      [Label, SlotToReg, SlotToReg, RegToSlot,SlotToReg,
+       SlotToReg, SlotToReg, FunctionReturn,  Label,]
     end
     def produce_body
       produced = produce_main
@@ -72,12 +71,7 @@ module Risc
     def should( all )
       preamble.each {all.shift}
       postamble.each {all.pop}
-      str = all.collect{|i| i.class.name}.join(", ").gsub("Risc::","")
-      str = "[#{str}]"
-      all = str.split(",").each_slice(5).collect { |line| "                " + line.join(",")}
-      res = ""
-      all.each_with_index { |line,index| res += "#{line}, ##{index*5 + 4}\n"}
-      res
+      class_list(all.collect{|i| i.class})
     end
   end
 end

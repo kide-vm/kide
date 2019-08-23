@@ -30,7 +30,7 @@ module Mom
     def test_compiles_all_risc
       compiler = in_test_vool().compilers.first.to_risc
       assert_equal Risc::LoadConstant , compiler.risc_instructions.next.class
-      assert_equal 20 , compiler.risc_instructions.length
+      assert_equal 16 , compiler.risc_instructions.length
     end
   end
 end
