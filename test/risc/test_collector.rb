@@ -11,7 +11,7 @@ module Risc
 
     def test_simple_collect
       objects = Collector.collect_space(@linker)
-      assert_equal 602 ,  objects.length , objects.length.to_s
+      assert_equal 620 ,  objects.length , objects.length.to_s
     end
 
     def test_collect_all_types
@@ -55,7 +55,7 @@ module Risc
 
     def test_simple_collect
       objects = Collector.collect_space(@linker)
-      assert_equal 2402, objects.length , objects.length.to_s
+      assert_equal 2420, objects.length , objects.length.to_s
     end
 
     def test_integer_positions

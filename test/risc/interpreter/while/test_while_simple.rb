@@ -11,15 +11,13 @@ module Risc
 
     def test_while
         #show_main_ticks # get output of what is in main
-        check_main_chain [LoadConstant, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-            LoadConstant, OperatorInstruction, IsZero, LoadConstant, OperatorInstruction, # 10
-            IsZero, LoadConstant, SlotToReg, RegToSlot, Branch,
-            SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsZero, # 20
-            SlotToReg, SlotToReg, RegToSlot, Branch, SlotToReg,
-            SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, # 30
-            RegToSlot, SlotToReg, SlotToReg, SlotToReg, Branch,
-            FunctionReturn, Transfer, SlotToReg, SlotToReg, Syscall, # 40
-            NilClass, ]
+        check_main_chain  [LoadConstant, RegToSlot, SlotToReg, LoadConstant, OperatorInstruction,
+            IsZero, LoadConstant, OperatorInstruction, IsZero, LoadConstant, # 10
+            RegToSlot, Branch, SlotToReg, LoadConstant, OperatorInstruction,
+            IsZero, SlotToReg, RegToSlot, Branch, SlotToReg, # 20
+            SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
+            RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, # 30
+            Transfer, SlotToReg, SlotToReg, Syscall, NilClass, ]
       assert_kind_of Parfait::NilClass , get_return
     end
     def test_load_false_const
@@ -28,7 +26,7 @@ module Risc
       assert_kind_of Parfait::TrueClass , load.constant
     end
     def base
-      6
+      4
     end
     def test_load_false
       load = main_ticks(base)
@@ -45,6 +43,11 @@ module Risc
       assert_equal IsZero , check.class
       assert check.label.name.start_with?("merge_label") , check.label.name
     end
+    def test_load_false
+      load = main_ticks(base+3)
+      assert_equal LoadConstant , load.class
+      assert_equal Parfait::NilClass , load.constant.class
+    end
     def test_compare2
       op = main_ticks(base + 4)
       assert_equal OperatorInstruction , op.class
@@ -54,10 +57,6 @@ module Risc
       check = main_ticks(base + 5)
       assert_equal IsZero , check.class
       assert check.label.name.start_with?("merge_label") , check.label.name
-    end
-    def test_exit
-      done = main_ticks(40)
-      assert_equal Syscall ,  done.class
     end
   end
 end
