@@ -7,10 +7,10 @@ module Risc
     def setup
       super
       @input = "5.get_internal_word(1)"
-      @expect = [LoadConstant, RegToSlot, LoadConstant, SlotToReg, RegToSlot, #4
-                 LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #9
-                 RegToSlot, SlotToReg, FunctionCall, Label, SlotToReg, #14
-                 RegToSlot, Branch,] #19
+      @expect = [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
+                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant, #10
+                 SlotToReg, RegToSlot, SlotToReg, FunctionCall, Label, #15
+                 SlotToReg, RegToSlot, Branch,] #20
     end
 
     def test_send_instructions
@@ -18,11 +18,11 @@ module Risc
     end
     def test_load_5
       produced = produce_body
-      assert_equal LoadConstant , produced.next(2).class
-      assert_equal 5 , produced.next(2).constant.value
+      assert_equal LoadConstant , produced.next(3).class
+      assert_equal 5 , produced.next(3).constant.value
     end
     def base
-      5
+      6
     end
     def test_load_arg_const
       produced = produce_body

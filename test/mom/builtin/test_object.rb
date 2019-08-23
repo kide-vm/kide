@@ -13,6 +13,9 @@ module Mom
       def test_mom_length
         assert_equal 5 , @method.mom_instructions.length
       end
+      def test_return
+        assert_equal ReturnSequence , @method.mom_instructions.next(3).class
+      end
     end
     class TestObjectSet < BootTest
       def setup
@@ -59,7 +62,7 @@ module Mom
         assert_equal Mom::MethodCompiler , @method.class
       end
       def test_mom_length
-        assert_equal 5 , @method.mom_instructions.length
+        assert_equal 2 , @method.mom_instructions.length
       end
     end
   end

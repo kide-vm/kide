@@ -7,17 +7,18 @@ module Risc
     def setup
       super
       @input = "@a.div4"
-      @expect = [LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg, #4
-                 OperatorInstruction, IsZero, SlotToReg, SlotToReg, SlotToReg, #9
-                 LoadConstant, RegToSlot, LoadConstant, LoadConstant, SlotToReg, #14
-                 SlotToReg, Label, LoadConstant, OperatorInstruction, IsZero, #19
-                 SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch, #24
-                 Label, LoadConstant, SlotToReg, Transfer, Syscall, #29
-                 Transfer, Transfer, SlotToReg, RegToSlot, Label, #34
-                 RegToSlot, Label, LoadConstant, SlotToReg, RegToSlot, #39
-                 SlotToReg, SlotToReg, SlotToReg, RegToSlot, LoadConstant, #44
-                 SlotToReg, RegToSlot, SlotToReg, LoadConstant, SlotToReg, #49
-                 DynamicJump, Label, SlotToReg, RegToSlot, Branch,] #54
+      @expect = [LoadConstant, SlotToReg, SlotToReg, SlotToReg, SlotToReg, #5
+                 OperatorInstruction, IsZero, SlotToReg, SlotToReg, SlotToReg, #10
+                 LoadConstant, RegToSlot, LoadConstant, LoadConstant, SlotToReg, #15
+                 SlotToReg, Label, LoadConstant, OperatorInstruction, IsZero, #20
+                 SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch, #25
+                 Label, LoadConstant, SlotToReg, Transfer, Syscall, #30
+                 Transfer, Transfer, SlotToReg, RegToSlot, Label, #35
+                 RegToSlot, Label, LoadConstant, SlotToReg, SlotToReg, #40
+                 RegToSlot, SlotToReg, SlotToReg, SlotToReg, RegToSlot, #45
+                 LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant, #50
+                 SlotToReg, DynamicJump, Label, SlotToReg, RegToSlot, #55
+                 Branch,] #60
     end
 
     def test_send_instructions
@@ -35,7 +36,7 @@ module Risc
     end
     def test_function_call
       produced = produce_body
-      assert_equal DynamicJump , produced.next(50).class
+      assert_equal DynamicJump , produced.next(51).class
     end
     def test_cache_check
       produced = produce_body

@@ -7,9 +7,9 @@ module Risc
     def setup
       super
       @input = "return 5.div4"
-      @expect =  [LoadConstant, RegToSlot, LoadConstant, SlotToReg, RegToSlot, #4
-                 LoadConstant, SlotToReg, RegToSlot, SlotToReg, FunctionCall, #9
-                 Label, SlotToReg, RegToSlot, Branch] #14
+      @expect =  [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
+                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, #10
+                 FunctionCall, Label, SlotToReg, RegToSlot, Branch,] #15
       @produced = produce_body
     end
 
@@ -22,7 +22,7 @@ module Risc
       assert_equal :div4 , method.constant.name
     end
     def test_store_method_in_message
-      sl = @produced.next( 1 )
+      sl = @produced.next( 2 )
       assert_reg_to_slot( sl , :r1  ,  :r2 ,  7 )
     end
   end

@@ -7,10 +7,10 @@ module Risc
     def setup
       super
       @input = as_block("return 5")
-      @expect = [LoadConstant, RegToSlot, LoadConstant, RegToSlot, SlotToReg, #4
-                 SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, #9
-                 LoadConstant, SlotToReg, RegToSlot, SlotToReg, FunctionCall, #14
-                 Label,] #19
+      @expect = [LoadConstant, RegToSlot, LoadConstant, SlotToReg, RegToSlot, #5
+                 SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #10
+                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, #15
+                 FunctionCall, Label,] #20
     end
 
     def test_send_instructions
@@ -27,22 +27,22 @@ module Risc
       assert_equal 5 , produced.constant.value
     end
     def test_load_block
-      produced = produce_body.next(7)
+      produced = produce_body.next(8)
       assert_load( produced , Parfait::Block)
       assert_equal :main_block , produced.constant.name
     end
     def test_load_return
-      produced = produce_body.next(10)
+      produced = produce_body.next(11)
       assert_load( produced , Label)
       assert produced.constant.name.start_with?("continue_")
     end
     def test_function_call
-      produced = produce_body.next(14)
+      produced = produce_body.next(15)
       assert_equal FunctionCall , produced.class
       assert_equal :main , produced.method.name
     end
     def test_check_continue
-      produced = produce_body.next(15)
+      produced = produce_body.next(16)
       assert_equal Label , produced.class
       assert produced.name.start_with?("continue_") , produced.name
     end

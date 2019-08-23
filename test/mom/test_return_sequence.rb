@@ -9,8 +9,8 @@ module Risc
       @input = "return 5.div4"
       @expect = "something"
     end
-    def instruction(num) # 15 is the main, see length in support/risc_interpreter.rb main_at
-      produce_main.next( 15 + num)
+    def instruction(num) # 16 is the main, see length in support/risc_interpreter.rb main_at
+      produce_main.next( 16 + num)
     end
     def test_postamble_classes
       postamble.each_with_index do |ins , index|
