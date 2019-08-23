@@ -43,7 +43,7 @@ module Risc
     end
     def test_allocate_len
       int = @builder.allocate_int
-      assert_equal 22 , @builder.compiler.risc_instructions.length
+      assert_equal 23 , @builder.compiler.risc_instructions.length
     end
   end
 end

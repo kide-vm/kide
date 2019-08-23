@@ -11,21 +11,21 @@ module Risc
 
     def test_chain
       #show_main_ticks # get output of what is
-      check_main_chain [LoadConstant, RegToSlot, LoadConstant, SlotToReg, RegToSlot, #5
-                 LoadConstant, SlotToReg, RegToSlot, SlotToReg, FunctionCall, #10
-                 LoadConstant, SlotToReg, LoadConstant, OperatorInstruction, IsNotZero, #15
-                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, LoadData, #20
-                 OperatorInstruction, RegToSlot, RegToSlot, SlotToReg, SlotToReg, #25
-                 RegToSlot, SlotToReg, Branch, SlotToReg, SlotToReg, #30
-                 FunctionReturn, SlotToReg, RegToSlot, Branch, SlotToReg, #35
-                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg, #40
-                 FunctionReturn, Transfer, SlotToReg, SlotToReg, Syscall, #45
-                 NilClass,] #50
+      check_main_chain   [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
+                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, #10
+                 FunctionCall, LoadConstant, SlotToReg, LoadConstant, OperatorInstruction, #15
+                 IsNotZero, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #20
+                 LoadData, OperatorInstruction, RegToSlot, RegToSlot, SlotToReg, #25
+                 SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, #30
+                 SlotToReg, FunctionReturn, SlotToReg, RegToSlot, Branch, #35
+                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #40
+                 SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg, #45
+                 Syscall, NilClass,] #50
        assert_equal 2 , get_return
     end
 
     def test_op
-      op = main_ticks(21)
+      op = main_ticks(22)
       assert_equal OperatorInstruction , op.class
       assert_equal :>> , op.operator
       assert_equal :r2 , op.left.symbol

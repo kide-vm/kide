@@ -42,7 +42,7 @@ module Risc
     # how many instruction up until the main starts, ie
     # ticks(main_at) will be the label for main
     def main_at
-      13
+      14
     end
 
     def get_return
@@ -115,7 +115,10 @@ module Risc
       run_all
     end
     def run_all
-      @interpreter.tick while(@interpreter.instruction)
+      while(@interpreter.instruction)
+        @interpreter.tick
+        #puts @interpreter.instruction
+      end
       @interpreter.clock
     end
 
