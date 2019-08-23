@@ -28,17 +28,17 @@ module Mom
     # or then the methods arg or frame
     def slot_type_for(name)
       if index = @callable.arguments_type.variable_index(name)
-        return ["arg#{index}".to_sym]
-      elsif @callable.frame_type.variable_index(name)
-        slot_def = [:frame]
+        slot_def = ["arg#{index}".to_sym]
+      elsif index = @callable.frame_type.variable_index(name)
+        slot_def = ["local#{index}".to_sym]
       elsif index = @method.arguments_type.variable_index(name)
-        return [:caller , :caller , "arg#{index}".to_sym]
-      elsif @method.frame_type.variable_index(name)
-        slot_def = [:caller ,:caller , :frame ]
+        slot_def = [:caller , :caller , "arg#{index}".to_sym]
+      elsif index = @method.frame_type.variable_index(name)
+        slot_def = [:caller ,:caller , "local#{index}".to_sym ]
       elsif
         raise "no variable #{name} , need to resolve at runtime"
       end
-      slot_def << name
+      return slot_def
     end
 
 

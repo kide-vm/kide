@@ -58,8 +58,11 @@ module Parfait
     end
 
     def init_message_chain( message )
+      prev = nil
       while(message)
         message.initialize
+        message.caller = prev if prev
+        prev = message
         message = message.next_message
       end
     end

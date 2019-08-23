@@ -71,7 +71,9 @@ module Mom
       if index = @callable.arguments_type.variable_index(name)
         return ["arg#{index}".to_sym]
       end
-      [:frame , name]
+      index = @callable.frame_type.variable_index(name)
+      raise "no such local or argument #{name}" unless index
+      return ["local#{index}".to_sym]
     end
 
     def add_block_compiler(compiler)
