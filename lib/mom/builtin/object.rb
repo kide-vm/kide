@@ -40,8 +40,8 @@ module Mom
         # - call main, ie set up message for that etc
         # - exit (exit_sequence) which passes a machine int out to c
         def __init__( context )
-          compiler = Mom::MethodCompiler.compiler_for_class(:Object,:__init__ ,
-                            Parfait::NamedList.type_for({}) , Parfait::NamedList.type_for({}))
+          compiler = compiler_for(:Object,:__init__ ,{})
+          compiler._reset_for_init # no return, just for init
           compiler.add_code Init.new("missing")
           return compiler
         end

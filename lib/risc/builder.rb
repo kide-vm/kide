@@ -12,7 +12,7 @@ module Risc
   #
   class Builder
 
-    attr_reader :built , :compiler
+    attr_reader :built , :compiler , :names
 
     # pass a compiler, to which instruction are added (usually)
     # second arg determines weather instructions are added (default true)

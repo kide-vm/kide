@@ -31,7 +31,7 @@ module Mom
         return_address! << message[:return_address]
         return_address << return_address[ Parfait::Integer.integer_index]
         message << message[:caller]
-        add_code Risc.function_return("return", return_address)
+        add_code Risc.function_return("return #{compiler.callable.name}", return_address)
       end
     end
 

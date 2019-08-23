@@ -9,7 +9,7 @@ module Mom
           next_message! << message[:next_message]
           factory[:next_object] << next_message
         end
-
+        builder.reset_names
         Mom::MessageSetup.new(Parfait.object_space.get_main).build_with( builder )
 
         builder.build do

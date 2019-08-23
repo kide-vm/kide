@@ -61,8 +61,12 @@ module Mom
 
     # set the method into the message
     def build_message_data( builder )
+      if(reg = builder.names["next_message"])
+        raise "NEXT = #{reg}"
+      end
       builder.build do
-        next_message?[:method] << callable
+        next_message! << message[:next_message]
+        next_message[:method] << callable
       end
     end
   end
