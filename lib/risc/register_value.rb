@@ -171,14 +171,6 @@ module Risc
       op
     end
 
-    # generate a Function return instruction
-    # using the register as the parameter where the return address is passed
-    def function_return
-      ret = Risc.function_return("return", self)
-      builder.add_code(ret) if builder
-      ret
-    end
-
     # create operator instruction for self and add
     # doesn't read quite as smoothly as one would like, but better than the compiler version
     def op( operator , right)
