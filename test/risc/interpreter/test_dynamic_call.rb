@@ -11,32 +11,29 @@ module Risc
 
     def test_chain
       #show_main_ticks # get output of what is
-      check_main_chain  [LoadConstant, RegToSlot, LoadConstant, SlotToReg, SlotToReg,
-            SlotToReg, OperatorInstruction, IsZero, SlotToReg, SlotToReg, # 10
-            LoadConstant, RegToSlot, LoadConstant, LoadConstant, SlotToReg,
-            SlotToReg, LoadConstant, OperatorInstruction, IsZero, SlotToReg, # 20
-            OperatorInstruction, IsZero, SlotToReg, Branch, LoadConstant,
-            OperatorInstruction, IsZero, SlotToReg, OperatorInstruction, IsZero, # 30
-            SlotToReg, Branch, LoadConstant, OperatorInstruction, IsZero,
-            SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch, # 40
-            LoadConstant, OperatorInstruction, IsZero, SlotToReg, OperatorInstruction,
-            IsZero, SlotToReg, Branch, LoadConstant, OperatorInstruction, # 50
-            IsZero, SlotToReg, OperatorInstruction, IsZero, SlotToReg,
-            Branch, LoadConstant, OperatorInstruction, IsZero, SlotToReg, # 60
-            OperatorInstruction, IsZero, RegToSlot, LoadConstant, SlotToReg,
-            LoadConstant, SlotToReg, SlotToReg, RegToSlot, RegToSlot, # 70
-            RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot,
-            LoadConstant, SlotToReg, RegToSlot, SlotToReg, LoadConstant, # 80
-            SlotToReg, DynamicJump, LoadConstant, SlotToReg, LoadConstant,
-            OperatorInstruction, IsNotZero, SlotToReg, RegToSlot, SlotToReg, # 90
-            SlotToReg, LoadData, OperatorInstruction, Branch, RegToSlot,
-            RegToSlot, SlotToReg, SlotToReg, RegToSlot, LoadConstant, # 100
-            SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-            SlotToReg, FunctionReturn, SlotToReg, RegToSlot, Branch, # 110
-            SlotToReg, SlotToReg, RegToSlot, Branch, LoadConstant,
-            SlotToReg, RegToSlot, RegToSlot, SlotToReg, SlotToReg, # 120
-            SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg,
-            Syscall, NilClass, ]
+      check_main_chain  [LoadConstant, RegToSlot, LoadConstant, SlotToReg, SlotToReg, #5
+                 SlotToReg, OperatorInstruction, IsZero, SlotToReg, SlotToReg, #10
+                 LoadConstant, RegToSlot, LoadConstant, LoadConstant, SlotToReg, #15
+                 SlotToReg, LoadConstant, OperatorInstruction, IsZero, SlotToReg, #20
+                 OperatorInstruction, IsZero, SlotToReg, Branch, LoadConstant, #25
+                 OperatorInstruction, IsZero, SlotToReg, OperatorInstruction, IsZero, #30
+                 SlotToReg, Branch, LoadConstant, OperatorInstruction, IsZero, #35
+                 SlotToReg, OperatorInstruction, IsZero, SlotToReg, Branch, #40
+                 LoadConstant, OperatorInstruction, IsZero, SlotToReg, OperatorInstruction, #45
+                 IsZero, SlotToReg, Branch, LoadConstant, OperatorInstruction, #50
+                 IsZero, SlotToReg, OperatorInstruction, IsZero, SlotToReg, #55
+                 Branch, LoadConstant, OperatorInstruction, IsZero, SlotToReg, #60
+                 OperatorInstruction, IsZero, RegToSlot, LoadConstant, SlotToReg, #65
+                 RegToSlot, SlotToReg, SlotToReg, RegToSlot, LoadConstant, #70
+                 SlotToReg, RegToSlot, SlotToReg, LoadConstant, SlotToReg, #75
+                 DynamicJump, LoadConstant, SlotToReg, LoadConstant, OperatorInstruction, #80
+                 IsNotZero, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #85
+                 LoadData, OperatorInstruction, RegToSlot, RegToSlot, SlotToReg, #90
+                 SlotToReg, RegToSlot, SlotToReg, Branch, SlotToReg, #95
+                 SlotToReg, FunctionReturn, SlotToReg, RegToSlot, Branch, #100
+                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #105
+                 SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg, #110
+                 Syscall, NilClass,] #115
 
        assert_equal ::Integer , get_return.class
        assert_equal 1 , get_return
@@ -54,17 +51,17 @@ module Risc
     end
 
     def test_dyn
-      cal = main_ticks(82)
+      cal = main_ticks(76)
       assert_equal DynamicJump ,  cal.class
     end
     def test_return
-      ret = main_ticks(122)
+      ret = main_ticks(107)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
       assert_equal ::Integer , link.class
     end
     def test_sys
-      sys = main_ticks(126)
+      sys = main_ticks(111)
       assert_equal Syscall ,  sys.class
     end
   end

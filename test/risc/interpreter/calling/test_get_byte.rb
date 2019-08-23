@@ -10,23 +10,20 @@ module Risc
     end
     def test_chain
       #show_main_ticks # get output of what is
-      check_main_chain   [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
-            RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, # 10
-            RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
-            SlotToReg, RegToSlot, SlotToReg, FunctionCall, LoadConstant, # 20
-            SlotToReg, LoadConstant, OperatorInstruction, IsNotZero, SlotToReg,
-            RegToSlot, SlotToReg, SlotToReg, SlotToReg, ByteToReg, # 30
-            Branch, RegToSlot, RegToSlot, SlotToReg, SlotToReg,
-            RegToSlot, LoadConstant, SlotToReg, RegToSlot, RegToSlot, # 40
-            SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg,
-            RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot, # 50
-            LoadConstant, SlotToReg, RegToSlot, RegToSlot, Branch,
-            SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer, # 60
-            SlotToReg, SlotToReg, Syscall, NilClass, ]
+      check_main_chain  [LoadConstant, RegToSlot, LoadConstant, SlotToReg, RegToSlot, #5
+                 LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #10
+                 RegToSlot, SlotToReg, FunctionCall, LoadConstant, SlotToReg, #15
+                 LoadConstant, OperatorInstruction, IsNotZero, SlotToReg, RegToSlot, #20
+                 SlotToReg, SlotToReg, SlotToReg, ByteToReg, RegToSlot, #25
+                 RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg, #30
+                 Branch, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, #35
+                 RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot, #40
+                 SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer, #45
+                 SlotToReg, SlotToReg, Syscall, NilClass,] #50
        assert_equal "H".ord , get_return
     end
     def test_byte_to_reg
-      done = main_ticks(30)
+      done = main_ticks(24)
       assert_equal ByteToReg ,  done.class
       assert_equal "H".ord ,  @interpreter.get_register(done.register)
     end

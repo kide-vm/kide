@@ -11,12 +11,11 @@ module Risc
 
     def test_if
         #show_main_ticks # get output of what is in main
-        check_main_chain [LoadConstant, LoadConstant, OperatorInstruction, IsZero, LoadConstant,
-            OperatorInstruction, IsZero, LoadConstant, RegToSlot, Branch, # 10
-            SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-            RegToSlot, RegToSlot, SlotToReg, SlotToReg, SlotToReg, # 20
-            FunctionReturn, Transfer, SlotToReg, SlotToReg, Syscall,
-            NilClass, ]
+        check_main_chain  [LoadConstant, LoadConstant, OperatorInstruction, IsZero, LoadConstant, #5
+                 OperatorInstruction, IsZero, LoadConstant, RegToSlot, Branch, #10
+                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #15
+                 SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg, #20
+                 Syscall, NilClass,] #25
       assert_equal 1 , get_return
     end
     def test_load_10
@@ -38,10 +37,6 @@ module Risc
       check = main_ticks(4)
       assert_equal IsZero , check.class
       assert check.label.name.start_with?("false_label") , check.label.name
-    end
-    def test_exit
-      done = main_ticks(25)
-      assert_equal Syscall ,  done.class
     end
   end
 end

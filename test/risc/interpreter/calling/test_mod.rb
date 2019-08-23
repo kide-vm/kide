@@ -10,25 +10,22 @@ module Risc
     end
 
     def test_chain
-      # show_main_ticks # get output of what is
-      check_main_chain [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
-            RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, # 10
-            RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg,
-            FunctionCall, LoadConstant, SlotToReg, LoadConstant, OperatorInstruction, # 20
-            IsNotZero, SlotToReg, RegToSlot, SlotToReg, SlotToReg,
-            LoadData, OperatorInstruction, Branch, RegToSlot, RegToSlot, # 30
-            SlotToReg, SlotToReg, RegToSlot, LoadConstant, SlotToReg,
-            RegToSlot, RegToSlot, SlotToReg, SlotToReg, SlotToReg, # 40
-            FunctionReturn, SlotToReg, RegToSlot, Branch, SlotToReg,
-            SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, # 50
-            RegToSlot, SlotToReg, SlotToReg, SlotToReg, Branch,
-            FunctionReturn, Transfer, SlotToReg, SlotToReg, Syscall, # 60
-            NilClass, ]
+      #show_main_ticks # get output of what is
+      check_main_chain [LoadConstant, RegToSlot, LoadConstant, SlotToReg, RegToSlot, #5
+                 LoadConstant, SlotToReg, RegToSlot, SlotToReg, FunctionCall, #10
+                 LoadConstant, SlotToReg, LoadConstant, OperatorInstruction, IsNotZero, #15
+                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, LoadData, #20
+                 OperatorInstruction, RegToSlot, RegToSlot, SlotToReg, SlotToReg, #25
+                 RegToSlot, SlotToReg, Branch, SlotToReg, SlotToReg, #30
+                 FunctionReturn, SlotToReg, RegToSlot, Branch, SlotToReg, #35
+                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg, #40
+                 FunctionReturn, Transfer, SlotToReg, SlotToReg, Syscall, #45
+                 NilClass,] #50
        assert_equal 2 , get_return
     end
 
     def test_op
-      op = main_ticks(27)
+      op = main_ticks(21)
       assert_equal OperatorInstruction , op.class
       assert_equal :>> , op.operator
       assert_equal :r2 , op.left.symbol

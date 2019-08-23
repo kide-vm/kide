@@ -11,13 +11,13 @@ module Risc
 
     def test_while
         #show_main_ticks # get output of what is in main
-        check_main_chain  [LoadConstant, RegToSlot, SlotToReg, LoadConstant, OperatorInstruction,
-            IsZero, LoadConstant, OperatorInstruction, IsZero, LoadConstant, # 10
-            RegToSlot, Branch, SlotToReg, LoadConstant, OperatorInstruction,
-            IsZero, SlotToReg, RegToSlot, Branch, SlotToReg, # 20
-            SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-            RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, # 30
-            Transfer, SlotToReg, SlotToReg, Syscall, NilClass, ]
+        check_main_chain  [LoadConstant, RegToSlot, SlotToReg, LoadConstant, OperatorInstruction, #5
+                 IsZero, LoadConstant, OperatorInstruction, IsZero, LoadConstant, #10
+                 RegToSlot, Branch, SlotToReg, LoadConstant, OperatorInstruction, #15
+                 IsZero, SlotToReg, RegToSlot, Branch, SlotToReg, #20
+                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg, #25
+                 FunctionReturn, Transfer, SlotToReg, SlotToReg, Syscall, #30
+                 NilClass,] #35
       assert_kind_of Parfait::NilClass , get_return
     end
     def test_load_false_const

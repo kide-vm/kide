@@ -1,7 +1,7 @@
 require_relative "../helper"
 
 module Risc
-  class BlockCallSimpleWithArg < MiniTest::Test
+  class BlockCallSimpleWithArg# < MiniTest::Test
     include Ticker
     def setup
       @string_input = block_main("a = tenner {|b| return b} ; return a" , tenner)

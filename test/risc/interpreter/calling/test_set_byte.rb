@@ -11,22 +11,19 @@ module Risc
 
     def test_chain
       #show_main_ticks # get output of what is
-      check_main_chain   [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
-            RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, # 10
-            RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
-            SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, # 20
-            SlotToReg, FunctionCall, SlotToReg, SlotToReg, RegToSlot,
-            SlotToReg, SlotToReg, SlotToReg, RegToByte, SlotToReg, # 30
-            SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot,
-            RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, # 40
-            SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg,
-            RegToSlot, LoadConstant, Branch, SlotToReg, RegToSlot, # 50
-            RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
-            Transfer, SlotToReg, SlotToReg, Syscall, NilClass, ]
+      check_main_chain   [LoadConstant, RegToSlot, LoadConstant, SlotToReg, RegToSlot, #5
+                 LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #10
+                 RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, #15
+                 FunctionCall, SlotToReg, SlotToReg, RegToSlot, SlotToReg, #20
+                 SlotToReg, SlotToReg, RegToByte, SlotToReg, SlotToReg, #25
+                 RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, #30
+                 SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, #35
+                 RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, #40
+                 Transfer, SlotToReg, SlotToReg, Syscall, NilClass,] #45
        assert_equal "K".ord , get_return
     end
     def test_reg_to_byte
-      done = main_ticks(29)
+      done = main_ticks(23)
       assert_equal RegToByte ,  done.class
       assert_equal "K".ord ,  @interpreter.get_register(done.register)
     end

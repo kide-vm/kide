@@ -11,23 +11,20 @@ module Risc
 
     def test_minus
       #show_main_ticks # get output of what is
-      check_main_chain [LoadConstant, LoadConstant, SlotToReg, SlotToReg, RegToSlot,
-            RegToSlot, RegToSlot, RegToSlot, LoadConstant, SlotToReg, # 10
-            RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant,
-            SlotToReg, RegToSlot, SlotToReg, FunctionCall, LoadConstant, # 20
-            SlotToReg, LoadConstant, OperatorInstruction, IsNotZero, SlotToReg,
-            RegToSlot, SlotToReg, SlotToReg, SlotToReg, SlotToReg, # 30
-            Branch, OperatorInstruction, RegToSlot, RegToSlot, SlotToReg,
-            SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, # 40
-            RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn,
-            SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, # 50
-            RegToSlot, LoadConstant, SlotToReg, RegToSlot, RegToSlot,
-            Branch, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, # 60
-            Transfer, SlotToReg, SlotToReg, Syscall, NilClass, ]
+      check_main_chain  [LoadConstant, RegToSlot, LoadConstant, SlotToReg, RegToSlot, #5
+                 LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #10
+                 RegToSlot, SlotToReg, FunctionCall, LoadConstant, SlotToReg, #15
+                 LoadConstant, OperatorInstruction, IsNotZero, SlotToReg, RegToSlot, #20
+                 SlotToReg, SlotToReg, SlotToReg, SlotToReg, OperatorInstruction, #25
+                 RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot, #30
+                 Branch, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, #35
+                 SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, #40
+                 RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, #45
+                 Transfer, SlotToReg, SlotToReg, Syscall, NilClass,] #50
        assert_equal 1 , get_return
     end
     def test_op
-      op = main_ticks(32)
+      op = main_ticks(25)
       assert_equal OperatorInstruction , op.class
       assert_equal :- , op.operator
       assert_equal :r2 , op.left.symbol
@@ -36,10 +33,10 @@ module Risc
       assert_equal 5 , @interpreter.get_register(:r3)
     end
     def test_return
-      ret = main_ticks(60)
+      ret = main_ticks(45)
       assert_equal FunctionReturn ,  ret.class
-      assert_equal :r1 ,  ret.register.symbol
-      assert_equal 26160 ,  @interpreter.get_register(ret.register)
+      assert_equal :r3 ,  ret.register.symbol
+      assert_equal 26008 ,  @interpreter.get_register(ret.register)
     end
   end
 end
