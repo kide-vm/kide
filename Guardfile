@@ -31,4 +31,7 @@ guard :minitest , all_on_start: false do   # with Minitest::Unit
   # message setup
   watch(%r{^lib/mom/instruction/message_setup.rb}) { Dir["test/mom/send/test_setup*.rb"] }
 
+  # mains test
+  watch(%r{^test/mains/source/(.*)\.rb}) { "test/mains/test_interpreted.rb" }
+
 end

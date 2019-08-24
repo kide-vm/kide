@@ -6,9 +6,11 @@ Some things that would be nice . .
 - Better elf support. I think it should be relatively easy to produce an executable binary
 (so linking could be skipped). Off course the possibility to link in another library would be nice
 - better elf tests
+- more mains tests
+- ruby spec integration
 - better arm coverage (more instructions, better tests)
 - utf8 support (string improvements generally)
-
+- risc optimisations
 
 ## Platforms
 
@@ -42,16 +44,15 @@ lock free stuff is the ultimate goal.
 
 Iterate:
 
-1. more cpus (ie intel)
-2. more systems (ie mac)
-3. more syscalls, there are after all some hundreds (most as external gems)
-5. A lot of modern cpu's functionality has to be mapped to ruby and implemented in assembler to be useful
-6. Different sized machines, with different register types ?
-7.  on 64bit, there would be 8 bits for types and thus allow for rational, complex, and whatnot
-8. Housekeeping (the superset of gc) is abundant
-9. Any amount of time could be spent on a decent digital tree (see judy). Or possibly Dr.Cliffs hash.
-10. Also better string/arrays would be good.
-11. The minor point of threads and hopefully lock free primitives to deal with that.
-12. Other languages, python at least, maybe others
+- more cpus (ie intel)
+- more systems (ie mac)
+ more syscalls, there are after all some hundreds (most as external gems)
+- A lot of modern cpu's functionality has to be mapped to ruby and implemented in assembler to be useful
+- Different sized machines, with different register types ?
+- Housekeeping (the superset of gc) is abundant
+- Any amount of time could be spent on a decent digital tree (see judy). Or possibly Dr.Cliffs hash.
+- Also better string/arrays would be good.
+- The minor point of threads and hopefully lock free primitives to deal with that.
+- Other languages, python at least, maybe others
 
 And generally optimise and work towards that perfect world (we never seem to be able to attain).

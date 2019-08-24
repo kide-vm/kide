@@ -6,7 +6,7 @@ Just  few things that have become important enough to write down. Apart from wha
 
 ### Line Length
 
-While the days of 80 are over, too big steps seems difficult. I've settled on 100 (ish)
+While the days of 80 are over, too big steps seems difficult. I've settled on 90 (ish)
 
 ### Brackets
 
