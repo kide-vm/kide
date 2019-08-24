@@ -3,7 +3,8 @@ require "rubyx"
 require "risc/interpreter"
 
 class RubyXC < Thor
-  class_option :parfait , type: :numeric
+  class_option :integers , type: :numeric
+  class_option :mesages , type: :numeric
 
 
   desc "compile FILE" , "Compile given FILE to binary"
@@ -98,7 +99,8 @@ class RubyXC < Thor
 
   private
   def extract_options
-    opt = { factory: options[:parfait] || 1024 }
+    opt = { Integer: options[:integers] || 1024 ,
+            Message: options[:messages] || 1024}
     return {parfait: opt}
   end
 

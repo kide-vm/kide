@@ -1,4 +1,4 @@
-# Benchmarks
+  # Benchmarks
 
 hello - output hello world to measure kernel calls
 add   - run integer adds by linear fibonacci of 40
@@ -25,6 +25,6 @@ Results (in ms) should be seen as relative, not absolute.
 language  |  noop   |  hello   |  add   |  call | loop        
 c         |    55   |   380    |   88   |   135 |    6
 go        |    52   |   450    |    9   |    77 |    2
-rubyx     |    42   |   200    | 1700   |  1700 |  480
+rubyx     |    42   |   200    | 1700   |  1450 |  470
 ruby      |  1570   |   650    | 1090   |  1500 |  180
 mruby     |    86   |  1200    | 1370   |  2700 |  300
