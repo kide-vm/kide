@@ -9,3 +9,5 @@ class Space
     return b
   end
 end
+# 9.5 local
+# 45 on pi
