@@ -1,5 +1,5 @@
 class Space
-  # ran with --parfait=25000
+  # ran with --parfait=21000
   def main(arg)
     b = 10000
     while( b >= 1 )

@@ -9,9 +9,9 @@ class Space
      return a + b
   end
 
-  # ran with --parfait=70000
+  # ran with --integers=170000 , result - noop * 10
   def main(arg)
-    b = 2
+    b = 5
     res = 0
     while( b >= 1 )
       b = b - 1

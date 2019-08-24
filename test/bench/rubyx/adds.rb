@@ -14,9 +14,9 @@ class Space
     return result
   end
 
-  # ran with --parfait=80000
+  # ran with --integers=1600000 , result -noop * 25
   def main(arg)
-    b = 1000
+    b = 2000
     while( b >= 1 )
       b = b - 1
       fibo_i(40)

@@ -23,8 +23,8 @@ Results (in ms) should be seen as relative, not absolute.
 
 
 language  |  noop   |  hello   |  add   |  call | loop        
-c         |    55   |   380    |   88   |   135 |    6
-go        |    52   |   450    |    9   |    77 |    2
-rubyx     |    42   |   200    | 1700   |  1450 |  470
+c         |    55   |   330    |   88   |   135 |    6
+go        |    52   |   400    |    9   |    77 |    2
+rubyx     |    42   |   160    | 1575   |   780 |  430
 ruby      |  1570   |   650    | 1090   |  1500 |  180
-mruby     |    86   |  1200    | 1370   |  2700 |  300
+mruby     |    86   |  1100    | 1370   |  2700 |  300
