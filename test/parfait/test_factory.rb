@@ -5,7 +5,8 @@ module Parfait
 
     def setup
       super
-      @factory = Factory.new Parfait.object_space.get_type_by_class_name(:Integer)
+      type = Parfait.object_space.get_type_by_class_name(:Integer)
+      @factory = Factory.new(type , 40)
     end
     def test_ok
       assert @factory
@@ -24,14 +25,7 @@ module Parfait
       assert_equal Parfait::Integer ,  @factory.get_next_object.class
     end
     def test_default_test_page
-      assert_equal 20 , Factory.page_size
-    end
-    def test_default_reserve
-      assert_equal 10 , Factory.reserve_size
-    end
-    def test_set_page
-      assert_equal 10 , Factory.page_size = 10
-      Factory.page_size = 1024
+      assert_equal 40 , @factory.page_size
     end
     def test_first_is_reserve
       @factory.get_next_object
@@ -45,12 +39,13 @@ module Parfait
         start = start.next_integer
         count += 1
       end
-      assert_equal 11 , count
+      assert_equal 16 , count
     end
     class BigFactoryTest < BigParfaitTest
       def setup
         super
-        @factory = Factory.new Parfait.object_space.get_type_by_class_name(:Integer)
+        type = Parfait.object_space.get_type_by_class_name(:Integer)
+        @factory = Factory.new(type , 300)
       end
       def test_chain_length
         count = 0
@@ -59,10 +54,10 @@ module Parfait
           start = start.next_integer
           count += 1
         end
-        assert_equal 1024 - 10 , count
+        assert_equal 300-15  , count
       end
-      def test_default_page
-        assert_equal 1024 , Factory.page_size
+      def test_page
+        assert_equal 300 , @factory.page_size
       end
     end
   end

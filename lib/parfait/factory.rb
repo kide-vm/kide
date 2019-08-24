@@ -12,18 +12,15 @@
   # factory when the next (not current) is nil.
   # This is btw just as easy a check, as the next needs to be gotten to swap the list.
   class Factory < Object
-    attr :type , :for_type , :next_object , :reserve , :attribute_name
-
-    @page_size = 1024
-    @reserve_size = 10
-    cattr :page_size , :reserve_size
+    attr :type , :for_type , :next_object , :reserve , :attribute_name , :page_size
 
     # initialize for a given type (for_type). The attribute that is used to create the
     # list is the first that starts with next_ . "next" itself would have been nice and general
     # but is a keyword, so no go.
-    def initialize(type)
+    def initialize(type , page)
       self.for_type = type
       self.attribute_name = type.names.find {|name| name.to_s.start_with?("next")}
+      self.page_size = page
       raise "No next found for #{type.class_name}" unless attribute_name
     end
 
@@ -52,7 +49,8 @@
     def get_more
       self.reserve = get_chain
       last_link = self.reserve
-      count = Factory.reserve_size
+      count = self.page_size / 100
+      count = 15 if count < 15
       while(count > 0)
         last_link = get_next_for(last_link)
         count -= 1
@@ -66,9 +64,9 @@
     # it creates objects from the mem and link them into a chain
     def get_chain
       raise "type is nil" unless self.for_type
-      first = sys_mem( for_type , Factory.page_size)
+      first = sys_mem( for_type , self.page_size)
       chain = first
-      counter = Factory.page_size
+      counter = self.page_size
       while( counter > 0)
         nekst = get_next_raw( chain )
         set_next_for(chain,  nekst)

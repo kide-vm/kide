@@ -55,7 +55,12 @@ module Risc
     end
     def test_pc1
       @interpreter.tick
-      assert_equal 25912 , @interpreter.pc
+      assert_equal 40296 , @interpreter.pc
+    end
+    def test_pc2
+      @interpreter.tick
+      @interpreter.tick
+      assert_equal 40300 , @interpreter.pc
     end
     def test_tick2
       @interpreter.tick
@@ -65,11 +70,6 @@ module Risc
       @interpreter.tick
       @interpreter.tick
       assert_equal 3 , @interpreter.clock
-    end
-    def test_pc2
-      @interpreter.tick
-      @interpreter.tick
-      assert_equal 25916 , @interpreter.pc
     end
     def ttest_tick_14_jump
       30.times { @interpreter.tick ;puts @interpreter.instruction.class}

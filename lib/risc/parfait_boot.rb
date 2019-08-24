@@ -55,9 +55,7 @@ module Parfait
     boot_boot_space( types )
     classes = boot_classes( types )
     fix_types( types , classes )
-    page = options[:factory] || 1024
-    Factory.page_size = page
-    space = Space.new( classes )
+    space = Space.new( classes , options )
     Parfait.set_object_space( space )
   end
 
@@ -154,8 +152,8 @@ module Parfait
       Data32: {},
       Dictionary: {i_keys: :List , i_values: :List  } ,
       FalseClass: {},
-      Factory: { for_type: :Type , next_object: :Object ,
-                 reserve: :Object , attribute_name: :Word },
+      Factory: { for_type: :Type , next_object: :Object , reserve: :Object ,
+                 attribute_name: :Word , page_size: :Integer },
       Integer: {next_integer: :Integer},
       List: {indexed_length: :Integer , next_list: :List} ,
       Message: { next_message: :Message,   receiver: :Object, frame: :NamedList ,

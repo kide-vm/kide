@@ -33,7 +33,7 @@ module Parfait
     attr  :type, :classes , :types , :factories
     attr  :true_object , :false_object , :nil_object
 
-    def initialize( classes )
+    def initialize( classes , pages)
       self.classes = classes
       self.types = Dictionary.new
       classes.each do |name , cl|
@@ -41,7 +41,11 @@ module Parfait
       end
       self.factories = Dictionary.new
       [:Integer , :ReturnAddress , :Message].each do |fact_name|
-        factories[ fact_name ] = Factory.new( classes[fact_name].instance_type).get_more
+        for_type = classes[fact_name].instance_type
+        page_size = pages[fact_name] || 1024
+        factory = Factory.new( for_type , page_size )
+        factory.get_more
+        factories[ fact_name ] = factory
       end
       init_message_chain( factories[ :Message ].reserve  )
       init_message_chain( factories[ :Message ].next_object  )

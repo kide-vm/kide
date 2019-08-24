@@ -1,17 +1,20 @@
 module Parfait
   def self.default_test_options
      {
-       factory: 20,
+       Message: 30,
+       Integer: 30,
      }
   end
   def self.interpreter_test_options
      {
-       factory: 50,
+       Message: 50,
+       Integer: 50,
      }
   end
   def self.full_test_options
      {
-       factory: 1024,
+       Message: 300,
+       Integer: 300,
      }
   end
 end

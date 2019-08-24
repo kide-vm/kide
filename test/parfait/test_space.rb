@@ -191,7 +191,7 @@ module Parfait
         count += 1
         addr = addr.next_integer
       end
-      assert_equal 1014, count
+      assert_equal 1009, count
     end
     def test_message_count
       mess = @space.get_next_for(:Message)
@@ -201,7 +201,7 @@ module Parfait
         assert mess.locals_used
         mess = mess.next_message
       end
-      assert_equal 1014, count
+      assert_equal 285, count
     end
   end
 
