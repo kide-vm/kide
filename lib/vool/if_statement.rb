@@ -15,12 +15,11 @@ module Vool
       false_label = Mom::Label.new( self , "false_label_#{object_id.to_s(16)}")
       merge_label = Mom::Label.new( self , "merge_label_#{object_id.to_s(16)}")
 
-      check =  Mom::TruthCheck.new(condition.to_slot(compiler) , false_label)
       if @condition.is_a?(CallStatement)
         head = @condition.to_mom(compiler)
-        head << check
+        head << check_slot(compiler , false_label)
       else
-        head = check
+        head = check_slot(compiler , false_label)
       end
       head << true_label
       head << if_true.to_mom(compiler)   if @if_true
@@ -29,6 +28,11 @@ module Vool
       head << if_false.to_mom(compiler)  if @if_false
       head << merge_label                if @if_false
       head
+    end
+
+    # create the slot lazily, so to_mom gets called first
+    def check_slot(compiler , false_label)
+      Mom::TruthCheck.new(@condition.to_slot(compiler) , false_label)
     end
 
     def each(&block)

@@ -44,7 +44,7 @@ module Mains
       run_all
       assert_equal ::Integer , get_return.class , " "
       assert_equal 4 , get_return , " "
-      assert_equal "hi" , @interpreter.stdout
+      assert_equal "11111" , @interpreter.stdout
     end
 
   end

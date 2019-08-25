@@ -33,6 +33,7 @@ module Ruby
         ast = Parser::CurrentRuby.parse( input )
       rescue => e
         puts "Error parsing #{input}"
+        raise e
       end
       begin
         self.new.process(ast)

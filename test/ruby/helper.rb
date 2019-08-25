@@ -2,11 +2,19 @@ require_relative "../helper"
 
 module Ruby
   module RubyTests
+    include ScopeHelper
     def setup
       Parfait.boot!(Parfait.default_test_options)
     end
     def compile(input)
       RubyCompiler.compile(input)
+    end
+    def compile_main(input)
+      RubyCompiler.compile(as_main(input))
+    end
+    def compile_main_vool(input)
+      xcompiler = RubyX::RubyXCompiler.new(RubyX.default_test_options)
+      xcompiler.ruby_to_vool(as_main(input))
     end
 
     def assert_raises_muted &block
