@@ -5,6 +5,7 @@ require "risc/interpreter"
 class RubyXC < Thor
   class_option :integers , type: :numeric
   class_option :mesages , type: :numeric
+  class_option :elf , type: :boolean
 
 
   desc "compile FILE" , "Compile given FILE to binary"
@@ -27,11 +28,13 @@ class RubyXC < Thor
     puts "compiling #{file}"
 
     linker = ::RubyX::RubyXCompiler.new(extract_options).ruby_to_binary( ruby , :arm )
-    writer = Elf::ObjectWriter.new(linker)
+    elf = { debug: options[:elf] || false  }
+    writer = Elf::ObjectWriter.new(linker , elf)
 
     outfile = file.split("/").last.gsub(".rb" , ".o")
     writer.save outfile
-
+    system "arm-linux-gnu-ld -N #{outfile}"
+    File.delete outfile
     return outfile
   end
 
@@ -92,16 +95,15 @@ class RubyXC < Thor
 
   def execute(file)
     outfile = compile(file)
-    system "arm-linux-gnu-ld -N #{outfile}"
-    puts "Linked ok, now running #{outfile}"
-    system "qemu-arm ./a.out ; echo $?"
+    puts "Running #{outfile}\n\n"
+    system "qemu-arm ./a.out ;echo $?"
   end
 
   private
   def extract_options
     opt = { Integer: options[:integers] || 1024 ,
             Message: options[:messages] || 1024}
-    return {parfait: opt}
+    return {parfait: opt }
   end
 
 end

@@ -7,7 +7,9 @@ require_relative 'string_table_section'
 module Elf
 
   class ObjectWriter
-    def initialize( linker )
+    attr_reader :text
+
+    def initialize( linker , options = {} )
       @linker = linker
       target = Elf::Constants::TARGET_ARM
       @object = Elf::ObjectFile.new(target)
@@ -22,7 +24,15 @@ module Elf
       assembler = Risc::TextWriter.new(@linker)
       set_text assembler.write_as_string
 
-      # for debug add labels for labels
+      add_debug_symbols(options)
+
+    end
+
+    # for debug add labels for labels
+    def add_debug_symbols(options)
+      debug = options[:debug]
+      return unless debug
+
       @linker.assemblers.each do |asm|
         meth = asm.callable
         asm.instructions.each do |label|
@@ -34,7 +44,6 @@ module Elf
           add_symbol label , Risc::Position.get(code).at
         end
       end
-
       @linker.object_positions.each do |slot , position|
         next if slot.is_a?(Parfait::BinaryCode)
         next if slot.class.name.include?("Arm")
@@ -47,8 +56,6 @@ module Elf
         add_symbol label , Risc::Position.get(slot).at
       end
     end
-
-    attr_reader :text
 
     def set_text(text)
       @text.text = text
