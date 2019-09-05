@@ -7,10 +7,35 @@ class RubyXC < Thor
   class_option :mesages , type: :numeric
   class_option :elf , type: :boolean
 
+  desc "stats FILE" , "Give object statistics on compiled FILE"
+  long_desc <<-LONGDESC
+      Compile the give file name and print statistics on the binary.
+      A Binary file is in essence an ObjectSpace, ie a collection of objects.
+
+      This command tells you how many objects of each kind, the amount of bytes
+      objects of that class take, and the total amount of bytes taken.
+
+      Together with various options this may be used to tune the executable, or just fyi.
+    LONGDESC
+  def stats(file)
+    compile(file)
+    by_class = Hash.new(0)
+    Risc::Position.positions.each  do |object , _ |
+      by_class[object.class] += 1 if Risc::Position.is_object(object)
+    end
+    obj, total = 0 , 0
+    by_class.each do |clazz , num|
+      dis =  (clazz == Symbol) ? 8 : clazz.memory_size
+      puts clazz.name.split("::").last + " == #{num}   / #{num*dis}"
+      obj += num
+      total += num * dis
+    end
+    puts "\nTotal Objects=#{obj}  Words=#{total}"
+  end
 
   desc "compile FILE" , "Compile given FILE to binary"
   long_desc <<-LONGDESC
-      Compile the give file name to binary object file (see long descr.)
+      Compile the give file name to binary object file (see below.)
 
       Output will be elf object file of the same name, with .o, in root directory.
 
@@ -18,16 +43,9 @@ class RubyXC < Thor
       executing it. This can be done on a mac by installing a cross linker
       (brew install arm-linux-gnueabihf-binutils), or on the target arm machine.
     LONGDESC
-
+    
   def compile(file)
-    begin
-      ruby = File.read(file)
-    rescue
-      fail MalformattedArgumentError , "No such file #{file}"
-    end
-    puts "compiling #{file}"
-
-    linker = ::RubyX::RubyXCompiler.new(extract_options).ruby_to_binary( ruby , :arm )
+    linker = do_compile(file)
     elf = { debug: options[:elf] || false  }
     writer = Elf::ObjectWriter.new(linker , elf)
 
@@ -100,6 +118,17 @@ class RubyXC < Thor
   end
 
   private
+  # Open file, create compiler, compile and return linker
+  def do_compile(file)
+    begin
+      ruby = File.read(file)
+    rescue
+      fail MalformattedArgumentError , "No such file #{file}"
+    end
+    puts "compiling #{file}"
+    ::RubyX::RubyXCompiler.new(extract_options).ruby_to_binary( ruby , :arm )
+  end
+
   def extract_options
     opt = { Integer: options[:integers] || 1024 ,
             Message: options[:messages] || 1024}

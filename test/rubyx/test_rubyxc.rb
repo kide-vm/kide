@@ -20,5 +20,14 @@ module RubyX
     def test_interpret
       assert_output(/interpreting/) {RubyXC.start(["interpret" , "test/mains/source/add__4.rb"])}
     end
+    def test_execute
+      assert_output(/Running/) {RubyXC.start(["execute" , "test/mains/source/add__4.rb"])}
+    end
+    def test_stats
+      out, err = capture_io {RubyXC.start(["stats" , "test/mains/source/add__4.rb"])}
+      assert out.include?("Space") , out
+      assert out.include?("Total") , out
+      assert out.include?("Objects=") , out
+    end
   end
 end

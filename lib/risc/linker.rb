@@ -3,11 +3,17 @@ require_relative "binary_writer"
 
 module Risc
 
-  # From code, the next step down is Vool, then Mom (in two steps)
+  # A RiscCollection is the last virtual stop on the way to binary.
+  # It creates a Linker to go to binary. The name linker came in analogy to
+  # "normal" (ie c world) lingo, because there too the linker is all about
+  # positioning code and data.
   #
-  # The next step transforms to the register machine layer, which is quite close to what actually
-  #  executes. The step after transforms to Arm, which creates executables.
-  #
+  # Here we also do the assembling, which (at least in arm) creates this mess
+  # of dependencies. As a simple example imagine a branch, a load and the label
+  # to which we jump. The brnahc needs the address, but the load may be 4 or 8
+  # instructions, and thus the label address is only known after the load.
+  # Exrapolate times 10, that's why this works with listeners and a sort
+  # of self organizing aproach (see class Position).
 
   class Linker
     include Util::Logging
