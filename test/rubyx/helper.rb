@@ -20,6 +20,34 @@ module RubyX
       assert itest
       itest
     end
+  end
+  module ParfaitHelper
+
+    def load_parfait(file)
+      File.read File.expand_path("../../../lib/parfait/#{file}.rb",__FILE__)
+    end
+    def load_parfait_test(file)
+      File.read File.expand_path("../../parfait/test_#{file}.rb",__FILE__)
+    end
+    def compiler
+      RubyXCompiler.new(RubyX.default_test_options)
+    end
+
+    def run_input
+      linker = compiler.ruby_to_binary(@input , :interpreter)
+      @interpreter = Risc::Interpreter.new(linker)
+      @interpreter.start_program
+      run_all
+    end
+
+    def run_all
+      while(@interpreter.instruction)
+        @interpreter.tick
+        #puts @interpreter.instruction
+      end
+      @interpreter.clock
+    end
 
   end
+
 end
