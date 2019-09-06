@@ -170,10 +170,17 @@ module Ruby
       ClassVariable.new(expression.children.first.to_s[2 .. -1].to_sym)
     end
 
+    # remove global parfait module scopes from consts
+    # Other modules _scopes_ not implemented
     def on_const expression
       scope = expression.children.first
       if scope
-        not_implemented(expression) unless scope.type == :cbase
+        unless(scope.type == :const and
+               scope.children.first and
+               scope.children.first.type == :cbase and
+               scope.children[1] == :Parfait)
+               not_implemented(expression) unless scope.type == :cbase
+        end
       end
       ModuleName.new(expression.children[1])
     end
@@ -254,6 +261,19 @@ module Ruby
       w
     end
 
+    # Unscope stuff out of the parfait module
+    # less magic in requires
+    # Other modules still not implemented
+    def on_module(statement)
+      kids = statement.children.dup
+      name = kids.shift
+      if(name.type == :const and
+            name.children[1] == :Parfait)
+            process_all(kids)
+      else
+        not_implemented(statement)
+      end
+    end
     private
 
     def instance_name sym
