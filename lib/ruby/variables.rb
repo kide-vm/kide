@@ -9,12 +9,12 @@ module Ruby
     def to_vool
       vool_brother.new(@name)
     end
+    def to_s(depth=0)
+      name.to_s
+    end
   end
 
   class LocalVariable < Variable
-    def to_s
-      name.to_s
-    end
   end
 
   class InstanceVariable < Variable
@@ -24,7 +24,7 @@ module Ruby
       array << @name
     end
     def to_s(depth = 0)
-      at_depth(depth , "@#{name}" )
+      "@#{name}"
     end
   end
 

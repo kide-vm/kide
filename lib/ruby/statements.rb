@@ -2,7 +2,8 @@ module Ruby
   class Statements < Statement
     attr_reader :statements
     def initialize(statements)
-      @statements = statements
+      @statements = []
+      statements.each{|st| self << st}
     end
 
     def empty?
@@ -30,6 +31,7 @@ module Ruby
       @statements[i]
     end
     def <<(o)
+      raise "Not Statement #{o.class}=#{o.to_s[0..100]}" unless o.is_a?(Statement)
       @statements << o
       self
     end

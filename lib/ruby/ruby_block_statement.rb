@@ -26,6 +26,8 @@ module Ruby
       sendd.arguments << lambda
       ret
     end
-
+    def to_s(depth = 0)
+      at_depth(depth , "{|#{@args.join(',')}| #{@body}}")
+    end
   end
 end

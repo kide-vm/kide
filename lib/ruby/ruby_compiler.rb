@@ -38,7 +38,7 @@ module Ruby
       begin
         self.new.process(ast)
       rescue => e
-        puts "Error processing #{ast}"
+        puts "Error processing \n#{ast}"
         raise e
       end
     end
@@ -139,7 +139,11 @@ module Ruby
       not_implemented(expression)
     end
     def on_kwbegin statement
-      ScopeStatement.new process_all( statement.children )
+      scope = ScopeStatement.new([])
+      statement.children.each do |kid| #do the loop to catch errors (not process_all)
+        scope << process(kid)
+      end
+      scope
     end
     alias  :on_begin :on_kwbegin
 
@@ -268,8 +272,13 @@ module Ruby
       kids = statement.children.dup
       name = kids.shift
       if(name.type == :const and
-            name.children[1] == :Parfait)
-            process_all(kids)
+         name.children[1] == :Parfait)
+         raise "No empty modules for now #{statement}" if kids.empty?
+        if(kids.length == 1)
+          process(kids.first)
+        else
+          on_kwbegin(kids)
+        end
       else
         not_implemented(statement)
       end
