@@ -5,7 +5,6 @@ module Vool
     include VoolCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @compiler = compile_first_method( "return 5")
       @ins = @compiler.mom_instructions.next
     end
@@ -42,7 +41,6 @@ module Vool
     include VoolCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @compiler = compile_first_method( "return 5.div4")
       @ins = @compiler.mom_instructions.next
     end

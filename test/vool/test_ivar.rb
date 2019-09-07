@@ -5,7 +5,6 @@ module Vool
     include VoolCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @compiler = compile_first_method( "@a = 5")
       @ins = @compiler.mom_instructions.next
     end

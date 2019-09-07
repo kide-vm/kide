@@ -26,7 +26,7 @@ module Mom
     #
     # We create an empty main for init to jump to, if no code is compiled, that just returns
     # See Builtin directory readme and module
-    def self.boot_functions()
+    def self.boot_functions( options = {})
       # TODO go through the virtual parfait layer and adjust function names
       #      to what they really are
       compilers = []

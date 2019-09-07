@@ -19,10 +19,17 @@ thus "typing" the syntax tree, and making it concrete.
 
 ## to Vool
 
-In our nice layers, we are ont the way down to Vool, a simplified version of oo.
+In our nice layers, we are on the way down to Vool, a simplified version of oo.
 
 It has proven handy to have this layer, so the code for transforming each object
 is in the class representing that object. (As one does in oo, again imho).
+
+## compile_time_expansions
+
+We do some expansions at compile time that are in fact methods calls in real ruby.
+
+First among those will be require (+ require_relative) , but attribute readers
+will surely follow.
 
 ## Parfait objects
 

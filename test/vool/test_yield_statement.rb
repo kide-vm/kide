@@ -5,7 +5,6 @@ module Vool
     include VoolCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @compiler = compile_first_method( "return yield(1)" )
       @ins = @compiler.mom_instructions.next
     end
@@ -70,7 +69,6 @@ module Vool
     include VoolCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @compiler = compile_first_method( "return yield(some.extra.calls)" )
       @ins = @compiler.mom_instructions.next
     end

@@ -7,8 +7,6 @@ module Vool
     include Mom
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
-      Mom.boot!
       @compiler = compile_first_method( send_method )
       @ins = @compiler.mom_instructions.next
     end

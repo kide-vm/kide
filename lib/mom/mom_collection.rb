@@ -42,6 +42,5 @@ module Mom
       Risc::RiscCollection.new(riscs)
     end
 
-
   end
 end

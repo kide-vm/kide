@@ -15,7 +15,7 @@ end
 # See risc/Readme
 module Risc
   # module method to reset, and init
-  def self.boot!
+  def self.boot!(options = {})
     Position.clear_positions
   end
 end

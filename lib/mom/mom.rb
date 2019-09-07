@@ -13,8 +13,8 @@
 
 module Mom
   # boot bubiltin function (subject to change)
-  def self.boot!
-    Builtin.boot_functions
+  def self.boot!(options = {})
+    Builtin.boot_functions(options)
   end
 end
 

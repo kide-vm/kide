@@ -5,7 +5,6 @@ module VoolBlocks
     include VoolCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @ins = compile_first_block( "while(@a) ; @a = 5 ; end")
     end
 

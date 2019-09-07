@@ -32,7 +32,6 @@ module Mom
     include MomCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @comp = compile_mom( "class Test ; def main(); return 'Hi'; end; end;")
       @collection = @comp.to_risc()
     end

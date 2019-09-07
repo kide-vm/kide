@@ -25,13 +25,14 @@ module RubyX
   #
   class RubyXCompiler
 
-    attr_reader :vool
+    attr_reader :vool , :options
 
     # initialize boots Parfait and Risc (ie load Builin)
     def initialize(options)
+      @options = options
       Parfait.boot!(options[:parfait] || {})
-      Mom.boot!
-      Risc.boot!
+      Mom.boot!(options[:mom] || {})
+      Risc.boot!(options[:risc] || {})
     end
 
     # The highest level function creates binary code for the given ruby code

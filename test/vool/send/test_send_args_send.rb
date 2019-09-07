@@ -5,8 +5,6 @@ module Vool
     include VoolCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
-      Risc.boot!
       @compiler = compile_first_method( "a = main(1 + 2);return a" )
       @ins = @compiler.mom_instructions.next
     end

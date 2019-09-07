@@ -5,7 +5,6 @@ module Vool
     include VoolCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @compiler = compile_first_method( "local = 5;return")
       @ins = @compiler.mom_instructions.next
     end
@@ -34,7 +33,6 @@ module Vool
   class TestAssignMomInstanceToLocal < MiniTest::Test
     include VoolCompile
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @compiler = compile_first_method( "@a = 5 ; local = @a;return")
       @ins = @compiler.mom_instructions.next
     end
@@ -48,7 +46,6 @@ module Vool
     include VoolCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @compiler = compile_first_method( "arg = 5;return")
       @ins = @compiler.mom_instructions.next
     end

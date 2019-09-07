@@ -5,7 +5,6 @@ module VoolBlocks
     include VoolCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @ins = compile_first_block(  "local = 5" )
     end
     def test_block_compiles
@@ -31,7 +30,6 @@ module VoolBlocks
   class TestAssignMomInstanceToLocal < MiniTest::Test
     include VoolCompile
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @ins = compile_first_block( "local = @a" , "@a = 5") #second arg in method scope
     end
     def test_class_compiles
@@ -49,7 +47,6 @@ module VoolBlocks
     include VoolCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @ins = compile_first_block( "arg = 5")
     end
 
@@ -67,7 +64,6 @@ module VoolBlocks
   class TestAssignMomToInstance < MiniTest::Test
     include VoolCompile
     def setup
-      Parfait.boot!(Parfait.default_test_options)
     end
     def test_assigns_const
       @ins = compile_first_block( "@a = 5")
