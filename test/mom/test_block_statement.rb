@@ -6,7 +6,6 @@ module Vool
     include MomCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @ret = compile_mom( as_test_main("self.main {|elem| elem = 5 } "))
     end
     def test_is_compiler
@@ -22,7 +21,6 @@ module Vool
   class TestBlockLocal < MiniTest::Test
     include MomCompile
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @ret = compile_mom( as_test_main("self.main {|elem| local = 5 } "))
       @block = @ret.method_compilers.first.get_method.blocks
     end
@@ -43,7 +41,6 @@ module Vool
     include MomCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
     end
     def test_method_arg_compiles
       ret = compile_mom( as_test_main("self.main {|elem| arg = 5 } "))

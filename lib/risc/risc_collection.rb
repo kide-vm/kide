@@ -36,7 +36,7 @@ module Risc
     # go through all methods and translate them to cpu, given the translator
     def translate_methods(translator)
       method_compilers.collect do |compiler|
-        #log.debug "Translate method #{compiler.method.name}"
+        #puts "Translate method #{compiler.callable.name}"
         translate_method(compiler , translator)
       end.flatten
     end

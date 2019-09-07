@@ -26,35 +26,39 @@ module Mom
     #
     # We create an empty main for init to jump to, if no code is compiled, that just returns
     # See Builtin directory readme and module
-    def self.boot_functions( options = {})
-      # TODO go through the virtual parfait layer and adjust function names
-      #      to what they really are
-      compilers = []
+    def self.boot_functions( options = nil)
       space = Parfait.object_space
       space_type = space.get_class.instance_type
-      if(space_type.methods.nil?)
-        compilers << compiler_for( space_type   , Space , :main)
+
+      if @compilers and options == nil
+        if(space_type.methods.nil?)
+          @compilers << compiler_for( space_type   , Space , :main)
+        end
+        return @compilers 
       end
+      # TODO go through the virtual parfait layer and adjust function names
+      #      to what they really are
+      @compilers = []
 
       obj_type = space.get_type_by_class_name(:Object)
       [ :__init__ , :exit ,  :_method_missing, :get_internal_word ,
         :set_internal_word ].each do |f|
-        compilers << compiler_for( obj_type , Object , f)
+        @compilers << compiler_for( obj_type , Object , f)
       end
 
       word_type = space.get_type_by_class_name(:Word)
       [:putstring , :get_internal_byte , :set_internal_byte ].each do |f|
-        compilers << compiler_for( word_type , Word , f)
+        @compilers << compiler_for( word_type , Word , f)
       end
 
       int_type = space.get_type_by_class_name(:Integer)
       Risc.operators.each do |op|
-        compilers << operator_compiler( int_type , op)
+        @compilers << operator_compiler( int_type , op)
       end
       [ :div4, :<,:<= , :>=, :> , :div10 ].each do |f|   #div4 is just a forward declaration
-        compilers << compiler_for( int_type , Integer , f)
+        @compilers << compiler_for( int_type , Integer , f)
       end
-      return compilers
+      return @compilers
     end
 
     def self.compiler_for( type , mod , name)

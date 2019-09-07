@@ -5,6 +5,7 @@ module Risc
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
+      Mom.boot!
       Risc.boot!
       @linker = Mom::MomCollection.new.to_risc.translate(:arm)
     end
@@ -25,7 +26,7 @@ module Risc
       assert_equal 0 ,  Position.get(@linker.cpu_init).at
     end
     def test_cpu_at
-      assert_equal "0x9e5c" ,  Position.get(@linker.cpu_init.first).to_s
+      assert_equal "0x9d9c" ,  Position.get(@linker.cpu_init.first).to_s
     end
     def test_cpu_label
       assert_equal Position ,  Position.get(@linker.cpu_init.first).class

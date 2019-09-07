@@ -6,7 +6,6 @@ module Vool
     include MomCompile
 
     def setup
-      Parfait.boot!(Parfait.default_test_options)
       @ret = compile_mom( as_test_main("return 1"))
     end
 

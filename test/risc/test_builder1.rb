@@ -6,6 +6,7 @@ module Risc
     def setup
       Parfait.boot!(Parfait.default_test_options)
       Mom.boot!
+      Mom::Builtin.boot_functions # creates main
       Risc.boot!
       @init = Parfait.object_space.get_init
       @compiler = Risc::MethodCompiler.new( @init , Mom::Label.new( "source_name", "return_label"))

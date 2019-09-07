@@ -4,6 +4,7 @@ module Risc
   class TestCodeListenerFull < MiniTest::Test
     def setup
       Parfait.boot!(Parfait.default_test_options)
+      Mom.boot!
       Risc.boot!
       @linker = Mom::MomCollection.new.to_risc.translate(:interpreter)
       @binary = Parfait::BinaryCode.new(1)

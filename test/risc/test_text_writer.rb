@@ -5,6 +5,7 @@ module Risc
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
+      Mom.boot!
       Risc.boot!
       @linker = Mom::MomCollection.new.to_risc.translate(:arm)
     end
@@ -20,6 +21,7 @@ module Risc
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
+      Mom.boot!
       Risc.boot!
       @linker = Mom::MomCollection.new.to_risc.translate(:arm)
       @linker.position_all
