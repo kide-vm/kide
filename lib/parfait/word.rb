@@ -29,7 +29,7 @@ module Parfait
       self.char_length = 0
       raise "Must init with int, not #{len.class}" unless len.kind_of? ::Integer
       raise "Must init with positive, not #{len}" if len < 0
-      set_length( len , 32 ) unless len == 0 #32 being ascii space
+      fill_to( len , 32 ) unless len == 0 #32 being ascii space
       #puts "type #{self.get_type} #{self.object_id.to_s(16)}"
     end
 
@@ -73,13 +73,13 @@ module Parfait
 
     # pad the string with the given character to the given length
     #
-    def set_length(len , fill_char)
+    def fill_to(len , fill_char)
       return if len <= 0
       old = char_length
       return if old >= len
       self.char_length = len
       check_length
-      fill_from_with( old + 1 , fill_char )
+      fill_from_with( old  , fill_char )
     end
 
     # set the character at the given index to the given character
@@ -140,7 +140,7 @@ module Parfait
       raise "index not integer #{at.class}" unless at.is_a?(::Integer)
       raise "index must be positive , not #{at}" if (index < 0)
       raise "index too large #{at} > #{self.length}" if (index >= self.length )
-      return index + 11
+      return index + 8 # type_length * 4
     end
 
     # compare the word to another
@@ -169,6 +169,7 @@ module Parfait
     def to_string
       string = ""
       index = 0
+      #puts "Length = #{char_length}"
       while( index < char_length)
         char = get_char(index)
         string += char ? char.chr : "*"
