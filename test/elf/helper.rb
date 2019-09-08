@@ -1,6 +1,4 @@
 require_relative "../helper"
-require 'net/ssh'
-require 'net/scp'
 
 module Elf
 

@@ -1,6 +1,4 @@
 require_relative 'helper'
-require 'net/ssh'
-require 'net/scp'
 
 module Mains
   class TestArm < MiniTest::Test
@@ -37,7 +35,7 @@ module Mains
     def self.has_qemu
       if `uname -a`.include?("torsten")
         @Linker = "arm-linux-gnu-ld"
-        return false
+        return false unless DEBUG
       end
       begin
         `#{@Qemu} -version`
