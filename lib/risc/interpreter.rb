@@ -158,8 +158,13 @@ module Risc
       end
       case object
       when Symbol
-        raise "Must convert symbol to word:#{object}" unless( index == 2 )
-        value = object.to_s.length
+        if(index == 0)
+          value = object.get_type
+        elsif(index==1)
+          value = object.to_s.length
+        else
+          raise "Must convert symbol to word:#{object}:#{index}"
+        end
       when nil
         raise "error #{@instruction} retrieves nil"
       else

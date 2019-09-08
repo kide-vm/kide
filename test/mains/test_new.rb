@@ -16,21 +16,19 @@ module Mains
 
     def whole_input
       <<-eos
-        class Space
-          def times
-            n = 5
-            i = 0
-            while( i < 5 )
-              yield
-              i = i + 1
-            end
-            return 1
+        class Class
+          def get_name
+            @name
           end
+        end
+        class Type
+          def get_name
+            @object_class.get_name
+          end
+        end
+        class Space
           def main(arg)
-            times{
-              "1".putstring
-            }
-            return 4
+            @type.get_name.putstring
           end
         end
       eos
@@ -43,8 +41,8 @@ module Mains
     def test_chain
       run_all
       assert_equal ::Integer , get_return.class , " "
-      assert_equal 4 , get_return , " "
-      assert_equal "11111" , @interpreter.stdout
+      #assert_equal 4 , get_return , " "
+      assert_equal "hi" , @interpreter.stdout
     end
 
   end
