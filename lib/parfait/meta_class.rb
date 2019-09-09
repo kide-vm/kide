@@ -20,10 +20,13 @@ module Parfait
   class MetaClass < Object
     include Behaviour
 
-    attr_reader :type, :instance_type , :instance_methods , :clazz
+    attr_reader :instance_type , :instance_methods , :clazz
 
     def self.type_length
       4
+    end
+    def self.memory_size
+      8
     end
 
     def initialize( clazz )

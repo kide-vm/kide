@@ -13,7 +13,7 @@ module Parfait
   # Object length is measured in non-type cells though
 
   class Word < Data8
-    attr_reader :type, :char_length
+    attr_reader :char_length
 
     def self.type_length
       2    # 0 type , 1 char_length

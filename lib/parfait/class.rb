@@ -18,11 +18,14 @@ module Parfait
   class Class < Object
     include Behaviour
 
-    attr_reader :type, :instance_type , :name , :instance_methods
+    attr_reader :instance_type , :name , :instance_methods
     attr_reader :super_class_name , :meta_class
 
     def self.type_length
       6
+    end
+    def self.memory_size
+      8
     end
 
     def initialize( name , superclass , instance_type)

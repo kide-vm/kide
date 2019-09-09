@@ -30,8 +30,14 @@ module Parfait
 
   class Space < Object
 
-    attr_reader  :type, :classes , :types , :factories
+    attr_reader  :classes , :types , :factories
     attr_reader  :true_object , :false_object , :nil_object
+    def self.type_length
+      7
+    end
+    def self.memory_size
+      8
+    end
 
     def initialize( classes , pages)
       @classes = classes
@@ -52,13 +58,6 @@ module Parfait
       @true_object = Parfait::TrueClass.new
       @false_object = Parfait::FalseClass.new
       @nil_object = Parfait::NilClass.new
-    end
-
-    def self.type_length
-      12
-    end
-    def self.memory_size
-      16
     end
 
     def init_message_chain( message )

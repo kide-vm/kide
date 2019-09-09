@@ -6,17 +6,7 @@
 module Parfait
   class Integer < Data4
 
-    attr_reader :type, :next_integer
-
-    def initialize(value , next_i = nil)
-      super()
-      @next_integer = next_i
-      set_internal_word(Integer.integer_index, value)
-    end
-
-    def value
-      get_internal_word(Integer.integer_index)
-    end
+    attr_reader :next_integer
 
     def self.type_length
       2    # 0 type, 1 next_i
@@ -28,6 +18,16 @@ module Parfait
     # index at which the actual integer is. Used in risc reneration
     def self.integer_index
       type_length
+    end
+
+    def initialize(value , next_i = nil)
+      super()
+      @next_integer = next_i
+      set_internal_word(Integer.integer_index, value)
+    end
+
+    def value
+      get_internal_word(Integer.integer_index)
     end
 
     def to_s

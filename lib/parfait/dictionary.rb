@@ -3,10 +3,13 @@
 module Parfait
   class Dictionary < Object
 
-    attr_reader :type, :i_keys , :i_values
+    attr_reader :i_keys , :i_values
 
     def self.type_length
       3
+    end
+    def self.memory_size
+      8
     end
 
     # only empty initialization for now

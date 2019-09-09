@@ -36,7 +36,7 @@ module Parfait
 
   class Type < Object
 
-    attr_reader :type, :object_class , :names , :types , :methods
+    attr_reader :object_class , :names , :types , :methods
 
     def self.type_length
       5

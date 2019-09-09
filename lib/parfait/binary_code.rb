@@ -7,7 +7,7 @@ module Parfait
   # and as the last code of each link is a jump to the next link.
   #
   class BinaryCode < Data32
-    attr_reader :type, :next_code
+    attr_reader :next_code
 
     def self.type_length
       2 #type + next (could get from space, maybe later)

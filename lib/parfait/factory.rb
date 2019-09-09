@@ -14,7 +14,13 @@
 
 module Parfait
   class Factory < Object
-    attr_reader :type , :for_type , :next_object , :reserve , :attribute_name , :page_size
+    attr_reader :for_type , :next_object , :reserve , :attribute_name , :page_size
+    def self.type_length
+      6
+    end
+    def self.memory_size
+      8
+    end
 
     # initialize for a given type (for_type). The attribute that is used to create the
     # list is the first that starts with next_ . "next" itself would have been nice and general

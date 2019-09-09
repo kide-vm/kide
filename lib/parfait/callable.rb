@@ -12,11 +12,14 @@ module Parfait
   #
   class Callable < Object
 
-    attr_reader :type, :self_type , :arguments_type , :frame_type , :binary
+    attr_reader :self_type , :arguments_type , :frame_type , :binary
     attr_reader :blocks , :name
     attr_reader :next_callable
 
     def self.type_length
+      8
+    end
+    def self.memory_size
       8
     end
 

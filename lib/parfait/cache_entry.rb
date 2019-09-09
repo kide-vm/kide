@@ -8,9 +8,10 @@
 module Parfait
   class CacheEntry < Object
 
-    attr_reader :type, :cached_type, :cached_method
+    attr_reader :cached_type, :cached_method
 
     def initialize(type , method)
+      super()
       @cached_type = type
       @cached_method = method
     end

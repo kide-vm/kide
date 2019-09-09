@@ -23,8 +23,6 @@
 module Parfait
   class NamedList < Object
 
-    attr_reader :type
-
     def self.memory_size
       16
     end

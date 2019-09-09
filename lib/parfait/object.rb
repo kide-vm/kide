@@ -15,6 +15,14 @@
 module Parfait
   class Object
     attr_reader :type
+    def self.type_length
+      1
+    end
+    def self.memory_size
+      4
+    end
+
+
     def type=(t)
       set_type( t )
     end

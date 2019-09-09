@@ -12,7 +12,7 @@ module Parfait
   #
   class VoolMethod < Object
 
-    attr_reader :type, :name , :args_type , :frame_type
+    attr_reader :name , :args_type , :frame_type
     attr_reader :source
 
     def initialize(name , args_type , frame_type , source )

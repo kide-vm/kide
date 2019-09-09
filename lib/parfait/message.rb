@@ -11,22 +11,15 @@
 module Parfait
   class Message < Object
 
-    # :next_message => :Message, :receiver => :Object, :frame => :NamedList ,
-    # :return_address => :Integer, :return_value => :Integer,
-    # :caller => :Message , :name => :Word , :arguments => :NamedList
-
-    attr_reader  :type, :next_message
-    attr_reader  :receiver
+    attr_reader  :next_message,  :receiver
     attr_reader  :return_address, :return_value
     attr_reader  :caller , :method
-    attr_reader  :arguments_given
-    attr_reader  :arg1 , :arg2, :arg3, :arg4, :arg5, :arg6
-    attr_reader  :locals_used
-    attr_reader  :local1 , :local2, :local3, :local4, :local5, :local6 ,:local7,:local8
-    attr_reader  :local9 ,:local10, :local11 , :local12, :local13, :local14
+    attr_reader  :arguments_given, :arg1 , :arg2, :arg3, :arg4, :arg5, :arg6
+    attr_reader  :locals_used, :local1 , :local2, :local3, :local4, :local5, :local6 ,:local7
+    attr_reader  :local8 , :local9 ,:local10, :local11 , :local12, :local13, :local14
 
     def self.type_length
-      31
+      30
     end
     def self.memory_size
       32

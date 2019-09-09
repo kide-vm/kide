@@ -7,7 +7,7 @@
 
 module Parfait
   class List < Data16
-    attr_reader :type, :indexed_length , :next_list
+    attr_reader :indexed_length , :next_list
 
     def self.type_length
       3    # 0 type , 1 length , 2 - next_list
