@@ -14,16 +14,16 @@ module Parfait
 
     def ==(other)
       return false unless other.is_a?(CallableMethod)
-      return false if name != other.name
+      return false if @name != other.name
       super
     end
 
     def rxf_reference_name
-      "Method: " + name.to_s
+      "Method: " + @name.to_s
     end
 
     def inspect
-      "#{self_type.object_class.name}:#{name}(#{arguments_type.inspect})"
+      "#{@self_type.object_class.name}:#{@name}(#{@arguments_type.inspect})"
     end
 
     def each_method( &block )
@@ -32,14 +32,14 @@ module Parfait
     end
 
     def create_block(args , frame)
-      block_name = "#{name}_block".to_sym #TODO with id, to distinguish
-      add_block( Block.new(block_name , self_type , args , frame))
+      block_name = "#{@name}_block".to_sym #TODO with id, to distinguish
+      add_block( Block.new(block_name , @self_type , args , frame))
     end
 
     def add_block(bl)
       was = blocks
       bl.set_next(was) if(was)
-      self.blocks = bl
+      @blocks = bl
     end
 
     def has_block(block)
@@ -47,7 +47,7 @@ module Parfait
       false
     end
     def each_block(&bl)
-      blo = blocks
+      blo = @blocks
       while( blo )
         yield(blo)
         blo = blo.next_callable

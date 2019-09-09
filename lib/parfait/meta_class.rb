@@ -20,7 +20,7 @@ module Parfait
   class MetaClass < Object
     include Behaviour
 
-    attr :type, :instance_type , :instance_methods , :clazz
+    attr_reader :type, :instance_type , :instance_methods , :clazz
 
     def self.type_length
       4
@@ -28,17 +28,17 @@ module Parfait
 
     def initialize( clazz )
       super()
-      self.clazz = clazz
-      self.instance_methods = List.new
+      @clazz = clazz
+      @instance_methods = List.new
       set_instance_type( clazz.get_type() )
     end
 
     def rxf_reference_name
-      clazz.name
+      @clazz.name
     end
 
     def inspect
-      "MetaClass(#{clazz.name})"
+      "MetaClass(#{@clazz.name})"
     end
 
     def add_method_for(name , type , frame , body )
@@ -49,23 +49,23 @@ module Parfait
 
     def add_method(method)
       raise "Must be untyped method #{method}" unless method.is_a? Parfait::VoolMethod
-      instance_methods.push(method)
+      @instance_methods.push(method)
     end
 
     def get_method(name)
-      instance_methods.find{|m| m.name == name }
+      @instance_methods.find{|m| m.name == name }
     end
 
     # adding an instance changes the instance_type to include that variable
     def add_instance_variable( name , type)
-      self.instance_type = instance_type.add_instance_variable( name , type )
+      @instance_type = @instance_type.add_instance_variable( name , type )
     end
 
     # setting the type generates all methods for this type
     # (or will do, once we store the methods code to do that)
     def set_instance_type( type )
-      raise "type must be type #{type}" unless type.is_a?(Type)
-      self.instance_type = type
+      raise "type must be type #{type.class}:#{type}" unless type.is_a?(Type)
+      @instance_type = type
     end
 
     # Nil name means no superclass, and so nil returned

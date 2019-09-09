@@ -18,8 +18,8 @@ module Parfait
   class Class < Object
     include Behaviour
 
-    attr :type, :instance_type , :name , :instance_methods
-    attr :super_class_name , :meta_class
+    attr_reader :type, :instance_type , :name , :instance_methods
+    attr_reader :super_class_name , :meta_class
 
     def self.type_length
       6
@@ -27,11 +27,11 @@ module Parfait
 
     def initialize( name , superclass , instance_type)
       super()
-      self.name = name
-      self.super_class_name = superclass
-      self.instance_methods = List.new
+      @name = name
+      @super_class_name = superclass
+      @instance_methods = List.new
       set_instance_type( instance_type )
-      self.meta_class = MetaClass.new( self )
+      @meta_class = MetaClass.new( self )
     end
 
     def rxf_reference_name
@@ -59,14 +59,14 @@ module Parfait
 
     # adding an instance changes the instance_type to include that variable
     def add_instance_variable( name , type)
-      self.instance_type = instance_type.add_instance_variable( name , type )
+      @instance_type = instance_type.add_instance_variable( name , type )
     end
 
     # setting the type generates all methods for this type
     # (or will do, once we store the methods code to do that)
     def set_instance_type( type )
       raise "type must be type #{type}" unless type.is_a?(Type)
-      self.instance_type = type
+      @instance_type = type
     end
 
     # return the super class, but raise exception if either the super class name

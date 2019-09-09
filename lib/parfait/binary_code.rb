@@ -7,7 +7,7 @@ module Parfait
   # and as the last code of each link is a jump to the next link.
   #
   class BinaryCode < Data32
-    attr :type, :next_code
+    attr_reader :type, :next_code
 
     def self.type_length
       2 #type + next (could get from space, maybe later)
@@ -27,11 +27,12 @@ module Parfait
 
     def initialize(total_size)
       super()
-      self.next_code = nil
+      @next_code = nil
       extend_to(total_size )
       (0 ... data_length).each{ |index| set_word(index , 0) }
       set_last(0)
     end
+
     def extend_to(total_size)
       return if total_size < data_length
       extend_one() unless next_code
@@ -39,7 +40,7 @@ module Parfait
     end
 
     def extend_one()
-      self.next_code = BinaryCode.new(1)
+      @next_code = BinaryCode.new(1)
       Risc::Position.get(self).trigger_inserted if Risc::Position.set?(self)
     end
 
@@ -107,9 +108,9 @@ module Parfait
       set_internal_word(word_index , char)
     end
     def total_byte_length(start = 0 )
-      start += self.byte_length
+      start += byte_length
       return start unless self.next_code
-      self.next_code.total_byte_length(start)
+      @next_code.total_byte_length(start)
     end
   end
 end

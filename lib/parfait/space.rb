@@ -30,16 +30,16 @@ module Parfait
 
   class Space < Object
 
-    attr  :type, :classes , :types , :factories
-    attr  :true_object , :false_object , :nil_object
+    attr_reader  :type, :classes , :types , :factories
+    attr_reader  :true_object , :false_object , :nil_object
 
     def initialize( classes , pages)
-      self.classes = classes
-      self.types = Dictionary.new
+      @classes = classes
+      @types = Dictionary.new
       classes.each do |name , cl|
         add_type(cl.instance_type)
       end
-      self.factories = Dictionary.new
+      @factories = Dictionary.new
       [:Integer , :ReturnAddress , :Message].each do |fact_name|
         for_type = classes[fact_name].instance_type
         page_size = pages[fact_name] || 1024
@@ -49,9 +49,9 @@ module Parfait
       end
       init_message_chain( factories[ :Message ].reserve  )
       init_message_chain( factories[ :Message ].next_object  )
-      self.true_object = Parfait::TrueClass.new
-      self.false_object = Parfait::FalseClass.new
-      self.nil_object = Parfait::NilClass.new
+      @true_object = Parfait::TrueClass.new
+      @false_object = Parfait::FalseClass.new
+      @nil_object = Parfait::NilClass.new
     end
 
     def self.type_length
@@ -65,7 +65,7 @@ module Parfait
       prev = nil
       while(message)
         message.initialize
-        message.caller = prev if prev
+        message._set_caller(prev) if prev
         prev = message
         message = message.next_message
       end
@@ -73,18 +73,18 @@ module Parfait
     # return the factory for the given type
     # or more exactly the type that has a class_name "name"
     def get_factory_for(name)
-      factories[name]
+      @factories[name]
     end
 
     # use the factory of given name to generate next_object
     # just a shortcut basically
     def get_next_for(name)
-      factories[name].get_next_object
+      @factories[name].get_next_object
     end
 
     # yield each type in the space
     def each_type
-      types.values.each do |type|
+      @types.values.each do |type|
         yield(type)
       end
     end
@@ -100,7 +100,7 @@ module Parfait
 
     # get a type by the type hash (the hash is what uniquely identifies the type)
     def get_type_for( hash )
-      types[hash]
+      @types[hash]
     end
 
     # all methods form all types
@@ -137,7 +137,7 @@ module Parfait
     # return nili if no such class. Use bang version if create should be implicit
     def get_class_by_name( name )
       raise "get_class_by_name #{name}.#{name.class}" unless name.is_a?(Symbol)
-      c = classes[name]
+      c = @classes[name]
       #puts "MISS, no class #{name} #{name.class}" unless c # " #{classes}"
       #puts "CLAZZ, #{name} #{c.get_type.get_length}" if c
       c
@@ -159,7 +159,7 @@ module Parfait
       raise "create_class #{superclass.class}" unless superclass.is_a? Symbol
       type = get_type_by_class_name(superclass)
       c = Class.new(name , superclass , type )
-      classes[name] = c
+      @classes[name] = c
     end
 
     def rxf_reference_name

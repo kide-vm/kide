@@ -36,7 +36,7 @@ module Parfait
 
   class Type < Object
 
-    attr :type, :object_class , :names , :types , :methods
+    attr_reader :type, :object_class , :names , :types , :methods
 
     def self.type_length
       5
@@ -57,18 +57,18 @@ module Parfait
     # this part of the init is seperate because at boot time we can not use normal new
     # new is overloaded to grab the type from space, and before boot, that is not set up
     def init_lists(hash)
-      self.methods = nil
-      self.names = List.new
-      self.types = List.new
+      @methods = nil
+      @names = List.new
+      @types = List.new
       raise "No type Type in #{hash}" unless hash[:type]
       private_add_instance_variable(:type , hash[:type]) #first
-      hash.each do |name , type|
-        private_add_instance_variable(name , type) unless name == :type
+      hash.keys.each do |name |
+        private_add_instance_variable(name , hash[name]) unless name == :type
       end
     end
 
     def class_name
-      object_class.name
+      @object_class.name
     end
 
     def to_s
@@ -87,7 +87,7 @@ module Parfait
 
     def method_names
       names = List.new
-      return names unless methods
+      return names unless @methods
       methods.each_method do |method|
         names.push method.name
       end
@@ -119,7 +119,7 @@ module Parfait
         remove_method(method.name)
       end
       method.set_next( methods )
-      self.methods = method
+      @methods = method
       #puts "#{self.name} add #{method.name}"
       method
     end
@@ -127,7 +127,7 @@ module Parfait
     def remove_method( method_name )
       raise "No such method #{method_name} in #{self.name}" unless methods
       if( methods.name == method_name)
-        self.methods = methods.next_callable
+        @methods = methods.next_callable
         return true
       end
       method = methods
@@ -190,7 +190,7 @@ module Parfait
 
     def set_object_class(oc)
       raise "object class should be a class, not #{oc.class}" unless oc.is_a?(Class)
-      self.object_class = oc
+      @object_class = oc
     end
 
     def instance_length

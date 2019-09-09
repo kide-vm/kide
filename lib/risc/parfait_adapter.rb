@@ -1,31 +1,43 @@
 require_relative "fake_memory"
 
-module Parfait
-  class Object
 
+module Parfait
+  class Object ; end
+  class DataObject < Object
     def self.allocate
       r = super
       r.instance_variable_set(:@memory , Risc::FakeMemory.new(r ,self.type_length , self.memory_size))
       r
     end
-
     # 0 -based index
     def get_internal_word(index)
-      @memory[index]
+      super(index) if index < self.class.type_length
+      @memory[ index ]
     end
 
     # 0 -based index
     def set_internal_word(index , value)
-      @memory[index] = value
-      value
+      return super(index,value) if index < self.class.type_length
+      @memory[ index ] = value
+    end
+  end
+
+  class Object
+
+    # 0 -based index
+    def get_internal_word(index)
+      return @type if index == Parfait::TYPE_INDEX
+      name = Parfait.name_for_index(self , index)
+      return nil unless name
+      instance_eval("@#{name}")
     end
 
-    def self.attr( *attributes )
-      attributes = [attributes] unless attributes.is_a?(Array)
-      attributes.each do |name|
-        define_getter(name)
-        define_setter(name)
-      end
+    # 0 -based index
+    def set_internal_word(index , value)
+      name = Parfait.name_for_index(self , index)
+      raise "no string #{name.class}" unless name.is_a?(Symbol)
+      instance_eval("@#{name}=value" )
+      value
     end
 
     def self.variable_index( name)
@@ -37,22 +49,6 @@ module Parfait
       i = type.keys.index(name)
       raise "no #{name} for #{clazz}:#{type.keys}" unless i
       i + 1
-    end
-
-    def self.define_getter(name)
-      index = variable_index(name)
-      define_method(name) do
-        #puts "GETTING #{name} for #{self.class.name} in #{object_id.to_s(16)}"
-        @memory._get(index)
-      end
-    end
-
-    def self.define_setter(name)
-      index = variable_index(name)
-      define_method("#{name}=".to_sym ) do |value|
-        #puts "SETTING #{name}= for #{self.class.name} in #{object_id.to_s(16)}"
-        @memory._set(index , value)
-      end
     end
 
     def self.cattr( *names )

@@ -7,7 +7,7 @@
 
 module Parfait
   class List < Data16
-    attr :type, :indexed_length , :next_list
+    attr_reader :type, :indexed_length , :next_list
 
     def self.type_length
       3    # 0 type , 1 length , 2 - next_list
@@ -18,20 +18,20 @@ module Parfait
 
     def initialize
       super
-      self.indexed_length = 0
+      @indexed_length = 0
     end
 
     def data_length
       self.class.data_length
     end
     def get_length
-      r = indexed_length
+      r = @indexed_length
       r.nil? ? 0 : r
     end
 
     def ensure_next
-      self.next_list = List.new unless next_list
-      self.next_list
+      @next_list = List.new unless @next_list
+      @next_list
     end
 
     # set the value at index.
@@ -43,7 +43,7 @@ module Parfait
       end
       if index >= data_length
         ensure_next
-        next_list.set( index - data_length , value)
+        @next_list.set( index - data_length , value)
       else
         set_internal_word( index + self.class.type_length, value)
       end
@@ -54,8 +54,8 @@ module Parfait
     def get( index )
       raise "Only positive indexes, #{index}" if index < 0
       if index >= data_length
-        return nil unless next_list
-        return next_list.get( index - data_length)
+        return nil unless @next_list
+        return @next_list.get( index - data_length)
       else
         ret = nil
         if(index < get_length)
@@ -273,7 +273,7 @@ module Parfait
     end
     private
     def internal_set_length( i )
-      self.indexed_length = i
+      @indexed_length = i
     end
   end
 

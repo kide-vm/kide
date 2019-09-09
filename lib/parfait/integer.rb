@@ -6,11 +6,11 @@
 module Parfait
   class Integer < Data4
 
-    attr :type, :next_integer
+    attr_reader :type, :next_integer
 
     def initialize(value , next_i = nil)
       super()
-      self.next_integer = next_i
+      @next_integer = next_i
       set_internal_word(Integer.integer_index, value)
     end
 
@@ -39,6 +39,9 @@ module Parfait
       set_internal_word(Integer.integer_index, value)
     end
 
+    def _set_next_integer(nekst)
+      @next_integer = nekst
+    end
     # :integer?, :odd?, :even?, :upto, :downto, :times, :succ, :next, :pred, :chr, :ord, :to_i, :to_int, :floor,
     # :ceil, :truncate, :round, :gcd, :lcm, :gcdlcm, :numerator, :denominator, :to_r, :rationalize,
     # :singleton_method_added, :coerce, :i, :+, :-, :fdiv, :div, :divmod, :%, :modulo, :remainder, :abs, :magnitude,

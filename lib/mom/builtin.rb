@@ -34,7 +34,7 @@ module Mom
         if(space_type.methods.nil?)
           @compilers << compiler_for( space_type   , Space , :main)
         end
-        return @compilers 
+        return @compilers
       end
       # TODO go through the virtual parfait layer and adjust function names
       #      to what they really are

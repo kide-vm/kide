@@ -181,4 +181,13 @@ module Parfait
       Word: {char_length: :Integer , next_word: :Word} ,
       }
   end
+  def self.name_for_index(object , index)
+    return :type if index == 0
+    clazz = object.class.name.split("::").last.to_sym
+    cl = self.type_names[clazz]
+    keys = cl.keys
+    keys[index - 1] # -1 because type is excluded in the lists (FIX)
+    # FIXME Now that we use instance variables in parfait, they should be parsed
+    # and the type_names generated automatically
+  end
 end

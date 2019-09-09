@@ -8,15 +8,15 @@
 module Parfait
   class CacheEntry < Object
 
-    attr :type, :cached_type, :cached_method
+    attr_reader :type, :cached_type, :cached_method
 
     def initialize(type , method)
-      self.cached_type = type
-      self.cached_method = method
+      @cached_type = type
+      @cached_method = method
     end
 
     def to_s
-      "CacheEntry" + "#{cached_method&.name}"
+      "CacheEntry" + "#{@cached_method&.name}"
     end
   end
 end
