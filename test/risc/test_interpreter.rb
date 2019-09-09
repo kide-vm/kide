@@ -91,5 +91,16 @@ module Risc
     def test_tick_15 #more than a binary code worth
       31.times {@interpreter.tick}
     end
+    class TestInterpreterDies < MiniTest::Test
+      include Ticker
+      def setup
+        @string_input = as_main("random.call")
+        super
+      end
+      def test_dies
+        # no method does syscall :dies that raises
+        assert_raises {44.times {@interpreter.tick}}
+      end
+    end
   end
 end

@@ -139,10 +139,12 @@ module Arm
     end
 
     def translate_Syscall( code )
-      call_codes = { :putstring => 4 , :exit => 1    }
-      int_code = call_codes[code.name]
-      raise "Not implemented syscall, #{code.name}" unless int_code
-      send( code.name , int_code )
+      call_codes = { putstring: 4 , exit: 1 }
+      name = code.name
+      name = :exit if name == :died
+      int_code = call_codes[name]
+      raise "Not implemented syscall, #{name}" unless int_code
+      send( name , int_code )
     end
 
     def putstring( int_code )

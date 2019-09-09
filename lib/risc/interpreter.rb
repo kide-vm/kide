@@ -245,6 +245,8 @@ module Risc
       when :exit
         set_instruction(nil)
         return false
+      when :died
+        raise "Method not found #{@registers[:r0]}"
       else
         raise "un-implemented syscall #{name}"
       end

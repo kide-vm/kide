@@ -27,7 +27,7 @@ module Risc
     def test_sys
       produced = produce_body
       assert_equal Syscall , produced.next(29).class
-      assert_equal :exit , produced.next(29).name
+      assert_equal :died , produced.next(29).name
     end
     def test_load_address
       produced = produce_body
