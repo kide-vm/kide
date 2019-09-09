@@ -3,6 +3,7 @@
   # - they have fixed value
   # - they are immutable fo rthe most part (or to the user)
   #
+module Parfait
   class Integer < Data4
 
     attr :type, :next_integer
@@ -90,3 +91,4 @@
       1    # 0 type
     end
   end
+end

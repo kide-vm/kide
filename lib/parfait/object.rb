@@ -12,7 +12,7 @@
 # The Type also defines the class of the object
 # The Type is **always** the first entry (index 0) in an object
 
-
+module Parfait
   class Object
     attr :type
 
@@ -99,3 +99,4 @@
     end
 
   end
+end

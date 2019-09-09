@@ -1,16 +1,18 @@
-  # A factory has the one job of handing out new instances
-  #
-  # A factory is for a specific type (currently, may change by size at some point)
-  #
-  # get_next_object is the main entry point, all other functions help to get more
-  # memory and objects as needed
-  #
-  # A factory keeps a reserve, and in case the freelist is empty, switches that in _immediately
-  # This is especially useful for messages, that can then be used even they run out.
-  #
-  # The idea (especially for messages) is to call out from the MessageSetup to the
-  # factory when the next (not current) is nil.
-  # This is btw just as easy a check, as the next needs to be gotten to swap the list.
+# A factory has the one job of handing out new instances
+#
+# A factory is for a specific type (currently, may change by size at some point)
+#
+# get_next_object is the main entry point, all other functions help to get more
+# memory and objects as needed
+#
+# A factory keeps a reserve, and in case the freelist is empty, switches that in _immediately
+# This is especially useful for messages, that can then be used even they run out.
+#
+# The idea (especially for messages) is to call out from the MessageSetup to the
+# factory when the next (not current) is nil.
+# This is btw just as easy a check, as the next needs to be gotten to swap the list.
+
+module Parfait
   class Factory < Object
     attr :type , :for_type , :next_object , :reserve , :attribute_name , :page_size
 
@@ -113,3 +115,4 @@
       obj
     end
   end
+end

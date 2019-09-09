@@ -19,6 +19,7 @@
 # DataObjects still have a type, and so can have objects before the data starts
 #
 # A marker class
+module Parfait
   class DataObject < Object
 
     def self.type_length
@@ -52,3 +53,4 @@
       32
     end
   end
+end
