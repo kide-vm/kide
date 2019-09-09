@@ -94,13 +94,5 @@ module Parfait
       get_instance_variables.to_a.collect{ |n| n.to_s.to_sym }
     end
 
-    # name comes in as a ruby var name
-    def instance_variable_ged( name )
-      #TODO the [] shoud be a range, but currenly that is not processed in RubyCompiler
-      var = get_instance_variable name.to_s[1 , name.to_s.length - 1].to_sym
-      #puts "getting #{name}  #{var}"
-      var
-    end
-
   end
 end

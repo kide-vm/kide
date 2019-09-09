@@ -68,7 +68,8 @@ module Parfait
     end
     def test_one_set1
       assert_equal 2 , @list.set(0,2)
-      assert_equal 1 , @list.get_internal_word(1)
+#      assert_equal 1 , @list.get_internal_word(1)
+      assert_equal 1 , @list.get_length
       assert_equal 2 , @list.get_internal_word(List.type_length)
     end
     def test_set1_len

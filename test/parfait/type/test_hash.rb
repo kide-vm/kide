@@ -5,7 +5,7 @@ module Parfait
 
     def setup
       super
-      @types = @space.instance_variable_ged("@types")
+      @types = @space.types
       @first = @types.values.first
     end
 
