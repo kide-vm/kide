@@ -8,7 +8,7 @@
 
 class ParfaitTest
   def setup
-    @space = Parfait.object_space
+    @space = Object.object_space # this mapping wil have to be added to compiler
   end
   def assert(arg)
     return unless(arg)
