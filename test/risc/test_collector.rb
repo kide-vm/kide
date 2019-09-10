@@ -1,10 +1,14 @@
 require_relative "../helper"
 
 module Risc
-  class TestCollector < MiniTest::Test
-
-    def setup
-      Parfait.boot!(Parfait.default_test_options)
+  module CollectT
+    def boot( num )
+      opt = Parfait.default_test_options
+      if(num)
+        opt[:Integer] = 400
+        opt[:Message] = 400
+      end
+      Parfait.boot!(opt)
       Mom.boot!
       Risc.boot!
       @linker = Mom::MomCollection.new.to_risc.translate(:arm)
@@ -12,7 +16,29 @@ module Risc
 
     def test_simple_collect
       objects = Collector.collect_space(@linker)
-      assert_equal 1564 ,  objects.length , objects.length.to_s
+      assert_equal len , objects.length , objects.length.to_s
+    end
+
+    def test_integer_positions
+      objects = Collector.collect_space(@linker)
+      int = Parfait.object_space.get_next_for(:Integer)
+      count = 0
+      while(int)
+        count += 1
+        assert Position.set?(int) , "INT #{int.object_id.to_s(16)} , count #{count}"
+        int = int.next_integer
+      end
+    end
+  end
+  class TestCollector < MiniTest::Test
+    include CollectT
+
+    def setup
+      boot(nil)
+    end
+
+    def len
+      1564
     end
 
     def test_collect_all_types
@@ -35,43 +61,16 @@ module Risc
         assert !position.valid?
       end
     end
-    def test_integer_positions
-      objects = Collector.collect_space(@linker)
-      int = Parfait.object_space.get_next_for(:Integer)
-      count = 0
-      while(int)
-        count += 1
-        assert Position.set?(int) , "INT #{int.object_id.to_s(16)} , count #{count}"
-        int = int.next_integer
-      end
-    end
   end
   class TestBigCollector < MiniTest::Test
+    include CollectT
 
     def setup
-      opt = Parfait.default_test_options
-      opt[:factory] = 400
-      Parfait.boot!(opt)
-      Mom.boot!
-      Risc.boot!
-      @linker = Mom::MomCollection.new.to_risc.translate(:arm)
+      boot(400)
     end
 
-    def test_simple_collect
-      objects = Collector.collect_space(@linker)
-      assert_equal 1564, objects.length , objects.length.to_s
+    def len
+      3044
     end
-
-    def test_integer_positions
-      objects = Collector.collect_space(@linker)
-      int = Parfait.object_space.get_next_for(:Integer)
-      count = 0
-      while(int)
-        count += 1
-        assert Position.set?(int) , "INT #{int.object_id.to_s(16)} , count #{count}"
-        int = int.next_integer
-      end
-    end
-
   end
 end

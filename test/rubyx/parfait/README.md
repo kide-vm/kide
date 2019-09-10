@@ -20,6 +20,6 @@ the RubyXCompiler parfait load list.
 The next step is to test the compiled parfait. Since we have tests, the best way would
 be to parse and execute the tests. This would involve creating a mini MiniTest and some
 fancy footwork in the compilation. But it should be possible to create one executable /
-interpreted test for each of the exising Parfait test.
+interpreted test for each of the existing Parfait test.
 
 Alas, this is for another day.
