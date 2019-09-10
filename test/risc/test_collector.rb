@@ -38,8 +38,10 @@ module Risc
     def test_integer_positions
       objects = Collector.collect_space(@linker)
       int = Parfait.object_space.get_next_for(:Integer)
+      count = 0
       while(int)
-        assert Position.set?(int) , "INt #{int.object_id}"
+        count += 1
+        assert Position.set?(int) , "INT #{int.object_id.to_s(16)} , count #{count}"
         int = int.next_integer
       end
     end
@@ -66,7 +68,7 @@ module Risc
       count = 0
       while(int)
         count += 1
-        assert Position.set?(int) , "INT #{int.object_id} , count #{count}"
+        assert Position.set?(int) , "INT #{int.object_id.to_s(16)} , count #{count}"
         int = int.next_integer
       end
     end

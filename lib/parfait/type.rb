@@ -36,7 +36,7 @@ module Parfait
 
   class Type < Object
 
-    attr :type, :object_class , :names , :types , :methods
+    attr_reader :object_class , :names , :types , :methods
 
     def self.type_length
       5
@@ -57,18 +57,18 @@ module Parfait
     # this part of the init is seperate because at boot time we can not use normal new
     # new is overloaded to grab the type from space, and before boot, that is not set up
     def init_lists(hash)
-      self.methods = nil
-      self.names = List.new
-      self.types = List.new
+      @methods = nil
+      @names = List.new
+      @types = List.new
       raise "No type Type in #{hash}" unless hash[:type]
       private_add_instance_variable(:type , hash[:type]) #first
-      hash.each do |name , type|
-        private_add_instance_variable(name , type) unless name == :type
+      hash.keys.each do |name |
+        private_add_instance_variable(name , hash[name]) unless name == :type
       end
     end
 
     def class_name
-      object_class.name
+      @object_class.name
     end
 
     def to_s
@@ -87,8 +87,8 @@ module Parfait
 
     def method_names
       names = List.new
-      return names unless methods
-      methods.each_method do |method|
+      return names unless @methods
+      @methods.each_method do |method|
         names.push method.name
       end
       names
@@ -118,19 +118,19 @@ module Parfait
       if get_method( method.name )
         remove_method(method.name)
       end
-      method.set_next( methods )
-      self.methods = method
+      method.set_next( @methods )
+      @methods = method
       #puts "#{self.name} add #{method.name}"
       method
     end
 
     def remove_method( method_name )
-      raise "No such method #{method_name} in #{self.name}" unless methods
-      if( methods.name == method_name)
-        self.methods = methods.next_callable
+      raise "No such method #{method_name} in #{self.name}" unless @methods
+      if( @methods.name == method_name)
+        @methods = @methods.next_callable
         return true
       end
-      method = methods
+      method = @methods
       while(method && method.next_callable)
         if( method.next_callable.name == method_name)
           method.set_next( method.next_callable.next_callable )
@@ -144,8 +144,8 @@ module Parfait
 
     def get_method( fname )
       raise "get_method #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
-      return nil unless methods
-      methods.each_method do |m|
+      return nil unless @methods
+      @methods.each_method do |m|
         return m if(m.name == fname )
       end
       nil
@@ -167,9 +167,9 @@ module Parfait
     end
 
     def methods_length
-      return 0 unless methods
+      return 0 unless @methods
       len = 0
-      methods.each_method { len += 1}
+      @methods.each_method { len += 1}
       return len
     end
 
@@ -190,33 +190,33 @@ module Parfait
 
     def set_object_class(oc)
       raise "object class should be a class, not #{oc.class}" unless oc.is_a?(Class)
-      self.object_class = oc
+      @object_class = oc
     end
 
     def instance_length
-      names.get_length()
+      @names.get_length()
     end
 
     # index of the variable when using get_internal_word
     # (get_internal_word is 0 based and 0 is always the type)
     def variable_index( name )
-      has = names.index_of(name)
+      has = @names.index_of(name)
       return nil unless has
       raise "internal error #{name}:#{has}" if has < 0
       has
     end
 
     def get_length()
-      names.get_length()
+      @names.get_length()
     end
 
     def name_at( index )
-      raise "No names #{index}" unless names
-      names.get(index)
+      raise "No names #{index}" unless @names
+      @names.get(index)
     end
 
     def type_at( index )
-      types.get(index)
+      @types.get(index)
     end
 
     def type_for( name )
@@ -226,11 +226,11 @@ module Parfait
     end
 
     def inspect
-      "Type[#{names.inspect}]"
+      "Type[#{@names.inspect}]"
     end
 
     def rxf_reference_name
-      "#{object_class.name}_Type"
+      "#{@object_class.name}_Type"
     end
     alias :name :rxf_reference_name
 
@@ -243,9 +243,10 @@ module Parfait
     end
 
     def each_method(&block)
-      return unless methods
-      methods.each_method(&block)
+      return unless @methods
+      @methods.each_method(&block)
     end
+
     def to_hash
       hash = {}
       each do |name , type|
@@ -284,8 +285,8 @@ module Parfait
     def private_add_instance_variable( name , type)
       raise "Name shouldn't be nil" unless name
       raise "Value Type shouldn't be nil" unless type
-      names.push(name)
-      types.push(type)
+      @names.push(name)
+      @types.push(type)
     end
 
   end

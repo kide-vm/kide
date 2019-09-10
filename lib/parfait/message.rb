@@ -11,22 +11,15 @@
 module Parfait
   class Message < Object
 
-    # :next_message => :Message, :receiver => :Object, :frame => :NamedList ,
-    # :return_address => :Integer, :return_value => :Integer,
-    # :caller => :Message , :name => :Word , :arguments => :NamedList
-
-    attr  :type, :next_message
-    attr  :receiver
-    attr  :return_address, :return_value
-    attr  :caller , :method
-    attr  :arguments_given
-    attr  :arg1 , :arg2, :arg3, :arg4, :arg5, :arg6
-    attr  :locals_used
-    attr  :local1 , :local2, :local3, :local4, :local5, :local6 ,:local7,:local8
-    attr  :local9 ,:local10, :local11 , :local12, :local13, :local14
+    attr_reader  :next_message,  :receiver
+    attr_reader  :return_address, :return_value
+    attr_reader  :caller , :method
+    attr_reader  :arguments_given, :arg1 , :arg2, :arg3, :arg4, :arg5, :arg6
+    attr_reader  :locals_used, :local1 , :local2, :local3, :local4, :local5, :local6 ,:local7
+    attr_reader  :local8 , :local9 ,:local10, :local11 , :local12, :local13, :local14
 
     def self.type_length
-      31
+      30
     end
     def self.memory_size
       32
@@ -40,25 +33,38 @@ module Parfait
 
     def initialize(  )
       super()
-      self.locals_used = Parfait::Integer.new(0)
-      self.arguments_given = Parfait::Integer.new(0)
+      @locals_used = Parfait::Integer.new(0)
+      @arguments_given = Parfait::Integer.new(0)
     end
     public :initialize
 
     def set_receiver(rec)
-      self.receiver = rec
+      @receiver = rec
     end
 
     def set_caller(caller)
-      caller = caller
+      @caller = caller
     end
 
     def get_type_for(name)
-      index = type.get_index(name)
+      index = @type.get_index(name)
       get_at(index)
     end
+
+    def method_name
+      return "" unless @method
+      return "" unless @method == NilClass
+      @method.name
+    end
     def to_s
-      "Message:#{method&.name}(#{arguments_given})"
+      "Message:#{method_name}(#{@arguments_given})"
+    end
+
+    def _set_next_message(nekst)
+      @next_message = nekst
+    end
+    def _set_caller(prev)
+      @caller = prev
     end
   end
 end

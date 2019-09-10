@@ -14,7 +14,18 @@
 
 module Parfait
   class Object
-    attr :type
+    attr_reader :type
+    def self.type_length
+      1
+    end
+    def self.memory_size
+      4
+    end
+
+
+    def type=(t)
+      set_type( t )
+    end
 
     def == other
       self.object_id == other.object_id
@@ -34,38 +45,39 @@ module Parfait
     # private
     def set_type(typ)
       raise "not type" + typ.class.to_s + "in " + object_id.to_s(16) unless typ.is_a?(Type)
-      self.type = typ
+      @type = typ
     end
 
     # so we can keep the raise in get_type
     def has_type?
-      ! type.nil?
+      ! @type.nil?
     end
 
     def get_type()
       raise "No type " + self.object_id.to_s(16) + ":" + self.class.name unless has_type?
-      type
+      @type
     end
 
     def get_instance_variables
-      type.names
+      @type.names
     end
 
     def get_instance_variable( name )
       index = instance_variable_defined(name)
-      #puts "getting #{name} at #{index}"
+      #raise "at :#{name}:" if name.to_s[0] == "@"
       return nil if index == nil
       return get_internal_word(index)
     end
 
     def set_instance_variable( name , value )
       index = instance_variable_defined(name)
+      #puts "setting #{name} at #{index}"
       return nil if index == nil
       return set_internal_word(index , value)
     end
 
     def instance_variable_defined( name )
-      type.variable_index(name)
+      @type.variable_index(name)
     end
 
     # objects only come in lengths of multiple of 8 words / 32 bytes
@@ -81,21 +93,13 @@ module Parfait
     end
 
     def padded_length
-      Object.padded_words( type.instance_length )
+      Object.padded_words( @type.instance_length )
     end
 
     # parfait versions are deliberately called different, so we "relay"
     # have to put the "" on the names for rfx to take them off again
     def instance_variables
       get_instance_variables.to_a.collect{ |n| n.to_s.to_sym }
-    end
-
-    # name comes in as a ruby var name
-    def instance_variable_ged( name )
-      #TODO the [] shoud be a range, but currenly that is not processed in RubyCompiler
-      var = get_instance_variable name.to_s[1 , name.to_s.length - 1].to_sym
-      #puts "getting #{name}  #{var}"
-      var
     end
 
   end

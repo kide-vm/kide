@@ -39,11 +39,6 @@ module Risc
       produced = produce_body
       assert_equal Parfait::NilClass , produced.next(5).constant.class
     end
-    def est_nil_check
-      produced = produce_body
-      assert_equal Label , produced.next(4).label.class
-      assert_equal produced.next(12) , produced.next(4).label
-    end
     def test_true_label
       produced = produce_body
       assert produced.next(8).name.start_with?("true_label")

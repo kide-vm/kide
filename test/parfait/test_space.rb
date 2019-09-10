@@ -46,7 +46,7 @@ module Parfait
       assert_equal classes.length , @space.classes.length , @space.classes.keys.inspect
     end
     def test_types
-      assert  @space.instance_variable_ged("@types").is_a? Parfait::Dictionary
+      assert  @space.types.is_a? Parfait::Dictionary
     end
     def test_types_attr
       assert @space.types.is_a? Parfait::Dictionary
@@ -57,7 +57,7 @@ module Parfait
       end
     end
     def test_types_hashes
-      types = @space.instance_variable_ged("@types")
+      types = @space.types
       types.each do |has , type|
         assert has.is_a?(::Integer) , has.inspect
       end

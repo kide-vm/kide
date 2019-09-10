@@ -19,7 +19,7 @@ module Parfait
       assert_nil  @mess.method
     end
     def test_message_next_set
-      @mess.next_message = :next_message
+      @mess._set_next_message :next_message
       assert_equal :next_message , @mess.next_message
     end
     def test_message_type_set
@@ -27,7 +27,7 @@ module Parfait
       assert_equal @type , @mess.get_type
     end
     def test_attribute_index
-      @mess.next_message = :message
+      @mess._set_next_message  :message
       assert_equal Parfait::Type , @mess.get_type.class
     end
 

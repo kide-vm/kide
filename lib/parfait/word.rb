@@ -13,7 +13,7 @@ module Parfait
   # Object length is measured in non-type cells though
 
   class Word < Data8
-    attr :type, :char_length
+    attr_reader :char_length
 
     def self.type_length
       2    # 0 type , 1 char_length
@@ -26,7 +26,7 @@ module Parfait
     # Risc provides methods to create Parfait objects from ruby
     def initialize( len )
       super()
-      self.char_length = 0
+      @char_length = 0
       raise "Must init with int, not #{len.class}" unless len.kind_of? ::Integer
       raise "Must init with positive, not #{len}" if len < 0
       fill_to( len , 32 ) unless len == 0 #32 being ascii space
@@ -36,10 +36,10 @@ module Parfait
 
     # return a copy of self
     def copy
-      cop = Word.new( self.length )
+      cop = Word.new( @char_length )
       index = 0
-      while( index < self.length )
-        cop.set_char(index , self.get_char(index))
+      while( index < @char_length )
+        cop.set_char(index , get_char(index))
         index = index + 1
       end
       cop
@@ -47,8 +47,7 @@ module Parfait
 
     # return the number of characters
     def length()
-      obj_len = char_length
-      return obj_len
+      @char_length
     end
 
     # make every char equal the given one
@@ -57,7 +56,7 @@ module Parfait
     end
 
     def fill_from_with( from , char )
-      len = self.length()
+      len = @char_length
       return if from < 0
       while( from < len)
         set_char( from , char)
@@ -68,16 +67,16 @@ module Parfait
 
     # true if no characters
     def empty?
-      return self.length == 0
+      return @char_length == 0
     end
 
     # pad the string with the given character to the given length
     #
     def fill_to(len , fill_char)
       return if len <= 0
-      old = char_length
+      old = @char_length
       return if old >= len
-      self.char_length = len
+      @char_length = len
       check_length
       fill_from_with( old  , fill_char )
     end
@@ -170,7 +169,7 @@ module Parfait
       string = ""
       index = 0
       #puts "Length = #{char_length}"
-      while( index < char_length)
+      while( index < @char_length)
         char = get_char(index)
         string += char ? char.chr : "*"
         index = index + 1
@@ -184,12 +183,12 @@ module Parfait
     end
 
     def padded_length
-      Object.padded( 4 * get_type().instance_length + char_length  )
+      Object.padded( 4 * get_type().instance_length + @char_length  )
     end
 
     private
     def check_length
-      raise "Length out of bounds #{char_length}" if char_length > 1000
+      raise "Length out of bounds #{char_length}" if @char_length > 1000
     end
   end
 

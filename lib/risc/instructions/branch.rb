@@ -43,6 +43,10 @@ module Risc
       @register = register
     end
     attr_reader :register
+
+    def to_s
+      class_source( register.to_s)
+    end
   end
 
   # A Dynamic yield is very much like a DynamicJump, especially in it's idea

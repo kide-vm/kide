@@ -3,10 +3,13 @@
 module Parfait
   class Dictionary < Object
 
-    attr :type, :i_keys , :i_values
+    attr_reader :i_keys , :i_values
 
     def self.type_length
       3
+    end
+    def self.memory_size
+      8
     end
 
     # only empty initialization for now
@@ -14,30 +17,30 @@ module Parfait
     # internally we store keys and values in lists, which means this does **not** scale well
     def initialize
       super()
-      self.i_keys = List.new()
-      self.i_values = List.new()
+      @i_keys = List.new()
+      @i_values = List.new()
     end
 
     def keys
-      i_keys.dup
+      @i_keys.dup
     end
 
     def values
-      i_values.dup
+      @i_values.dup
     end
 
     # are there any key/value items in the list
     def empty?
-      i_keys.empty?
+      @i_keys.empty?
     end
 
     # How many key/value pairs there are
     def length()
-      return i_keys.get_length()
+      return @i_keys.get_length()
     end
 
     def next_value(val)
-      return i_values.next_value(val)
+      return @i_values.next_value(val)
     end
 
     # get a value fot the given key
@@ -46,7 +49,7 @@ module Parfait
     def get(key)
       index = key_index(key)
       if( index )
-        i_values.get(index)
+        @i_values.get(index)
       else
         nil
       end
@@ -59,17 +62,17 @@ module Parfait
 
     # private method
     def key_index(key)
-      i_keys.index_of(key)
+      @i_keys.index_of(key)
     end
 
     # set key with value, returns value
     def set(key , value)
       index = key_index(key)
       if( index )
-        i_values.set(index , value)
+        @i_values.set(index , value)
       else
-        i_keys.push(key)
-        i_values.push(value)
+        @i_keys.push(key)
+        @i_values.push(value)
       end
       value
     end
@@ -82,9 +85,9 @@ module Parfait
     # yield to each key value pair
     def each
       index = 0
-      while index < i_keys.get_length
-        key = i_keys.get(index)
-        value = i_values.get(index)
+      while index < @i_keys.get_length
+        key = @i_keys.get(index)
+        value = @i_values.get(index)
         yield key , value
         index = index + 1
       end

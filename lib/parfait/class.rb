@@ -18,20 +18,23 @@ module Parfait
   class Class < Object
     include Behaviour
 
-    attr :type, :instance_type , :name , :instance_methods
-    attr :super_class_name , :meta_class
+    attr_reader :instance_type , :name , :instance_methods
+    attr_reader :super_class_name , :meta_class
 
     def self.type_length
       6
     end
+    def self.memory_size
+      8
+    end
 
     def initialize( name , superclass , instance_type)
       super()
-      self.name = name
-      self.super_class_name = superclass
-      self.instance_methods = List.new
+      @name = name
+      @super_class_name = superclass
+      @instance_methods = List.new
       set_instance_type( instance_type )
-      self.meta_class = MetaClass.new( self )
+      @meta_class = MetaClass.new( self )
     end
 
     def rxf_reference_name
@@ -50,32 +53,32 @@ module Parfait
 
     def add_method(method)
       raise "Must be untyped method #{method}" unless method.is_a? Parfait::VoolMethod
-      instance_methods.push(method)
+      @instance_methods.push(method)
     end
 
     def get_method(name)
-      instance_methods.find{|m| m.name == name }
+      @instance_methods.find{|m| m.name == name }
     end
 
     # adding an instance changes the instance_type to include that variable
     def add_instance_variable( name , type)
-      self.instance_type = instance_type.add_instance_variable( name , type )
+      @instance_type = @instance_type.add_instance_variable( name , type )
     end
 
     # setting the type generates all methods for this type
     # (or will do, once we store the methods code to do that)
     def set_instance_type( type )
       raise "type must be type #{type}" unless type.is_a?(Type)
-      self.instance_type = type
+      @instance_type = type
     end
 
     # return the super class, but raise exception if either the super class name
     # or the super classs is nil.
     # Use only for non Object base class
     def super_class!
-      raise "No super_class for class #{name}" unless super_class_name
+      raise "No super_class for class #{@name}" unless @super_class_name
       s = super_class
-      raise "superclass not found for class #{name} (#{super_class_name})" unless s
+      raise "superclass not found for class #{@name} (#{@super_class_name})" unless s
       s
     end
 
@@ -83,8 +86,8 @@ module Parfait
     # we only store the name, and so have to resolve.
     # Nil name means no superclass, and so nil is a valid return value
     def super_class
-      return nil unless super_class_name
-      Parfait.object_space.get_class_by_name(super_class_name)
+      return nil unless @super_class_name
+      Parfait.object_space.get_class_by_name(@super_class_name)
     end
 
     # ruby 2.1 list (just for reference, keep at bottom)

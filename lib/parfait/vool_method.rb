@@ -12,13 +12,13 @@ module Parfait
   #
   class VoolMethod < Object
 
-    attr :type, :name , :args_type , :frame_type
+    attr_reader :name , :args_type , :frame_type
     attr_reader :source
 
     def initialize(name , args_type , frame_type , source )
-      self.name = name
-      self.args_type = args_type
-      self.frame_type = frame_type
+      @name = name
+      @args_type = args_type
+      @frame_type = frame_type
       @source = source
       raise "Name must be symbol" unless name.is_a?(Symbol)
       raise "args_type must be type" unless args_type.is_a?(Parfait::Type)
@@ -27,13 +27,13 @@ module Parfait
       raise "Empty bod" if(@source.is_a?(Vool::Statements) and @source.empty?)
     end
 
-    def create_callable_method( type )
+    def create_callable_method_for( type )
       raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
-      type.create_method( name , args_type , frame_type)
+      type.create_method( @name , @args_type , @frame_type)
     end
 
     def compiler_for(self_type)
-      callable_method = create_callable_method(self_type)
+      callable_method = create_callable_method_for(self_type)
       compiler = Mom::MethodCompiler.new( callable_method )
       head = @source.to_mom( compiler )
       compiler.add_code(head)

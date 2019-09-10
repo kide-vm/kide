@@ -14,15 +14,21 @@
 
 module Parfait
   class Factory < Object
-    attr :type , :for_type , :next_object , :reserve , :attribute_name , :page_size
+    attr_reader :for_type , :next_object , :reserve , :attribute_name , :page_size
+    def self.type_length
+      6
+    end
+    def self.memory_size
+      8
+    end
 
     # initialize for a given type (for_type). The attribute that is used to create the
     # list is the first that starts with next_ . "next" itself would have been nice and general
     # but is a keyword, so no go.
     def initialize(type , page)
-      self.for_type = type
-      self.attribute_name = type.names.find {|name| name.to_s.start_with?("next")}
-      self.page_size = page
+      @for_type = type
+      @attribute_name = type.names.find {|name| name.to_s.start_with?("next")}
+      @page_size = page
       raise "No next found for #{type.class_name}" unless attribute_name
     end
 
@@ -32,7 +38,7 @@ module Parfait
     # used, as it get's called from risc (or will)
     def get_next_object
       unless( next_object )
-        self.next_object = reserve
+        @next_object = reserve
         get_more
       end
       get_head
@@ -41,7 +47,7 @@ module Parfait
     # this gets the head of the freelist, swaps it out agains the next and returns it
     def get_head
       nekst = next_object
-      self.next_object = get_next_for(nekst)
+      @next_object = get_next_for(nekst)
       return nekst
     end
 
@@ -49,15 +55,15 @@ module Parfait
     # and rebuilt the reserve (get_next already instantiates the reserve)
     #
     def get_more
-      self.reserve = get_chain
-      last_link = self.reserve
-      count = self.page_size / 100
+      @reserve = get_chain
+      last_link = @reserve
+      count = @page_size / 100
       count = 15 if count < 15
       while(count > 0)
         last_link = get_next_for(last_link)
         count -= 1
       end
-      self.next_object = get_next_for(last_link)
+      @next_object = get_next_for(last_link)
       set_next_for( last_link , nil )
       self
     end
@@ -65,10 +71,10 @@ module Parfait
     # this initiates the syscall to get more memory.
     # it creates objects from the mem and link them into a chain
     def get_chain
-      raise "type is nil" unless self.for_type
-      first = sys_mem( for_type , self.page_size)
+      raise "type is nil" unless @for_type
+      first = sys_mem( for_type , @page_size)
       chain = first
-      counter = self.page_size
+      counter = @page_size
       while( counter > 0)
         nekst = get_next_raw( chain )
         set_next_for(chain,  nekst)
@@ -87,7 +93,7 @@ module Parfait
     # set the next_* attribute of the given object, with the value.
     # the attribute name is determined in initialize
     def set_next_for(object , value)
-      object.send("#{attribute_name}=".to_sym , value)
+      object.send("_set_#{attribute_name}".to_sym , value)
     end
 
     # Return the object _after the given one. In memory terms the next object starts

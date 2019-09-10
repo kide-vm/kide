@@ -12,11 +12,14 @@ module Parfait
   #
   class Callable < Object
 
-    attr :type, :self_type , :arguments_type , :frame_type , :binary
-    attr :blocks , :name
-    attr :next_callable
+    attr_reader :self_type , :arguments_type , :frame_type , :binary
+    attr_reader :blocks , :name
+    attr_reader :next_callable
 
     def self.type_length
+      8
+    end
+    def self.memory_size
       8
     end
 
@@ -25,8 +28,8 @@ module Parfait
       raise "No class #{self}" unless self_type
       raise "For type, not class #{self_type}" unless self_type.is_a?(Type)
       raise "Mixup" unless name.is_a?(Symbol)
-      self.name = name
-      self.self_type = self_type
+      @name = name
+      @self_type = self_type
       init(arguments_type, frame_type)
     end
 
@@ -38,25 +41,25 @@ module Parfait
     def init(arguments_type, frame_type)
       raise "Wrong argument type, expect Type not #{arguments_type.class}" unless arguments_type.is_a? Type
       raise "Wrong frame type, expect Type not #{frame_type.class}" unless frame_type.is_a? Type
-      self.arguments_type = arguments_type
-      self.frame_type = frame_type
-      self.binary = BinaryCode.new(0)
+      @arguments_type = arguments_type
+      @frame_type = frame_type
+      @binary = BinaryCode.new(0)
     end
 
     # determine if method has a local variable or tmp (anonymous local) by given name
     def has_local( name )
       raise "has_local #{name}.#{name.class}" unless name.is_a? Symbol
-      frame_type.variable_index( name )
+      @frame_type.variable_index( name )
     end
 
     def add_local( name , type )
       index = has_local( name )
       return index if index
-      self.frame_type = frame_type.add_instance_variable(name,type)
+      @frame_type = @frame_type.add_instance_variable(name,type)
     end
 
     def each_binary( &block )
-      bin = binary
+      bin = @binary
       while(bin) do
         block.call( bin )
         bin = bin.next_code
@@ -64,7 +67,7 @@ module Parfait
     end
 
     def set_next( method )
-      self.next_callable = method
+      @next_callable = method
     end
 
   end
