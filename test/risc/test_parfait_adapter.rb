@@ -19,5 +19,16 @@ module Parfait
       assert_equal word , Parfait.new_word(string)
       assert_equal string , word.to_string
     end
+    def test_word_type
+      assert_has_type Parfait.new_word("string")
+    end
+    def test_int_type
+      assert_has_type Parfait::Integer.new(5)
+    end
+    def assert_has_type(obj)
+      assert_equal Parfait::Type , obj.type.class
+      assert_equal Parfait::Type , obj.get_type.class
+      assert_equal Parfait::Type , obj.get_internal_word(0).class
+    end
   end
 end
