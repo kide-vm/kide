@@ -52,6 +52,7 @@ module Risc
       raise "Not int #{pos}" unless pos.is_a? Numeric
       position = Position.at(pos)
       raise "No position at 0x#{pos.to_s(16)}" unless position
+      log.debug ""
       log.debug "Setting Position #{clock}-#{position}, "
       set_instruction( position.object )
       @clock += 1
@@ -60,7 +61,7 @@ module Risc
 
     def set_instruction( instruction )
       raise "set to same instruction #{instruction}:#{instruction.class} at #{clock}" if @instruction == instruction
-      log.debug "Setting Instruction #{instruction.class}"
+      #log.debug "Setting Instruction #{instruction.class}"
       old = @instruction
       @instruction = instruction
       trigger(:instruction_changed, old , instruction)
@@ -121,6 +122,7 @@ module Risc
     end
     def execute_Branch
       label = @instruction.label
+      log.debug "Branch to Label: #{@instruction.label}"
       pos = Position.get(label).at
       pos += Parfait::BinaryCode.byte_offset if label.is_a?(Parfait::BinaryCode)
       set_pc( pos )
@@ -169,6 +171,8 @@ module Risc
         raise "error #{@instruction} retrieves nil"
       else
         value = object.get_internal_word( index )
+        #log.debug "Getting #{index} from #{object} value=#{value}"
+        #log.debug "type=#{object.type} get_type=#{object.get_type} intern=#{object.get_internal_word(0)}"
       end
       log.debug "#{@instruction} == #{object}(#{Position.get(object)})   (#{value}|#{index})"
       set_register( @instruction.register , value )

@@ -11,7 +11,7 @@ module Parfait
     end
     # 0 -based index
     def get_internal_word(index)
-      super(index) if index < self.class.type_length
+      return super(index) if index < self.class.type_length
       @memory[ index ]
     end
 
