@@ -28,7 +28,7 @@ module Parfait
 
     def each_method( &block )
       block.call( self )
-      next_callable.each_method( &block ) if next_callable
+      @next_callable.each_method( &block ) if @next_callable
     end
 
     def create_block(args , frame)

@@ -7,13 +7,13 @@ module Parfait
 
     def initialize
       super()
-      instance_methods = List.new
+      @instance_methods = List.new
     end
 
     def methods
-      m = instance_methods
+      m = @instance_methods
       return m if m
-      instance_methods = List.new
+      @instance_methods = List.new
     end
 
     def method_names
@@ -26,12 +26,13 @@ module Parfait
 
     def add_instance_method( method )
       raise "not implemented #{method.class} #{method.inspect}" unless method.is_a? VoolMethod
+      raise "HMM"
       method
     end
 
     def remove_instance_method( method_name )
       found = get_instance_method( method_name )
-      found ? @methods.delete(found) : false
+      found ? methods.delete(found) : false
     end
 
     def get_instance_method( fname )

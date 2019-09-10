@@ -53,16 +53,16 @@ module Parfait
 
     def add_method(method)
       raise "Must be untyped method #{method}" unless method.is_a? Parfait::VoolMethod
-      instance_methods.push(method)
+      @instance_methods.push(method)
     end
 
     def get_method(name)
-      instance_methods.find{|m| m.name == name }
+      @instance_methods.find{|m| m.name == name }
     end
 
     # adding an instance changes the instance_type to include that variable
     def add_instance_variable( name , type)
-      @instance_type = instance_type.add_instance_variable( name , type )
+      @instance_type = @instance_type.add_instance_variable( name , type )
     end
 
     # setting the type generates all methods for this type
@@ -76,9 +76,9 @@ module Parfait
     # or the super classs is nil.
     # Use only for non Object base class
     def super_class!
-      raise "No super_class for class #{name}" unless super_class_name
+      raise "No super_class for class #{@name}" unless @super_class_name
       s = super_class
-      raise "superclass not found for class #{name} (#{super_class_name})" unless s
+      raise "superclass not found for class #{@name} (#{@super_class_name})" unless s
       s
     end
 
@@ -86,8 +86,8 @@ module Parfait
     # we only store the name, and so have to resolve.
     # Nil name means no superclass, and so nil is a valid return value
     def super_class
-      return nil unless super_class_name
-      Parfait.object_space.get_class_by_name(super_class_name)
+      return nil unless @super_class_name
+      Parfait.object_space.get_class_by_name(@super_class_name)
     end
 
     # ruby 2.1 list (just for reference, keep at bottom)

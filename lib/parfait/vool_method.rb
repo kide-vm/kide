@@ -27,13 +27,13 @@ module Parfait
       raise "Empty bod" if(@source.is_a?(Vool::Statements) and @source.empty?)
     end
 
-    def create_callable_method( type )
+    def create_callable_method_for( type )
       raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
       type.create_method( @name , @args_type , @frame_type)
     end
 
     def compiler_for(self_type)
-      callable_method = create_callable_method(self_type)
+      callable_method = create_callable_method_for(self_type)
       compiler = Mom::MethodCompiler.new( callable_method )
       head = @source.to_mom( compiler )
       compiler.add_code(head)

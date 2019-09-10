@@ -55,12 +55,12 @@ module Risc
     end
     def test_pc1
       @interpreter.tick
-      assert_equal 40168 , @interpreter.pc
+      assert_equal 23320 , @interpreter.pc
     end
     def test_pc2
       @interpreter.tick
       @interpreter.tick
-      assert_equal 40172 , @interpreter.pc
+      assert_equal 23324 , @interpreter.pc
     end
     def test_tick2
       @interpreter.tick

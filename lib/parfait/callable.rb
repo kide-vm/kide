@@ -49,17 +49,17 @@ module Parfait
     # determine if method has a local variable or tmp (anonymous local) by given name
     def has_local( name )
       raise "has_local #{name}.#{name.class}" unless name.is_a? Symbol
-      frame_type.variable_index( name )
+      @frame_type.variable_index( name )
     end
 
     def add_local( name , type )
       index = has_local( name )
       return index if index
-      @frame_type = frame_type.add_instance_variable(name,type)
+      @frame_type = @frame_type.add_instance_variable(name,type)
     end
 
     def each_binary( &block )
-      bin = binary
+      bin = @binary
       while(bin) do
         block.call( bin )
         bin = bin.next_code
