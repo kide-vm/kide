@@ -13,8 +13,9 @@ module Risc
   class OperatorInstruction < Instruction
     def initialize( source , operator , left , right )
       super(source)
+      operator = operator.value if operator.is_a?(Vool::Constant)
       @operator = operator
-      raise "unsuported operator :#{operator}:" unless Risc.operators.include?(operator)
+      raise "unsuported operator :#{operator}:#{operator.class}:" unless Risc.operators.include?(operator)
       @left = left
       @right = right
       raise "Not register #{left}" unless RegisterValue.look_like_reg(left)

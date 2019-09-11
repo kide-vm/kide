@@ -61,7 +61,7 @@ module Mom
         # - returns the new int
         def operator_method( op_sym )
           compiler = compiler_for(:Integer, op_sym ,{other: :Integer })
-          compiler.add_code Operator.new("operator" , op_sym)
+          compiler.add_code Operator.new( "op:#{op_sym}" , op_sym)
           return compiler
         end
 

@@ -23,13 +23,12 @@ module Mom
         return compiler
       end
     end
-
   end
   class IntOperator < Instruction
     attr_reader :operator
     def initialize(name , operator)
       super(name)
-      @operator = operator
+      @operator = operator.value
     end
 
     def to_risc(compiler)
