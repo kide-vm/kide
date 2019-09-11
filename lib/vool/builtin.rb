@@ -1,5 +1,5 @@
 module Vool
-  module Builtin
+  module Macro
     def self.boot_methods(options)
       return if options[:boot_methods] == false
       load_builtin( :int_plus )

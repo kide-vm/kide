@@ -12,7 +12,7 @@ module Mom
       end
     end
   end
-  class GetInternalWord < Instruction
+  class GetInternalWord < Macro
     def to_risc(compiler)
       compiler.builder(compiler.source).build do
         object! << message[:receiver]

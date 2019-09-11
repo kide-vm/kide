@@ -1,9 +1,9 @@
 require_relative "helper"
 
 module RubyX
-  module Builtin
+  module Macro
     class TestIntegerDiv10 < MiniTest::Test
-      include BuiltinHelper
+      include MacroHelper
       def source
         <<GET
         class Integer

@@ -9,12 +9,14 @@ module Mom
       end
     end
   end
+  class Macro < Instruction
+  end
 end
 
-require_relative "builtin/space"
-require_relative "builtin/integer"
-require_relative "builtin/object"
-require_relative "builtin/word"
+require_relative "macro/space"
+require_relative "macro/integer"
+require_relative "macro/object"
+require_relative "macro/word"
 
 module Mom
   module Builtin

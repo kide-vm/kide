@@ -2,7 +2,7 @@ require_relative "../helper"
 
 # TODO move these to interpreter dir
 module Risc
-  module Builtin
+  module Macro
     class IntCmp < Minitest::Test
       include Ticker
       def setup

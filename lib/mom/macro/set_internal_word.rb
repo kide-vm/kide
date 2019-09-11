@@ -14,7 +14,7 @@ module Mom
       end
     end
   end
-  class SetInternalWord < ::Mom::Instruction
+  class SetInternalWord < Macro
     def to_risc(compiler)
       compiler.builder(compiler.source).build do
         object! << message[:receiver]

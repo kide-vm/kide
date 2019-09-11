@@ -1,7 +1,7 @@
 require_relative "../helper"
 
 module Risc
-  module Builtin
+  module Macro
     class IntMath < Minitest::Test
       include Ticker
       def setup

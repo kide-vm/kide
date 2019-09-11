@@ -13,7 +13,7 @@ module Mom
       end
     end
   end
-  class Putstring < ::Mom::Instruction
+  class Putstring < Macro
     def to_risc(compiler)
       builder = compiler.builder(compiler.source)
       builder.prepare_int_return # makes integer_tmp variable as return

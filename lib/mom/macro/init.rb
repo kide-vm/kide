@@ -32,7 +32,7 @@ module Mom
       end
     end
   end
-  class Init < ::Mom::Instruction
+  class Init < Macro
     def to_risc(compiler)
       builder = compiler.builder(compiler.source)
       builder.build do

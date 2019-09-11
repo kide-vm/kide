@@ -15,7 +15,7 @@ module Mom
       end
     end
   end
-  class SetInternalByte < ::Mom::Instruction
+  class SetInternalByte < Macro
     def to_risc(compiler)
       compiler.builder(compiler.source).build do
         word! << message[:receiver]

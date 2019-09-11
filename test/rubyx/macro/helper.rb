@@ -1,7 +1,7 @@
 require_relative "../helper"
 
 module RubyX
-  module BuiltinHelper
+  module MacroHelper
     def setup
       whole ="class Space;def main(arg);return;end;end;" + source
       @mom = RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(whole)

@@ -39,7 +39,7 @@ module Vool
       check = Mom::NotSameCheck.new(compile_method , runtime_method, ok_label)
       # TODO? Maybe create mom instructions for this
       #builder = compiler.builder("yield")
-      #Risc::Builtin.exit_sequence(builder)
+      #Risc::Macro.exit_sequence(builder)
       #check << builder.built
       check << ok_label
     end

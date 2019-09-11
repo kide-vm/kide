@@ -1,19 +1,19 @@
 module Mom
   module Builtin
-    class MethodMissing < ::Mom::Instruction
+    class Exit < ::Mom::Instruction
       def to_risc(compiler)
         builder = compiler.builder(compiler.source)
         builder.prepare_int_return # makes integer_tmp variable as return
-        Builtin.emit_syscall( builder , :exit )
+        Builtin.exit_sequence(builder)
         return compiler
       end
     end
   end
-  class MethodMissing < ::Mom::Instruction
+  class Exit < Macro
     def to_risc(compiler)
       builder = compiler.builder(compiler.source)
       builder.prepare_int_return # makes integer_tmp variable as return
-      Builtin.emit_syscall( builder , :exit )
+      Builtin.exit_sequence(builder)
       return compiler
     end
   end

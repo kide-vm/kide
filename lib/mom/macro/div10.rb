@@ -62,7 +62,7 @@ module Mom
       end
     end
   end
-  class Div10 < ::Mom::Instruction
+  class Div10 < Macro
     def to_risc(compiler)
       s = "div_10 "
       builder = compiler.builder(compiler.source)
