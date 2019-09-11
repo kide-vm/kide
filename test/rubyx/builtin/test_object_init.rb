@@ -6,11 +6,6 @@ module RubyX
       include BuiltinHelper
       def source
         <<GET
-        class Space
-          def main(arg)
-            return
-          end
-        end
         class Object
           def __init(at)
             X.__init

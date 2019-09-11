@@ -2,28 +2,28 @@ require_relative "helper"
 
 module RubyX
   module Builtin
-    class TestObjectExit < MiniTest::Test
+    class TestWordSet < MiniTest::Test
       include BuiltinHelper
       def source
         <<GET
-        class Object
-          def exit(at)
-            X.exit
+        class Word
+          def set_internal_byte( at , value)
+            X.set_internal_byte
           end
         end
 GET
       end
       def test_mom_meth
-        assert_equal :exit , compiler.callable.name
+        assert_equal :set_internal_byte , compiler.callable.name
       end
       def test_instr_len
         assert_equal 7 , compiler.mom_instructions.length
       end
       def test_instr_get
-        assert_equal Mom::Exit , compiler.mom_instructions.next.class
+        assert_equal Mom::SetInternalByte , compiler.mom_instructions.next.class
       end
       def test_risc
-        assert_equal 40 , compiler.to_risc.risc_instructions.length
+        assert_equal 20 , compiler.to_risc.risc_instructions.length
       end
     end
   end
