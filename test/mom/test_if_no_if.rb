@@ -6,7 +6,7 @@ module Risc
 
     def setup
       super
-      @input = "unless(@a) ; arg = 5 ; end;return"
+      @input = "unless(@true_object) ; arg = 5 ; end;return"
       @expect = [SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsZero, #4
                  LoadConstant, OperatorInstruction, IsZero, Label, Branch, #9
                  Label, LoadConstant, RegToSlot, Label, LoadConstant, #14

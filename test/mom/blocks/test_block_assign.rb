@@ -5,7 +5,6 @@ module Risc
     include Statements
 
     def setup
-      super
       @input = as_block("a = 5")
       @expect =  [LoadConstant, RegToSlot]
     end

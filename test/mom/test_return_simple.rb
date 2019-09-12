@@ -5,7 +5,6 @@ module Risc
     include Statements
 
     def setup
-      super
       @input = "return 5"
       @expect = [LoadConstant, RegToSlot, Branch]
     end

@@ -5,8 +5,7 @@ module Risc
     include Statements
 
     def setup
-      super
-      @input = "if(@a) ; arg = 5 ; else; arg = 6; end;return"
+      @input = "if(@true_object) ; arg = 5 ; else; arg = 6; end;return"
       @expect =  [SlotToReg, SlotToReg, LoadConstant, OperatorInstruction, IsZero, #4
                  LoadConstant, OperatorInstruction, IsZero, Label, LoadConstant, #9
                  RegToSlot, Branch, Label, LoadConstant, RegToSlot, #14

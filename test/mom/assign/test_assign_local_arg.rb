@@ -5,7 +5,6 @@ module Risc
     include Statements
 
     def setup
-      super
       @input = "local = arg; return local"
       @expect = [SlotToReg, RegToSlot, SlotToReg, RegToSlot, Branch] #4
     end

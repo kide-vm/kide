@@ -1,6 +1,14 @@
 
 module ScopeHelper
 
+  def in_Test(statements)
+    "class Test ; #{statements} ; end"
+  end
+
+  def as_test_main(statements)
+    in_Test("def main(arg) ; #{statements}; end")
+  end
+
   def in_Space(statements)
     "class Space ; #{statements} ; end"
   end
@@ -17,18 +25,19 @@ end
 module VoolCompile
   include ScopeHelper
   include Mom
+  include Preloader
 
-  def compile_main( input )
-    input = as_main( input )
+  def compile_main( input , preload = nil)
+    input = get_preload(preload) + as_main( input )
     collection = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(input)
     assert collection.is_a?(Mom::MomCollection) , collection.class.name
-    compiler = collection.compilers.first
+    compiler = collection.compilers.find{|comp| comp.callable.name == :main}
     assert compiler.is_a?(Mom::MethodCompiler)
     assert_equal Mom::MethodCompiler , compiler.class
     compiler
   end
-  def compile_main_block( block_input , method_input = "main_local = 5")
-    source =  as_main("#{method_input} ; self.main{|val| #{block_input}}")
+  def compile_main_block( block_input , method_input = "main_local = 5" , preload = nil)
+    source = get_preload(preload) + as_main("#{method_input} ; self.main{|val| #{block_input}}")
     mom_col = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom( source )
     compiler = mom_col.method_compilers.find{|c| c.get_method.name.to_s.start_with?("main") }
     block = compiler.block_compilers.first

@@ -208,6 +208,7 @@ module Risc
       factory = Parfait.object_space.get_factory_for( :Integer )
       calling = factory.get_type.get_method( :get_more )
       calling = Parfait.object_space.get_main #until we actually parse Factory
+      raise "no main defined" unless calling
       Mom::MessageSetup.new( calling ).build_with( self )
       self.build do
         factory_reg! << factory

@@ -16,7 +16,7 @@ module Risc
       assert_equal 1 , mains.length
     end
     def test_assembler_num
-      assert_equal 22 , @linker.assemblers.length
+      assert_equal 2 , @linker.assemblers.length
     end
   end
 end

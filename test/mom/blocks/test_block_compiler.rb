@@ -5,7 +5,6 @@ module Risc
     include Statements
 
     def setup
-      super
       @input = as_block("return 5")
       @mom = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(as_main)
     end

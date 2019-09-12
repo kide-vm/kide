@@ -6,11 +6,12 @@ module Vool
     include ScopeHelper
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      ruby_tree = Ruby::RubyCompiler.compile( as_main("@a = 5") )
+      ruby_tree = Ruby::RubyCompiler.compile( as_test_main("@a = 5") )
       @vool = ruby_tree.to_vool
     end
     def test_class
       assert_equal ClassExpression , @vool.class
+      assert_equal :Test , @vool.name
     end
     def test_method
       assert_equal MethodExpression , @vool.body.first.class
@@ -30,8 +31,8 @@ module Vool
     def setup
       Parfait.boot!(Parfait.default_test_options)
     end
-    def assert_type_for(input)
-      ruby_tree = Ruby::RubyCompiler.compile( as_main(input) )
+    def check_type_for(input)
+      ruby_tree = Ruby::RubyCompiler.compile( as_test_main(input) )
       vool = ruby_tree.to_vool
       assert_equal ClassExpression , vool.class
       clazz = vool.create_class_object
@@ -39,31 +40,31 @@ module Vool
       assert_equal :a , clazz.instance_type.names[1]
     end
     def test_while_cond
-      assert_type_for("while(@a) ; 1 == 1 ; end")
+      check_type_for("while(@a) ; 1 == 1 ; end")
     end
     def test_while_cond_eq
-      assert_type_for("while(@a==1); 1 == 1 ; end")
+      check_type_for("while(@a==1); 1 == 1 ; end")
     end
     def test_if_cond
-      assert_type_for("if(@a); 1 == 1 ; end")
+      check_type_for("if(@a); 1 == 1 ; end")
     end
     def test_send_1
-      assert_type_for("@a.call")
+      check_type_for("@a.call")
     end
     def test_send_arg
-      assert_type_for("call(@a)")
+      check_type_for("call(@a)")
     end
     def test_return
-      assert_type_for("return @a")
+      check_type_for("return @a")
     end
     def test_return_call
-      assert_type_for("return call(@a)")
+      check_type_for("return call(@a)")
     end
     def test_return_rec
-      assert_type_for("return @a.call()")
+      check_type_for("return @a.call()")
     end
   end
-  class TestClassStatementCompile < MiniTest::Test
+  class TestClassStatementCompile# < MiniTest::Test
     include VoolCompile
 
     def setup

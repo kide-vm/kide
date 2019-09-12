@@ -50,7 +50,7 @@ module Vool
       @body.each(&block) if @body
     end
 
-    # This creates the Parfait class. But doesn not hadle reopening yet, so only new classes
+    # This creates the Parfait class. But doesn not handle reopening yet, so only new classes
     # Creating the class involves creating the instance_type (or an initial version)
     # which means knowing all used names. So we go through the code looking for
     # InstanceVariables or InstanceVariable Assignments, to do that.
@@ -70,8 +70,8 @@ module Vool
           ivar_hash[node.name] = :Object
         end
         @clazz.set_instance_type( Parfait::Type.for_hash( @clazz ,  ivar_hash ) )
-        @clazz
       end
+      @clazz
     end
 
     def to_s(depth = 0)

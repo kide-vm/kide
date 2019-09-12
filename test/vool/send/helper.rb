@@ -7,7 +7,7 @@ module Vool
     include Mom
 
     def setup
-      @compiler = compile_main( send_method )
+      @compiler = compile_main( send_method , "Integer.div4;Object.get")
       @ins = @compiler.mom_instructions.next
     end
 

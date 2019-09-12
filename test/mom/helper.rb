@@ -3,8 +3,7 @@ require_relative '../helper'
 module Risc
   module Statements
     include Output
-    def setup
-    end
+    include Preloader
 
     def preamble
       [ Label ]
@@ -23,7 +22,7 @@ module Risc
       "#{method_input} ; self.main{|val| #{block_input}}"
     end
     def as_main
-      "class Space; #{@class_input if @class_input};def main(arg);#{@input};end;end"
+      "#{preload}class Space; #{@class_input};def main(arg);#{@input};end;end"
     end
     def to_target
       assert @expect , "No output given"

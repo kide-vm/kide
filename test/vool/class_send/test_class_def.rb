@@ -17,8 +17,9 @@ module Vool
     end
 
     def setup
-      ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(class_main)
-      @ins = ret.compilers.first.mom_instructions.next
+      source = "class Integer;def +(other);X.int_operator(:+);end;end;" + class_main
+      ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(source)
+      @ins = ret.compilers.find{|c|c.callable.name==:main}.mom_instructions.next
     end
 
     def test_any
@@ -27,7 +28,7 @@ module Vool
 
     def test_no_arg
       assert_equal Mom::ArgumentTransfer,  @ins.next(1).class
-      assert_equal 1,  @ins.next(1).arguments.length
+      assert_equal 0,  @ins.next(1).arguments.length
     end
     def test_call_two
       assert_equal SimpleCall,  @ins.next(2).class

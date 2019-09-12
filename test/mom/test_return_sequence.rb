@@ -5,7 +5,7 @@ module Risc
     include Statements
 
     def setup
-      super
+      @preload = "Integer.div4"
       @input = "return 5.div4"
       @expect = "something"
     end

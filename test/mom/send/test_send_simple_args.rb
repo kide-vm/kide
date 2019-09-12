@@ -5,7 +5,7 @@ module Risc
     include Statements
 
     def setup
-      super
+      @preload = "Object.get"
       @input = "5.get_internal_word(1)"
       @expect = [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant, #10

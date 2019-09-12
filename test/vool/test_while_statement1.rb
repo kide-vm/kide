@@ -6,7 +6,7 @@ module Vool
     include VoolCompile
 
     def setup
-      @compiler = compile_main( "while(5.div4) ; 5.div4 ; end;return")
+      @compiler = compile_main( "while(5.div4) ; 5.div4 ; end;return" , "Integer.div4")
       @ins = @compiler.mom_instructions.next
     end
 

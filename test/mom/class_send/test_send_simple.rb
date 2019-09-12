@@ -5,7 +5,6 @@ module Risc
     include Statements
 
     def setup
-      super
       @class_input = "def self.simple_return; return 1 ; end;"
       @input = "return Test.simple_return"
       @expect = [LoadConstant, RegToSlot, Branch]
