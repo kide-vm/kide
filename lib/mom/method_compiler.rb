@@ -87,5 +87,12 @@ module Mom
       ret
     end
 
+    # Only for init, as init has no return
+    # kind of private
+    def _reset_for_init
+      @mom_instructions = Label.new(source_name, source_name)
+      @current = @mom_instructions
+    end
+
   end
 end

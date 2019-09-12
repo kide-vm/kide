@@ -31,7 +31,6 @@ module RubyX
     def initialize(options)
       @options = options
       Parfait.boot!(options[:parfait] || {})
-      Mom.boot!(options[:mom] || {})
       Risc.boot!(options[:risc] || {})
     end
 

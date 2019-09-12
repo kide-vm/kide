@@ -28,12 +28,6 @@ module Mom
       end
     end
 
-    # Only for init, as init has no return
-    def _reset_for_init
-      @mom_instructions = Label.new(source_name, source_name)
-      @current = @mom_instructions
-    end
-
     # add a constant (which get created during compilation and need to be linked)
     def add_constant(const)
       raise "Must be Parfait #{const}" unless const.is_a?(Parfait::Object)

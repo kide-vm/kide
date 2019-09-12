@@ -11,16 +11,9 @@
 # No send or call, just objects and jump.
 # Machine capabilities (instructions) for basic operations. Use of macros for higher level.
 
-module Mom
-  # boot bubiltin function (subject to change)
-  def self.boot!(options = {})
-    Builtin.boot_functions(options)
-  end
-end
-
 require_relative "instruction.rb"
 require_relative "mom_collection"
 require_relative "callable_compiler"
 require_relative "method_compiler"
 require_relative "block_compiler"
-require_relative "macro"
+require_relative "macro/macro"
