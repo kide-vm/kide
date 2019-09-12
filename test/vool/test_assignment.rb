@@ -5,7 +5,7 @@ module Vool
     include VoolCompile
 
     def setup
-      @compiler = compile_first_method( "local = 5;return")
+      @compiler = compile_main( "local = 5;return")
       @ins = @compiler.mom_instructions.next
     end
 
@@ -33,7 +33,7 @@ module Vool
   class TestAssignMomInstanceToLocal < MiniTest::Test
     include VoolCompile
     def setup
-      @compiler = compile_first_method( "@a = 5 ; local = @a;return")
+      @compiler = compile_main( "@a = 5 ; local = @a;return")
       @ins = @compiler.mom_instructions.next
     end
     def test_class_compiles
@@ -46,7 +46,7 @@ module Vool
     include VoolCompile
 
     def setup
-      @compiler = compile_first_method( "arg = 5;return")
+      @compiler = compile_main( "arg = 5;return")
       @ins = @compiler.mom_instructions.next
     end
 
@@ -70,13 +70,13 @@ module Vool
       Parfait.boot!(Parfait.default_test_options)
     end
     def test_assigns_const
-      @compiler = compile_first_method( "@a = 5;return")
+      @compiler = compile_main( "@a = 5;return")
       @ins = @compiler.mom_instructions.next
       assert_equal Mom::SlotLoad , @ins.class , @ins
       assert_equal Mom::IntegerConstant , @ins.right.known_object.class , @ins
     end
     def test_assigns_move
-      @compiler = compile_first_method( "@a = arg;return")
+      @compiler = compile_main( "@a = arg;return")
       @ins = @compiler.mom_instructions.next
       assert_equal Mom::SlotLoad , @ins.class , @ins
       assert_equal Mom::SlotDefinition , @ins.right.class , @ins

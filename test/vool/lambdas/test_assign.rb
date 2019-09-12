@@ -5,7 +5,7 @@ module VoolBlocks
     include VoolCompile
 
     def setup
-      @ins = compile_first_block(  "local = 5" )
+      @ins = compile_main_block(  "local = 5" )
     end
     def test_block_compiles
       assert_equal Mom::SlotLoad , @ins.class , @ins
@@ -30,7 +30,7 @@ module VoolBlocks
   class TestAssignMomInstanceToLocal < MiniTest::Test
     include VoolCompile
     def setup
-      @ins = compile_first_block( "local = @a" , "@a = 5") #second arg in method scope
+      @ins = compile_main_block( "local = @a" , "@a = 5") #second arg in method scope
     end
     def test_class_compiles
       assert_equal Mom::SlotLoad , @ins.class , @ins
@@ -47,7 +47,7 @@ module VoolBlocks
     include VoolCompile
 
     def setup
-      @ins = compile_first_block( "arg = 5")
+      @ins = compile_main_block( "arg = 5")
     end
 
     def test_class_compiles
@@ -66,12 +66,12 @@ module VoolBlocks
     def setup
     end
     def test_assigns_const
-      @ins = compile_first_block( "@a = 5")
+      @ins = compile_main_block( "@a = 5")
       assert_equal Mom::SlotLoad , @ins.class , @ins
       assert_equal Mom::IntegerConstant , @ins.right.known_object.class , @ins
     end
     def test_assigns_move
-      @ins = compile_first_block( "@a = arg")
+      @ins = compile_main_block( "@a = arg")
       assert_equal Mom::SlotLoad , @ins.class , @ins
       assert_equal Mom::SlotDefinition , @ins.right.class , @ins
     end

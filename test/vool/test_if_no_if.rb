@@ -6,7 +6,7 @@ module Vool
     include VoolCompile
 
     def setup
-      @compiler = compile_first_method( "unless(@a) ; @a = 5 ; end;return")
+      @compiler = compile_main( "unless(@a) ; @a = 5 ; end;return")
       @ins = @compiler.mom_instructions.next
     end
 

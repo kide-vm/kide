@@ -5,7 +5,7 @@ module Mom
     include ScopeHelper
 
     def setup
-      code = as_test_main_block("return 5" , "a = 1")
+      code = as_main_block("return 5" , "a = 1")
       @risc = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_risc(code)
     end
 
@@ -24,7 +24,7 @@ module Mom
     include ScopeHelper
 
     def setup
-      code = as_test_main_block("return arg" , "arg = 1")
+      code = as_main_block("return arg" , "arg = 1")
       @risc = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_risc(code)
     end
 

@@ -1,11 +1,11 @@
 require_relative "helper"
 
 module Vool
-  class TestReturnMom < MiniTest::Test
+  class TestReturnMom #< MiniTest::Test
     include VoolCompile
 
     def setup
-      @compiler = compile_first_method( "return 5")
+      @compiler = compile_main( "return 5")
       @ins = @compiler.mom_instructions.next
     end
 
@@ -41,7 +41,7 @@ module Vool
     include VoolCompile
 
     def setup
-      @compiler = compile_first_method( "return 5.div4")
+      @compiler = compile_main( "return 5.div4")
       @ins = @compiler.mom_instructions.next
     end
 

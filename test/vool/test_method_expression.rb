@@ -6,7 +6,7 @@ module Vool
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      ruby_tree = Ruby::RubyCompiler.compile( as_test_main("a = 5") )
+      ruby_tree = Ruby::RubyCompiler.compile( as_main("a = 5") )
       @clazz = ruby_tree.to_vool
     end
     def method

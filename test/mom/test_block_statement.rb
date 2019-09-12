@@ -6,7 +6,7 @@ module Vool
     include MomCompile
 
     def setup
-      @ret = compile_mom( as_test_main("self.main {|elem| elem = 5 } "))
+      @ret = compile_mom( as_main("self.main {|elem| elem = 5 } "))
     end
     def test_is_compiler
       assert_equal Mom::MomCollection , @ret.class
@@ -21,7 +21,7 @@ module Vool
   class TestBlockLocal < MiniTest::Test
     include MomCompile
     def setup
-      @ret = compile_mom( as_test_main("self.main {|elem| local = 5 } "))
+      @ret = compile_mom( as_main("self.main {|elem| local = 5 } "))
       @block = @ret.method_compilers.first.get_method.blocks
     end
     def test_block_arg_type
@@ -43,11 +43,11 @@ module Vool
     def setup
     end
     def test_method_arg_compiles
-      ret = compile_mom( as_test_main("self.main {|elem| arg = 5 } "))
+      ret = compile_mom( as_main("self.main {|elem| arg = 5 } "))
       assert ret
     end
     def test_method_local_compiles
-      ret = compile_mom( as_test_main("local = 5 ; self.main {|elem| local = 10 } "))
+      ret = compile_mom( as_main("local = 5 ; self.main {|elem| local = 10 } "))
       assert ret
     end
   end

@@ -7,7 +7,7 @@ module Risc
     def setup
       super
       @input = as_block("return 5")
-      @mom = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(as_test_main)
+      @mom = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(as_main)
     end
     def main_risc
       @mom.to_risc.method_compilers.find{|c| c.callable.name == :main }

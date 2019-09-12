@@ -5,7 +5,7 @@ module Vool
     include VoolCompile
 
     def setup
-      @compiler = compile_first_method( "a = 5; a.div4;return ")
+      @compiler = compile_main( "a = 5; a.div4;return ")
       @ins = @compiler.mom_instructions.next
     end
     def test_check_type

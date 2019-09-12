@@ -5,7 +5,7 @@ module VoolBlocks
     include VoolCompile
 
     def setup
-      @ins = compile_first_block( "while(@a) ; @a = 5 ; end")
+      @ins = compile_main_block( "while(@a) ; @a = 5 ; end")
     end
 
     def test_compiles_as_while

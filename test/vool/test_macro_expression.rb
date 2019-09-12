@@ -15,7 +15,7 @@ module Vool
     include VoolCompile
 
     def setup
-      @compiler = compile_first_method( "X.plus_equals(arg,1)")
+      @compiler = compile_main( "X.plus_equals(arg,1)")
       @ins = @compiler.mom_instructions.next
     end
 

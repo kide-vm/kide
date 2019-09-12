@@ -12,13 +12,13 @@ module Mom
       assert_equal MomCollection , @comp.class
     end
     def test_compilers
-      assert_equal 23 , @comp.compilers.length
+      assert_equal 2 , @comp.compilers.length
     end
-    def test_boot_compilers
-      assert_equal 22 , @comp.boot_compilers.length
+    def test_init_compiler
+      assert_equal Mom::MethodCompiler , @comp.init_compiler.class
     end
     def test_compilers_bare
-      assert_equal 22 , MomCollection.new.compilers.length
+      assert_equal 1 , MomCollection.new.compilers.length
     end
     def test_append_class
       assert_equal MomCollection,  (@comp.append @comp).class
@@ -31,7 +31,7 @@ module Mom
     include MomCompile
 
     def setup
-      @comp = compile_mom( "class Test ; def main(); return 'Hi'; end; end;")
+      @comp = compile_mom( "class Space ; def main(); return 'Hi'; end; end;")
       @collection = @comp.to_risc()
     end
     def compiler
@@ -42,7 +42,7 @@ module Mom
     end
     def test_has_risc_compiler
       assert_equal Risc::MethodCompiler, compiler.class
-      assert_equal 23, @collection.method_compilers.length
+      assert_equal 2, @collection.method_compilers.length
     end
     def test_has_risc_instructions
       assert_equal Risc::Label, compiler.risc_instructions.class

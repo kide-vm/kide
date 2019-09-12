@@ -5,7 +5,7 @@ module Mom
     class BootTest < MiniTest::Test
       def setup
         Parfait.boot!(Parfait.default_test_options)
-        Builtin.compiler_for( Parfait.object_space.get_class.instance_type   , Space , :main)
+        MomCollection.compiler_for( Parfait.object_space.get_class.instance_type   , Parfait::Space , :main)
       end
       def get_int_compiler(name)
         obj_type = Parfait.object_space.get_type_by_class_name(:Integer)

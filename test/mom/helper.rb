@@ -22,13 +22,13 @@ module Risc
     def as_block( block_input , method_input = "main_local = 5")
       "#{method_input} ; self.main{|val| #{block_input}}"
     end
-    def as_test_main
-      "class Test; #{@class_input if @class_input};def main(arg);#{@input};end;end"
+    def as_main
+      "class Space; #{@class_input if @class_input};def main(arg);#{@input};end;end"
     end
     def to_target
       assert @expect , "No output given"
       compiler = RubyX::RubyXCompiler.new(RubyX.default_test_options)
-      vool = compiler.ruby_to_vool(as_test_main)
+      vool = compiler.ruby_to_vool(as_main)
       compiler.to_target(:interpreter)
     end
     def produce_main

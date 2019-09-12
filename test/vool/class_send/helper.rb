@@ -7,7 +7,7 @@ module Vool
     include VoolCompile
 
     def setup
-      @compiler = compile_first_method( send_method )
+      @compiler = compile_main( send_method )
       @ins = @compiler.mom_instructions.next
     end
 

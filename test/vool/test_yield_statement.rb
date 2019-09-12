@@ -5,7 +5,7 @@ module Vool
     include VoolCompile
 
     def setup
-      @compiler = compile_first_method( "return yield(1)" )
+      @compiler = compile_main( "return yield(1)" )
       @ins = @compiler.mom_instructions.next
     end
 
@@ -69,7 +69,7 @@ module Vool
     include VoolCompile
 
     def setup
-      @compiler = compile_first_method( "return yield(some.extra.calls)" )
+      @compiler = compile_main( "return yield(some.extra.calls)" )
       @ins = @compiler.mom_instructions.next
     end
     def test_check_label

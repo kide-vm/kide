@@ -6,7 +6,7 @@ module Vool
     include MomCompile
 
     def setup
-      @ret = compile_mom( as_test_main("return 1"))
+      @ret = compile_mom( as_main("return 1"))
     end
 
     def test_return_class

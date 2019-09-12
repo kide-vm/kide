@@ -5,7 +5,7 @@ module Vool
     include VoolCompile
 
     def setup
-      @compiler = compile_first_method( "5.div8")
+      @compiler = compile_main( "5.div8")
       @ins = @compiler.mom_instructions.next
     end
     def test_check_type

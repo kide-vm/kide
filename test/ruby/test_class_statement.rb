@@ -49,11 +49,11 @@ module Ruby
     include RubyTests
 
     def test_compile_one_method
-      lst = compile( as_test_main("@ivar = 4") )
+      lst = compile( as_main("@ivar = 4") )
       assert_equal IvarAssignment , lst.body.first.body.class
     end
     def test_compile_two_stats
-      lst = compile( as_test_main("false; true;") )
+      lst = compile( as_main("false; true;") )
       assert_equal ScopeStatement , lst.body.first.body.class
       assert_equal TrueConstant , lst.body.first.body.statements[1].class
     end

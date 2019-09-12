@@ -6,7 +6,7 @@ module Vool
     include ScopeHelper
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      ruby_tree = Ruby::RubyCompiler.compile( as_test_main("@a = 5") )
+      ruby_tree = Ruby::RubyCompiler.compile( as_main("@a = 5") )
       @vool = ruby_tree.to_vool
     end
     def test_class
@@ -31,7 +31,7 @@ module Vool
       Parfait.boot!(Parfait.default_test_options)
     end
     def assert_type_for(input)
-      ruby_tree = Ruby::RubyCompiler.compile( as_test_main(input) )
+      ruby_tree = Ruby::RubyCompiler.compile( as_main(input) )
       vool = ruby_tree.to_vool
       assert_equal ClassExpression , vool.class
       clazz = vool.create_class_object
@@ -67,7 +67,7 @@ module Vool
     include VoolCompile
 
     def setup
-      @compiler = compile_first_method( "if(@a) ; @a = 5 ; else; @a = 6 ; end; return")
+      @compiler = compile_main( "if(@a) ; @a = 5 ; else; @a = 6 ; end; return")
       @ins = @compiler.mom_instructions
     end
 

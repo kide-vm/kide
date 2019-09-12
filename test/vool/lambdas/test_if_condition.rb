@@ -5,7 +5,7 @@ module VoolBlocks
     include VoolCompile
 
     def setup
-      @ins = compile_first_block( "if(5.div4) ; @a = 6 ; else; @a = 5 ; end")
+      @ins = compile_main_block( "if(5.div4) ; @a = 6 ; else; @a = 5 ; end")
     end
 
     def test_condition
