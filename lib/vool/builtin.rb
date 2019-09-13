@@ -14,7 +14,6 @@ module Vool
       {
         "Object.get" => "def get_internal_word(at); X.get_internal_word;end",
         "Object.missing" => "def method_missing(at); X.method_missing;end",
-        "Object.init" => "def __init__(at); X.init;end",
         "Object.exit" => "def exit; X.exit;end",
         "Integer.div4" => "def div4; X.div4;end",
         "Integer.div10" => "def div10; X.div10;end",
@@ -32,7 +31,7 @@ module Vool
         "Word.put" => "def putstring(at); X.putstring;end",
         "Word.set" => "def set_internal_byte(at, val); X.set_internal_byte;end",
         "Word.get" => "def get_internal_byte(at); X.get_internal_byte;end",
-        "Space.main" => "def main(args);return;end",
+        "Space.main" => "def main(args);return nil;end",
       }
     end
     def self.builtin_code

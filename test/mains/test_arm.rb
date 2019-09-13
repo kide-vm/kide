@@ -49,8 +49,9 @@ module Mains
 
     def run_code(input , name )
       puts "Compiling #{name}.o" if DEBUG
+      code = Vool::Builtin.builtin_code + input
 
-      linker = ::RubyX::RubyXCompiler.new({}).ruby_to_binary( input , :arm )
+      linker = ::RubyX::RubyXCompiler.new({}).ruby_to_binary( code , :arm )
       writer = Elf::ObjectWriter.new(linker)
 
       writer.save "mains.o"

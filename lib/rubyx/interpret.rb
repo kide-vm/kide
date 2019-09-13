@@ -24,8 +24,10 @@ class RubyXC < Thor
     rescue
       fail MalformattedArgumentError , "No such file #{file}"
     end
+    code = get_preload + ruby
+
     compiler = RubyX::RubyXCompiler.new(extract_options)
-    linker = compiler.ruby_to_binary(ruby, :interpreter)
+    linker = compiler.ruby_to_binary(code, :interpreter)
 
     puts "interpreting #{file}"
 

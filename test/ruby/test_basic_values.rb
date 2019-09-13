@@ -99,7 +99,7 @@ module Ruby
       assert_equal "'string'" , compile_const( "'string'")
     end
     def test_sym
-      assert_equal "'symbol'" , compile_const( ":symbol")
+      assert_equal ":symbol" , compile_const( ":symbol")
     end
     def test_nil
       assert_equal "nil" , compile_const( "nil")

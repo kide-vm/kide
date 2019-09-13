@@ -6,7 +6,7 @@ module Vool
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @code = Macro.boot_methods({})
+      @code = Builtin.boot_methods({})
     end
     def as_ruby
       @ruby = Ruby::RubyCompiler.compile(@code)

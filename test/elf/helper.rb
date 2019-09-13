@@ -3,10 +3,6 @@ require_relative "../helper"
 module Elf
 
   class FullTest < MiniTest::Test
-    DEBUG = false
-
-    def setup
-    end
 
     def in_space(input)
       "class Space; #{input} ; end"

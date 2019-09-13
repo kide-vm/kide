@@ -16,7 +16,7 @@ module Mom
 
     # lazily instantiate the compiler for init function
     def init_compiler
-      @init_compilers ||= create_init_compiler
+      @init_compilers ||= MomCollection.create_init_compiler
     end
 
     # Return all compilers, namely the MethodCompilers passed in, plus the
@@ -47,8 +47,8 @@ module Mom
      # - load fist message, set up Space as receiver
      # - call main, ie set up message for that etc
      # - exit (exit_sequence) which passes a machine int out to c
-     def create_init_compiler
-       compiler = self.class.compiler_for(:Object,:__init__ ,{})
+     def self.create_init_compiler
+       compiler = compiler_for(:Object,:__init__ ,{})
        compiler._reset_for_init # no return, just for init
        compiler.add_code Init.new("missing")
        return compiler

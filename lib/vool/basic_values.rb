@@ -105,5 +105,8 @@ module Vool
     def ct_type
       Parfait.object_space.get_type_by_class_name(:Word)
     end
+    def to_s(depth = 0)
+      ":#{@value}"
+    end
   end
 end

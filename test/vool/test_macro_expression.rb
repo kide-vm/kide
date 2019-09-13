@@ -7,6 +7,9 @@ module Mom
       @a = arg
       @b = b
     end
+    def to_risc(compiler)
+      Risc.label("some" , "thing")
+    end
   end
 end
 
@@ -30,6 +33,10 @@ module Vool
       assert_equal  Vool::IntegerConstant , @ins.b.class
       assert_equal  1 , @ins.b.value
     end
+    def test_to_risc
+      comp = @compiler.to_risc
+      assert_equal Risc::MethodCompiler , comp.class
+      assert_equal :main , comp.callable.name
+    end
   end
-
 end
