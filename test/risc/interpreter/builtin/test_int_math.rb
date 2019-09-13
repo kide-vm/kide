@@ -5,6 +5,7 @@ module Risc
     class IntMath < Minitest::Test
       include Ticker
       def setup
+        @preload = "all"
       end
 
       def test_add

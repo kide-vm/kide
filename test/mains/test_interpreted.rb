@@ -16,6 +16,7 @@ module Mains
         tests << method_name
         input = File.read(file_name)
         self.send(:define_method, method_name ) do
+          @preload = "all"
           ticks = run_input(input)
           #puts "Ticks for #{method_name}=#{ticks}"
           assert_equal stdout , @interpreter.stdout , "Wrong stdout #{name}"

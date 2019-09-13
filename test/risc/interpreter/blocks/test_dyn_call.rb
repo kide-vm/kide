@@ -4,6 +4,7 @@ module Risc
   class BlockCallDyn < MiniTest::Test
     include Ticker
     def setup
+      @preload = "Integer.div4"
       @string_input = block_main("a = tenner {|b| return b.div4} ; return a" , tenner)
       super
     end
@@ -16,6 +17,7 @@ module Risc
   class BlockCallArgOpDyn < MiniTest::Test
     include Ticker
     def setup
+      @preload = "Integer.mul"
       @string_input = block_main("a = tenner {|b| return b*b} ; return a" , tenner)
       super
     end

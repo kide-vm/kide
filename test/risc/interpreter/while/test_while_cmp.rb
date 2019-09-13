@@ -5,6 +5,7 @@ module Risc
     include Ticker
 
     def setup
+      @preload = "Integer.ge;Integer.plus"
       @string_input = as_main 'a = 0; while( 0 >= a); a = 1 + a;end;return a'
       super
     end

@@ -1,7 +1,6 @@
 require_relative "../helper"
 
 module RubyX
-
   class TestIntegerCompile < MiniTest::Test
     include ParfaitHelper
     def setup
@@ -10,7 +9,7 @@ module RubyX
       @compiler.ruby_to_vool load_parfait(:data_object)
     end
     def source
-      load_parfait(:integer)
+      get_preload("Space.main") + load_parfait(:integer)
     end
     def test_load
       assert source.include?("class Integer")

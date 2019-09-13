@@ -42,15 +42,15 @@ module RubyX
       assert_equal :TestObject , vool[2].name
     end
 
-    def test_basics
-      risc = compiler.ruby_to_binary @input , :interpreter
+    def est_basics
+      risc = compiler.ruby_to_risc @input , :interpreter
       assert_equal Risc::Linker , risc.class
     end
 
     def test_run_all
-      @input += "class Space;def main(arg);'Object'.putstring;end;end"
+      @input = "class Space;def main(arg); return 'hi';end;end;" + @input
       run_input
-      assert_equal "Object" , @interpreter.stdout
+      assert_equal "" , @interpreter.stdout
     end
   end
 end

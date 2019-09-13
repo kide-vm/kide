@@ -5,6 +5,7 @@ module Risc
     include Ticker
 
     def setup
+      @preload = "Word.put"
       @string_input = as_main(" return 'Hello again'.putstring ")
       super
     end
@@ -16,11 +17,12 @@ module Risc
                  FunctionCall, LoadConstant, SlotToReg, LoadConstant, OperatorInstruction, #15
                  IsNotZero, SlotToReg, RegToSlot, RegToSlot, SlotToReg, #20
                  SlotToReg, Transfer, Syscall, Transfer, Transfer, #25
-                 SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, #30
-                 RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, #35
-                 SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, #40
-                 RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, #45
-                 Transfer, SlotToReg, SlotToReg, Syscall, NilClass,] #50
+                 SlotToReg, RegToSlot, Branch, SlotToReg, RegToSlot, #30
+                 Branch, SlotToReg, SlotToReg, RegToSlot, SlotToReg, #35
+                 SlotToReg, SlotToReg, FunctionReturn, SlotToReg, RegToSlot, #40
+                 Branch, SlotToReg, SlotToReg, RegToSlot, SlotToReg, #45
+                 SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg, #50
+                 SlotToReg, Syscall, NilClass,] #55
        assert_equal "Hello again" , @interpreter.stdout
        assert_equal 11 , get_return #bytes written
     end
@@ -49,11 +51,11 @@ module Risc
       assert_equal Parfait::Message , @interpreter.get_register(:r0).class
     end
     def test_move_sys_return
-      sl = main_ticks(31)
+      sl = main_ticks(34)
       assert_reg_to_slot( sl , :r1 ,:r2 , 5)
     end
     def test_return
-      done = main_ticks(45)
+      done = main_ticks(48)
       assert_equal FunctionReturn ,  done.class
     end
 

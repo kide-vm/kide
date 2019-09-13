@@ -5,23 +5,24 @@ module Risc
     include Ticker
 
     def setup
+      @preload = "Integer.plus"
       @string_input = as_main("return 5 + 5")
       super
     end
 
     def test_chain
       #show_main_ticks # get output of what is
-      check_main_chain [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
+      check_main_chain  [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant, #10
                  SlotToReg, RegToSlot, SlotToReg, FunctionCall, LoadConstant, #15
                  SlotToReg, LoadConstant, OperatorInstruction, IsNotZero, SlotToReg, #20
                  RegToSlot, SlotToReg, SlotToReg, SlotToReg, SlotToReg, #25
-                 OperatorInstruction, RegToSlot, RegToSlot, SlotToReg, SlotToReg, #30
-                 Branch, RegToSlot, SlotToReg, SlotToReg, SlotToReg, #35
-                 FunctionReturn, SlotToReg, RegToSlot, Branch, SlotToReg, #40
-                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg, #45
-                 FunctionReturn, Transfer, SlotToReg, SlotToReg, Syscall, #50
-                 NilClass,] #55
+                 OperatorInstruction, RegToSlot, RegToSlot, SlotToReg, RegToSlot, #30
+                 Branch, Branch, SlotToReg, SlotToReg, RegToSlot, #35
+                 SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, #40
+                 RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot, #45
+                 SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer, #50
+                 SlotToReg, SlotToReg, Syscall, NilClass,] #55
        assert_equal 10 , get_return
     end
     def base_ticks(num)
@@ -67,11 +68,11 @@ module Risc
     end
     def test_move_fix_to_result
       sl = base_ticks( 15 )
-      assert_slot_to_reg( sl , :r0 , 5 , :r1)
+      assert_slot_to_reg( sl , :r0 , 5 , :r2)
     end
-    def test_start_return_sequence
+    def test_move_fix_to_result
       sl = base_ticks( 16 )
-      assert_slot_to_reg( sl , :r0 , 6 , :r2)
+      assert_reg_to_slot( sl , :r2 , :r0 , 5)
     end
   end
 end

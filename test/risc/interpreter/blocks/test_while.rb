@@ -4,6 +4,7 @@ module Risc
   class BlockWhile < MiniTest::Test
     include Ticker
     def setup
+      @preload = "Integer.gt;Integer.minus"
       @string_input = block_main("a = tenner {|b| #{while_str} } ; return a" , tenner)
       super
     end

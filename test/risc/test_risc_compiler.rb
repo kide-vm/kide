@@ -5,7 +5,7 @@ module Risc
     include MomCompile
 
     def setup
-      @comp = compile_mom( "class Test ; def main(); main{return 'Ho'};return 'Hi'; end; end;")
+      @comp = compile_mom( "class Space ; def main(); main{return 'Ho'};return 'Hi'; end; end;")
       @linker = @comp.to_risc.translate(:interpreter)
     end
 

@@ -4,6 +4,7 @@ module Risc
   module BlockIfOp
     include Ticker
     def setup
+      @preload = "Integer.gt;Integer.lt"
       @string_input = block_main("a = tenner {|b| if( b #{op} 5 ); return 1;else;return 2;end } ; return a" , tenner)
       super
     end

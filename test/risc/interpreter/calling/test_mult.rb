@@ -5,6 +5,7 @@ module Risc
     include Ticker
 
     def setup
+      @preload = "Integer.mul"
       @string_input = as_main "return #{2**31} * #{2**31}"
       super
     end
@@ -16,12 +17,12 @@ module Risc
                  SlotToReg, RegToSlot, SlotToReg, FunctionCall, LoadConstant, #15
                  SlotToReg, LoadConstant, OperatorInstruction, IsNotZero, SlotToReg, #20
                  RegToSlot, SlotToReg, SlotToReg, SlotToReg, SlotToReg, #25
-                 OperatorInstruction, RegToSlot, RegToSlot, SlotToReg, SlotToReg, #30
-                 Branch, RegToSlot, SlotToReg, SlotToReg, SlotToReg, #35
-                 FunctionReturn, SlotToReg, RegToSlot, Branch, SlotToReg, #40
-                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg, #45
-                 FunctionReturn, Transfer, SlotToReg, SlotToReg, Syscall, #50
-                 NilClass,] #55
+                 OperatorInstruction, RegToSlot, RegToSlot, SlotToReg, RegToSlot, #30
+                 Branch, Branch, SlotToReg, SlotToReg, RegToSlot, #35
+                 SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, #40
+                 RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot, #45
+                 SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer, #50
+                 SlotToReg, SlotToReg, Syscall, NilClass,] #55
        assert_equal 0 , get_return
     end
     def test_zero

@@ -2,11 +2,10 @@ require_relative "helper"
 
 module Risc
   class TestInterpreterBasics < MiniTest::Test
+    include ScopeHelper
     def setup
-      Parfait.boot!(Parfait.default_test_options)
-      Mom.boot!
-      Risc.boot!
-      @linker = Mom::MomCollection.new.to_risc.translate(:interpreter)
+      compiler = compiler_with_main()
+      @linker = compiler.to_target( :interpreter)
     end
 
     def test_class
@@ -55,12 +54,12 @@ module Risc
     end
     def test_pc1
       @interpreter.tick
-      assert_equal 40168 , @interpreter.pc
+      assert_equal 37704 , @interpreter.pc
     end
     def test_pc2
       @interpreter.tick
       @interpreter.tick
-      assert_equal 40172 , @interpreter.pc
+      assert_equal 37708 , @interpreter.pc
     end
     def test_tick2
       @interpreter.tick

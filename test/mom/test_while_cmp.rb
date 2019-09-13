@@ -5,7 +5,7 @@ module Risc
     include Statements
 
     def setup
-      @preload = "Integer.ge"
+      @preload = "Integer.gt"
       @input = "while(5 > 0) ; @false_object = true; end;return"
       @expect =  [Label, LoadConstant, SlotToReg, RegToSlot, LoadConstant, #5
                  SlotToReg, RegToSlot, LoadConstant, SlotToReg, RegToSlot, #10

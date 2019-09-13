@@ -1,6 +1,11 @@
 
 module ScopeHelper
 
+  def compiler_with_main(options = {})
+    compiler = RubyX::RubyXCompiler.new(RubyX.default_test_options.merge(options))
+    compiler.ruby_to_vool( "class Space;def main(arg);return;end;end" )
+    compiler
+  end
   def in_Test(statements)
     "class Test ; #{statements} ; end"
   end

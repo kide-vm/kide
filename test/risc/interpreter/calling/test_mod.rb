@@ -5,22 +5,23 @@ module Risc
     include Ticker
 
     def setup
+      @preload = "Integer.div4"
       @string_input = as_main "return 9.div4"
       super
     end
 
     def test_chain
       #show_main_ticks # get output of what is
-      check_main_chain   [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
+      check_main_chain [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, #10
                  FunctionCall, LoadConstant, SlotToReg, LoadConstant, OperatorInstruction, #15
                  IsNotZero, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #20
                  LoadData, OperatorInstruction, RegToSlot, RegToSlot, SlotToReg, #25
-                 SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, #30
-                 SlotToReg, FunctionReturn, SlotToReg, RegToSlot, Branch, #35
-                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #40
-                 SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg, #45
-                 Syscall, NilClass,] #50
+                 RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot, #30
+                 SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, #35
+                 RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot, #40
+                 SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer, #45
+                 SlotToReg, SlotToReg, Syscall, NilClass,] #50
        assert_equal 2 , get_return
     end
 

@@ -6,10 +6,11 @@ module Risc
   module Ticker
     include ScopeHelper
     include Output
+    include Preloader
 
     def setup
       compiler = RubyX::RubyXCompiler.new(RubyX.interpreter_test_options)
-      @linker = compiler.ruby_to_binary(@string_input, :interpreter)
+      @linker = compiler.ruby_to_binary(preload + @string_input, :interpreter)
       @interpreter = Interpreter.new(@linker)
       @interpreter.start_program
     end
@@ -103,17 +104,11 @@ module Risc
     # use the input as it, compile and run it
     # input muts contain a Space.main, but may contain more classes and methods
     def run_input(input)
-      @string_input = input
+      @string_input = preload + input
       do_setup
       run_all
     end
 
-    # wrap the input in Space (main is assumed to be part of it)
-    def run_space(input)
-      @string_input = in_Space(input)
-      do_setup
-      run_all
-    end
     def run_all
       while(@interpreter.instruction)
         @interpreter.tick

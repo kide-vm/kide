@@ -2,12 +2,10 @@ require_relative "../helper"
 
 module Risc
   class TestTextWriter < MiniTest::Test
-
+    include  ScopeHelper
     def setup
-      Parfait.boot!(Parfait.default_test_options)
-      Mom.boot!
-      Risc.boot!
-      @linker = Mom::MomCollection.new.to_risc.translate(:arm)
+      compiler = compiler_with_main()
+      @linker = compiler.to_target( :arm)
     end
     def test_init
       @text_writer = TextWriter.new(@linker)
@@ -18,12 +16,10 @@ module Risc
     end
   end
   class TestTextWriterPositions < MiniTest::Test
-
+    include  ScopeHelper
     def setup
-      Parfait.boot!(Parfait.default_test_options)
-      Mom.boot!
-      Risc.boot!
-      @linker = Mom::MomCollection.new.to_risc.translate(:arm)
+      compiler = compiler_with_main()
+      @linker = compiler.to_target( :arm)
       @linker.position_all
       @linker.create_binary
       @text_writer = TextWriter.new(@linker)

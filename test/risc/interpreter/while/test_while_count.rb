@@ -3,8 +3,10 @@ require_relative "../helper"
 module Risc
   class InterpreterWhileCount < MiniTest::Test
     include Ticker
+    include Preloader
 
     def setup
+      @preload = "Integer.gt;Integer.plus"
       @string_input = as_main 'a = -1; while( 0 > a); a = 1 + a;end;return a'
       super
     end

@@ -5,7 +5,8 @@ module Risc
     include Ticker
 
     def setup
-        @string_input = as_main("return 'Hello'.get_internal_byte(0)")
+      @preload = "Word.get"
+      @string_input = as_main("return 'Hello'.get_internal_byte(0)")
       super
     end
     def test_chain
@@ -15,11 +16,12 @@ module Risc
                  SlotToReg, RegToSlot, SlotToReg, FunctionCall, LoadConstant, #15
                  SlotToReg, LoadConstant, OperatorInstruction, IsNotZero, SlotToReg, #20
                  RegToSlot, SlotToReg, SlotToReg, SlotToReg, ByteToReg, #25
-                 RegToSlot, RegToSlot, SlotToReg, SlotToReg, RegToSlot, #30
-                 Branch, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, #35
-                 SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, #40
-                 RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, #45
-                 Transfer, SlotToReg, SlotToReg, Syscall, NilClass,] #50
+                 RegToSlot, RegToSlot, SlotToReg, RegToSlot, Branch, #30
+                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #35
+                 SlotToReg, FunctionReturn, SlotToReg, RegToSlot, Branch, #40
+                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #45
+                 SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg, #50
+                 Syscall, NilClass,] #55
        assert_equal "H".ord , get_return
     end
     def test_byte_to_reg

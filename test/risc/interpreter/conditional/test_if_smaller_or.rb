@@ -5,6 +5,7 @@ module Risc
     include Ticker
 
     def setup
+      @preload = "Integer.le"
       @string_input = as_main 'if( 5 <= 5 ); return 1;else;return 2;end'
       super
     end

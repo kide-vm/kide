@@ -23,7 +23,7 @@ module RubyX
     end
     def test_asm_len
       linker = @collection.translate(:interpreter)
-      assert_equal 22 , linker.assemblers.length
+      assert_equal 2 , linker.assemblers.length
     end
   end
   class TestRubyXCompilerParfait < MiniTest::Test

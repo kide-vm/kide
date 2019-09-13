@@ -36,7 +36,7 @@ module RubyX
       assert_equal 2 , compiler.vool.length
       linker = compiler.to_binary(:interpreter)
       assert_equal Risc::Linker , linker.class
-      assert_equal 23 , linker.assemblers.length
+      assert_equal 3 , linker.assemblers.length
     end
   end
 end

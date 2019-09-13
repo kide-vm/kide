@@ -6,7 +6,7 @@ module Risc
 
     def setup
       @class_input = "def self.simple_return; return 1 ; end;"
-      @input = "return Test.simple_return"
+      @input = "return Space.simple_return"
       @expect = [LoadConstant, RegToSlot, Branch]
     end
 

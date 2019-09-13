@@ -35,6 +35,7 @@ module Mains
     end
 
     def setup
+      @preload = "Word.put"
       @string_input = whole_input
       super
     end

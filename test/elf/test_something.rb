@@ -2,6 +2,7 @@ require_relative "helper"
 
 module Elf
   class SomethingTest < FullTest
+    include Preloader
 
     def test_add
       input = <<HERE
@@ -22,7 +23,7 @@ module Elf
       end
 HERE
       @exit_code = 4
-      check in_space(input) , "fibo"
+      check get_preload("Integer.lt;Integer.plus") + in_space(input) , "fibo"
     end
   end
 end

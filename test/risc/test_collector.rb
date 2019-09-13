@@ -2,16 +2,16 @@ require_relative "../helper"
 
 module Risc
   module CollectT
+    include ScopeHelper
+
     def boot( num )
       opt = Parfait.default_test_options
       if(num)
         opt[:Integer] = 400
         opt[:Message] = 400
       end
-      Parfait.boot!(opt)
-      Mom.boot!
-      Risc.boot!
-      @linker = Mom::MomCollection.new.to_risc.translate(:arm)
+      compiler = compiler_with_main({parfait: opt})
+      @linker = compiler.to_target( :arm)
     end
 
     def test_simple_collect
@@ -38,7 +38,7 @@ module Risc
     end
 
     def len
-      1564
+      1476
     end
 
     def test_collect_all_types
@@ -52,13 +52,13 @@ module Risc
       Collector.collect_space(@linker).each do |objekt , position|
         next if objekt.is_a?( Parfait::Object )
         next if objekt.is_a?( Symbol )
-        assert false
+        assert false , objekt.class.name
       end
     end
     def test_positions
       Collector.collect_space(@linker).each do |objekt , position|
         assert_equal Position , position.class
-        assert !position.valid?
+        assert !position.valid? , objekt.class.name
       end
     end
   end
@@ -70,7 +70,7 @@ module Risc
     end
 
     def len
-      3044
+      2956
     end
   end
 end

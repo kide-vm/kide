@@ -22,7 +22,8 @@ module RubyX
     end
   end
   module ParfaitHelper
-
+    include Preloader
+    
     def load_parfait(file)
       File.read File.expand_path("../../../lib/parfait/#{file}.rb",__FILE__)
     end

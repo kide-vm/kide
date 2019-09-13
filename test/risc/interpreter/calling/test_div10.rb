@@ -5,12 +5,13 @@ module Risc
     include Ticker
 
     def setup
+      @preload = "Integer.div10"
       @string_input = as_main("return 25.div10")
       super
     end
 
     def test_chain
-      # show_main_ticks # get output of what is
+      #show_main_ticks # get output of what is
       check_main_chain  [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, #10
                  FunctionCall, LoadConstant, SlotToReg, LoadConstant, OperatorInstruction, #15
@@ -22,11 +23,11 @@ module Risc
                  LoadData, OperatorInstruction, LoadData, Transfer, OperatorInstruction, #45
                  OperatorInstruction, Transfer, LoadData, OperatorInstruction, LoadData, #50
                  OperatorInstruction, OperatorInstruction, RegToSlot, RegToSlot, SlotToReg, #55
-                 SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, #60
-                 SlotToReg, FunctionReturn, SlotToReg, RegToSlot, Branch, #65
-                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #70
-                 SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg, #75
-                 Syscall, NilClass,] #80
+                 RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot, #60
+                 SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, #65
+                 RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot, #70
+                 SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer, #75
+                 SlotToReg, SlotToReg, Syscall, NilClass,] #80
        assert_equal 2 , get_return
     end
 
@@ -36,7 +37,7 @@ module Risc
       assert_equal 25 , @interpreter.get_register(load_ins.register).value
     end
     def test_return_class
-      ret = main_ticks(72)
+      ret = main_ticks(74)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
       assert_equal ::Integer , link.class

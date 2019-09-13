@@ -6,6 +6,7 @@ module Risc
     class IntCmp < Minitest::Test
       include Ticker
       def setup
+        @preload = [:le,:ge,:gt,:lt].collect{|op| "Integer.#{op}"}.join(";")
       end
 
       def test_smaller_true

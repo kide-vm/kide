@@ -2,11 +2,10 @@ require_relative "helper"
 
 module Risc
   class TestCodeListenerFull < MiniTest::Test
+    include ScopeHelper
     def setup
-      Parfait.boot!(Parfait.default_test_options)
-      Mom.boot!
-      Risc.boot!
-      @linker = Mom::MomCollection.new.to_risc.translate(:interpreter)
+      compiler = compiler_with_main()
+      @linker = compiler.to_target( :interpreter)
       @binary = Parfait::BinaryCode.new(1)
       @method = Parfait.object_space.types.values.first.methods
       @label = Risc.label("hi","ho")

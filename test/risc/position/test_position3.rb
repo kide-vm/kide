@@ -2,11 +2,10 @@ require_relative "helper"
 
 module Risc
   class TestMachinePositions < MiniTest::Test
+    include ScopeHelper
     def setup_for(platform)
-      Parfait.boot!(Parfait.default_test_options)
-      Mom.boot!
-      Risc.boot!
-      @linker = Mom::MomCollection.new.to_risc.translate(platform)
+      compiler = compiler_with_main()
+      @linker = compiler.to_target( platform)
       @linker.position_all
     end
     def test_cpu_init

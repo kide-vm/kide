@@ -5,23 +5,24 @@ module Risc
     include Ticker
 
     def setup
+      @preload = "Integer.minus"
       @string_input = as_main("return 6 - 5")
       super
     end
 
     def test_minus
       #show_main_ticks # get output of what is
-      check_main_chain   [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
+      check_main_chain  [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant, #10
                  SlotToReg, RegToSlot, SlotToReg, FunctionCall, LoadConstant, #15
                  SlotToReg, LoadConstant, OperatorInstruction, IsNotZero, SlotToReg, #20
                  RegToSlot, SlotToReg, SlotToReg, SlotToReg, SlotToReg, #25
-                 OperatorInstruction, RegToSlot, RegToSlot, SlotToReg, SlotToReg, #30
-                 Branch, RegToSlot, SlotToReg, SlotToReg, SlotToReg, #35
-                 FunctionReturn, SlotToReg, RegToSlot, Branch, SlotToReg, #40
-                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg, #45
-                 FunctionReturn, Transfer, SlotToReg, SlotToReg, Syscall, #50
-                 NilClass,] #55
+                 OperatorInstruction, RegToSlot, RegToSlot, SlotToReg, RegToSlot, #30
+                 Branch, Branch, SlotToReg, SlotToReg, RegToSlot, #35
+                 SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, #40
+                 RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot, #45
+                 SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer, #50
+                 SlotToReg, SlotToReg, Syscall, NilClass,] #55
        assert_equal 1 , get_return
     end
     def test_op
@@ -34,10 +35,10 @@ module Risc
       assert_equal 5 , @interpreter.get_register(:r3)
     end
     def test_return
-      ret = main_ticks(46)
+      ret = main_ticks(49)
       assert_equal FunctionReturn ,  ret.class
       assert_equal :r3 ,  ret.register.symbol
-      assert_equal 40220 ,  @interpreter.get_register(ret.register)
+      assert_equal 38140 ,  @interpreter.get_register(ret.register)
     end
   end
 end

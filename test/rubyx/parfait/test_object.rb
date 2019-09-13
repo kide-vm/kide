@@ -4,6 +4,8 @@ module RubyX
 
   class TestObjectCompile < MiniTest::Test
     include ParfaitHelper
+    include Preloader
+
     def source
       load_parfait(:object)
     end
@@ -21,11 +23,11 @@ module RubyX
       assert_equal Mom::MomCollection , mom.class
     end
     def test_risc
-      risc = compiler.ruby_to_risc source
+      risc = compiler.ruby_to_risc( get_preload("Space.main") + source)
       assert_equal Risc::RiscCollection , risc.class
     end
     def test_binary
-      risc = compiler.ruby_to_binary source , :interpreter
+      risc = compiler.ruby_to_binary( get_preload("Space.main") + source , :interpreter)
       assert_equal Risc::Linker , risc.class
     end
   end
