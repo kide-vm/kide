@@ -1,6 +1,7 @@
 require "util/eventable"
 require "risc/interpreter"
 require_relative "compiling"
+require_relative "output"
 
 module Risc
   module Ticker

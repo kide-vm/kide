@@ -24,4 +24,9 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'test'))
 
 require 'rubyx'
 
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+require_relative "support/options"
+require_relative "support/parfait_test"
+require_relative "support/fake_int"
+require_relative "support/fake_compiler"
+require_relative "support/risc_assert"
+require_relative "support/risc_interpreter"
