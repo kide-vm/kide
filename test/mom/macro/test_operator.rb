@@ -2,25 +2,34 @@ require_relative "helper"
 
 module Mom
   module Builtin
-    class TestIntOperatorsRisc < BootTest
+    class TestIntOpPl < BootTest
       def setup
-        super
+        @method = get_compiler("Integer",:and)
       end
-      def each_method &block
-        Risc.operators.each do |name|
-          method = get_operator_compiler(name)
-          block.yield(method)
-        end
+      def test_mom_length
+        assert_equal :& , @method.callable.name
+        assert_equal 7 , @method.mom_instructions.length
       end
       def test_compile
-        each_method do |method|
-          assert_equal Risc::MethodCompiler , method.to_risc.class
-        end
+        assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        each_method do |method|
-          assert_equal 39 , method.to_risc.risc_instructions.length
-        end
+        assert_equal 42 , @method.to_risc.risc_instructions.length
+      end
+    end
+    class TestIntOpMM < BootTest
+      def setup
+        @method = get_compiler("Integer",:or)
+      end
+      def test_mom_length
+        assert_equal :| , @method.callable.name
+        assert_equal 7 , @method.mom_instructions.length
+      end
+      def test_compile
+        assert_equal Risc::MethodCompiler , @method.to_risc.class
+      end
+      def test_risc_length
+        assert_equal 42 , @method.to_risc.risc_instructions.length
       end
     end
   end

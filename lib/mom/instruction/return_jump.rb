@@ -22,6 +22,10 @@ module Mom
     def to_risc(compiler)
       compiler.add_code Risc::Branch.new(self , return_label.risc_label(compiler))
     end
+
+    def to_s
+      "ReturnJump: #{return_label}"
+    end
   end
 
 

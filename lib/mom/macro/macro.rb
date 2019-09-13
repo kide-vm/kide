@@ -1,6 +1,10 @@
 module Mom
   class Macro < Instruction
 
+    def to_s
+      self.class.name.split("::").last
+    end
+
     # emit the syscall with given name
     # there is a Syscall instruction, but the message has to be saved and restored
     def self.emit_syscall( builder , name )

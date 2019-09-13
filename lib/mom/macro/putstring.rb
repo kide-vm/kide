@@ -7,7 +7,7 @@ module Mom
         word! << message[:receiver]
         integer! << word[Parfait::Word.get_length_index]
       end
-      Mom::Builtin.emit_syscall( builder , :putstring )
+      Mom::Macro.emit_syscall( builder , :putstring )
       compiler
     end
   end
