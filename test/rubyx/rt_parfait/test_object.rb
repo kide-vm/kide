@@ -1,12 +1,11 @@
 require_relative "rt_helper"
 
 module RubyX
-  class ObjectTest < MiniTest::Test
+  class ObjectSourceTest < MiniTest::Test
     include ParfaitHelper
     def setup
       @input = load_parfait(:object) + load_parfait_test(:object)
     end
-
     def test_load
       assert @input.include? "ParfaitTest"
       assert @input.include? "class Object"
@@ -41,16 +40,41 @@ module RubyX
       assert_equal Vool::ClassExpression , vool[2].class
       assert_equal :TestObject , vool[2].name
     end
+    def test_vool_methods
+      vool = Ruby::RubyCompiler.compile(@input).to_vool
+      assert_equal Vool::Statements , vool[2].body.class
+      vool[2].body.statements.each do |st|
+        assert_equal Vool::MethodExpression , st.class
+      end
+    end
+  end
+  class TestObjectRtTest < Minitest::Test
+    self.class.include ParfaitHelper
+    include Risc::Ticker
 
-    def est_basics
-      risc = compiler.ruby_to_risc @input , :interpreter
-      assert_equal Risc::Linker , risc.class
+    def self.runnable_methods
+      input = load_parfait(:object) + load_parfait_test(:object)
+      vool = Ruby::RubyCompiler.compile(input).to_vool
+      tests = [  ]
+      vool[2].body.statements.each do |method|
+        tests << method.name
+        self.send(:define_method, method.name ) do
+          code = input + <<MAIN
+            class Space
+              def main(args)
+                test = #{vool[2].name}.new
+                test.setup
+                test.#{method.name}
+              end
+            end
+MAIN
+          @preload = "all"
+#          ticks = run_input(code)
+#          assert_equal "" , @interpreter.stdout
+        end
+      end
+      tests
     end
 
-    def test_run_all
-      @input = "class Space;def main(arg); return 'hi';end;end;" + @input
-      run_input
-      assert_equal "" , @interpreter.stdout
-    end
   end
 end

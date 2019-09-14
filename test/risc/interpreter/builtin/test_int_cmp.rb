@@ -1,6 +1,5 @@
 require_relative "../helper"
 
-# TODO move these to interpreter dir
 module Risc
   module Macro
     class IntCmp < Minitest::Test

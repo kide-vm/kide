@@ -31,7 +31,7 @@ module Risc
     end
   end
 
-  # dynamic version of an Branch branch that jumps to the contents
+  # dynamic version of an Branch that jumps to the contents
   # of a register instead of a hardcoded address
   # As Branches jump to Labels, this is not derived from Branch
   # PS: to conditionally jump to a dynamic adddress we do a normal branch
