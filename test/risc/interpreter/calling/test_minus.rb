@@ -38,7 +38,7 @@ module Risc
       ret = main_ticks(49)
       assert_equal FunctionReturn ,  ret.class
       assert_equal :r3 ,  ret.register.symbol
-      assert_equal 38140 ,  @interpreter.get_register(ret.register)
+      assert_equal 38236 ,  @interpreter.get_register(ret.register)
     end
   end
 end

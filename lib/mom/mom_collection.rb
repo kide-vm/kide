@@ -14,15 +14,18 @@ module Mom
       @method_compilers = compilers
     end
 
-    # lazily instantiate the compiler for init function
+    # lazily instantiate the compiler for __init__ function and __method_missing__
     def init_compiler
-      @init_compilers ||= MomCollection.create_init_compiler
+      @init_compilers ||= [
+        MomCollection.create_init_compiler ,
+        MomCollection.create_mm_compiler ,
+                  ]
     end
 
     # Return all compilers, namely the MethodCompilers passed in, plus the
     # boot_function's compilers (boot_compilers)
     def compilers
-      @method_compilers << init_compiler
+      @method_compilers + init_compiler
     end
 
     # Append another MomCompilers method_compilers to this one.
@@ -41,23 +44,25 @@ module Mom
       Risc::RiscCollection.new(riscs)
     end
 
-    # this is the really really first place the machine starts (apart from the jump here)
-     # it isn't really a function, ie it is jumped to (not called), exits and may not return
-     # so it is responsible for initial setup:
-     # - load fist message, set up Space as receiver
-     # - call main, ie set up message for that etc
-     # - exit (exit_sequence) which passes a machine int out to c
-     def self.create_init_compiler
-       compiler = compiler_for(:Object,:__init__ ,{})
-       compiler._reset_for_init # no return, just for init
-       compiler.add_code Init.new("missing")
-       return compiler
-     end
-     def self.compiler_for( clazz_name , method_name , arguments , locals = {})
-       frame = Parfait::NamedList.type_for( locals )
-       args = Parfait::NamedList.type_for( arguments )
-       MethodCompiler.compiler_for_class(clazz_name , method_name , args, frame )
-     end
+    # See Init instruction. We must have an init (ie we need it in code), so it is created in code
+    def self.create_init_compiler
+      compiler = compiler_for(:Object,:__init__ ,{})
+      compiler._reset_for_init # no return, just for init
+      compiler.add_code Init.new("missing")
+      return compiler
+    end
+
+    def self.create_mm_compiler
+      compiler = compiler_for(:Object,:__method_missing__ ,{})
+      compiler.add_code MethodMissing.new("missing")
+      return compiler
+    end
+
+    def self.compiler_for( clazz_name , method_name , arguments , locals = {})
+      frame = Parfait::NamedList.type_for( locals )
+      args = Parfait::NamedList.type_for( arguments )
+      MethodCompiler.compiler_for_class(clazz_name , method_name , args, frame )
+    end
 
   end
 end

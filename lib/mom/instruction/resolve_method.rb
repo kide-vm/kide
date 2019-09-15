@@ -62,10 +62,7 @@ module Mom
         branch  while_start_label
 
         add_code exit_label
-        # temporary, need to raise really.
-        factory! << Parfait.object_space.get_factory_for(:Integer)
-        integer_tmp! << factory[:reserve]
-        Mom::Macro.emit_syscall( builder , :died ) #uses integer_tmp
+        MethodMissing.new(compiler.source_name).to_risc(compiler)
 
         add_code ok_label
         cache_entry[:cached_method] << callable_method

@@ -52,14 +52,11 @@ module Risc
       @interpreter.tick
       assert_equal 2 , @interpreter.clock
     end
-    def test_pc1
+    def test_pc
       @interpreter.tick
-      assert_equal 37704 , @interpreter.pc
-    end
-    def test_pc2
+      assert_equal t = 37800 , @interpreter.pc
       @interpreter.tick
-      @interpreter.tick
-      assert_equal 37708 , @interpreter.pc
+      assert_equal t + 4 , @interpreter.pc
     end
     def test_tick2
       @interpreter.tick
