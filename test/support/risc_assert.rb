@@ -22,5 +22,13 @@ module Minitest
       assert_equal from , transfer.from.symbol
       assert_equal to , transfer.to.symbol
     end
+    def assert_label( label , name )
+      assert_equal Risc::Label , label.class
+      if(name[-1] == "_")
+        assert label.name.start_with?(name) , "Label does not start with #{name}:#{label.name}"
+      else
+        assert_equal name , label.name
+      end
+    end
   end
 end
