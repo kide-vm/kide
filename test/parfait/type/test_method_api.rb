@@ -63,6 +63,10 @@ module Parfait
       type.add_method(foo)
       assert_equal :foo , type.get_method(:foo).name
     end
+    def test_space_get_method
+      test_get_instance
+      assert_equal :foo , @space.get_method!(:Object , :foo).name
+    end
     def test_resolve_on_object
       add_foo_to :Object
       assert_equal :foo , object_type.resolve_method( :foo ).name

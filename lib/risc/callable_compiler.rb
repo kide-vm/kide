@@ -14,6 +14,7 @@ module Risc
     # Must pass the callable (method/block)
     # Also start instuction, usually a label is mandatory
     def initialize( callable  , mom_label)
+      raise "No method" unless callable
       @callable = callable
       @regs = []
       @constants = []

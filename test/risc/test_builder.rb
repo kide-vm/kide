@@ -6,8 +6,8 @@ module Risc
     def setup
       Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
-      init = Parfait.object_space.get_init
-      @builder = Risc::MethodCompiler.new( init ,Mom::Label.new( "source_name", "return_label")).builder(init)
+      label = Mom::Label.new( "source_name", "return_label")
+      @builder = Risc::MethodCompiler.new( FakeCallable.new ,label).builder("source")
       @label = Risc.label("source","name")
       @start = @builder.compiler.current
     end

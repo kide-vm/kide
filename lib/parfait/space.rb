@@ -113,16 +113,15 @@ module Parfait
       methods
     end
 
-    # shortcut to get the main method. main is defined on Space
-    def get_main
-      space = get_class_by_name :Space
-      space.instance_type.get_method :main
-    end
-
-    # shortcut to get the __init__ method, which is defined on Object
-    def get_init
-      object = get_class_by_name :Object
-      object.instance_type.get_method :__init__
+    # shortcut to get at known methods that are used in the compiler
+    # arguments are class and method names
+    # returns method or raises (!)
+    def get_method!( clazz_name , method_name )
+      clazz = get_class_by_name( clazz_name )
+      raise "No such class #{clazz_name}" unless clazz
+      method = clazz.instance_type.get_method(method_name)
+      raise "No such Method #{method_name}, in #{clazz_name}" unless method
+      method
     end
 
     # get the current instance_typ of the class with the given name

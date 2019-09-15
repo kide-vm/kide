@@ -1,3 +1,5 @@
+class FakeCallable
+end
 module Risc
   class FakeCompiler
     attr_reader :instructions

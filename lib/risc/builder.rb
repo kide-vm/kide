@@ -19,6 +19,7 @@ module Risc
     # call build with a block to build
     def initialize(compiler, for_source)
       raise "no compiler" unless compiler
+      raise "no source" unless for_source
       @compiler = compiler
       @source = for_source
       @source_used = false
@@ -207,7 +208,7 @@ module Risc
     def call_get_more
       factory = Parfait.object_space.get_factory_for( :Integer )
       calling = factory.get_type.get_method( :get_more )
-      calling = Parfait.object_space.get_main #until we actually parse Factory
+      calling = Parfait.object_space.get_method!(:Space,:main) #until we actually parse Factory
       raise "no main defined" unless calling
       Mom::MessageSetup.new( calling ).build_with( self )
       self.build do

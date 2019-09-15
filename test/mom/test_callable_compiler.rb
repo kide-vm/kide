@@ -1,6 +1,4 @@
 require_relative "helper"
-class FakeCallable
-end
 module Mom
   class FakeCallableCompiler < CallableCompiler
     def source_name

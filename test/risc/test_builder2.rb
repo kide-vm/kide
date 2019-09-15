@@ -6,9 +6,9 @@ module Risc
     def setup
       Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
-      @init = Parfait.object_space.get_init
-      @compiler = Risc::MethodCompiler.new( @init, Mom::Label.new( "source_name", "return_label") )
-      @builder  = @compiler.builder(@init)
+      method = FakeCallable.new
+      @compiler = Risc::MethodCompiler.new( method, Mom::Label.new( "source_name", "return_label") )
+      @builder  = @compiler.builder(method)
     end
     def test_list
       assert_equal :List , @builder.infer_type(:list).class_name

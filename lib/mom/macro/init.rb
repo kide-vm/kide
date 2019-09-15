@@ -2,6 +2,8 @@ module Mom
   class Init < Macro
     def to_risc(compiler)
       builder = compiler.builder(compiler.source)
+      main = Parfait.object_space.get_method!(:Space, :main)
+
       builder.build do
         factory! << Parfait.object_space.get_factory_for(:Message)
         message << factory[:next_object]
@@ -9,7 +11,7 @@ module Mom
         factory[:next_object] << next_message
       end
       builder.reset_names
-      Mom::MessageSetup.new(Parfait.object_space.get_main).build_with( builder )
+      Mom::MessageSetup.new(main).build_with( builder )
 
       builder.build do
         message << message[:next_message]
@@ -22,7 +24,7 @@ module Mom
       builder.build do
         ret_tmp << exit_label
         message[:return_address] << ret_tmp
-        add_code Risc.function_call( "__init__ issue call" ,  Parfait.object_space.get_main)
+        add_code Risc.function_call( "__init__ issue call" ,  main)
         add_code exit_label
       end
       compiler.reset_regs

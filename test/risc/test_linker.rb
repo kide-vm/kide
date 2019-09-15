@@ -30,11 +30,11 @@ module Risc
       assert_equal Position ,  Position.get(@linker.cpu_init.first).class
     end
     def test_first_binary_jump
-      bin = Parfait.object_space.get_init.binary
+      bin = Parfait.object_space.get_method!(:Object,:__init__).binary
       assert_equal 116 , bin.total_byte_length
     end
     def test_second_binary_first
-      bin = Parfait.object_space.get_init.binary
+      bin = Parfait.object_space.get_method!(:Object,:__init__).binary
       assert 0 != bin.get_word(0) , "index 0 is 0 #{bin.inspect}"
     end
     def test_positions_set
