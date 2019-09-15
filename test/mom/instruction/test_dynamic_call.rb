@@ -10,6 +10,7 @@ module Mom
     end
     def test_1_load
       assert_load risc(1) , Risc::Label , :r1
+      assert_label risc(1).constant , "continue_" 
     end
     def test_2_slot
       assert_slot_to_reg risc(2) ,:r0 , 1 , :r2

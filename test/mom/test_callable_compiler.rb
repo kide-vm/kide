@@ -8,7 +8,7 @@ module Mom
   class TestCallableCompiler < MiniTest::Test
 
     def setup
-      @compiler = FakeCallableCompiler.new(FakeCallable.new)
+      @compiler = FakeCallableCompiler.new(Risc::FakeCallable.new)
     end
     def test_ok
       assert @compiler

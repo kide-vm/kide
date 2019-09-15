@@ -96,7 +96,7 @@ module Mom
     # type information inferred from their names / type hierachy
     def sym_to_risc(compiler , source)
       slots = @slots.dup
-      raise "Not Message #{object}" unless @known_object == :message
+      raise "Not Message #{@known_object}" unless @known_object == :message
       left = Risc.message_reg
       left = left.resolve_and_add( slots.shift , compiler)
       reg = compiler.current.register

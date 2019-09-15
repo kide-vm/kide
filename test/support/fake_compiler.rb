@@ -1,6 +1,9 @@
-class FakeCallable
-end
 module Risc
+  class FakeCallable
+    def self_type
+      Parfait.object_space.types.values.first
+    end
+  end
   class FakeCompiler
     attr_reader :instructions
     def initialize

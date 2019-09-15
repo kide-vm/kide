@@ -1,7 +1,5 @@
 require_relative "helper"
 module Risc
-  class FakeCallable
-  end
   class FakeCallableCompiler < CallableCompiler
     def initialize(a,c)
       super(a,c)

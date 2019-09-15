@@ -12,7 +12,7 @@ module Mom
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @instruction = instruction
-      @compiler = Risc::MethodCompiler.new(FakeCallable.new , Label.new("source","start"))
+      @compiler = Risc::MethodCompiler.new(Risc::FakeCallable.new , Label.new("source","start"))
       @instruction.to_risc(@compiler)
       @risc = @compiler.risc_instructions
     end
