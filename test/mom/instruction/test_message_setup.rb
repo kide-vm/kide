@@ -14,9 +14,9 @@ module Mom
     def test_2_slot
       assert_slot_to_reg risc(2) ,:r0 , 1 , :r2
     end
-  end
-  def test_3_reg
-    assert_reg_to_slot risc(3) , :r1 , :r2 , 4
+    def test_3_reg
+      assert_reg_to_slot risc(3) , :r1 , :r2 , 7
+    end
   end
   class TestMessageSetupCache < MomInstructionTest
     include Parfait::MethodHelper
