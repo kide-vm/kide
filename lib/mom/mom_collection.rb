@@ -54,7 +54,7 @@ module Mom
 
     def self.create_mm_compiler
       compiler = compiler_for(:Object,:__method_missing__ ,{})
-      compiler.add_code MethodMissing.new("missing")
+      compiler.add_code MethodMissing.new("missing" , :r1)
       return compiler
     end
 

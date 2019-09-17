@@ -13,7 +13,7 @@ module Vool
     def self.builtin
       {
         "Object.get" => "def get_internal_word(at); X.get_internal_word;end",
-        "Object.missing" => "def method_missing(at); X.method_missing;end",
+        "Object.missing" => "def method_missing(at); X.method_missing(:r1);end",
         "Object.exit" => "def exit; X.exit;end",
         "Integer.div4" => "def div4; X.div4;end",
         "Integer.div10" => "def div10; X.div10;end",

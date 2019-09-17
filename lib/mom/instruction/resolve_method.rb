@@ -62,7 +62,7 @@ module Mom
         branch  while_start_label
 
         add_code exit_label
-        MethodMissing.new(compiler.source_name).to_risc(compiler)
+        MethodMissing.new(compiler.source_name , word.symbol).to_risc(compiler)
 
         add_code ok_label
         cache_entry[:cached_method] << callable_method

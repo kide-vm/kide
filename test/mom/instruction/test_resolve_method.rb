@@ -10,7 +10,7 @@ module Mom
       ResolveMethod.new( "method" , :name , cache_entry )
     end
     def test_len
-      assert_equal 18 , all.length , all_str
+      assert_equal 19 , all.length , all_str
     end
     def test_1_load_name
       assert_load risc(1) , Symbol , :r1
@@ -56,14 +56,17 @@ module Mom
     def test_14_goto_exit
       assert_label risc(14) , "exit_label_"
     end
-    def test_15_die
-      assert_syscall risc(15) , :died
+    def test_15_move_name
+      assert_transfer( risc(15) , :r1 , :r1)
     end
-    def test_16_label
-      assert_label risc(16) , "ok_label_"
+    def test_16_die
+      assert_syscall risc(16) , :died
     end
-    def test_17_load_method
-      assert_reg_to_slot risc(17) , :r4 , :r2 , 2
+    def test_17_label
+      assert_label risc(17) , "ok_label_"
+    end
+    def test_18_load_method
+      assert_reg_to_slot risc(18) , :r4 , :r2 , 2
     end
   end
 end

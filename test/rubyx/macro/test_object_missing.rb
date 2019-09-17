@@ -13,7 +13,7 @@ module RubyX
         end
         class Object
           def method_missing(at)
-            X.method_missing
+            X.method_missing(:r1)
           end
         end
 GET
@@ -28,7 +28,7 @@ GET
         assert_equal Mom::MethodMissing , compiler.mom_instructions.next.class
       end
       def test_risc
-        assert_equal 14 , compiler.to_risc.risc_instructions.length
+        assert_equal 15 , compiler.to_risc.risc_instructions.length
       end
     end
   end

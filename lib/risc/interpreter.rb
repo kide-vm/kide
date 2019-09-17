@@ -250,7 +250,7 @@ module Risc
         set_instruction(nil)
         return false
       when :died
-        raise "Method not found #{@registers[:r0]}"
+        raise "Method #{@registers[:r1]} not found for #{@registers[:r0].receiver}"
       else
         raise "un-implemented syscall #{name}"
       end
