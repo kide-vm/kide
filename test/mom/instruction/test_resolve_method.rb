@@ -10,7 +10,7 @@ module Mom
       ResolveMethod.new( "method" , :name , cache_entry )
     end
     def test_len
-      assert_equal 25 , all.length , all_str
+      assert_equal 18 , all.length , all_str
     end
     def test_1_load_name
       assert_load risc(1) , Symbol , :r1
@@ -40,6 +40,7 @@ module Mom
     def test_9_get_method_name
       assert_slot_to_reg risc(9) ,:r4 , 6 , :r6
     end
+    #              Syscall, Label, RegToSlot,] #20
     def test_10_check_name
       assert_operator risc(10) , :- , :r6 , :r1
     end
@@ -55,35 +56,14 @@ module Mom
     def test_14_goto_exit
       assert_label risc(14) , "exit_label_"
     end
-    def test_15_load_factory
-      assert_load risc(15) , Parfait::Factory , :r7
+    def test_15_die
+      assert_syscall risc(15) , :died
     end
-    def test_16_load_next_from_factory
-      assert_slot_to_reg risc(16) , :r7 ,3 ,:r8
+    def test_16_label
+      assert_label risc(16) , "ok_label_"
     end
-    def test_17_save_message
-      assert_transfer risc(17) , :r0 , :r8
-    end
-    def test_18_die
-      assert_syscall risc(18) , :died
-    end
-    def test_19_mistake1
-      assert_transfer risc(19) , :r0 , :r9
-    end
-    def test_20_should_not_restore
-      assert_transfer risc(20) , :r8 , :r0
-    end
-    def test_21_dead_code
-      assert_slot_to_reg risc(21) , :r0 ,5 ,:r10
-    end
-    def test_22_dead_code
-      assert_reg_to_slot risc(22) , :r9 , :r10 , 2
-    end
-    def test_23_label
-      assert_label risc(23) , "ok_label_"
-    end
-    def test_24_load_method
-      assert_reg_to_slot risc(24) , :r4 , :r2 , 2
+    def test_17_load_method
+      assert_reg_to_slot risc(17) , :r4 , :r2 , 2
     end
   end
 end
