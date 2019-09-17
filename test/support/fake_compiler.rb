@@ -3,6 +3,9 @@ module Risc
     def self_type
       Parfait.object_space.types.values.first
     end
+    def name
+      :fake_name
+    end
   end
   class FakeCompiler
     attr_reader :instructions

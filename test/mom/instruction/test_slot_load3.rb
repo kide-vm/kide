@@ -1,10 +1,11 @@
 require_relative "helper"
 
 module Mom
-  class TestSlotLoad3 < Parfait::ParfaitTest
+  class TestSlotLoad3 < MiniTest::Test
+    include Parfait::MethodHelper
 
     def setup
-      super
+      Parfait.boot!(Parfait.default_test_options)
       method = make_method
       @compiler = Risc::FakeCompiler.new
       @cache_entry = Parfait::CacheEntry.new(method.frame_type, method)

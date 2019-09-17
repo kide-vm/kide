@@ -30,5 +30,24 @@ module Minitest
         assert_equal name , label.name
       end
     end
+    def assert_branch( branch , label_name )
+      assert_equal Risc::Branch , branch.class
+      assert_label branch.label , label_name
+    end
+    def assert_operator ins , op , left , right
+      assert_equal Risc::OperatorInstruction , ins.class
+      assert_equal op , ins.operator
+      assert_equal left , ins.left.symbol
+      assert_equal right , ins.right.symbol
+    end
+    def assert_zero ins , label
+      assert_equal Risc::IsZero , ins.class
+      assert_label ins.label , label
+    end
+    def assert_syscall ins , name
+      assert_equal Risc::Syscall , ins.class
+      assert_equal ins.name , name
+    end
+
   end
 end
