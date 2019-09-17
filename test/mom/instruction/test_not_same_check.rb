@@ -16,14 +16,10 @@ module Mom
       assert_slot_to_reg risc(2) ,:r0 , 6 , :r4
     end
     def test_3_op
-      assert_equal Risc::OperatorInstruction , risc(3).class
-      assert_equal :r2 , risc(3).left.symbol
-      assert_equal :r4 , risc(3).right.symbol
-      assert_equal :- , risc(3).operator
+      assert_operator risc(3) , :-, :r2 , :r4
     end
     def test_4_zero
-      assert_equal Risc::IsZero , risc(4).class
-      assert_label risc(4).label , "target"
+      assert_zero risc(4) , "target"
     end
   end
 end
