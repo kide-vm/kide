@@ -64,7 +64,7 @@ module Vool
       check_type_for("return @a.call()")
     end
   end
-  class TestClassStatementCompile# < MiniTest::Test
+  class TestClassStatementCompile < MiniTest::Test
     include VoolCompile
 
     def setup
@@ -74,7 +74,7 @@ module Vool
 
     def test_label
       assert_equal Label , @ins.class , @ins
-      assert_equal "Test_Type.main" , @ins.name , @ins
+      assert_equal "Space_Type.main" , @ins.name , @ins
     end
     def test_condition_compiles_to_check
       assert_equal TruthCheck , @ins.next.class , @ins

@@ -9,16 +9,13 @@ module Vool
       @ins = @compiler.mom_instructions.next
     end
 
-    def test_compiles_not_array
-      assert Array != @stats.class , @stats
+    def test_array
+      check_array  [SlotLoad, SlotLoad, ReturnJump, Label, ReturnSequence ,
+                    Label] , @ins
     end
     def test_class_compiles
-      assert_equal Mom::SlotLoad , @ins.class , @ins
-    end
-    def test_slot_is_set
+      assert_equal SlotLoad , @ins.class , @ins
       assert @ins.left
-    end
-    def test_slot_starts_at_message
       assert_equal :message , @ins.left.known_object
     end
     def test_slot_gets_self
@@ -29,8 +26,6 @@ module Vool
     end
     def test_slot_assigns_something
       assert @ins.right
-    end
-    def test_slot_assigns_int
       assert_equal Mom::IntegerConstant ,  @ins.right.known_object.class
     end
   end

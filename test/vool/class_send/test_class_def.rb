@@ -3,6 +3,8 @@ require_relative "helper"
 module Vool
   class TestClassDef < MiniTest::Test
     include Mom
+    include VoolCompile
+
     def class_main
       <<-eos
         class Space
@@ -21,11 +23,14 @@ module Vool
       ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(source)
       @ins = ret.compilers.find{|c|c.callable.name==:main}.mom_instructions.next
     end
+    def test_array
+      check_array [MessageSetup,ArgumentTransfer,SimpleCall,SlotLoad,
+                    ReturnJump,Label, ReturnSequence , Label] , @ins
+    end
 
     def test_any
       assert_equal Mom::MessageSetup , @ins.class
     end
-
     def test_no_arg
       assert_equal Mom::ArgumentTransfer,  @ins.next(1).class
       assert_equal 0,  @ins.next(1).arguments.length

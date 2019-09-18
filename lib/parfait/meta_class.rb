@@ -4,14 +4,11 @@
 
 # A Class in general can be viewed as a way to generate methods for a group of objects.
 
-# A MetaClass serves the same function, but just for one object, the class object that
+# A MetaClass serves the same function, but just for one object, the class object that it
 # is the meta_class of.
-# This is slightnly different in the way that the type of the class must actually
+# This is slightly different in the way that the type of the class must actually
 # change, whereas for a class the instance type changes and only objects generated
 # henceafter have a different type.
-
-# This is still a first version, this change is not implemeted, also classes at boot don't
-# have metaclasses yet, so still a bit TODO
 
 # Another current difference is that a metaclass has no superclass. Also no name.
 # There is a one to one relationship between a class instance and it's meta_class instance.
