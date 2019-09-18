@@ -9,7 +9,7 @@ module Risc
       @string_input = as_main("return 5 + 5")
       super
     end
-
+#FIXME should be mom macro test, no need to interpret
     def test_chain
       #show_main_ticks # get output of what is
       check_main_chain  [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
@@ -28,23 +28,23 @@ module Risc
     def base_ticks(num)
       main_ticks(14 + num)
     end
-    def test_base
+    def est_base
         cal = main_ticks( 14 )
         assert_equal FunctionCall , cal.class
     end
-    def test_load_receiver
+    def est_load_receiver
       sl = base_ticks( 8 )
       assert_slot_to_reg( sl , :r0 , 2 , :r2)
     end
-    def test_reduce_receiver
+    def est_reduce_receiver
       sl = base_ticks( 9 )
       assert_slot_to_reg( sl , :r2 , 2 , :r2)
     end
-    def test_slot_args #load args from message
+    def est_slot_args #load args from message
       sl = base_ticks( 10 )
       assert_slot_to_reg( sl , :r0 , 9 , :r3)
     end
-    def test_reduce_arg
+    def est_reduce_arg
       sl = base_ticks( 11 )
       assert_slot_to_reg( sl , :r3 , 2 , :r3)
       assert_equal 5 , @interpreter.get_register(:r3)
@@ -65,14 +65,6 @@ module Risc
     def test_move_int_to_reg
       int = base_ticks( 14 )
       assert_reg_to_slot( int , :r1 , :r0 , 5)
-    end
-    def test_move_fix_to_result
-      sl = base_ticks( 15 )
-      assert_slot_to_reg( sl , :r0 , 5 , :r2)
-    end
-    def test_move_fix_to_result
-      sl = base_ticks( 16 )
-      assert_reg_to_slot( sl , :r2 , :r0 , 5)
     end
   end
 end

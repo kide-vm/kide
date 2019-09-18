@@ -1,7 +1,8 @@
-# A sample Guardfile
-# More info at https://github.com/guard/guard#readme
+# can't put in helper or it will run (and fail) with parallel
+#require "minitest/reporters"
+#Minitest::Reporters.use!( Minitest::Reporters::MeanTimeReporter.new)
 
-guard :minitest , all_on_start: false do   # with Minitest::Unit
+guard :minitest ,:cli => "--profile", all_on_start: false do   # with Minitest::Unit
 
   # if any test file changes, run that test
   watch(%r{^test/(.*)\/?test_(.*)\.rb$})

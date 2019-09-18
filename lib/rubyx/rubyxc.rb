@@ -4,7 +4,7 @@ require "risc/interpreter"
 
 class RubyXC < Thor
   class_option :integers , type: :numeric
-  class_option :mesages , type: :numeric
+  class_option :messages , type: :numeric
   class_option :elf , type: :boolean
   class_option :preload , type: :boolean
 

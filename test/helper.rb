@@ -16,9 +16,6 @@ require "minitest/color"
 require "minitest/autorun"
 require "minitest/fail_fast" unless ENV["TEST_ALL"]
 require 'minitest/profile'
-#require "minitest/reporters"
-#Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
-
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'test'))
 
