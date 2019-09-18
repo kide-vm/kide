@@ -15,13 +15,23 @@
 module Parfait
   class Object
     attr_reader :type
+
     def self.type_length
       1
     end
     def self.memory_size
       4
     end
+    # Make the object space globally available
+    def self.object_space
+      @object_space
+    end
 
+    def self.new
+      factory = @object_space.get_factory(:Object)
+      object = factory.get_next
+      object.initialize
+    end
 
     def type=(t)
       set_type( t )

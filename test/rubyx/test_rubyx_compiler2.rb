@@ -26,7 +26,7 @@ module RubyX
       assert_equal 3 , linker.assemblers.length
     end
   end
-  class TestRubyXCompilerParfait < MiniTest::Test
+  class TestRubyXCompilerParfait #< MiniTest::Test
     include ScopeHelper
     include RubyXHelper
 

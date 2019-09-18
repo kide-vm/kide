@@ -2,7 +2,7 @@
 #require "minitest/reporters"
 #Minitest::Reporters.use!( Minitest::Reporters::MeanTimeReporter.new)
 
-guard :minitest ,:cli => "--profile", all_on_start: false do   # with Minitest::Unit
+guard :minitest , all_on_start: false do   # with Minitest::Unit
 
   # if any test file changes, run that test
   watch(%r{^test/(.*)\/?test_(.*)\.rb$})

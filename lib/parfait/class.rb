@@ -87,7 +87,7 @@ module Parfait
     # Nil name means no superclass, and so nil is a valid return value
     def super_class
       return nil unless @super_class_name
-      Parfait.object_space.get_class_by_name(@super_class_name)
+      Object.object_space.get_class_by_name(@super_class_name)
     end
 
     # ruby 2.1 list (just for reference, keep at bottom)

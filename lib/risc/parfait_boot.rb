@@ -50,13 +50,13 @@ module Parfait
   # - flesh out the types , create the real space
   # - and finally load the methods
   def self.boot!(options)
-    Parfait.set_object_space( nil )
+    Parfait::Object.set_object_space( nil ) # in case we are rebooting
     types = boot_types
     boot_boot_space( types )
     classes = boot_classes( types )
     fix_types( types , classes )
     space = Space.new( classes , options )
-    Parfait.set_object_space( space )
+    Parfait::Object.set_object_space( space )
   end
 
   # types is where the snake bites its tail. Every chain ends at a type and then it
@@ -83,7 +83,7 @@ module Parfait
       clazz = Boot::Class.new(type)
       boot_space.classes[name] = clazz
     end
-    Parfait.set_object_space( boot_space )
+    Parfait::Object.set_object_space( boot_space )
   end
 
   # when running code instantiates a class, a type is created automatically

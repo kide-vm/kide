@@ -8,15 +8,6 @@
 #
 #
 module Parfait
-  # Make the object space globally available
-  def self.object_space
-    @object_space
-  end
-
-  # TODO Must get rid of the setter (move the boot process ?)
-  def self.set_object_space( space )
-    @object_space = space
-  end
 
   # The Space contains all objects for a program. In functional terms it is a program, but in oo
   # it is a collection of objects, some of which are data, some classes, some functions

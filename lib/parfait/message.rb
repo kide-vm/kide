@@ -25,10 +25,10 @@ module Parfait
       32
     end
     def self.args_start_at
-      Parfait.object_space.get_type_by_class_name(:Message).variable_index(:arguments_given)
+      Object.object_space.get_type_by_class_name(:Message).variable_index(:arguments_given)
     end
     def self.locals_start_at
-      Parfait.object_space.get_type_by_class_name(:Message).variable_index(:locals_used)
+      Object.object_space.get_type_by_class_name(:Message).variable_index(:locals_used)
     end
 
     def initialize(  )
