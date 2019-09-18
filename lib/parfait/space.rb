@@ -151,10 +151,17 @@ module Parfait
 
     # this is the way to instantiate classes (not Parfait::Class.new)
     # so we get and keep exactly one per name
+    #
+    # The superclass must be known when the class is created, or it raises an error.
+    # The class is initiated with the type of the superclass (hence above)
+    #
+    # Only Vool::ClassExpression really ever creates classes and "grows" the type
+    # according to the instances it finds, see there
+    #
     def create_class( name , superclass = nil )
       raise "create_class #{name.class}" unless name.is_a? Symbol
       superclass = :Object unless superclass
-      raise "create_class #{superclass.class}" unless superclass.is_a? Symbol
+      raise "create_class failed for #{name}:#{superclass.class}" unless superclass.is_a? Symbol
       type = get_type_by_class_name(superclass)
       c = Class.new(name , superclass , type )
       @classes[name] = c

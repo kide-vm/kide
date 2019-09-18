@@ -42,12 +42,19 @@ module Parfait
       5
     end
 
-    def self.for_hash( object_class , hash)
+    def self.for_hash( hash , object_class = :Object)
+      name = object_class
+      if(object_class.is_a?(Symbol))
+        object_class = Parfait.object_space.get_class_by_name(object_class)
+      end
+      raise "No such class #{name}" unless object_class
       hash = {type: object_class.name }.merge(hash) unless hash[:type]
       new_type = Type.new( object_class , hash)
       Parfait.object_space.add_type(new_type)
     end
 
+    # should not be called directly. Use Type.for_hash instead, that adds the
+    # type to the global list
     def initialize( object_class , hash )
       super()
       set_object_class( object_class)
@@ -185,7 +192,7 @@ module Parfait
       raise "No nil type" unless type
       hash = to_hash
       hash[name] = type
-      return Type.for_hash( object_class , hash)
+      return Type.for_hash( hash , object_class)
     end
 
     def set_object_class(oc)

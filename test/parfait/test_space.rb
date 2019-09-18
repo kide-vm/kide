@@ -6,7 +6,7 @@ module Parfait
     def classes
       [:BinaryCode,:Block,:CacheEntry,:Callable,:CallableMethod,:Class,
         :DataObject,:Data4,:Data8,:Data16,:Data32,:Dictionary,:Factory, :Integer,:FalseClass,
-        :List,:Message, :MetaClass, :NamedList,:NilClass,:Object,:ReturnAddress,
+        :List,:Message, :MetaClass,:NilClass,:Object,:ReturnAddress,
         :Space,:TrueClass,:Type,:VoolMethod,:Word]
     end
 
@@ -123,7 +123,7 @@ module Parfait
     end
 
     def test_created_class_is_stored
-      @space.create_class( :NewerClass )
+      clazz = @space.create_class( :NewerClass )
       assert @space.get_class_by_name(:NewerClass)
     end
 

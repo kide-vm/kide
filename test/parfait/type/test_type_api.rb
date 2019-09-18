@@ -5,7 +5,7 @@ module Parfait
 
     def setup
       super
-      tc = @space.get_class_by_name( :NamedList )
+      tc = @space.get_class_by_name( :Object )
       @type = tc.instance_type
     end
 

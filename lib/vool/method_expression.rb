@@ -38,7 +38,7 @@ module Vool
       type_hash = {}
       @args.each {|arg| type_hash[arg] = :Object }
       type_hash[:implicit_block] = :Block if has_yield?
-      Parfait::NamedList.type_for( type_hash )
+      Parfait::Type.for_hash( type_hash )
     end
 
     def to_s(depth = 0)
@@ -60,7 +60,7 @@ module Vool
         next unless node.is_a?(LocalVariable) or node.is_a?(LocalAssignment)
         type_hash[node.name] = :Object
       end
-      Parfait::NamedList.type_for( type_hash )
+      Parfait::Type.for_hash( type_hash )
     end
 
   end

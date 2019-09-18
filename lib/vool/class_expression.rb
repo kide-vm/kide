@@ -60,18 +60,22 @@ module Vool
         #FIXME super class check with "sup"
         #existing class, don't overwrite type (parfait only?)
       else
-        @clazz = Parfait.object_space.create_class(@name , @super_class_name )
-        #TODO this should start from Object Type and add one name at a time.
-        # So the "trail" of types leading to this one exists.
-        # Also the Class always has a valid type.
-        ivar_hash = {}
-        self.each do |node|
-          next unless node.is_a?(InstanceVariable) or node.is_a?(IvarAssignment)
-          ivar_hash[node.name] = :Object
-        end
-        @clazz.set_instance_type( Parfait::Type.for_hash( @clazz ,  ivar_hash ) )
+        create_new_class
       end
       @clazz
+    end
+
+    def create_new_class
+      @clazz = Parfait.object_space.create_class(@name , @super_class_name )
+      #TODO this should start from Object Type and add one name at a time.
+      # So the "trail" of types leading to this one exists.
+      # Also the Class always has a valid type.
+      ivar_hash = {}
+      self.each do |node|
+        next unless node.is_a?(InstanceVariable) or node.is_a?(IvarAssignment)
+        ivar_hash[node.name] = :Object
+      end
+      @clazz.set_instance_type( Parfait::Type.for_hash( ivar_hash , @clazz ) )
     end
 
     def to_s(depth = 0)

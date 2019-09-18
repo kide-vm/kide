@@ -25,7 +25,7 @@ module Vool
     def make_arg_type(  )
       type_hash = {}
       @args.each {|arg| type_hash[arg] = :Object }
-      Parfait::NamedList.type_for( type_hash )
+      Parfait::Type.for_hash( type_hash )
     end
 
     def to_s(depth = 0)
@@ -43,7 +43,7 @@ module Vool
         next unless node.is_a?(LocalVariable) or node.is_a?(LocalAssignment)
         type_hash[node.name] = :Object
       end
-      Parfait::NamedList.type_for( type_hash )
+      Parfait::Type.for_hash( type_hash )
     end
 
   end

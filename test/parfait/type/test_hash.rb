@@ -37,9 +37,8 @@ module Parfait
     end
 
     def test_hash_for_no_ivars
-      list = @space.get_class_by_name(:NamedList )
-      t1 = Parfait::Type.for_hash( list , type: :NewInt)
-      t2 = Parfait::Type.for_hash( list , type: :NewObj)
+      t1 = Parfait::Type.for_hash( {type: :NewInt})
+      t2 = Parfait::Type.for_hash( {type: :NewObj})
       assert  t1.hash != t2.hash , "Hashes should differ"
     end
   end

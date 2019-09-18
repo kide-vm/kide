@@ -48,7 +48,7 @@ module Vool
     def make_arg_type(  )
       type_hash = {}
       @args.each {|arg| type_hash[arg] = :Object }
-      Parfait::NamedList.type_for( type_hash )
+      Parfait::Type.for_hash( type_hash )
     end
     def make_frame(compiler)
       type_hash = {}
@@ -57,7 +57,7 @@ module Vool
         next if compiler.in_scope?(node.name)
         type_hash[node.name] = :Object
       end
-      Parfait::NamedList.type_for( type_hash )
+      Parfait::Type.for_hash( type_hash )
     end
 
   end

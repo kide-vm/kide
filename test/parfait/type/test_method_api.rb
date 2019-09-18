@@ -10,10 +10,10 @@ module Parfait
     end
 
     def empty_frame
-      Parfait::Type.for_hash( @try_class , { })
+      Parfait::Type.for_hash( { } , @try_class)
     end
     def foo_method( for_class = :Try)
-      args = Parfait::Type.for_hash( @try_class , { bar: :Integer})
+      args = Parfait::Type.for_hash( { bar: :Integer} , @try_class )
       CallableMethod.new( :foo ,@space.get_type_by_class_name(for_class) , args,empty_frame)
     end
     def add_foo_to( clazz = :Try )
@@ -44,7 +44,7 @@ module Parfait
       end
     end
     def test_create_method
-      args = Parfait::Type.for_hash( @try_class , { bar: :Integer})
+      args = Parfait::Type.for_hash( { bar: :Integer} ,  @try_class)
       @try_type.create_method :bar, args , empty_frame
       assert @try_type.method_names.inspect.include?("bar")
     end
