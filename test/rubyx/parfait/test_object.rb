@@ -2,7 +2,7 @@ require_relative "../helper"
 
 module RubyX
 
-  class TestObjectCompile #< MiniTest::Test
+  class TestObjectCompile < MiniTest::Test
     include ParfaitHelper
     include Preloader
 

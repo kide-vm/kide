@@ -26,7 +26,7 @@ module RubyX
       assert_equal 3 , linker.assemblers.length
     end
   end
-  class TestRubyXCompilerParfait #< MiniTest::Test
+  class TestRubyXCompilerParfait < MiniTest::Test
     include ScopeHelper
     include RubyXHelper
 
@@ -38,7 +38,6 @@ module RubyX
 
     def test_load
       object = Parfait.object_space.get_class_by_name(:Object)
-      #object.methods.each_method {|m| puts m.name}
       assert_equal Parfait::VoolMethod , object.get_method(:set_type).class
       assert_equal Parfait::CallableMethod , object.instance_type.get_method(:set_type).class
     end
