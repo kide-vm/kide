@@ -28,8 +28,9 @@ module Vool
       raise "Not implemented for #{self}"
     end
 
-    def at_depth(depth , *strings)
+    def at_depth(depth , lines)
       prefix = " " * 2 * depth
+      strings = lines.split("\n")
       strings.collect{|str| prefix + str}.join("\n")
     end
 

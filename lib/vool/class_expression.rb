@@ -65,7 +65,7 @@ module Vool
     # adding each to the respective type, ie class or meta_class, depending
     # on if they are instance or class instance variables.
     #
-    # Class variables are deemed a design mistake, ie not implemented (yet) 
+    # Class variables are deemed a design mistake, ie not implemented (yet)
     def create_types
       self.body.statements.each do |node|
         case node
@@ -87,7 +87,8 @@ module Vool
       end
     end
     def to_s(depth = 0)
-      at_depth(depth , "class #{name}" , @body.to_s(depth + 1) , "end")
+      derive = super_class_name ? "< #{super_class_name}" : ""
+      at_depth(depth , "class #{name} #{derive}\n#{@body.to_s(depth + 1)}\nend")
     end
   end
 end

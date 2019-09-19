@@ -1,11 +1,10 @@
 module Ruby
   class MethodStatement < Statement
-    attr_reader :name, :args , :body , :clazz
+    attr_reader :name, :args , :body
 
-    def initialize( name , args , body , clazz = nil)
+    def initialize( name , args , body)
       @name , @args , @body = name , args , body
       raise "no bod" unless @body
-      @clazz = clazz
     end
 
     # At the moment normalizing means creating implicit returns for some cases

@@ -37,11 +37,12 @@ module Ruby
     end
 
     def to_s(depth = 0)
-      parts = ["if(#{@condition})" ]
-      parts << @if_true.to_s(depth + 1) if(@if_true)
-      parts += ["else" ,  @if_false.to_s(depth + 1)] if(@if_false)
-      parts << "end"
-      at_depth(depth , *parts )
+      parts =  "if(#{@condition})\n"
+      parts += "  #{@if_true.to_s(depth + 1)}\n" if(@if_true)
+      parts += "else\n" if(@if_false)
+      parts += "  #{@if_false.to_s(depth + 1)}\n" if(@if_false)
+      parts += "end\n"
+      at_depth(depth , parts )
     end
   end
 end

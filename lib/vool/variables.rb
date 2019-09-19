@@ -60,5 +60,8 @@ module Vool
     def each(&block)
       block.call(self)
     end
+    def to_s
+      @name.to_s
+    end
   end
 end

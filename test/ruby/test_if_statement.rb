@@ -39,7 +39,7 @@ module Ruby
     end
     def test_to_s
       lst = compile( double_if )
-      assert_equal "if(false);true;else;false;end" , lst.to_s.gsub("\n",";")
+      assert_equal "if(false);  true;else;  false;end" , lst.to_s.gsub("\n",";")
     end
   end
 end
