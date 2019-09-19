@@ -58,6 +58,10 @@ module Parfait
       assert_equal :Type , @type.type_at(0)
     end
 
+    def test_add_again
+      assert_equal @type.to_hash , @type.add_instance_variable(:type , :Type).to_hash
+    end
+
     def test_inspect_added
       type = test_add_name
       assert type.inspect.include?("boo") , type.inspect

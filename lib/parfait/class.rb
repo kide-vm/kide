@@ -33,7 +33,7 @@ module Parfait
       @name = name
       @super_class_name = superclass
       @instance_methods = List.new
-      set_instance_type( instance_type )
+      @instance_type = instance_type
       @meta_class = MetaClass.new( self )
     end
 
@@ -63,13 +63,6 @@ module Parfait
     # adding an instance changes the instance_type to include that variable
     def add_instance_variable( name , type)
       @instance_type = @instance_type.add_instance_variable( name , type )
-    end
-
-    # setting the type generates all methods for this type
-    # (or will do, once we store the methods code to do that)
-    def set_instance_type( type )
-      raise "type must be type #{type}" unless type.is_a?(Type)
-      @instance_type = type
     end
 
     # return the super class, but raise exception if either the super class name

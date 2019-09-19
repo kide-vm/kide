@@ -19,9 +19,14 @@ module Vool
     end
 
     def setup
-      source = "class Integer;def +(other);X.int_operator(:+);end;end;" + class_main
-      ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(source)
+      ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(class_main)
       @ins = ret.compilers.find{|c|c.callable.name==:some_inst}.mom_instructions.next
+    end
+    def test_class_inst
+        space_class = Parfait.object_space.get_class
+        assert_equal :Space , space_class.name
+        names = space_class.meta_class.instance_type.names
+        assert names.index_of(:inst) , names
     end
     def test_array
       check_array   [SlotLoad, ReturnJump, Label, ReturnSequence, Label]  , @ins

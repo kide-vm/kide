@@ -45,11 +45,6 @@ module Vool
       Mom::MomCollection.new(method_compilers)
     end
 
-    def each(&block)
-      block.call(self)
-      @body.each(&block) if @body
-    end
-
     # This creates the Parfait class. But doesn not handle reopening yet, so only new classes
     # Creating the class involves creating the instance_type (or an initial version)
     # which means knowing all used names. So we go through the code looking for
@@ -60,24 +55,37 @@ module Vool
         #FIXME super class check with "sup"
         #existing class, don't overwrite type (parfait only?)
       else
-        create_new_class
+        @clazz = Parfait.object_space.create_class(@name , @super_class_name )
       end
+      create_types
       @clazz
     end
 
-    def create_new_class
-      @clazz = Parfait.object_space.create_class(@name , @super_class_name )
-      #TODO this should start from Object Type and add one name at a time.
-      # So the "trail" of types leading to this one exists.
-      # Also the Class always has a valid type.
-      ivar_hash = {}
-      self.each do |node|
-        next unless node.is_a?(InstanceVariable) or node.is_a?(IvarAssignment)
-        ivar_hash[node.name] = :Object
+    # goes through the code looking for instance variables (and their assignments)
+    # adding each to the respective type, ie class or meta_class, depending
+    # on if they are instance or class instance variables.
+    #
+    # Class variables are deemed a design mistake, ie not implemented (yet) 
+    def create_types
+      self.body.statements.each do |node|
+        case node
+        when MethodExpression
+          target = @clazz
+        when ClassMethodExpression
+          target = @clazz.meta_class
+        else
+          raise "Only methods for now #{node.class}:#{node}"
+        end
+        node.each do |exp|
+          case exp
+          when InstanceVariable, IvarAssignment
+            target.add_instance_variable( exp.name , :Object  )
+          when ClassVariable #, ClassVarAssignment
+            raise "Class variables not implemented #{node.name}"
+          end
+        end
       end
-      @clazz.set_instance_type( Parfait::Type.for_hash( ivar_hash , @clazz ) )
     end
-
     def to_s(depth = 0)
       at_depth(depth , "class #{name}" , @body.to_s(depth + 1) , "end")
     end

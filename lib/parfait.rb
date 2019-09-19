@@ -30,7 +30,7 @@ module Parfait
   def self.object_space
     Object.object_space
   end
-  
+
   class Object
     # redefine the runtime version
     def self.new( *args )

@@ -3,8 +3,9 @@ module Boot
 
   # a ruby object as a placeholder for the parfait Space during boot
   class Space
-    attr_reader :classes
+    attr_reader :classes , :types
     def initialize
+      @types = {}
       @classes = {}
     end
 
@@ -12,6 +13,9 @@ module Boot
       cl = @classes[name]
       raise "No class for #{name}" unless cl
       cl
+    end
+    def get_type_by_class_name(name)
+      @types[name]
     end
   end
 
@@ -82,6 +86,7 @@ module Parfait
     types.each do |name , type|
       clazz = Boot::Class.new(type)
       boot_space.classes[name] = clazz
+      boot_space.types[name] = type
     end
     Parfait::Object.set_object_space( boot_space )
   end

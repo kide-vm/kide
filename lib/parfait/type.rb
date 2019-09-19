@@ -190,6 +190,7 @@ module Parfait
     def add_instance_variable( name , type )
       raise "No nil name" unless name
       raise "No nil type" unless type
+      return self if @names.index_of(name)
       hash = to_hash
       hash[name] = type
       return Type.for_hash( hash , object_class)
