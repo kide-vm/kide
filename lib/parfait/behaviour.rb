@@ -3,11 +3,14 @@
 # instance_methods is the attribute in the including class that has the methods
 
 module Parfait
-  module Behaviour
+  class Behaviour < Object
 
-    def initialize
+    attr_reader :instance_type , :instance_methods
+
+    def initialize(type)
       super()
       @instance_methods = List.new
+      @instance_type = type
     end
 
     def methods
@@ -24,9 +27,14 @@ module Parfait
       names
     end
 
+    def add_instance_method_for(name , type , frame , body )
+      method = Parfait::VoolMethod.new(name , type , frame , body )
+      add_instance_method( method )
+    end
+
     def add_instance_method( method )
       raise "not implemented #{method.class} #{method.inspect}" unless method.is_a? VoolMethod
-      raise "HMM"
+      @instance_methods.push(method)
       method
     end
 
@@ -50,6 +58,11 @@ module Parfait
         method = @super_class.resolve_method(m_name)
       end
       method
+    end
+
+    # adding an instance changes the instance_type to include that variable
+    def add_instance_variable( name , type)
+      @instance_type = @instance_type.add_instance_variable( name , type )
     end
 
   end

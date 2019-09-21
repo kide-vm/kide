@@ -14,7 +14,7 @@ module Mom
 
     def test_method
       in_test_vool()
-      method = Parfait.object_space.get_class_by_name(:Test).get_method(:meth)
+      method = Parfait.object_space.get_class_by_name(:Test).get_instance_method(:meth)
       assert_equal Parfait::VoolMethod , method.class
     end
     def test_method_mom_col

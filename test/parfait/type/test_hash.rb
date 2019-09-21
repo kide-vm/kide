@@ -22,13 +22,13 @@ module Parfait
     end
 
     def test_name
-      assert_equal "BinaryCode_Type" , @types.values.first.name
+      assert_equal "Behaviour_Type" , @types.values.first.name
     end
 
     def test_to_hash
       hash = @first.to_hash
       assert_equal hash[:type] , :Type
-      assert_equal 2 ,  hash.length
+      assert_equal 3 ,  hash.length
     end
     def test_add_is_different
       type = @first.add_instance_variable :random , :Integer

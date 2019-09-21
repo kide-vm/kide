@@ -15,11 +15,9 @@
 # Each type in turn has a list of CallableMethods that hold binary code
 
 module Parfait
-  class Class < Object
-    include Behaviour
+  class Class < Behaviour
 
-    attr_reader :instance_type , :name , :instance_methods
-    attr_reader :super_class_name , :meta_class
+    attr_reader :name , :super_class_name , :meta_class
 
     def self.type_length
       6
@@ -29,11 +27,9 @@ module Parfait
     end
 
     def initialize( name , superclass , instance_type)
-      super()
+      super(instance_type)
       @name = name
       @super_class_name = superclass
-      @instance_methods = List.new
-      @instance_type = instance_type
       @meta_class = MetaClass.new( self )
     end
 
@@ -46,26 +42,6 @@ module Parfait
     end
     def to_s
       inspect
-    end
-
-    def add_method_for(name , type , frame , body )
-      method = Parfait::VoolMethod.new(name , type , frame , body )
-      add_method( method )
-      method
-    end
-
-    def add_method(method)
-      raise "Must be untyped method #{method}" unless method.is_a? Parfait::VoolMethod
-      @instance_methods.push(method)
-    end
-
-    def get_method(name)
-      @instance_methods.find{|m| m.name == name }
-    end
-
-    # adding an instance changes the instance_type to include that variable
-    def add_instance_variable( name , type)
-      @instance_type = @instance_type.add_instance_variable( name , type )
     end
 
     # return the super class, but raise exception if either the super class name

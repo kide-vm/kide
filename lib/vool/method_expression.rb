@@ -21,7 +21,7 @@ module Vool
     # extracted call to create the VoolMethod as this is the place
     # where we have all the info. Used in testing.
     def make_method(clazz)
-      clazz.add_method_for(name , make_arg_type , make_frame , body )
+      clazz.add_instance_method_for(name , make_arg_type , make_frame , body )
     end
 
     def each(&block)

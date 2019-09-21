@@ -14,10 +14,9 @@
 # There is a one to one relationship between a class instance and it's meta_class instance.
 
 module Parfait
-  class MetaClass < Object
-    include Behaviour
+  class MetaClass < Behaviour
 
-    attr_reader :instance_type , :instance_methods , :clazz
+    attr_reader :clazz
 
     def self.type_length
       4
@@ -27,9 +26,10 @@ module Parfait
     end
 
     def initialize( clazz )
-      super()
+      type = Object.object_space.get_type_by_class_name(:Object)
+      raise "No type for #{clazz.name}" unless type
+      super( type )
       @clazz = clazz
-      @instance_type =  Object.object_space.get_type_by_class_name(:Object)
     end
 
     def rxf_reference_name
@@ -42,25 +42,6 @@ module Parfait
 
     def to_s
       inspect
-    end
-    def add_method_for(name , type , frame , body )
-      method = Parfait::VoolMethod.new(name , type , frame , body )
-      add_method( method )
-      method
-    end
-
-    def add_method(method)
-      raise "Must be untyped method #{method}" unless method.is_a? Parfait::VoolMethod
-      @instance_methods.push(method)
-    end
-
-    def get_method(name)
-      @instance_methods.find{|m| m.name == name }
-    end
-
-    # adding an instance changes the instance_type to include that variable
-    def add_instance_variable( name , type)
-      @instance_type = @instance_type.add_instance_variable( name , type )
     end
 
     # Nil name means no superclass, and so nil returned

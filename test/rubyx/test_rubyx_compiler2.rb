@@ -38,7 +38,7 @@ module RubyX
 
     def test_load
       object = Parfait.object_space.get_class_by_name(:Object)
-      assert_equal Parfait::VoolMethod , object.get_method(:set_type).class
+      assert_equal Parfait::VoolMethod , object.get_instance_method(:set_type).class
       assert_equal Parfait::CallableMethod , object.instance_type.get_method(:set_type).class
     end
   end

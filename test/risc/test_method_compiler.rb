@@ -15,7 +15,7 @@ module Risc
     def create_method(body = "@ivar = 5;return")
       in_test_vool("def meth; #{body};end")
       test = Parfait.object_space.get_class_by_name(:Test)
-      test.get_method(:meth)
+      test.get_instance_method(:meth)
     end
 
     def test_method_has_source
@@ -55,7 +55,7 @@ module Risc
     def test_callable_method_has_one_local
       in_test_vool("def meth; local = 5 ; a = 6;return;end")
       test = Parfait.object_space.get_class_by_name(:Test)
-      method = test.get_method(:meth)
+      method = test.get_instance_method(:meth)
       assert_equal 3 , method.frame_type.instance_length
       assert_equal 1 , method.frame_type.variable_index(:local)
       assert_equal 2 , method.frame_type.variable_index(:a)

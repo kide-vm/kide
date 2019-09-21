@@ -4,7 +4,7 @@ module Parfait
   class TestSpace < ParfaitTest
 
     def classes
-      [:BinaryCode,:Block,:CacheEntry,:Callable,:CallableMethod,:Class,
+      [:Behaviour ,:BinaryCode,:Block,:CacheEntry,:Callable,:CallableMethod,:Class,
         :DataObject,:Data4,:Data8,:Data16,:Data32,:Dictionary,:Factory, :Integer,:FalseClass,
         :List,:Message, :MetaClass,:NilClass,:Object,:ReturnAddress,
         :Space,:TrueClass,:Type,:VoolMethod,:Word]

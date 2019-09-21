@@ -129,6 +129,8 @@ module Parfait
        List: :Data16 ,
        CallableMethod: :Callable,
        Block: :Callable,
+       Class: :Behaviour,
+       MetaClass: :Behaviour ,
        ReturnAddress: :Integer}
   end
 
@@ -136,11 +138,11 @@ module Parfait
   # unfortuantely that constant condenses every detail about the system, class names
   # and all instance variable names. Really have to find a better way
   def self.type_names
-     {BinaryCode: {next_code: :BinaryCode} ,
+     {Behaviour: {instance_type: :Type , instance_methods: :List  } ,
+      BinaryCode: {next_code: :BinaryCode} ,
       Block: {binary: :BinaryCode, next_callable: :Block,
               arguments_type: :Type , self_type: :Type, frame_type: :Type,
               name: :Word , blocks: :Block } ,
-
       CacheEntry: {cached_type: :Type , cached_method: :CallableMethod  } ,
       Callable:   {binary: :BinaryCode,next_callable: :Callable ,
                    arguments_type: :Type , self_type: :Type, frame_type: :Type,
