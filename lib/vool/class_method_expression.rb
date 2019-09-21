@@ -11,6 +11,7 @@ module Vool
       raise "not meta" unless clazz.class == Parfait::MetaClass
       raise( "no class in #{self}") unless clazz
       method = clazz.add_method_for(name , make_arg_type , make_frame , body )
+      #puts "CLass method Class:#{clazz}:#{name}"
       compiler = method.compiler_for(clazz.instance_type)
       each {|node| raise "Blocks not implemented" if node.is_a?(LambdaExpression)}
       compiler

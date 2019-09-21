@@ -44,6 +44,9 @@ module Parfait
     def inspect
       "Class(#{name})"
     end
+    def to_s
+      inspect
+    end
 
     def add_method_for(name , type , frame , body )
       method = Parfait::VoolMethod.new(name , type , frame , body )

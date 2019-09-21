@@ -29,7 +29,6 @@ module Parfait
     def initialize( clazz )
       super()
       @clazz = clazz
-      @instance_methods = List.new
       @instance_type =  Object.object_space.get_type_by_class_name(:Object)
     end
 
@@ -41,6 +40,9 @@ module Parfait
       "MetaClass(#{@clazz.name})"
     end
 
+    def to_s
+      inspect
+    end
     def add_method_for(name , type , frame , body )
       method = Parfait::VoolMethod.new(name , type , frame , body )
       add_method( method )

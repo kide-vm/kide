@@ -127,7 +127,7 @@ module Parfait
       end
       method.set_next( @methods )
       @methods = method
-      #puts "#{self.name} add #{method.name}"
+      # puts "ADD method to #{self.inspect}:#{method.name}"
       method
     end
 
@@ -167,9 +167,9 @@ module Parfait
     def resolve_method( fname )
       method = get_method(fname)
       return method if method
+      return nil if object_class.name == :Object
       sup = object_class.super_class
       return nil unless sup
-      return nil if object_class.name == :Object
       sup.instance_type.resolve_method(fname)
     end
 
