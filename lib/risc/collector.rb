@@ -24,7 +24,6 @@ module Risc
       collection = []
       mark_1k( object , 0 , collection)
       collection.each do |obj|
-        #puts "obj  #{obj.object_id}"
         keep(obj)
       end
     end
@@ -49,7 +48,6 @@ module Risc
       type.names.each do |name|
         mark_1k(name , depth + 1, collection)
         inst = object.get_instance_variable name
-        #puts "getting name #{name}, val=#{inst} #{inst.object_id}"
         mark_1k(inst , depth + 1, collection)
       end
       if object.is_a? Parfait::List

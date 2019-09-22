@@ -14,9 +14,7 @@ module Parfait
     end
 
     def methods
-      m = @instance_methods
-      return m if m
-      @instance_methods = List.new
+      @instance_methods
     end
 
     def method_names

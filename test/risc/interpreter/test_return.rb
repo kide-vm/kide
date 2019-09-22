@@ -17,7 +17,7 @@ module Risc
       assert_equal 5 , get_return
     end
 
-    def est_call_main
+    def test_call_main
       call_ins = ticks(main_at)
       assert_equal FunctionCall , call_ins.class
       assert  :main , call_ins.method.name

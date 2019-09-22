@@ -15,6 +15,9 @@ module Parfait
     def test_new_superclass_name
       assert_equal :Object , @try.super_class_name
     end
+    def test_existing_superclass_name
+      assert_equal :Object , @space.classes[:Type].super_class_name
+    end
     def test_new_superclass
       assert_equal "Class(Object)" , @try.super_class!.inspect
       assert_equal "Class(Object)" , @try.super_class.inspect

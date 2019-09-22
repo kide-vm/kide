@@ -13,13 +13,13 @@ module Parfait
   # Object length is measured in non-type cells though
 
   class Word < Data8
-    attr_reader :char_length
+    attr_reader :char_length , :next_word
 
     def self.type_length
-      2    # 0 type , 1 char_length
+      3    # 0 type , 1 char_length , next_word
     end
     def self.get_length_index
-      type_length - 1
+      type_length - 2
     end
     # initialize with length. For now we try to keep all non-parfait (including String) out
     # String will contain spaces for non-zero length

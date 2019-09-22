@@ -44,7 +44,7 @@ module Risc
     def test_collect_all_types
       Collector.collect_space(@linker).each do |objekt , position|
         next unless objekt.is_a?( Parfait::Type )
-        assert Parfait.object_space.get_type_for( objekt.hash ) , objekt.hash
+        assert Parfait.object_space.types[ objekt.hash]  , objekt.hash
       end
     end
 

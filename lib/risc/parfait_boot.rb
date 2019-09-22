@@ -25,6 +25,7 @@ module Parfait
   end
 
   def self.boot!(options)
+    Parfait::Object.set_object_space( nil ) #case of reboot
     space = Space.new( )
     type_names.each do |name , ivars |
       ivars[:type] = :Type
@@ -41,16 +42,34 @@ module Parfait
   # Types are hollow shells before this, so we need to set the object_class
   # and initialize the list variables (which we now can with .new)
   def self.fix_types
-    ObjectSpace.each_object(Parfait::Object) { |o| Parfait.set_type_for(o) }
+    fix_object_type(Parfait.object_space)
     classes = Parfait.object_space.classes
     class_type = Parfait.object_space.get_type_by_class_name(:Class)
+    raise "nil type" unless class_type
     types = Parfait.object_space.types
+    super_names = super_class_names
     classes.each do |name , cl|
       object_type = Parfait.object_space.get_type_by_class_name(name)
-      cl.meta_class.set_instance_variable(:@instance_type, class_type)
-      cl.set_instance_variable( :@instance_type , object_type)
-      object_type.set_object_class(cl)
+      raise "nil type" unless object_type
+      cl.meta_class.instance_eval{ @instance_type = class_type}
+      cl.instance_eval{ @instance_type = object_type}
+      cl.instance_eval{ @super_class_name = super_names[name] || :Object}
+      object_type.instance_eval{ @object_class = cl }
     end
+  end
+
+  def self.fix_object_type(object)
+    return unless object
+    return if object.is_a?(::Integer)
+    return if object.is_a?(::Symbol)
+    return if object.type
+    Parfait.set_type_for(object)
+    object.type.names.each do |name|
+      value = object.get_instance_variable(name)
+      fix_object_type(value)
+    end
+    return unless object.is_a?(List)
+    object.each {|obj| fix_object_type(obj)}
   end
 
   # superclasses other than default object
@@ -122,15 +141,6 @@ module Parfait
       VoolMethod: { name: :Word , args_type: :Type , frame_type: :Type } ,
       Word: {char_length: :Integer , next_word: :Word} ,
       }
-  end
-  def self.name_for_index(object , index)
-    return :type if index == 0
-    clazz = object.class.name.split("::").last.to_sym
-    cl = self.type_names[clazz]
-    keys = cl.keys
-    keys[index - 1] # -1 because type is excluded in the lists (FIX)
-    # FIXME Now that we use instance variables in parfait, they should be parsed
-    # and the type_names generated automatically
   end
 
 end

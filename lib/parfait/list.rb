@@ -10,7 +10,7 @@ module Parfait
     attr_reader :indexed_length , :next_list
 
     def self.type_length
-      3    # 0 type , 1 length , 2 - next_list
+      3    # 0 type , 1 indexed_length , 2 - next_list
     end
     def self.data_length
       self.memory_size - self.type_length - 1
@@ -19,6 +19,7 @@ module Parfait
     def initialize
       super
       @indexed_length = 0
+      @next_list = nil
     end
 
     def data_length

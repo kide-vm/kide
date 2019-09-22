@@ -64,7 +64,7 @@ module Parfait
     end
 
     def get_type()
-      raise "No type " + self.object_id.to_s(16) + ":" + self.class.name unless has_type?
+      raise "No type " + self.object_id.to_s(16) + " : " + self.class.name+" : " + self.to_s unless @type
       @type
     end
 

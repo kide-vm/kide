@@ -19,6 +19,8 @@ module Parfait
 
   def self.set_type_for(object)
     return unless(Parfait.object_space)
+    return if(object.is_a?(Symbol))
+    return if(object.is_a?(::Integer))
     name = object.class.name.split("::").last.to_sym
     # have to grab the class, because we are in the ruby class not the parfait one
     cl = Parfait.object_space.get_class_by_name( name )
@@ -40,11 +42,11 @@ module Parfait
     end
     def init_mem(pages)
       [:Integer , :ReturnAddress , :Message].each do |fact_name|
-        for_type = classes[fact_name].instance_type
+        for_type = @classes[fact_name].instance_type
         page_size = pages[fact_name] || 1024
         factory = Factory.new( for_type , page_size )
         factory.get_more
-        factories[ fact_name ] = factory
+        @factories[ fact_name ] = factory
       end
       init_message_chain( factories[ :Message ].reserve  )
       init_message_chain( factories[ :Message ].next_object  )
@@ -96,24 +98,16 @@ module Parfait
       value
     end
 
-    def self.variable_index( name)
-      if(name == :type)
-        return Parfait::TYPE_INDEX
-      end
-      clazz = self.name.split("::").last.to_sym
-      type = Parfait.type_names[clazz]
-      i = type.keys.index(name)
-      raise "no #{name} for #{clazz}:#{type.keys}" unless i
-      i + 1
-    end
+  end
 
-    def self.cattr( *names )
-      names.each do |ca|
-        class_eval "@@#{ca} = 0"
-        class_eval "def self.#{ca}; return @#{ca};end"
-        class_eval "def self.#{ca}=(val); @#{ca} = val;end"
-      end
-    end
+  def self.name_for_index(object , index)
+    return :type if index == 0
+    clazz = object.class.name.split("::").last.to_sym
+    cl = self.type_names[clazz]
+    keys = cl.keys
+    keys[index - 1] # -1 because type is excluded in the lists (FIX)
+    # FIXME Now that we use instance variables in parfait, they should be parsed
+    # and the type_names generated automatically
   end
 
   # new list from ruby array to be precise

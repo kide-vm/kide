@@ -29,7 +29,7 @@ module Parfait
       @for_type = type
       @attribute_name = type.names.find {|name| name.to_s.start_with?("next")}
       @page_size = page
-      raise "No next found for #{type.class_name}" unless attribute_name
+      raise "No next found for #{type.class_name}" unless @attribute_name
     end
 
     # get the next free object, advancing the list.
@@ -37,7 +37,7 @@ module Parfait
     # This function is not realy used, as it is hard-coded in risc, but the get_more is
     # used, as it get's called from risc (or will)
     def get_next_object
-      unless( next_object )
+      unless( @next_object )
         @next_object = reserve
         get_more
       end
@@ -46,7 +46,7 @@ module Parfait
 
     # this gets the head of the freelist, swaps it out agains the next and returns it
     def get_head
-      nekst = next_object
+      nekst = @next_object
       @next_object = get_next_for(nekst)
       return nekst
     end
@@ -117,7 +117,6 @@ module Parfait
       r_class = eval( "Parfait::#{type.object_class.name}" )
       obj = r_class.allocate
       obj.set_type(type)
-      #puts "Factory #{type.object_class.name} at 0x#{obj.object_id.to_s(16)}"
       obj
     end
   end

@@ -57,13 +57,7 @@ module Parfait
     # type to the global list
     def initialize( object_class , hash )
       super()
-      set_object_class( object_class)
-      init_lists( hash )
-    end
-
-    # this part of the init is seperate because at boot time we can not use normal new
-    # new is overloaded to grab the type from space, and before boot, that is not set up
-    def init_lists(hash)
+      @object_class =  object_class
       @methods = nil
       @names = List.new
       @types = List.new
@@ -75,13 +69,13 @@ module Parfait
     end
 
     def class_name
-      @object_class.name
+      @object_class&.name
     end
 
     def to_s
       str = "#{class_name}-["
       first = false
-      names.each do |name|
+      @names.each do |name|
         unless(first)
           first = true
           str += ":#{name}"
@@ -194,13 +188,6 @@ module Parfait
       hash = to_hash
       hash[name] = type
       return Type.for_hash( hash , object_class)
-    end
-
-    def set_object_class(oc)
-      unless oc.is_a?(Class)       #but during boot a symbol is ok
-        raise "object class should be a class, not #{oc.class}"  unless oc.is_a?(Symbol)
-      end
-      @object_class = oc
     end
 
     def instance_length

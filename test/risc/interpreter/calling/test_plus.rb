@@ -28,23 +28,23 @@ module Risc
     def base_ticks(num)
       main_ticks(14 + num)
     end
-    def est_base
+    def test_base
         cal = main_ticks( 14 )
         assert_equal FunctionCall , cal.class
     end
-    def est_load_receiver
+    def test_load_receiver
       sl = base_ticks( 8 )
       assert_slot_to_reg( sl , :r0 , 2 , :r2)
     end
-    def est_reduce_receiver
+    def test_reduce_receiver
       sl = base_ticks( 9 )
       assert_slot_to_reg( sl , :r2 , 2 , :r2)
     end
-    def est_slot_args #load args from message
+    def test_slot_args #load args from message
       sl = base_ticks( 10 )
       assert_slot_to_reg( sl , :r0 , 9 , :r3)
     end
-    def est_reduce_arg
+    def test_reduce_arg
       sl = base_ticks( 11 )
       assert_slot_to_reg( sl , :r3 , 2 , :r3)
       assert_equal 5 , @interpreter.get_register(:r3)

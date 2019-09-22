@@ -23,8 +23,15 @@ module Parfait
     end
 
     def test_type_methods
+      assert  @mess.get_type#.get_type.variable_index(:methods)
       assert_equal 4 , @mess.get_type.get_type.variable_index(:methods)
     end
 
+    def test_mess_class
+      mess = @space.get_class_by_name(:Message)
+      assert_equal :Message , mess.name
+      mess_type = @space.get_type_by_class_name(:Message)
+      assert mess_type.get_type , "No type, but no raise either"
+    end
   end
 end
