@@ -197,7 +197,9 @@ module Parfait
     end
 
     def set_object_class(oc)
-      raise "object class should be a class, not #{oc.class}" unless oc.is_a?(Class)
+      unless oc.is_a?(Class)       #but during boot a symbol is ok
+        raise "object class should be a class, not #{oc.class}"  unless oc.is_a?(Symbol)
+      end
       @object_class = oc
     end
 
@@ -267,7 +269,8 @@ module Parfait
 
     def hash
       index = 1
-      hash_code = Type.str_hash( object_class.name )
+      name = object_class.is_a?(Symbol) ? object_class : object_class.name
+      hash_code = Type.str_hash(name)
       each do |name , type|
         item_hash = Type.str_hash(name) + Type.str_hash(type)
         hash_code  += item_hash + (item_hash / 256 ) * index

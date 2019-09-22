@@ -22,9 +22,9 @@ end
 
 require_relative "risc/position/position"
 require_relative "risc/platform"
+require "parfait"
 require_relative "risc/parfait_boot"
 require_relative "risc/parfait_adapter"
-require "parfait"
 require_relative "risc/linker"
 require_relative "risc/callable_compiler"
 require_relative "risc/method_compiler"

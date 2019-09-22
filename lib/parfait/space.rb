@@ -30,36 +30,6 @@ module Parfait
       8
     end
 
-    def initialize( classes , pages)
-      @classes = classes
-      @types = Dictionary.new
-      classes.each do |name , cl|
-        add_type(cl.instance_type)
-      end
-      @factories = Dictionary.new
-      [:Integer , :ReturnAddress , :Message].each do |fact_name|
-        for_type = classes[fact_name].instance_type
-        page_size = pages[fact_name] || 1024
-        factory = Factory.new( for_type , page_size )
-        factory.get_more
-        factories[ fact_name ] = factory
-      end
-      init_message_chain( factories[ :Message ].reserve  )
-      init_message_chain( factories[ :Message ].next_object  )
-      @true_object = Parfait::TrueClass.new
-      @false_object = Parfait::FalseClass.new
-      @nil_object = Parfait::NilClass.new
-    end
-
-    def init_message_chain( message )
-      prev = nil
-      while(message)
-        message.initialize
-        message._set_caller(prev) if prev
-        prev = message
-        message = message.next_message
-      end
-    end
     # return the factory for the given type
     # or more exactly the type that has a class_name "name"
     def get_factory_for(name)
@@ -86,11 +56,6 @@ module Parfait
       was = types[hash]
       return was if was
       types[hash] = type
-    end
-
-    # get a type by the type hash (the hash is what uniquely identifies the type)
-    def get_type_for( hash )
-      @types[hash]
     end
 
     # all methods form all types

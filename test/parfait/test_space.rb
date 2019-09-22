@@ -48,7 +48,7 @@ module Parfait
     def test_word_class
       word = @space.classes[:Word]
       assert word.instance_type
-      t_word = @space.get_type_for(word.instance_type.hash)
+      t_word = @space.types[word.instance_type.hash]
       assert_equal word.instance_type.hash , t_word.hash
       assert_equal word.instance_type.object_id , t_word.object_id
     end

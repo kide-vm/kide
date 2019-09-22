@@ -18,7 +18,7 @@ module Parfait
     def test_types_hashes
       types = @space.types
       types.each do |has , type|
-        assert has.is_a?(::Integer) , has.inspect
+        assert has.is_a?(::Integer) , has.class
       end
     end
     def test_classes_types_in_space_types
@@ -29,14 +29,14 @@ module Parfait
 
     def test_class_types_are_stored
       @space.classes.each do |name,clazz|
-        assert @space.get_type_for(clazz.instance_type.hash)
+        assert @space.types[clazz.instance_type.hash]
       end
     end
 
     def test_class_types_are_identical
       @space.classes.each do |name , clazz|
-        cl_type = @space.get_type_for(clazz.instance_type.hash)
-        assert_equal cl_type.object_id , clazz.instance_type.object_id
+        cl_type = @space.types[clazz.instance_type.hash]
+        assert_equal cl_type.object_id , clazz.instance_type.object_id , name
       end
     end
 

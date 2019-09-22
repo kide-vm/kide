@@ -2,7 +2,63 @@ require_relative "fake_memory"
 
 
 module Parfait
-  class Object ; end
+  class Object
+    # redefine the runtime version
+    def self.new( *args )
+      object = self.allocate
+      Parfait.set_type_for(object)
+      object.send :initialize , *args
+      object
+    end
+    # Setter fo the boot process, only at runtime.
+    # only one space exists and it is generated at compile time, not runtime
+    def self.set_object_space( space )
+      @object_space = space
+    end
+  end
+
+  def self.set_type_for(object)
+    return unless(Parfait.object_space)
+    name = object.class.name.split("::").last.to_sym
+    # have to grab the class, because we are in the ruby class not the parfait one
+    cl = Parfait.object_space.get_class_by_name( name )
+    # and have to set the type before we let the object do anything. otherwise boom
+    raise "No such class #{name} for #{object}" unless cl
+    object.set_type cl.instance_type
+  end
+
+  class Space < Object
+
+    # Space can only ever be creared at compile time, not runtime
+    def initialize( )
+      @classes = Dictionary.new
+      @types = Dictionary.new
+      @factories = Dictionary.new
+      @true_object = Parfait::TrueClass.new
+      @false_object = Parfait::FalseClass.new
+      @nil_object = Parfait::NilClass.new
+    end
+    def init_mem(pages)
+      [:Integer , :ReturnAddress , :Message].each do |fact_name|
+        for_type = classes[fact_name].instance_type
+        page_size = pages[fact_name] || 1024
+        factory = Factory.new( for_type , page_size )
+        factory.get_more
+        factories[ fact_name ] = factory
+      end
+      init_message_chain( factories[ :Message ].reserve  )
+      init_message_chain( factories[ :Message ].next_object  )
+    end
+    def init_message_chain( message )
+      prev = nil
+      while(message)
+        message.initialize
+        message._set_caller(prev) if prev
+        prev = message
+        message = message.next_message
+      end
+    end
+  end
   class DataObject < Object
     def self.allocate
       r = super
@@ -35,7 +91,7 @@ module Parfait
     # 0 -based index
     def set_internal_word(index , value)
       name = Parfait.name_for_index(self , index)
-      raise "no string #{name.class}" unless name.is_a?(Symbol)
+      raise "not sym for #{index} in #{self}:#{self.type}:#{name.class}" unless name.is_a?(Symbol)
       instance_eval("@#{name}=value" )
       value
     end

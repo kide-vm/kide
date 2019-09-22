@@ -25,10 +25,9 @@ module Parfait
       8
     end
 
-    def initialize( clazz )
-      type = Object.object_space.get_type_by_class_name(:Object)
-      raise "No type for #{clazz.name}" unless type
-      super( type )
+    def initialize( clazz , clazz_type)
+      raise "No type for #{clazz.name}" unless clazz_type
+      super( clazz_type )
       @clazz = clazz
     end
 

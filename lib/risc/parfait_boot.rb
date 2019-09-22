@@ -1,43 +1,11 @@
-module Boot
-  # Booting is complicated, so it is extracted into this file, even it has only one entry point
-
-  # a ruby object as a placeholder for the parfait Space during boot
-  class Space
-    attr_reader :classes , :types
-    def initialize
-      @types = {}
-      @classes = {}
-    end
-
-    def get_class_by_name(name)
-      cl = @classes[name]
-      raise "No class for #{name}" unless cl
-      cl
-    end
-    def get_type_by_class_name(name)
-      @types[name]
-    end
-  end
-
-  # another ruby object to shadow the parfait, just during booting.
-  # all it needs is the type, which we make the Parfait type
-  class Class
-    attr_reader :instance_type
-
-    def initialize( type)
-      @instance_type = type
-    end
-  end
-end
-
 module Parfait
 
   # The general idea is that compiling is creating an object graph. Functionally
   # one tends to think of methods, and that is complicated enough, sure.
   # But for an object system the graph includes classes and all instance variables
   #
-  # And so we have a chicken and egg problem. At the end of the boot function we want to have a
-  # working Space object
+  # And so we have a chicken and egg problem. At the end of the boot function we want
+  # to have a working Space object
   # But that has instance variables (List and Dictionary) and off course a class.
   # Or more precisely in rubyx, a Type, that points to a class.
   # So we need a Type, but that has Type and Class too. hmmm
@@ -47,73 +15,41 @@ module Parfait
   #  (PPS: The "real" solution is to read a rx-file graph and not do this by hand
   #    That graph can be programatically built and written (with this to boot that process :-))
 
-  # There are some helpers below, but the roadmap is something like:
-  # - create all the Type instances, with their basic types, but no classes
-  # - create a BootSpace that has BootClasses , used only during booting
-  # - create the Class objects and assign them to the types
-  # - flesh out the types , create the real space
-  # - and finally load the methods
+
+  # temporary shorthand getter for the space
+  # See implementation, space is now moved to inside the Object class
+  # (not module anymore), but there is a lot of code (about 100, 50/50 li/test)
+  # still calling this old version and since it is shorter . . .
+  def self.object_space
+    Object.object_space
+  end
+
   def self.boot!(options)
-    Parfait::Object.set_object_space( nil ) # in case we are rebooting
-    types = boot_types
-    boot_boot_space( types )
-    classes = boot_classes( types )
-    fix_types( types , classes )
-    space = Space.new( classes , options )
-    Parfait::Object.set_object_space( space )
-  end
-
-  # types is where the snake bites its tail. Every chain ends at a type and then it
-  # goes around (circular references). We create them from the list below, just as empty
-  # shells, that we pass back, for the BootSpace to be created
-  def self.boot_types
-    types = {}
+    space = Space.new( )
     type_names.each do |name , ivars |
-      types[name] = Type.allocate
+      ivars[:type] = :Type
+      instance_type = Type.new(name , ivars)
+      space.add_type instance_type
+      space.classes[name] = Class.new(name , nil , instance_type)
     end
-    type_type = types[:Type]
-    types.each do |name , type |
-      type.set_type(type_type)
-    end
-    types
-  end
-
-  # The BootSpace is an object that holds fake classes, that hold _real_ types
-  # Once we plug it in we can use .new
-  # then we need to create the parfait classes and fix the types before creating a Space
-  def self.boot_boot_space(types)
-    boot_space = Boot::Space.new
-    types.each do |name , type|
-      clazz = Boot::Class.new(type)
-      boot_space.classes[name] = clazz
-      boot_space.types[name] = type
-    end
-    Parfait::Object.set_object_space( boot_space )
-  end
-
-  # when running code instantiates a class, a type is created automatically
-  # but even to get our space up, we have already instantiated all types
-  # so we have to continue and allocate classes and fill the data by hand
-  # and off cource we can't use space.create_class , but still they need to go there
-  def self.boot_classes(types)
-    classes = Dictionary.new
-    classes.type = types[:Dictionary]
-    type_names.each do |name , vars|
-      super_c = super_class_names[name] || :Object
-      clazz = Class.new(name , super_c , types[name] )
-      classes[name] = clazz
-    end
-    classes
+    # cant set it before or new will try to take types from it
+    Parfait::Object.set_object_space( space )
+    fix_types
+    space.init_mem(options)
   end
 
   # Types are hollow shells before this, so we need to set the object_class
   # and initialize the list variables (which we now can with .new)
-  def self.fix_types(types , classes)
-    type_names.each do |name , ivars |
-      type = types[name]
-      clazz = classes[name]
-      type.set_object_class( clazz )
-      type.init_lists({type: :Type }.merge(ivars))
+  def self.fix_types
+    ObjectSpace.each_object(Parfait::Object) { |o| Parfait.set_type_for(o) }
+    classes = Parfait.object_space.classes
+    class_type = Parfait.object_space.get_type_by_class_name(:Class)
+    types = Parfait.object_space.types
+    classes.each do |name , cl|
+      object_type = Parfait.object_space.get_type_by_class_name(name)
+      cl.meta_class.set_instance_variable(:@instance_type, class_type)
+      cl.set_instance_variable( :@instance_type , object_type)
+      object_type.set_object_class(cl)
     end
   end
 
@@ -196,4 +132,5 @@ module Parfait
     # FIXME Now that we use instance variables in parfait, they should be parsed
     # and the type_names generated automatically
   end
+
 end

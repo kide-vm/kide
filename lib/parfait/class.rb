@@ -30,7 +30,7 @@ module Parfait
       super(instance_type)
       @name = name
       @super_class_name = superclass
-      @meta_class = MetaClass.new( self )
+      @meta_class = MetaClass.new( self , self.type || @name)
     end
 
     def rxf_reference_name
