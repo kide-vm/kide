@@ -1,12 +1,12 @@
 module Parfait
-  # Behaviour is the old smalltalk name for the duperclass of class and meta_class
+  # Behaviour is the old smalltalk name for the duperclass of class and singleton_class
   #
-  # Classes and meta_classes are in fact very similar, in that they manage
+  # Classes and singleton_classes are in fact very similar, in that they manage
   # - the type of instances
   # - the methods for instances
   #
   # The main way they differ is that Classes manage type for a class of objects (ie many)
-  # whereas meta_class, or singleton_class manages the type of only one object (here a class)
+  # whereas singleton_class, or singleton_class manages the type of only one object (here a class)
   #
   # Singleton classes can manage the type/methods of any single object, and in the
   # future off course they will, just not yet. Most single objects don't need that,

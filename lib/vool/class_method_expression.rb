@@ -8,7 +8,7 @@ module Vool
     end
 
     def to_mom(clazz)
-      raise "not meta" unless clazz.class == Parfait::MetaClass
+      raise "not singleton" unless clazz.class == Parfait::SingletonClass
       raise( "no class in #{self}") unless clazz
       method = clazz.add_instance_method_for(name , make_arg_type , make_frame , body )
       #puts "CLass method Class:#{clazz}:#{name}"

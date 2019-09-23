@@ -1,20 +1,20 @@
 #
-# In many respects a MetaClass is like a Class. We haven't gone to the full ruby/oo level
-# yet, where the metaclass is actually a class instance, but someday.
+# In many respects a SingletonClass is like a Class. We haven't gone to the full ruby/oo level
+# yet, where the singleton_class is actually a class instance, but someday.
 
 # A Class in general can be viewed as a way to generate methods for a group of objects.
 
-# A MetaClass serves the same function, but just for one object, the class object that it
-# is the meta_class of.
+# A SingletonClass serves the same function, but just for one object, the class object that it
+# is the singleton_class of.
 # This is slightly different in the way that the type of the class must actually
 # change, whereas for a class the instance type changes and only objects generated
 # henceafter have a different type.
 
-# Another current difference is that a metaclass has no superclass. Also no name.
-# There is a one to one relationship between a class instance and it's meta_class instance.
+# Another current difference is that a singleton_class has no superclass. Also no name.
+# There is a one to one relationship between a class instance and it's singleton_class instance.
 
 module Parfait
-  class MetaClass < Behaviour
+  class SingletonClass < Behaviour
 
     attr_reader :clazz
 
@@ -36,7 +36,7 @@ module Parfait
     end
 
     def inspect
-      "MetaClass(#{@clazz.name})"
+      "SingletonClass(#{@clazz.name})"
     end
 
     def to_s
