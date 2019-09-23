@@ -1,7 +1,7 @@
 require_relative "../helper"
 
 module Risc
-  class InterpreterSetters < MiniTest::Test
+  class InterpreterGetters < MiniTest::Test
     include Ticker
 
     def setup
@@ -19,7 +19,7 @@ module Risc
 MAIN
       super
     end
-
+#Space type is wrong, shold be same as meta_class.instance_type
     def test_chain
       #show_main_ticks # get output of what is
       run_input @string_input

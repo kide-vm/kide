@@ -43,6 +43,12 @@ module Parfait
       inspect
     end
 
+    # adding an instance changes the instance_type to include that variable
+    def add_instance_variable( name , type)
+      super(name,type)
+      @clazz.set_type(@instance_type)
+    end
+
     # Nil name means no superclass, and so nil returned
     def super_class
       return nil

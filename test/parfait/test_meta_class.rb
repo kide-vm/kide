@@ -36,15 +36,18 @@ module Parfait
       assert_raises{ @try.add_instance_method(nil)}
     end
     def test_add_instance_variable_changes_type
-      before = @space.get_class.instance_type
-      @space.get_class.add_instance_variable(:counter , :Integer)
-      assert before != @space.get_class.instance_type
+      before = @try.instance_type
+      @try.add_instance_variable(:counter , :Integer)
+      assert before != @try.instance_type
     end
     def test_add_instance_variable_changes_type_hash
-      before = @space.get_class.instance_type.hash
-      @space.get_class.add_instance_variable(:counter , :Integer)
-      assert before != @space.get_class.instance_type.hash
+      before = @try.instance_type.hash
+      @try.add_instance_variable(:counter , :Integer)
+      assert before != @try.instance_type.hash
     end
-
+    def test_add_instance_variable_changes_class_type
+      @try.add_instance_variable(:counter , :Integer)
+      assert_equal @try.clazz.type , @try.instance_type
+    end
   end
 end
