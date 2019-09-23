@@ -85,29 +85,19 @@ module Parfait
     # 0 -based index
     def get_internal_word(index)
       return @type if index == Parfait::TYPE_INDEX
-      name = Parfait.name_for_index(self , index)
+      name = self.type.names[index]
       return nil unless name
       instance_eval("@#{name}")
     end
 
     # 0 -based index
     def set_internal_word(index , value)
-      name = Parfait.name_for_index(self , index)
+      name = self.type.names[index] #unless name.is_a?(Symbol)
       raise "not sym for #{index} in #{self}:#{self.type}:#{name.class}" unless name.is_a?(Symbol)
       instance_eval("@#{name}=value" )
       value
     end
 
-  end
-
-  def self.name_for_index(object , index)
-    return :type if index == 0
-    clazz = object.class.name.split("::").last.to_sym
-    cl = self.type_names[clazz]
-    keys = cl.keys
-    keys[index - 1] # -1 because type is excluded in the lists (FIX)
-    # FIXME Now that we use instance variables in parfait, they should be parsed
-    # and the type_names generated automatically
   end
 
   # new list from ruby array to be precise

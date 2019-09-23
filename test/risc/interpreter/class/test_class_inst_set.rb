@@ -23,7 +23,7 @@ MAIN
       super
     end
 
-    def est_chain
+    def test_chain
       #show_main_ticks # get output of what is
       run_input @string_input
       assert_equal 5 , get_return
