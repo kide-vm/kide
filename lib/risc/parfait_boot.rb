@@ -51,7 +51,7 @@ module Parfait
     classes.each do |name , cl|
       object_type = Parfait.object_space.get_type_by_class_name(name)
       raise "nil type" unless object_type
-      cl.meta_class.instance_eval{ @instance_type = class_type}
+      cl.singleton_class.instance_eval{ @instance_type = class_type}
       cl.instance_eval{ @instance_type = object_type}
       cl.instance_eval{ @super_class_name = super_names[name] || :Object}
       object_type.instance_eval{ @object_class = cl }
@@ -85,7 +85,7 @@ module Parfait
        CallableMethod: :Callable,
        Block: :Callable,
        Class: :Behaviour,
-       MetaClass: :Behaviour ,
+       SingletonClass: :Behaviour ,
        ReturnAddress: :Integer}
   end
 
@@ -106,7 +106,7 @@ module Parfait
                        arguments_type: :Type , self_type: :Type, frame_type: :Type ,
                        name: :Word , blocks: :Block} ,
       Class: {instance_methods: :List, instance_type: :Type,
-              name: :Word, super_class_name: :Word , meta_class: :MetaClass},
+              name: :Word, super_class_name: :Word , singleton_class: :SingletonClass},
       DataObject: {},
       Data4: {},
       Data8: {},
@@ -129,7 +129,7 @@ module Parfait
                  local5: :Object, local6: :Object ,local7: :Object, local8: :Object ,
                  local9: :Object ,local10: :Object, local11: :Object , local12: :Object,
                  local13: :Object, local14: :Object, local15: :Object},
-      MetaClass: {instance_methods: :List, instance_type: :Type, clazz: :Class },
+      SingletonClass: {instance_methods: :List, instance_type: :Type, clazz: :Class },
       NilClass: {},
       Object: {},
       ReturnAddress: {next_integer: :ReturnAddress},

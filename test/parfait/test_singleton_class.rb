@@ -1,11 +1,11 @@
 require_relative "helper"
 
 module Parfait
-  class TestMetaClass < ParfaitTest
+  class TestSingletonClass < ParfaitTest
 
     def setup
       super
-      @try = @space.create_class( :Try , :Object).meta_class
+      @try = @space.create_class( :Try , :Object).singleton_class
     end
 
     def test_type_forclass
@@ -17,7 +17,7 @@ module Parfait
     end
     def test_new_superclass
       assert_equal "Class(Try)" , @try.clazz.inspect
-      assert_equal "MetaClass(Try)" , @try.inspect
+      assert_equal "SingletonClass(Try)" , @try.inspect
     end
     def test_new_methods
       assert_equal @try.method_names.class, @try.instance_methods.class

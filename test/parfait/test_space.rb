@@ -6,7 +6,7 @@ module Parfait
     def classes
       [:Behaviour ,:BinaryCode,:Block,:CacheEntry,:Callable,:CallableMethod,:Class,
         :DataObject,:Data4,:Data8,:Data16,:Data32,:Dictionary,:Factory, :Integer,:FalseClass,
-        :List,:Message, :MetaClass,:NilClass,:Object,:ReturnAddress,
+        :List,:Message, :SingletonClass,:NilClass,:Object,:ReturnAddress,
         :Space,:TrueClass,:Type,:VoolMethod,:Word]
     end
 
@@ -27,8 +27,8 @@ module Parfait
     def test_get_class_by_name
       assert_equal Parfait::Class , space_class.class
     end
-    def test_get_meta_class
-      assert_equal Parfait::MetaClass , space_class.meta_class.class
+    def test_get_singleton_class
+      assert_equal Parfait::SingletonClass , space_class.singleton_class.class
     end
     def test_get_type_by_class_name
       assert_equal Parfait::Type , Parfait.object_space.get_type_by_class_name(:Space).class
@@ -72,9 +72,9 @@ module Parfait
         end
       end
     end
-    def test_all_meta
+    def test_all_singletons
       @space.classes.each do |name , clazz|
-        assert clazz.meta_class , clazz.name
+        assert clazz.singleton_class , clazz.name
       end
     end
     def test_has_factory

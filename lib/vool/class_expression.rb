@@ -37,7 +37,7 @@ module Vool
         when MethodExpression
           node.to_mom(@clazz)
         when ClassMethodExpression
-          node.to_mom(@clazz.meta_class)
+          node.to_mom(@clazz.singleton_class)
         else
           raise "Only methods for now #{node.class}:#{node}"
         end
@@ -62,7 +62,7 @@ module Vool
     end
 
     # goes through the code looking for instance variables (and their assignments)
-    # adding each to the respective type, ie class or meta_class, depending
+    # adding each to the respective type, ie class or singleton_class, depending
     # on if they are instance or class instance variables.
     #
     # Class variables are deemed a design mistake, ie not implemented (yet)
@@ -72,7 +72,7 @@ module Vool
         when MethodExpression
           target = @clazz
         when ClassMethodExpression
-          target = @clazz.meta_class
+          target = @clazz.singleton_class
         else
           raise "Only methods for now #{node.class}:#{node}"
         end
