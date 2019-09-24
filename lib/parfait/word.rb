@@ -139,7 +139,7 @@ module Parfait
       raise "index not integer #{at.class}" unless at.is_a?(::Integer)
       raise "index must be positive , not #{at}" if (index < 0)
       raise "index too large #{at} > #{self.length}" if (index >= self.length )
-      return index + 8 # type_length * 4
+      return index + Word.type_length * 4
     end
 
     # compare the word to another

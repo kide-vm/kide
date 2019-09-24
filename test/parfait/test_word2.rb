@@ -98,10 +98,10 @@ module Parfait
       assert_raises {one.set_char(3 , "s".ord)}
     end
     def test_max
-      str = "123456789012345678901234"
+      str = "12345678901234567890"
       one = Parfait.new_word(str)
       assert_equal str , one.to_string
-      assert_equal 24 , one.length
+      assert_equal 20 , one.length
     end
 
   end
