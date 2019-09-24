@@ -16,7 +16,7 @@ module Mains
 
     def whole_input
       <<-eos
-        class Class
+        class Class < Behaviour
           def get_name
             @name
           end

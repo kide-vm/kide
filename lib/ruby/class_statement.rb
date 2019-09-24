@@ -71,7 +71,11 @@ module Ruby
     end
 
     def to_s(depth = 0)
-      at_depth(depth , "class #{name}" , @body.to_s(depth + 1) , "end")
+      at_depth(depth , "class #{name} #{super_s}\n#{@body.to_s(depth + 1)}\nend")
+    end
+    # deriviation if apropriate
+    def super_s
+      @super_class_name ? " < #{@super_class_name}" : ""
     end
   end
 end

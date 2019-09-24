@@ -51,7 +51,7 @@ module Parfait
     classes.each do |name , cl|
       object_type = Parfait.object_space.get_type_by_class_name(name)
       raise "nil type" unless object_type
-      cl.singleton_class.instance_eval{ @instance_type = class_type}
+      cl.single_class.instance_eval{ @instance_type = class_type}
       cl.instance_eval{ @instance_type = object_type}
       cl.instance_eval{ @super_class_name = super_names[name] || :Object}
       object_type.instance_eval{ @object_class = cl }
@@ -79,6 +79,9 @@ module Parfait
        Data16: :DataObject ,
        Data32: :DataObject ,
        BinaryCode: :Data32 ,
+       TrueClass: :Data4 ,
+       FalseClass: :Data4 ,
+       NilClass: :Data4 ,
        Integer: :Data4 ,
        Word: :Data8 ,
        List: :Data16 ,
@@ -106,7 +109,7 @@ module Parfait
                        arguments_type: :Type , self_type: :Type, frame_type: :Type ,
                        name: :Word , blocks: :Block} ,
       Class: {instance_methods: :List, instance_type: :Type,
-              name: :Word, super_class_name: :Word , singleton_class: :SingletonClass},
+              name: :Word, super_class_name: :Word , single_class: :SingletonClass},
       DataObject: {},
       Data4: {},
       Data8: {},

@@ -8,7 +8,7 @@ module RubyX
       def len ; 25 ; end
       def source
         <<GET
-        class Integer
+        class Integer < Data4
           def #{op}(other)
             X.comparison(:"#{op}")
           end

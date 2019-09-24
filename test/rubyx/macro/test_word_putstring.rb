@@ -6,7 +6,7 @@ module RubyX
       include MacroHelper
       def source
         <<GET
-        class Word
+        class Word < Data8
           def putstring
             X.putstring
           end

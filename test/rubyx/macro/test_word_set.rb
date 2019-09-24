@@ -6,7 +6,7 @@ module RubyX
       include MacroHelper
       def source
         <<GET
-        class Word
+        class Word < Data8
           def set_internal_byte( at , value)
             X.set_internal_byte
           end

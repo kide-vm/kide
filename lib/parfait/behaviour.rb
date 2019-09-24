@@ -52,7 +52,6 @@ module Parfait
 
     def get_instance_method( fname )
       raise "get_instance_method #{fname}.#{fname.class}" unless fname.is_a?(Symbol)
-      #if we had a hash this would be easier.  Detect or find would help too
       @instance_methods.find {|m| m.name == fname }
     end
 

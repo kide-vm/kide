@@ -19,7 +19,7 @@ module Vool
     end
 
     def setup
-      source = "class Integer;def +(other);X.int_operator(:+);end;end;" + class_main
+      source = "class Integer<Data4;def +(other);X.int_operator(:+);end;end;" + class_main
       ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(source)
       @ins = ret.compilers.find{|c|c.callable.name==:main}.mom_instructions.next
     end

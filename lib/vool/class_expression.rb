@@ -59,7 +59,7 @@ module Vool
         when MethodExpression
           node.to_mom(@clazz)
         when ClassMethodExpression
-          node.to_mom(@clazz.singleton_class)
+          node.to_mom(@clazz.single_class)
         else
           raise "Only methods for now #{node.class}:#{node}"
         end
@@ -78,7 +78,7 @@ module Vool
         when MethodExpression
           target = @clazz
         when ClassMethodExpression
-          target = @clazz.singleton_class
+          target = @clazz.single_class
         else
           raise "Only methods for now #{node.class}:#{node}"
         end

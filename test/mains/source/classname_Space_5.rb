@@ -1,4 +1,4 @@
-class Class
+class Class < Behaviour
   def name
     @name
   end

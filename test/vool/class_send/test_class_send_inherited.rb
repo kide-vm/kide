@@ -7,7 +7,7 @@ module Vool
 
     def class_main
       <<-eos
-        class Object
+        class Space
           def self.one_plus()
             return 1 + 1
           end

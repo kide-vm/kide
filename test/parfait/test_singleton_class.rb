@@ -5,7 +5,7 @@ module Parfait
 
     def setup
       super
-      @try = @space.create_class( :Try , :Object).singleton_class
+      @try = @space.create_class( :Try , :Object).single_class
     end
 
     def test_type_forclass

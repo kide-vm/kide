@@ -6,7 +6,7 @@ module RubyX
       include MacroHelper
       def source
         <<GET
-        class Integer
+        class Integer < Data4
           def div10
             X.div10
           end

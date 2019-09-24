@@ -15,6 +15,7 @@ module RubyX
     end
     def compile_in_test( input , options = {})
       vool = ruby_to_vool(in_Test(input) , options)
+      vool.to_parfait
       vool.to_mom(nil)
       itest = Parfait.object_space.get_class_by_name(:Test)
       assert itest
@@ -23,7 +24,7 @@ module RubyX
   end
   module ParfaitHelper
     include Preloader
-    
+
     def load_parfait(file)
       File.read File.expand_path("../../../lib/parfait/#{file}.rb",__FILE__)
     end

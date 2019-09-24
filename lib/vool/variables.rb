@@ -49,7 +49,7 @@ module Vool
   class ModuleName < Expression
     include Named
     def ct_type
-      get_named_class.singleton_class.instance_type
+      get_named_class.single_class.instance_type
     end
     def to_slot(_)
       return Mom::SlotDefinition.new( get_named_class, [])

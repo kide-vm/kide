@@ -2,7 +2,7 @@
 require_relative "helper"
 
 module Vool
-  class TestClassStatement #< MiniTest::Test
+  class TestClassStatement < MiniTest::Test
     include ScopeHelper
     def setup
       Parfait.boot!(Parfait.default_test_options)
@@ -26,7 +26,7 @@ module Vool
       assert_equal :a , @vool.to_parfait.instance_type.names[1]
     end
   end
-  class TestClassStatementTypeCreation #< MiniTest::Test
+  class TestClassStatementTypeCreation < MiniTest::Test
     include ScopeHelper
     def setup
       Parfait.boot!(Parfait.default_test_options)

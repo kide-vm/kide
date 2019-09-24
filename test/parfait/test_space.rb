@@ -28,7 +28,7 @@ module Parfait
       assert_equal Parfait::Class , space_class.class
     end
     def test_get_singleton_class
-      assert_equal Parfait::SingletonClass , space_class.singleton_class.class
+      assert_equal Parfait::SingletonClass , space_class.single_class.class
     end
     def test_get_type_by_class_name
       assert_equal Parfait::Type , Parfait.object_space.get_type_by_class_name(:Space).class
@@ -74,7 +74,7 @@ module Parfait
     end
     def test_all_singletons
       @space.classes.each do |name , clazz|
-        assert clazz.singleton_class , clazz.name
+        assert clazz.single_class , clazz.name
       end
     end
     def test_has_factory

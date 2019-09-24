@@ -27,7 +27,7 @@ module Vool
     def test_class_inst
       space_class = Parfait.object_space.get_class
       assert_equal :Space , space_class.name
-      names = space_class.singleton_class.instance_type.names
+      names = space_class.single_class.instance_type.names
       assert names.index_of(:inst) , names
     end
     def test_compiler

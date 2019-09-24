@@ -12,14 +12,16 @@ module VoolBlocks
     def test_block_not_compiles
       source =  "main{|val| val = 0}"
       vool = Ruby::RubyCompiler.compile( as_class_method(source) ).to_vool
+      vool.to_parfait
       begin
         vool.to_mom(nil)
-      rescue => err
+     rescue => err
         assert err.message.include?("Blocks") , err.message
       end
     end
     def test_assign_compiles
       vool = Ruby::RubyCompiler.compile( as_class_method("val = 0") ).to_vool
+      vool.to_parfait
       assert_equal Mom::MomCollection , vool.to_mom(nil).class
     end
   end

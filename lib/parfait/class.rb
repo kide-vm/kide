@@ -17,7 +17,7 @@
 module Parfait
   class Class < Behaviour
 
-    attr_reader :name , :super_class_name , :singleton_class
+    attr_reader :name , :super_class_name , :single_class
 
     def self.type_length
       6
@@ -30,7 +30,7 @@ module Parfait
       super(instance_type)
       @name = name
       @super_class_name = superclass
-      @singleton_class = SingletonClass.new( self , self.type || @name)
+      @single_class = SingletonClass.new( self , self.type || @name)
     end
 
     def rxf_reference_name

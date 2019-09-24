@@ -7,7 +7,7 @@ module RubyX
       def op ; :+ ; end
       def source
         <<GET
-        class Integer
+        class Integer  < Data4
           def #{op}(other)
             X.int_operator(:"#{op}")
           end
