@@ -57,6 +57,10 @@ module Vool
       @statements.pop
     end
 
+    # apply for all statements , return collection (for testing)
+    def to_parfait
+      @statements.collect{|s| s.to_parfait}
+    end
     # to_mom all the statements. Append subsequent ones to the first, and return the
     # first.
     #

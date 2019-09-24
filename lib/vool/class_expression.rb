@@ -6,14 +6,16 @@ module Vool
   #
   # We store the class name and the parfait class
   #
-  # The Parfait class gets created lazily on the way down to mom, ie the clazz
-  # attribute will only be set after to_mom, or a direct call to create_class
+  # The Parfait class gets created by to_parfait, ie only after that is the clazz
+  # attribute set.
+  #
   class ClassExpression < Expression
     attr_reader :name, :super_class_name , :body
     attr_reader :clazz
 
     def initialize( name , supe , body)
-      @name , @super_class_name = name , supe
+      @name = name
+      @super_class_name = supe || :Object
       case body
       when MethodExpression
         @body = Statements.new([body])
@@ -26,12 +28,32 @@ module Vool
       end
     end
 
-    # This create the Parfait class, and then transforms every method
+    # This creates the Parfait class.
+    # Creating the class involves creating the instance_type (or an initial version)
+    # which means knowing all used names. So we go through the code looking for
+    # InstanceVariables or InstanceVariable Assignments, to do that.
+    def to_parfait
+      @clazz = Parfait.object_space.get_class_by_name(@name )
+      if(@clazz)
+        if( @super_class_name != clazz.super_class_name)
+          raise "Superclass mismatch for #{@name} , was #{clazz.super_class_name}, now: #{super_class_name}"
+        end
+      else
+        @clazz = Parfait.object_space.create_class(@name , @super_class_name )
+      end
+      create_types
+      @body.statements.each {|meth| meth.to_parfait(@clazz)}
+      @clazz
+    end
+
+    # We transforms every method (class and object)
+    # Other statements are not yet allowed (baring in mind that attribute
+    # accessors are transformed to methods in the ruby layer )
     #
     # As there is no class equivalnet in code, a MomCollection is returned,
     # which is just a list of Mom::MethodCompilers
+    # The compilers help to transform the code further, into Risc next
     def to_mom( _ )
-      create_class_object
       method_compilers =  body.statements.collect do |node|
         case node
         when MethodExpression
@@ -45,24 +67,8 @@ module Vool
       Mom::MomCollection.new(method_compilers)
     end
 
-    # This creates the Parfait class. But doesn not handle reopening yet, so only new classes
-    # Creating the class involves creating the instance_type (or an initial version)
-    # which means knowing all used names. So we go through the code looking for
-    # InstanceVariables or InstanceVariable Assignments, to do that.
-    def create_class_object
-      @clazz = Parfait.object_space.get_class_by_name(@name )
-      if(@clazz)
-        #FIXME super class check with "sup"
-        #existing class, don't overwrite type (parfait only?)
-      else
-        @clazz = Parfait.object_space.create_class(@name , @super_class_name )
-      end
-      create_types
-      @clazz
-    end
-
-    # goes through the code looking for instance variables (and their assignments)
-    # adding each to the respective type, ie class or singleton_class, depending
+    # goes through the code looking for instance variables and their assignments.
+    # Adding each to the respective type, ie class or singleton_class, depending
     # on if they are instance or class instance variables.
     #
     # Class variables are deemed a design mistake, ie not implemented (yet)

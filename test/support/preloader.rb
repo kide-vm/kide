@@ -5,7 +5,7 @@ module Preloader
     preload.split(";").collect do |loads|
       raise "no preload #{loads}" unless Vool::Builtin.builtin[loads]
       clazz , meth = loads.split(".")
-      "class #{clazz}; #{Vool::Builtin.builtin[loads]};end;"
+      "class #{clazz} #{Vool::Builtin.derive(clazz)}; #{Vool::Builtin.builtin[loads]};end;"
     end.join
   end
   def preload

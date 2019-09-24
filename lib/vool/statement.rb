@@ -2,17 +2,23 @@
 # Object Oriented
 # Language
 #
-# VOOL is the abstraction of ruby, ruby minusthe fluff
+# VOOL is the abstraction of ruby: ruby minus the fluff
 #      fluff is generally what makes ruby nice to use, like 3 ways to achieve the same thing
 #      if/unless/ternary , reverse ifs (ie statement if condition), reverse whiles,
 #      implicit blocks, splats and multiple assigns etc
 #
-# Also, Vool is a typed tree, not abstract, so  there is a base class Statement
-#            and all it's derivation that make up the syntax tree
-#
-# Also Vool has expression and statements, revealing that age old dichotomy of code and
+# Vool has expression and statements, revealing that age old dichotomy of code and
 # data. Statements represent code whereas Expressions resolve to data.
 # (in ruby there are no pure statements, everthing resolves to data)
+#
+# Vool resolves to Mom in the next step down. But it also the place where we create
+# Parfait representations for the main oo players, ie classes and methods.
+# The protocol is thus two stage:
+# - first to_parfait with implicit side-effects of creating parfait objects that
+#     are added to the Parfait object_space
+# - second to_mom , which will return a mom version of the statement. This may be code
+#   or a compiler (for methods), or compiler collection (for classes)
+#
 module Vool
 
   # Base class for all statements in the tree. Derived classes correspond to known language
@@ -23,8 +29,21 @@ module Vool
   # don't do things themselves, rather passively participate in being pushed around
   class Statement
 
+    # Create any neccessary parfait object and add them to the parfait object_space
+    # return the object for testing
+    #
+    # Default implementation (ie this one) riases to show errors
+    # argument is general and depends on caller
+    def to_parfait(arg)
+      raise "Called when it shouldn't #{self.class}"
+    end
+
+    # create mom version of the statement, this is often code, that is added to the
+    # compiler, but for methods it is a compiler and for classes a collection of those.
+    #
+    # The argument given most often is a compiler
+    # The default implementation (this) is to raise an error
     def to_mom( _ )
-      # temporary warning to find unimplemented kids
       raise "Not implemented for #{self}"
     end
 

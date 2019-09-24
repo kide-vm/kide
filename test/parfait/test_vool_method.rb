@@ -18,11 +18,11 @@ module Vool
       assert_equal MethodExpression , method.class
     end
     def test_class
-      assert_equal Parfait::Class , @clazz.create_class_object.class
+      assert_equal Parfait::Class , @clazz.to_parfait.class
     end
     def test_method
-      clazz =  @clazz.create_class_object
-      assert_equal Parfait::VoolMethod , method.make_method(clazz).class
+      clazz =  @clazz.to_parfait
+      assert_equal Parfait::VoolMethod , method.to_parfait(clazz).class
     end
   end
 end

@@ -103,6 +103,7 @@ module RubyX
 
     # return mom for the previously stored vool source.
     def to_mom
+      @vool.to_parfait
       @vool.to_mom(nil)
     end
 

@@ -9,6 +9,7 @@ module Risc
 
     def in_test_vool(str)
       vool = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_vool(in_Test(str))
+      vool.to_parfait
       vool.to_mom(nil)
       vool
     end

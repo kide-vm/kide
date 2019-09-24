@@ -7,10 +7,19 @@ module Vool
       raise "no bod" unless @body
     end
 
+    # create the parfait VoolMethod to hold the code for this method
+    #
+    # Must pass in the actual Parfait class (default nil is just to conform to api)
+    def to_parfait( clazz = nil )
+      raise "No class given to class method #{name}" unless clazz
+      clazz.add_instance_method_for(name , make_arg_type , make_frame , body )
+    end
+
     def to_mom(clazz)
       raise "not singleton" unless clazz.class == Parfait::SingletonClass
       raise( "no class in #{self}") unless clazz
-      method = clazz.add_instance_method_for(name , make_arg_type , make_frame , body )
+      method = clazz.get_instance_method(name )
+      raise( "no class method in #{@name} in #{clazz}") unless method
       #puts "CLass method Class:#{clazz}:#{name}"
       compiler = method.compiler_for(clazz.instance_type)
       each {|node| raise "Blocks not implemented" if node.is_a?(LambdaExpression)}

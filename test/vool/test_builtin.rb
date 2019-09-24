@@ -11,6 +11,11 @@ module Vool
     def as_ruby
       @ruby = Ruby::RubyCompiler.compile(@code)
     end
+    def as_mom
+      vool = as_ruby.to_vool
+      vool.to_parfait
+      vool.to_mom(nil)
+    end
     def test_boot
       assert_equal String , @code.class
       assert @code.include?("Integer")
@@ -32,12 +37,12 @@ module Vool
       assert_equal Vool::MacroExpression , vool.body.first.body.return_value.class
     end
     def test_mom_basic
-      mom = as_ruby.to_vool.to_mom(nil)
+      mom = as_mom
       assert_equal Mom::MomCollection , mom.class
       assert_equal Mom::MethodCompiler , mom.method_compilers.first.class
     end
     def test_mom_instructions
-      mom_compiler = as_ruby.to_vool.to_mom(nil).method_compilers.first
+      mom_compiler = as_mom.method_compilers.first
       assert_equal Mom::Label , mom_compiler.mom_instructions.class
       assert_equal Mom::IntOperator , mom_compiler.mom_instructions.next.class
       assert_equal Mom::SlotLoad , mom_compiler.mom_instructions.next(2).class

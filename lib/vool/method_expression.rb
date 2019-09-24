@@ -8,20 +8,21 @@ module Vool
       raise "Not Vool #{@body}" unless @body.is_a?(Statement)
     end
 
-    def to_mom(clazz)
-      raise( "no class in #{self}") unless clazz
-      method = make_method(clazz)
-      compiler = method.compiler_for(clazz.instance_type)
-      compiler
+    # create the parfait VoolMethod to hold the code for this method
+    #
+    # Must pass in the actual Parfait class (default nil is just to conform to api)
+    def to_parfait( clazz = nil )
+      raise "No class given to method #{name}" unless clazz
+      clazz.add_instance_method_for(name , make_arg_type , make_frame , body )
     end
 
-    # Class to be passed in is a Parfait class
-    # return VoolMethod
-    #
-    # extracted call to create the VoolMethod as this is the place
-    # where we have all the info. Used in testing.
-    def make_method(clazz)
-      clazz.add_instance_method_for(name , make_arg_type , make_frame , body )
+    # Creates the Mom::MethodCompiler that will do the next step
+    def to_mom(clazz)
+      raise( "no class in #{self}") unless clazz
+      method = clazz.get_instance_method(@name)
+      raise( "no method in #{@name} in #{clazz.name}") unless method
+      compiler = method.compiler_for(clazz.instance_type)
+      compiler
     end
 
     def each(&block)

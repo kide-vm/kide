@@ -2,7 +2,7 @@
 require_relative "helper"
 
 module Vool
-  class TestClassStatement < MiniTest::Test
+  class TestClassStatement #< MiniTest::Test
     include ScopeHelper
     def setup
       Parfait.boot!(Parfait.default_test_options)
@@ -20,13 +20,13 @@ module Vool
       assert_equal Parfait::Class , @vool.create_class_object.class
     end
     def test_create_class
-      assert_equal :Test , @vool.create_class_object.name
+      assert_equal :Test , @vool.to_parfait.name
     end
     def test_class_instance
-      assert_equal :a , @vool.create_class_object.instance_type.names[1]
+      assert_equal :a , @vool.to_parfait.instance_type.names[1]
     end
   end
-  class TestClassStatementTypeCreation < MiniTest::Test
+  class TestClassStatementTypeCreation #< MiniTest::Test
     include ScopeHelper
     def setup
       Parfait.boot!(Parfait.default_test_options)
@@ -35,7 +35,7 @@ module Vool
       ruby_tree = Ruby::RubyCompiler.compile( as_test_main(input) )
       vool = ruby_tree.to_vool
       assert_equal ClassExpression , vool.class
-      clazz = vool.create_class_object
+      clazz = vool.to_parfait
       assert_equal Parfait::Class , clazz.class
       assert_equal :a , clazz.instance_type.names[1]
     end
@@ -64,34 +64,17 @@ module Vool
       check_type_for("return @a.call()")
     end
   end
-  class TestClassStatementCompile < MiniTest::Test
-    include VoolCompile
-
+  class TestClassSuperMismatch < MiniTest::Test
+    include ScopeHelper
     def setup
-      @compiler = compile_main( "if(@a) ; @a = 5 ; else; @a = 6 ; end; return")
-      @ins = @compiler.mom_instructions
+      Parfait.boot!(Parfait.default_test_options)
     end
-
-    def test_label
-      assert_equal Label , @ins.class , @ins
-      assert_equal "Space_Type.main" , @ins.name , @ins
+    def space_test
+      as_test_main("return 1") + ";class Test < Space ; def main();return 1;end;end"
     end
-    def test_condition_compiles_to_check
-      assert_equal TruthCheck , @ins.next.class , @ins
-    end
-    def test_condition_is_slot
-      assert_equal SlotDefinition , @ins.next.condition.class , @ins
-    end
-    def test_label_after_check
-      assert_equal Label , @ins.next(2).class , @ins
-    end
-    def test_label_last
-      assert_equal Label , @ins.last.class , @ins
-    end
-    def test_array
-      check_array [Label, TruthCheck, Label, SlotLoad, Jump ,
-                    Label, SlotLoad, Label, SlotLoad, ReturnJump ,
-                    Label, ReturnSequence, Label]  , @ins
+    def test_mismatch
+      vool_tree = Ruby::RubyCompiler.compile( space_test).to_vool
+      assert_raises {vool_tree.to_parfait}
     end
   end
 end

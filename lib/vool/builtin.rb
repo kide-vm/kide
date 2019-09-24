@@ -7,9 +7,18 @@ module Vool
 
     def self.load_builtin(loads)
       clazz , meth = loads.split(".")
-      "class #{clazz}; #{Vool::Builtin.builtin[loads]};end;"
+      "class #{clazz} #{derive(clazz)}; #{Vool::Builtin.builtin[loads]};end;"
     end
-
+    def self.derive(clazz) #must get derived classes rigth, so no mismatch
+      case clazz
+      when "Integer"
+        "< Data4"
+      when "Word"
+        " < Data8"
+      else
+        ""
+      end
+    end
     def self.builtin
       {
         "Object.get" => "def get_internal_word(at); X.get_internal_word;end",
