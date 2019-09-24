@@ -6,11 +6,6 @@ module RubyX
       include MacroHelper
       def source
         <<GET
-        class Space
-          def main(arg)
-            return
-          end
-        end
         class Object
           def method_missing(at)
             X.method_missing(:r1)

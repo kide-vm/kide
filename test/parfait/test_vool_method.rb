@@ -22,7 +22,7 @@ module Vool
     end
     def test_method
       clazz =  @clazz.to_parfait
-      assert_equal Parfait::VoolMethod , method.to_parfait(clazz).class
+      assert_equal Parfait::VoolMethod , clazz.get_instance_method(:main).class
     end
   end
 end

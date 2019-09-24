@@ -4,8 +4,8 @@ module Mom
   module Builtin
     class TestObjectInitRisc < BootTest
       def setup
-        Parfait.boot!(Parfait.default_test_options)
-        get_compiler("Space",:main)
+        compiler = RubyX::RubyXCompiler.new(RubyX.default_test_options)
+        coll = compiler.ruby_to_mom( get_preload("Space.main") )
         @method = MomCollection.create_init_compiler
       end
       def test_mom_length

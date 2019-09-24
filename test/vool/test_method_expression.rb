@@ -21,15 +21,28 @@ module Vool
       assert_raises{ method.to_parfait }
     end
     def test_method
-      clazz = @clazz.to_parfait
-      assert_equal Parfait::Class , clazz.class
-      meth = method.to_parfait(clazz)
-      assert_equal Parfait::VoolMethod , meth.class
-      assert_equal :main , meth.name
+      assert_equal Parfait::Class , @clazz.to_parfait.class
     end
     def test_is_instance_method
-      assert main = @clazz.to_parfait.get_instance_method(:main)
+      main = @clazz.to_parfait.get_instance_method(:main)
+      assert_equal Parfait::VoolMethod , main.class
+      assert_equal :main , main.name
     end
 
+  end
+  class TestMethodExpressionDoubleDef < MiniTest::Test
+    include VoolCompile
+
+    def setup
+      Parfait.boot!(Parfait.default_test_options)
+      ruby_tree = Ruby::RubyCompiler.compile( as_main("a = 5") + ";" + as_main("a = 5") )
+      @clazz = ruby_tree.to_vool
+    end
+    def method
+      @clazz.body.first
+    end
+    def test_no_double
+      assert_raises {@clazz.to_parfait}
+    end
   end
 end

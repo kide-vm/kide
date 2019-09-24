@@ -6,9 +6,12 @@ module Vool
     end
 
     def self.load_builtin(loads)
+      return "class Space;def main(arg);return 0; end; end" if(loads == "Space.main")
+      raise "no preload #{loads}" unless builtin[loads]
       clazz , meth = loads.split(".")
-      "class #{clazz} #{derive(clazz)}; #{Vool::Builtin.builtin[loads]};end;"
+      "class #{clazz} #{derive(clazz)}; #{builtin[loads]};end;"
     end
+
     def self.derive(clazz) #must get derived classes rigth, so no mismatch
       case clazz
       when "Integer"
@@ -40,7 +43,6 @@ module Vool
         "Word.put" => "def putstring(at); X.putstring;end",
         "Word.set" => "def set_internal_byte(at, val); X.set_internal_byte;end",
         "Word.get" => "def get_internal_byte(at); X.get_internal_byte;end",
-        "Space.main" => "def main(args);return nil;end",
       }
     end
     def self.builtin_code

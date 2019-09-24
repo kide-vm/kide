@@ -1,12 +1,12 @@
 module Preloader
   def get_preload(preload)
     return "" unless preload
-    preload = Vool::Builtin.builtin.keys.join(";") if(preload == "all" )
-    preload.split(";").collect do |loads|
-      raise "no preload #{loads}" unless Vool::Builtin.builtin[loads]
-      clazz , meth = loads.split(".")
-      "class #{clazz} #{Vool::Builtin.derive(clazz)}; #{Vool::Builtin.builtin[loads]};end;"
-    end.join
+    if( preload == "all" )
+      loading = Vool::Builtin.builtin.keys
+    else
+      loading = preload.split(";")
+    end
+    loading.collect { |loads| Vool::Builtin.load_builtin(loads)}.join(";") + ";"
   end
   def preload
     get_preload(@preload)

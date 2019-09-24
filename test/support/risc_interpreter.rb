@@ -105,7 +105,7 @@ module Risc
     # use the input as it, compile and run it
     # input muts contain a Space.main, but may contain more classes and methods
     def run_input(input)
-      @string_input = preload + input
+      @string_input = input
       do_setup
       run_all
     end

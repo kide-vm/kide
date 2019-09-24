@@ -13,6 +13,10 @@ module Vool
     # Must pass in the actual Parfait class (default nil is just to conform to api)
     def to_parfait( clazz = nil )
       raise "No class given to method #{name}" unless clazz
+      if( method = clazz.get_instance_method(name))
+        #FIXME , should check arg_type, and if the same, clear method and ok
+        raise "Redefining #{clazz.name}.#{name} not supported #{method}"
+      end
       clazz.add_instance_method_for(name , make_arg_type , make_frame , body )
     end
 
