@@ -9,7 +9,7 @@ module Elf
       preload = "class Word < Data8;def putstring;X.putstring;end;end;"
       @stdout = hello
       @exit_code = hello.length
-      check preload + as_main(input), "hello"
+      check preload + as_main(input)
     end
   end
 end

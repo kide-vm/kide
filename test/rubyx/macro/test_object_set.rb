@@ -2,7 +2,7 @@ require_relative "helper"
 
 module RubyX
   module Macro
-    class TestObjectGet < MiniTest::Test
+    class TestObjectSet < MiniTest::Test
       include MacroHelper
       def source
         <<GET

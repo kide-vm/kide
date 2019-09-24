@@ -11,8 +11,12 @@ module Elf
 
     def test_empty_translate
       writer = Elf::ObjectWriter.new(@linker )
-      writer.save "test/zero.o"
+      writer.save StringIO.new
     end
 
+    def test_empty_translate_with_debug
+      writer = Elf::ObjectWriter.new(@linker , debug: true )
+      writer.save StringIO.new
+    end
   end
 end

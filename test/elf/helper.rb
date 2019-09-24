@@ -10,10 +10,10 @@ module Elf
     def as_main(input)
       in_space("def main(arg);#{input};end")
     end
-    def check(input, file)
+    def check(input)
       linker = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_binary( input , :arm )
       writer = Elf::ObjectWriter.new(linker)
-      writer.save "test/#{file}.o"
+      writer.save StringIO.new
     end
   end
 end

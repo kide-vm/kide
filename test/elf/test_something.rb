@@ -23,7 +23,7 @@ module Elf
       end
 HERE
       @exit_code = 4
-      check get_preload("Integer.lt;Integer.plus") + in_space(input) , "fibo"
+      check get_preload("Integer.lt;Integer.plus") + in_space(input) 
     end
   end
 end

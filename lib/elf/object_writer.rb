@@ -67,10 +67,20 @@ module Elf
       @symbol_table.add_func_symbol name, offset, @text, linkage
     end
 
-    def save(filename)
-      to = File.open(filename, 'wb')
-      @object.write to
-      to.close
+    # save to either file or io
+    # Pass Filename as string
+    # or any io object
+    def save(file)
+      case file
+      when String
+        io = File.open(file, 'wb')
+      when IO , StringIO
+        io = file
+      else
+        raise "must pass io or filename, not #{file}"
+      end
+      @object.write io
+      io.close
     end
 
   end
