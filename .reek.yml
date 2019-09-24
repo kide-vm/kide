@@ -1,40 +1,38 @@
 ---
-TooManyStatements:
-  enabled: true
-  max_statements: 8
-DuplicateMethodCall:
-  max_calls: 2
-FeatureEnvy:
-  exclude:
-    - "Vool::Compiler"
-    - "RubyX::RubyCompiler"
-    - "Risc::Interpreter"
-    - "Risc::TextWriter"
-    - "Arm::Translator"
-    - "Vm::ToCode"
-TooManyMethods:
-  max_methods: 30
-  exclude:
-    - "Vool::Compiler"
-    - "RubyX::RubyCompiler"
-    - "Ruby::RubyCompiler"
-    - "Risc::Interpreter"
-    - "Risc::TextWriter"
-    - "Arm::Translator"
-    - "Util::List"
-UtilityFunction:
-  exclude:
-    - "Vool::Compiler"
-    - "RubyX::RubyCompiler"
-    - "Risc::Interpreter"
-    - "Risc::TextWriter"
-    - "Arm::Translator"
-    - "Vm::ToCode"
-UncommunicativeMethodName:
-  exclude:
-    - "Vool::Compiler"
-    - "RubyX::RubyCompiler"
-    - "Risc::TextWriter"
-    - "Risc::Interpreter"
-    - "Arm::Translator"
-    - "Vm::ToCode"
+detectors:
+  TooManyStatements:
+    enabled: true
+    max_statements: 8
+  DuplicateMethodCall:
+    max_calls: 2
+  FeatureEnvy:
+    exclude:
+      - "RubyX::RubyCompiler"
+      - "Risc::Interpreter"
+      - "Risc::TextWriter"
+      - "Arm::Translator"
+  TooManyMethods:
+    max_methods: 30
+    exclude:
+      - "RubyX::RubyCompiler"
+      - "Ruby::RubyCompiler"
+      - "Risc::Interpreter"
+      - "Risc::TextWriter"
+      - "Arm::Translator"
+      - "Util::List"
+  UtilityFunction:
+    exclude:
+      - "RubyX::RubyCompiler"
+      - "Risc::Interpreter"
+      - "Risc::TextWriter"
+      - "Arm::Translator"
+  UncommunicativeMethodName:
+    exclude:
+      - "RubyX::RubyCompiler"
+      - "Risc::TextWriter"
+      - "Risc::Interpreter"
+      - "Arm::Translator"
+exclude_paths:
+  - test
+  - vendor
+  - stash
