@@ -147,8 +147,8 @@ module Arm
       send( name , int_code )
     end
 
-    def putstring( int_code )
-      codes = ArmMachine.add( :r1 ,  :r1 , Parfait::Word.type_length*4 ) # adjust for object header
+    def putstring( int_code )    # adjust for object header (0 based, hence -1)
+      codes = ArmMachine.add( :r1 ,  :r1 , (Parfait::Word.type_length - 1)*4 )
       codes.append ArmMachine.mov( :r0 ,  1 )  # write to stdout == 1
       syscall(int_code , codes )
     end
