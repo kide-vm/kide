@@ -1,3 +1,8 @@
+class Integer < Data4
+  def -(right)
+    X.int_operator(:-)
+  end
+end
 class Space
   def same( n )
     return n

@@ -2,14 +2,19 @@
 
 Test methods by their output and exit codes (return, since it is the main).
 
-There are only two tests here (lus one, see below), one for interpreter, one for arm.
+There are only two tests here (plus one, see below), one for interpreter, one for arm.
 Both run the same tests. The actual ruby code that is run is in the source dir.
 Test methods are generated, one for each source file.
 
 ## Files
 
-File names follow [name,stdout,exitcode] joined by _ pattern. Stdout may be left blank,
-but exit code must be supplied.
+File names follow [order,name,stdout,exitcode] joined by _ pattern.
+Stdout may be left blank, but exit code must be supplied.
+
+The order number is some number giving the difficulty of the test, higher is more.
+The first digit represents how many external methods the code relies on, the second
+is some general indicator, ie recursive is more difficult than not, syscalls more than
+normal calls, if or while more than nothing etc.
 
 ## Arm
 

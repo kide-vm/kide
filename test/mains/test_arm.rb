@@ -19,12 +19,12 @@ module Mains
       return tests unless has_qemu
       all.each do |file_name|
         fullname = file_name.split("/").last.split(".").first
-        name , stdout , exit_code = fullname.split("_")
-        method_name = "test_#{name}"
+        order , name , stdout , exit_code = fullname.split("_")
+        method_name = "test_#{order}_#{name}"
         input = File.read(file_name)
         tests << method_name
         self.send(:define_method, method_name ) do
-          out , code = run_code(input , name)
+          out , code = run_code(input , "#{order}_#{name}")
           assert_equal stdout , out , "Wrong stdout #{name}"
           assert_equal exit_code , code.to_s , "Wrong exit code #{name}"
         end
@@ -49,9 +49,8 @@ module Mains
 
     def run_code(input , name )
       puts "Compiling #{name}.o" if DEBUG
-      code = Vool::Builtin.builtin_code + input
 
-      linker = ::RubyX::RubyXCompiler.new({}).ruby_to_binary( code , :arm )
+      linker = ::RubyX::RubyXCompiler.new({}).ruby_to_binary( input , :arm )
       writer = Elf::ObjectWriter.new(linker)
 
       writer.save "mains.o"

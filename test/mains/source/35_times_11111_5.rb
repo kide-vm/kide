@@ -1,3 +1,16 @@
+class Integer < Data4
+  def <(right)
+    X.comparison(:<)
+  end
+  def +(right)
+    X.int_operator(:+)
+  end
+end
+class Word < Data8
+  def putstring
+    X.putstring
+  end
+end
 class Space
   def times(n)
     i = 0

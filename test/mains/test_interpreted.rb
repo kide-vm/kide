@@ -11,12 +11,11 @@ module Mains
       tests =[]
       all.each do |file_name|
         fullname = file_name.split("/").last.split(".").first
-        name , stdout , exit_code = fullname.split("_")
-        method_name = "test_#{name}"
+        order , name , stdout , exit_code = fullname.split("_")
+        method_name = "test_#{order}_#{name}"
         tests << method_name
         input = File.read(file_name)
         self.send(:define_method, method_name ) do
-          @preload = "all"
           ticks = run_input(input)
           #puts "Ticks for #{method_name}=#{ticks}"
           assert_equal stdout , @interpreter.stdout , "Wrong stdout #{name}"

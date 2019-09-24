@@ -1,3 +1,15 @@
+class Integer < Data4
+  def <(right)
+    X.comparison(:<)
+  end
+  def +(right)
+    X.int_operator(:+)
+  end
+  def -(right)
+    X.int_operator(:-)
+  end
+end
+
 class Space
 
   def fibo_r( n )
