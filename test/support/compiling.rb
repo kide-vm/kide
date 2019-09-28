@@ -45,7 +45,7 @@ module VoolCompile
     source = get_preload(preload) + as_main("#{method_input} ; self.main{|val| #{block_input}}")
     mom_col = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom( source )
     compiler = mom_col.method_compilers.find_compiler_name(:main)
-    block = compiler.block_compilers.first
+    block = mom_col.method_compilers.find_compiler_name(:main_block)
     assert block
     block.mom_instructions.next
   end

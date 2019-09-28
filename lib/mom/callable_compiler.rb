@@ -7,11 +7,11 @@ module Mom
   #                 Instructions derive from class Instruction and form a linked list
 
   class CallableCompiler
+    include Util::CompilerList
 
     def initialize( callable )
       @callable = callable
       @constants = []
-      @block_compilers = []
       @mom_instructions = Label.new(source_name, source_name)
       @current = start = @mom_instructions
       add_code Label.new( source_name, "return_label")
@@ -19,7 +19,7 @@ module Mom
       add_code Label.new( source_name, "unreachable")
       @current = start
     end
-    attr_reader :mom_instructions , :constants , :block_compilers , :callable , :current
+    attr_reader :mom_instructions , :constants , :callable , :current
 
     def return_label
       @mom_instructions.each do |ins|

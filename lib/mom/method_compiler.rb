@@ -4,8 +4,7 @@ module Mom
   # and to instantiate the methods correctly.
 
   class MethodCompiler < CallableCompiler
-    include Util::CompilerList
-    
+
     def initialize( method )
       super(method)
     end
@@ -28,9 +27,6 @@ module Mom
     def to_risc
       risc_compiler = Risc::MethodCompiler.new(@callable , mom_instructions)
       instructions_to_risc(risc_compiler)
-      block_compilers.each do |m_comp|
-        risc_compiler.block_compilers << m_comp.to_risc(@callable)
-      end
       risc_compiler
     end
 
@@ -75,10 +71,6 @@ module Mom
       index = @callable.frame_type.variable_index(name)
       raise "no such local or argument #{name}" unless index
       return ["local#{index}".to_sym]
-    end
-
-    def add_block_compiler(compiler)
-      @block_compilers << compiler
     end
 
     # return true or false if the given name is in scope (arg/local)

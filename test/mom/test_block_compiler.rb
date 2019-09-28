@@ -16,8 +16,9 @@ module Mom
       assert_equal :main , @risc.method_compilers.callable.name
     end
     def test_main_block_compiler
-      assert_equal :main , @risc.method_compilers.block_compilers.first.in_method.name
-      assert_equal :main_block , @risc.method_compilers.block_compilers.first.callable.name
+      main_block = @risc.method_compilers.find_compiler_name(:main_block)
+      assert_equal :main_block , main_block.callable.name
+      assert_equal :main , main_block.in_method.name
     end
   end
   class TestBlockCompiler2 < MiniTest::Test
@@ -35,8 +36,9 @@ module Mom
       assert_equal :main , @risc.method_compilers.callable.name
     end
     def test_main_block_compiler
-      assert_equal :main , @risc.method_compilers.block_compilers.first.in_method.name
-      assert_equal :main_block , @risc.method_compilers.block_compilers.first.callable.name
+      main_block = @risc.method_compilers.find_compiler_name(:main_block)
+      assert_equal :main_block , main_block.callable.name
+      assert_equal :main , main_block.in_method.name
     end
   end
 end

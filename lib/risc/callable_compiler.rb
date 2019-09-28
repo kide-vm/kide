@@ -10,6 +10,7 @@ module Risc
   # - current instruction is where addidion happens
   #
   class CallableCompiler
+    include Util::CompilerList
 
     # Must pass the callable (method/block)
     # Also start instuction, usually a label is mandatory
@@ -18,11 +19,10 @@ module Risc
       @callable = callable
       @regs = []
       @constants = []
-      @block_compilers = []
       @current = @risc_instructions = mom_label.risc_label(self)
       reset_regs
     end
-    attr_reader :risc_instructions , :constants , :block_compilers , :callable , :current
+    attr_reader :risc_instructions , :constants , :callable , :current
 
     def return_label
       @risc_instructions.each do |ins|
@@ -136,6 +136,13 @@ module Risc
         nekst = nekst.next
       end
       Risc::Assembler.new(@callable , cpu_instructions )
+    end
+
+    # translate this method, which means the method itself and all blocks inside it
+    # returns the array (of assemblers) that you pass in as collection
+    def translate_method(  translator , collection)
+      collection << translate_cpu( translator )
+      collection
     end
 
   end

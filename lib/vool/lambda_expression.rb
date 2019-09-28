@@ -23,10 +23,10 @@ module Vool
     def compile( compiler )
       parfait_block = self.parfait_block(compiler)
       block_compiler = Mom::BlockCompiler.new( parfait_block , compiler.get_method )
-      compiler.add_block_compiler(block_compiler)
       head = body.to_mom( block_compiler )
       block_compiler.add_code(head)
-      block_compiler
+      compiler.add_method_compiler(block_compiler)
+      nil
     end
 
     def each(&block)

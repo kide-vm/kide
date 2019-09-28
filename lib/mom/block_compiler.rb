@@ -16,8 +16,8 @@ module Mom
       "#{@method.self_type.name}.init"
     end
 
-    def to_risc(in_method)
-      risc_compiler = Risc::BlockCompiler.new(@callable , in_method , mom_instructions)
+    def to_risc
+      risc_compiler = Risc::BlockCompiler.new(@callable , @method , mom_instructions)
       instructions_to_risc(risc_compiler)
       #recursive blocks not done
       risc_compiler

@@ -1,6 +1,7 @@
 module Risc
 
-  # A BlockCompiler is much like a Mehtodcompiler, exept for blocks
+  # A BlockCompiler is much like a MethodCompiler, exept for it's for blocks
+  # This only changes scoping for variables, lsee slot_type
   #
   class BlockCompiler < CallableCompiler
 
