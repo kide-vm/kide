@@ -1,7 +1,6 @@
 require "rx-file"
 
-require "util/logging"
-require "util/list"
+require_relative "util"
 require_relative "elf/object_writer"
 require_relative "risc"
 require_relative "mom/mom"
