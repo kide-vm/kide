@@ -40,42 +40,11 @@ module Risc
     def translate( platform_sym )
       platform_sym = platform_sym.to_s.capitalize
       platform = Risc::Platform.for(platform_sym)
-      assemblers = translate_methods( platform.translator )
+      assemblers = []
+      @method_compilers.each_compiler do |compiler|
+        compiler.translate_method( platform.translator , assemblers)
+      end
       Risc::Linker.new(platform , assemblers , constants)
-    end
-
-    # go through all methods and translate them to cpu, given the translator
-    def translate_methods(translator)
-      collection = []
-      method_compilers.each_compiler do |compiler|
-        #puts "Translate method #{compiler.callable.name}"
-        translate_method(compiler , translator , collection)
-      end
-      collection
-    end
-
-    # translate one method, which means the method itself and all blocks inside it
-    # returns an array of assemblers
-    def translate_method( method_compiler , translator , collection)
-      collection << translate_cpu( method_compiler , translator )
-      method_compiler.block_compilers.each do |block_compiler|
-        collection << translate_cpu(block_compiler , translator)
-      end
-      collection
-    end
-
-    # compile the callable (method or block) to cpu
-    # return an Assembler that will then translate to binary
-    def translate_cpu(compiler , translator)
-      risc = compiler.risc_instructions
-      cpu_instructions = risc.to_cpu(translator)
-      nekst = risc.next
-      while(nekst)
-        cpu = nekst.to_cpu(translator) # returning nil means no replace
-        cpu_instructions << cpu if cpu
-        nekst = nekst.next
-      end
-      Risc::Assembler.new(compiler.callable , cpu_instructions )
     end
 
   end

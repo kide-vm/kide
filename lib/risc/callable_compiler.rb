@@ -123,5 +123,20 @@ module Risc
     def builder( source)
       Builder.new(self , source)
     end
+
+    # compile the callable (method or block) to cpu
+    # return an Assembler that will then translate to binary
+    def translate_cpu(translator)
+      risc = @risc_instructions
+      cpu_instructions = risc.to_cpu(translator)
+      nekst = risc.next
+      while(nekst)
+        cpu = nekst.to_cpu(translator) # returning nil means no replace
+        cpu_instructions << cpu if cpu
+        nekst = nekst.next
+      end
+      Risc::Assembler.new(@callable , cpu_instructions )
+    end
+
   end
 end

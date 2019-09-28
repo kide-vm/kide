@@ -5,72 +5,28 @@ module Risc
     include ScopeHelper
 
     def setup
+      code = in_Test("def meth; @ivar = 5;return ;end")
+      rubyx = RubyX::RubyXCompiler.new(RubyX.default_test_options)
+      @compiler = rubyx.ruby_to_mom(code).compilers.to_risc
     end
-
-    def in_test_vool(str)
-      vool = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_vool(in_Test(str))
-      vool.to_parfait
-      vool.to_mom(nil)
-      vool
+    def test_compiles_risc
+      assert_equal Risc::MethodCompiler , @compiler.class
+      assert_equal Risc::Label , @compiler.risc_instructions.class
     end
-    def create_method(body = "@ivar = 5;return")
-      in_test_vool("def meth; #{body};end")
-      test = Parfait.object_space.get_class_by_name(:Test)
-      test.get_instance_method(:meth)
+    def test_compiles_all_risc
+      assert_equal Risc::LoadConstant , @compiler.risc_instructions.next.class
+      assert_equal 16 , @compiler.risc_instructions.length
     end
-
-    def test_method_has_source
-      method = create_method
-      assert_equal Vool::Statements ,  method.source.class
+    def test_translate_cpu
+      cpu = @compiler.translate_cpu(Platform.for(:arm).translator)
+      assert_equal Assembler , cpu.class
+      assert_equal :meth , cpu.callable.name
     end
-
-    def test_method_has_no_locals
-      method = create_method
-      assert_equal 1 , method.frame_type.instance_length
-    end
-
-    def test_method_has_no_args
-      method = create_method
-      assert_equal 1 , method.args_type.instance_length
-    end
-
-    def test_creates_method_in_class
-      method = create_method
-      assert method , "No method created"
-      assert_equal Parfait::VoolMethod , method.class
-    end
-
-    def test_creates_method_statement_in_class
-      clazz = in_test_vool("def meth; @ivar = 5 ;return;end")
-      assert_equal Vool::Statements , clazz.body.class
-      assert_equal Vool::MethodExpression , clazz.body.first.class
-    end
-
-    def test_callable_method_instance_type
-      in_test_vool("def meth; @ivar = 5; @ibar = 4;return;end")
-      test = Parfait.object_space.get_class_by_name(:Test)
-      method = test.instance_type.get_method(:meth)
-      assert_equal 1, method.self_type.variable_index(:ivar)
-      assert_equal 2, method.self_type.variable_index(:ibar)
-    end
-    def test_callable_method_has_one_local
-      in_test_vool("def meth; local = 5 ; a = 6;return;end")
-      test = Parfait.object_space.get_class_by_name(:Test)
-      method = test.get_instance_method(:meth)
-      assert_equal 3 , method.frame_type.instance_length
-      assert_equal 1 , method.frame_type.variable_index(:local)
-      assert_equal 2 , method.frame_type.variable_index(:a)
-    end
-    def constant_setup(input)
-      mom = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(in_Test(input))
-      assert_equal Mom::MomCollection , mom.class
-      compiler = mom.method_compilers
-      assert_equal Mom::MethodCompiler , compiler.class
-      compiler
-    end
-    def test_return_label
-      compiler = constant_setup("def meth; return 'Hi';end")
-      assert_equal "return_label",  compiler.return_label.name
+    def test_translate_method
+      ass = @compiler.translate_method(Platform.for(:arm).translator , [])
+      assert_equal Array , ass.class
+      assert_equal Assembler , ass.first.class
+      assert_equal :meth , ass.first.callable.name
     end
   end
 end

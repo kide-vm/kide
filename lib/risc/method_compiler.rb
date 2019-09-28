@@ -30,5 +30,14 @@ module Risc
       @block_compilers << compiler
     end
 
+    # translate this method, which means the method itself and all blocks inside it
+    # returns the array (of assemblers) that you pass in as collection
+    def translate_method(  translator , collection)
+      collection << translate_cpu( translator )
+      @block_compilers.each do |block_compiler|
+        collection << block_compiler.translate_cpu(translator)
+      end
+      collection
+    end
   end
 end

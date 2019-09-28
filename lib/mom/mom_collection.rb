@@ -24,8 +24,8 @@ module Mom
       self
     end
 
-    # Return all compilers, namely the MethodCompilers passed in, plus the
-    # boot_function's compilers (boot_compilers)
+    # Return all compilers, namely the MethodCompilers instanc,
+    # plus the init_compilers
     def compilers
       init_compilers
       @method_compilers
