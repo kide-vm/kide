@@ -6,6 +6,7 @@ module Util
 
     def add_method_compiler(comp)
       raise "not compiler #{comp.class}" unless comp.respond_to?(:find_compiler)
+      raise "nil compiler #{self}" unless comp
       if(@next_compiler)
         @next_compiler.add_method_compiler(comp)
       else
@@ -16,6 +17,12 @@ module Util
     def each_compiler &block
       block.yield(self)
       @next_compiler.each_compiler(&block) if @next_compiler
+    end
+
+    def find_compiler_name name
+      return self if @callable.name == name
+      return nil unless @next_compiler
+      @next_compiler.find_compiler_name(name)
     end
 
     def find_compiler &block

@@ -7,17 +7,28 @@ module Risc
 
     # Initialize with an array of risc MethodCompilers
     def initialize(compilers = [])
-      @method_compilers = compilers
+      @method_compilers = nil
+      compilers.each{|c| add_compiler(c)}
     end
 
     # collects constants from all compilers into one array
     def constants
-      method_compilers.inject([]){|sum ,comp| sum + comp.constants }
+      all = []
+      method_compilers.each_compiler{|comp| all +=  comp.constants }
+      all
     end
 
-    # Append another MomCompilers method_compilers to this one.
-    def append(mom_compiler)
-      @method_compilers += mom_compiler.method_compilers
+    def append(collection)
+      @method_compilers.add_method_compiler( collection.method_compilers)
+      self
+    end
+
+    def add_compiler(compiler)
+      if(@method_compilers)
+        @method_compilers.add_method_compiler(compiler)
+      else
+        @method_compilers = compiler
+      end
       self
     end
 
@@ -35,21 +46,22 @@ module Risc
 
     # go through all methods and translate them to cpu, given the translator
     def translate_methods(translator)
-      method_compilers.collect do |compiler|
+      collection = []
+      method_compilers.each_compiler do |compiler|
         #puts "Translate method #{compiler.callable.name}"
-        translate_method(compiler , translator)
-      end.flatten
+        translate_method(compiler , translator , collection)
+      end
+      collection
     end
 
     # translate one method, which means the method itself and all blocks inside it
     # returns an array of assemblers
-    def translate_method( method_compiler , translator)
-      all = []
-      all << translate_cpu( method_compiler , translator )
+    def translate_method( method_compiler , translator , collection)
+      collection << translate_cpu( method_compiler , translator )
       method_compiler.block_compilers.each do |block_compiler|
-        all << translate_cpu(block_compiler , translator)
+        collection << translate_cpu(block_compiler , translator)
       end
-      all
+      collection
     end
 
     # compile the callable (method or block) to cpu

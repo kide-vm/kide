@@ -13,11 +13,11 @@ module Mom
       assert_equal Risc::RiscCollection, @risc.class
     end
     def test_main_compiler
-      assert_equal :main , @risc.method_compilers.first.callable.name
+      assert_equal :main , @risc.method_compilers.callable.name
     end
     def test_main_block_compiler
-      assert_equal :main , @risc.method_compilers.first.block_compilers.first.in_method.name
-      assert_equal :main_block , @risc.method_compilers.first.block_compilers.first.callable.name
+      assert_equal :main , @risc.method_compilers.block_compilers.first.in_method.name
+      assert_equal :main_block , @risc.method_compilers.block_compilers.first.callable.name
     end
   end
   class TestBlockCompiler2 < MiniTest::Test
@@ -32,11 +32,11 @@ module Mom
       assert_equal Risc::RiscCollection, @risc.class
     end
     def test_main_compiler
-      assert_equal :main , @risc.method_compilers.first.callable.name
+      assert_equal :main , @risc.method_compilers.callable.name
     end
     def test_main_block_compiler
-      assert_equal :main , @risc.method_compilers.first.block_compilers.first.in_method.name
-      assert_equal :main_block , @risc.method_compilers.first.block_compilers.first.callable.name
+      assert_equal :main , @risc.method_compilers.block_compilers.first.in_method.name
+      assert_equal :main_block , @risc.method_compilers.block_compilers.first.callable.name
     end
   end
 end

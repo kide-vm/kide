@@ -4,6 +4,7 @@ module Risc
   # and to instantiate the methods correctly.
 
   class MethodCompiler < CallableCompiler
+    include Util::CompilerList
 
     # Methods starts with a Label, both in risc and mom.
     # Pass in the callable(method) and the mom label that the method starts with

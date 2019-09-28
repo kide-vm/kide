@@ -9,7 +9,7 @@ module Util
     end
   end
 
-  class TestComplierListOne < Minitest::Test
+  class TestCompilerListOne < Minitest::Test
 
     def setup
       @compiler = MethodCompiler.new(:one)
@@ -27,7 +27,7 @@ module Util
       assert_equal :one , @compiler.find_compiler{|c| c.name == :one}.name
     end
   end
-  class TestComplierListTwo < Minitest::Test
+  class TestCompilerListTwo < Minitest::Test
 
     def setup
       @compiler = MethodCompiler.new(:one)

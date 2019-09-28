@@ -32,14 +32,14 @@ module Mom
       @collection = @comp.to_risc()
     end
     def compiler
-      @collection.method_compilers.first
+      @collection.method_compilers
     end
     def test_has_to_risc
       assert_equal Risc::RiscCollection, @collection.class
     end
     def test_has_risc_compiler
       assert_equal Risc::MethodCompiler, compiler.class
-      assert_equal 3, @collection.method_compilers.length
+      assert_equal 3, @collection.method_compilers.num_compilers
     end
     def test_has_risc_instructions
       assert_equal Risc::Label, compiler.risc_instructions.class
