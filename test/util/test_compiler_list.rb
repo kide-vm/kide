@@ -24,7 +24,7 @@ module Util
       assert_equal :one , @compiler.last_compiler.name
     end
     def test_find_one
-      assert_equal :one , @compiler.find_compiler{|c| c.name == :one}.name      
+      assert_equal :one , @compiler.find_compiler{|c| c.name == :one}.name
     end
   end
   class TestComplierListTwo < Minitest::Test
@@ -42,23 +42,10 @@ module Util
     def test_find_two
       assert_equal :two , @compiler.find_compiler{|c| c.name == :two}.name
     end
+    def test_each
+      all = []
+      @compiler.each_compiler{|c| all << c.name}
+      assert_equal [:one, :two] , all
+    end
   end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 end

@@ -4,7 +4,8 @@ module Mom
   # and to instantiate the methods correctly.
 
   class MethodCompiler < CallableCompiler
-
+    include Util::CompilerList
+    
     def initialize( method )
       super(method)
     end

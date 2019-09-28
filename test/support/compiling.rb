@@ -37,15 +37,14 @@ module VoolCompile
     input = get_preload(preload) + as_main( input )
     collection = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(input)
     assert collection.is_a?(Mom::MomCollection) , collection.class.name
-    compiler = collection.compilers.find{|comp| comp.callable.name == :main}
-    assert compiler.is_a?(Mom::MethodCompiler)
+    compiler = collection.compilers.find_compiler{|comp| comp.callable.name == :main}
     assert_equal Mom::MethodCompiler , compiler.class
     compiler
   end
   def compile_main_block( block_input , method_input = "main_local = 5" , preload = nil)
     source = get_preload(preload) + as_main("#{method_input} ; self.main{|val| #{block_input}}")
     mom_col = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom( source )
-    compiler = mom_col.method_compilers.find{|c| c.get_method.name.to_s.start_with?("main") }
+    compiler = mom_col.method_compilers.find_compiler{|c| c.get_method.name.to_s.start_with?("main") }
     block = compiler.block_compilers.first
     assert block
     block.mom_instructions.next

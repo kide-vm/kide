@@ -64,7 +64,7 @@ module Risc
     def constant_setup(input)
       mom = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(in_Test(input))
       assert_equal Mom::MomCollection , mom.class
-      compiler = mom.method_compilers.first
+      compiler = mom.method_compilers
       assert_equal Mom::MethodCompiler , compiler.class
       compiler
     end

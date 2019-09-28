@@ -20,15 +20,15 @@ module Mom
     def test_method_mom_col
       mom = in_test_vool()
       assert_equal Mom::MomCollection ,  mom.class
-      assert_equal Mom::MethodCompiler ,  mom.compilers.first.class
+      assert_equal Mom::MethodCompiler ,  mom.compilers.class
     end
     def test_compiles_risc
-      compiler = in_test_vool().compilers.first.to_risc
+      compiler = in_test_vool().compilers.to_risc
       assert_equal Risc::MethodCompiler , compiler.class
       assert_equal Risc::Label , compiler.risc_instructions.class
     end
     def test_compiles_all_risc
-      compiler = in_test_vool().compilers.first.to_risc
+      compiler = in_test_vool().compilers.to_risc
       assert_equal Risc::LoadConstant , compiler.risc_instructions.next.class
       assert_equal 16 , compiler.risc_instructions.length
     end

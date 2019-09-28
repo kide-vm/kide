@@ -13,11 +13,11 @@ module Vool
       assert_equal Mom::MomCollection , @ret.class
     end
     def test_has_compilers
-      assert_equal Mom::MethodCompiler , @ret.method_compilers.first.class
+      assert_equal Mom::MethodCompiler , @ret.method_compilers.class
     end
 
     def test_constant
-      assert @ret.method_compilers.first.add_constant( Parfait::Integer.new(5) )
+      assert @ret.method_compilers.add_constant( Parfait::Integer.new(5) )
     end
 
   end

@@ -12,22 +12,16 @@ module Mom
       assert_equal MomCollection , @comp.class
     end
     def test_compilers
-      assert_equal 3 , @comp.compilers.length
+      assert_equal 3 , @comp.compilers.num_compilers
     end
     def test_init_compilers
-      assert_equal Array , @comp.init_compiler.class
-    end
-    def test_init_compiler
-      assert_equal Mom::MethodCompiler , @comp.init_compiler.first.class
+      assert_equal MomCollection , @comp.init_compilers.class
     end
     def test_compilers_bare
-      assert_equal 2 , MomCollection.new.compilers.length
+      assert_equal 2 , MomCollection.new.compilers.num_compilers
     end
     def test_append_class
       assert_equal MomCollection,  (@comp.append @comp).class
-    end
-    def test_append_length
-      assert_equal 2 ,  @comp.append(@comp).method_compilers.length
     end
   end
   class TestMomCollectionToRisc < MiniTest::Test

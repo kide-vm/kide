@@ -11,32 +11,46 @@ module Mom
 
     # Initialize with an array of risc MethodCompilers
     def initialize(compilers = [])
-      @method_compilers = compilers
+      @method_compilers = nil
+      compilers.each{|c| add_compiler(c)}
     end
 
     # lazily instantiate the compiler for __init__ function and __method_missing__
-    def init_compiler
-      @init_compilers ||= [
-        MomCollection.create_init_compiler ,
-        MomCollection.create_mm_compiler ,
-                  ]
+    def init_compilers
+      return if @init_compilers
+      @init_compilers = true
+      add_compiler MomCollection.create_init_compiler
+      add_compiler MomCollection.create_mm_compiler
+      self
     end
 
     # Return all compilers, namely the MethodCompilers passed in, plus the
     # boot_function's compilers (boot_compilers)
     def compilers
-      @method_compilers + init_compiler
+      init_compilers
+      @method_compilers
+    end
+
+    def add_compiler(compiler)
+      if(@method_compilers)
+        @method_compilers.add_method_compiler(compiler)
+      else
+        @method_compilers = compiler
+      end
+      self
     end
 
     # Append another MomCompilers method_compilers to this one.
-    def append(mom_compiler)
-      @method_compilers += mom_compiler.method_compilers
+    def append(collection)
+      @method_compilers.add_method_compiler( collection.method_compilers)
       self
     end
 
     def to_risc( )
-      riscs = compilers.collect do | mom_c |
-        mom_c.to_risc
+      init_compilers
+      riscs =[]
+      @method_compilers.each_compiler do | mom_c |
+        riscs << mom_c.to_risc
       end
       # to_risc all compilers
       # for each suffling constnts and fist label, then all instructions (see below)

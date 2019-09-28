@@ -39,10 +39,10 @@ module Vool
     def test_mom_basic
       mom = as_mom
       assert_equal Mom::MomCollection , mom.class
-      assert_equal Mom::MethodCompiler , mom.method_compilers.first.class
+      assert_equal Mom::MethodCompiler , mom.method_compilers.class
     end
     def test_mom_instructions
-      mom_compiler = as_mom.method_compilers.first
+      mom_compiler = as_mom.method_compilers
       assert_equal Mom::Label , mom_compiler.mom_instructions.class
       assert_equal Mom::IntOperator , mom_compiler.mom_instructions.next.class
       assert_equal Mom::SlotLoad , mom_compiler.mom_instructions.next(2).class

@@ -20,8 +20,8 @@ module Vool
 
     def setup
       ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(class_main)
-      @compiler = ret.compilers.find{|c|c.callable.name==:some_inst}
-      @main = ret.compilers.find{|c|c.callable.name==:main}
+      @compiler = ret.compilers.find_compiler{|c|c.callable.name==:some_inst}
+      @main = ret.compilers.find_compiler{|c|c.callable.name==:main}
       @ins = @compiler.mom_instructions.next
     end
     def test_class_inst
