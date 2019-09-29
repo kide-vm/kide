@@ -79,5 +79,9 @@ module Parfait
     def test_class_name
       assert_equal :Message , @type.class_name
     end
+    def test_class_object_type
+      int_class = @space.get_type_by_class_name(:Integer)
+      assert_equal :Integer, int_class.object_class.name
+    end
   end
 end

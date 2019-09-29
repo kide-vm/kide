@@ -34,13 +34,33 @@ module Vool
     # A Send breaks down to 2 steps:
     # - Setting up the next message, with receiver, arguments, and (importantly) return address
     # - a CachedCall , or a SimpleCall, depending on wether the receiver type can be determined
+    #
+    # A slight complication occurs for methods defined in superclasses. Since we are
+    # type, not class, based, these are not part of our type.
+    # So we check, and if find, add the source (vool_method) to the class and start
+    # compiling the vool for the receiver_type
+    #
     def to_mom( compiler )
       @receiver = SelfExpression.new(compiler.receiver_type) if @receiver.is_a?(SelfExpression)
       if(@receiver.ct_type)
-        method = @receiver.ct_type.resolve_method(self.name)
+        method = @receiver.ct_type.get_method(@name)
+        method = create_method_from_source(compiler) unless( method )
         return simple_call(compiler, method) if method
       end
       cached_call(compiler)
+    end
+
+    # If a method is found in the class (not the type)
+    # we add it to the class that the receiver type represents, and create a compiler
+    # to compile the vool for the specific type (the receiver)
+    def create_method_from_source(compiler)
+      vool_method = @receiver.ct_type.object_class.resolve_method!(@name)
+      return nil unless vool_method
+      puts "#{vool_method} , adding to #{@receiver.ct_type.object_class.name}"
+      @receiver.ct_type.object_class.add_instance_method(vool_method)
+      new_compiler = vool_method.compiler_for(@receiver.ct_type)
+      compiler.add_method_compiler(new_compiler)
+      new_compiler.callable
     end
 
     def message_setup(compiler,called_method)

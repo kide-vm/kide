@@ -48,7 +48,7 @@ module Parfait
     # or the super classs is nil.
     # Use only for non Object base class
     def super_class!
-      raise "No super_class for class #{@name}" unless @super_class_name
+      raise "No super_class for class #{@name}" if is_object?
       s = super_class
       raise "superclass not found for class #{@name} (#{@super_class_name})" unless s
       s
@@ -58,10 +58,13 @@ module Parfait
     # we only store the name, and so have to resolve.
     # Nil name means no superclass, and so nil is a valid return value
     def super_class
-      return nil unless @super_class_name
+      return nil if is_object?
       Object.object_space.get_class_by_name(@super_class_name)
     end
 
+    def is_object?
+      @name == :Object
+    end
     # ruby 2.1 list (just for reference, keep at bottom)
     #:allocate, :new, :superclass
 

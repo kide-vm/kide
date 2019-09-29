@@ -39,5 +39,11 @@ module Parfait
       compiler.add_code(head)
       compiler
     end
+    def to_s
+      "def #{name}(#{args_type.names})\n---" +
+      source.statements.first.source + "::" +
+      source.statements.collect{|s| s.to_s}.join("--::--") +
+      "\n---end"
+    end
   end
 end

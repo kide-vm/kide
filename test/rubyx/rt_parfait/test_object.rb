@@ -70,7 +70,7 @@ module RubyX
             end
 MAIN
           @preload = "all"
-#          ticks = run_input(code)
+          ticks = run_input(code)
 #          assert_equal "" , @interpreter.stdout
         end
         break

@@ -67,21 +67,5 @@ module Parfait
       test_get_instance
       assert_equal :foo , @space.get_method!(:Object , :foo).name
     end
-    def test_resolve_on_object
-      add_foo_to :Object
-      assert_equal :foo , object_type.resolve_method( :foo ).name
-    end
-    def test_resolve_super
-      add_foo_to :Object
-      assert_equal :foo , @try_class.instance_type.resolve_method( :foo ).name
-    end
-    def test_resolve_is_get
-      add_foo_to
-      assert_equal :foo , @try_class.instance_type.resolve_method( :foo ).name
-      assert_equal :foo , @try_class.instance_type.get_method( :foo ).name
-    end
-    def test_resolve_fail
-      assert_nil object_type.resolve_method( :foo )
-    end
   end
 end

@@ -60,10 +60,21 @@ module Parfait
       raise "resolve_method #{m_name}.#{m_name.class}" unless m_name.is_a?(Symbol)
       method = get_instance_method(m_name)
       return method if method
-      if( super_class_name && super_class_name != :Object )
-        method = @super_class.resolve_method(m_name)
+      if( s_class = super_class )
+        method = s_class.resolve_method(m_name)
       end
       method
+    end
+
+    # assume resolving is needed, ie getting has failed, raise if it hasnt
+    def resolve_method!( m_name )
+      method = get_instance_method(m_name)
+      if method
+        tm = @instance_type.method_names
+        raise "resolve_method #{name}.#{m_name} has #{tm}"
+      end
+      return nil unless( s_class = super_class )
+      s_class.resolve_method(m_name)
     end
 
     # adding an instance changes the instance_type to include that variable

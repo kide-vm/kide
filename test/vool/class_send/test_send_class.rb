@@ -40,7 +40,7 @@ module Vool
       assert_equal :get_internal_word,  @ins.next(2).method.name
     end
     def test_call_has_right_receiver
-      assert_equal "Object_Type",  @ins.next(2).method.self_type.name
+      assert_equal "Class_Type",  @ins.next(2).method.self_type.name
     end
   end
 end
