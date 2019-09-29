@@ -24,5 +24,9 @@ module Vool
       clazz =  @clazz.to_parfait
       assert_equal Parfait::VoolMethod , clazz.get_instance_method(:main).class
     end
+    def test_type_method
+      clazz =  @clazz.to_parfait
+      assert_equal Parfait::CallableMethod , clazz.instance_type.get_method(:main).class
+    end
   end
 end

@@ -19,6 +19,9 @@ require 'minitest/profile'
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'test'))
 
+#require "minitest/reporters"
+#Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
+
 require 'rubyx'
 
 require_relative "support/options"

@@ -56,8 +56,9 @@ module Vool
     def create_method_from_source(compiler)
       vool_method = @receiver.ct_type.object_class.resolve_method!(@name)
       return nil unless vool_method
-      puts "#{vool_method} , adding to #{@receiver.ct_type.object_class.name}"
+      #puts "#{vool_method.name} , adding to #{@receiver.ct_type.object_class.name}"
       @receiver.ct_type.object_class.add_instance_method(vool_method)
+      vool_method.create_callable_method_for(@receiver.ct_type)
       new_compiler = vool_method.compiler_for(@receiver.ct_type)
       compiler.add_method_compiler(new_compiler)
       new_compiler.callable

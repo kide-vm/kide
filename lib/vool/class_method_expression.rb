@@ -12,7 +12,9 @@ module Vool
     # Must pass in the actual Parfait class (default nil is just to conform to api)
     def to_parfait( clazz = nil )
       raise "No class given to class method #{name}" unless clazz
-      clazz.single_class.add_instance_method_for(name , make_arg_type , make_frame , body )
+      vool_m = clazz.single_class.create_instance_method_for(name , make_arg_type , make_frame , body )
+      vool_m.create_callable_method_for(clazz.single_class.instance_type)
+      vool_m
     end
 
     def to_mom(clazz)

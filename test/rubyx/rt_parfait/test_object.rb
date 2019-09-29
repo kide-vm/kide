@@ -1,7 +1,7 @@
 require_relative "rt_helper"
 
 module RubyX
-  class ObjectSourceTest #< MiniTest::Test
+  class ObjectSourceTest < MiniTest::Test
     include ParfaitHelper
     def setup
       @input = load_parfait(:object) + load_parfait_test(:object)
@@ -48,14 +48,13 @@ module RubyX
       end
     end
   end
-  class TestObjectRtTest < Minitest::Test
+  class TestObjectRtTest #< Minitest::Test
     self.class.include ParfaitHelper
     include Risc::Ticker
 
     def self.runnable_methods
       input = load_parfait(:object) + load_parfait_test(:object)
       vool = Ruby::RubyCompiler.compile(input).to_vool
-      #puts vool.to_s
       tests = [  ]
       vool[2].body.statements.each do |method|
         tests << method.name
@@ -69,8 +68,7 @@ module RubyX
               end
             end
 MAIN
-          @preload = "all"
-          ticks = run_input(code)
+#          ticks = run_input(code)
 #          assert_equal "" , @interpreter.stdout
         end
         break

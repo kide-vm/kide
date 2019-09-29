@@ -17,7 +17,9 @@ module Vool
         #FIXME , should check arg_type, and if the same, clear method and ok
         raise "Redefining #{clazz.name}.#{name} not supported #{method}"
       end
-      clazz.add_instance_method_for(name , make_arg_type , make_frame , body )
+      vool_m = clazz.create_instance_method_for(name , make_arg_type , make_frame , body )
+      vool_m.create_callable_method_for(clazz.instance_type)
+      vool_m
     end
 
     # Creates the Mom::MethodCompiler that will do the next step

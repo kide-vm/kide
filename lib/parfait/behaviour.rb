@@ -1,12 +1,18 @@
 module Parfait
-  # Behaviour is the old smalltalk name for the duperclass of class and singleton_class
+  # Behaviour is the old smalltalk name for the superclass of class and singleton_class
   #
   # Classes and singleton_classes are in fact very similar, in that they manage
   # - the type of instances
   # - the methods for instances
   #
+  # - the instance methods are source level methods defined on the class
+  # - the type refers to the instance variables and callable methods of objects
+  #   (in other words the type is a concrete representation, while instance_methods
+  #    is more abstract, ie source level)
+  #
   # The main way they differ is that Classes manage type for a class of objects (ie many)
-  # whereas singleton_class, or singleton_class manages the type of only one object (here a class)
+  # whereas singleton_class, or singleton_class manages the type of only one object
+  #  (here a class)
   #
   # Singleton classes can manage the type/methods of any single object, and in the
   # future off course they will, just not yet. Most single objects don't need that,
@@ -28,19 +34,20 @@ module Parfait
 
     def method_names
       names = List.new
-      methods.each do |method|
+      @instance_methods.each do |method|
         names.push method.name
       end
       names
     end
 
-    def add_instance_method_for(name , type , frame , body )
+    def create_instance_method_for(name , type , frame , body )
+      raise "Method exists #{name}" if get_instance_method(name)
       method = Parfait::VoolMethod.new(name , type , frame , body )
       add_instance_method( method )
     end
 
     def add_instance_method( method )
-      raise "not implemented #{method.class} #{method.inspect}" unless method.is_a? VoolMethod
+      raise "Method exists #{method.name}" if get_instance_method(method.name)
       @instance_methods.push(method)
       method
     end
@@ -71,7 +78,7 @@ module Parfait
       method = get_instance_method(m_name)
       if method
         tm = @instance_type.method_names
-        raise "resolve_method #{name}.#{m_name} has #{tm}"
+        raise "resolve_method #{name}.#{m_name} has #{tm}:#{method_names}"
       end
       return nil unless( s_class = super_class )
       s_class.resolve_method(m_name)

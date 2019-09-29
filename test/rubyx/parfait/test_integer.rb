@@ -1,7 +1,7 @@
 require_relative "../helper"
 
 module RubyX
-  class TestIntegerCompile < MiniTest::Test
+  class TestIntegerCompile# < MiniTest::Test
     include ParfaitHelper
     def setup
       @compiler = compiler

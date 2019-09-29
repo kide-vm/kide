@@ -23,17 +23,15 @@ module Vool
     def test_fail
       assert_raises{ method.to_parfait }
     end
-    def test_method
-      clazz = @clazz.to_parfait
-      assert_equal Parfait::Class , clazz.class
-      meth = method.to_parfait(clazz)
-      assert_equal Parfait::VoolMethod , meth.class
-      assert_equal :meth , meth.name
-    end
-    def test_is_class_method
+    def test_creates_class_method
       clazz = @clazz.to_parfait
       m = clazz.single_class.get_instance_method(:meth)
       assert m , "no method :meth"
+    end
+    def test_creates_type_method
+      clazz = @clazz.to_parfait
+      m = clazz.single_class.instance_type.get_method(:meth)
+      assert m , "no type method :meth"
     end
   end
 end

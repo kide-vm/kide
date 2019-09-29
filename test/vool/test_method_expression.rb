@@ -23,10 +23,15 @@ module Vool
     def test_method
       assert_equal Parfait::Class , @clazz.to_parfait.class
     end
-    def test_is_instance_method
+    def test_creates_instance_method
       main = @clazz.to_parfait.get_instance_method(:main)
       assert_equal Parfait::VoolMethod , main.class
       assert_equal :main , main.name
+    end
+    def test_creates_type_method
+      clazz = @clazz.to_parfait
+      m = clazz.instance_type.get_method(:main)
+      assert m , "no type method :main"
     end
 
   end

@@ -29,21 +29,21 @@ module Parfait
 
     def create_callable_method_for( type )
       raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
+      #puts "Create #{name} for #{type.object_class.name}.#{type.hash}"
       type.create_method( @name , @args_type , @frame_type)
     end
 
     def compiler_for(self_type)
-      callable_method = create_callable_method_for(self_type)
+      callable_method = self_type.get_method(@name)
+      #puts "Using #{name} for #{self_type.object_class.name}.#{self_type.hash}" unless callable_method
+      raise "Callable not found #{@name}" unless callable_method
       compiler = Mom::MethodCompiler.new( callable_method )
       head = @source.to_mom( compiler )
       compiler.add_code(head)
       compiler
     end
     def to_s
-      "def #{name}(#{args_type.names})\n---" +
-      source.statements.first.source + "::" +
-      source.statements.collect{|s| s.to_s}.join("--::--") +
-      "\n---end"
+      "def #{name}(#{args_type.names})\n  #{source}\nend"
     end
   end
 end
