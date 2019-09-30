@@ -4,9 +4,25 @@ module Vool
   class TestSendClassMom < MiniTest::Test
     include VoolCompile
 
+    def class_main
+      <<-eos
+        class Space
+          def self.one_plus(one)
+            return 1 + 1
+          end
+        end
+        class Space
+          def main(arg)
+            return Space.one_plus(1)
+          end
+        end
+      eos
+    end
+
     def setup
-      @compiler = compile_main( "Object.get_internal_word(0)" , "Object.get" )
-      @ins = @compiler.mom_instructions.next
+      source = "class Integer < Data4;def +(other);X.int_operator(:+);end;end;" + class_main
+      ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(source)
+      @ins = ret.compilers.find_compiler_name(:main).mom_instructions.next
     end
 
     def test_array
@@ -37,10 +53,10 @@ module Vool
     def test_call_is
       assert_equal SimpleCall,  @ins.next(2).class
       assert_equal Parfait::CallableMethod,  @ins.next(2).method.class
-      assert_equal :get_internal_word,  @ins.next(2).method.name
+      assert_equal :one_plus,  @ins.next(2).method.name
     end
     def test_call_has_right_receiver
-      assert_equal "Class_Type",  @ins.next(2).method.self_type.name
+      assert_equal "Space.Single_Type",  @ins.next(2).method.self_type.name
     end
   end
 end

@@ -50,7 +50,7 @@ module Vool
 
     def to_s(depth = 0)
       arg_str = @args.collect{|a| a.to_s}.join(', ')
-      at_depth(depth , "def #{name}(#{arg_str})\n#{@body.to_s(depth + 1)}\nend")
+      at_depth(depth , "def #{name}(#{arg_str})\n#{@body.to_s(1)}\nend")
     end
 
     private

@@ -72,11 +72,7 @@ module Vool
       first = stats.shift.to_mom(compiler)
       while( nekst = stats.shift )
         next_mom = nekst.to_mom(compiler)
-        if next_mom.is_a?(Mom::BlockCompiler)
-          compiler.block_compilers << next_mom
-        else
-          first.append next_mom
-        end
+        first.append next_mom
       end
       first
     end

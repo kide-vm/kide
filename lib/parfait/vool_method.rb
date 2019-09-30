@@ -20,6 +20,7 @@ module Parfait
       @args_type = args_type
       @frame_type = frame_type
       @source = source
+      #raise source.to_s if name == :type_length
       raise "Name must be symbol" unless name.is_a?(Symbol)
       raise "args_type must be type" unless args_type.is_a?(Parfait::Type)
       raise "frame_type must be type" unless frame_type.is_a?(Parfait::Type)

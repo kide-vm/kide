@@ -48,7 +48,7 @@ module RubyX
       end
     end
   end
-  class TestObjectRtTest #< Minitest::Test
+  class TestObjectRtTest < Minitest::Test
     self.class.include ParfaitHelper
     include Risc::Ticker
 

@@ -25,14 +25,19 @@ module Parfait
       8
     end
 
-    def initialize( clazz , clazz_type)
-      raise "No type for #{clazz.name}" unless clazz_type
-      super( clazz_type )
+    def initialize( clazz )
+      clazz_hash = clazz.type.to_hash
       @clazz = clazz
+      super( Type.for_hash(clazz_hash , self , 1) )
+      @clazz.set_type( @instance_type )
     end
 
     def rxf_reference_name
       @clazz.name
+    end
+
+    def name
+      :"#{clazz.name}.Single"
     end
 
     def inspect

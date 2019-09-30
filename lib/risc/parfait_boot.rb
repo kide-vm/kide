@@ -29,7 +29,7 @@ module Parfait
     space = Space.new( )
     type_names.each do |name , ivars |
       ivars[:type] = :Type
-      instance_type = Type.new(name , ivars)
+      instance_type = Type.new(name , ivars , 0)
       space.add_type instance_type
       space.classes[name] = Class.new(name , nil , instance_type)
     end
@@ -51,7 +51,6 @@ module Parfait
     classes.each do |name , cl|
       object_type = Parfait.object_space.get_type_by_class_name(name)
       raise "nil type" unless object_type
-      cl.single_class.instance_eval{ @instance_type = class_type}
       cl.instance_eval{ @instance_type = object_type}
       cl.instance_eval{ @super_class_name = super_names[name] || :Object}
       object_type.instance_eval{ @object_class = cl }
@@ -140,7 +139,8 @@ module Parfait
               true_object: :TrueClass, false_object: :FalseClass , nil_object: :NilClass},
       TrueClass: {},
       Type: {names: :List , types: :List  ,
-             object_class: :Class, methods: :CallableMethod } ,
+             object_class: :Class, methods: :CallableMethod ,
+             is_single: :Object} ,
       VoolMethod: { name: :Word , args_type: :Type , frame_type: :Type } ,
       Word: {char_length: :Integer , next_word: :Word} ,
       }

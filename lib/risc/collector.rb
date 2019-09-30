@@ -67,6 +67,9 @@ module Risc
     def self.position!( objekt )
       return false if Position.set?(objekt)
       return true if objekt.is_a? ::Integer
+      return true if objekt.is_a? ::NilClass
+      return true if objekt.is_a? ::TrueClass
+      return true if objekt.is_a? ::FalseClass
       return true if objekt.is_a?( Risc::Label)
       #puts "ADD  #{objekt.class.name}"
       unless objekt.is_a?( Parfait::Object) or objekt.is_a?( Symbol)

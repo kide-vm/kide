@@ -4,7 +4,7 @@ module Parfait
 # you want to store values by name (instance variable names).
 #
 # One could (like mri), store the names in each object, but that is wasteful in both
-# time and space.
+# time and space (time for access, space to store implicitly known names ).
 # Instead we store only the values, and access them by index (bit like c++).
 # The Type allows the mapping of names to index.
 
@@ -17,20 +17,27 @@ module Parfait
 # for every Type instance.
 
 # But, as we want every Object to have a class, the Type carries that class.
-# So the type of type has an entry "object_class"
+# So the type of type has an entry "object_class", ir Type has an instance object_class.
 
 # But Objects must also be able to carry methods themselves (ruby calls singleton_methods)
-# and those too are stored in the Type (both type and class include behaviour)
+# and those too are stored in the Type. Those type instances are called singleton
+# types, in analogy to the singleton classes they represent.
+# In other words, "usually" a type represents a whole group of objects (instances of a
+# class at the time the type was the instance_type). But for Singletons, ie objects
+# that have a singleton class, the type is only for that object.
 
-# The object is an "List" (memory location) of values of length n
+# An object is an "List" (memory location) of values of length n
 # The Type is a list of n names and n types that describe the values stored in an
 # actual object.
 # Together they turn the object into a hash like structure
 
 # For types to be a useful concept, they have to be unique and immutable. Any "change",
 # like adding a name/type pair, will result in a new type instance.
+# Type identity can be checked by the hash function, so two types are the same when their
+# hashes are the same. The hash is made up of hashing all instance names and the class
+# name.
 
-# The Type class carries a hash of types of the systems, which is used to ensure that
+# The Space class carries a hash of types of the systems, which is used to ensure that
 # there is only one instance of every type. Hash and equality are defined on type
 # for this to work.
 
@@ -39,24 +46,31 @@ module Parfait
     attr_reader :object_class , :names , :types , :methods
 
     def self.type_length
-      5
+      6
     end
 
-    def self.for_hash( hash , object_class = :Object)
+    # This is the default way to create  new type, because we add it to the
+    # global list, to space.
+    # The hash (actually the keys of the hash) and the object_class define the
+    # identity of the type, which can be checked with the hash function.
+    # single is by default 0, meaning you have to specify explicitly (1) for
+    # it to be a "singleton" type (see class description)
+    def self.for_hash( hash , object_class = :Object , single = 0)
       name = object_class
       if(object_class.is_a?(Symbol))
         object_class = Object.object_space.get_class_by_name(object_class)
       end
       raise "No such class #{name}" unless object_class
       hash = {type: object_class.name }.merge(hash) unless hash[:type]
-      new_type = Type.new( object_class , hash)
+      new_type = Type.new( object_class , hash , single)
       Object.object_space.add_type(new_type)
     end
 
     # should not be called directly. Use Type.for_hash instead, that adds the
-    # type to the global list
-    def initialize( object_class , hash )
+    # type to the global list and does sym->class conversion if neccessary
+    def initialize( object_class , hash , single )
       super()
+      @is_single = single
       @object_class =  object_class
       @methods = nil
       @names = List.new
@@ -66,6 +80,10 @@ module Parfait
       hash.keys.each do |name |
         private_add_instance_variable(name , hash[name]) unless name == :type
       end
+    end
+
+    def is_single?
+      @is_single == 1
     end
 
     def class_name

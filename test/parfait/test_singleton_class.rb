@@ -49,5 +49,11 @@ module Parfait
       @try.add_instance_variable(:counter , :Integer)
       assert_equal @try.clazz.type , @try.instance_type
     end
+    def test_name
+      assert_equal :"Try.Single" , @try.name
+    end
+    def test_type_is_single
+      assert_equal true , @try.instance_type.is_single?
+    end
   end
 end

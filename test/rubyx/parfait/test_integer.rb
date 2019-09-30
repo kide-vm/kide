@@ -1,7 +1,7 @@
 require_relative "../helper"
 
 module RubyX
-  class TestIntegerCompile# < MiniTest::Test
+  class TestIntegerCompile < MiniTest::Test
     include ParfaitHelper
     def setup
       @compiler = compiler
@@ -26,14 +26,17 @@ module RubyX
       assert_equal :Data8 , vool[3].name
     end
     def test_mom
-      mom = @compiler.ruby_to_mom source
+      vool = @compiler.ruby_to_vool source
+      vool.to_parfait
+      #puts vool
+      mom = vool.to_mom(nil)
       assert_equal Mom::MomCollection , mom.class
     end
-    def test_risc
+    def est_risc
       risc = compiler.ruby_to_risc source
       assert_equal Risc::RiscCollection , risc.class
     end
-    def test_binary
+    def est_binary
       risc = compiler.ruby_to_binary source , :interpreter
       assert_equal Risc::Linker , risc.class
     end

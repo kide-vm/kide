@@ -40,7 +40,7 @@ module Vool
       assert_equal SimpleCall,  @ins.next(2).class
       assert_equal :one_plus,  @ins.next(2).method.name
       assert_equal Parfait::Type,  @ins.next(2).method.self_type.class
-      assert_equal :Class,  @ins.next(2).method.self_type.object_class.name
+      assert_equal :"Space.Single",  @ins.next(2).method.self_type.object_class.name
     end
   end
 end

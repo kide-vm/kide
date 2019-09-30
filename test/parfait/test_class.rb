@@ -48,6 +48,20 @@ module Parfait
       @space.get_class.add_instance_variable(:counter , :Integer)
       assert before != @space.get_class.instance_type.hash
     end
-
+    def test_has_single
+      assert_equal SingletonClass , @try.single_class.class
+    end
+    def test_before_not_single_type
+      assert_equal false , @try.type.is_single?
+    end
+    def test_single_type_not_class
+      hash_after = @try.single_class.instance_type.hash
+      assert_equal @try.type.hash , hash_after
+    end
+    def test_single_type_not_class_before
+      hash_before = @try.type.hash
+      hash_after = @try.single_class.instance_type.hash
+      refute_equal hash_before , hash_after
+    end
   end
 end

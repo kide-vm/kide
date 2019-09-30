@@ -5,7 +5,7 @@ module Vool
     include VoolCompile
 
     def class_code
-      "class Space;def self.meth;return 1 ; end;end"
+      "class Space;def self.meth; return meth(22 + 22) ; end;end"
     end
     def setup
       Parfait.boot!(Parfait.default_test_options)
@@ -32,6 +32,17 @@ module Vool
       clazz = @clazz.to_parfait
       m = clazz.single_class.instance_type.get_method(:meth)
       assert m , "no type method :meth"
+    end
+    def as_mom
+      @clazz.to_parfait
+      @clazz.to_mom(nil)
+    end
+    def test_mom
+      assert_equal :meth , as_mom.method_compilers.callable.name
+    end
+    def test_mom_frame
+      callable = as_mom.method_compilers.callable
+      assert callable.frame_type.names.last.to_s.start_with?("tmp_") , "no tmp_ variable #{callable.frame_type.names}"
     end
   end
 end

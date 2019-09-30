@@ -69,7 +69,7 @@ module Mom
         return ["arg#{index}".to_sym]
       end
       index = @callable.frame_type.variable_index(name)
-      raise "no such local or argument #{name}" unless index
+      raise "no such local or argument #{name} for #{callable.name}:#{callable.frame_type.hash}" unless index
       return ["local#{index}".to_sym]
     end
 
