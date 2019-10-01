@@ -7,12 +7,12 @@ module Vool
 
     def class_main
       <<-eos
-        class Space
+        class Object
           def self.one_plus()
-            return 1 + 1
+            return 1
           end
         end
-        class Space
+        class Space < Object
           def main(arg)
             return Space.one_plus
           end
@@ -21,8 +21,7 @@ module Vool
     end
 
     def setup
-      source = "class Integer < Data4;def +(other);X.int_operator(:+);end;end;" + class_main
-      ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(source)
+      ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(class_main)
       @ins = ret.compilers.find_compiler_name(:main).mom_instructions.next
     end
     def test_array

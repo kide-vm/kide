@@ -44,6 +44,7 @@ module Vool
       @receiver = SelfExpression.new(compiler.receiver_type) if @receiver.is_a?(SelfExpression)
       if(@receiver.ct_type)
         method = @receiver.ct_type.get_method(@name)
+        #puts "Known #{@receiver.ct_type}: method #{method}"
         method = create_method_from_source(compiler) unless( method )
         return simple_call(compiler, method) if method
       end

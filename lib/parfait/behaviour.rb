@@ -80,6 +80,7 @@ module Parfait
         tm = @instance_type.method_names
         raise "resolve_method #{name}.#{m_name} has #{tm}:#{method_names}"
       end
+      #puts "resolve #{m_name}:#{super_class}:"
       return nil unless( s_class = super_class )
       s_class.resolve_method(m_name)
     end

@@ -54,14 +54,17 @@ module Parfait
       @clazz.set_type(@instance_type)
     end
 
-    # Nil name means no superclass, and so nil returned
+    # the super class of a singleton classs is  the singleton class of the super class.
+    # In effect the single classes shadow the class tree, leading to the fact that
+    # a class method defined in a super_class is accessible to a derived class in
+    # much the same way as normal methods are accessible in (normal) derived classes.
     def super_class
-      return nil
+      @clazz.super_class.single_class if @clazz.super_class
     end
 
-    # no superclass, return nil to signal
+    # return the name of the superclass (see there)
     def super_class_name
-      nil
+      super_class.name if @clazz.super_class
     end
 
   end

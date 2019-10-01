@@ -55,5 +55,11 @@ module Parfait
     def test_type_is_single
       assert_equal true , @try.instance_type.is_single?
     end
+    def test_super_class
+      assert_equal SingletonClass , @try.super_class.class
+    end
+    def test_super_class_name
+      assert_equal :"Object.Single" , @try.super_class_name
+    end
   end
 end
