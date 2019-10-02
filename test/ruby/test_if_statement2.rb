@@ -12,12 +12,17 @@ module Ruby
     end
     def test_true
       assert_equal Vool::LocalAssignment , @lst.if_true.class
+      assert @lst.has_true?
     end
     def test_false
       assert_equal Vool::LocalAssignment , @lst.if_false.class
+      assert @lst.has_false?
     end
     def test_condition
       assert_equal Vool::TrueConstant , @lst.condition.class
+    end
+    def test_to_s
+      assert_tos "if (true);a = 1;else;a = 2;end" , @lst
     end
   end
   class TestIfStatementVoolHoisted < MiniTest::Test

@@ -38,9 +38,9 @@ module Ruby
 
     def to_s(depth = 0)
       parts =  "if(#{@condition})\n"
-      parts += "  #{@if_true.to_s(depth + 1)}\n" if(@if_true)
+      parts += "  #{@if_true.to_s(1)}\n" if(@if_true)
       parts += "else\n" if(@if_false)
-      parts += "  #{@if_false.to_s(depth + 1)}\n" if(@if_false)
+      parts += "  #{@if_false.to_s(1)}\n" if(@if_false)
       parts += "end\n"
       at_depth(depth , parts )
     end

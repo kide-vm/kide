@@ -52,8 +52,8 @@ module Vool
     def to_s(depth = 0)
       parts =  "if (#{@condition.to_s(0)})\n"
       parts += "  #{@if_true}\n" if @if_true
-      parts += "else\n" if(@false)
-      parts += "  #{@if_false}\n" if(@false)
+      parts += "else\n" if(@if_false)
+      parts += "  #{@if_false}\n" if(@if_false)
       parts += "end\n"
       at_depth(depth , parts )
     end

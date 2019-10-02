@@ -1,5 +1,8 @@
 module Minitest
   module Assertions
+    def assert_tos string , object
+      assert_equal string , object.to_s.gsub("\n",";").gsub(/\s+/," ").gsub("; ",";")
+    end
     def assert_slot_to_reg( slot , array = nil, index = nil , register = nil)
       assert_equal Risc::SlotToReg , slot.class
       assert_equal( array , slot.array.symbol , "wrong source register") if array

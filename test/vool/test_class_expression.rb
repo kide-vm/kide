@@ -25,6 +25,9 @@ module Vool
     def test_class_instance
       assert_equal :a , @vool.to_parfait.instance_type.names[1]
     end
+    def test_to_s
+      assert_tos "class Test < Object;def main(arg);@a = 5;return @a;end;end" , @vool
+    end
   end
   class TestClassStatementTypeCreation < MiniTest::Test
     include ScopeHelper

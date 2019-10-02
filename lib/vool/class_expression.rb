@@ -16,16 +16,8 @@ module Vool
     def initialize( name , supe , body)
       @name = name
       @super_class_name = supe || :Object
-      case body
-      when MethodExpression
-        @body = Statements.new([body])
-      when Statements
-        @body = body
-      when nil
-        @body = Statements.new([])
-      else
-        raise "what body #{body}"
-      end
+      raise "what body #{body}" unless body.is_a?(Statements)
+      @body = body
     end
 
     # This creates the Parfait class.
