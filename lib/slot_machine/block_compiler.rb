@@ -1,10 +1,10 @@
-module Mom
+module SlotMachine
 
   # A BlockCompiler is much like a MehtodCompiler, exept for blocks
   #
   class BlockCompiler < CallableCompiler
 
-    attr_reader :block , :mom_instructions
+    attr_reader :block , :slot_instructions
     alias :block  :callable
 
     def initialize( block , method)
@@ -17,7 +17,7 @@ module Mom
     end
 
     def to_risc
-      risc_compiler = Risc::BlockCompiler.new(@callable , @method , mom_instructions)
+      risc_compiler = Risc::BlockCompiler.new(@callable , @method , slot_instructions)
       instructions_to_risc(risc_compiler)
       #recursive blocks not done
       risc_compiler

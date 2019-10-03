@@ -13,7 +13,7 @@ module Vool
     end
 
     # Since the return is normalized to only allow simple values it is simple.
-    # To return form a method in mom instructions we only need to do two things:
+    # To return form a method in slot_machine instructions we only need to do two things:
     # - store the given return value, this is a SlotMove
     # - activate return sequence (reinstantiate old message and jump to return address)
     def to_slot( compiler )

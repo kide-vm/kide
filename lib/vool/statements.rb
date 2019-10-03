@@ -71,8 +71,8 @@ module Vool
       stats = @statements.dup
       first = stats.shift.to_slot(compiler)
       while( nekst = stats.shift )
-        next_mom = nekst.to_slot(compiler)
-        first.append next_mom
+        next_slot = nekst.to_slot(compiler)
+        first.append next_slot
       end
       first
     end

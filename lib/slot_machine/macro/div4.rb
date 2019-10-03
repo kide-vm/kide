@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
   class Div4 < Macro
     def to_risc(compiler)
       builder = compiler.builder(compiler.source)

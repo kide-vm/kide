@@ -1,11 +1,11 @@
-module Mom
+module SlotMachine
 
   # The ReturnSequence models the return from a method.
   #
   # This involves the jump to the return address stored in the message, and
   # the reinstantiation of the previous message.
   #
-  # The machine (mom) only ever "knows" one message, the current message.
+  # The (slot) machine only ever "knows" one message, the current message.
   # Messages are a double linked list, calling involves going forward,
   # returning means going back.
   #

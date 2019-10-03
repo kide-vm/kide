@@ -43,9 +43,9 @@ module VoolCompile
   end
   def compile_main_block( block_input , method_input = "main_local = 5" , preload = nil)
     source = get_preload(preload) + as_main("#{method_input} ; self.main{|val| #{block_input}}")
-    mom_col = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_slot( source )
-    compiler = mom_col.method_compilers.find_compiler_name(:main)
-    block = mom_col.method_compilers.find_compiler_name(:main_block)
+    slot_col = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_slot( source )
+    compiler = slot_col.method_compilers.find_compiler_name(:main)
+    block = slot_col.method_compilers.find_compiler_name(:main_block)
     assert block
     block.slot_instructions.next
   end

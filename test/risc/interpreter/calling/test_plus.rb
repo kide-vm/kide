@@ -9,7 +9,7 @@ module Risc
       @string_input = as_main("return 5 + 5")
       super
     end
-#FIXME should be mom macro test, no need to interpret
+#FIXME should be macro test, no need to interpret
     def test_chain
       #show_main_ticks # get output of what is
       check_main_chain  [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5

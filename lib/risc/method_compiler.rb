@@ -5,8 +5,8 @@ module Risc
 
   class MethodCompiler < CallableCompiler
 
-    # Methods starts with a Label, both in risc and mom.
-    # Pass in the callable(method) and the mom label that the method starts with
+    # Methods starts with a Label, both in risc and slot.
+    # Pass in the callable(method) and the slot label that the method starts with
     def initialize( method , slot_label)
       super(method , slot_label)
     end

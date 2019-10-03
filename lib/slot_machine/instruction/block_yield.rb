@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
 
   # A BlockYield calls an argument block. All we need to know is the index
   # of the argument, and the rest is almost as simple as a SimpleCall

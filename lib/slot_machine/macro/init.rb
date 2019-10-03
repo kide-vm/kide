@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
   # Init "method" is the first thing that happens in the machine
   # There is an inital jump to it, but that's it, no setup, no nothing
   #
@@ -20,7 +20,7 @@ module Mom
       end
       builder.reset_names
       # Set up the call to main, with space as receiver
-      Mom::MessageSetup.new(main).build_with( builder )
+      SlotMachine::MessageSetup.new(main).build_with( builder )
       builder.build do
         message << message[:next_message]
         space? << Parfait.object_space

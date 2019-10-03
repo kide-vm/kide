@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
 
   # Branch jump to the Label given
   # Eg used at the end of while or end of if_true branch

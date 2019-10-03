@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
 
   # A SimpleCall is just that, a simple call. This could be called a function call too,
   # meaning we managed to resolve the function at compile time and all we have to do is

@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
   class Macro < Instruction
 
     def to_s

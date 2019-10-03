@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
   class MethodMissing < Macro
     attr_reader :name
 

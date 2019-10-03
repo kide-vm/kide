@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
 
   # A dynamic call calls a method at runtime. This off course implies that we don't know the
   # method at compile time and so must "find" it. Resolving, or finding the method, is a

@@ -1,14 +1,14 @@
-module Mom
+module SlotMachine
 
-  # Base class for MOM instructions
+  # Base class for SlotMachine instructions
   # At the base class level instructions are a linked list.
   #
-  # Mom::Instructions are created by the Vool level as an intermediate step
+  # SlotMachine::Instructions are created by the Vool level as an intermediate step
   # towards the next level down, the Risc level.
-  # Mom and Risc are both abstract machines (ie have instructions), so both
+  # SlotMachine and Risc are both abstract machines (ie have instructions), so both
   # share the linked list functionality (In Util::List)
   #
-  # To convert a Mom instruction to it's Risc equivalent to_risc is called
+  # To convert a SlotMachine instruction to it's Risc equivalent to_risc is called
   #
   class Instruction
     include Util::List
@@ -26,7 +26,7 @@ module Mom
 
     # to_risc, like the name says, converts the instruction to it's Risc equivalent.
     # The Risc machine is basically a simple register machine (kind of arm).
-    # In other words Mom is the higher abstraction and so mom instructions convert
+    # In other words SlotMachine is the higher abstraction and so slot instructions convert
     # to many (1-10) risc instructions
     #
     # The argument that is passed is a MethodCompiler, which has the method and some

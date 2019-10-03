@@ -1,6 +1,6 @@
-module Mom
+module SlotMachine
 
-  # MethodCompiler is used to generate Mom instructions for methods
+  # MethodCompiler is used to generate SlotMachine instructions for methods
   # and to instantiate the methods correctly.
 
   class MethodCompiler < CallableCompiler
@@ -25,7 +25,7 @@ module Mom
     # drop down to risc by converting this compilers instructions to risc.
     # and the doing the same for any block_compilers
     def to_risc
-      risc_compiler = Risc::MethodCompiler.new(@callable , mom_instructions)
+      risc_compiler = Risc::MethodCompiler.new(@callable , slot_instructions)
       instructions_to_risc(risc_compiler)
       risc_compiler
     end
@@ -83,8 +83,8 @@ module Mom
     # Only for init, as init has no return
     # kind of private
     def _reset_for_init
-      @mom_instructions = Label.new(source_name, source_name)
-      @current = @mom_instructions
+      @slot_instructions = Label.new(source_name, source_name)
+      @current = @slot_instructions
     end
 
   end

@@ -1,6 +1,6 @@
-module Mom
+module SlotMachine
 
-  # A Label is the only legal target for a branch (in Mom, in Risc a BinaryCode is ok too)
+  # A Label is the only legal target for a branch (in SlotMachine, in Risc a BinaryCode is ok too)
   #
   # In the dynamic view (runtime) where the instructions form a graph,
   # branches fan out, Labels collect. In other words a branch is the place where
@@ -8,7 +8,7 @@ module Mom
   #
   # A Label has a name which is mainly used for debugging.
   #
-  # A Mom::Label converts one2one to a Risc::Label. So in a way it could not be more
+  # A SlotMachine::Label converts one2one to a Risc::Label. So in a way it could not be more
   # simple.
   # Alas, since almost by definition several roads lead to this label, all those
   # several converted instructions must also point to the identical label on the

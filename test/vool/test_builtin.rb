@@ -37,16 +37,16 @@ module Vool
       assert_equal Vool::MacroExpression , vool.body.first.body.return_value.class
     end
     def test_slot_basic
-      mom = as_slot
-      assert_equal SlotMachine::SlotCollection , mom.class
-      assert_equal SlotMachine::MethodCompiler , mom.method_compilers.class
+      slot = as_slot
+      assert_equal SlotMachine::SlotCollection , slot.class
+      assert_equal SlotMachine::MethodCompiler , slot.method_compilers.class
     end
     def test_slot_instructions
-      mom_compiler = as_slot.method_compilers
-      assert_equal SlotMachine::Label , mom_compiler.slot_instructions.class
-      assert_equal SlotMachine::IntOperator , mom_compiler.slot_instructions.next.class
-      assert_equal SlotMachine::SlotLoad , mom_compiler.slot_instructions.next(2).class
-      assert_equal SlotMachine::ReturnJump , mom_compiler.slot_instructions.next(3).class
+      slot_compiler = as_slot.method_compilers
+      assert_equal SlotMachine::Label , slot_compiler.slot_instructions.class
+      assert_equal SlotMachine::IntOperator , slot_compiler.slot_instructions.next.class
+      assert_equal SlotMachine::SlotLoad , slot_compiler.slot_instructions.next(2).class
+      assert_equal SlotMachine::ReturnJump , slot_compiler.slot_instructions.next(3).class
     end
   end
 end

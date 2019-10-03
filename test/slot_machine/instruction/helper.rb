@@ -7,7 +7,7 @@ module SlotMachine
     end
   end
 
-  # Most SlotMachineInstructionTests test the risc instructions of the mom instruction
+  # Most SlotMachineInstructionTests test the risc instructions of the slot instruction
   # quite carefully, ie every instruction, every register.
   #
   # This is done with the assert methods in risc_assert

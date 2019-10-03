@@ -1,3 +1,3 @@
 
-module Mom
+module SlotMachine
 end

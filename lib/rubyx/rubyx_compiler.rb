@@ -4,7 +4,7 @@ module RubyX
   # Layers are:
   # - ruby , always needed as input, string
   # - vool - intermediate language layer
-  # - mom - intermediate machine layer
+  # - slot_machine - intermediate machine layer
   # - risc - "last" intermediate machine layer
   # - target - arm or interpreter binary code
   # - binary - "linked" code, everything need to create an elf binary
@@ -65,7 +65,7 @@ module RubyX
       to_risc()
     end
 
-    # Transform the incoming ruby source (string)  to mom
+    # Transform the incoming ruby source (string)  to slot
     #
     # The vool is stored using ruby_to_vool,the to_slot is called
     # Return SlotMachine Statement
@@ -97,11 +97,11 @@ module RubyX
     # Process previously stored vool source to risc.
     # return a Risc::RiscCollection , a collection of MethodCompilers
     def to_risc()
-      mom = to_slot
-      mom.to_risc()
+      slot = to_slot
+      slot.to_risc()
     end
 
-    # return mom for the previously stored vool source.
+    # return slot_machine for the previously stored vool source.
     def to_slot
       @vool.to_parfait
       @vool.to_slot(nil)

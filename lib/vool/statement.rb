@@ -16,7 +16,7 @@
 # The protocol is thus two stage:
 # - first to_parfait with implicit side-effects of creating parfait objects that
 #     are added to the Parfait object_space
-# - second to_slot , which will return a mom version of the statement. This may be code
+# - second to_slot , which will return a slot version of the statement. This may be code
 #   or a compiler (for methods), or compiler collection (for classes)
 #
 module Vool
@@ -38,8 +38,8 @@ module Vool
       raise "Called when it shouldn't #{self.class}"
     end
 
-    # create mom version of the statement, this is often code, that is added to the
-    # compiler, but for methods it is a compiler and for classes a collection of those.
+    # create slot_machine version of the statement, this is often code, that is added
+    # to the compiler, but for methods it is a compiler and for classes a collection of those.
     #
     # The argument given most often is a compiler
     # The default implementation (this) is to raise an error

@@ -1,7 +1,7 @@
-module Mom
+module SlotMachine
 
   # Dynamic method resolution is at the heart of a dynamic language, and here
-  # is the Mom level instruction to do it.
+  # is the SlotMachine level instruction to do it.
   #
   # When the static type can not be determined a CacheEntry is used to store
   # type and method of the resolved method. The CacheEntry is shared with

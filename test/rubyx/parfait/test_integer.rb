@@ -29,8 +29,8 @@ module RubyX
       vool = @compiler.ruby_to_vool source
       vool.to_parfait
       #puts vool
-      mom = vool.to_slot(nil)
-      assert_equal SlotMachine::SlotCollection , mom.class
+      slot = vool.to_slot(nil)
+      assert_equal SlotMachine::SlotCollection , slot.class
     end
     def est_risc
       risc = compiler.ruby_to_risc source

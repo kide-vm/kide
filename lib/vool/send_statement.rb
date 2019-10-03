@@ -67,13 +67,13 @@ module Vool
 
     def message_setup(compiler,called_method)
       setup  = SlotMachine::MessageSetup.new( called_method )
-      mom_receive = @receiver.to_slot_definition(compiler)
+      slot_receive = @receiver.to_slot_definition(compiler)
       arg_target = [:message , :next_message ]
       args = []
       @arguments.each_with_index do |arg , index| # +1 because of type
         args << SlotMachine::SlotLoad.new(self, arg_target + ["arg#{index+1}".to_sym] , arg.to_slot_definition(compiler))
       end
-      setup << SlotMachine::ArgumentTransfer.new(self, mom_receive , args )
+      setup << SlotMachine::ArgumentTransfer.new(self, slot_receive , args )
     end
 
     def simple_call(compiler, called_method)

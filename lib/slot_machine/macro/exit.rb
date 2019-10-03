@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
   class Exit < Macro
     def to_risc(compiler)
       builder = compiler.builder(compiler.source)

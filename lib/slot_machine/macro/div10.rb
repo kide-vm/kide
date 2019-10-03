@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
   class Div10 < Macro
     def to_risc(compiler)
       s = "div_10 "

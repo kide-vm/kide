@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
 
   # the return jump jumps to the return label
   # the method setup is such that there is exactly one return_label in a method

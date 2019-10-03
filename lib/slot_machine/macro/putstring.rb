@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
   class Putstring < Macro
     def to_risc(compiler)
       builder = compiler.builder(compiler.source)
@@ -7,7 +7,7 @@ module Mom
         word! << message[:receiver]
         integer! << word[Parfait::Word.get_length_index]
       end
-      Mom::Macro.emit_syscall( builder , :putstring )
+      SlotMachine::Macro.emit_syscall( builder , :putstring )
       compiler
     end
   end

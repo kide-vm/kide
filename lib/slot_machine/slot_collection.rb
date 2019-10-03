@@ -3,7 +3,7 @@ module SlotMachine
   # compilers These will transform to Risc MethodCompilers on the way down.
   #
   # As RubyCompiler pools source at the vool level, when several classes are compiled
-  # from vool to mom, several SlotMachineCompilers get instantiated. They must be merged before
+  # from vool to slot, several SlotMachineCompilers get instantiated. They must be merged before
   # proceeding with translate. Thus we have a append method.
   #
   class SlotCollection
@@ -49,8 +49,8 @@ module SlotMachine
     def to_risc( )
       init_compilers
       riscs =[]
-      @method_compilers.each_compiler do | mom_c |
-        riscs << mom_c.to_risc
+      @method_compilers.each_compiler do | slot_c |
+        riscs << slot_c.to_risc
       end
       # to_risc all compilers
       # for each suffling constnts and fist label, then all instructions (see below)

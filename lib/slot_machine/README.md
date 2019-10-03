@@ -1,4 +1,4 @@
-# SlotMachine , Minimal Object Machine
+# SlotMachine
 
 This layer sits between the language layer (vool) and the risc machine layer.
 It is meant to make the transition (between vool and risc) easier to understand.
@@ -48,7 +48,7 @@ no registers (one could see the current message as the only register)
 
 ### Instruction based
 
-So mom is a machine layer, rather than a language.
+So SlotMachine is a machine layer, rather than a language.
 No control structures, but compare and jump instructions.
 
 No send or call, just objects and jump.

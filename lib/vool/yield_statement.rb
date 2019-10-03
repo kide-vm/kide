@@ -37,7 +37,7 @@ module Vool
       compile_method = SlotMachine::SlotDefinition.new( compiler.get_method , [])
       runtime_method = SlotMachine::SlotDefinition.new( :message , [ :method] )
       check = SlotMachine::NotSameCheck.new(compile_method , runtime_method, ok_label)
-      # TODO? Maybe create mom instructions for this
+      # TODO? Maybe create slot instructions for this
       #builder = compiler.builder("yield")
       #Risc::Macro.exit_sequence(builder)
       #check << builder.built
@@ -49,13 +49,13 @@ module Vool
     def yield_arg_block(compiler)
       arg_index = compiler.get_method.arguments_type.get_length - 1
       setup  = SlotMachine::MessageSetup.new( arg_index )
-      mom_receive = @receiver.to_slot_definition(compiler)
+      slot_receive = @receiver.to_slot_definition(compiler)
       arg_target = [:message , :next_message ]
       args = []
       @arguments.each_with_index do |arg , index| # +1 because of type
         args << SlotMachine::SlotLoad.new(self, arg_target + ["arg#{index+1}".to_sym] , arg.to_slot_definition(compiler))
       end
-      setup << SlotMachine::ArgumentTransfer.new( self , mom_receive , args )
+      setup << SlotMachine::ArgumentTransfer.new( self , slot_receive , args )
       setup << SlotMachine::BlockYield.new( self , arg_index )
     end
 

@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
   class SetInternalWord < Macro
     def to_risc(compiler)
       compiler.builder(compiler.source).build do

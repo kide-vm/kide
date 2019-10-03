@@ -13,8 +13,8 @@ module RubyX
     end
 
     def test_creates_class_deriviation
-      mom = ruby_to_slot "class Testing ; end"
-      assert mom , "No classes created"
+      slot = ruby_to_slot "class Testing ; end"
+      assert slot , "No classes created"
     end
 
     def test_creates_class_with_deriviation

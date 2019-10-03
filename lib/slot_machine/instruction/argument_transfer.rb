@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
 
   # Transering the arguments from the current frame into the next frame
   #

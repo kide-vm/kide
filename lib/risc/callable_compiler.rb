@@ -3,7 +3,8 @@ module Risc
   # CallableCompiler is used to generate risc instructions. It is an abstact base
   # class shared by BlockCompiler and MethodCompiler
 
-  # - risc_instructions: The sequence of risc level instructions that mom was compiled to
+  # - risc_instructions: The sequence of risc level instructions that slot machine was
+  #                     compiled to
   #                 Instructions derive from class Instruction and form a linked list
   # - constants is an array of Parfait objects that need to be available
   # - callable is a Method of Block

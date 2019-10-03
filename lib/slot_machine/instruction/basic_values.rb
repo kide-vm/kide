@@ -1,5 +1,5 @@
-module Mom
-  # just name scoping the same stuff to mom
+module SlotMachine
+  # just name scoping the same stuff to slot
   # so we know we are on the way down, keeping our layers seperated
   # and we can put constant adding into the to_risc methods (instead of on vool classes)
   class Constant

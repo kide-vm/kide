@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
   class IntOperator < Macro
     attr_reader :operator
     def initialize(name , operator)

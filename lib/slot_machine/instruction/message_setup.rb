@@ -1,6 +1,6 @@
-module Mom
+module SlotMachine
 
-  # As reminder: a statically resolved call (the simplest one) becomes three Mom Instructions.
+  # As reminder: a statically resolved call (the simplest one) becomes three SlotMachine Instructions.
   # Ie: MessageSetup,ArgumentTransfer,SimpleCall
   #
   # MessageSetup does Setup before a call can be made, acquiring and filling the message

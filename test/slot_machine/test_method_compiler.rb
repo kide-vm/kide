@@ -62,9 +62,9 @@ module SlotMachine
       assert_equal 2 , method.frame_type.variable_index(:a)
     end
     def constant_setup(input)
-      mom = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_slot(in_Test(input))
-      assert_equal SlotMachine::SlotCollection , mom.class
-      compiler = mom.method_compilers
+      slot = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_slot(in_Test(input))
+      assert_equal SlotMachine::SlotCollection , slot.class
+      compiler = slot.method_compilers
       assert_equal SlotMachine::MethodCompiler , compiler.class
       compiler
     end

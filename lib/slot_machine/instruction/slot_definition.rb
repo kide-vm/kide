@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
   # A SlotDefinition defines a slot. A bit like a variable name but for objects.
   #
   # PS: for the interested: A "developement" of Smalltalk was the

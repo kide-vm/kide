@@ -1,9 +1,9 @@
-module Mom
+module SlotMachine
 
   # SlotLoad is for moving data into a slot, either from another slot, or constant
   # A Slot is basically an instance variable, but it must be of known type
   #
-  # The value loaded (the right hand side) can be a constant (Mom::Constant) or come from
+  # The value loaded (the right hand side) can be a constant (SlotMachine::Constant) or come from
   #  another Slot (SlotDefinition)
   #
   # The Slot on the left hand side is always a SlotDefinition.
@@ -21,9 +21,9 @@ module Mom
   # @left: A SlotDefinition, or an array that can be passed to the constructor of the
   #        SlotDefinition (see there)
   #
-  # @right: A SlotDefinition with slots or a Mom::Constant
-  # original_source: optinally another mom instruction that will be passed down to created
-  #   risc instructions. (Because SlotLoad is often used internally in mom)
+  # @right: A SlotDefinition with slots or a SlotMachine::Constant
+  # original_source: optinally another slot_machine instruction that will be passed down
+  #                to created  risc instructions. (Because SlotLoad is often used internally)
   class SlotLoad < Instruction
 
     attr_reader :left , :right , :original_source
@@ -33,7 +33,7 @@ module Mom
       @left , @right = left , right
       @left = SlotDefinition.new(@left.shift , @left) if @left.is_a? Array
       @right = SlotDefinition.new(@right.shift , @right) if @right.is_a? Array
-      raise "right not Mom, #{@right.to_s}" unless @right.is_a?( SlotDefinition )
+      raise "right not SlotMachine, #{@right.to_s}" unless @right.is_a?( SlotDefinition )
       @original_source = original_source || self
     end
 

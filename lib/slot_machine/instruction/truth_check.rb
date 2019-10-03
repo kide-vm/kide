@@ -1,4 +1,4 @@
-module Mom
+module SlotMachine
 
   # The funny thing about the ruby truth is that it is anything but false or nil
   #
