@@ -7,16 +7,16 @@ module Ruby
   #
   class Statement
 
-    # Many statements exist in the vool layer in quite a similar arrangement
+    # Many statements exist in the sol layer in quite a similar arrangement
     # Especially for different types of assignment we can abstract the creation
-    # of the vool, by using the right class to instantiate, the "vool_brother"
-    # Ie same class_name, but in the Vool module
-    def vool_brother
-      eval "Vool::#{class_name}"
+    # of the sol, by using the right class to instantiate, the "sol_brother"
+    # Ie same class_name, but in the Sol module
+    def sol_brother
+      eval "Sol::#{class_name}"
     end
 
     # return the class name without the module
-    # used to evaluate the vool_brother
+    # used to evaluate the sol_brother
     def class_name
       self.class.name.split("::").last
     end

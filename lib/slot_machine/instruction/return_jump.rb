@@ -9,7 +9,7 @@ module SlotMachine
 
     attr_reader :return_label
 
-    # pass in the source_name (string/vool_instruction) for accounting purposes
+    # pass in the source_name (string/sol_instruction) for accounting purposes
     # and the return_label, where we actually jump to. This is set up by the
     # method_compiler, so it is easy to find (see return_label in compiler)
     def initialize( source , label )

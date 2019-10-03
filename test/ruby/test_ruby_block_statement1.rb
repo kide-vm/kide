@@ -24,28 +24,28 @@ module Ruby
       assert_equal ReturnStatement , @lst.last.class
     end
   end
-  class TestBlockReturnVool < MiniTest::Test
+  class TestBlockReturnSol < MiniTest::Test
     include RubyTests
     def setup()
       input = "a = plus_one{return 1 } ; return a "
-      @lst = compile( input ).to_vool
+      @lst = compile( input ).to_sol
     end
     def test_scope
-      assert_equal Vool::ScopeStatement , @lst.class
+      assert_equal Sol::ScopeStatement , @lst.class
     end
     def test_assign
-      assert_equal Vool::LocalAssignment , @lst.first.class
+      assert_equal Sol::LocalAssignment , @lst.first.class
       assert_equal :a ,  @lst.first.name
     end
     def test_send
-      assert_equal Vool::SendStatement , @lst.first.value.class
+      assert_equal Sol::SendStatement , @lst.first.value.class
       assert_equal :plus_one , @lst.first.value.name
     end
     def test_block_arg
-      assert_equal Vool::LambdaExpression , @lst.first.value.arguments.first.class
+      assert_equal Sol::LambdaExpression , @lst.first.value.arguments.first.class
     end
     def test_ret
-      assert_equal Vool::ReturnStatement , @lst[1].class
+      assert_equal Sol::ReturnStatement , @lst[1].class
     end
   end
 end

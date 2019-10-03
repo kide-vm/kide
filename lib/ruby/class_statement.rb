@@ -3,7 +3,7 @@ module Ruby
     attr_reader :name, :super_class_name , :body
 
     # init with the class name, super class name and statement body
-    # body must be Method or Send (See to_vool) or empty/nil (possibly not handled right)
+    # body must be Method or Send (See to_sol) or empty/nil (possibly not handled right)
     def initialize( name , supe , body)
       @name , @super_class_name = name , supe
       case body
@@ -18,23 +18,23 @@ module Ruby
       end
     end
 
-    # Create equivalent vool objects. Mostly for method statements
+    # Create equivalent sol objects. Mostly for method statements
     # For calls, call transform_statement, see there
-    def to_vool
+    def to_sol
       meths = []
       body.statements.each do |meth|
         if( meth.is_a?(MethodStatement))
-          meths << meth.to_vool
+          meths << meth.to_sol
         else
           meths += transform_statement(meth)
         end
       end
-      Vool::ClassExpression.new(@name , @super_class_name, Vool::Statements.new(meths) )
+      Sol::ClassExpression.new(@name , @super_class_name, Sol::Statements.new(meths) )
     end
 
     # We rewrite certain send statements (so raise error for all else)
     # Currently only attributes (ie attr :name) supported, for which the standard getter
-    # and setter is created and returned as vool
+    # and setter is created and returned as sol
     def transform_statement( class_send )
       unless class_send.is_a?(SendStatement)
         raise "Other than methods, only class methods allowed, not #{class_send.class}"
@@ -53,21 +53,21 @@ module Ruby
     end
 
     # creates a getter method for the given instance name (sym)
-    # The Method is created in Ruby, and to_vool is called to transform to Vool
+    # The Method is created in Ruby, and to_sol is called to transform to Sol
     # The standard getter obviously only returns the ivar
     def getter_for(instance_name)
       return_statement = ReturnStatement.new(InstanceVariable.new(instance_name))
-      MethodStatement.new(instance_name , [] , return_statement).to_vool
+      MethodStatement.new(instance_name , [] , return_statement).to_sol
     end
 
     # creates a setter method (name=) for the given instance name (sym)
-    # The Method is created in Ruby, and to_vool is called to transform to Vool
+    # The Method is created in Ruby, and to_sol is called to transform to Sol
     # The setter method assigns the incoming value and returns the ivar
     def setter_for(instance_name)
       assign = IvarAssignment.new(instance_name , LocalVariable.new(:val))
       return_statement = ReturnStatement.new(InstanceVariable.new(instance_name))
       statements = Statements.new([assign, return_statement])
-      MethodStatement.new("#{instance_name}=".to_sym , [:val] , statements).to_vool
+      MethodStatement.new("#{instance_name}=".to_sym , [:val] , statements).to_sol
     end
 
     def to_s(depth = 0)

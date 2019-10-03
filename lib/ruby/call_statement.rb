@@ -5,8 +5,8 @@ module Ruby
   #
   # A CallStatement has a name, receiver and arguments
   #
-  # Using the "vool_brother" we can create the right Vool class for it.
-  # Arguments in vool must be simple, so any complex expressions get
+  # Using the "sol_brother" we can create the right Sol class for it.
+  # Arguments in sol must be simple, so any complex expressions get
   # hoisted and assigned to temporary variables.
   #
   class CallStatement < Statement
@@ -18,17 +18,17 @@ module Ruby
     end
 
     # we "normalize" or flatten any complex argument expressions into a list
-    def to_vool
-      statements = Vool::Statements.new([])
+    def to_sol
+      statements = Sol::Statements.new([])
       receiver = normalize_arg(@receiver , statements)
       arguments = []
       @arguments.each_with_index do |arg , index |
         arguments << normalize_arg(arg , statements)
       end
       if statements.empty?
-        return vool_brother.new(@name, receiver , arguments)
+        return sol_brother.new(@name, receiver , arguments)
       else
-        statements << vool_brother.new(@name, receiver , arguments)
+        statements << sol_brother.new(@name, receiver , arguments)
         return statements
       end
     end
@@ -38,17 +38,17 @@ module Ruby
     # the effect is of walking the call tree now,
     # rather than using a stack to do that at runtime
     def normalize_arg(arg , statements)
-      vool_arg = arg.to_vool
-      return vool_arg if vool_arg.is_a?(Vool::Expression)
-      if( vool_arg.is_a?(Vool::Statements))
-        while(vool_arg.length > 1)
-          statements << vool_arg.shift
+      sol_arg = arg.to_sol
+      return sol_arg if sol_arg.is_a?(Sol::Expression)
+      if( sol_arg.is_a?(Sol::Statements))
+        while(sol_arg.length > 1)
+          statements << sol_arg.shift
         end
-        vool_arg = vool_arg.shift
+        sol_arg = sol_arg.shift
       end
-      assign = Vool::LocalAssignment.new( "tmp_#{arg.object_id}".to_sym, vool_arg)
+      assign = Sol::LocalAssignment.new( "tmp_#{arg.object_id}".to_sym, sol_arg)
       statements << assign
-      return Vool::LocalVariable.new(assign.name)
+      return Sol::LocalVariable.new(assign.name)
     end
 
   end

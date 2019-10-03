@@ -15,9 +15,9 @@ module Ruby
       body << replace_return( body.pop )
     end
 
-    def to_vool
+    def to_sol
       body = normalized_body
-      Vool::MethodExpression.new( @name , @args.dup , body.to_vool)
+      Sol::MethodExpression.new( @name , @args.dup , body.to_sol)
     end
 
     def replace_return(statement)

@@ -3,11 +3,11 @@ require_relative "normalizer"
 module Ruby
   # The if must have condition and a true branch, the false is optional
   #
-  # It maps pretty much one to one to a Vool, except for "hoisting"
+  # It maps pretty much one to one to a Sol, except for "hoisting"
   #
   # Ruby may have super complex expressions as the condition, whereas
-  # Vool may not. Ie of a Statement list all but the last are hoisted to before
-  # the vool if. This is equivalent, just easier to compile later
+  # Sol may not. Ie of a Statement list all but the last are hoisted to before
+  # the sol if. This is equivalent, just easier to compile later
   #
   # The hoisintg code is in Normalizer, as it is also useed in return and while
   class IfStatement < Statement
@@ -21,11 +21,11 @@ module Ruby
       @if_false = if_false
     end
 
-    def to_vool
-      cond , hoisted = *normalized_vool(@condition)
-      me = Vool::IfStatement.new(cond , @if_true&.to_vool, @if_false&.to_vool)
+    def to_sol
+      cond , hoisted = *normalized_sol(@condition)
+      me = Sol::IfStatement.new(cond , @if_true&.to_sol, @if_false&.to_sol)
       return me unless hoisted
-      Vool::Statements.new( hoisted ) << me
+      Sol::Statements.new( hoisted ) << me
     end
 
     def has_false?

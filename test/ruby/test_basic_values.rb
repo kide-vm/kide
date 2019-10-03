@@ -79,7 +79,7 @@ module Ruby
       assert_equal TrueConstant , compile_const( "true")
     end
   end
-  class TestBasicTypesVool < MiniTest::Test
+  class TestBasicTypesSol < MiniTest::Test
     include RubyTests
 
     def setup
@@ -87,7 +87,7 @@ module Ruby
     end
     def compile_const( input )
       lst = compile( input )
-      lst.to_vool.to_s
+      lst.to_sol.to_s
     end
     def test_integer
       assert_equal "123" , compile_const( "123")

@@ -4,7 +4,7 @@ module SlotMachine
 
     def initialize( source , name  )
       super(source)
-      name = name.value if name.is_a?(Vool::SymbolConstant)
+      name = name.value if name.is_a?(Sol::SymbolConstant)
       raise "No reg #{name.class}" unless name.class == Symbol
       @name = name
     end

@@ -35,11 +35,11 @@ module Ruby
       @statements << o
       self
     end
-    def to_vool
-      return first.to_vool if( single? )
-      brother = vool_brother.new(nil)
+    def to_sol
+      return first.to_sol if( single? )
+      brother = sol_brother.new(nil)
       @statements.each do |s|
-        brother << s.to_vool
+        brother << s.to_sol
       end
       brother
     end

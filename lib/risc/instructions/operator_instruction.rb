@@ -13,7 +13,7 @@ module Risc
   class OperatorInstruction < Instruction
     def initialize( source , operator , left , right )
       super(source)
-      operator = operator.value if operator.is_a?(Vool::Constant)
+      operator = operator.value if operator.is_a?(Sol::Constant)
       @operator = operator
       raise "unsuported operator :#{operator}:#{operator.class}:" unless Risc.operators.include?(operator)
       @left = left

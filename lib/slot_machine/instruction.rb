@@ -3,7 +3,7 @@ module SlotMachine
   # Base class for SlotMachine instructions
   # At the base class level instructions are a linked list.
   #
-  # SlotMachine::Instructions are created by the Vool level as an intermediate step
+  # SlotMachine::Instructions are created by the Sol level as an intermediate step
   # towards the next level down, the Risc level.
   # SlotMachine and Risc are both abstract machines (ie have instructions), so both
   # share the linked list functionality (In Util::List)
@@ -18,7 +18,7 @@ module SlotMachine
       @next = nekst
       return unless source
       unless source.is_a?(String) or
-             source.is_a?(Vool::Statement)
+             source.is_a?(Sol::Statement)
           raise "Source must be string or Instruction, not #{source.class}"
       end
     end

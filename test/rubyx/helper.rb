@@ -5,18 +5,18 @@ module RubyX
   module RubyXHelper
     def setup
     end
-    def ruby_to_vool(input, options = {})
+    def ruby_to_sol(input, options = {})
       options = RubyX.default_test_options.merge(options)
-      RubyXCompiler.new(options).ruby_to_vool(input)
+      RubyXCompiler.new(options).ruby_to_sol(input)
     end
     def ruby_to_slot(input , options = {})
       options = RubyX.default_test_options.merge(options)
       RubyXCompiler.new(options).ruby_to_slot(input)
     end
     def compile_in_test( input , options = {})
-      vool = ruby_to_vool(in_Test(input) , options)
-      vool.to_parfait
-      vool.to_slot(nil)
+      sol = ruby_to_sol(in_Test(input) , options)
+      sol.to_parfait
+      sol.to_slot(nil)
       itest = Parfait.object_space.get_class_by_name(:Test)
       assert itest
       itest

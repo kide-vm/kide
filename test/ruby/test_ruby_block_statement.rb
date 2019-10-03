@@ -25,22 +25,22 @@ module Ruby
       assert_equal 1 , @lst.body.arguments.length
     end
   end
-  class TestBlockStatementVool < MiniTest::Test
+  class TestBlockStatementSol < MiniTest::Test
     include RubyTests
 
     def setup()
       input = "plus_one{|arg1| arg1 + 1 } "
-      @lst = compile( input ).to_vool
+      @lst = compile( input ).to_sol
     end
     def test_block
-      assert_equal Vool::SendStatement , @lst.class
+      assert_equal Sol::SendStatement , @lst.class
     end
     def test_send_name
       assert_equal :plus_one , @lst.name
     end
     def test_send_block_arg
       assert_equal 1 , @lst.arguments.length
-      assert_equal Vool::LambdaExpression , @lst.arguments.first.class
+      assert_equal Sol::LambdaExpression , @lst.arguments.first.class
     end
     def test_block_args
       assert_equal [:arg1] , @lst.arguments.first.args

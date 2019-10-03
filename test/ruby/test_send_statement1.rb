@@ -1,69 +1,69 @@
 require_relative "helper"
 
 module Ruby
-  class TestSendNoArgVool < MiniTest::Test
+  class TestSendNoArgSol < MiniTest::Test
     include RubyTests
     def setup
-      @lst = compile( "foo").to_vool
+      @lst = compile( "foo").to_sol
     end
     def test_simple_class
-      assert_equal Vool::SendStatement , @lst.class
+      assert_equal Sol::SendStatement , @lst.class
     end
     def test_simple_name
       assert_equal :foo , @lst.name
     end
     def test_simple_receiver
-      assert_equal Vool::SelfExpression , @lst.receiver.class
+      assert_equal Sol::SelfExpression , @lst.receiver.class
     end
     def test_simple_args
       assert_equal [] , @lst.arguments
     end
   end
-  class TestSendSimpleArgVool < MiniTest::Test
+  class TestSendSimpleArgSol < MiniTest::Test
     include RubyTests
     def setup
-      @lst = compile( "bar(1)").to_vool
+      @lst = compile( "bar(1)").to_sol
     end
     def test_class
-      assert_equal Vool::SendStatement , @lst.class
+      assert_equal Sol::SendStatement , @lst.class
     end
     def test_name
       assert_equal :bar , @lst.name
     end
     def test_receiver
-      assert_equal Vool::SelfExpression , @lst.receiver.class
+      assert_equal Sol::SelfExpression , @lst.receiver.class
     end
     def test_args
-      assert_equal Vool::IntegerConstant ,  @lst.arguments.first.class
+      assert_equal Sol::IntegerConstant ,  @lst.arguments.first.class
     end
   end
-  class TestSendSuperVool < MiniTest::Test
+  class TestSendSuperSol < MiniTest::Test
     include RubyTests
     def test_super0
-      lst = compile( "super").to_vool
-      assert_equal Vool::SuperStatement , lst.class
+      lst = compile( "super").to_sol
+      assert_equal Sol::SuperStatement , lst.class
     end
     def test_super0_receiver
-      lst = compile( "super").to_vool
-      assert_equal Vool::SelfExpression , lst.receiver.class
+      lst = compile( "super").to_sol
+      assert_equal Sol::SelfExpression , lst.receiver.class
     end
   end
-  class TestSendSuperArgsVool < MiniTest::Test
+  class TestSendSuperArgsSol < MiniTest::Test
     include RubyTests
     def setup
-      @lst = compile( "super(1)").to_vool
+      @lst = compile( "super(1)").to_sol
     end
     def test_super_class
-      assert_equal Vool::SuperStatement , @lst.class
+      assert_equal Sol::SuperStatement , @lst.class
     end
     def test_super_receiver
-      assert_equal Vool::SelfExpression , @lst.receiver.class
+      assert_equal Sol::SelfExpression , @lst.receiver.class
     end
     def test_super_name
       assert_equal :super,  @lst.name
     end
   end
-  class TestSendReceiverTypeVool < MiniTest::Test
+  class TestSendReceiverTypeSol < MiniTest::Test
     include RubyTests
 
     def setup
@@ -71,12 +71,12 @@ module Ruby
     end
 
     def test_int_receiver
-      sent = compile( "5.div4").to_vool
+      sent = compile( "5.div4").to_sol
       assert_equal Parfait::Type , sent.receiver.ct_type.class
       assert_equal "Integer_Type" , sent.receiver.ct_type.name
     end
     def test_string_receiver
-      sent = compile( "'5'.putstring").to_vool
+      sent = compile( "'5'.putstring").to_sol
       assert_equal Parfait::Type , sent.receiver.ct_type.class
       assert_equal "Word_Type" , sent.receiver.ct_type.name
     end
@@ -84,13 +84,13 @@ module Ruby
   class TestSendReceiver < MiniTest::Test
     include RubyTests
     def setup
-      @lst = compile( "call.once.more").to_vool
+      @lst = compile( "call.once.more").to_sol
     end
     def test_class
-      assert_equal Vool::Statements , @lst.class
+      assert_equal Sol::Statements , @lst.class
     end
     def test_one
-      assert_equal Vool::LocalAssignment , @lst.first.class
+      assert_equal Sol::LocalAssignment , @lst.first.class
     end
     def test_one_name
       assert @lst[0].name.to_s.start_with?("tmp_")
@@ -105,7 +105,7 @@ module Ruby
       assert_equal :once , @lst[1].value.name
     end
     def test_three_class
-      assert_equal Vool::SendStatement, @lst[2].class
+      assert_equal Sol::SendStatement, @lst[2].class
     end
     def test_three_name
       assert_equal :more , @lst[2].name

@@ -8,11 +8,11 @@ module Ruby
       @return_value = value || NilConstant.new
     end
 
-    def to_vool
-      val , hoisted = *normalized_vool(@return_value)
-      me = Vool::ReturnStatement.new(val)
+    def to_sol
+      val , hoisted = *normalized_sol(@return_value)
+      me = Sol::ReturnStatement.new(val)
       return me unless hoisted
-      Vool::Statements.new( hoisted ) << me
+      Sol::Statements.new( hoisted ) << me
     end
 
     def to_s(depth = 0)

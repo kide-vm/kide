@@ -1,24 +1,24 @@
 require_relative "helper"
 
 module Ruby
-  class TestClassStatementVool < MiniTest::Test
+  class TestClassStatementSol < MiniTest::Test
     include RubyTests
 
     def setup
       input = "class Tryout < Base;def meth; a = 5 ;end; end"
-      @vool = compile( input ).to_vool
+      @sol = compile( input ).to_sol
     end
     def test_class
-      assert_equal Vool::ClassExpression , @vool.class
+      assert_equal Sol::ClassExpression , @sol.class
     end
     def test_body
-      assert_equal Vool::Statements , @vool.body.class
+      assert_equal Sol::Statements , @sol.body.class
     end
     def test_compile_class_name
-      assert_equal :Tryout , @vool.name
+      assert_equal :Tryout , @sol.name
     end
     def test_compile_class_super
-      assert_equal :Base , @vool.super_class_name
+      assert_equal :Base , @sol.super_class_name
     end
 
   end
@@ -63,15 +63,15 @@ module Ruby
 
     def test_if
       input = "class Tryout < Base;  false if(true) ; end"
-      assert_raises_muted { compile( input ).to_vool}
+      assert_raises_muted { compile( input ).to_sol}
     end
     def test_instance
       input = "class Tryout < Base;  @var = 5 ; end"
-      assert_raises_muted { compile( input ).to_vool}
+      assert_raises_muted { compile( input ).to_sol}
     end
     def test_wrong_send
       input = "class Tryout < Base;  hi() ; end"
-      assert_raises_muted { compile( input ).to_vool}
+      assert_raises_muted { compile( input ).to_sol}
     end
   end
 end

@@ -17,9 +17,9 @@ what we may loosely call type here, ie the kind of statement.
 The ruby layer is really all about defining classes for every kind of statement,
 thus "typing" the syntax tree, and making it concrete.
 
-## to Vool
+## to Sol
 
-In our nice layers, we are on the way down to Vool, a simplified version of oo.
+In our nice layers, we are on the way down to Sol, a simplified version of oo.
 
 It has proven handy to have this layer, so the code for transforming each object
 is in the class representing that object. (As one does in oo, again imho).
@@ -35,4 +35,4 @@ will surely follow.
 
 The compilation process ends up creating (parfait) objects to represent
 things like classes, types and constants. This is not done here yet, but in
-the vool layer.
+the sol layer.

@@ -13,16 +13,16 @@ module Ruby
       raise "no bod" unless @body
     end
 
-    # This resolves to a Vool SendStatement, in fact that is mostly what it is.
+    # This resolves to a Sol SendStatement, in fact that is mostly what it is.
     #
     # The implicitly passed block (in ruby) gets converted to the constant it is, and
     # is passed as the last argument.
     #
-    def to_vool
+    def to_sol
       #block_name = "implicit_block_#{object_id}".to_sym
-      lambda = Vool::LambdaExpression.new( @args.dup , @body.to_vool)
-      ret = @send.to_vool
-      sendd = ret.is_a?(Vool::Statements) ? ret.last : ret
+      lambda = Sol::LambdaExpression.new( @args.dup , @body.to_sol)
+      ret = @send.to_sol
+      sendd = ret.is_a?(Sol::Statements) ? ret.last : ret
       sendd.arguments << lambda
       ret
     end

@@ -141,7 +141,7 @@ module Parfait
       Type: {names: :List , types: :List  ,
              object_class: :Class, methods: :CallableMethod ,
              is_single: :Object} ,
-      VoolMethod: { name: :Word , args_type: :Type , frame_type: :Type } ,
+      SolMethod: { name: :Word , args_type: :Type , frame_type: :Type } ,
       Word: {char_length: :Integer , next_word: :Word} ,
       }
   end

@@ -1,5 +1,5 @@
 # Class is mainly a list of methods with a name.
-# The methods are untyped, sis VoolMethod.
+# The methods are untyped, sis SolMethod.
 
 # The memory layout of an object is determined by the Type (see there).
 # The class carries the "current" type, ie the type an object would be if you
@@ -11,7 +11,7 @@
 
 # An Object carries the data for the instance variables it has.
 # The Type lists the names of the instance variables
-# The Class keeps a list of instance methods, these have a name and (vool) code
+# The Class keeps a list of instance methods, these have a name and (sol) code
 # Each type in turn has a list of CallableMethods that hold binary code
 
 module Parfait

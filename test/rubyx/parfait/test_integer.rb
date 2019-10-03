@@ -5,8 +5,8 @@ module RubyX
     include ParfaitHelper
     def setup
       @compiler = compiler
-      @compiler.ruby_to_vool load_parfait(:object)
-      @compiler.ruby_to_vool load_parfait(:data_object)
+      @compiler.ruby_to_sol load_parfait(:object)
+      @compiler.ruby_to_sol load_parfait(:data_object)
     end
     def source
       get_preload("Space.main") + load_parfait(:integer)
@@ -15,21 +15,21 @@ module RubyX
       assert source.include?("class Integer")
       assert source.length > 1500 , source.length
     end
-    def test_vool
-      vool = @compiler.ruby_to_vool source
-      assert_equal Vool::ScopeStatement , vool.class
-      assert_equal Vool::ClassExpression , vool[0].class
-      assert_equal Vool::ClassExpression , vool[1].class
-      assert_equal Vool::ClassExpression , vool[2].class
-      assert_equal :DataObject , vool[1].name
-      assert_equal :Data4 , vool[2].name
-      assert_equal :Data8 , vool[3].name
+    def test_sol
+      sol = @compiler.ruby_to_sol source
+      assert_equal Sol::ScopeStatement , sol.class
+      assert_equal Sol::ClassExpression , sol[0].class
+      assert_equal Sol::ClassExpression , sol[1].class
+      assert_equal Sol::ClassExpression , sol[2].class
+      assert_equal :DataObject , sol[1].name
+      assert_equal :Data4 , sol[2].name
+      assert_equal :Data8 , sol[3].name
     end
     def test_slot
-      vool = @compiler.ruby_to_vool source
-      vool.to_parfait
-      #puts vool
-      slot = vool.to_slot(nil)
+      sol = @compiler.ruby_to_sol source
+      sol.to_parfait
+      #puts sol
+      slot = sol.to_slot(nil)
       assert_equal SlotMachine::SlotCollection , slot.class
     end
     def est_risc

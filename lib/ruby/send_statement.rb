@@ -5,10 +5,10 @@ module Ruby
   #
   class SendStatement < CallStatement
 
-    def to_vool
+    def to_sol
       if @receiver.is_a?(ModuleName) and @receiver.name == :X
-        args = @arguments.collect { |arg| arg.to_vool }
-        return Vool::MacroExpression.new(name , args)
+        args = @arguments.collect { |arg| arg.to_sol }
+        return Sol::MacroExpression.new(name , args)
       end
       return require_file if( @name == :require_relative )
       return super
@@ -25,7 +25,7 @@ module Ruby
       end
       path = File.expand_path(  "../../../#{file}" , __FILE__)
       source = File.read(path)
-      RubyCompiler.compile( source ).to_vool
+      RubyCompiler.compile( source ).to_sol
     end
   end
   class SuperStatement < SendStatement

@@ -11,9 +11,9 @@ module Ruby
       @body = body
     end
 
-    def to_vool
-      cond , hoisted = *normalized_vool(@condition)
-      Vool::WhileStatement.new(cond , @body.to_vool , hoisted)
+    def to_sol
+      cond , hoisted = *normalized_sol(@condition)
+      Sol::WhileStatement.new(cond , @body.to_sol , hoisted)
     end
 
     def to_s(depth = 0)

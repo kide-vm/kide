@@ -1,5 +1,5 @@
-# The *essential* step from vool to risc, is the one from a language to a machine.
-# From vools statements that hang in the air, to an instruction set.
+# The *essential* step from sol to risc, is the one from a language to a machine.
+# From sols statements that hang in the air, to an instruction set.
 #
 # ### List based:  Bit like Risc, just no registers
 #

@@ -6,7 +6,7 @@ module SlotMachine
   class BlockYield < Instruction
     attr :arg_index
 
-    # pass in the source (vool statement) and the index.
+    # pass in the source (sol statement) and the index.
     # The index is the argument index of the block that we call
     def initialize(source , index)
       super(source)

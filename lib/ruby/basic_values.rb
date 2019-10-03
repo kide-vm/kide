@@ -1,7 +1,7 @@
 module Ruby
   class Constant < Statement
-    def to_vool
-      vool_brother.new
+    def to_sol
+      sol_brother.new
     end
   end
   class ValueConstant < Constant
@@ -9,8 +9,8 @@ module Ruby
     def initialize(value)
       @value = value
     end
-    def to_vool
-      vool_brother.new(@value)
+    def to_sol
+      sol_brother.new(@value)
     end
   end
   class IntegerConstant < ValueConstant

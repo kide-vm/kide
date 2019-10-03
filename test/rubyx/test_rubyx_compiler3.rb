@@ -17,23 +17,23 @@ module RubyX
       @linker = RubyXCompiler.ruby_to_binary(space_source_for("main"), RubyX.interpreter_test_options)
       assert_equal Risc::Linker , @linker.class
     end
-    def test_one_vool_call
+    def test_one_sol_call
       compiler = RubyXCompiler.new(RubyX.default_test_options)
-      compiler.ruby_to_vool(space_source_for("main"))
-      assert_equal Vool::ClassExpression , compiler.vool.class
+      compiler.ruby_to_sol(space_source_for("main"))
+      assert_equal Sol::ClassExpression , compiler.sol.class
     end
-    def test_two_vool_calls
+    def test_two_sol_calls
       compiler = RubyXCompiler.new(RubyX.default_test_options)
-      compiler.ruby_to_vool(space_source_for("main"))
-      compiler.ruby_to_vool(space_source_for("twain"))
-      assert_equal Vool::ScopeStatement , compiler.vool.class
-      assert_equal 2 , compiler.vool.length
+      compiler.ruby_to_sol(space_source_for("main"))
+      compiler.ruby_to_sol(space_source_for("twain"))
+      assert_equal Sol::ScopeStatement , compiler.sol.class
+      assert_equal 2 , compiler.sol.length
     end
     def test_bin_two_sources
       compiler = RubyXCompiler.new(RubyX.default_test_options)
-      compiler.ruby_to_vool(space_source_for("main"))
-      compiler.ruby_to_vool(space_source_for("twain"))
-      assert_equal 2 , compiler.vool.length
+      compiler.ruby_to_sol(space_source_for("main"))
+      compiler.ruby_to_sol(space_source_for("twain"))
+      assert_equal 2 , compiler.sol.length
       linker = compiler.to_binary(:interpreter)
       assert_equal Risc::Linker , linker.class
       assert_equal 4 , linker.assemblers.length

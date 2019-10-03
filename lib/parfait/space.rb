@@ -111,7 +111,7 @@ module Parfait
     # The superclass must be known when the class is created, or it raises an error.
     # The class is initiated with the type of the superclass (hence above)
     #
-    # Only Vool::ClassExpression really ever creates classes and "grows" the type
+    # Only Sol::ClassExpression really ever creates classes and "grows" the type
     # according to the instances it finds, see there
     #
     def create_class( name , superclass = nil )

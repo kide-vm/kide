@@ -13,10 +13,10 @@ module RubyX
       assert source.include?("class Object")
       assert source.length > 2000
     end
-    def test_vool
-      vool = compiler.ruby_to_vool source
-      assert_equal Vool::ClassExpression , vool.class
-      assert_equal :Object , vool.name
+    def test_sol
+      sol = compiler.ruby_to_sol source
+      assert_equal Sol::ClassExpression , sol.class
+      assert_equal :Object , sol.name
     end
     def test_slot
       slot = compiler.ruby_to_slot source

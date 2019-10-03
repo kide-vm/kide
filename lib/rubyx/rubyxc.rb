@@ -18,7 +18,7 @@ class RubyXC < Thor
     return {parfait: opt }
   end
   def get_preload
-    options[:preload] ? Vool::Builtin.builtin_code : ""
+    options[:preload] ? Sol::Builtin.builtin_code : ""
   end
 end
 

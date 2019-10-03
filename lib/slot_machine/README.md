@@ -1,7 +1,7 @@
 # SlotMachine
 
-This layer sits between the language layer (vool) and the risc machine layer.
-It is meant to make the transition (between vool and risc) easier to understand.
+This layer sits between the language layer (sol) and the risc machine layer.
+It is meant to make the transition (between sol and risc) easier to understand.
 
 Previous efforts were doing the transition without an intermediate layer. But while
 this was possible, it was more difficult than need be, and so we go to the old saying
@@ -13,17 +13,17 @@ A little recap of why the transition was too steep will naturally reveal the des
 
 ### Structure
 
-Vool has a tree structure. Risc is a linked list, so essentially flat.
+Sol has a tree structure. Risc is a linked list, so essentially flat.
 
 ### Memory model
 
-Vool has no memory, it has objects and they just are. Risc on the other hand has only registers
+Sol has no memory, it has objects and they just are. Risc on the other hand has only registers
 and memory. Data can only move to/from/between registers, ie not from memory to memory.
 While Risc knows about objects, it deals in machine words.
 
 ### Execution model
 
-Vool's implicit execution model would be interpretation, ie tree traversal. Vool has high level
+Sol's implicit execution model would be interpretation, ie tree traversal. Sol has high level
 control structures, including send, and no goto, it is a language after all.
 
 Risc is close to a cpu, it has a current instruction (pc), registers (8) and a register based
@@ -32,7 +32,7 @@ used (stacks are messy, not oo)
 
 ## Design
 
-The *essential* step from vool to risc, is the one from a language to a machine. From statements
+The *essential* step from sol to risc, is the one from a language to a machine. From statements
 that hang in the air, to an instruction set.
 So to put a layer in the middle of those two, SlotMachine will be:
 

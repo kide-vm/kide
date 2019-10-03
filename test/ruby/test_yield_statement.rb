@@ -18,18 +18,18 @@ module Ruby
       assert_equal "yield(0)" , @lst.to_s
     end
   end
-  class TestYieldStatementVool < MiniTest::Test
+  class TestYieldStatementSol < MiniTest::Test
     include RubyTests
 
     def setup()
       input = "yield(0)"
-      @lst = compile( input ).to_vool
+      @lst = compile( input ).to_sol
     end
     def test_block
-      assert_equal Vool::YieldStatement , @lst.class
+      assert_equal Sol::YieldStatement , @lst.class
     end
     def test_block_args
-      assert_equal Vool::IntegerConstant , @lst.arguments.first.class
+      assert_equal Sol::IntegerConstant , @lst.arguments.first.class
     end
   end
 end

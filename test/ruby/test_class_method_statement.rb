@@ -40,35 +40,35 @@ module Ruby
 
     def setup()
       input = "def self.tryout(arg1, arg2) ; a = arg1 ; end "
-      @lst = compile( input ).to_vool
+      @lst = compile( input ).to_sol
     end
     def test_method
-      assert_equal Vool::ClassMethodExpression , @lst.class
+      assert_equal Sol::ClassMethodExpression , @lst.class
     end
     def test_method_args
       assert_equal [:arg1, :arg2] , @lst.args
     end
     def test_body_is_scope_zero_statement
-      assert_equal Vool::Statements , @lst.body.class
+      assert_equal Sol::Statements , @lst.body.class
     end
     def test_body_is_scope_zero_statement
-      assert_equal Vool::LocalAssignment , @lst.body.first.class
+      assert_equal Sol::LocalAssignment , @lst.body.first.class
     end
   end
   class TestClassMethodStatementImplicitReturn < MiniTest::Test
     include RubyTests
     def setup()
       input = "def self.tryout(arg1, arg2) ; arg1 ; end "
-      @lst = compile( input ).to_vool
+      @lst = compile( input ).to_sol
     end
     def test_method
-      assert_equal Vool::ClassMethodExpression , @lst.class
+      assert_equal Sol::ClassMethodExpression , @lst.class
     end
     def test_method_args
       assert_equal [:arg1, :arg2] , @lst.args
     end
     def test_body_is_scope_zero_statement
-      assert_equal Vool::ReturnStatement , @lst.body.class
+      assert_equal Sol::ReturnStatement , @lst.body.class
     end
   end
   class TestClassMethodStatement < MiniTest::Test

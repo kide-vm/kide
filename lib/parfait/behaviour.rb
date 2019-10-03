@@ -42,7 +42,7 @@ module Parfait
 
     def create_instance_method_for(name , type , frame , body )
       raise "Method exists #{name}" if get_instance_method(name)
-      method = Parfait::VoolMethod.new(name , type , frame , body )
+      method = Parfait::SolMethod.new(name , type , frame , body )
       add_instance_method( method )
     end
 

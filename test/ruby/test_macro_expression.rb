@@ -25,13 +25,13 @@ module Ruby
   class TestPlusEquals < Minitest::Test
     include RubyTests
     def setup
-      @lst = compile( "X.plus_equals(1)").to_vool
+      @lst = compile( "X.plus_equals(1)").to_sol
     end
     def test_class
-      assert_equal Vool::MacroExpression , @lst.class
+      assert_equal Sol::MacroExpression , @lst.class
     end
     def test_arg1
-      assert_equal Vool::IntegerConstant , @lst.arguments.first.class
+      assert_equal Sol::IntegerConstant , @lst.arguments.first.class
     end
     def test_name
       assert_equal :plus_equals , @lst.name
@@ -40,22 +40,22 @@ module Ruby
   class TestPlusEqualsX < Minitest::Test
     include RubyTests
     def setup
-      @lst = compile_main( "X.plus_equals(arg,1)").to_vool
+      @lst = compile_main( "X.plus_equals(arg,1)").to_sol
     end
     def method_body
       @lst.body.first.body
     end
     def test_class
-      assert_equal Vool::ClassExpression , @lst.class
-      assert_equal Vool::MethodExpression , @lst.body.first.class
+      assert_equal Sol::ClassExpression , @lst.class
+      assert_equal Sol::MethodExpression , @lst.body.first.class
     end
     def test_macro_class
-      assert_equal Vool::ReturnStatement , method_body.class
-      assert_equal Vool::MacroExpression , method_body.return_value.class
+      assert_equal Sol::ReturnStatement , method_body.class
+      assert_equal Sol::MacroExpression , method_body.return_value.class
     end
     def test_args
-      assert_equal Vool::LocalVariable , method_body.return_value.arguments.first.class
-      assert_equal Vool::IntegerConstant , method_body.return_value.arguments.last.class
+      assert_equal Sol::LocalVariable , method_body.return_value.arguments.first.class
+      assert_equal Sol::IntegerConstant , method_body.return_value.arguments.last.class
     end
     def test_name
       assert_equal :plus_equals , method_body.return_value.name

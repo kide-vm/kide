@@ -1,9 +1,9 @@
 module Ruby
   class ClassMethodStatement < MethodStatement
 
-    def to_vool
+    def to_sol
       body = normalized_body
-      Vool::ClassMethodExpression.new( @name , @args.dup , body.to_vool)
+      Sol::ClassMethodExpression.new( @name , @args.dup , body.to_sol)
     end
 
     def to_s(depth = 0)

@@ -27,7 +27,7 @@ module RubyX
     def test_space_type_is_unchanged_by_compile
       compiler = RubyXCompiler.new(RubyX.default_test_options)
       space1 = Parfait.object_space.get_type_by_class_name(:Space)
-      compiler.ruby_to_vool  "class Space ;end"
+      compiler.ruby_to_sol  "class Space ;end"
       space2 = Parfait.object_space.get_type_by_class_name(:Space)
       assert_equal space1 , space2
     end

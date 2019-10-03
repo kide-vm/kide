@@ -12,9 +12,9 @@ module Ruby
     def compile_main(input)
       RubyCompiler.compile(as_main(input))
     end
-    def compile_main_vool(input)
+    def compile_main_sol(input)
       xcompiler = RubyX::RubyXCompiler.new(RubyX.default_test_options)
-      xcompiler.ruby_to_vool(as_main(input))
+      xcompiler.ruby_to_sol(as_main(input))
     end
 
     def assert_raises_muted &block
@@ -28,25 +28,25 @@ module Ruby
     include RubyTests
     def setup
       super
-      @vool = compile( "class Tryout < Base; #{attr_def};end" ).to_vool
+      @sol = compile( "class Tryout < Base; #{attr_def};end" ).to_sol
     end
     def getter
-      @vool.body.statements.first
+      @sol.body.statements.first
     end
     def setter
-      @vool.body.statements.last
+      @sol.body.statements.last
     end
     def test_class
-      assert_equal Vool::ClassExpression , @vool.class
+      assert_equal Sol::ClassExpression , @sol.class
     end
     def test_body
-      assert_equal Vool::Statements , @vool.body.class
+      assert_equal Sol::Statements , @sol.body.class
     end
     def test_getter
-      assert_equal Vool::MethodExpression , getter.class
+      assert_equal Sol::MethodExpression , getter.class
     end
     def test_getter_return
-      assert_equal Vool::ReturnStatement , getter.body.class
+      assert_equal Sol::ReturnStatement , getter.body.class
     end
     def test_getter_name
       assert_equal :page , getter.name

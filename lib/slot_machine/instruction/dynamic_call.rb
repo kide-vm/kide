@@ -9,7 +9,7 @@ module SlotMachine
   #
   # Setting up the method is not part of this instructions scope. That setup
   # includes the type check and any necccessay method resolution.
-  # See vool send statement
+  # See sol send statement
   #
   class DynamicCall < Instruction
     attr :cache_entry

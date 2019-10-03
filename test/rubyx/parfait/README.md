@@ -8,10 +8,10 @@ Since we need Parfait in the runtime, we need to parse it and compile it.
 And since it is early days, we expect errors at every level during this process, which
 means testing every layer for every file.
 
-Rather than create parfait tests for every layer (ie in the vool/slot_machine/risc directories)
+Rather than create parfait tests for every layer (ie in the sol/slot_machine/risc directories)
 we have one file per parfait file here. Each file tests all layers.
 
-The usual workflow is to start with a new file and create tests for vool, slot_machine, risc,binary
+The usual workflow is to start with a new file and create tests for sol, slot_machine, risc,binary
 in that order. Possibly fixing the compiler on the way. Then adding the file to
 the RubyXCompiler parfait load list.
 

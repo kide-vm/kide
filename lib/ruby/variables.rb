@@ -6,8 +6,8 @@ module Ruby
       @name = name
     end
 
-    def to_vool
-      vool_brother.new(@name)
+    def to_sol
+      sol_brother.new(@name)
     end
     def to_s(depth=0)
       name.to_s

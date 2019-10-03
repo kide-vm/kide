@@ -12,7 +12,7 @@ X can be read as X times faster, or a decade away, depending on mindset.
 The last rewrite clarified the roles of the different layers
 of the system, see below. The overhaul is done and rubyx produces working binaries.
 
-Processing goes through layers: Ruby --> Vool --> SlotMachine --> Risc --> Arm --> binary .
+Processing goes through layers: Ruby --> Sol --> SlotMachine --> Risc --> Arm --> binary .
 
 Currently most basic constructs work to some (usable) degree, ie if, while,
 assignment, ivars, calling and dynamic dispatch all work. Simple blocks, those
@@ -27,14 +27,15 @@ anything, even counting to a million.
 
 Ruby is input layer, we use whitequarks parser to parse ruby. The untyped ast is then
 transformed into a typed version. The classes and fields follow the ast output pretty
-much one to one. The we transform to Vool, removing much of ruby's "fluff".
+much one to one. The we transform to Sol, removing much of ruby's "fluff".
 
-### Vool
+### Sol
 
-Vool is a Virtual Object Oriented Language. Virtual in that is has no own syntax. But
-it has semantics, and those are substantially simpler than ruby.
+Sol is a Simple Object Language. Simple as in much simpler than ruby. Object (more
+based than oriented) as everything is an object. Everything the language "sees".
+(Dataprocessing is done at a lower level, partly Slot, partly risc)
 
-Vool is Ruby without the fluff. No unless, no reverse if/while, no splats. Just simple
+Sol is Ruby without the fluff. No unless, no reverse if/while, no splats. Just simple
 oo. (Without this level the step down to the next layer was just too big)
 
 
@@ -47,13 +48,13 @@ SlotMachine has no concept of memory yet, only objects. Data is transferred dire
 to object with one of SlotMachine's main instructions, the SlotLoad.
 
 Mainly SlotMachine is an easy to understand step on the way down. A mix of oo and machine. In
-practise it means that the amount of instructions that need to be generated in vool
+practise it means that the amount of instructions that need to be generated in sol
 is much smaller (easier to understand) and the mapping down to risc is quite straightforward.
 
 ### Risc
 
 The risc cpu architecture approach was a simplification of the cpu instruction set to a
-minimum. Arm, our main target, is a risc architecture, and much like Vool uncrinkles
+minimum. Arm, our main target, is a risc architecture, and much like Sol uncrinkles
 Ruby, the Risc layer simplifies ARM.
 
 The Risc layer here abstracts the Arm in a minimal and independent way. It does not model

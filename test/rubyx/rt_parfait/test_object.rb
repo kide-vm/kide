@@ -25,26 +25,26 @@ module RubyX
       assert_equal Ruby::ClassStatement , compiled[2].class
       assert_equal :TestObject , compiled[2].name
     end
-    def test_vool_object
-      vool = Ruby::RubyCompiler.compile(@input).to_vool
-      assert_equal Vool::ScopeStatement , vool.class
-      assert_equal Vool::ClassExpression , vool.first.class
+    def test_sol_object
+      sol = Ruby::RubyCompiler.compile(@input).to_sol
+      assert_equal Sol::ScopeStatement , sol.class
+      assert_equal Sol::ClassExpression , sol.first.class
     end
-    def test_vool_helper
-      vool = Ruby::RubyCompiler.compile(@input).to_vool
-      assert_equal Vool::ClassExpression , vool[1].class
-      assert_equal :ParfaitTest , vool[1].name
+    def test_sol_helper
+      sol = Ruby::RubyCompiler.compile(@input).to_sol
+      assert_equal Sol::ClassExpression , sol[1].class
+      assert_equal :ParfaitTest , sol[1].name
     end
-    def test_vool_test
-      vool = Ruby::RubyCompiler.compile(@input).to_vool
-      assert_equal Vool::ClassExpression , vool[2].class
-      assert_equal :TestObject , vool[2].name
+    def test_sol_test
+      sol = Ruby::RubyCompiler.compile(@input).to_sol
+      assert_equal Sol::ClassExpression , sol[2].class
+      assert_equal :TestObject , sol[2].name
     end
-    def test_vool_methods
-      vool = Ruby::RubyCompiler.compile(@input).to_vool
-      assert_equal Vool::Statements , vool[2].body.class
-      vool[2].body.statements.each do |st|
-        assert_equal Vool::MethodExpression , st.class
+    def test_sol_methods
+      sol = Ruby::RubyCompiler.compile(@input).to_sol
+      assert_equal Sol::Statements , sol[2].body.class
+      sol[2].body.statements.each do |st|
+        assert_equal Sol::MethodExpression , st.class
       end
     end
   end
@@ -54,15 +54,15 @@ module RubyX
 
     def self.runnable_methods
       input = load_parfait(:object) + load_parfait_test(:object)
-      vool = Ruby::RubyCompiler.compile(input).to_vool
+      sol = Ruby::RubyCompiler.compile(input).to_sol
       tests = [  ]
-      vool[2].body.statements.each do |method|
+      sol[2].body.statements.each do |method|
         tests << method.name
         self.send(:define_method, method.name ) do
           code = input + <<MAIN
             class Space
               def main(args)
-                test = #{vool[2].name}.new
+                test = #{sol[2].name}.new
                 test.setup
                 test.#{method.name}
               end

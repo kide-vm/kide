@@ -25,46 +25,46 @@ module Ruby
       assert_equal IvarAssignment , lst.class
     end
   end
-  class TestAssignmentVoolLocal < MiniTest::Test
+  class TestAssignmentSolLocal < MiniTest::Test
     include RubyTests
     def setup
-      @lst = compile( "foo = bar").to_vool
+      @lst = compile( "foo = bar").to_sol
     end
     def test_tos
       assert_equal "foo = self.bar()" , @lst.to_s
     end
     def test_local
-      assert_equal Vool::LocalAssignment , @lst.class
+      assert_equal Sol::LocalAssignment , @lst.class
     end
     def test_bar
-      assert_equal Vool::SendStatement , @lst.value.class
+      assert_equal Sol::SendStatement , @lst.value.class
     end
     def test_local_name
       assert_equal :foo , @lst.name
     end
   end
-  class TestAssignmentVoolInst < MiniTest::Test
+  class TestAssignmentSolInst < MiniTest::Test
     include RubyTests
     def setup
-      @lst = compile( "@foo = bar").to_vool
+      @lst = compile( "@foo = bar").to_sol
     end
     def test_tos
       assert_equal "@foo = self.bar()" , @lst.to_s
     end
     def test_instance
-      assert_equal Vool::IvarAssignment , @lst.class
+      assert_equal Sol::IvarAssignment , @lst.class
     end
     def test_instance_name
       assert_equal :foo , @lst.name
     end
   end
-  class TestAssignmentVoolConst < MiniTest::Test
+  class TestAssignmentSolConst < MiniTest::Test
     include RubyTests
     def setup
-      @lst = compile( "foo = 5").to_vool
+      @lst = compile( "foo = 5").to_sol
     end
     def test_const
-      assert_equal Vool::IntegerConstant , @lst.value.class
+      assert_equal Sol::IntegerConstant , @lst.value.class
     end
   end
 end

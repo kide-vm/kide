@@ -1,7 +1,7 @@
 
 require_relative "helper"
 
-module Vool
+module Sol
   class TestClassStatementSlotMachine < MiniTest::Test
     include SlotMachineCompile
 

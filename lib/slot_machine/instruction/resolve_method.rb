@@ -15,7 +15,7 @@ module SlotMachine
   class ResolveMethod < Instruction
     attr :cache_entry , :name
 
-    # pass in source (VoolStatement)
+    # pass in source (SolStatement)
     # name of the method (don't knwow the actaual method)
     # and the cache_entry
     def initialize(source , name , cache_entry)
