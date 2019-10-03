@@ -38,8 +38,8 @@ module Parfait
       callable_method = self_type.get_method(@name)
       #puts "Using #{name} for #{self_type.object_class.name}.#{self_type.hash}" unless callable_method
       raise "Callable not found #{@name}" unless callable_method
-      compiler = Mom::MethodCompiler.new( callable_method )
-      head = @source.to_mom( compiler )
+      compiler = SlotMachine::MethodCompiler.new( callable_method )
+      head = @source.to_slot( compiler )
       compiler.add_code(head)
       compiler
     end

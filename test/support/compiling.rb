@@ -30,24 +30,24 @@ module ScopeHelper
 end
 module VoolCompile
   include ScopeHelper
-  include Mom
+  include SlotMachine
   include Preloader
 
   def compile_main( input , preload = nil)
     input = get_preload(preload) + as_main( input )
-    collection = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(input)
-    assert collection.is_a?(Mom::MomCollection) , collection.class.name
+    collection = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_slot(input)
+    assert collection.is_a?(SlotMachine::SlotCollection) , collection.class.name
     compiler = collection.compilers.find_compiler_name(:main)
-    assert_equal Mom::MethodCompiler , compiler.class
+    assert_equal SlotMachine::MethodCompiler , compiler.class
     compiler
   end
   def compile_main_block( block_input , method_input = "main_local = 5" , preload = nil)
     source = get_preload(preload) + as_main("#{method_input} ; self.main{|val| #{block_input}}")
-    mom_col = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom( source )
+    mom_col = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_slot( source )
     compiler = mom_col.method_compilers.find_compiler_name(:main)
     block = mom_col.method_compilers.find_compiler_name(:main_block)
     assert block
-    block.mom_instructions.next
+    block.slot_instructions.next
   end
   def check_array( should , is )
     index = 0
@@ -75,11 +75,11 @@ module VoolCompile
 
 end
 
-module MomCompile
+module SlotMachineCompile
   include ScopeHelper
 
-  def compile_mom(input)
-    RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(input)
+  def compile_slot(input)
+    RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_slot(input)
   end
 
 end

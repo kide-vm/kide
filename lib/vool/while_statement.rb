@@ -9,15 +9,15 @@ module Vool
       @body = body
     end
 
-    def to_mom( compiler )
-      merge_label = Mom::Label.new(self, "merge_label_#{object_id.to_s(16)}")
-      cond_label = Mom::Label.new(self, "cond_label_#{object_id.to_s(16)}")
+    def to_slot( compiler )
+      merge_label = SlotMachine::Label.new(self, "merge_label_#{object_id.to_s(16)}")
+      cond_label = SlotMachine::Label.new(self, "cond_label_#{object_id.to_s(16)}")
       codes = cond_label
-      codes << @hoisted.to_mom(compiler) if @hoisted
-      codes << @condition.to_mom(compiler) if @condition.is_a?(SendStatement)
-      codes << Mom::TruthCheck.new(condition.to_slot(compiler) , merge_label)
-      codes << @body.to_mom(compiler)
-      codes << Mom::Jump.new(cond_label)
+      codes << @hoisted.to_slot(compiler) if @hoisted
+      codes << @condition.to_slot(compiler) if @condition.is_a?(SendStatement)
+      codes << SlotMachine::TruthCheck.new(condition.to_slot_definition(compiler) , merge_label)
+      codes << @body.to_slot(compiler)
+      codes << SlotMachine::Jump.new(cond_label)
       codes << merge_label
     end
 

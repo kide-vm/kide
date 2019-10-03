@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestSendSelfMom < MiniTest::Test
+  class TestSendSelfSlotMachine < MiniTest::Test
     include SimpleSendHarness
 
     def send_method
@@ -23,7 +23,7 @@ module Vool
       assert_equal :get_internal_word,  @ins.next(2).method.name
     end
   end
-  class TestSendSelfImplicitMom < TestSendSelfMom
+  class TestSendSelfImplicitSlotMachine < TestSendSelfSlotMachine
 
     def send_method
       "get_internal_word(0)"

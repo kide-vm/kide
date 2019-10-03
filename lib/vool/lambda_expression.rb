@@ -11,19 +11,19 @@ module Vool
     # because of normalization (of send), slot_definition is called first,
     # to assign the block to a variable.
     #
-    # This means we do the compiler here (rather than to_mom, which is in
+    # This means we do the compiler here (rather than to_slot, which is in
     # fact never called)
-    def to_slot(compiler)
+    def to_slot_definition(compiler)
       compile(compiler) unless @parfait_block
-      return Mom::SlotDefinition.new(Mom::LambdaConstant.new(parfait_block(compiler)) , [])
+      return SlotMachine::SlotDefinition.new(SlotMachine::LambdaConstant.new(parfait_block(compiler)) , [])
     end
 
     # create a block, a compiler for it, comile the bock and add the compiler(code)
     # to the method compiler for further processing
     def compile( compiler )
       parfait_block = self.parfait_block(compiler)
-      block_compiler = Mom::BlockCompiler.new( parfait_block , compiler.get_method )
-      head = body.to_mom( block_compiler )
+      block_compiler = SlotMachine::BlockCompiler.new( parfait_block , compiler.get_method )
+      head = body.to_slot( block_compiler )
       block_compiler.add_code(head)
       compiler.add_method_compiler(block_compiler)
       nil

@@ -18,9 +18,9 @@ module RubyX
       assert_equal Vool::ClassExpression , vool.class
       assert_equal :Object , vool.name
     end
-    def test_mom
-      mom = compiler.ruby_to_mom source
-      assert_equal Mom::MomCollection , mom.class
+    def test_slot
+      mom = compiler.ruby_to_slot source
+      assert_equal SlotMachine::SlotCollection , mom.class
     end
     def test_risc
       risc = compiler.ruby_to_risc( get_preload("Space.main") + source)

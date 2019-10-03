@@ -28,7 +28,7 @@ module Vool
 
     # lazy init this, to keep the dependency (which goes to parfait and booting) at bay
     def dynamic_call
-      @dynamic ||= Mom::DynamicCall.new()
+      @dynamic ||= SlotMachine::DynamicCall.new()
     end
 
     # A Send breaks down to 2 steps:
@@ -40,7 +40,7 @@ module Vool
     # So we check, and if find, add the source (vool_method) to the class and start
     # compiling the vool for the receiver_type
     #
-    def to_mom( compiler )
+    def to_slot( compiler )
       @receiver = SelfExpression.new(compiler.receiver_type) if @receiver.is_a?(SelfExpression)
       if(@receiver.ct_type)
         method = @receiver.ct_type.get_method(@name)
@@ -66,18 +66,18 @@ module Vool
     end
 
     def message_setup(compiler,called_method)
-      setup  = Mom::MessageSetup.new( called_method )
-      mom_receive = @receiver.to_slot(compiler)
+      setup  = SlotMachine::MessageSetup.new( called_method )
+      mom_receive = @receiver.to_slot_definition(compiler)
       arg_target = [:message , :next_message ]
       args = []
       @arguments.each_with_index do |arg , index| # +1 because of type
-        args << Mom::SlotLoad.new(self, arg_target + ["arg#{index+1}".to_sym] , arg.to_slot(compiler))
+        args << SlotMachine::SlotLoad.new(self, arg_target + ["arg#{index+1}".to_sym] , arg.to_slot_definition(compiler))
       end
-      setup << Mom::ArgumentTransfer.new(self, mom_receive , args )
+      setup << SlotMachine::ArgumentTransfer.new(self, mom_receive , args )
     end
 
     def simple_call(compiler, called_method)
-      message_setup(compiler,called_method) << Mom::SimpleCall.new(called_method)
+      message_setup(compiler,called_method) << SlotMachine::SimpleCall.new(called_method)
     end
 
     # this breaks cleanly into two parts:
@@ -91,10 +91,10 @@ module Vool
     # if not, change and find method for the type (simple_call to resolve_method)
     # conceptually easy in ruby, but we have to compile that "easy" ruby
     def cache_check(compiler)
-      ok = Mom::Label.new(self,"cache_ok_#{self.object_id}")
+      ok = SlotMachine::Label.new(self,"cache_ok_#{self.object_id}")
       check = build_condition(ok, compiler)      # if cached_type != current_type
-      check << Mom::SlotLoad.new(self,[dynamic_call.cache_entry, :cached_type] , receiver_type_definition(compiler))
-      check << Mom::ResolveMethod.new(self, @name , dynamic_call.cache_entry )
+      check << SlotMachine::SlotLoad.new(self,[dynamic_call.cache_entry, :cached_type] , receiver_type_definition(compiler))
+      check << SlotMachine::ResolveMethod.new(self, @name , dynamic_call.cache_entry )
       check << ok
     end
 
@@ -111,14 +111,14 @@ module Vool
 
     private
     def receiver_type_definition(compiler)
-      defi = @receiver.to_slot(compiler)
+      defi = @receiver.to_slot_definition(compiler)
       defi.slots << :type
       defi
     end
     def build_condition(ok_label, compiler)
-      cached_type = Mom::SlotDefinition.new(dynamic_call.cache_entry , [:cached_type])
+      cached_type = SlotMachine::SlotDefinition.new(dynamic_call.cache_entry , [:cached_type])
       current_type = receiver_type_definition(compiler)
-      Mom::NotSameCheck.new(cached_type , current_type, ok_label)
+      SlotMachine::NotSameCheck.new(cached_type , current_type, ok_label)
     end
   end
 end

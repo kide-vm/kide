@@ -1,12 +1,12 @@
 require_relative "helper"
 
 module Vool
-  class TestSendArgsSendMom < MiniTest::Test
+  class TestSendArgsSendSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup
       @compiler = compile_main( "a = main(4.div4);return a" , "Integer.div4")
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
 
     def test_array

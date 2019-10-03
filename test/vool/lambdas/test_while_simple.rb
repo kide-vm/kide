@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module VoolBlocks
-  class TestSimpleWhileMom < MiniTest::Test
+  class TestSimpleWhileSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup

@@ -2,7 +2,7 @@ require_relative "helper"
 
 module Vool
   class TestClassSendInherited < MiniTest::Test
-    include Mom
+    include SlotMachine
     include VoolCompile
 
     def class_main
@@ -21,15 +21,15 @@ module Vool
     end
 
     def setup
-      ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(class_main)
-      @ins = ret.compilers.find_compiler_name(:main).mom_instructions.next
+      ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_slot(class_main)
+      @ins = ret.compilers.find_compiler_name(:main).slot_instructions.next
     end
     def test_array
       check_array [MessageSetup,ArgumentTransfer,SimpleCall,SlotLoad,
                     ReturnJump,Label, ReturnSequence , Label] , @ins
     end
     def test_receiver
-      assert_equal Mom::ArgumentTransfer,  @ins.next(1).class
+      assert_equal SlotMachine::ArgumentTransfer,  @ins.next(1).class
       assert_equal 0,  @ins.next(1).arguments.length
       assert_equal SlotDefinition,  @ins.next(1).receiver.class
       assert_equal Parfait::Class,  @ins.next(1).receiver.known_object.class

@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module Vool
-  class TestSendClassMom < MiniTest::Test
+  class TestSendClassSlotMachine < MiniTest::Test
     include VoolCompile
 
     def class_main
@@ -21,8 +21,8 @@ module Vool
 
     def setup
       source = "class Integer < Data4;def +(other);X.int_operator(:+);end;end;" + class_main
-      ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_mom(source)
-      @ins = ret.compilers.find_compiler_name(:main).mom_instructions.next
+      ret = RubyX::RubyXCompiler.new(RubyX.default_test_options).ruby_to_slot(source)
+      @ins = ret.compilers.find_compiler_name(:main).slot_instructions.next
     end
 
     def test_array

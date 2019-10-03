@@ -7,7 +7,7 @@ module Vool
 
     def setup
       @compiler = compile_main( "if(@a) ; @a = 5 ; else; @a = 6 ; end; return")
-      @ins = @compiler.mom_instructions
+      @ins = @compiler.slot_instructions
     end
 
     def test_label

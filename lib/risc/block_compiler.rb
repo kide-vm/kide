@@ -7,9 +7,9 @@ module Risc
 
     attr_reader :block , :risc_instructions , :constants , :in_method
 
-    def initialize( block , in_method , mom_label)
+    def initialize( block , in_method , slot_label)
       @in_method = in_method
-      super(block , mom_label)
+      super(block , slot_label)
     end
 
     def source_name

@@ -35,7 +35,7 @@ module RubyX
     end
 
     # The highest level function creates binary code for the given ruby code
-    # for the given platform (see Platform). Binary code means that vool/mom/risc
+    # for the given platform (see Platform). Binary code means that vool/slot_machine/risc
     # are created and then assembled into BinaryCode objects.
     # (no executable is generated, only the binary code and objects needed for a binary)
     #
@@ -67,11 +67,11 @@ module RubyX
 
     # Transform the incoming ruby source (string)  to mom
     #
-    # The vool is stored using ruby_to_vool,the to_mom is called
-    # Return Mom Statement
-    def ruby_to_mom(ruby)
+    # The vool is stored using ruby_to_vool,the to_slot is called
+    # Return SlotMachine Statement
+    def ruby_to_slot(ruby)
       ruby_to_vool(ruby)
-      to_mom
+      to_slot
     end
 
     # Process previously stored vool source to binary.
@@ -97,14 +97,14 @@ module RubyX
     # Process previously stored vool source to risc.
     # return a Risc::RiscCollection , a collection of MethodCompilers
     def to_risc()
-      mom = to_mom
+      mom = to_slot
       mom.to_risc()
     end
 
     # return mom for the previously stored vool source.
-    def to_mom
+    def to_slot
       @vool.to_parfait
-      @vool.to_mom(nil)
+      @vool.to_slot(nil)
     end
 
     # ruby_to_vool compiles the ruby to ast, and then to vool

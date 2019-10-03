@@ -5,8 +5,8 @@ module Risc
     include Parfait::MethodHelper
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @method = Mom::MomCollection.compiler_for( :Space , :main,{},{}).callable
-      @compiler = Risc::MethodCompiler.new( @method , Mom::Label.new( "source_name", "return_label"))
+      @method = SlotMachine::SlotCollection.compiler_for( :Space , :main,{},{}).callable
+      @compiler = Risc::MethodCompiler.new( @method , SlotMachine::Label.new( "source_name", "return_label"))
       @builder  = @compiler.builder(@method)
     end
     def test_inserts_built

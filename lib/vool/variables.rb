@@ -10,9 +10,9 @@ module Vool
 
   class LocalVariable < Expression
     include Named
-    def to_slot(compiler)
+    def to_slot_definition(compiler)
       slot_def = compiler.slot_type_for(@name)
-      Mom::SlotDefinition.new(:message , slot_def)
+      SlotMachine::SlotDefinition.new(:message , slot_def)
     end
     def to_s(depth = 0)
       name.to_s
@@ -24,8 +24,8 @@ module Vool
 
   class InstanceVariable < Expression
     include Named
-    def to_slot(_)
-      Mom::SlotDefinition.new(:message , [ :receiver , @name] )
+    def to_slot_definition(_)
+      SlotMachine::SlotDefinition.new(:message , [ :receiver , @name] )
     end
     # used to collect type information
     def add_ivar( array )
@@ -51,8 +51,8 @@ module Vool
     def ct_type
       get_named_class.single_class.instance_type
     end
-    def to_slot(_)
-      return Mom::SlotDefinition.new( get_named_class, [])
+    def to_slot_definition(_)
+      return SlotMachine::SlotDefinition.new( get_named_class, [])
     end
     def get_named_class
       Parfait.object_space.get_class_by_name(self.name)

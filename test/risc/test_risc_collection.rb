@@ -1,11 +1,11 @@
 require_relative "helper"
 
 module Risc
-  class TestMomCompilerTranslate < MiniTest::Test
-    include MomCompile
+  class TestSlotMachineCompilerTranslate < MiniTest::Test
+    include SlotMachineCompile
 
     def setup
-      @comp = compile_mom( "class Space ; def main(); main{return 'Ho'};return 'Hi'; end; end;")
+      @comp = compile_slot( "class Space ; def main(); main{return 'Ho'};return 'Hi'; end; end;")
       @linker = @comp.to_risc.translate(:interpreter)
     end
 

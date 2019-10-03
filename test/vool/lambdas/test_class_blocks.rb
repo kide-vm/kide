@@ -1,7 +1,7 @@
 require_relative "../helper"
 
 module VoolBlocks
-  class TestClassAssignMom < MiniTest::Test
+  class TestClassAssignSlotMachine < MiniTest::Test
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
@@ -14,7 +14,7 @@ module VoolBlocks
       vool = Ruby::RubyCompiler.compile( as_class_method(source) ).to_vool
       vool.to_parfait
       begin
-        vool.to_mom(nil)
+        vool.to_slot(nil)
      rescue => err
         assert err.message.include?("Blocks") , err.message
       end
@@ -22,7 +22,7 @@ module VoolBlocks
     def test_assign_compiles
       vool = Ruby::RubyCompiler.compile( as_class_method("val = 0") ).to_vool
       vool.to_parfait
-      assert_equal Mom::MomCollection , vool.to_mom(nil).class
+      assert_equal SlotMachine::SlotCollection , vool.to_slot(nil).class
     end
   end
 end

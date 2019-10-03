@@ -24,7 +24,7 @@ module Ruby
   #
   # The next step is then to go to the vool level, which is
   # simpler, and then finally to compile
-  # to the next level down, MOM (Minimal Object Machine)
+  # to the next level down, SlotMachine (Minimal Object Machine)
   class RubyCompiler < AST::Processor
     include AST::Sexp
 

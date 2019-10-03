@@ -11,12 +11,12 @@
 # data. Statements represent code whereas Expressions resolve to data.
 # (in ruby there are no pure statements, everthing resolves to data)
 #
-# Vool resolves to Mom in the next step down. But it also the place where we create
+# Vool resolves to SlotMachine in the next step down. But it also the place where we create
 # Parfait representations for the main oo players, ie classes and methods.
 # The protocol is thus two stage:
 # - first to_parfait with implicit side-effects of creating parfait objects that
 #     are added to the Parfait object_space
-# - second to_mom , which will return a mom version of the statement. This may be code
+# - second to_slot , which will return a mom version of the statement. This may be code
 #   or a compiler (for methods), or compiler collection (for classes)
 #
 module Vool
@@ -43,7 +43,7 @@ module Vool
     #
     # The argument given most often is a compiler
     # The default implementation (this) is to raise an error
-    def to_mom( _ )
+    def to_slot( _ )
       raise "Not implemented for #{self}"
     end
 

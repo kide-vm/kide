@@ -2,12 +2,12 @@
 require_relative "helper"
 
 module Vool
-  class TestSimpleIfMom < MiniTest::Test
+  class TestSimpleIfSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup
       @compiler = compile_main( "if(@a) ; @a = 5 ; else; @a = 6 ; end;return")
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
 
     def test_condition_compiles_to_check

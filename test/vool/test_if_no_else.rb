@@ -7,7 +7,7 @@ module Vool
 
     def setup
       @compiler = compile_main( "if(@a) ; @a = 5 ; end;return")
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
 
     def test_condition_compiles_to_check

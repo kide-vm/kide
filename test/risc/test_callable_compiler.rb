@@ -12,7 +12,7 @@ module Risc
 
     def setup
       Parfait.boot!({})
-      label = Mom::Label.new("hi","ho")
+      label = SlotMachine::Label.new("hi","ho")
       @compiler = FakeCallableCompiler.new(FakeCallable.new  , label)
     end
     def test_ok
@@ -25,7 +25,7 @@ module Risc
       assert_equal Label , @compiler.current.class
       assert_equal "ho" , @compiler.current.name
     end
-    def test_mom
+    def test_slot
       assert @compiler.risc_instructions
     end
     def test_const

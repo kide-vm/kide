@@ -7,7 +7,7 @@ module Risc
     def setup
       code = in_Test("def meth; @ivar = 5;return ;end")
       rubyx = RubyX::RubyXCompiler.new(RubyX.default_test_options)
-      @compiler = rubyx.ruby_to_mom(code).compilers.to_risc
+      @compiler = rubyx.ruby_to_slot(code).compilers.to_risc
     end
     def test_compiles_risc
       assert_equal Risc::MethodCompiler , @compiler.class

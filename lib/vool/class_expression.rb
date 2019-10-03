@@ -42,21 +42,21 @@ module Vool
     # Other statements are not yet allowed (baring in mind that attribute
     # accessors are transformed to methods in the ruby layer )
     #
-    # As there is no class equivalnet in code, a MomCollection is returned,
-    # which is just a list of Mom::MethodCompilers
+    # As there is no class equivalnet in code, a SlotCollection is returned,
+    # which is just a list of SlotMachine::MethodCompilers
     # The compilers help to transform the code further, into Risc next
-    def to_mom( _ )
+    def to_slot( _ )
       method_compilers =  body.statements.collect do |node|
         case node
         when MethodExpression
-          node.to_mom(@clazz)
+          node.to_slot(@clazz)
         when ClassMethodExpression
-          node.to_mom(@clazz.single_class)
+          node.to_slot(@clazz.single_class)
         else
           raise "Only methods for now #{node.class}:#{node}"
         end
       end
-      Mom::MomCollection.new(method_compilers)
+      SlotMachine::SlotCollection.new(method_compilers)
     end
 
     # goes through the code looking for instance variables and their assignments.

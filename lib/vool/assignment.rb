@@ -30,13 +30,13 @@ module Vool
     # When the right hand side is a CallStatement, it must be compiled, before the assign
     # is executed
     #
-    # Derived classes do not implement to_mom, only slot_position
-    def to_mom(compiler)
-      to = Mom::SlotDefinition.new(:message , self.slot_position(compiler))
-      from = @value.to_slot(compiler)
-      assign = Mom::SlotLoad.new(self,to,from)
+    # Derived classes do not implement to_slot, only slot_position
+    def to_slot(compiler)
+      to = SlotMachine::SlotDefinition.new(:message , self.slot_position(compiler))
+      from = @value.to_slot_definition(compiler)
+      assign = SlotMachine::SlotLoad.new(self,to,from)
       return assign unless @value.is_a?(CallStatement)
-      @value.to_mom(compiler) << assign
+      @value.to_slot(compiler) << assign
     end
   end
 end

@@ -1,14 +1,14 @@
 require_relative "../helper"
 
 module VoolBlocks
-  class TestAssignMom < MiniTest::Test
+  class TestAssignSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup
       @ins = compile_main_block(  "local = 5" )
     end
     def test_block_compiles
-      assert_equal Mom::SlotLoad , @ins.class , @ins
+      assert_equal SlotMachine::SlotLoad , @ins.class , @ins
     end
     def test_slot_is_set
       assert @ins.left
@@ -23,17 +23,17 @@ module VoolBlocks
       assert @ins.right
     end
     def test_slot_assigns_int
-      assert_equal Mom::IntegerConstant ,  @ins.right.known_object.class
+      assert_equal SlotMachine::IntegerConstant ,  @ins.right.known_object.class
     end
   end
 
-  class TestAssignMomInstanceToLocal < MiniTest::Test
+  class TestAssignSlotMachineInstanceToLocal < MiniTest::Test
     include VoolCompile
     def setup
       @ins = compile_main_block( "local = @a" , "@a = 5") #second arg in method scope
     end
     def test_class_compiles
-      assert_equal Mom::SlotLoad , @ins.class , @ins
+      assert_equal SlotMachine::SlotLoad , @ins.class , @ins
     end
     def test_slots_left
       assert_equal [:local1] , @ins.left.slots
@@ -51,7 +51,7 @@ module VoolBlocks
     end
 
     def test_class_compiles
-      assert_equal Mom::SlotLoad , @ins.class , @ins
+      assert_equal SlotMachine::SlotLoad , @ins.class , @ins
     end
     def test_slot_is_set
       assert @ins.left
@@ -61,19 +61,19 @@ module VoolBlocks
     end
   end
 
-  class TestAssignMomToInstance < MiniTest::Test
+  class TestAssignSlotMachineToInstance < MiniTest::Test
     include VoolCompile
     def setup
     end
     def test_assigns_const
       @ins = compile_main_block( "@a = 5")
-      assert_equal Mom::SlotLoad , @ins.class , @ins
-      assert_equal Mom::IntegerConstant , @ins.right.known_object.class , @ins
+      assert_equal SlotMachine::SlotLoad , @ins.class , @ins
+      assert_equal SlotMachine::IntegerConstant , @ins.right.known_object.class , @ins
     end
     def test_assigns_move
       @ins = compile_main_block( "@a = arg")
-      assert_equal Mom::SlotLoad , @ins.class , @ins
-      assert_equal Mom::SlotDefinition , @ins.right.class , @ins
+      assert_equal SlotMachine::SlotLoad , @ins.class , @ins
+      assert_equal SlotMachine::SlotDefinition , @ins.right.class , @ins
     end
   end
 

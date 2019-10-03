@@ -9,8 +9,8 @@ module Vool
     def initialize(value)
       @value = value
     end
-    def to_slot(_)
-      return Mom::SlotDefinition.new(Mom::IntegerConstant.new(@value) , [])
+    def to_slot_definition(_)
+      return SlotMachine::SlotDefinition.new(SlotMachine::IntegerConstant.new(@value) , [])
     end
     def ct_type
       Parfait.object_space.get_type_by_class_name(:Integer)
@@ -37,8 +37,8 @@ module Vool
     def ct_type
       Parfait.object_space.get_type_by_class_name(:True)
     end
-    def to_slot(_)
-      return Mom::SlotDefinition.new(Parfait.object_space.true_object , [])
+    def to_slot_definition(_)
+      return SlotMachine::SlotDefinition.new(Parfait.object_space.true_object , [])
     end
     def to_s(depth = 0)
       "true"
@@ -49,8 +49,8 @@ module Vool
     def ct_type
       Parfait.object_space.get_type_by_class_name(:False)
     end
-    def to_slot(_)
-      return Mom::SlotDefinition.new(Parfait.object_space.false_object , [])
+    def to_slot_definition(_)
+      return SlotMachine::SlotDefinition.new(Parfait.object_space.false_object , [])
     end
     def to_s(depth = 0)
       "false"
@@ -61,8 +61,8 @@ module Vool
     def ct_type
       Parfait.object_space.get_type_by_class_name(:Nil)
     end
-    def to_slot(_)
-      return Mom::SlotDefinition.new(Parfait.object_space.nil_object , [])
+    def to_slot_definition(_)
+      return SlotMachine::SlotDefinition.new(Parfait.object_space.nil_object , [])
     end
     def to_s(depth = 0)
       "nil"
@@ -75,9 +75,9 @@ module Vool
     def initialize(type = nil)
       @my_type = type
     end
-    def to_slot(compiler)
+    def to_slot_definition(compiler)
       @my_type = compiler.receiver_type
-      Mom::SlotDefinition.new(:message , [:receiver])
+      SlotMachine::SlotDefinition.new(:message , [:receiver])
     end
     def ct_type
       @my_type
@@ -91,8 +91,8 @@ module Vool
     def initialize(value)
       @value = value
     end
-    def to_slot(_)
-      return Mom::SlotDefinition.new(Mom::StringConstant.new(@value),[])
+    def to_slot_definition(_)
+      return SlotMachine::SlotDefinition.new(SlotMachine::StringConstant.new(@value),[])
     end
     def ct_type
       Parfait.object_space.get_type_by_class_name(:Word)

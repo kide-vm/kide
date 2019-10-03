@@ -25,12 +25,12 @@ module RubyX
       assert_equal :Data4 , vool[2].name
       assert_equal :Data8 , vool[3].name
     end
-    def test_mom
+    def test_slot
       vool = @compiler.ruby_to_vool source
       vool.to_parfait
       #puts vool
-      mom = vool.to_mom(nil)
-      assert_equal Mom::MomCollection , mom.class
+      mom = vool.to_slot(nil)
+      assert_equal SlotMachine::SlotCollection , mom.class
     end
     def est_risc
       risc = compiler.ruby_to_risc source

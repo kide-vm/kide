@@ -1,5 +1,5 @@
 require_relative "helper"
-module Mom
+module SlotMachine
   class PlusEquals < Instruction
     attr_reader :a , :b
     def initialize(source , arg , b)
@@ -14,16 +14,16 @@ module Mom
 end
 
 module Vool
-  class TestMacroMom < MiniTest::Test
+  class TestMacroSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup
       @compiler = compile_main( "X.plus_equals(arg,1)")
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
 
     def test_class_compiles
-      assert_equal Mom::PlusEquals , @ins.class , @ins
+      assert_equal SlotMachine::PlusEquals , @ins.class , @ins
     end
     def test_arg1
       assert_equal  Vool::LocalVariable , @ins.a.class

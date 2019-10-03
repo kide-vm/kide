@@ -1,12 +1,12 @@
 require_relative "../helper"
 
 module Vool
-  class TestSendCachedSimpleMom < MiniTest::Test
+  class TestSendCachedSimpleSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup
       @compiler = compile_main( "a = 5; a.div4;return ")
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
     def test_check_type
       assert_equal NotSameCheck , @ins.next(1).class , @ins

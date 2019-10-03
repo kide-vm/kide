@@ -33,15 +33,15 @@ module Vool
       m = clazz.single_class.instance_type.get_method(:meth)
       assert m , "no type method :meth"
     end
-    def as_mom
+    def as_slot
       @clazz.to_parfait
-      @clazz.to_mom(nil)
+      @clazz.to_slot(nil)
     end
-    def test_mom
-      assert_equal :meth , as_mom.method_compilers.callable.name
+    def test_slot
+      assert_equal :meth , as_slot.method_compilers.callable.name
     end
-    def test_mom_frame
-      callable = as_mom.method_compilers.callable
+    def test_slot_frame
+      callable = as_slot.method_compilers.callable
       assert callable.frame_type.names.last.to_s.start_with?("tmp_") , "no tmp_ variable #{callable.frame_type.names}"
     end
   end

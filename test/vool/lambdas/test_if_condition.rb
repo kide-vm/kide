@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module VoolBlocks
-  class TestConditionIfMom < MiniTest::Test
+  class TestConditionIfSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup

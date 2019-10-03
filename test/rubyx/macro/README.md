@@ -10,10 +10,10 @@ On the way there, we start by Testing and moving the old ones. Since we want to 
 to test some methods even after the move, without parsing/processing the whole of parfait
 we have to have a method of "injecting" the single? methods.
 
-## Mom level
+## SlotMachine level
 
-There a re two test levels to every method. Mom being the first, where we basically just
-see if the right Mom instruction has been generated
+There a re two test levels to every method. SlotMachine being the first, where we basically just
+see if the right SlotMachine instruction has been generated
 
 ## Risc
 

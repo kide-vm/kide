@@ -1,12 +1,12 @@
 require_relative "helper"
 
 module Vool
-  class TestYieldArgsSendMom  < MiniTest::Test
+  class TestYieldArgsSendSlotMachine  < MiniTest::Test
     include VoolCompile
 
     def setup
       @compiler = compile_main( "return yield(1)" )
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
 
     def test_array
@@ -65,12 +65,12 @@ module Vool
       assert_equal ReturnJump, @ins.next(6).class
     end
   end
-  class TestYieldNoArgsSendMom < MiniTest::Test
+  class TestYieldNoArgsSendSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup
       @compiler = compile_main( "return yield(some.extra.calls)" )
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
     def test_check_label
       assert_equal NotSameCheck, @ins.class

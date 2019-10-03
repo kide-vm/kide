@@ -11,10 +11,10 @@ module Vool
     def as_ruby
       @ruby = Ruby::RubyCompiler.compile(@code)
     end
-    def as_mom
+    def as_slot
       vool = as_ruby.to_vool
       vool.to_parfait
-      vool.to_mom(nil)
+      vool.to_slot(nil)
     end
     def test_boot
       assert_equal String , @code.class
@@ -36,17 +36,17 @@ module Vool
       assert_equal Vool::ReturnStatement , vool.body.first.body.class
       assert_equal Vool::MacroExpression , vool.body.first.body.return_value.class
     end
-    def test_mom_basic
-      mom = as_mom
-      assert_equal Mom::MomCollection , mom.class
-      assert_equal Mom::MethodCompiler , mom.method_compilers.class
+    def test_slot_basic
+      mom = as_slot
+      assert_equal SlotMachine::SlotCollection , mom.class
+      assert_equal SlotMachine::MethodCompiler , mom.method_compilers.class
     end
-    def test_mom_instructions
-      mom_compiler = as_mom.method_compilers
-      assert_equal Mom::Label , mom_compiler.mom_instructions.class
-      assert_equal Mom::IntOperator , mom_compiler.mom_instructions.next.class
-      assert_equal Mom::SlotLoad , mom_compiler.mom_instructions.next(2).class
-      assert_equal Mom::ReturnJump , mom_compiler.mom_instructions.next(3).class
+    def test_slot_instructions
+      mom_compiler = as_slot.method_compilers
+      assert_equal SlotMachine::Label , mom_compiler.slot_instructions.class
+      assert_equal SlotMachine::IntOperator , mom_compiler.slot_instructions.next.class
+      assert_equal SlotMachine::SlotLoad , mom_compiler.slot_instructions.next(2).class
+      assert_equal SlotMachine::ReturnJump , mom_compiler.slot_instructions.next(3).class
     end
   end
 end

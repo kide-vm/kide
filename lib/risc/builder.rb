@@ -204,18 +204,18 @@ module Risc
     # - setting up the next message
     # - moving receiver (factory) and arguments (none)
     # - issuing the call
-    # These steps shadow the MomInstructions MessageSetup, ArgumentTransfer and SimpleCall
+    # These steps shadow the SlotMachineInstructions MessageSetup, ArgumentTransfer and SimpleCall
     def call_get_more
       factory = Parfait.object_space.get_factory_for( :Integer )
       calling = factory.get_type.get_method( :get_more )
       calling = Parfait.object_space.get_method!(:Space,:main) #until we actually parse Factory
       raise "no main defined" unless calling
-      Mom::MessageSetup.new( calling ).build_with( self )
+      SlotMachine::MessageSetup.new( calling ).build_with( self )
       self.build do
         factory_reg! << factory
         message[:receiver] << factory_reg
       end
-      Mom::SimpleCall.new(calling).to_risc(compiler)
+      SlotMachine::SimpleCall.new(calling).to_risc(compiler)
     end
 
   end

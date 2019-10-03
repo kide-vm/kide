@@ -22,8 +22,8 @@ module Vool
       vool_m
     end
 
-    # Creates the Mom::MethodCompiler that will do the next step
-    def to_mom(clazz)
+    # Creates the SlotMachine::MethodCompiler that will do the next step
+    def to_slot(clazz)
       raise( "no class in #{self}") unless clazz
       method = clazz.get_instance_method(@name)
       raise( "no method in #{@name} in #{clazz.name}") unless method

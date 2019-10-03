@@ -4,11 +4,11 @@ module Vool
   # relies on @ins and receiver_type method
   module SimpleSendHarness
     include VoolCompile
-    include Mom
+    include SlotMachine
 
     def setup
       @compiler = compile_main( send_method , "Integer.div4;Object.get")
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
 
     def test_first_not_array

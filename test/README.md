@@ -15,7 +15,7 @@ time comes to move to rubyx, less work.
   ruby test/test_all.rb
 ''''
 
-### Parfait, Risc , Arm , Mom
+### Parfait, Risc , Arm , SlotMachine
 
 Follow the directory structure of the source and may be called unit tests
 

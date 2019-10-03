@@ -2,12 +2,12 @@
 require_relative "helper"
 
 module Vool
-  class TestWhileConditionMom < MiniTest::Test
+  class TestWhileConditionSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup
       @compiler = compile_main( "while(5.div4) ; 5.div4 ; end;return" , "Integer.div4")
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
 
     def test_condition_compiles_to_check

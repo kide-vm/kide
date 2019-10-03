@@ -5,7 +5,7 @@ module Vool
   #
   # On the ruby side, normalisation works pretty much the same too.
   #
-  # On the way down to Mom, small differences become abvious, as the block that is
+  # On the way down to SlotMachine, small differences become abvious, as the block that is
   # yielded to is an argument. Whereas in a send it is either statically known
   # or resolved and cached. Here it is dynamic, but sort of known dynamic.
   # All we do before calling it is check that it is the right type.
@@ -14,8 +14,8 @@ module Vool
     # A Yield breaks down to 2 steps:
     # - Setting up the next message, with receiver, arguments, and (importantly) return address
     # - a SimpleCall,
-    def to_mom( compiler )
-      @parfait_block = @block.to_mom(compiler) if @block
+    def to_slot( compiler )
+      @parfait_block = @block.to_slot(compiler) if @block
       @receiver = SelfExpression.new(compiler.receiver_type) if @receiver.is_a?(SelfExpression)
       yield_call(compiler)
     end
@@ -33,10 +33,10 @@ module Vool
     #      this needs run-time variable resolution, which is just not done.
     #      we brace ourselves with the check, and exit (later raise) if . . .
     def method_check(compiler)
-      ok_label = Mom::Label.new(self,"method_ok_#{self.object_id}")
-      compile_method = Mom::SlotDefinition.new( compiler.get_method , [])
-      runtime_method = Mom::SlotDefinition.new( :message , [ :method] )
-      check = Mom::NotSameCheck.new(compile_method , runtime_method, ok_label)
+      ok_label = SlotMachine::Label.new(self,"method_ok_#{self.object_id}")
+      compile_method = SlotMachine::SlotDefinition.new( compiler.get_method , [])
+      runtime_method = SlotMachine::SlotDefinition.new( :message , [ :method] )
+      check = SlotMachine::NotSameCheck.new(compile_method , runtime_method, ok_label)
       # TODO? Maybe create mom instructions for this
       #builder = compiler.builder("yield")
       #Risc::Macro.exit_sequence(builder)
@@ -48,15 +48,15 @@ module Vool
     # we do a message setup, arg transfer and the a arg_yield (which is similar to dynamic_call)
     def yield_arg_block(compiler)
       arg_index = compiler.get_method.arguments_type.get_length - 1
-      setup  = Mom::MessageSetup.new( arg_index )
-      mom_receive = @receiver.to_slot(compiler)
+      setup  = SlotMachine::MessageSetup.new( arg_index )
+      mom_receive = @receiver.to_slot_definition(compiler)
       arg_target = [:message , :next_message ]
       args = []
       @arguments.each_with_index do |arg , index| # +1 because of type
-        args << Mom::SlotLoad.new(self, arg_target + ["arg#{index+1}".to_sym] , arg.to_slot(compiler))
+        args << SlotMachine::SlotLoad.new(self, arg_target + ["arg#{index+1}".to_sym] , arg.to_slot_definition(compiler))
       end
-      setup << Mom::ArgumentTransfer.new( self , mom_receive , args )
-      setup << Mom::BlockYield.new( self , arg_index )
+      setup << SlotMachine::ArgumentTransfer.new( self , mom_receive , args )
+      setup << SlotMachine::BlockYield.new( self , arg_index )
     end
 
   end

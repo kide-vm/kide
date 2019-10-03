@@ -1,19 +1,19 @@
 require_relative "helper"
 
 module Vool
-  class TestLocalMom < MiniTest::Test
+  class TestLocalSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup
       @compiler = compile_main( "a = 5")
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
 
     def test_compiles_not_array
       assert Array != @ins.class , @ins
     end
     def test_class_compiles
-      assert_equal Mom::SlotLoad , @ins.class , @ins
+      assert_equal SlotMachine::SlotLoad , @ins.class , @ins
     end
     def test_slot_is_set
       assert @ins.left
@@ -28,21 +28,21 @@ module Vool
       assert @ins.right
     end
     def test_slot_assigns_int
-      assert_equal Mom::IntegerConstant ,  @ins.right.known_object.class
+      assert_equal SlotMachine::IntegerConstant ,  @ins.right.known_object.class
     end
   end
 
-  class TestArgMom < MiniTest::Test
+  class TestArgSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @compiler = compile_main( "arg = 5")
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
 
     def test_class_compiles
-      assert_equal Mom::SlotLoad , @ins.class , @ins
+      assert_equal SlotMachine::SlotLoad , @ins.class , @ins
     end
     def test_slot_is_set
       assert @ins.left
@@ -57,7 +57,7 @@ module Vool
       assert @ins.right
     end
     def test_slot_assigns_int
-      assert_equal Mom::IntegerConstant ,  @ins.right.known_object.class
+      assert_equal SlotMachine::IntegerConstant ,  @ins.right.known_object.class
     end
   end
 

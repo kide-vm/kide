@@ -30,7 +30,7 @@ guard :minitest , all_on_start: false do   # with Minitest::Unit
     [ Dir["test/vool/send/test_*.rb"] ] }
 
   # message setup
-  watch(%r{^lib/mom/instruction/message_setup.rb}) { Dir["test/mom/send/test_setup*.rb"] }
+  watch(%r{^lib/slot_machine/instruction/message_setup.rb}) { Dir["test/slot_machine/send/test_setup*.rb"] }
 
   # mains test
   watch(%r{^test/mains/source/(.*)\.rb}) { "test/mains/test_interpreted.rb" }

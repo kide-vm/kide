@@ -6,7 +6,7 @@ module Risc
     def setup
       Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
-      label = Mom::Label.new( "source_name", "return_label")
+      label = SlotMachine::Label.new( "source_name", "return_label")
       @builder = Risc::MethodCompiler.new( FakeCallable.new ,label).builder("source")
       @label = Risc.label("source","name")
       @start = @builder.compiler.current

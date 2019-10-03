@@ -1,12 +1,12 @@
 require_relative "helper"
 
 module Vool
-  class TestReturnMom < MiniTest::Test
+  class TestReturnSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup
       @compiler = compile_main( "return 5")
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
 
     def test_class_compiles
@@ -28,7 +28,7 @@ module Vool
       assert @ins.right
     end
     def test_slot_assigns_int
-      assert_equal Mom::IntegerConstant ,  @ins.right.known_object.class
+      assert_equal SlotMachine::IntegerConstant ,  @ins.right.known_object.class
     end
     def test_second_is_return
       assert_equal ReturnJump,  @ins.next(1).class
@@ -37,12 +37,12 @@ module Vool
       check_array [SlotLoad, ReturnJump, Label, ReturnSequence, Label], @ins
     end
   end
-  class TestReturnSendMom < MiniTest::Test
+  class TestReturnSendSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup
       @compiler = compile_main( "return 5.div4" , "Integer.div4" )
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
 
     def test_return_is_last

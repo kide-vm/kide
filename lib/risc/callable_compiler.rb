@@ -14,12 +14,12 @@ module Risc
 
     # Must pass the callable (method/block)
     # Also start instuction, usually a label is mandatory
-    def initialize( callable  , mom_label)
+    def initialize( callable  , slot_label)
       raise "No method" unless callable
       @callable = callable
       @regs = []
       @constants = []
-      @current = @risc_instructions = mom_label.risc_label(self)
+      @current = @risc_instructions = slot_label.risc_label(self)
       reset_regs
     end
     attr_reader :risc_instructions , :constants , :callable , :current

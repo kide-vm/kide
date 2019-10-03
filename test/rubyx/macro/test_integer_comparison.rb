@@ -15,15 +15,15 @@ module RubyX
         end
 GET
       end
-      def test_mom_meth
+      def test_slot_meth
         assert_equal op , compiler.callable.name
       end
       def test_instr_len
-        assert_equal 7 , compiler.mom_instructions.length
+        assert_equal 7 , compiler.slot_instructions.length
       end
       def test_instr_op
-        assert_equal Mom::Comparison , compiler.mom_instructions.next.class
-        assert_equal op , compiler.mom_instructions.next.operator
+        assert_equal SlotMachine::Comparison , compiler.slot_instructions.next.class
+        assert_equal op , compiler.slot_instructions.next.operator
       end
       def test_risc
         assert_equal len , compiler.to_risc.risc_instructions.length

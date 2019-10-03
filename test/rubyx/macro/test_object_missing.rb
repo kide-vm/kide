@@ -13,14 +13,14 @@ module RubyX
         end
 GET
       end
-      def test_mom_meth
+      def test_slot_meth
         assert_equal :method_missing , compiler.callable.name
       end
       def test_instr_len
-        assert_equal 7 , compiler.mom_instructions.length
+        assert_equal 7 , compiler.slot_instructions.length
       end
       def test_instr_get
-        assert_equal Mom::MethodMissing , compiler.mom_instructions.next.class
+        assert_equal SlotMachine::MethodMissing , compiler.slot_instructions.next.class
       end
       def test_risc
         assert_equal 15 , compiler.to_risc.risc_instructions.length

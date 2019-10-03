@@ -7,7 +7,7 @@ module Risc
       Parfait.boot!(Parfait.default_test_options)
       Risc.boot!
       method = FakeCallable.new
-      @compiler = Risc::MethodCompiler.new( method, Mom::Label.new( "source_name", "return_label") )
+      @compiler = Risc::MethodCompiler.new( method, SlotMachine::Label.new( "source_name", "return_label") )
       @builder  = @compiler.builder(method)
     end
     def test_list

@@ -8,7 +8,7 @@ module Risc
   #
   # We can load and store their contents, move data between them and
   #   access (get/set) memory at a constant offset from a register
-  # While Mom works with objects, the register machine has registers,
+  # While SlotMachine works with objects, the register machine has registers,
   #             but we keep the names for better understanding, r2-5 are temporary/scratch
   # There is no direct memory access, only through registers
   # Constants can/must be loaded into registers before use
@@ -27,7 +27,7 @@ module Risc
       @next = nekst
       return unless source
       raise "Source must be string or Instruction, not #{source.class}" unless source.is_a?(String) or
-                source.is_a?(Mom::Instruction) or source.is_a?(Parfait::Callable)
+                source.is_a?(SlotMachine::Instruction) or source.is_a?(Parfait::Callable)
     end
     attr_reader :source
 

@@ -1,12 +1,12 @@
 require_relative "helper"
 
 module Vool
-  class TestIvarMom < MiniTest::Test
+  class TestIvarSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup
       @compiler = compile_main( "@a = 5")
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
 
     def test_array
@@ -26,7 +26,7 @@ module Vool
     end
     def test_slot_assigns_something
       assert @ins.right
-      assert_equal Mom::IntegerConstant ,  @ins.right.known_object.class
+      assert_equal SlotMachine::IntegerConstant ,  @ins.right.known_object.class
     end
   end
 end

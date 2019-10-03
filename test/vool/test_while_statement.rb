@@ -1,12 +1,12 @@
 require_relative "helper"
 
 module Vool
-  class TestSimpleWhileMom < MiniTest::Test
+  class TestSimpleWhileSlotMachine < MiniTest::Test
     include VoolCompile
 
     def setup
       @compiler = compile_main( "while(@a) ; @a = 5 ; end;return")
-      @ins = @compiler.mom_instructions.next
+      @ins = @compiler.slot_instructions.next
     end
 
     def test_compiles_as_while

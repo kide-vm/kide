@@ -12,7 +12,7 @@ X can be read as X times faster, or a decade away, depending on mindset.
 The last rewrite clarified the roles of the different layers
 of the system, see below. The overhaul is done and rubyx produces working binaries.
 
-Processing goes through layers: Ruby --> Vool --> Mom --> Risc --> Arm --> binary .
+Processing goes through layers: Ruby --> Vool --> SlotMachine --> Risc --> Arm --> binary .
 
 Currently most basic constructs work to some (usable) degree, ie if, while,
 assignment, ivars, calling and dynamic dispatch all work. Simple blocks, those
@@ -38,15 +38,15 @@ Vool is Ruby without the fluff. No unless, no reverse if/while, no splats. Just 
 oo. (Without this level the step down to the next layer was just too big)
 
 
-### Mom
+### SlotMachine
 
 The Minimal Object Machine layer is the first machine layer. This means it has instructions
 rather than statements. Instructions (in all machine layers) are a linked list.
 
-Mom has no concept of memory yet, only objects. Data is transferred directly from object
-to object with one of Mom's main instructions, the SlotLoad.
+SlotMachine has no concept of memory yet, only objects. Data is transferred directly from object
+to object with one of SlotMachine's main instructions, the SlotLoad.
 
-Mainly Mom is an easy to understand step on the way down. A mix of oo and machine. In
+Mainly SlotMachine is an easy to understand step on the way down. A mix of oo and machine. In
 practise it means that the amount of instructions that need to be generated in vool
 is much smaller (easier to understand) and the mapping down to risc is quite straightforward.
 
@@ -63,7 +63,7 @@ Instructions are derived from a base class, so the instruction set is extensible
 way additional functionality may be added by external code.
 
 Risc knows memory and has a small set of registers. It allows memory to register transfer
-and back, and inter register transfer. But has no memory to memory transfer like Mom.
+and back, and inter register transfer. But has no memory to memory transfer like SlotMachine.
 
 ### Arm
 
@@ -124,7 +124,7 @@ All Objects have a Type, as their first member (also integers!). The Type points
 Class that the object has in oo terms.
 
 Classes are defined by ruby code, but the methods of a Type (that are executed) are defined
-by Mom and Risc only.
+by SlotMachine and Risc only.
 
 ## Other
 

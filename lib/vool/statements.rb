@@ -61,17 +61,17 @@ module Vool
     def to_parfait
       @statements.collect{|s| s.to_parfait}
     end
-    # to_mom all the statements. Append subsequent ones to the first, and return the
+    # to_slot all the statements. Append subsequent ones to the first, and return the
     # first.
     #
-    # For ClassStatements this creates and returns a MomCompiler
+    # For ClassStatements this creates and returns a SlotMachineCompiler
     #
-    def to_mom( compiler )
+    def to_slot( compiler )
       raise "Empty list ? #{statements.length}" if empty?
       stats = @statements.dup
-      first = stats.shift.to_mom(compiler)
+      first = stats.shift.to_slot(compiler)
       while( nekst = stats.shift )
-        next_mom = nekst.to_mom(compiler)
+        next_mom = nekst.to_slot(compiler)
         first.append next_mom
       end
       first

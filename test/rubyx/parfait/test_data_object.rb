@@ -27,9 +27,9 @@ module RubyX
       assert_equal :Data4 , vool[2].name
       assert_equal :Data8 , vool[3].name
     end
-    def test_mom
-      mom = @compiler.ruby_to_mom source
-      assert_equal Mom::MomCollection , mom.class
+    def test_slot
+      mom = @compiler.ruby_to_slot source
+      assert_equal SlotMachine::SlotCollection , mom.class
     end
     def test_risc
       risc = compiler.ruby_to_risc( get_preload("Space.main") + source)

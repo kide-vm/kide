@@ -17,7 +17,7 @@ module Vool
       vool_m
     end
 
-    def to_mom(clazz)
+    def to_slot(clazz)
       raise "not singleton #{clazz.class}" unless clazz.class == Parfait::SingletonClass
       raise( "no class in #{self}") unless clazz
       method = clazz.get_instance_method(name )
