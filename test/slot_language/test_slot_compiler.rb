@@ -19,7 +19,15 @@ module SlotLanguage
       assert_equal :while_label , label.name
     end
     def test_slot_load
-      compile("a = @b")
+      assert_equal Sol::LocalAssignment , compile_class("a = @b")
+    end
+    def test_goto
+      assert_equal SlotMachine::Jump , compile_class("goto(exit_label)")
+    end
+    def test_if
+      check = compile("goto(exit_label) if(a == b)")
+      assert_equal CheckMaker , check.class
+      assert_equal SlotMachine::Jump , check.goto.class
     end
   end
 end

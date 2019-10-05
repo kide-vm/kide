@@ -6,7 +6,7 @@ module SlotLanguage
       SlotCompiler.compile(input)
     end
     def compile_class(input)
-      compile.class
+      compile(input).class
     end
   end
 end

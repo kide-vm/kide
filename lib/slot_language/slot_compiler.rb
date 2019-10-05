@@ -16,18 +16,26 @@ module SlotLanguage
       not_implemented(node)
     end
     def on_send(statement)
-      #puts  statement
       kids = statement.children.dup
       receiver = process(kids.shift) || MessageSlot.new
       name = kids.shift
       return label(name) if(name.to_s.end_with?("_label"))
+      return goto(name,kids) if(name == :goto)
+      return check(name,receiver, kids) if(name == :==)
       SlotMaker.new( name , receiver )
     end
     def on_lvasgn expression
-      #puts expression
       name = expression.children[0]
       value = process(expression.children[1])
       Sol::LocalAssignment.new(name,value)
+    end
+    def on_if(expression)
+      condition = process(expression.children[0])
+      condition.set_goto( process(expression.children[1]) )
+      condition
+    end
+    def on_begin(exp)
+      process(exp.first)
     end
     def on_ivar expression
       Sol::InstanceVariable.new(instance_name(expression.children.first))
@@ -40,8 +48,21 @@ module SlotLanguage
     def label(name)
       SlotMachine::Label.new(name.to_s , name)
     end
+    def goto(name , args)
+      # error handling would not hurt
+      label = process(args.first)
+      SlotMachine::Jump.new(  label )
+    end
+    def check(name , receiver , kids)
+      raise "Only ==, not #{name}" unless name == :==
+      raise "Familiy too large #{kids}" if kids.length > 1
+      puts  "Kids " + kids.to_s
+      right = process(kids.first)
+      CheckMaker.new(name , receiver , right)
+    end
   end
 end
 require_relative "named_slot"
 require_relative "message_slot"
 require_relative "slot_maker"
+require_relative "check_maker"
