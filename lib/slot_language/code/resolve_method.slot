@@ -19,4 +19,4 @@ exit_label
 MethodMissing.new(compiler.source_name , word.symbol).to_risc(compiler)
 
 ok_label
-cache_entry.cached_method == callable_method
+cache_entry.cached_method = callable_method
