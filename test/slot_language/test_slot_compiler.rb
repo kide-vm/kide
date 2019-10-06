@@ -15,8 +15,20 @@ module SlotLanguage
       assert_equal SlotMachine::Label , label.class
       assert_equal :while_label , label.name
     end
-    def test_slot_load
+    def test_slot_load_rinst
       assert_equal LoadMaker , compile_class("a = @b")
+    end
+    def test_slot_load_linst
+      assert_equal LoadMaker , compile_class("@a = b")
+    end
+    def test_slot_load_lrinst
+      assert_equal LoadMaker , compile_class("@a = @b")
+    end
+    def test_slot_load_linst_trav
+      assert_equal LoadMaker , compile_class("@a = b.c")
+    end
+    def test_slot_load_linst_trav2
+       assert_equal LoadMaker , compile_class("@a.c = b.c")
     end
     def test_goto
       assert_equal SlotMachine::Jump , compile_class("goto(exit_label)")
@@ -37,6 +49,12 @@ module SlotLanguage
     def test_assign2
       assign = compile("c.next = d")
       assert_equal LoadMaker  , assign.class
+    end
+    def test_multiline
+      multi = compile("start_label;c = c.next;goto(start_label)")
+      assert_equal Array , multi.class
+      assert_equal SlotMachine::Label , multi.first.class
+      assert_equal SlotMachine::Jump , multi.last.class
     end
   end
 end

@@ -29,27 +29,30 @@ module SlotLanguage
     def on_lvar(lvar)
       SlotMaker.new(lvar.children.first , nil)
     end
-    def on_lvasgn expression
+    def on_lvasgn( expression)
       name = expression.children[0]
       value = process(expression.children[1])
       LoadMaker.new(SlotMaker.new(name,nil),value)
     end
+    alias :on_ivasgn :on_lvasgn
+
     def on_if(expression)
       condition = process(expression.children[0])
       condition.set_goto( process(expression.children[1]) )
       condition
     end
     def on_begin(exp)
-      process(exp.first)
+      if( exp.children.length == 1)
+        process(exp.first)
+      else
+        process_all(exp)
+      end
     end
     def on_ivar expression
-      SlotMaker.new(instance_name(expression.children.first),nil)
+      SlotMaker.new(expression.children.first,nil)
     end
 
     private
-    def instance_name(sym)
-      sym.to_s[1 .. -1].to_sym
-    end
     def label(name)
       SlotMachine::Label.new(name.to_s , name)
     end
@@ -78,3 +81,4 @@ require_relative "message_slot"
 require_relative "slot_maker"
 require_relative "load_maker"
 require_relative "check_maker"
+require_relative "macro_maker"

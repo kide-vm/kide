@@ -9,4 +9,10 @@ module SlotLanguage
       compile(input).class
     end
   end
+  module SlotToHelper
+    def setup
+      Parfait.boot!({})
+      @compiler = SlotMachine::SlotCollection.compiler_for( :Space , :main,{},{})
+    end
+  end
 end
