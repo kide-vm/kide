@@ -2,12 +2,13 @@ require_relative "helper"
 
 module SlotLanguage
   class TestSlotMaker < MiniTest::Test
-    include SlotHelper
-
-    def test_label
-      label = compile("while_label")
-      assert_equal SlotMachine::Label , label.class
-      assert_equal :while_label , label.name
+    include SlotToHelper
+    def setup
+      super
+      @maker = SlotMaker.new(:hi )
+    end
+    def test_slot
+      @maker.slot_def(@compiler)
     end
   end
 end

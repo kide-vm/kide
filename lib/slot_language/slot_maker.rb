@@ -1,22 +1,24 @@
 module SlotLanguage
   class SlotMaker
-    attr_reader :name , :leaps
+    attr_reader :leaps
 
-    def initialize(name , more)
-      @name = name
-      if(more.is_a?(Array))
-        @leaps = more
+    def initialize(leaps)
+      case leaps
+      when Array
+        @leaps = leaps
+      when nil
+        raise "No leaps given"
       else
-        @leaps = [more] if more
+        @leaps = [leaps]
       end
     end
 
     def add_slot_name(name)
-      if(@leaps)
-        @leaps << name
-      else
-        @leaps = [name]
-      end
+      @leaps << name
+    end
+
+    def slot_def(compiler)
+      SlotMachine::SlotDefinition.new(:message , leaps)
     end
   end
 end

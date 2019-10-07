@@ -24,15 +24,15 @@ module SlotLanguage
       return goto(name,kids) if(name == :goto)
       return check(name,receiver, kids) if(name == :==)
       return assign(receiver, name , kids) if(name.to_s.end_with?("="))
-      SlotMaker.new( name , receiver )
+      SlotMaker.new( name )
     end
     def on_lvar(lvar)
-      SlotMaker.new(lvar.children.first , nil)
+      SlotMaker.new(lvar.children.first )
     end
     def on_lvasgn( expression)
       name = expression.children[0]
       value = process(expression.children[1])
-      LoadMaker.new(SlotMaker.new(name,nil),value)
+      LoadMaker.new(SlotMaker.new(name),value)
     end
     alias :on_ivasgn :on_lvasgn
 
@@ -49,7 +49,7 @@ module SlotLanguage
       end
     end
     def on_ivar expression
-      SlotMaker.new(expression.children.first,nil)
+      SlotMaker.new(expression.children.first)
     end
 
     private

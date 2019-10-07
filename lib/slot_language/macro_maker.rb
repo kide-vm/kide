@@ -17,7 +17,19 @@ module SlotLanguage
     end
 
     def to_slot(compiler)
-      @source.first
+      chain = do_link( @source.first , compiler)
+      rest = @source.dup
+      rest.shift
+      rest.each do |link|
+        chain << do_link(link , compiler)
+      end
+      chain
+    end
+
+    private
+    def do_link(link,compiler)
+      return link if link.is_a?(SlotMachine::Instruction)
+      link.to_slot(compiler)
     end
   end
 end

@@ -7,11 +7,18 @@ module SlotLanguage
       super
       @slot = MacroMaker.load_string( mini_file ).to_slot(@compiler)
     end
-    def test_to_slot
-      assert @slot.is_a?(SlotMachine::Instruction) , @slot.class
+    def test_label
+      assert_equal SlotMachine::Label , @slot.class
+    end
+    def test_assign
+      assert_equal SlotMachine::SlotLoad , @slot.next.class
+      assert_equal :message , @slot.next.left.known_object
+      assert_equal [:a] , @slot.next.left.slots
+      assert_equal :message , @slot.next.right.known_object
+      assert_equal [:b] , @slot.next.right.slots
     end
     def test_length
-      assert_equal 1 , @slot.length
+      assert_equal 2 , @slot.length
     end
   end
 
