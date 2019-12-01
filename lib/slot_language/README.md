@@ -6,8 +6,8 @@ In essence the slot_language lets us code the slot_machine.
 
 ## Problem
 
-The Problem with the current way is that some of the slot_machine instruction are
-really quite complex. They are really more function than instructions.
+The Problem with the current way is that some of the slot_machine instructions are
+really quite complex. They are really more functions than instructions.
 
 This is especially true for everything around the dynamic call. Dynamic call itself
 is still ok, but resolve_method is too much. And it even uses method_missing, another
@@ -41,10 +41,10 @@ the message.
 
 ## Syntax (projection)
 
-Since we are not defining methods, there is no seperate scope. We create objects that
+Since we are not defining methods, there is no separate scope. We create objects that
 will transform to SlotMachine Instructions _in_ the scope of the current method.
 In other words they will have access to the compiler and the callable, when transforming
-to SlotMachine (similar to Sol in that way). This means at compile time we have
+to SlotMachine (similar to Sol in that way). This means at compile time we
 can use the frame type and constants, while we can always assume the Message (and not
 much else) at runtime.
 

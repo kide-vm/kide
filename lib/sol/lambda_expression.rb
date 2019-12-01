@@ -18,7 +18,7 @@ module Sol
       return SlotMachine::SlotDefinition.new(SlotMachine::LambdaConstant.new(parfait_block(compiler)) , [])
     end
 
-    # create a block, a compiler for it, comile the bock and add the compiler(code)
+    # create a block, a compiler for it, compile the block and add the compiler(code)
     # to the method compiler for further processing
     def compile( compiler )
       parfait_block = self.parfait_block(compiler)
@@ -26,7 +26,6 @@ module Sol
       head = body.to_slot( block_compiler )
       block_compiler.add_code(head)
       compiler.add_method_compiler(block_compiler)
-      nil
     end
 
     def each(&block)

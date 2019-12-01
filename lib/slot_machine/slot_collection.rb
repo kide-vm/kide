@@ -1,10 +1,10 @@
 module SlotMachine
-  # The Compiler/Collection for the SlotMachine level is a collection of SlotMachine level Method
-  # compilers These will transform to Risc MethodCompilers on the way down.
+  # The Compiler/Collection for the SlotMachine level is a collection of SlotMachine level
+  # Method compilers These will transform to Risc MethodCompilers on the way down.
   #
   # As RubyCompiler pools source at the sol level, when several classes are compiled
-  # from sol to slot, several SlotMachineCompilers get instantiated. They must be merged before
-  # proceeding with translate. Thus we have a append method.
+  # from sol to slot, several SlotMachineCompilers get instantiated. They must be merged
+  # before proceeding with translate. Thus we have a append method.
   #
   class SlotCollection
     attr_reader :method_compilers
