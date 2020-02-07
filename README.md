@@ -101,6 +101,9 @@ they are
 ([quite readable](https://github.com/ruby-x/rubyx/blob/2f07cc34f3f56c72d05c7d822f40fa6c15fd6a08/lib/risc/builtin/object.rb#L48))
 through the ruby magic.
 
+I am in the process of converting builtin to a simple language on top of SlotMachine,  
+which i'm calling SlotLanguage. But this is wip.
+
 ## Types and classes, static vs dynamic
 
 Classes in dynamic languages are open. They can change at any time, meaning you can
@@ -128,6 +131,20 @@ Classes are defined by ruby code, but the methods of a Type (that are executed) 
 by SlotMachine and Risc only.
 
 ## Other
+
+### CLI
+
+There is a basic command line interface in *bin/rubyxc* . It can be used to
+- *compile* ie create an executable form a ruby source file
+- *interpret* compile the given source file to risc, and run the interpreter on it
+- *execute* like compile, but runs the executable (needs qemu configured)
+
+The easiest way to execute a binary is by using qemu on your machine. Qemu comes with
+commands that have a linux baked in, qemu-arm in case of arm. So running
+*./bin/rubyxc hello.rb* will produce a *hello* arm executable, that can be run on any
+machine  where qemu is installed with *qemu-arm ./hello* .
+
+On my fedora, the package to install is "qemu", quite possible on mac with homebew, too.
 
 ### Interpreter
 
@@ -169,8 +186,12 @@ in vain. If you're interested in an existing issues, just comment on it.
 
 Fork and create a branch before sending pulls.
 
+PS: I have started formulating a Democratic Open Source process, but it is still early days.
+Still, if you want to help, reach out. I am hoping to initiate an alternative to the
+benevolent dictator model that is currently the norm.
+
 ## Copyright
 
-Copyright (c) 2014-8 Torsten Ruger.
+Copyright (c) 2014-20 Torsten Ruger.
 
 See LICENSE.txt for further details.
