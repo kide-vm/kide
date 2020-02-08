@@ -6,7 +6,7 @@ class RubyXC < Thor
   class_option :integers , type: :numeric
   class_option :messages , type: :numeric
   class_option :elf , type: :boolean
-  class_option :preload , type: :boolean
+  class_option :preload , type: :boolean , default: true
 
   #
   # Actual commands are required at the end, one per file, same name as command

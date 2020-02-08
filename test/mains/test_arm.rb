@@ -1,5 +1,11 @@
 require_relative 'helper'
 
+# set environment TEST_ARM to true to have these tests run
+# They need qemu and arm cross linker to be installed
+# Also they are too slow to include in normal runs, so only by request and on travis
+
+# set TEST_ARM to DEBUG to get extra output
+
 module Mains
   class TestArm < MiniTest::Test
     @Qemu = "qemu-arm"
@@ -10,7 +16,6 @@ module Mains
     def self.Qemu
       @Qemu
     end
-    DEBUG = false
 
     # runnable_methods is called by minitest to determine which tests to run
     def self.runnable_methods
@@ -34,9 +39,9 @@ module Mains
 
     def self.has_qemu
       if `uname -a`.include?("torsten")
-        @Linker = "arm-linux-gnu-ld"
-        return false unless DEBUG
+        @Linker = "arm-linux-gnu-ld"  #on fedora
       end
+      return false unless ENV["TEST_ARM"]
       begin
         `#{@Qemu} -version`
         `#{@Linker} -v`
@@ -48,22 +53,22 @@ module Mains
     end
 
     def run_code(input , name )
-      puts "Compiling #{name}.o" if DEBUG
+      puts "Compiling #{name}.o" if ENV["TEST_ARM"] == "DEBUG"
 
       linker = ::RubyX::RubyXCompiler.new({}).ruby_to_binary( input , :arm )
       writer = Elf::ObjectWriter.new(linker)
 
       writer.save "mains.o"
 
-      puts "Linking #{name}" if DEBUG
+      puts "Linking #{name}" if ENV["TEST_ARM"] == "DEBUG"
 
       `#{TestArm.Linker} -N mains.o`
       assert_equal 0 , $?.exitstatus , "Linking #{name} failed #{$?}"
 
-      puts "Running #{name}" if DEBUG
+      puts "Running #{name}" if ENV["TEST_ARM"] == "DEBUG"
       stdout = `#{TestArm.Qemu} ./a.out`
       exit_code = $?.exitstatus
-      puts "Result #{stdout} #{exit_code}" if DEBUG
+      puts "Result #{stdout} #{exit_code}" if ENV["TEST_ARM"] == "DEBUG"
       return stdout , exit_code
     end
 
