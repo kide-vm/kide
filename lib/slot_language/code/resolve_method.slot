@@ -1,8 +1,8 @@
 # passed in? name and cache_entry
-word! << name_
-cache_entry! << cache_entry_
+word! = name_
+cache_entry! = cache_entry_
 # local var assignment
-callable_method << cache_entry.cached_type.methods
+callable_method = cache_entry.cached_type.methods
 
 while_start_label
 

@@ -20,5 +20,9 @@ module SlotLanguage
     def slot_def(compiler)
       SlotMachine::SlotDefinition.new(:message , leaps)
     end
+
+    def to_s
+      "message." + leaps.join(",")
+    end
   end
 end

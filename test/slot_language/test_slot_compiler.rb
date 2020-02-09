@@ -56,5 +56,11 @@ module SlotLanguage
       assert_equal SlotMachine::Label , multi.first.class
       assert_equal SlotMachine::Jump , multi.last.class
     end
+    def test_shift
+      load = compile("word = name.member")
+      assert_equal LoadMaker , load.class
+      assert_equal :word , load.left.leaps.first
+      assert_equal SlotMaker , load.right.class
+    end
   end
 end
