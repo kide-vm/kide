@@ -23,9 +23,6 @@ module Sol
     def test_receiver_move_class
       assert_equal ArgumentTransfer,  @ins.next(1).class
     end
-    def test_receiver_move
-      assert_equal SlotDefinition,  @ins.next.receiver.class
-    end
     def test_receiver
       type , value = receiver
       assert_equal type,  @ins.next.receiver.known_object.class

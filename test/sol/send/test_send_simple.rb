@@ -13,6 +13,9 @@ module Sol
     def test_call_has_right_method
       assert_equal :div4,  @ins.next(2).method.name
     end
+    def test_receiver_move
+      assert_equal ConstantDefinition,  @ins.next.receiver.class
+    end
 
   end
 end

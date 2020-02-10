@@ -6,7 +6,7 @@ module SlotMachine
     end
 
     def known_name
-      known_object
+      :message
     end
 
     # load the slots into a register
