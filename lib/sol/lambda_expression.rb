@@ -15,7 +15,7 @@ module Sol
     # fact never called)
     def to_slot_definition(compiler)
       compile(compiler) unless @parfait_block
-      return SlotMachine::SlotDefinition.new(SlotMachine::LambdaConstant.new(parfait_block(compiler)) , [])
+      return SlotMachine::SlotDefinition.for(SlotMachine::LambdaConstant.new(parfait_block(compiler)) , [])
     end
 
     # create a block, a compiler for it, compile the block and add the compiler(code)

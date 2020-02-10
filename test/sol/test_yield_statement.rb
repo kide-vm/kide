@@ -34,7 +34,7 @@ module Sol
       assert @ins.left.slots.empty?
     end
     def test_check_right
-      assert_equal SlotDefinition, @ins.right.class
+      assert_equal MessageDefinition, @ins.right.class
       assert_equal :message, @ins.right.known_object
       assert_equal [:method] , @ins.right.slots
     end

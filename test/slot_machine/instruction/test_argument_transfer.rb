@@ -3,7 +3,7 @@ require_relative "helper"
 module SlotMachine
   class TestArgumentTransfer < SlotMachineInstructionTest
     def instruction
-      receiver = SlotDefinition.new(:message , [:receiver])
+      receiver = MessageDefinition.new( [:receiver])
       arg = SlotLoad.new("test", [:message, :caller] , [:message,:type] )
       ArgumentTransfer.new("" , receiver ,[arg])
     end

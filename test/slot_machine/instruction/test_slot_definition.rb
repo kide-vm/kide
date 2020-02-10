@@ -4,7 +4,7 @@ module SlotMachine
   class TestSlotDefinitionBasics < MiniTest::Test
 
     def slot(slot = :caller)
-      SlotDefinition.new(:message , slot)
+      MessageDefinition.new(slot)
     end
     def test_create_ok1
       assert_equal :message , slot.known_object

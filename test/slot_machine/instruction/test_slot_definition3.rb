@@ -5,7 +5,7 @@ module SlotMachine
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @compiler = Risc::FakeCompiler.new
-      @definition = SlotDefinition.new(:message , [:caller , :type])
+      @definition = MessageDefinition.new( [:caller , :type])
       @register = @definition.to_register(@compiler , InstructionMock.new)
     end
     def test_def_next_class

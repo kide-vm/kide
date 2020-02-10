@@ -34,8 +34,8 @@ module Sol
     #      we brace ourselves with the check, and exit (later raise) if . . .
     def method_check(compiler)
       ok_label = SlotMachine::Label.new(self,"method_ok_#{self.object_id}")
-      compile_method = SlotMachine::SlotDefinition.new( compiler.get_method , [])
-      runtime_method = SlotMachine::SlotDefinition.new( :message , [ :method] )
+      compile_method = SlotMachine::SlotDefinition.for( compiler.get_method , [])
+      runtime_method = SlotMachine::SlotDefinition.for( :message , [ :method] )
       check = SlotMachine::NotSameCheck.new(compile_method , runtime_method, ok_label)
       # TODO? Maybe create slot instructions for this
       #builder = compiler.builder("yield")

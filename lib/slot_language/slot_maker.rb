@@ -18,7 +18,7 @@ module SlotLanguage
     end
 
     def slot_def(compiler)
-      SlotMachine::SlotDefinition.new(:message , leaps)
+      SlotMachine::SlotDefinition.for(:message , leaps)
     end
 
     def to_s

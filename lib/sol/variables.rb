@@ -12,7 +12,7 @@ module Sol
     include Named
     def to_slot_definition(compiler)
       slot_def = compiler.slot_type_for(@name)
-      SlotMachine::SlotDefinition.new(:message , slot_def)
+      SlotMachine::SlotDefinition.for(:message , slot_def)
     end
     def to_s(depth = 0)
       name.to_s
@@ -25,7 +25,7 @@ module Sol
   class InstanceVariable < Expression
     include Named
     def to_slot_definition(_)
-      SlotMachine::SlotDefinition.new(:message , [ :receiver , @name] )
+      SlotMachine::SlotDefinition.for(:message , [ :receiver , @name] )
     end
     # used to collect type information
     def add_ivar( array )
@@ -52,7 +52,7 @@ module Sol
       get_named_class.single_class.instance_type
     end
     def to_slot_definition(_)
-      return SlotMachine::SlotDefinition.new( get_named_class, [])
+      return SlotMachine::SlotDefinition.for( get_named_class, [])
     end
     def get_named_class
       Parfait.object_space.get_class_by_name(self.name)
