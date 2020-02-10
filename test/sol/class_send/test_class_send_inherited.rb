@@ -31,7 +31,7 @@ module Sol
     def test_receiver
       assert_equal SlotMachine::ArgumentTransfer,  @ins.next(1).class
       assert_equal 0,  @ins.next(1).arguments.length
-      assert_equal SlotDefinition,  @ins.next(1).receiver.class
+      assert_equal ObjectDefinition,  @ins.next(1).receiver.class
       assert_equal Parfait::Class,  @ins.next(1).receiver.known_object.class
       assert_equal :Space,  @ins.next(1).receiver.known_object.name
     end

@@ -22,6 +22,8 @@ module SlotMachine
         MessageDefinition.new(slots)
       when Constant
         ConstantDefinition.new(object , slots)
+      when Parfait::Object
+        ObjectDefinition.new(object , slots)
       else
         SlotDefinition.new(object,slots)
       end
@@ -47,8 +49,6 @@ module SlotMachine
 
     def known_name
       case known_object
-      when Parfait::Object
-        known_object.class.short_name
       when Risc::Label
         known_object.to_s
       else
@@ -67,7 +67,7 @@ module SlotMachine
       end
       right = compiler.use_reg( type )
       case known_object
-      when Parfait::Object , Risc::Label
+      when Risc::Label
         const = Risc.load_constant(source, known_object , right)
         compiler.add_code const
         if slots.length > 0

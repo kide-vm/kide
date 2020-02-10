@@ -83,3 +83,4 @@ end
 require_relative "slot_definition"
 require_relative "message_definition"
 require_relative "constant_definition"
+require_relative "object_definition"
