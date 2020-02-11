@@ -15,7 +15,7 @@ module Sol
     # When used as right hand side, this tells what data to move to get the result into
     # a varaible. It is (off course) the return value of the message
     def to_slot_definition(_)
-      SlotMachine::SlotDefinition.for(:message ,[ :return_value])
+      SlotMachine::Slot.for(:message ,[ :return_value])
     end
 
     def to_s(depth = 0)

@@ -53,11 +53,11 @@ module Sol
       assert_equal SlotLoad,  @ins.class
     end
     def test_left
-      assert_equal MessageDefinition , @ins.left.class
+      assert_equal MessageSlot , @ins.left.class
       assert_equal [:return_value] , @ins.left.slots
     end
     def test_right
-      assert_equal MessageDefinition , @ins.right.class
+      assert_equal MessageSlot , @ins.right.class
       assert_equal [:receiver , :inst] , @ins.right.slots
     end
   end

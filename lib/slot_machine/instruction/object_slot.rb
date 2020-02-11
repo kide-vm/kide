@@ -1,5 +1,5 @@
 module SlotMachine
-  class ObjectDefinition < SlotDefinition
+  class ObjectSlot < Slot
 
     def initialize( object , slots)
       super(object , slots )

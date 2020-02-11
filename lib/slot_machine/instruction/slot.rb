@@ -1,11 +1,11 @@
 module SlotMachine
-  # A SlotDefinition defines a slot. A bit like a variable name but for objects.
+  # A Slot defines a slot. A bit like a variable name but for objects.
   #
   # PS: for the interested: A "development" of Smalltalk was the
   #     prototype based language (read: JavaScript equivalent)
   #     called Self https://en.wikipedia.org/wiki/Self_(programming_language)
   #
-  # SlotDefinitions are the instance names of objects. But since the language is dynamic
+  # Slots are the instance names of objects. But since the language is dynamic
   # what is it that we can say about instance names at runtime?
   # Start with a known object like the Message (in register one), we know all it's
   # variables. But there is a Message in there, and for that we know the instances
@@ -14,16 +14,16 @@ module SlotMachine
   # The definiion is an array of symbols that we can resolve to SlotLoad
   # Instructions. Or in the case of constants to ConstantLoad
   #
-  class SlotDefinition
+  class Slot
     # get the right definition, depending on the object
     def self.for(object , slots)
       case object
       when :message
-        MessageDefinition.new(slots)
+        MessageSlot.new(slots)
       when Constant
-        ConstantDefinition.new(object , slots)
+        ConstantSlot.new(object , slots)
       when Parfait::Object , Risc::Label
-        ObjectDefinition.new(object , slots)
+        ObjectSlot.new(object , slots)
       else
         raise "not supported type #{object}"
       end

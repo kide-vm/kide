@@ -116,7 +116,7 @@ module Sol
       defi
     end
     def build_condition(ok_label, compiler)
-      cached_type = SlotMachine::SlotDefinition.for(dynamic_call.cache_entry , [:cached_type])
+      cached_type = SlotMachine::Slot.for(dynamic_call.cache_entry , [:cached_type])
       current_type = receiver_type_definition(compiler)
       SlotMachine::NotSameCheck.new(cached_type , current_type, ok_label)
     end

@@ -34,12 +34,12 @@ module Sol
       assert_equal MessageSetup , @ins.class , @ins
     end
     def test_receiver
-      assert_equal SlotDefinition,  @ins.next.receiver.class
+      assert_equal Slot,  @ins.next.receiver.class
       assert_equal Parfait::Class,  @ins.next.receiver.known_object.class
       assert_equal :Object ,  @ins.next.receiver.known_object.name
     end
     def test_receiver_move
-      assert_equal ObjectDefinition,  @ins.next.receiver.class
+      assert_equal ObjectSlot,  @ins.next.receiver.class
     end
     def test_receiver
       assert_equal Parfait::Class,  @ins.next.receiver.known_object.class

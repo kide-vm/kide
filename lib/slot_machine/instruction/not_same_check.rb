@@ -3,7 +3,7 @@ module SlotMachine
   # SlotMachine internal check, as the name says to see if two values are not the same
   # In other words, we this checks identity, bit-values, pointers
   #
-  # The values that are compared are defined as SlotDefinitions, ie can be anything
+  # The values that are compared are defined as Slots, ie can be anything
   # available to the machine through frame message or self
   #
   # Acording to SlotMachine::Check logic, we jump to the given label is the values are the same

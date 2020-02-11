@@ -1,10 +1,10 @@
 require_relative "helper"
 
 module SlotMachine
-  class TestSlotDefinitionBasics < MiniTest::Test
+  class TestSlotBasics < MiniTest::Test
 
     def slot(slot = :caller)
-      MessageDefinition.new(slot)
+      MessageSlot.new(slot)
     end
     def test_create_ok1
       assert_equal :message , slot.known_object

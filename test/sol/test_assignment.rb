@@ -79,7 +79,7 @@ module Sol
       @compiler = compile_main( "@a = arg;return")
       @ins = @compiler.slot_instructions.next
       assert_equal SlotMachine::SlotLoad , @ins.class , @ins
-      assert_equal SlotMachine::MessageDefinition , @ins.right.class , @ins
+      assert_equal SlotMachine::MessageSlot , @ins.right.class , @ins
     end
   end
 

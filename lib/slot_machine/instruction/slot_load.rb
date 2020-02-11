@@ -4,9 +4,9 @@ module SlotMachine
   # A Slot is basically an instance variable, but it must be of known type
   #
   # The value loaded (the right hand side) can be a constant (SlotMachine::Constant) or come from
-  #  another Slot (SlotDefinition)
+  #  another Slot (Slot)
   #
-  # The Slot on the left hand side is always a SlotDefinition.
+  # The Slot on the left hand side is always a Slot.
   # The only known object (*) for the left side is the current message, which is a bit like
   # the oo version of a Stack (Stack Register, Frame Pointer, ..)
   # (* off course all class objects are global, and so they are allowed too)
@@ -18,10 +18,10 @@ module SlotMachine
   # From the outside a send is neccessary, both for get and set, (which goes through the method
   # resolution and guarantees the correct method for a type), in other words perfect data hiding.
   #
-  # @left: A SlotDefinition, or an array that can be passed to the constructor of the
-  #        SlotDefinition (see there)
+  # @left: A Slot, or an array that can be passed to the constructor of the
+  #        Slot (see there)
   #
-  # @right: A SlotDefinition with slots or a SlotMachine::Constant
+  # @right: A Slot with slots or a SlotMachine::Constant
   # original_source: optinally another slot_machine instruction that will be passed down
   #                to created  risc instructions. (Because SlotLoad is often used internally)
   class SlotLoad < Instruction
@@ -31,10 +31,10 @@ module SlotMachine
     def initialize(source , left , right, original_source = nil)
       super(source)
       @left , @right = left , right
-      @left = SlotDefinition.for(@left.shift , @left) if @left.is_a? Array
-      @right = SlotDefinition.for(@right.shift , @right) if @right.is_a? Array
-      raise "right not SlotMachine, #{@right.to_s}" unless @right.is_a?( SlotDefinition )
-      raise "left not SlotMachine, #{@left.to_s}" unless @left.is_a?( SlotDefinition )
+      @left = Slot.for(@left.shift , @left) if @left.is_a? Array
+      @right = Slot.for(@right.shift , @right) if @right.is_a? Array
+      raise "right not SlotMachine, #{@right.to_s}" unless @right.is_a?( Slot )
+      raise "left not SlotMachine, #{@left.to_s}" unless @left.is_a?( Slot )
       @original_source = original_source || self
     end
 
@@ -54,7 +54,7 @@ module SlotMachine
   end
 
 end
-require_relative "slot_definition"
-require_relative "message_definition"
-require_relative "constant_definition"
-require_relative "object_definition"
+require_relative "slot"
+require_relative "message_slot"
+require_relative "constant_slot"
+require_relative "object_slot"

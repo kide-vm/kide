@@ -1,5 +1,5 @@
 module SlotMachine
-  class MessageDefinition < SlotDefinition
+  class MessageSlot < Slot
 
     def initialize(slots)
       super(:message , slots)

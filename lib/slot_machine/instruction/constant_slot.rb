@@ -1,14 +1,14 @@
 module SlotMachine
-  class ConstantDefinition < SlotDefinition
+  class ConstantSlot < Slot
     # get the right definition, depending on the object
     def self.for(object , slots)
       case object
       when :message
-        MessageDefinition.new(slots)
+        MessageSlot.new(slots)
       when Constant
-        ConstantDefinition.new(object , slots)
+        ConstantSlot.new(object , slots)
       else
-        SlotDefinition.new(object,slots)
+        Slot.new(object,slots)
       end
     end
 

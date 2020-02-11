@@ -25,7 +25,7 @@ module SlotMachine
     def initialize( source , receiver,arguments )
       super(source)
       @receiver , @arguments = receiver , arguments
-      raise "Receiver not SlotDefinition #{@receiver}" unless @receiver.is_a?(SlotDefinition)
+      raise "Receiver not Slot #{@receiver}" unless @receiver.is_a?(Slot)
       @arguments.each{|a| raise "args not SlotLoad #{a}" unless a.is_a?(SlotLoad)}
     end
 

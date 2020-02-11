@@ -28,13 +28,13 @@ module Sol
       assert_equal [:next_message, :arg1], left.slots
     end
     def test_check_left
-      assert_equal ObjectDefinition, @ins.left.class
+      assert_equal ObjectSlot, @ins.left.class
       assert_equal Parfait::CallableMethod, @ins.left.known_object.class
       assert_equal :main, @ins.left.known_object.name
       assert @ins.left.slots.empty?
     end
     def test_check_right
-      assert_equal MessageDefinition, @ins.right.class
+      assert_equal MessageSlot, @ins.right.class
       assert_equal :message, @ins.right.known_object
       assert_equal [:method] , @ins.right.slots
     end

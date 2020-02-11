@@ -24,7 +24,7 @@ module Sol
                   Label, ReturnSequence , Label] , @ins
     end
     def test_receiver_move
-      assert_equal ConstantDefinition,  @ins.next.receiver.class
+      assert_equal ConstantSlot,  @ins.next.receiver.class
     end
 
   end

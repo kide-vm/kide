@@ -2,11 +2,11 @@ require_relative "helper"
 
 module SlotMachine
 
-  class TestSlotDefinitionConstant < MiniTest::Test
+  class TestSlotConstant < MiniTest::Test
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @compiler = Risc::FakeCompiler.new
-      @definition = SlotDefinition.for(StringConstant.new("hi") , [])
+      @definition = Slot.for(StringConstant.new("hi") , [])
       @register = @definition.to_register(@compiler , InstructionMock.new)
       @instruction = @compiler.instructions.first
     end
@@ -23,11 +23,11 @@ module SlotMachine
       assert_equal "[StringConstant]" , @definition.to_s
     end
   end
-  class TestSlotDefinitionConstantType < MiniTest::Test
+  class TestSlotConstantType < MiniTest::Test
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @compiler = Risc::FakeCompiler.new
-      @definition = SlotDefinition.for(StringConstant.new("hi") , [:type])
+      @definition = Slot.for(StringConstant.new("hi") , [:type])
       @register = @definition.to_register(@compiler , InstructionMock.new)
       @instruction = @compiler.instructions.first
     end
