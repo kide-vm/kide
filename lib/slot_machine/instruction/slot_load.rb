@@ -34,6 +34,7 @@ module SlotMachine
       @left = SlotDefinition.for(@left.shift , @left) if @left.is_a? Array
       @right = SlotDefinition.for(@right.shift , @right) if @right.is_a? Array
       raise "right not SlotMachine, #{@right.to_s}" unless @right.is_a?( SlotDefinition )
+      raise "left not SlotMachine, #{@left.to_s}" unless @left.is_a?( SlotDefinition )
       @original_source = original_source || self
     end
 
@@ -46,35 +47,8 @@ module SlotMachine
     # after loading the right into register
     def to_risc(compiler)
       const_reg = @right.to_register(compiler , original_source)
-      left_slots = @left.slots
-      case @left.known_object
-      when Symbol
-        sym_to_risc(compiler , const_reg)
-      when Parfait::CacheEntry
-        left = compiler.use_reg( :CacheEntry )
-        compiler.add_code Risc.load_constant(original_source, @left.known_object , left)
-        compiler.add_code Risc.reg_to_slot(original_source, const_reg , left, left_slots.first)
-      else
-        raise "We have left #{@left.known_object}"
-      end
+      @left.reduce_and_load(const_reg , compiler , original_source )
       compiler.reset_regs
-    end
-
-    # load the data in const_reg into the slot that is named by left symbols
-    # left may usually be only 3 long, as the first is known, then the second is loaded
-    # with type known type (as it comes from message)
-    #
-    # actual lifting is done by RegisterValue resolve_and_add
-    def sym_to_risc(compiler , const_reg)
-      left_slots = @left.slots.dup
-      raise "Not Message #{object}" unless @left.known_object == :message
-      left = Risc.message_reg
-      slot = left_slots.shift
-      while( !left_slots.empty? )
-        left = left.resolve_and_add( slot , compiler)
-        slot = left_slots.shift
-      end
-      compiler.add_code Risc.reg_to_slot(original_source, const_reg , left, slot)
     end
 
   end

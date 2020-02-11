@@ -22,10 +22,10 @@ module SlotMachine
         MessageDefinition.new(slots)
       when Constant
         ConstantDefinition.new(object , slots)
-      when Parfait::Object
+      when Parfait::Object , Risc::Label
         ObjectDefinition.new(object , slots)
       else
-        SlotDefinition.new(object,slots)
+        raise "not supported type #{object}"
       end
     end
 
@@ -47,47 +47,6 @@ module SlotMachine
       "[#{names.join(', ')}]"
     end
 
-    def known_name
-      case known_object
-      when Risc::Label
-        known_object.to_s
-      else
-        "unknown"
-      end
-    end
-
-    # load the slots into a register
-    # the code is added to compiler
-    # the register returned
-    def to_register(compiler, source)
-      if(known_object.respond_to?(:get_type))
-        type = known_object.get_type
-      else
-        type = :Object
-      end
-      right = compiler.use_reg( type )
-      case known_object
-      when Risc::Label
-        const = Risc.load_constant(source, known_object , right)
-        compiler.add_code const
-        if slots.length > 0
-          # desctructively replace the existing value to be loaded if more slots
-          compiler.add_code Risc.slot_to_reg( source , right ,slots[0], right)
-        end
-      else
-        raise "We have a #{self} #{known_object}"
-      end
-      if slots.length > 1
-        # desctructively replace the existing value to be loaded if more slots
-        index = Risc.resolve_to_index(slots[0] , slots[1] ,compiler)
-        compiler.add_code Risc::SlotToReg.new( source , right ,index, right)
-        if slots.length > 2
-          raise "3 slots only for type #{slots}" unless slots[2] == :type
-          compiler.add_code Risc::SlotToReg.new( source , right , Parfait::TYPE_INDEX, right)
-        end
-      end
-      return const.register
-    end
 
   end
 end
