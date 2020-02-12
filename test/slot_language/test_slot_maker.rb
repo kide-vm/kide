@@ -8,7 +8,7 @@ module SlotLanguage
       @maker = SlotMaker.new(:hi )
     end
     def test_slot
-      @maker.slot_def(@compiler)
+      @maker.to_slot(@compiler)
     end
   end
 end

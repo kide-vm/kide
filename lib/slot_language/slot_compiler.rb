@@ -9,6 +9,7 @@ module SlotLanguage
       ast = Parser::CurrentRuby.parse( input )
       self.new.process(ast)
     end
+
     def not_implemented(node)
       raise "Not implemented #{node.type}"
     end

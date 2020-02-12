@@ -59,7 +59,7 @@ module SlotLanguage
     def test_shift
       load = compile("word = name.member")
       assert_equal LoadMaker , load.class
-      assert_equal :word , load.left.leaps.first
+      assert_equal :word , load.left.names.first
       assert_equal SlotMaker , load.right.class
     end
   end
