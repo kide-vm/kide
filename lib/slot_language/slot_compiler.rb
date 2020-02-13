@@ -28,24 +28,30 @@ module SlotLanguage
     end
     def on_send(statement)
       kids = statement.children.dup
-      receiver = process(kids.shift) || MessageSlot.new
+      receiver = kids.shift
       name = kids.shift
       return label(name) if(name.to_s.end_with?("_label"))
       return goto(name,kids) if(name == :goto)
       return check(name,receiver, kids) if SlotCompiler.checks.include?(name)
       return assign(receiver, name , kids) if(name.to_s.end_with?("="))
-      puts "Send #{name} , #{receiver} kids=#{kids}" if DEBUG
-      Variable.new( name )
+      puts "Send: #{statement} " if DEBUG
+      var = Variable.new( name )
+      if(receiver)
+        puts "receiver at #{name} #{receiver}" if DEBUG
+        process(receiver).chained(var)
+      else
+        var
+      end
     end
     def on_lvar(lvar)
       puts "lvar #{lvar}" if DEBUG
       Variable.new(lvar.children.first )
     end
     def on_lvasgn( expression)
-      puts "lvasgn #{expression}" if DEBUG
-      name = expression.children[0]
+      puts "i/lvasgn #{expression}" if DEBUG
+      var = var_for(expression.children[0])
       value = process(expression.children[1])
-      Assignment.new(Variable.new(name),value)
+      Assignment.new(var , value)
     end
     alias :on_ivasgn :on_lvasgn
 
@@ -62,12 +68,21 @@ module SlotLanguage
         process_all(exp)
       end
     end
-    def on_ivar( expression)
+    def on_ivar(expression)
       puts "ivar #{expression}" if DEBUG
-      Variable.new(expression.children.first)
+      var_for(expression.children.first)
     end
 
     private
+
+    def var_for( name )
+      name = name.to_s
+      if(name[0] == "@")
+        MessageVariable.new(name.to_s[1 .. -1].to_sym)
+      else
+        Variable.new(name.to_sym)
+      end
+    end
     def label(name)
       raise "no label #{name}" unless(name.to_s.end_with?("_label"))
       if @labels.has_key?(name)
@@ -88,13 +103,14 @@ module SlotLanguage
       right = process(kids.first)
       case name
       when :==
-        return EqualGoto.new(receiver , right)
+        return EqualGoto.new(process(receiver) , right)
       else
         raise "Only ==, not #{name}" unless name == :==
       end
     end
 
     def assign(receiver , name , kids)
+      raise name.to_s
       name = name.to_s[0...-1].to_sym
       receiver.add_slot_name(name)
       right = process kids.shift

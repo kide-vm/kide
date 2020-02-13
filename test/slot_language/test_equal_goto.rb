@@ -7,24 +7,22 @@ module SlotLanguage
     def do_check(check)
       assert_equal EqualGoto , check.class
       assert_equal Goto , check.goto.class
-      assert_equal Variable , check.left.class
-      assert_equal Variable , check.right.class
+      assert check.left.is_a?(Variable)
+      assert check.right.is_a?(Variable)
+      assert_equal :a , check.left.name
+      assert_equal :b , check.right.name
     end
     def test_equal_local
       check = compile("goto(exit_label) if(a == b)")
       do_check(check)
-      assert_equal :a , check.left.names[0]
-      assert_equal :b , check.right.names[0]
     end
     def test_equal_inst_left
       check = compile("goto(exit_label) if(@a == b)")
       do_check(check)
-      assert_equal :@a , check.left.names[0]
     end
     def test_equal_inst_right
       check = compile("goto(exit_label) if(a == @b)")
       do_check(check)
-      assert_equal :@b , check.right.names[0]
     end
   end
 
@@ -50,11 +48,11 @@ module SlotLanguage
     end
     def test_expression_left
       assert_equal Variable , @expr.last.left.class
-      assert_equal [:b] , @expr.last.left.names
+      assert_equal :b , @expr.last.left.name
     end
     def test_expression_right
       assert_equal Variable , @expr.last.right.class
-      assert_equal [:c] , @expr.last.right.names
+      assert_equal :c , @expr.last.right.name
     end
   end
 end
