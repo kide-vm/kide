@@ -1,12 +1,12 @@
 module SlotLanguage
-  # A SlotMaker makes Slots. A Slot s the central SlotMachines description of a
-  # variable in an object. This Language level "Maker" holds the information
+  # A Variable makes Slots. A Slot is the central SlotMachines description of a
+  # variable in an object. At the Language level this holds the information
   # (names of instance variables) to be able to create the Slot instance
   #
   # In the SlotLanguage this is used in the Assignment. Just as a Slotload stores
   # two slots to define what is loaded where, the Assignment, that creates a SlotLoad,
-  # uses two SlotMakers.
-  class SlotMaker
+  # uses two Variables.
+  class Variable
     # stores the (instance) names that allow us to create a Slot
     attr_reader :names
 

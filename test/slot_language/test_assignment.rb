@@ -35,7 +35,7 @@ module SlotLanguage
       load = compile("word = name.member")
       assert_equal Assignment , load.class
       assert_equal :word , load.left.names.first
-      assert_equal SlotMaker , load.right.class
+      assert_equal Variable , load.right.class
     end
   end
 end

@@ -7,8 +7,8 @@ module SlotLanguage
     def do_check(check)
       assert_equal EqualGoto , check.class
       assert_equal Goto , check.goto.class
-      assert_equal SlotMaker , check.left.class
-      assert_equal SlotMaker , check.right.class
+      assert_equal Variable , check.left.class
+      assert_equal Variable , check.right.class
     end
     def test_equal_local
       check = compile("goto(exit_label) if(a == b)")
@@ -49,11 +49,11 @@ module SlotLanguage
       assert_equal @expr.first.object_id , @expr.last.goto.label.object_id
     end
     def test_expression_left
-      assert_equal SlotMaker , @expr.last.left.class
+      assert_equal Variable , @expr.last.left.class
       assert_equal [:b] , @expr.last.left.names
     end
     def test_expression_right
-      assert_equal SlotMaker , @expr.last.right.class
+      assert_equal Variable , @expr.last.right.class
       assert_equal [:c] , @expr.last.right.names
     end
   end

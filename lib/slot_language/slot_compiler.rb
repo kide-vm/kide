@@ -35,17 +35,17 @@ module SlotLanguage
       return check(name,receiver, kids) if SlotCompiler.checks.include?(name)
       return assign(receiver, name , kids) if(name.to_s.end_with?("="))
       puts "Send #{name} , #{receiver} kids=#{kids}" if DEBUG
-      SlotMaker.new( name )
+      Variable.new( name )
     end
     def on_lvar(lvar)
       puts "lvar #{lvar}" if DEBUG
-      SlotMaker.new(lvar.children.first )
+      Variable.new(lvar.children.first )
     end
     def on_lvasgn( expression)
       puts "lvasgn #{expression}" if DEBUG
       name = expression.children[0]
       value = process(expression.children[1])
-      Assignment.new(SlotMaker.new(name),value)
+      Assignment.new(Variable.new(name),value)
     end
     alias :on_ivasgn :on_lvasgn
 
@@ -64,7 +64,7 @@ module SlotLanguage
     end
     def on_ivar( expression)
       puts "ivar #{expression}" if DEBUG
-      SlotMaker.new(expression.children.first)
+      Variable.new(expression.children.first)
     end
 
     private
@@ -105,7 +105,7 @@ module SlotLanguage
 end
 require_relative "named_slot"
 require_relative "message_slot"
-require_relative "slot_maker"
+require_relative "variable"
 require_relative "assignment"
 require_relative "macro_maker"
 require_relative "goto"

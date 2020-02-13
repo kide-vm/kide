@@ -10,8 +10,8 @@ module SlotLanguage
     def test_labels
       assert SlotCompiler.new.labels.empty?
     end
-    def test_compile
-      assert_equal SlotMaker , compile("a").class
+    def test_basic_compile
+      assert_equal Variable , compile("a").class
     end
   end
 end
