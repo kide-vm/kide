@@ -10,11 +10,6 @@ module SlotLanguage
     def test_compile
       assert_equal SlotMaker , compile("a").class
     end
-    def test_label
-      label = compile("while_label")
-      assert_equal SlotMachine::Label , label.class
-      assert_equal :while_label , label.name
-    end
     def test_slot_load_rinst
       assert_equal LoadMaker , compile_class("a = @b")
     end
@@ -30,13 +25,10 @@ module SlotLanguage
     def test_slot_load_linst_trav2
        assert_equal LoadMaker , compile_class("@a.c = b.c")
     end
-    def test_goto
-      assert_equal SlotMachine::Jump , compile_class("goto(exit_label)")
-    end
     def test_if
       check = compile("goto(exit_label) if(a == b)")
       assert_equal CheckMaker , check.class
-      assert_equal SlotMachine::Jump , check.goto.class
+      assert_equal Goto , check.goto.class
     end
     def test_assign
       assign = compile("c = d")
@@ -54,7 +46,7 @@ module SlotLanguage
       multi = compile("start_label;c = c.next;goto(start_label)")
       assert_equal Array , multi.class
       assert_equal SlotMachine::Label , multi.first.class
-      assert_equal SlotMachine::Jump , multi.last.class
+      assert_equal Goto , multi.last.class
     end
     def test_shift
       load = compile("word = name.member")

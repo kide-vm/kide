@@ -10,6 +10,10 @@ module SlotLanguage
       self.new.process(ast)
     end
 
+    def initialize
+      @labels = {}
+    end
+
     def not_implemented(node)
       raise "Not implemented #{node.type}"
     end
@@ -60,13 +64,18 @@ module SlotLanguage
 
     private
     def label(name)
-      SlotMachine::Label.new(name.to_s , name)
+      raise "no label #{name}" unless(name.to_s.end_with?("_label"))
+      if @labels.has_key?(name)
+        return @labels[name]
+      else
+        @labels[name] = SlotMachine::Label.new(name.to_s , name)
+      end
     end
     def goto(name , args)
       # error handling would not hurt
       puts "goto #{name} , #{args}" if DEBUG
       label = process(args.first)
-      SlotMachine::Jump.new(  label )
+      Goto.new(  label )
     end
     def check(name , receiver , kids)
       raise "Only ==, not #{name}" unless name == :==
@@ -90,3 +99,4 @@ require_relative "slot_maker"
 require_relative "load_maker"
 require_relative "check_maker"
 require_relative "macro_maker"
+require_relative "goto"
