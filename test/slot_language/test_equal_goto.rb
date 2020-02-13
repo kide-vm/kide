@@ -55,4 +55,38 @@ module SlotLanguage
       assert_equal :c , @expr.last.right.name
     end
   end
+  class TestEqualGotoChain < MiniTest::Test
+    include SlotHelper
+    def setup
+      @expr = compile("goto(start_label) if( a.b == c)")
+    end
+    def test_eq
+      assert_equal EqualGoto , @expr.class
+    end
+    def test_left
+      assert_equal Variable , @expr.left.class
+      assert_equal :a , @expr.left.name
+    end
+    def test_left_chain
+      assert_equal Variable , @expr.left.chain.class
+      assert_equal :b , @expr.left.chain.name
+    end
+  end
+  class TestEqualGotoChain2 < MiniTest::Test
+    include SlotHelper
+    def setup
+      @expr = compile("goto(start_label) if( a == @b.c)")
+    end
+    def test_eq
+      assert_equal EqualGoto , @expr.class
+    end
+    def test_left
+      assert_equal MessageVariable , @expr.right.class
+      assert_equal :b , @expr.right.name
+    end
+    def test_left_chain
+      assert_equal Variable , @expr.right.chain.class
+      assert_equal :c , @expr.right.chain.name
+    end
+  end
 end

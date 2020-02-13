@@ -110,17 +110,16 @@ module SlotLanguage
     end
 
     def assign(receiver , name , kids)
-      raise name.to_s
-      name = name.to_s[0...-1].to_sym
-      receiver.add_slot_name(name)
-      right = process kids.shift
+      receiver = process(receiver)
       puts "Assign #{name} , #{receiver}" if DEBUG
+      raise "Only one arg #{kids}" unless kids.length == 1
+      right = process kids.shift
+      name = name.to_s[0...-1].to_sym
+      receiver.chained(Variable.new(name))
       Assignment.new(receiver,right)
     end
   end
 end
-require_relative "named_slot"
-require_relative "message_slot"
 require_relative "variable"
 require_relative "assignment"
 require_relative "macro_maker"

@@ -44,12 +44,21 @@ module SlotLanguage
   class TestAssignment3 < MiniTest::Test
     include SlotHelper
 
-    def est_slot_load_linst_trav2
-       assert_equal Assignment , compile_class("@a.c = b.c")
+    def test_inst_ass
+      assign = compile("@a.b = c")
+      assert_equal Assignment , assign.class
+      assert_equal MessageVariable , assign.left.class
+      assert_equal :a , assign.left.name
+      assert_equal Variable , assign.left.chain.class
+      assert_equal :b , assign.left.chain.name
     end
-    def est_assign2
-      assign = compile("c.next = d")
-      assert_equal Assignment  , assign.class
+    def test_local_ass
+      assign = compile("a.b = c")
+      assert_equal Assignment , assign.class
+      assert_equal Variable , assign.left.class
+      assert_equal :a , assign.left.name
+      assert_equal Variable , assign.left.chain.class
+      assert_equal :b , assign.left.chain.name
     end
   end
 end
