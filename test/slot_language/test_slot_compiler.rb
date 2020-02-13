@@ -7,6 +7,9 @@ module SlotLanguage
     def test_init
       assert SlotCompiler.new
     end
+    def test_labels
+      assert SlotCompiler.new.labels.empty?
+    end
     def test_compile
       assert_equal SlotMaker , compile("a").class
     end
@@ -25,11 +28,6 @@ module SlotLanguage
     def test_slot_load_linst_trav2
        assert_equal LoadMaker , compile_class("@a.c = b.c")
     end
-    def test_if
-      check = compile("goto(exit_label) if(a == b)")
-      assert_equal CheckMaker , check.class
-      assert_equal Goto , check.goto.class
-    end
     def test_assign
       assign = compile("c = d")
       assert_equal LoadMaker , assign.class
@@ -41,12 +39,6 @@ module SlotLanguage
     def test_assign2
       assign = compile("c.next = d")
       assert_equal LoadMaker  , assign.class
-    end
-    def test_multiline
-      multi = compile("start_label;c = c.next;goto(start_label)")
-      assert_equal Array , multi.class
-      assert_equal SlotMachine::Label , multi.first.class
-      assert_equal Goto , multi.last.class
     end
     def test_shift
       load = compile("word = name.member")

@@ -5,11 +5,16 @@ module SlotLanguage
   class SlotCompiler < AST::Processor
     DEBUG = false
 
+    # conditionals supported, currently only equal
+    def self.checks
+      [:==]
+    end
+
     def self.compile(input)
       ast = Parser::CurrentRuby.parse( input )
       self.new.process(ast)
     end
-
+    attr_reader :labels
     def initialize
       @labels = {}
     end
@@ -27,7 +32,7 @@ module SlotLanguage
       name = kids.shift
       return label(name) if(name.to_s.end_with?("_label"))
       return goto(name,kids) if(name == :goto)
-      return check(name,receiver, kids) if(name == :==)
+      return check(name,receiver, kids) if SlotCompiler.checks.include?(name)
       return assign(receiver, name , kids) if(name.to_s.end_with?("="))
       puts "Send #{name} , #{receiver} kids=#{kids}" if DEBUG
       SlotMaker.new( name )
@@ -78,12 +83,17 @@ module SlotLanguage
       Goto.new(  label )
     end
     def check(name , receiver , kids)
-      raise "Only ==, not #{name}" unless name == :==
       raise "Familiy too large #{kids}" if kids.length > 1
       puts   "Kids " + kids.to_s if DEBUG
       right = process(kids.first)
-      CheckMaker.new(name , receiver , right)
+      case name
+      when :==
+        return EqualGoto.new(receiver , right)
+      else
+        raise "Only ==, not #{name}" unless name == :==
+      end
     end
+
     def assign(receiver , name , kids)
       name = name.to_s[0...-1].to_sym
       receiver.add_slot_name(name)
@@ -97,6 +107,6 @@ require_relative "named_slot"
 require_relative "message_slot"
 require_relative "slot_maker"
 require_relative "load_maker"
-require_relative "check_maker"
 require_relative "macro_maker"
 require_relative "goto"
+require_relative "equal_goto"
