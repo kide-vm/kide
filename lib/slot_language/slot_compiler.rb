@@ -45,7 +45,7 @@ module SlotLanguage
       puts "lvasgn #{expression}" if DEBUG
       name = expression.children[0]
       value = process(expression.children[1])
-      LoadMaker.new(SlotMaker.new(name),value)
+      Assignment.new(SlotMaker.new(name),value)
     end
     alias :on_ivasgn :on_lvasgn
 
@@ -99,14 +99,14 @@ module SlotLanguage
       receiver.add_slot_name(name)
       right = process kids.shift
       puts "Assign #{name} , #{receiver}" if DEBUG
-      LoadMaker.new(receiver,right)
+      Assignment.new(receiver,right)
     end
   end
 end
 require_relative "named_slot"
 require_relative "message_slot"
 require_relative "slot_maker"
-require_relative "load_maker"
+require_relative "assignment"
 require_relative "macro_maker"
 require_relative "goto"
 require_relative "equal_goto"

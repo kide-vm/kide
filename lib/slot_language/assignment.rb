@@ -1,10 +1,10 @@
 module SlotLanguage
-  # A LoadMaker makes SlotLoad. That means it stores the information
+  # A Assignment makes SlotLoad. That means it stores the information
   # to be able to create a SlotLoad
   #
   # Just like the SlotLoad stores two Slots, here we store two SlotMakers
   #
-  class LoadMaker
+  class Assignment
     # The two SlotMakers that become Slots in to_slot
     attr_reader :left , :right
 

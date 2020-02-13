@@ -3,8 +3,8 @@ module SlotLanguage
   # variable in an object. This Language level "Maker" holds the information
   # (names of instance variables) to be able to create the Slot instance
   #
-  # In the SlotLanguage this is used in the LoadMaker. Just as a Slotload stores
-  # two slots to define what is loaded where, the LoadMaker, that creates a SlotLoad,
+  # In the SlotLanguage this is used in the Assignment. Just as a Slotload stores
+  # two slots to define what is loaded where, the Assignment, that creates a SlotLoad,
   # uses two SlotMakers.
   class SlotMaker
     # stores the (instance) names that allow us to create a Slot
