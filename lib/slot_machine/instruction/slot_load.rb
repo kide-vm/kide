@@ -54,7 +54,3 @@ module SlotMachine
   end
 
 end
-require_relative "slot"
-require_relative "message_slot"
-require_relative "constant_slot"
-require_relative "object_slot"
