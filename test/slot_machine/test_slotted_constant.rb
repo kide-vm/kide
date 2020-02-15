@@ -6,7 +6,7 @@ module SlotMachine
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @compiler = Risc::FakeCompiler.new
-      @definition = Slot.for(StringConstant.new("hi") , [])
+      @definition = Slotted.for(StringConstant.new("hi") , [])
       @register = @definition.to_register(@compiler , InstructionMock.new)
       @instruction = @compiler.instructions.first
     end
@@ -27,7 +27,7 @@ module SlotMachine
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @compiler = Risc::FakeCompiler.new
-      @definition = Slot.for(StringConstant.new("hi") , [:type])
+      @definition = Slotted.for(StringConstant.new("hi") , [:type])
       @register = @definition.to_register(@compiler , InstructionMock.new)
       @instruction = @compiler.instructions.first
     end

@@ -1,5 +1,5 @@
 module SlotMachine
-  class ConstantSlot < Slot
+  class SlottedConstant < Slot
 
 
     attr_reader :known_object

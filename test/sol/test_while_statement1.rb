@@ -14,7 +14,7 @@ module Sol
       assert_equal TruthCheck , @ins.next(4).class
     end
     def test_condition_is_slot
-      assert_equal MessageSlot , @ins.next(4).condition.class , @ins
+      assert_equal SlottedMessage , @ins.next(4).condition.class , @ins
     end
     def test_hoisetd
       jump = @ins.next(8)

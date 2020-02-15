@@ -5,7 +5,7 @@ module SlotMachine
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @compiler = Risc::FakeCompiler.new
-      @definition = MessageSlot.new( :caller)
+      @definition = SlottedMessage.new( :caller)
       @register = @definition.to_register(@compiler , "fake source")
       @instruction = @compiler.instructions.first
     end

@@ -14,7 +14,7 @@ module Sol
       assert_equal :div4,  @ins.next(2).method.name
     end
     def test_receiver_move
-      assert_equal ConstantSlot,  @ins.next.receiver.class
+      assert_equal SlottedConstant,  @ins.next.receiver.class
     end
 
   end

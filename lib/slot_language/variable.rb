@@ -26,7 +26,7 @@ module SlotLanguage
     end
 
     def to_slot(compiler)
-      SlotMachine::Slot.for(:message , name)
+      SlotMachine::Slotted.for(:message , name)
     end
 
     def to_s

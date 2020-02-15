@@ -12,7 +12,7 @@ module SolBlocks
       assert_equal TruthCheck , @ins.next(3).class
     end
     def test_condition_is_slot
-      assert_equal MessageSlot , @ins.next(3).condition.class , @ins
+      assert_equal SlottedMessage , @ins.next(3).condition.class , @ins
     end
     def test_simple_call
       assert_equal SimpleCall , @ins.next(2).class

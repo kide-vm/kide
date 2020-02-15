@@ -12,10 +12,11 @@
 # Machine capabilities (instructions) for basic operations.
 # Use of macros for higher level.
 
+require_relative "slotted"
 require_relative "slot"
-require_relative "message_slot"
-require_relative "constant_slot"
-require_relative "object_slot"
+require_relative "slotted_message"
+require_relative "slotted_constant"
+require_relative "slotted_object"
 require_relative "instruction"
 require_relative "slot_collection"
 require_relative "callable_compiler"

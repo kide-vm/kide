@@ -39,7 +39,7 @@ module Sol
       assert_equal :Object ,  @ins.next.receiver.known_object.name
     end
     def test_receiver_move
-      assert_equal ObjectSlot,  @ins.next.receiver.class
+      assert_equal SlottedObject,  @ins.next.receiver.class
     end
     def test_receiver
       assert_equal Parfait::Class,  @ins.next.receiver.known_object.class

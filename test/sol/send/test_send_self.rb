@@ -8,7 +8,7 @@ module Sol
       "self.get_internal_word(0);return"
     end
     def test_receiver
-      assert_equal MessageSlot,  @ins.next.receiver.class
+      assert_equal SlottedMessage,  @ins.next.receiver.class
     end
     def test_arg_one
       assert_equal SlotLoad,  @ins.next(1).arguments[0].class
@@ -23,7 +23,7 @@ module Sol
       assert_equal :get_internal_word,  @ins.next(2).method.name
     end
     def test_receiver_move
-      assert_equal MessageSlot,  @ins.next.receiver.class
+      assert_equal SlottedMessage,  @ins.next.receiver.class
     end
 
   end

@@ -31,8 +31,8 @@ module SlotMachine
     def initialize(source , left , right, original_source = nil)
       super(source)
       @left , @right = left , right
-      @left = Slot.for(@left.shift , @left) if @left.is_a? Array
-      @right = Slot.for(@right.shift , @right) if @right.is_a? Array
+      @left = Slotted.for(@left.shift , @left) if @left.is_a? Array
+      @right = Slotted.for(@right.shift , @right) if @right.is_a? Array
       raise "right not SlotMachine, #{@right.to_s}" unless @right.is_a?( Slot )
       raise "left not SlotMachine, #{@left.to_s}" unless @left.is_a?( Slot )
       @original_source = original_source || self

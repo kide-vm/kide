@@ -73,7 +73,7 @@ module SolBlocks
     def test_assigns_move
       @ins = compile_main_block( "@a = arg")
       assert_equal SlotMachine::SlotLoad , @ins.class , @ins
-      assert_equal SlotMachine::MessageSlot , @ins.right.class , @ins
+      assert_equal SlotMachine::SlottedMessage , @ins.right.class , @ins
     end
   end
 

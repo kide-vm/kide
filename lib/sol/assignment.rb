@@ -32,7 +32,7 @@ module Sol
     #
     # Derived classes do not implement to_slot, only slot_position
     def to_slot(compiler)
-      to = SlotMachine::Slot.for(:message , self.slot_position(compiler))
+      to = SlotMachine::Slotted.for(:message , self.slot_position(compiler))
       from = @value.to_slot_definition(compiler)
       assign = SlotMachine::SlotLoad.new(self,to,from)
       return assign unless @value.is_a?(CallStatement)

@@ -1,5 +1,5 @@
 module SlotMachine
-  class ObjectSlot < Slot
+  class SlottedObject < Slot
 
     attr_reader :known_object
 
