@@ -2,12 +2,13 @@ module SlotMachine
   class MessageSlot < Slot
 
     def initialize(slots)
-      super(:message , slots)
+      super(slots)
     end
 
     def known_name
       :message
     end
+    alias :known_object :known_name 
 
     # load the slots into a register
     # the code is added to compiler

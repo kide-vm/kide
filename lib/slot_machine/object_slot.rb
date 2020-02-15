@@ -1,8 +1,12 @@
 module SlotMachine
   class ObjectSlot < Slot
 
+    attr_reader :known_object
+
     def initialize( object , slots)
-      super(object , slots )
+      super(slots)
+      @known_object = object
+      raise "Not known #{slots}" unless object
     end
 
     def known_name

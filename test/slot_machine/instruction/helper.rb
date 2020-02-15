@@ -1,11 +1,6 @@
 require_relative '../helper'
 
 module SlotMachine
-  class InstructionMock < Instruction
-    def initialize
-      super("mocking")
-    end
-  end
 
   # Most SlotMachineInstructionTests test the risc instructions of the slot instruction
   # quite carefully, ie every instruction, every register.
