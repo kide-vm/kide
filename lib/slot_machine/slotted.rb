@@ -2,7 +2,7 @@ module SlotMachine
 
   class Slotted
 
-    def self.for(object , slots)
+    def self.for(object , slots = nil)
       case object
       when :message
         SlottedMessage.new(slots)
@@ -19,11 +19,11 @@ module SlotMachine
     # previous object
     attr_reader :slots
 
-    def initialize( slots )
-      raise "No slots #{object}" unless slots
-      slots = [slots] unless slots.is_a?(Array)
+    def initialize( slots = nil )
+      return unless slots
+      raise "stopped" unless slots.is_a?(Array)
       first = slots.shift
-      return unless first
+      raise "ended" unless first
       @slots = Slot.new(first)
       until(slots.empty?)
         @slots.set_next( Slot.new( slots.shift ))

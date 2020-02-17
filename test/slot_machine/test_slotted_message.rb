@@ -3,7 +3,7 @@ require_relative "helper"
 module SlotMachine
   class TestSlottedMessage < MiniTest::Test
 
-    def slotted(slot = :caller)
+    def slotted(slot = [:caller])
       SlottedMessage.new(slot)
     end
     def test_create_ok1

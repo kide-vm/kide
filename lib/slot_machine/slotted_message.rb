@@ -6,6 +6,10 @@ module SlotMachine
     end
     alias :known_object :known_name
 
+    def initialize(slots)
+      super(slots)
+      raise "Message must have slots, but none given" unless slots
+    end
     # load the slots into a register
     # the code is added to compiler
     # the register returned

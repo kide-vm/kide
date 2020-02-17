@@ -52,7 +52,7 @@ module Sol
       get_named_class.single_class.instance_type
     end
     def to_slotted(_)
-      return SlotMachine::Slotted.for( get_named_class, [])
+      return SlotMachine::Slotted.for( get_named_class)
     end
     def get_named_class
       Parfait.object_space.get_class_by_name(self.name)

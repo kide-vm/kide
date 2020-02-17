@@ -10,7 +10,7 @@ module Sol
       @value = value
     end
     def to_slotted(_)
-      return SlotMachine::Slotted.for(SlotMachine::IntegerConstant.new(@value) , [])
+      return SlotMachine::Slotted.for(SlotMachine::IntegerConstant.new(@value) )
     end
     def ct_type
       Parfait.object_space.get_type_by_class_name(:Integer)
@@ -38,7 +38,7 @@ module Sol
       Parfait.object_space.get_type_by_class_name(:True)
     end
     def to_slotted(_)
-      return SlotMachine::Slotted.for(Parfait.object_space.true_object , [])
+      return SlotMachine::Slotted.for(Parfait.object_space.true_object )
     end
     def to_s(depth = 0)
       "true"
@@ -50,7 +50,7 @@ module Sol
       Parfait.object_space.get_type_by_class_name(:False)
     end
     def to_slotted(_)
-      return SlotMachine::Slotted.for(Parfait.object_space.false_object , [])
+      return SlotMachine::Slotted.for(Parfait.object_space.false_object )
     end
     def to_s(depth = 0)
       "false"
@@ -62,7 +62,7 @@ module Sol
       Parfait.object_space.get_type_by_class_name(:Nil)
     end
     def to_slotted(_)
-      return SlotMachine::Slotted.for(Parfait.object_space.nil_object , [])
+      return SlotMachine::Slotted.for(Parfait.object_space.nil_object )
     end
     def to_s(depth = 0)
       "nil"
@@ -92,7 +92,7 @@ module Sol
       @value = value
     end
     def to_slotted(_)
-      return SlotMachine::Slotted.for(SlotMachine::StringConstant.new(@value),[])
+      return SlotMachine::Slotted.for(SlotMachine::StringConstant.new(@value))
     end
     def ct_type
       Parfait.object_space.get_type_by_class_name(:Word)

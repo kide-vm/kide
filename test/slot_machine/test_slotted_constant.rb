@@ -6,7 +6,7 @@ module SlotMachine
     def setup
       Parfait.boot!(Parfait.default_test_options)
       compiler = Risc::FakeCompiler.new
-      @slotted = Slotted.for(StringConstant.new("hi") , [])
+      @slotted = Slotted.for(StringConstant.new("hi") , nil)
       register = @slotted.to_register(compiler , InstructionMock.new)
       @instruction = compiler.instructions.first
     end
