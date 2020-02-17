@@ -33,8 +33,8 @@ module SlotMachine
       @left , @right = left , right
       @left = Slotted.for(@left.shift , @left) if @left.is_a? Array
       @right = Slotted.for(@right.shift , @right) if @right.is_a? Array
-      raise "right not SlotMachine, #{@right.to_s}" unless @right.is_a?( Slot )
-      raise "left not SlotMachine, #{@left.to_s}" unless @left.is_a?( Slot )
+      raise "right not SlotMachine, #{@right.to_s}" unless @right.is_a?( Slotted )
+      raise "left not SlotMachine, #{@left.to_s}" unless @left.is_a?( Slotted )
       @original_source = original_source || self
     end
 

@@ -1,9 +1,6 @@
 module SlotMachine
-  class SlottedMessage < Slot
+  class SlottedMessage < Slotted
 
-    def initialize(slots)
-      super(slots)
-    end
 
     def known_name
       :message
@@ -16,12 +13,14 @@ module SlotMachine
     def to_register(compiler, source)
       type = :Message
       right = compiler.use_reg( type )
-      slots = @slots.dup
+      slots = @slot
       left = Risc.message_reg
-      left = left.resolve_and_add( slots.shift , compiler)
+      left = left.resolve_and_add( slots.name , compiler)
       reg = compiler.current.register
-      while( !slots.empty? )
-        left = left.resolve_and_add( slots.shift , compiler)
+      slots = slots.next_slot
+      while( slots )
+        left = left.resolve_and_add( slots , compiler)
+        slots = slots.next_slot
       end
       return reg
     end

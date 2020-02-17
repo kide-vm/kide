@@ -4,10 +4,10 @@ module SlotMachine
   class TestSlotKnown1 < MiniTest::Test
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @compiler = Risc::FakeCompiler.new
-      @definition = SlottedMessage.new( :caller)
-      @register = @definition.to_register(@compiler , "fake source")
-      @instruction = @compiler.instructions.first
+      compiler = Risc::FakeCompiler.new
+      slotted = SlottedMessage.new(:caller)
+      @register = slotted.to_register(compiler , "fake source")
+      @instruction = compiler.instructions.first
     end
     def test_def_class
       assert_equal Risc::SlotToReg , @instruction.class

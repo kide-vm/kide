@@ -15,21 +15,24 @@ module SlotMachine
       end
     end
 
-    attr_reader :slots
-    # is an array of symbols, that specifies the first the object, and then the Slot.
-    # The first element is either a known type name (Capitalized symbol of the class name) ,
-    # or the symbol :message
-    # And subsequent symbols must be instance variables on the previous type.
-    # Examples:  [:message , :receiver] or [:Space , :next_message]
-    def initialize( slots)
+    # The first in a possible chain of slots, that name instance variables in the
+    # previous object
+    attr_reader :slot
+
+    def initialize( slots )
       raise "No slots #{object}" unless slots
       slots = [slots] unless slots.is_a?(Array)
-      @slots =  slots
+      first = slots.shift
+      @slot = Slot.new(first)
+      until(slots.empty?)
+        @slot.set_next( Slot.new( slots.shift ))
+      end
     end
 
     def to_s
-      names = [known_name] + @slots
-      "[#{names.join(', ')}]"
+      names = known_name.to_s
+      names += ".#{@slot}" if @slot
+      names
     end
 
 

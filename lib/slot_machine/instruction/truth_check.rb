@@ -11,7 +11,7 @@ module SlotMachine
     def initialize(condition , false_jump)
       super(false_jump)
       @condition  = condition
-      raise "condition must be slot_definition #{condition}" unless condition.is_a?(Slot)
+      raise "condition must be slot_definition #{condition}" unless condition.is_a?(Slotted)
     end
 
     def to_s
