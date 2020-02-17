@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module SlotMachine
-  class TestSlotKnown1 < MiniTest::Test
+  class TestSlottedMessage2 < MiniTest::Test
     def setup
       Parfait.boot!(Parfait.default_test_options)
       compiler = Risc::FakeCompiler.new

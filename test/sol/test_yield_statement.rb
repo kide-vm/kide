@@ -25,18 +25,18 @@ module Sol
       left = @ins.next(3).arguments[0].left
       assert_equal Symbol, left.known_object.class
       assert_equal :message, left.known_object
-      assert_equal [:next_message, :arg1], left.slots
+      assert_equal "message.next_message.arg1", left.to_s
     end
     def test_check_left
       assert_equal SlottedObject, @ins.left.class
       assert_equal Parfait::CallableMethod, @ins.left.known_object.class
       assert_equal :main, @ins.left.known_object.name
-      assert @ins.left.slots.empty?
+      assert !@ins.left.slots
     end
     def test_check_right
       assert_equal SlottedMessage, @ins.right.class
       assert_equal :message, @ins.right.known_object
-      assert_equal [:method] , @ins.right.slots
+      assert_equal "message.method" , @ins.right.to_s
     end
     def test_label
       assert_equal Label, @ins.next(1).class
@@ -48,7 +48,7 @@ module Sol
     end
     def test_receiver
       assert_equal :message , @ins.next(3).receiver.known_object
-      assert_equal [:receiver] , @ins.next(3).receiver.slots
+      assert_equal :receiver , @ins.next(3).receiver.slots.name
     end
     def test_yield
       assert_equal BlockYield, @ins.next(4).class
@@ -58,8 +58,8 @@ module Sol
       assert_equal SlotLoad, @ins.next(5).class
       assert_equal :message, @ins.next(5).left.known_object
       assert_equal :message, @ins.next(5).right.known_object
-      assert_equal [:return_value], @ins.next(5).left.slots
-      assert_equal [:return_value], @ins.next(5).right.slots
+      assert_equal :return_value, @ins.next(5).left.slots.name
+      assert_equal :return_value, @ins.next(5).right.slots.name
     end
     def test_return
       assert_equal ReturnJump, @ins.next(6).class

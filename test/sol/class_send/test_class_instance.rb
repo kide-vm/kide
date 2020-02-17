@@ -54,11 +54,11 @@ module Sol
     end
     def test_left
       assert_equal SlottedMessage , @ins.left.class
-      assert_equal [:return_value] , @ins.left.slots
+      assert_equal :return_value , @ins.left.slots.name
     end
     def test_right
       assert_equal SlottedMessage , @ins.right.class
-      assert_equal [:receiver , :inst] , @ins.right.slots
+      assert_equal "receiver.inst" , @ins.right.slots.to_s
     end
   end
 end

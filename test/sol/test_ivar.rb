@@ -19,10 +19,10 @@ module Sol
       assert_equal :message , @ins.left.known_object
     end
     def test_slot_gets_self
-      assert_equal :receiver , @ins.left.slots[0]
+      assert_equal :receiver , @ins.left.slots.name
     end
     def test_slot_assigns_to_local
-      assert_equal :a , @ins.left.slots[-1]
+      assert_equal :a , @ins.left.slots.next_slot.name
     end
     def test_slot_assigns_something
       assert @ins.right

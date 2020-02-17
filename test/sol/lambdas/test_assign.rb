@@ -17,7 +17,7 @@ module SolBlocks
       assert_equal :message , @ins.left.known_object
     end
     def test_slots_left
-      assert_equal [:local1] , @ins.left.slots
+      assert_equal :local1 , @ins.left.slots.name
     end
     def test_slot_assigns_something
       assert @ins.right
@@ -36,10 +36,10 @@ module SolBlocks
       assert_equal SlotMachine::SlotLoad , @ins.class , @ins
     end
     def test_slots_left
-      assert_equal [:local1] , @ins.left.slots
+      assert_equal :local1 , @ins.left.slots.name
     end
     def test_slots_right
-      assert_equal [:receiver, :a] , @ins.right.slots
+      assert_equal "receiver.a" , @ins.right.slots.to_s
     end
   end
 
@@ -57,7 +57,7 @@ module SolBlocks
       assert @ins.left
     end
     def test_slots_left
-      assert_equal [:caller,:caller, :arg1] , @ins.left.slots
+      assert_equal "caller.caller.arg1" , @ins.left.slots.to_s
     end
   end
 

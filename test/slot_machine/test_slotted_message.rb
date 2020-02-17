@@ -1,23 +1,20 @@
 require_relative "helper"
 
 module SlotMachine
-  class TestSlotBasics < MiniTest::Test
+  class TestSlottedMessage < MiniTest::Test
 
-    def slot(slot = :caller)
+    def slotted(slot = :caller)
       SlottedMessage.new(slot)
     end
     def test_create_ok1
-      assert_equal :message , slot.known_object
+      assert_equal :message , slotted.known_object
     end
     def test_create_ok2
-      assert_equal Array , slot.slots.class
-      assert_equal :caller , slot.slots.first
-    end
-    def test_to_s
-      assert_equal "[message, caller]" , slot.to_s
+      assert_equal Slot , slotted.slots.class
+      assert_equal :caller , slotted.slots.name
     end
     def test_create_fail_none
-      assert_raises {slot(nil)}
+      assert_raises {slotted(nil)}
     end
   end
 end

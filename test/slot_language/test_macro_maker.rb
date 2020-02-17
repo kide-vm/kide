@@ -12,10 +12,8 @@ module SlotLanguage
     end
     def test_assign
       assert_equal SlotMachine::SlotLoad , @slot.next.class
-      assert_equal :message , @slot.next.left.known_object
-      assert_equal [:a] , @slot.next.left.slots
-      assert_equal :message , @slot.next.right.known_object
-      assert_equal [:b] , @slot.next.right.slots
+      assert_equal "message.a" , @slot.next.left.to_s
+      assert_equal "message.b" , @slot.next.right.to_s
     end
     def test_length
       assert_equal 2 , @slot.length

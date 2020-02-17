@@ -22,7 +22,7 @@ module Sol
       assert_equal :message , @ins.left.known_object
     end
     def test_slot_gets_local
-      assert_equal :local1 , @ins.left.slots[0]
+      assert_equal :local1 , @ins.left.slots.name
     end
     def test_slot_assigns_something
       assert @ins.right
@@ -51,7 +51,7 @@ module Sol
       assert_equal :message , @ins.left.known_object
     end
     def test_slot_gets_arg
-      assert_equal :arg1 , @ins.left.slots[0]
+      assert_equal :arg1 , @ins.left.slots.name
     end
     def test_slot_assigns_something
       assert @ins.right
