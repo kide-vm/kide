@@ -32,7 +32,7 @@ module Sol
 
     # create the slot lazily, so to_slot gets called first
     def check_slot(compiler , false_label)
-      SlotMachine::TruthCheck.new(@condition.to_slot_definition(compiler) , false_label)
+      SlotMachine::TruthCheck.new(@condition.to_slotted(compiler) , false_label)
     end
 
     def each(&block)

@@ -15,7 +15,7 @@ module Sol
       codes = cond_label
       codes << @hoisted.to_slot(compiler) if @hoisted
       codes << @condition.to_slot(compiler) if @condition.is_a?(SendStatement)
-      codes << SlotMachine::TruthCheck.new(condition.to_slot_definition(compiler) , merge_label)
+      codes << SlotMachine::TruthCheck.new(condition.to_slotted(compiler) , merge_label)
       codes << @body.to_slot(compiler)
       codes << SlotMachine::Jump.new(cond_label)
       codes << merge_label

@@ -11,27 +11,41 @@ module SlotMachine
       when Parfait::Object , Risc::Label
         SlottedObject.new(object , slots)
       else
-        raise "not supported type #{object}"
+        raise "not supported type #{object}:#{object.class}"
       end
     end
 
     # The first in a possible chain of slots, that name instance variables in the
     # previous object
-    attr_reader :slot
+    attr_reader :slots
 
     def initialize( slots )
       raise "No slots #{object}" unless slots
       slots = [slots] unless slots.is_a?(Array)
       first = slots.shift
-      @slot = Slot.new(first)
+      return unless first
+      @slots = Slot.new(first)
       until(slots.empty?)
-        @slot.set_next( Slot.new( slots.shift ))
+        @slots.set_next( Slot.new( slots.shift ))
+      end
+    end
+
+    def slots_length
+      return 0 unless @slots
+      1 + @slots.length
+    end
+
+    def set_next(slot)
+      if(@slots)
+        @slots.set_next(slot)
+      else
+        @slots = slot
       end
     end
 
     def to_s
       names = known_name.to_s
-      names += ".#{@slot}" if @slot
+      names += ".#{@slots}" if @slots
       names
     end
 

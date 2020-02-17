@@ -67,11 +67,11 @@ module Sol
 
     def message_setup(compiler,called_method)
       setup  = SlotMachine::MessageSetup.new( called_method )
-      slot_receive = @receiver.to_slot_definition(compiler)
+      slot_receive = @receiver.to_slotted(compiler)
       arg_target = [:message , :next_message ]
       args = []
       @arguments.each_with_index do |arg , index| # +1 because of type
-        args << SlotMachine::SlotLoad.new(self, arg_target + ["arg#{index+1}".to_sym] , arg.to_slot_definition(compiler))
+        args << SlotMachine::SlotLoad.new(self, arg_target + ["arg#{index+1}".to_sym] , arg.to_slotted(compiler))
       end
       setup << SlotMachine::ArgumentTransfer.new(self, slot_receive , args )
     end
@@ -111,10 +111,11 @@ module Sol
 
     private
     def receiver_type_definition(compiler)
-      defi = @receiver.to_slot_definition(compiler)
-      defi.slots << :type
+      defi = @receiver.to_slotted(compiler)
+      defi.set_next( SlotMachine::Slot.new(:type) )
       defi
     end
+
     def build_condition(ok_label, compiler)
       cached_type = SlotMachine::Slotted.for(dynamic_call.cache_entry , [:cached_type])
       current_type = receiver_type_definition(compiler)

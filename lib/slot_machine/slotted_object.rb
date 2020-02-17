@@ -21,16 +21,16 @@ module SlotMachine
       right = compiler.use_reg( type )
       const = Risc.load_constant(source, known_object , right)
       compiler.add_code const
-      if slots.length > 0
+      if slots_length > 1
         # desctructively replace the existing value to be loaded if more slots
-        compiler.add_code Risc.slot_to_reg( source , right ,slots[0], right)
+        compiler.add_code Risc.slot_to_reg( source , right ,slots.name, right)
       end
-      if slots.length > 1
+      if slots_length > 2
         # desctructively replace the existing value to be loaded if more slots
-        index = Risc.resolve_to_index(slots[0] , slots[1] ,compiler)
+        index = Risc.resolve_to_index(slots.name , slots.next_slot.name ,compiler)
         compiler.add_code Risc::SlotToReg.new( source , right ,index, right)
-        if slots.length > 2
-          raise "3 slots only for type #{slots}" unless slots[2] == :type
+        if slots_length > 3
+          raise "3 slots only for type #{slots}" unless slots.next_slot.next_slot.name == :type
           compiler.add_code Risc::SlotToReg.new( source , right , Parfait::TYPE_INDEX, right)
         end
       end
@@ -44,7 +44,7 @@ module SlotMachine
       raise "only cache" unless known_object.is_a?( Parfait::CacheEntry)
       left = compiler.use_reg( :CacheEntry )
       compiler.add_code Risc.load_constant(original_source, known_object , left)
-      compiler.add_code Risc.reg_to_slot(original_source, const_reg , left, slots.first)
+      compiler.add_code Risc.reg_to_slot(original_source, const_reg , left, slots.name)
     end
   end
 end

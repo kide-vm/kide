@@ -32,7 +32,7 @@ module Sol
 
     def slot_load(compiler)
       SlotMachine::SlotLoad.new( self , [:message , :return_value] ,
-                        @return_value.to_slot_definition(compiler) )
+                        @return_value.to_slotted(compiler) )
     end
   end
 end

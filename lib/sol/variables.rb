@@ -10,7 +10,7 @@ module Sol
 
   class LocalVariable < Expression
     include Named
-    def to_slot_definition(compiler)
+    def to_slotted(compiler)
       slot_def = compiler.slot_type_for(@name)
       SlotMachine::Slotted.for(:message , slot_def)
     end
@@ -24,7 +24,7 @@ module Sol
 
   class InstanceVariable < Expression
     include Named
-    def to_slot_definition(_)
+    def to_slotted(_)
       SlotMachine::Slotted.for(:message , [ :receiver , @name] )
     end
     # used to collect type information
@@ -51,7 +51,7 @@ module Sol
     def ct_type
       get_named_class.single_class.instance_type
     end
-    def to_slot_definition(_)
+    def to_slotted(_)
       return SlotMachine::Slotted.for( get_named_class, [])
     end
     def get_named_class

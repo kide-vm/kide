@@ -13,7 +13,7 @@ module Sol
     #
     # This means we do the compiler here (rather than to_slot, which is in
     # fact never called)
-    def to_slot_definition(compiler)
+    def to_slotted(compiler)
       compile(compiler) unless @parfait_block
       return SlotMachine::Slotted.for(SlotMachine::LambdaConstant.new(parfait_block(compiler)) , [])
     end

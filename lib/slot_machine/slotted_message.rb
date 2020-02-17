@@ -1,7 +1,6 @@
 module SlotMachine
   class SlottedMessage < Slotted
 
-
     def known_name
       :message
     end
@@ -13,13 +12,13 @@ module SlotMachine
     def to_register(compiler, source)
       type = :Message
       right = compiler.use_reg( type )
-      slots = @slot
+      slots = @slots
       left = Risc.message_reg
       left = left.resolve_and_add( slots.name , compiler)
       reg = compiler.current.register
       slots = slots.next_slot
       while( slots )
-        left = left.resolve_and_add( slots , compiler)
+        left = left.resolve_and_add( slots.name , compiler)
         slots = slots.next_slot
       end
       return reg
@@ -32,15 +31,14 @@ module SlotMachine
     #       They are very similar (apart from the final reg_to_slot here) and should
     #       most likely be united
     def reduce_and_load(const_reg , compiler , original_source )
-      left_slots = slots.dup
       raise "Not Message #{object}" unless known_object == :message
       left = Risc.message_reg
-      slot = left_slots.shift
-      while( !left_slots.empty? )
-        left = left.resolve_and_add( slot , compiler)
-        slot = left_slots.shift
+      slot = slots
+      while( slot.next_slot )
+        left = left.resolve_and_add( slot.name , compiler)
+        slot = slot.next_slot
       end
-      compiler.add_code Risc.reg_to_slot(original_source, const_reg , left, slot)
+      compiler.add_code Risc.reg_to_slot(original_source, const_reg , left, slot.name)
     end
 
   end
