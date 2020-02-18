@@ -11,11 +11,15 @@ module SlotMachine
   #       is met. This means that the asm implementation is somewhat the reverse
   #       of the SlotMachine names. But it's easier to understand (imho)
   class Check < Instruction
-    attr_reader :false_jump
-    def initialize(false_jump)
-      @false_jump = false_jump
-      raise "Jump target must be a label #{false_jump}" unless false_jump.is_a?(Label)
+    attr_reader :false_label
+
+    def initialize(false_label)
+      set_label(false_label)
     end
+
+    def set_label(false_label)
+      @false_label = false_label
+      raise "Jump target must be a label #{false_label}" unless false_label.is_a?(Label)    end
   end
 
 end

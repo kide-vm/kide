@@ -1,14 +1,14 @@
 module SlotMachine
 
-  # SlotMachine internal check, as the name says to see if two values are not the same
+  # SlotMachine internal check, as the name says to see if two values are the same
   # In other words, we this checks identity, bit-values, pointers
   #
   # The values that are compared are defined as Slots, ie can be anything
   # available to the machine through frame message or self
   #
-  # Acording to SlotMachine::Check logic, we jump to the given label is the values are the same
+  # Acording to SlotMachine::Check logic, we jump to the given label is the values are not the same
   #
-  class NotSameCheck < Check
+  class SameCheck < Check
     attr_reader :left , :right
 
     def initialize(left, right , label)
@@ -17,7 +17,7 @@ module SlotMachine
     end
 
     def to_s
-      "NotSameCheck: #{left}:#{right}"
+      "SameCheck: #{left}:#{right}"
     end
 
     # basically move both left and right values into register
@@ -26,7 +26,7 @@ module SlotMachine
       l_reg = left.to_register(compiler, self)
       r_reg = right.to_register(compiler, self)
       compiler.add_code Risc.op( self , :- , l_reg , r_reg)
-      compiler.add_code Risc::IsZero.new( self, false_label.risc_label(compiler))
+      compiler.add_code Risc::IsNotZero.new( self, false_label.risc_label(compiler))
     end
   end
 end

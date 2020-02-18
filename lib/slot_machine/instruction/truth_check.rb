@@ -8,18 +8,18 @@ module SlotMachine
   class TruthCheck < Check
     attr_reader :condition
 
-    def initialize(condition , false_jump)
-      super(false_jump)
+    def initialize(condition , false_label)
+      super(false_label)
       @condition  = condition
       raise "condition must be slot_definition #{condition}" unless condition.is_a?(Slotted)
     end
 
     def to_s
-      "TruthCheck #{@condition} -> #{false_jump}"
+      "TruthCheck #{@condition} -> #{false_label}"
     end
 
     def to_risc(compiler)
-      false_label = @false_jump.risc_label(compiler)
+      false_label = @false_label.risc_label(compiler)
       builder = compiler.builder("TruthCheck")
       condition_reg = @condition.to_register(compiler,self)
       builder.build do

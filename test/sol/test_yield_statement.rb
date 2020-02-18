@@ -15,7 +15,7 @@ module Sol
     end
     def test_check_label
       assert_equal NotSameCheck, @ins.class
-      assert @ins.false_jump.name.start_with?("method_ok_") , @ins.false_jump.name
+      assert @ins.false_label.name.start_with?("method_ok_") , @ins.false_label.name
     end
     def test_transfer
       assert_equal ArgumentTransfer, @ins.next(3).class
@@ -74,7 +74,7 @@ module Sol
     end
     def test_check_label
       assert_equal NotSameCheck, @ins.class
-      assert @ins.false_jump.name.start_with?("cache_ok_") , @ins.false_jump.name
+      assert @ins.false_label.name.start_with?("cache_ok_") , @ins.false_label.name
     end
     def test_array
       check_array [NotSameCheck, SlotLoad, ResolveMethod, Label, MessageSetup ,
