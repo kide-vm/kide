@@ -21,7 +21,7 @@ module SlotMachine
 
     def initialize( slots = nil )
       return unless slots
-      raise "stopped" unless slots.is_a?(Array)
+      raise "stopped #{slots.class}" unless slots.is_a?(Array)
       first = slots.shift
       raise "ended" unless first
       @slots = Slot.new(first)

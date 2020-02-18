@@ -26,6 +26,9 @@ guard :minitest , all_on_start: false do   # with Minitest::Unit
   # ruby compiler tests have a whole directory
   watch(%r{^lib/ruby/ruby_compiler.rb}) { Dir["test/ruby/test_*.rb"] }
 
+  # slot compiler tests have a whole directory
+  watch(%r{^lib/slot_machine/slot_compiler.rb}) { Dir["test/slot_machine/compiler/test_*.rb"] }
+
   watch(%r{^lib/sol/statements/send_statement.rb}) {
     [ Dir["test/sol/send/test_*.rb"] ] }
 
