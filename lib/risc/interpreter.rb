@@ -29,7 +29,7 @@ module Risc
       @registers = {}
       @flags = {  :zero => false , :plus => false ,
                   :minus => false , :overflow => false }
-      (0...12).each do |reg|
+      (0...InterpreterPlatform.new.num_registers).each do |reg|
         set_register "r#{reg}".to_sym , "r#{reg}:unknown"
       end
       @linker = linker

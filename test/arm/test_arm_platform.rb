@@ -14,5 +14,8 @@ module Arm
     def test_platform_loaded_class
       assert_equal ::Integer , @arm.loaded_at.class
     end
+    def test_registers
+      assert_equal 16  , @arm.num_registers
+    end
   end
 end

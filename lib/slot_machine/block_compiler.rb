@@ -1,6 +1,10 @@
 module SlotMachine
 
-  # A BlockCompiler is much like a MehtodCompiler, exept for blocks
+  # A BlockCompiler is much like a MethodCompiler, except for blocks
+  # Blocks are much like methods (hence the base classes) , just the
+  # scope for accessing variables is different. (This only applies to static
+  # blocks, not ones being passed around. That is undone because it needs runtime
+  # code to resolve variables)
   #
   class BlockCompiler < CallableCompiler
 
@@ -16,6 +20,8 @@ module SlotMachine
       "#{@method.self_type.name}.init"
     end
 
+    # Create the risc equivalent, which is a also a (Risc) BlockCompiler
+    # sintructions are converted from slot to risc in instructions_to_risc (in base class)
     def to_risc
       risc_compiler = Risc::BlockCompiler.new(@callable , @method , slot_instructions)
       instructions_to_risc(risc_compiler)

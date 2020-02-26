@@ -20,7 +20,7 @@ module Risc
       assert_equal :stopped , Interpreter.new(@linker).state
     end
     def test_has_regs
-      assert_equal 12 , Interpreter.new(@linker).registers.length
+      assert_equal 16 , Interpreter.new(@linker).registers.length
     end
     def test_has_r0
       assert_equal :r0 , Interpreter.new(@linker).registers.keys.first

@@ -25,6 +25,7 @@ module Risc
     end
     attr_reader :risc_instructions , :constants , :callable , :current
 
+    # find the return label. Every methd should have exactly one
     def return_label
       @risc_instructions.each do |ins|
         next unless ins.is_a?(Label)
@@ -33,6 +34,7 @@ module Risc
     end
 
     # add a constant (which get created during compilation and need to be linked)
+    # constants must be Parfait instances
     def add_constant(const)
       raise "Must be Parfait #{const}" unless const.is_a?(Parfait::Object)
       @constants << const

@@ -1,7 +1,7 @@
 require_relative "../helper"
 
 module Sol
-  class TestSendCachedSimpleSlotMachine < MiniTest::Test
+  class TestNotFoundSlotMachine < MiniTest::Test
     include SolCompile
 
     def setup

@@ -1,7 +1,8 @@
 module Risc
 
   # A BlockCompiler is much like a MethodCompiler, exept for it's for blocks
-  # This only changes scoping for variables, lsee slot_type
+  # This only changes scoping for variables, see slot_type
+  # (dynamic resolve, as needed when the block is passed, is not implemented)
   #
   class BlockCompiler < CallableCompiler
 

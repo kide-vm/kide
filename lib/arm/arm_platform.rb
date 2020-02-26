@@ -10,5 +10,8 @@ module Arm
     def padding
       0x11000 - loaded_at
     end
+    def num_registers
+      16
+    end
   end
 end

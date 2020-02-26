@@ -6,6 +6,9 @@ module SlotMachine
   # - slot_instructions: The sequence of slot level instructions that was compiled to
   #                 Instructions derive from class Instruction and form a linked list
 
+  # Since we have many different compilers, and they are kept in lists, the
+  # Util CompilerList encapsulates the list behaviour
+  #
   class CallableCompiler
     include Util::CompilerList
 
@@ -21,6 +24,8 @@ module SlotMachine
     end
     attr_reader :slot_instructions , :constants , :callable , :current
 
+    # find the return_label, every method should have exactly one (see constructor)
+    # used during return sequence code generation
     def return_label
       @slot_instructions.each do |ins|
         next unless ins.is_a?(Label)

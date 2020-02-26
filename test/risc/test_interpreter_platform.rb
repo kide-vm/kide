@@ -17,6 +17,9 @@ module Risc
     def test_translator
       assert IdentityTranslator.new
     end
+    def test_registers
+      assert_equal 16  , @inter.num_registers
+    end
   end
   class TestIdentityTranslator < MiniTest::Test
 

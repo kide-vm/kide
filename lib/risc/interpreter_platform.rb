@@ -10,6 +10,9 @@ module Risc
     def padding
       0x100 - loaded_at
     end
+    def num_registers
+      16
+    end
   end
   class Instruction
     def nil_next

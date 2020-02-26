@@ -5,6 +5,30 @@ module SlotMachine
 
   class MethodCompiler < CallableCompiler
 
+    # helper method for builtin mainly
+    # the class_name is a symbol, which is resolved to the instance_type of that class
+    #
+    # return compiler_for_type with the resolved type
+    #
+    def self.compiler_for_class( class_name , method_name , args , frame )
+      raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
+      clazz = Parfait.object_space.get_class_by_name! class_name
+      compiler_for_type( clazz.instance_type , method_name , args , frame)
+    end
+
+    # create a method for the given type ( Parfait type object)
+    # method_name is a Symbol
+    # args a hash that will be converted to a type
+    # the created method is set as the current and the given type too
+    # return the compiler
+    def self.compiler_for_type( type , method_name , args , frame)
+      raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
+      raise "Args must be Type #{args}" unless args.is_a?(Parfait::Type)
+      raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
+      method = type.create_method( method_name , args , frame)
+      self.new(method)
+    end
+
     def initialize( method )
       super(method)
     end
@@ -30,36 +54,11 @@ module SlotMachine
       risc_compiler
     end
 
-    # helper method for builtin mainly
-    # the class_name is a symbol, which is resolved to the instance_type of that class
-    #
-    # return compiler_for_type with the resolved type
-    #
-    def self.compiler_for_class( class_name , method_name , args , frame )
-      raise "create_method #{class_name}.#{class_name.class}" unless class_name.is_a? Symbol
-      clazz = Parfait.object_space.get_class_by_name! class_name
-      compiler_for_type( clazz.instance_type , method_name , args , frame)
-    end
-
-    def add_method_to( target )
-      target.add_method( @callable )
-    end
-
+    # create a block in the scope of the method.
+    # Blocks are like other constants, exept with code.
+    # They need to be compiled, so a list of them is kept
     def create_block(arg_type , frame_type)
       @callable.create_block(arg_type ,frame_type)
-    end
-
-    # create a method for the given type ( Parfait type object)
-    # method_name is a Symbol
-    # args a hash that will be converted to a type
-    # the created method is set as the current and the given type too
-    # return the compiler
-    def self.compiler_for_type( type , method_name , args , frame)
-      raise "create_method #{type.inspect} is not a Type" unless type.is_a? Parfait::Type
-      raise "Args must be Type #{args}" unless args.is_a?(Parfait::Type)
-      raise "create_method #{method_name}.#{method_name.class}" unless method_name.is_a? Symbol
-      method = type.create_method( method_name , args , frame)
-      self.new(method)
     end
 
     # determine how given name need to be accsessed.
