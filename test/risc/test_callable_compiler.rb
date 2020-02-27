@@ -9,7 +9,32 @@ module Risc
     end
   end
   class TestCallableCompiler < MiniTest::Test
-
+    def setup
+      Parfait.boot!({})
+      label = SlotMachine::Label.new("hi","ho")
+      @compiler = CallableCompiler.new(FakeCallable.new  , label)
+    end
+    def test_ok
+      assert @compiler
+    end
+    def test_current
+      assert @compiler.current
+    end
+    def test_current_label
+      assert_equal Label , @compiler.current.class
+      assert_equal "ho" , @compiler.current.name
+    end
+    def test_slot
+      assert @compiler.risc_instructions
+    end
+    def test_const
+      assert_equal Array , @compiler.constants.class
+    end
+    def test_use_reg
+      @compiler.use_reg(:Type)
+    end
+  end
+  class TestFakeCallableCompiler < MiniTest::Test
     def setup
       Parfait.boot!({})
       label = SlotMachine::Label.new("hi","ho")

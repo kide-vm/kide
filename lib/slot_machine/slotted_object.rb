@@ -18,6 +18,7 @@ module SlotMachine
     # the register returned
     def to_register(compiler, source)
       type = known_object.get_type
+      raise "not sym for #{known_object}" if type.is_a?(String)
       right = compiler.use_reg( type )
       const = Risc.load_constant(source, known_object , right)
       compiler.add_code const

@@ -18,10 +18,10 @@ module Risc
     def initialize( callable  , slot_label)
       raise "No method" unless callable
       @callable = callable
-      @regs = []
+      @allocator = Allocator.new
       @constants = []
       @current = @risc_instructions = slot_label.risc_label(self)
-      reset_regs
+      @allocator.reset_regs
     end
     attr_reader :risc_instructions , :constants , :callable , :current
 
@@ -54,14 +54,7 @@ module Risc
     # require a (temporary) register. code must give this back with release_reg
     # Second extra parameter may give extra info about the value, see RegisterValue
     def use_reg( type , extra = {} )
-      raise "Not type #{type.inspect}" unless type.is_a?(Symbol) or type.is_a?(Parfait::Type)
-      if @regs.empty?
-        reg = Risc.tmp_reg(type , extra)
-      else
-        reg = @regs.last.next_reg_use(type , extra)
-      end
-      @regs << reg
-      return reg
+      @allocator.use_reg(type, extra)
     end
 
     # resolve the type of the slot, by inferring from it's name, using the type
@@ -106,7 +99,7 @@ module Risc
     # releasing a register (accuired by use_reg) makes it available for use again
     # thus avoiding possibly using too many registers
     def release_reg( reg )
-      last = @regs.pop
+      last = @allocator.pop
       raise "released register in wrong order, expect #{last} but was #{reg}" if reg != last
     end
 
@@ -114,7 +107,7 @@ module Risc
     # Every statement starts with this, meaning each statement may use all registers, but none
     # get saved. Statements have affect on objects.
     def reset_regs
-      @regs.clear
+      @allocator.clear_regs
     end
 
     # Build with builder (see there), adding the created instructions
@@ -150,3 +143,4 @@ module Risc
 
   end
 end
+require_relative "allocator"
