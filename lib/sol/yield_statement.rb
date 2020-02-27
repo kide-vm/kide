@@ -50,11 +50,7 @@ module Sol
       arg_index = compiler.get_method.arguments_type.get_length - 1
       setup  = SlotMachine::MessageSetup.new( arg_index )
       slot_receive = @receiver.to_slotted(compiler)
-      arg_target = [:message , :next_message ]
-      args = []
-      @arguments.each_with_index do |arg , index| # +1 because of type
-        args << SlotMachine::SlotLoad.new(self, arg_target + ["arg#{index+1}".to_sym] , arg.to_slotted(compiler))
-      end
+      args = @arguments.collect { |arg|  arg.to_slotted(compiler)}
       setup << SlotMachine::ArgumentTransfer.new( self , slot_receive , args )
       setup << SlotMachine::BlockYield.new( self , arg_index )
     end

@@ -11,7 +11,7 @@ module Sol
       assert_equal SlottedMessage,  @ins.next.receiver.class
     end
     def test_arg_one
-      assert_equal SlotLoad,  @ins.next(1).arguments[0].class
+      assert_equal SlottedConstant,  @ins.next(1).arguments[0].class
     end
     def test_call_two
       assert_equal SimpleCall,  @ins.next(2).class

@@ -22,10 +22,8 @@ module Sol
       assert_equal 1, @ins.next(3).arguments.length
     end
     def test_args_one_l
-      left = @ins.next(3).arguments[0].left
-      assert_equal Symbol, left.known_object.class
-      assert_equal :message, left.known_object
-      assert_equal "message.next_message.arg1", left.to_s
+      left = @ins.next(3).arguments[0]
+      assert_equal SlotMachine::IntegerConstant, left.known_object.class
     end
     def test_check_left
       assert_equal SlottedObject, @ins.left.class

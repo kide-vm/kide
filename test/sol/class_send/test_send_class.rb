@@ -45,7 +45,7 @@ module Sol
       assert_equal Parfait::Class,  @ins.next.receiver.known_object.class
     end
     def test_arg_one
-      assert_equal SlotLoad,  @ins.next(1).arguments[0].class
+      assert_equal SlottedConstant,  @ins.next(1).arguments[0].class
     end
     def test_receiver_move_class
       assert_equal ArgumentTransfer,  @ins.next(1).class

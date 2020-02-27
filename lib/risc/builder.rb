@@ -4,7 +4,7 @@ module Risc
   #
   # The code is added to the method_compiler.
   #
-  # Basically this allows to many Risc instructions with extremely readable code.
+  # Basically this allows to express many Risc instructions with extremely readable code.
   # example:
   #  space << Parfait.object_space # load constant
   #  message[:receiver] << space  #make current message's (r0) receiver the space
@@ -15,7 +15,6 @@ module Risc
     attr_reader :built , :compiler , :names
 
     # pass a compiler, to which instruction are added (usually)
-    # second arg determines weather instructions are added (default true)
     # call build with a block to build
     def initialize(compiler, for_source)
       raise "no compiler" unless compiler
@@ -27,10 +26,10 @@ module Risc
     end
 
     # make the magic: convert incoming names into registers that have the
-    # type set according to the name (using resolve_type)
+    # type set according to the name (using infer_type)
     # names are stored, so subsequent calls use the same register
     def method_missing(name , *args)
-      super if args.length != 0
+      return super if args.length != 0
       name = name.to_s
       return @names[name] if @names.has_key?(name)
       if name == "message"
@@ -72,7 +71,6 @@ module Risc
       as_string = "word" if as_string == "name"
       as_string = "message" if as_string == "next_message"
       as_string = "message" if as_string == "caller"
-      as_string = "named_list" if as_string == "arguments"
       sym = as_string.camelise.to_sym
       clazz = Parfait.object_space.get_class_by_name(sym)
       raise "Not implemented/found object #{name}:#{sym}" unless clazz

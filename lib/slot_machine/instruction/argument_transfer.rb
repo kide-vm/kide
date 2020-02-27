@@ -26,7 +26,7 @@ module SlotMachine
       super(source)
       @receiver , @arguments = receiver , arguments
       raise "Receiver not Slot #{@receiver}" unless @receiver.is_a?(Slotted)
-      @arguments.each{|a| raise "args not SlotLoad #{a}" unless a.is_a?(SlotLoad)}
+      @arguments.each{|a| raise "args not Slotted #{a}" unless a.is_a?(Slotted)}
     end
 
     def to_s
@@ -38,11 +38,13 @@ module SlotMachine
     def to_risc(compiler)
       transfer = SlotLoad.new(self.source ,[:message , :next_message , :receiver] , @receiver, self).to_risc(compiler)
       #TODO transfer the Number of arguments to :arguments_given (to be checked on entry)
-      compiler.reset_regs
-      @arguments.each do |arg|
-        arg.to_risc(compiler)
+      arg_target = [:message , :next_message ]
+      @arguments.each_with_index do |arg , index| # +1 because of type
         compiler.reset_regs
+        load = SlotMachine::SlotLoad.new(self.source, arg_target + ["arg#{index+1}".to_sym] , arg)
+        load.to_risc(compiler)
       end
+      compiler.reset_regs
       transfer
     end
   end

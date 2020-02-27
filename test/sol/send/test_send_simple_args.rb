@@ -12,12 +12,11 @@ module Sol
       [SlotMachine::IntegerConstant , 5]
     end
     def test_args_two_move
-      assert_equal :next_message, @ins.next(1).arguments[1].left.slots.name
-      assert_equal :arg2,    @ins.next(1).arguments[1].left.slots.next_slot.name
+      assert_equal SlottedConstant, @ins.next(1).arguments[1].class
     end
     def test_args_two_str
-      assert_equal SlotMachine::IntegerConstant,    @ins.next(1).arguments[1].right.known_object.class
-      assert_equal 2,    @ins.next(1).arguments[1].right.known_object.value
+      assert_equal SlottedConstant,    @ins.next(1).arguments[1].class
+      assert_equal 2,    @ins.next(1).arguments[1].known_object.value
     end
     def test_array
       check_array [MessageSetup,ArgumentTransfer,SimpleCall, SlotLoad, ReturnJump,
