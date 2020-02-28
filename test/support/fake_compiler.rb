@@ -7,6 +7,9 @@ module Risc
       :fake_name
     end
   end
+  def self.test_compiler(label =  SlotMachine::Label.new("start","start_label"))
+    CallableCompiler.new( FakeCallable.new , label)
+  end
   class FakeCompiler
     attr_reader :instructions
     def initialize

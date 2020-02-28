@@ -11,8 +11,7 @@ module Risc
   class TestCallableCompiler < MiniTest::Test
     def setup
       Parfait.boot!({})
-      label = SlotMachine::Label.new("hi","ho")
-      @compiler = CallableCompiler.new(FakeCallable.new  , label)
+      @compiler = Risc.test_compiler
     end
     def test_ok
       assert @compiler
@@ -22,7 +21,7 @@ module Risc
     end
     def test_current_label
       assert_equal Label , @compiler.current.class
-      assert_equal "ho" , @compiler.current.name
+      assert_equal "start_label" , @compiler.current.name
     end
     def test_slot
       assert @compiler.risc_instructions

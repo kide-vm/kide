@@ -6,34 +6,34 @@ module SlotMachine
     def setup
       Parfait.boot!(Parfait.default_test_options)
       load = SlotLoad.new("test", [:message, :caller] , [:message,:type] )
-      @compiler = Risc::FakeCompiler.new
-      load.to_risc(@compiler)
-      @instructions = @compiler.instructions
+      compiler = Risc.test_compiler
+      load.to_risc(compiler)
+      @instructions = compiler.risc_instructions.next
     end
 
     def test_ins_class
-      assert_equal Risc::SlotToReg , @instructions[0].class
+      assert_equal Risc::SlotToReg , @instructions.class
     end
     def test_ins_next_class
-      assert_equal Risc::RegToSlot , @instructions[1].class
+      assert_equal Risc::RegToSlot , @instructions.next.class
     end
     def test_ins_arr
-      assert_equal :r0 , @instructions[0].array.symbol
+      assert_equal :r0 , @instructions.array.symbol
     end
     def test_ins_reg
-      assert_equal :r1 , @instructions[0].register.symbol
+      assert_equal :r2 , @instructions.register.symbol
     end
     def test_ins_index
-      assert_equal 0 , @instructions[0].index
+      assert_equal 0 , @instructions.index
     end
     def test_ins_next_reg
-      assert_equal :r1 , @instructions[1].register.symbol
+      assert_equal :r2 , @instructions.next.register.symbol
     end
     def test_ins_next_arr
-      assert_equal :r0 , @instructions[1].array.symbol
+      assert_equal :r0 , @instructions.next.array.symbol
     end
     def test_ins_next_index
-      assert_equal 6 , @instructions[1].index
+      assert_equal 6 , @instructions.next.index
     end
   end
 end

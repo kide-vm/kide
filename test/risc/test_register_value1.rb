@@ -7,7 +7,7 @@ module Risc
       Parfait.boot!(Parfait.default_test_options)
       @r0 = RegisterValue.new(:r0 , :Message)
       @r1 = RegisterValue.new(:r1 , :Space)
-      @compiler = FakeCompiler.new
+      @compiler = Risc.test_compiler
     end
 
     def test_resolves_index_ok

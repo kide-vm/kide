@@ -14,11 +14,11 @@ module SlotMachine
     end
     def pest_fail_on_right
       load = SlotLoad.new( "test",[:message, :caller] , [:message ,:receiver,:type] )
-      assert_raises {load.to_risc(Risc::FakeCompiler.new)}
+      assert_raises {load.to_risc(Risc.test_compiler)}
     end
     def pest_fail_on_left_long
       load = SlotLoad.new("test", [:message, :caller , :type , :type] , [:message,:type] )
-      assert_raises {load.to_risc(Risc::FakeCompiler.new)}
+      assert_raises {load.to_risc(Risc.test_compiler)}
     end
   end
 end

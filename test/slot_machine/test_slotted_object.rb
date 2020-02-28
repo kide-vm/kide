@@ -5,10 +5,10 @@ module SlotMachine
   class TestSlottedObjectType < MiniTest::Test
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @compiler = Risc::FakeCompiler.new
+      compiler = Risc.test_compiler
       @slotted = Slotted.for(Parfait.object_space , [:type])
-      register = @slotted.to_register(@compiler , InstructionMock.new)
-      @instruction = @compiler.instructions.first
+      register = @slotted.to_register(compiler , InstructionMock.new)
+      @instruction = compiler.risc_instructions.next
     end
     def test_def_class
       assert_equal Risc::LoadConstant , @instruction.class
@@ -23,10 +23,10 @@ module SlotMachine
       assert_equal "Space.type" , @slotted.to_s
     end
     def test_def_register2
-      assert_equal :r1 , @compiler.instructions[1].register.symbol
+      assert_equal :r1 , @instruction.next.register.symbol
     end
     def test_def_next_index
-      assert_equal 0 , @compiler.instructions[1].index
+      assert_equal 0 , @instruction.next.index
     end
   end
 end
