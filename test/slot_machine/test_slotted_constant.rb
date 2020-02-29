@@ -14,7 +14,7 @@ module SlotMachine
       assert_equal Risc::LoadConstant , @instruction.class
     end
     def test_def_register
-      assert_equal :r1 , @instruction.register.symbol
+      assert @instruction.register.is_object?
     end
     def test_def_const
       assert_equal "hi" , @instruction.constant.to_string
@@ -32,7 +32,7 @@ module SlotMachine
       assert_equal Risc::LoadConstant , @instruction.class
     end
     def test_def_register
-      assert_equal :r1 , @instruction.register.symbol
+      assert @instruction.register.is_object?
     end
     def test_def_const
       assert_equal "hi" , @instruction.constant.to_string
@@ -41,7 +41,7 @@ module SlotMachine
       assert_equal "StringConstant.type" , @slotted.to_s
     end
     def test_def_register2
-      assert_equal :r1 , @instruction.next.register.symbol
+      assert @instruction.next.register.is_object?
     end
     def test_def_next_index
       assert_equal 0 , @instruction.next.index

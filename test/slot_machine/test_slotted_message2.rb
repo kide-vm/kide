@@ -16,10 +16,10 @@ module SlotMachine
       assert_equal NilClass , @instruction.next.class
     end
     def test_def_array #from message r0
-      assert_equal :r0 , @instruction.array.symbol
+      assert_equal :message , @instruction.array.symbol
     end
     def test_def_register # to next free register r1
-      assert_equal :r2 , @register.symbol
+      assert_equal :"message.caller" , @register.symbol
     end
     def test_def_index # at caller index 6
       assert_equal 6 , @instruction.index

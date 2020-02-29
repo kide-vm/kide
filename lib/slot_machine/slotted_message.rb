@@ -14,18 +14,13 @@ module SlotMachine
     # the code is added to compiler
     # the register returned
     def to_register(compiler, source)
-      type = :Message
-      right = compiler.use_reg( type )
       slots = @slots
-      left = Risc.message_reg
-      left = left.resolve_and_add( slots.name , compiler)
-      reg = compiler.current.register
-      slots = slots.next_slot
+      left = Risc.message_named_reg
       while( slots )
         left = left.resolve_and_add( slots.name , compiler)
         slots = slots.next_slot
       end
-      return reg
+      return left
     end
 
     # load the data in const_reg into the slot that is named by slot symbols
@@ -36,7 +31,7 @@ module SlotMachine
     #       most likely be united
     def reduce_and_load(const_reg , compiler , original_source )
       raise "Not Message #{object}" unless known_object == :message
-      left = Risc.message_reg
+      left = Risc.message_named_reg
       slot = slots
       while( slot.next_slot )
         left = left.resolve_and_add( slot.name , compiler)

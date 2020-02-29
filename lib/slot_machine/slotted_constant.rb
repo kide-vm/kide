@@ -22,16 +22,16 @@ module SlotMachine
       else
         type = :Object
       end
-      right = compiler.use_reg( type )
       parfait = known_object.to_parfait(compiler)
-      const = Risc.load_constant(source, parfait , right)
-      compiler.add_code const
+      last = Risc.load_constant(source, parfait )
+      compiler.add_code(last)
       if slots_length == 2
         raise "only type allowed for constants, not #{slots}" unless slots.name == :type
-        compiler.add_code Risc::SlotToReg.new( source , right , Parfait::TYPE_INDEX, right)
+        last = Risc.slot_to_reg( source , last.register , Parfait::TYPE_INDEX )
+        compiler.add_code(last)
       end
       raise "Can't have slots into Constants #{slots}" if slots_length > 2
-      return const.register
+      return last.register
     end
 
   end

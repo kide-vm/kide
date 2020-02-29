@@ -19,23 +19,22 @@ module SlotMachine
     def to_register(compiler, source)
       type = known_object.get_type
       raise "not sym for #{known_object}" if type.is_a?(String)
-      right = compiler.use_reg( type )
-      const = Risc.load_constant(source, known_object , right)
-      compiler.add_code const
+      last = Risc.load_constant(source, known_object)
+      compiler.add_code last
       if slots_length > 1
-        # desctructively replace the existing value to be loaded if more slots
-        compiler.add_code Risc.slot_to_reg( source , right ,slots.name, right)
+        last = Risc.slot_to_reg( source , last.register ,slots.name)
+        compiler.add_code(last)
       end
       if slots_length > 2
-        # desctructively replace the existing value to be loaded if more slots
-        index = Risc.resolve_to_index(slots.name , slots.next_slot.name ,compiler)
-        compiler.add_code Risc::SlotToReg.new( source , right ,index, right)
-        if slots_length > 3
-          raise "3 slots only for type #{slots}" unless slots.next_slot.next_slot.name == :type
-          compiler.add_code Risc::SlotToReg.new( source , right , Parfait::TYPE_INDEX, right)
-        end
+        last = Risc.slot_to_reg( source , last.register , slots.next_slot.name )
+        compiler.add_code(last)
       end
-      return const.register
+      if slots_length > 3
+        raise "3 slots only for type #{slots}" unless slots.next_slot.next_slot.name == :type
+        last = Risc.slot_to_reg( source , last.register , slots.next_slot.name )
+        compiler.add_code(last)
+      end
+      return last.register
     end
 
     # Note: this is the left hand case, the right hand being to_register
