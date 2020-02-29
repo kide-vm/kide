@@ -29,9 +29,6 @@ module Risc
     def test_const
       assert_equal Array , @compiler.constants.class
     end
-    def test_use_reg
-      @compiler.use_reg(:Type)
-    end
   end
   class TestFakeCallableCompiler < MiniTest::Test
     def setup

@@ -16,9 +16,12 @@ module Risc
   # Produce a SlotToReg instruction.
   # Array and to are registers
   # index may be a Symbol in which case is resolves with resolve_index.
-  def self.slot_to_reg( source , array , index , to)
-    raise "Not register #{array}" unless RegisterValue.look_like_reg(array)
+  def self.slot_to_reg( source , array , index )
+    raise "Register #{array}" if RegisterValue.look_like_reg(array.symbol)
     index = array.resolve_index(index) if index.is_a?(Symbol)
+    type = array.type_at(index)
+    #puts "Slot for #{array.symbol}@ index #{index} is #{type}"
+    to = RegisterValue.new( "#{array.symbol}.#{type.to_s.downcase}".to_sym , type )
     SlotToReg.new( source , array , index , to)
   end
 end
