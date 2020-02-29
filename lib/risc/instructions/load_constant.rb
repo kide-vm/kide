@@ -10,7 +10,7 @@ module Risc
       @register = register
       @constant = constant
       raise "Not Constant #{constant}" if constant.is_a?(SlotMachine::Slot)
-      raise "Not register #{register}" unless RegisterValue.look_like_reg(register)
+      raise "Not register #{register}" unless register.is_a?(RegisterValue)
     end
     attr_accessor :register , :constant
 
@@ -32,7 +32,15 @@ module Risc
       end
     end
   end
-  def self.load_constant( source , constant , register )
+  def self.load_constant( source , constant )
+    if(constant.is_a?(Parfait::Object))
+      type = constant.get_type
+      value = constant
+    else
+      type = constant.ct_type
+      value = constant.value
+    end
+    register = RegisterValue.new( "id_#{value.object_id}".to_sym , type )
     LoadConstant.new( source , constant , register )
   end
 end

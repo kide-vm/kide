@@ -51,12 +51,6 @@ module Risc
       self
     end
 
-    # require a (temporary) register. code must give this back with release_reg
-    # Second extra parameter may give extra info about the value, see RegisterValue
-    def use_reg( type , extra = {} )
-      @allocator.use_reg(type, extra)
-    end
-
     # resolve the type of the slot, by inferring from it's name, using the type
     # scope related slots are resolved by the compiler by method/block
     def slot_type( slot , type)
