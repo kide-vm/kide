@@ -11,18 +11,18 @@ module Risc
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @r0 = RegisterValue.new(:r0 , :Message)
-      @r1 = RegisterValue.new(:r1 , :Space)
-      @r2 = RegisterValue.new(:r1 , :Factory)
+      @r0 = RegisterValue.new(:message , :Message)
+      @r1 = RegisterValue.new(:id_1234 , :Space)
+      @r2 = RegisterValue.new(:id_1256 , :Factory)
     end
     def test_class_name_type
       assert_equal :Message , @r0.class_name
     end
     def test_class_name_fix
-      assert_equal :fixnum , RegisterValue.new(:r0 , :fixnum).class_name
+      assert_equal :Integer , RegisterValue.new(:id_234 , :Integer).class_name
     end
     def test_r0
-      assert_equal :r0 , @r0.symbol
+      assert_equal :message , @r0.symbol
     end
     def test_load_space
       move = @r0 << Parfait.object_space
@@ -72,12 +72,12 @@ module Risc
       assert_equal @r0 , instr.register
       assert_equal 1 , instr.index
     end
-    def test_slot_to_reg
+    def est_slot_to_reg
       instr = @r0 << @r2[:next_object]
       assert_equal SlotToReg , instr.class
-      assert_equal @r1 , instr.array
       assert_equal @r0 , instr.register
       assert_equal 2 , instr.index
+      assert_equal @r1 , instr.array
     end
     def test_reg_to_byte
       instr = @r1[1] <= @r0
@@ -86,12 +86,12 @@ module Risc
       assert_equal @r0 , instr.register
       assert_equal 1 , instr.index
     end
-    def test_reg_to_slot
+    def est_reg_to_slot
       instr = @r2[:next_object] << @r0
       assert_equal RegToSlot , instr.class
-      assert_equal @r1 , instr.array
       assert_equal @r0 , instr.register
       assert_equal 2 , instr.index
+      assert_equal @r1 , instr.array
     end
   end
 end

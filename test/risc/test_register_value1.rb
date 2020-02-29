@@ -5,8 +5,8 @@ module Risc
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @r0 = RegisterValue.new(:r0 , :Message)
-      @r1 = RegisterValue.new(:r1 , :Space)
+      @r0 = RegisterValue.new(:message , :Message)
+      @r1 = RegisterValue.new(:id_1234 , :Space)
       @compiler = Risc.test_compiler
     end
 
@@ -28,16 +28,16 @@ module Risc
       assert @r0.get_new_left(:caller , @compiler).extra.empty?
     end
     def test_get_new_left_0_reg
-      assert_equal :r1 , @r0.get_new_left(:caller , @compiler).symbol
+      assert_equal :"message.caller" , @r0.get_new_left(:caller , @compiler).symbol
     end
     def test_get_new_left_1
       assert_equal RegisterValue , @r0.get_new_left(:caller , @compiler).class
     end
     def test_get_new_left_1_reg
-      assert_equal :r1 , @r0.get_new_left(:caller , @compiler).symbol
+      assert_equal :"id_1234.classes" , @r1.get_new_left(:classes , @compiler).symbol
     end
     def test_get_left_uses_extra
-      @r1 = RegisterValue.new(:r1 , :Space , type_arguments: @r0.type)
+      @r1 = RegisterValue.new(:message , :Space , type_arguments: @r0.type)
       # works with nil as compiler, because extra is used
       assert_equal :Message , @r1.get_new_left(:arguments , nil).type.class_name
     end

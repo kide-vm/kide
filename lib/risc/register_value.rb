@@ -22,9 +22,8 @@ module Risc
     def initialize( reg , type , extra = {})
       extra = {} unless extra
       raise "Not Hash #{extra}"  unless extra.is_a?(Hash)
-      raise "not reg #{reg}" unless self.class.look_like_reg( reg )
-      raise "No type " unless type
       type = Parfait.object_space.get_type_by_class_name(type) if type.is_a?(Symbol)
+      raise "No type #{reg}" unless type
       @type = type
       @symbol = reg
       @extra = extra
@@ -61,9 +60,13 @@ module Risc
       return index
     end
 
+    def type_at(index)
+      type.type_at(index)
+    end
+
     # reduce integer to fixnum and add instruction if builder is used
     def reduce_int
-      reduce = Risc.slot_to_reg( "int -> fix" , self , Parfait::Integer.integer_index , self)
+      reduce = Risc::SlotToReg.new( "int -> fix" , self , Parfait::Integer.integer_index , self)
       builder.add_code(reduce) if builder
       reduce
     end
@@ -77,11 +80,10 @@ module Risc
     def get_new_left(slot, compiler)
       new_type = extra["type_#{slot}".to_sym]
       new_type , extra = compiler.slot_type(slot , type) unless new_type
-      if( @symbol == :r0 )
-        new_left  = compiler.use_reg( new_type , extra)
-      else
-        new_left = RegisterValue.new( @symbol , new_type , extra)
-      end
+      new_name = "#{@symbol}.#{slot}"
+      raise "no #{self}" if RegisterValue.look_like_reg(@symbol)
+      puts "New name #{new_name}"
+      new_left = RegisterValue.new( new_name.to_sym , new_type , extra)
       new_left
     end
 
@@ -135,12 +137,12 @@ module Risc
     def <<( right )
       case right
       when Symbol
-        ins = Risc.load_constant("#{right.class} to #{self.type}" , right , self)
+        ins = Risc::LoadConstant.new("#{right.class} to #{self.type}" , right , self)
       when Parfait::Object
-        ins = Risc.load_constant("#{right.class} to #{self.type}" , right , self)
+        ins = Risc::LoadConstant.new("#{right.class} to #{self.type}" , right , self)
         builder.compiler.add_constant(right) if builder
       when Label
-        ins = Risc.load_constant("#{right.class} to #{self.type}" , right , self)
+        ins = Risc::LoadConstant.new("#{right.class} to #{self.type}" , right , self)
         builder.compiler.add_constant(right.address) if builder
       when ::Integer
         ins = Risc.load_data("#{right.class} to #{self.type}" , right , self)
@@ -218,7 +220,10 @@ module Risc
   def self.message_reg
     RegisterValue.new :r0 , :Message
   end
-
+  # a named version of the message register, called :message
+  def self.message_named_reg
+    RegisterValue.new :message , :Message
+  end
   # The register we use to store the new message object is :r3
   # The new message is the one being built, to be sent
   def self.new_message_reg
