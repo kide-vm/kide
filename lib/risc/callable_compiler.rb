@@ -96,6 +96,7 @@ module Risc
     def load_object( object )
       raise "must be Parfait, not #{object.class}" unless object.is_a?(Parfait::Object)
       ins = Risc.load_constant("load to #{object.type}" , object)
+      ins.register.set_compiler(self)
       add_code ins
       # todo for constants (not objects)
       # add_constant(right) if compiler

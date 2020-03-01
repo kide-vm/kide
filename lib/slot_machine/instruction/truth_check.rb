@@ -20,13 +20,13 @@ module SlotMachine
 
     def to_risc(compiler)
       false_label = @false_label.risc_label(compiler)
-      builder = compiler.builder("TruthCheck")
       condition_reg = @condition.to_register(compiler,self)
-      builder.build do
-        object! << Parfait.object_space.false_object
+      
+      compiler.build(self.to_s) do
+        object = load_object Parfait.object_space.false_object
         object.op :- , condition_reg
         if_zero false_label
-        object << Parfait.object_space.nil_object
+        object = load_object Parfait.object_space.nil_object
         object.op :- , condition_reg
         if_zero false_label
       end

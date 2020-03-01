@@ -142,6 +142,9 @@ module Risc
       return ins
     end
 
+    def load_object(object)
+      @compiler.load_object(object)
+    end
     # for some methods that return an integer it is beneficial to pre allocate the
     # integer and store it in the return value. That is what this function does.
     #

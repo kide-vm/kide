@@ -18,7 +18,11 @@ module Minitest
     def assert_load(load , clazz = nil , register = nil)
       assert_equal Risc::LoadConstant , load.class
       assert_equal( clazz , load.constant.class) if clazz
-      assert_equal( register , load.register.symbol, "wrong destination register") if register
+      if register
+        assert_equal( register , load.register.symbol, "wrong destination register") if register
+      else
+        assert load.register.is_object? , "reg #{load.register.symbol} is not object (ie no id_xx)"
+      end
     end
     def assert_transfer( transfer , from , to)
       assert_equal Risc::Transfer , transfer.class
