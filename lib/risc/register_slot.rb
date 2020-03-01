@@ -14,10 +14,10 @@ module Risc
   # or r-vlalue respectively.
 
   class RegisterSlot
-    attr_reader :register , :index , :builder
+    attr_reader :register , :index , :compiler
 
-    def initialize(register, index , builder)
-      @register , @index , @builder = register , index , builder
+    def initialize(register, index , compiler)
+      @register , @index , @compiler = register , index , compiler
     end
 
     # fullfil the objects purpose by creating a RegToSlot instruction from
@@ -25,7 +25,7 @@ module Risc
     def <<( reg )
       raise "not reg #{reg}" unless reg.is_a?(RegisterValue)
       reg_to_slot = Risc.reg_to_slot("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg , register, index)
-      builder.add_code(reg_to_slot) if builder
+      compiler.add_code(reg_to_slot) if compiler
       reg_to_slot
     end
 
@@ -34,7 +34,7 @@ module Risc
     def <=( reg )
       raise "not reg #{reg}" unless reg.is_a?(RegisterValue)
       reg_to_byte = Risc.reg_to_byte("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg , register, index)
-      builder.add_code(reg_to_byte) if builder
+      compiler.add_code(reg_to_byte) if compiler
       reg_to_byte
     end
 

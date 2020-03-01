@@ -1,5 +1,6 @@
 require_relative "helper"
 module SlotMachine
+  # need to derive, to overwrite source_name
   class FakeCallableCompiler < CallableCompiler
     def source_name
       "luke"

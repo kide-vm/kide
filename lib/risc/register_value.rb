@@ -5,13 +5,13 @@ module Risc
   # The type is always known, and sometimes the value too
   # Or something about the value, like some instances types
   #
-  # When participating in the builder dsl, a builder may be set to get the
-  # results of dsl operations (like <<) back to the builder
+  # When participating in the compiler dsl, a compiler may be set to get the
+  # results of dsl operations (like <<) back to the compiler
   class RegisterValue
 
     attr_reader :symbol , :type , :extra
 
-    attr_reader :builder
+    attr_reader :compiler
 
     # The first arg is a symbol :r0 - :r12
     # Second arg is the type, which may be given as the symbol of the class name
@@ -34,11 +34,11 @@ module Risc
       @type.class_name
     end
 
-    # allows to set the builder, which is mainly done by the builder
+    # allows to set the compiler, which is mainly done by the compiler
     # but sometimes, eg in exit, one nneds to create the reg by hand and set
     # return the RegisterValue for chaining in assignment
-    def set_builder( builder )
-      @builder = builder
+    def set_compiler( compiler )
+      @compiler = compiler
       self
     end
 
@@ -64,10 +64,10 @@ module Risc
       type.type_at(index)
     end
 
-    # reduce integer to fixnum and add instruction if builder is used
+    # reduce integer to fixnum and add instruction if compiler is used
     def reduce_int
       reduce = Risc::SlotToReg.new( "int -> fix" , self , Parfait::Integer.integer_index , self)
-      builder.add_code(reduce) if builder
+      compiler.add_code(reduce) if compiler
       reduce
     end
 
@@ -136,25 +136,19 @@ module Risc
     # - an RegisterSlot, resulting in an SlotToReg
     def <<( right )
       case right
-      when Symbol
-        ins = Risc::LoadConstant.new("#{right.class} to #{self.type}" , right , self)
-      when Parfait::Object
-        ins = Risc::LoadConstant.new("#{right.class} to #{self.type}" , right , self)
-        builder.compiler.add_constant(right) if builder
       when Label
         ins = Risc::LoadConstant.new("#{right.class} to #{self.type}" , right , self)
-        builder.compiler.add_constant(right.address) if builder
+        compiler.compiler.add_constant(right.address) if compiler
       when ::Integer
         ins = Risc.load_data("#{right.class} to #{self.type}" , right , self)
       when RegisterValue
         ins = Risc.transfer("#{right.type} to #{self.type}" , right , self)
       when RegisterSlot
-        puts right.to_s
         ins = Risc::SlotToReg.new("#{right.register.type}[#{right.index}] -> #{self.type}" , right.register , right.index , self)
       else
         raise "not implemented for #{right.class}:#{right}"
       end
-      builder.add_code(ins) if builder
+      compiler.add_code(ins) if compiler
       return ins
     end
 
@@ -163,14 +157,14 @@ module Risc
     def <=( right )
       raise "not implemented for #{right.class}:#{right}" unless right.is_a?( RegisterSlot )
       ins = Risc.byte_to_reg("#{right.register.type}[#{right.index}] -> #{self.type}" , right.register , right.index , self)
-      builder.add_code(ins) if builder
+      compiler.add_code(ins) if compiler
       return ins
     end
 
     def -( right )
       raise "operators only on registers, not #{right.class}" unless right.is_a? RegisterValue
       op = Risc.op("#{self.type} - #{right.type}", :- , self , right )
-      builder.add_code(op) if builder
+      compiler.add_code(op) if compiler
       op
     end
 
@@ -178,7 +172,7 @@ module Risc
     # doesn't read quite as smoothly as one would like, but better than the compiler version
     def op( operator , right)
       ret = Risc.op( "operator #{operator}" , operator , self , right)
-      builder.add_code(ret) if builder
+      compiler.add_code(ret) if compiler
       ret
     end
 
@@ -186,7 +180,7 @@ module Risc
     # The RegisterSlot then gets used in a RegToSlot or SlotToReg, where
     # the values are unpacked to call Risc.reg_to_slot or Risc.slot_to_reg
     def []( index )
-      RegisterSlot.new( self , index , builder)
+      RegisterSlot.new( self , index , compiler)
     end
   end
 

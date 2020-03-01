@@ -90,18 +90,16 @@ module Risc
       copied
     end
 
-    # releasing a register (accuired by use_reg) makes it available for use again
-    # thus avoiding possibly using too many registers
-    def release_reg( reg )
-      last = @allocator.pop
-      raise "released register in wrong order, expect #{last} but was #{reg}" if reg != last
-    end
-
-    # reset the registers to be used. Start at r4 for next usage.
-    # Every statement starts with this, meaning each statement may use all registers, but none
-    # get saved. Statements have affect on objects.
-    def reset_regs
-      @allocator.clear_regs
+    # Load a constant, meaning create a LoadConstant instruction for the constant
+    # add the instruction to the code and return the register_value that was created
+    # for further use
+    def load_object( object )
+      raise "must be Parfait, not #{object.class}" unless object.is_a?(Parfait::Object)
+      ins = Risc.load_constant("load to #{object.type}" , object)
+      add_code ins
+      # todo for constants (not objects)
+      # add_constant(right) if compiler
+      ins.register
     end
 
     # Build with builder (see there), adding the created instructions

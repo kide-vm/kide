@@ -1,9 +1,9 @@
 require_relative "../helper"
 
-class FakeBuilder
-  attr_reader :built
+class SuperFakeCompiler
+  attr_reader :code
   def add_code(ins)
-    @built = ins
+    @code = ins
   end
 end
 module Risc
@@ -24,14 +24,6 @@ module Risc
     def test_r0
       assert_equal :message , @r0.symbol
     end
-    def test_load_space
-      move = @r0 << Parfait.object_space
-      assert_equal LoadConstant , move.class
-    end
-    def test_load_symbol
-      move = @r1 << :puts
-      assert_equal LoadConstant , move.class
-    end
     def test_load_label
       label = Risc::Label.new("HI","ho" , FakeAddress.new(0))
       move = @r1 << label
@@ -41,16 +33,16 @@ module Risc
       transfer = @r0 << @r1
       assert_equal Transfer , transfer.class
     end
-    def test_set_builder
-      reg = @r0.set_builder(FakeBuilder.new)
+    def test_set_compiler
+      reg = @r0.set_compiler(SuperFakeCompiler.new)
       assert_equal RegisterValue , reg.class
-      assert reg.builder
+      assert reg.compiler
     end
-    def test_calls_builder
-      builder = FakeBuilder.new
-      @r0.set_builder( builder )
+    def test_calls_compiler
+      compiler = SuperFakeCompiler.new
+      @r0.set_compiler( compiler )
       @r0 << @r1
-      assert_equal Transfer , builder.built.class
+      assert_equal Transfer , compiler.code.class
     end
     def test_index_op
       message = @r0[:next_message]

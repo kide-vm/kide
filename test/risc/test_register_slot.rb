@@ -17,14 +17,6 @@ module Risc
     def test_r0
       assert_equal :message , @r0.symbol
     end
-    def test_load_space
-      move = @r0 << Parfait.object_space
-      assert_equal LoadConstant , move.class
-    end
-    def test_load_symbol
-      move = @r1 << :puts
-      assert_equal LoadConstant , move.class
-    end
     def test_load_label
       label = Risc::Label.new("HI","ho" , FakeAddress.new(0))
       move = @r1 << label
