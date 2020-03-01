@@ -23,25 +23,25 @@ module SlotMachine
       assert_equal NilClass ,   @instructions.next(3).class
     end
     def test_ins_load
-      assert_equal :r3 , @instructions.next.register.symbol
+      assert @instructions.next.register.is_object?
       assert_equal Parfait::CacheEntry , @instructions.next.constant.class
     end
 
     def test_ins_next_reg
-      assert_equal :r2 , @instructions.register.symbol
+      assert_equal :"message.type" , @instructions.register.symbol
     end
     def test_ins_next_arr
-      assert_equal :r0 , @instructions.array.symbol
+      assert_equal :message , @instructions.array.symbol
     end
     def test_ins_next_index
       assert_equal 0 , @instructions.index
     end
 
     def test_ins_next_2_reg
-      assert_equal :r2 , @instructions.next(2).register.symbol
+      assert_equal :"message.type" , @instructions.next(2).register.symbol
     end
     def test_ins_next_2_arr
-      assert_equal :r3 , @instructions.next(2).array.symbol
+      assert @instructions.next(2).array.is_object?
     end
     def test_ins_next_2_index
       assert_equal 1 , @instructions.next(2).index

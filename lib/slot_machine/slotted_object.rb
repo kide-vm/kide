@@ -42,8 +42,9 @@ module SlotMachine
     #       most likely be united
     def reduce_and_load(const_reg , compiler , original_source )
       raise "only cache" unless known_object.is_a?( Parfait::CacheEntry)
-      left = compiler.use_reg( :CacheEntry )
-      compiler.add_code Risc.load_constant(original_source, known_object , left)
+      load = Risc.load_constant(original_source, known_object )
+      left = load.register
+      compiler.add_code load
       compiler.add_code Risc.reg_to_slot(original_source, const_reg , left, slots.name)
     end
   end

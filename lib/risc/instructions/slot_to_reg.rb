@@ -19,10 +19,11 @@ module Risc
   # a new regsister will be created as the result, ie the reg part for slot_to_reg
   def self.slot_to_reg( source , array , index )
     raise "Register #{array}" if RegisterValue.look_like_reg(array.symbol)
+    new_name = "#{array.symbol}.#{index.to_s.downcase}".to_sym
     index = array.resolve_index(index) if index.is_a?(Symbol)
     type = array.type_at(index)
     #puts "Slot for #{array.symbol}@ index #{index} is #{type}"
-    to = RegisterValue.new( "#{array.symbol}.#{type.to_s.downcase}".to_sym , type )
+    to = RegisterValue.new( new_name , type )
     SlotToReg.new( source , array , index , to)
   end
 end

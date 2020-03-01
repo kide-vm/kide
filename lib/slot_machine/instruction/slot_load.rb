@@ -48,7 +48,6 @@ module SlotMachine
     def to_risc(compiler)
       const_reg = @right.to_register(compiler , original_source)
       @left.reduce_and_load(const_reg , compiler , original_source )
-      compiler.reset_regs
     end
 
   end

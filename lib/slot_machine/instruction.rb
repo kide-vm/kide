@@ -38,9 +38,9 @@ module SlotMachine
 
 end
 
+require_relative "basic_values"
 require_relative "instruction/label"
 require_relative "instruction/check"
-require_relative "instruction/basic_values"
 require_relative "instruction/simple_call"
 require_relative "instruction/dynamic_call"
 require_relative "instruction/block_yield"

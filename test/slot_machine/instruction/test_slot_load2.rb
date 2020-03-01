@@ -21,28 +21,28 @@ module SlotMachine
       assert_equal NilClass , @instructions.next(4).class
     end
     def test_ins_next_reg
-      assert_equal :r2 , @instructions.next.register.symbol
+      assert_equal :"message.caller.type" , @instructions.next.register.symbol
     end
     def test_ins_next_arr
-      assert_equal :r2 , @instructions.next.array.symbol
+      assert_equal :"message.caller" , @instructions.next.array.symbol
     end
     def test_ins_next_index
       assert_equal 0 , @instructions.next.index
     end
     def test_ins_next_2_reg
-      assert_equal :r3 , @instructions.next(2).register.symbol
+      assert_equal :"message.caller" , @instructions.next(2).register.symbol
     end
     def test_ins_next_2_arr
-      assert_equal :r0 , @instructions.next(2).array.symbol
+      assert_equal :"message" , @instructions.next(2).array.symbol
     end
     def test_ins_next_2_index
       assert_equal 6 , @instructions.next(2).index
     end
     def test_ins_next_3_reg
-      assert_equal :r2 , @instructions.next(3).register.symbol
+      assert_equal :"message.caller.type" , @instructions.next(3).register.symbol
     end
     def test_ins_next_3_arr
-      assert_equal :r3 , @instructions.next(3).array.symbol
+      assert_equal :"message.caller" , @instructions.next(3).array.symbol
     end
     def test_ins_next_3_index
       assert_equal 0 , @instructions.next(3).index

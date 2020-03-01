@@ -40,11 +40,9 @@ module SlotMachine
       #TODO transfer the Number of arguments to :arguments_given (to be checked on entry)
       arg_target = [:message , :next_message ]
       @arguments.each_with_index do |arg , index| # +1 because of type
-        compiler.reset_regs
         load = SlotMachine::SlotLoad.new(self.source, arg_target + ["arg#{index+1}".to_sym] , arg)
         load.to_risc(compiler)
       end
-      compiler.reset_regs
       transfer
     end
   end

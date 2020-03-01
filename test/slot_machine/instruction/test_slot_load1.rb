@@ -18,19 +18,19 @@ module SlotMachine
       assert_equal Risc::RegToSlot , @instructions.next.class
     end
     def test_ins_arr
-      assert_equal :r0 , @instructions.array.symbol
+      assert_equal :message , @instructions.array.symbol
     end
     def test_ins_reg
-      assert_equal :r2 , @instructions.register.symbol
+      assert_equal :"message.type" , @instructions.register.symbol
     end
     def test_ins_index
       assert_equal 0 , @instructions.index
     end
     def test_ins_next_reg
-      assert_equal :r2 , @instructions.next.register.symbol
+      assert_equal :"message.type" , @instructions.next.register.symbol
     end
     def test_ins_next_arr
-      assert_equal :r0 , @instructions.next.array.symbol
+      assert_equal :message , @instructions.next.array.symbol
     end
     def test_ins_next_index
       assert_equal 6 , @instructions.next.index

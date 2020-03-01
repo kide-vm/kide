@@ -25,17 +25,25 @@ module Risc
     def <<( reg )
       case reg
       when RegisterValue
-        puts reg.symbol
         to_mem("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg)
       when RegisterSlot
-        puts reg.register.symbol
         reg = to_reg("reduce #{@register.symbol}[@index]")
-        to_mem("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg)        
+        to_mem("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg)
       else
         raise "not reg value or slot #{reg}"
       end
     end
 
+    # for chaining the array operator is defined here too.
+    # It basically reduces the slot to a register and applies the [] on that reg.
+    # thus returning a new RegisterSlot.
+    # Example: message[:caller][:next_message]
+    #     message[:caller] returns a RegisterSlot, which would be self for this example
+    #    to evaluate self[:next_message] we reduce self to a register with to_reg
+    def [](index)
+      reg = to_reg("reduce #{@register.symbol}[@index]")
+      reg[index]
+    end
     # push the given register into the slot that self represents
     # ie create a slot_to_reg instruction and add to the compiler
     # the register represents and "array", and the content of the
@@ -47,7 +55,7 @@ module Risc
     end
 
     # load the conntent of the slot that self descibes into a a new register.
-    # the regsiter is created, and the slot_to_reg instruction added to the
+    # the register is created, and the slot_to_reg instruction added to the
     # compiler. the return is a bit like @register[@index]
     def to_reg(source )
       slot_to_reg = Risc.slot_to_reg(source , register, index)

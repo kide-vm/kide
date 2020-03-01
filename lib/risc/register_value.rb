@@ -82,7 +82,6 @@ module Risc
       new_type , extra = compiler.slot_type(slot , type) unless new_type
       new_name = "#{@symbol}.#{slot}"
       raise "no #{self}" if RegisterValue.look_like_reg(@symbol)
-      puts "New name #{new_name}"
       new_left = RegisterValue.new( new_name.to_sym , new_type , extra)
       new_left
     end
