@@ -33,9 +33,12 @@ module Risc
     end
   end
   def self.load_constant( source , constant )
-    if(constant.is_a?(Parfait::Object))
+    value = constant
+    case constant
+    when Parfait::Object
       type = constant.get_type
-      value = constant
+    when Label
+      type = constant.address.get_type
     else
       type = constant.ct_type
       value = constant.value

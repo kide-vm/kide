@@ -64,12 +64,12 @@ module Risc
       assert_equal @r0 , instr.register
       assert_equal 1 , instr.index
     end
-    def est_slot_to_reg
+    def test_slot_to_reg
       instr = @r0 << @r2[:next_object]
       assert_equal SlotToReg , instr.class
-      assert_equal @r0 , instr.register
+      assert_equal :message , instr.register.symbol
       assert_equal 2 , instr.index
-      assert_equal @r1 , instr.array
+      assert instr.array.is_object?
     end
     def test_reg_to_byte
       instr = @r1[1] <= @r0

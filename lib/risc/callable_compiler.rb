@@ -94,8 +94,7 @@ module Risc
     # add the instruction to the code and return the register_value that was created
     # for further use
     def load_object( object )
-      raise "must be Parfait, not #{object.class}" unless object.is_a?(Parfait::Object)
-      ins = Risc.load_constant("load to #{object.type}" , object)
+      ins = Risc.load_constant("load to #{object}" , object)
       ins.register.set_compiler(self)
       add_code ins
       # todo for constants (not objects)

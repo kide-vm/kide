@@ -40,15 +40,16 @@ module Risc
     # Example: message[:caller][:next_message]
     #     message[:caller] returns a RegisterSlot, which would be self for this example
     #    to evaluate self[:next_message] we reduce self to a register with to_reg
-    def [](index)
+    def []( index )
       reg = to_reg("reduce #{@register.symbol}[@index]")
       reg[index]
     end
+
     # push the given register into the slot that self represents
     # ie create a slot_to_reg instruction and add to the compiler
     # the register represents and "array", and the content of the
     # given register from, is pushed to the memory at register[index]
-    def to_mem(source , from )
+    def to_mem( source , from )
       reg_to_slot = Risc.reg_to_slot(source , from , register, index)
       compiler.add_code(reg_to_slot) if compiler
       reg_to_slot.register
@@ -57,9 +58,12 @@ module Risc
     # load the conntent of the slot that self descibes into a a new register.
     # the register is created, and the slot_to_reg instruction added to the
     # compiler. the return is a bit like @register[@index]
-    def to_reg(source )
+    def to_reg( source )
       slot_to_reg = Risc.slot_to_reg(source , register, index)
-      compiler.add_code(slot_to_reg) if compiler
+      if compiler
+        compiler.add_code(slot_to_reg)
+        slot_to_reg.register.set_compiler(compiler)
+      end
       slot_to_reg.register
     end
 

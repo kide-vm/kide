@@ -26,12 +26,11 @@ module SlotMachine
     def to_risc(compiler)
       method = @method
       return_label = Risc.label(self,"continue_#{object_id}")
-      compiler.build("SimpleCall") do
-        return_address! << return_label
-        next_message! << message[:next_message]
-        next_message[:return_address] << return_address
+      return_address = compiler.load_object( return_label )
+      compiler.build(self.to_s) do
+        message[:next_message][:return_address] << return_address
         message << message[:next_message]
-        add_code Risc::FunctionCall.new("SimpleCall", method )
+        add_code Risc.function_call(self.to_s, method )
         add_code return_label
       end
     end
