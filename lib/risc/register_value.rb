@@ -144,6 +144,7 @@ module Risc
       when RegisterValue
         ins = Risc.transfer("#{right.type} to #{self.type}" , right , self)
       when RegisterSlot
+        raise "logic error, after creating the reg, need to transfer"
         ins = Risc::SlotToReg.new("#{right.register.type}[#{right.index}] -> #{self.type}" , right.register , right.index , self)
       else
         raise "not implemented for #{right.class}:#{right}"

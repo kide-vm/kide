@@ -78,12 +78,5 @@ module Risc
       assert_equal @r0 , instr.register
       assert_equal 1 , instr.index
     end
-    def est_reg_to_slot
-      instr = @r2[:next_object] << @r0
-      assert_equal RegToSlot , instr.class
-      assert_equal @r0 , instr.register
-      assert_equal 2 , instr.index
-      assert_equal @r1 , instr.array
-    end
   end
 end

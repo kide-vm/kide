@@ -23,10 +23,36 @@ module Risc
     # fullfil the objects purpose by creating a RegToSlot instruction from
     # itself (the slot) and the register given
     def <<( reg )
-      raise "not reg #{reg}" unless reg.is_a?(RegisterValue)
-      reg_to_slot = Risc.reg_to_slot("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg , register, index)
+      case reg
+      when RegisterValue
+        puts reg.symbol
+        to_mem("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg)
+      when RegisterSlot
+        puts reg.register.symbol
+        reg = to_reg("reduce #{@register.symbol}[@index]")
+        to_mem("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg)        
+      else
+        raise "not reg value or slot #{reg}"
+      end
+    end
+
+    # push the given register into the slot that self represents
+    # ie create a slot_to_reg instruction and add to the compiler
+    # the register represents and "array", and the content of the
+    # given register from, is pushed to the memory at register[index]
+    def to_mem(source , from )
+      reg_to_slot = Risc.reg_to_slot(source , from , register, index)
       compiler.add_code(reg_to_slot) if compiler
-      reg_to_slot
+      reg_to_slot.register
+    end
+
+    # load the conntent of the slot that self descibes into a a new register.
+    # the regsiter is created, and the slot_to_reg instruction added to the
+    # compiler. the return is a bit like @register[@index]
+    def to_reg(source )
+      slot_to_reg = Risc.slot_to_reg(source , register, index)
+      compiler.add_code(slot_to_reg) if compiler
+      slot_to_reg.register
     end
 
     # similar to above (<< which produces reg_to_slot), this produces reg_to_byte

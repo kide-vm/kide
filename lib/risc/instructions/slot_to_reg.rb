@@ -14,8 +14,9 @@ module Risc
   end
 
   # Produce a SlotToReg instruction.
-  # Array and to are registers
+  # Array is a register
   # index may be a Symbol in which case is resolves with resolve_index.
+  # a new regsister will be created as the result, ie the reg part for slot_to_reg
   def self.slot_to_reg( source , array , index )
     raise "Register #{array}" if RegisterValue.look_like_reg(array.symbol)
     index = array.resolve_index(index) if index.is_a?(Symbol)
