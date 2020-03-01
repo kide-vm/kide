@@ -133,7 +133,7 @@ module Risc
     # right value may be
     # - constant (Parfait object) , resulting in a LoadConstant
     # - another RegisterValue, resulting in a Transfer instruction
-    # - an RValue, resulting in an SlotToReg
+    # - an RegisterSlot, resulting in an SlotToReg
     def <<( right )
       case right
       when Symbol
@@ -148,8 +148,9 @@ module Risc
         ins = Risc.load_data("#{right.class} to #{self.type}" , right , self)
       when RegisterValue
         ins = Risc.transfer("#{right.type} to #{self.type}" , right , self)
-      when RValue
-        ins = Risc.slot_to_reg("#{right.register.type}[#{right.index}] -> #{self.type}" , right.register , right.index , self)
+      when RegisterSlot
+        puts right.to_s
+        ins = Risc::SlotToReg.new("#{right.register.type}[#{right.index}] -> #{self.type}" , right.register , right.index , self)
       else
         raise "not implemented for #{right.class}:#{right}"
       end
@@ -158,9 +159,9 @@ module Risc
     end
 
     # similar to above (<< which produces slot_to_reg), this produces byte_to_reg
-    # since << covers all other cases, this must have a RValue as the right
+    # since << covers all other cases, this must have a RegisterSlot as the right
     def <=( right )
-      raise "not implemented for #{right.class}:#{right}" unless right.is_a?( RValue )
+      raise "not implemented for #{right.class}:#{right}" unless right.is_a?( RegisterSlot )
       ins = Risc.byte_to_reg("#{right.register.type}[#{right.index}] -> #{self.type}" , right.register , right.index , self)
       builder.add_code(ins) if builder
       return ins
@@ -180,40 +181,13 @@ module Risc
       builder.add_code(ret) if builder
       ret
     end
-    # just capture the values in an intermediary object (RValue)
-    # The RValue then gets used in a RegToSlot ot SlotToReg, where
+
+    # just capture the values in an intermediary object (RegisterSlot)
+    # The RegisterSlot then gets used in a RegToSlot or SlotToReg, where
     # the values are unpacked to call Risc.reg_to_slot or Risc.slot_to_reg
     def []( index )
-      RValue.new( self , index , builder)
+      RegisterSlot.new( self , index , builder)
     end
-  end
-
-  # Just a struct, see comment for [] of RegisterValue
-  #
-  class RValue
-    attr_reader :register , :index , :builder
-    def initialize(register, index , builder)
-      @register , @index , @builder = register , index , builder
-    end
-
-    # fullfil the objects purpose by creating a RegToSlot instruction from
-    # itself (the slot) and the register given
-    def <<( reg )
-      raise "not reg #{reg}" unless reg.is_a?(RegisterValue)
-      reg_to_slot = Risc.reg_to_slot("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg , register, index)
-      builder.add_code(reg_to_slot) if builder
-      reg_to_slot
-    end
-
-    # similar to above (<< which produces reg_to_slot), this produces reg_to_byte
-    # from itself (the slot) and the register given
-    def <=( reg )
-      raise "not reg #{reg}" unless reg.is_a?(RegisterValue)
-      reg_to_byte = Risc.reg_to_byte("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg , register, index)
-      builder.add_code(reg_to_byte) if builder
-      reg_to_byte
-    end
-
   end
 
   # The register we use to store the current message object is :r0

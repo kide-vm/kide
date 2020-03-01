@@ -50,7 +50,7 @@ module Risc
           raise "Must create (with ! or ?) before using #{name}#{last_char}"
         end
         type = infer_type(name )
-        reg = @compiler.use_reg( type.object_class.name ).set_builder(self)
+        reg = RegisterValue.new( name.to_sym , type.object_class.name ).set_builder(self)
       end
       @names[name] = reg
       reg

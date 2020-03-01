@@ -29,13 +29,13 @@ module Risc
       assert_raises {@builder.space}
     end
     def test_reset
-      assert_equal :r1 , @builder.integer!.symbol
+      assert_equal :integer , @builder.integer!.symbol
       @builder.reset_names
-      assert_equal :r1 , @builder.integer!.symbol  # would raise if it existed
+      assert_equal :integer , @builder.integer!.symbol  # would raise if it existed
     end
     def test_next_message
       reg = @builder.next_message!
-      assert_equal :r1 , reg.symbol
+      assert_equal :next_message , reg.symbol
       assert_equal :Message , reg.type.class_name
     end
     def test_message
@@ -54,16 +54,16 @@ module Risc
       assert_equal Transfer , built.next.class
     end
     def test_returns_slot
-      r2 = RegisterValue.new(:r2 , :Message).set_builder( @builder )
+      r2 = RegisterValue.new(:message , :Message).set_builder( @builder )
       @builder.build{ r2 << factory![:next_object] }
       assert_equal SlotToReg , built.class
-      assert_equal :r1 , built.array.symbol
+      assert_equal :factory , built.array.symbol
     end
-    def test_returns_slot_reverse
+    def pest_returns_slot_reverse
       r2 = RegisterValue.new(:r2 , :Message).set_builder( @builder )
       @builder.build{ r2 << factory![:next_object] }
       assert_equal SlotToReg , built.class
-      assert_equal :r1 , built.array.symbol
+      assert_equal :factory , built.array.symbol
     end
     def test_reuses_names
       r1 = RegisterValue.new(:r1 , :Space)

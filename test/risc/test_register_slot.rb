@@ -1,14 +1,7 @@
 require_relative "../helper"
 
-class FakeBuilder
-  attr_reader :built
-  def add_code(ins)
-    @built = ins
-  end
-end
 module Risc
-  class TestRegisterValue < MiniTest::Test
-
+  class TestRegisterSlot < MiniTest::Test
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @r0 = RegisterValue.new(:message , :Message)
@@ -40,17 +33,6 @@ module Risc
     def test_transfer
       transfer = @r0 << @r1
       assert_equal Transfer , transfer.class
-    end
-    def test_set_builder
-      reg = @r0.set_builder(FakeBuilder.new)
-      assert_equal RegisterValue , reg.class
-      assert reg.builder
-    end
-    def test_calls_builder
-      builder = FakeBuilder.new
-      @r0.set_builder( builder )
-      @r0 << @r1
-      assert_equal Transfer , builder.built.class
     end
     def test_index_op
       message = @r0[:next_message]

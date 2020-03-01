@@ -30,7 +30,7 @@ module Risc
       assert_raises{ @builder.caller_reg! }
     end
     def test_define_conditionally_first
-      assert_equal :r1 , @builder.caller_reg?.symbol
+      assert_equal :caller_reg , @builder.caller_reg?.symbol
     end
     def test_define_conditionally_again
       first = @builder.caller_reg!

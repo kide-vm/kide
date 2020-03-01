@@ -41,5 +41,6 @@ end
 
 require_relative "risc/instruction"
 require_relative "risc/register_value"
+require_relative "risc/register_slot"
 require_relative "risc/text_writer"
 require_relative "risc/builder"

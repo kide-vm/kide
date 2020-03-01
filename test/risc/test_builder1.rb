@@ -37,7 +37,7 @@ module Risc
     end
     def test_allocate_returns
       int = @builder.allocate_int
-      assert_equal :r1 , int.symbol
+      assert_equal :integer_tmp , int.symbol
     end
     def test_allocate_len
       int = @builder.allocate_int
