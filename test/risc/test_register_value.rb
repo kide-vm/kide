@@ -52,10 +52,11 @@ module Risc
     end
     def test_operator
       ret = @r0.op :<< , @r1
-      assert_equal OperatorInstruction , ret.class
-      assert_equal @r0 , ret.left
-      assert_equal @r1 , ret.right
-      assert_equal :<< , ret.operator
+      assert_operator ret , :<< , :message , "id_"
+    end
+    def test_operator_slot
+      ret = @r0.op :<< , @r1[:type]
+      assert_operator ret , :<< , :message , "id_.type"
     end
     def test_byte_to_reg
       instr = @r0 <= @r1[1]
@@ -66,10 +67,7 @@ module Risc
     end
     def test_slot_to_reg
       instr = @r0 << @r2[:next_object]
-      assert_equal SlotToReg , instr.class
-      assert_equal :message , instr.register.symbol
-      assert_equal 2 , instr.index
-      assert instr.array.is_object?
+      assert_slot_to_reg instr , "id_" , 2 , :message
     end
     def test_reg_to_byte
       instr = @r1[1] <= @r0

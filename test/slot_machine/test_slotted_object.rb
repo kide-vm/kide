@@ -6,59 +6,37 @@ module SlotMachine
     def setup
       Parfait.boot!(Parfait.default_test_options)
       compiler = Risc.test_compiler
-      @slotted = Slotted.for(Parfait.object_space , [:type])
+      @slotted = Slotted.for(Parfait.object_space , slot2)
       register = @slotted.to_register(compiler , InstructionMock.new)
       @instruction = compiler.risc_instructions.next
     end
-    def test_def_class
-      assert_equal Risc::LoadConstant , @instruction.class
+    def slot2
+      [:type]
     end
-    def test_def_register
-      assert @instruction.register.is_object?
-    end
-    def test_def_const
-      assert_equal Parfait::Space , @instruction.constant.class
+    def test_load
+      assert_load @instruction , Parfait::Space , "id_"
     end
     def test_to_s
-      assert_equal "Space.type" , @slotted.to_s
+      assert_equal "Space." + slot2.join(".") , @slotted.to_s
     end
     def test_def_register2
-      reg = @instruction.next.register
-      assert reg.is_object?
-      assert reg.symbol.to_s.index(".") , reg.symbol.to_s
-    end
-    def test_def_next_index
-      assert_equal 0 , @instruction.next.index
+      assert_slot_to_reg @instruction.next , "id_" , 0 , "id_.type"
     end
   end
-  class TestSlottedObjectType2 < MiniTest::Test
-    def setup
-      Parfait.boot!(Parfait.default_test_options)
-      compiler = Risc.test_compiler
-      @slotted = Slotted.for(Parfait.object_space , [:type , :type])
-      register = @slotted.to_register(compiler , InstructionMock.new)
-      @instruction = compiler.risc_instructions.next
-    end
-    def test_def_register2
-      reg = @instruction.next.register
-      assert reg.is_object?
-      assert_equal "type", reg.symbol.to_s.split(".").last
-      assert_equal 2, reg.symbol.to_s.split(".").length
-    end
-  end
-  class TestSlottedObjectType3 < MiniTest::Test
-    def setup
-      Parfait.boot!(Parfait.default_test_options)
-      compiler = Risc.test_compiler
-      @slotted = Slotted.for(Parfait.object_space , [:type , :type , :type])
-      register = @slotted.to_register(compiler , InstructionMock.new)
-      @instruction = compiler.risc_instructions.next
+  class TestSlottedObjectType2 < TestSlottedObjectType
+    def slot2
+      [:type , :type]
     end
     def test_def_register3
-      reg = @instruction.next.next.register
-      assert reg.is_object?
-      assert_equal "type", reg.symbol.to_s.split(".").last
-      assert_equal 3, reg.symbol.to_s.split(".").length
+      assert_slot_to_reg @instruction.next(2) , "id_.type" , 0 , "id_.type.type"
+    end
+  end
+  class TestSlottedObjectType3 < TestSlottedObjectType
+    def slot2
+      [:type , :type , :type ]
+    end
+    def test_def_register3
+      assert_slot_to_reg @instruction.next(3) , "id_.type.type" , 0 , "id_.type.type.type"
     end
   end
 end

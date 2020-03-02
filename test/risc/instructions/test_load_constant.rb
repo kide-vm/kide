@@ -9,10 +9,7 @@ module Risc
       Risc.load_constant("source" , const)
     end
     def test_const
-      assert_equal LoadConstant , load.class
-    end
-    def test_const_reg
-      assert load.register.is_object?
+      assert_load load , SlotMachine::StringConstant , "id_"
     end
   end
   class TestLoadConstant1 < MiniTest::Test
@@ -23,10 +20,7 @@ module Risc
       Risc.load_constant("source" , const)
     end
     def test_parf
-      assert_equal LoadConstant , load.class
-    end
-    def test_parf_reg
-      assert load.register.is_object?
+      assert_load load , Parfait::Word , "id_"
     end
   end
 end

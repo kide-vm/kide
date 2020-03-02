@@ -14,26 +14,20 @@ module SlotMachine
       assert_slot_to_reg risc(1) ,:message , 6 , :"message.caller"
     end
     def test_2_load
-      assert_load risc(2) , Parfait::FalseClass
+      assert_load risc(2) , Parfait::FalseClass, "id_"
     end
     def test_3_op
-      assert_equal Risc::OperatorInstruction , risc(3).class
-      assert risc(3).left.is_object?
-      assert_equal :"message.caller" , risc(3).right.symbol
-      assert_equal :- , risc(3).operator
+      assert_operator risc(3) , :- , "id_" , "message.caller"
     end
     def test_4_zero
       assert_equal Risc::IsZero , risc(4).class
       assert_label risc(4).label , "target"
     end
     def test_5_load
-      assert_load risc(5) , Parfait::NilClass
+      assert_load risc(5) , Parfait::NilClass , "id_"
     end
     def test_6_op
-      assert_equal Risc::OperatorInstruction , risc(6).class
-      assert risc(6).left.is_object?
-      assert_equal :"message.caller" , risc(6).right.symbol
-      assert_equal :- , risc(6).operator
+      assert_operator risc(6), :- , "id_", "message.caller"
     end
     def test_7_zero
       assert_equal Risc::IsZero , risc(7).class

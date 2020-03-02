@@ -10,11 +10,8 @@ module SlotMachine
       register = @slotted.to_register(compiler , InstructionMock.new)
       @instruction = compiler.risc_instructions.next
     end
-    def test_def_class
-      assert_equal Risc::LoadConstant , @instruction.class
-    end
-    def test_def_register
-      assert @instruction.register.is_object?
+    def test_load
+      assert_load @instruction , Parfait::Word , "id_"
     end
     def test_def_const
       assert_equal "hi" , @instruction.constant.to_string
@@ -28,11 +25,8 @@ module SlotMachine
       register = @slotted.to_register(compiler , InstructionMock.new)
       @instruction = compiler.risc_instructions.next
     end
-    def test_def_class
-      assert_equal Risc::LoadConstant , @instruction.class
-    end
-    def test_def_register
-      assert @instruction.register.is_object?
+    def test_load
+      assert_load @instruction , Parfait::Word , "id_"
     end
     def test_def_const
       assert_equal "hi" , @instruction.constant.to_string
@@ -41,10 +35,7 @@ module SlotMachine
       assert_equal "StringConstant.type" , @slotted.to_s
     end
     def test_def_register2
-      assert @instruction.next.register.is_object?
-    end
-    def test_def_next_index
-      assert_equal 0 , @instruction.next.index
+      assert_slot_to_reg @instruction.next , "id_" , 0 , "id_.0"
     end
   end
 end

@@ -20,32 +20,17 @@ module SlotMachine
       assert_equal Risc::RegToSlot , @instructions.next(3).class
       assert_equal NilClass , @instructions.next(4).class
     end
-    def test_ins_next_reg
-      assert_equal :"message.caller.type" , @instructions.next.register.symbol
+    def test_ins
+      assert_slot_to_reg @instructions ,:message , 6 , "message.caller"
     end
-    def test_ins_next_arr
-      assert_equal :"message.caller" , @instructions.next.array.symbol
+    def test_ins_next
+      assert_slot_to_reg @instructions.next ,"message.caller" , 0 , "message.caller.type"
     end
-    def test_ins_next_index
-      assert_equal 0 , @instructions.next.index
+    def test_ins_next_2
+      assert_slot_to_reg @instructions.next(2) , :message , 6 , "message.caller"
     end
-    def test_ins_next_2_reg
-      assert_equal :"message.caller" , @instructions.next(2).register.symbol
-    end
-    def test_ins_next_2_arr
-      assert_equal :"message" , @instructions.next(2).array.symbol
-    end
-    def test_ins_next_2_index
-      assert_equal 6 , @instructions.next(2).index
-    end
-    def test_ins_next_3_reg
-      assert_equal :"message.caller.type" , @instructions.next(3).register.symbol
-    end
-    def test_ins_next_3_arr
-      assert_equal :"message.caller" , @instructions.next(3).array.symbol
-    end
-    def test_ins_next_3_index
-      assert_equal 0 , @instructions.next(3).index
+    def test_ins_next_3
+      assert_reg_to_slot @instructions.next(3) ,"message.caller.type"  , "message.caller" , 0
     end
   end
 end
