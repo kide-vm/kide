@@ -37,20 +37,15 @@ module SlotMachine
     def build_with(builder)
       case from = method_source
       when Parfait::CallableMethod
-        builder.build { callable! << from }
+        callable = builder.load_object(from)
       when Parfait::CacheEntry
-        builder.build do
-          cache_entry! << from
-          callable! << cache_entry[:cached_method]
-        end
+        callable = builder.load_object(from)[:cached_method].to_reg
       when Integer
-        builder.build do
-          callable! << message[ "arg#{from}".to_sym ]
-        end
+        callable = builder.message[ "arg#{from}".to_sym ].to_reg
       else
         raise "unknown source #{method_source.class}:#{method_source}"
       end
-      build_message_data(builder)
+      build_message_data(builder , callable)
       return builder.built
     end
 
@@ -60,14 +55,8 @@ module SlotMachine
     end
 
     # set the method into the message
-    def build_message_data( builder )
-      if(reg = builder.names["next_message"])
-        raise "NEXT = #{reg}"
-      end
-      builder.build do
-        next_message! << message[:next_message]
-        next_message[:method] << callable
-      end
+    def build_message_data( builder , callable)
+      builder.message[:next_message][:method] << callable
     end
   end
 end

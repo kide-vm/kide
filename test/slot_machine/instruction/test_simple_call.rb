@@ -11,16 +11,14 @@ module SlotMachine
       assert_equal 7 , all.length , all_str
     end
     def test_1_load_return_label
-      assert_load risc(1) , Risc::Label
+      assert_load risc(1) , Risc::Label , "id_"
       assert_label risc(1).constant , "continue_"
     end
     def test_2_load_next_message
       assert_slot_to_reg risc(2) ,:message , 1 , :"message.next_message"
     end
     def test_3_store_return_address
-      assert risc(3).register.is_object?
-      assert_equal 4,  risc(3).index
-      assert_equal :"message.next_message",  risc(3).array.symbol
+      assert_reg_to_slot risc(3) , "id_" , :"message.next_message" , 4
     end
     def test_4_swap_messages
       assert_slot_to_reg risc(4) ,:message , 1 , :message

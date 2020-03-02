@@ -171,6 +171,7 @@ module Risc
     # create operator instruction for self and add
     # doesn't read quite as smoothly as one would like, but better than the compiler version
     def op( operator , right)
+      right = right.to_reg() if(right.is_a?(RegisterSlot))
       ret = Risc.op( "operator #{operator}" , operator , self , right)
       compiler.add_code(ret) if compiler
       ret

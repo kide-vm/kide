@@ -27,7 +27,7 @@ module Risc
       when RegisterValue
         to_mem("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg)
       when RegisterSlot
-        reg = to_reg("reduce #{@register.symbol}[@index]")
+        reg = to_reg()
         to_mem("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg)
       else
         raise "not reg value or slot #{reg}"
@@ -41,7 +41,7 @@ module Risc
     #     message[:caller] returns a RegisterSlot, which would be self for this example
     #    to evaluate self[:next_message] we reduce self to a register with to_reg
     def []( index )
-      reg = to_reg("reduce #{@register.symbol}[@index]")
+      reg = to_reg()
       reg[index]
     end
 
@@ -58,7 +58,8 @@ module Risc
     # load the conntent of the slot that self descibes into a a new register.
     # the register is created, and the slot_to_reg instruction added to the
     # compiler. the return is a bit like @register[@index]
-    def to_reg( source )
+    def to_reg()
+      source = "reduce #{@register.symbol}[@index]"
       slot_to_reg = Risc.slot_to_reg(source , register, index)
       if compiler
         compiler.add_code(slot_to_reg)
