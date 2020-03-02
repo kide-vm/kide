@@ -12,7 +12,7 @@ module Risc
   #
   class Builder
 
-    attr_reader :built , :compiler , :names
+    attr_reader :built , :compiler
 
     # pass a compiler, to which instruction are added (usually)
     # call build with a block to build
@@ -22,38 +22,6 @@ module Risc
       @compiler = compiler
       @source = for_source
       @source_used = false
-      @names = {}
-    end
-
-    # make the magic: convert incoming names into registers that have the
-    # type set according to the name (using infer_type)
-    # names are stored, so subsequent calls use the same register
-    def method_missing(name , *args)
-      return super if args.length != 0
-      name = name.to_s
-      return @names[name] if @names.has_key?(name)
-      if name == "message"
-        return Risc.message_reg.set_builder(self)
-      end
-      if name.index("label")
-        reg = Risc.label( @source , "#{name}_#{object_id}")
-        @source_used = true
-      else
-        last_char = name[-1]
-        name = name[0 ... -1]
-        if last_char == "!" or last_char == "?"
-          if @names.has_key?(name)
-            return @names[name] if last_char == "?"
-            raise "Name exists (#{@names.keys})before creating it #{name}#{last_char}"
-          end
-        else
-          raise "Must create (with ! or ?) before using #{name}#{last_char}"
-        end
-        type = infer_type(name )
-        reg = RegisterValue.new( name.to_sym , type.object_class.name ).set_builder(self)
-      end
-      @names[name] = reg
-      reg
     end
 
     # Infer the type from a symbol. In the simplest case the symbol is the class name.
@@ -94,31 +62,6 @@ module Risc
       add_code Risc::Branch.new(@source, label)
     end
 
-    # To avoid many an if, it can be handy to swap variable names.
-    # But since the names in the builder are not variables, we need this method.
-    # As it says, swap the two names around. Names must exist
-    def swap_names(left , right)
-      left , right = left.to_s , right.to_s
-      l = @names[left]
-      r = @names[right]
-      raise "No such name #{left}" unless l
-      raise "No such name #{right}" unless r
-      @names[left] = r
-      @names[right] = l
-    end
-
-    # Reset the names stored by the builder. The names are sort of variables names
-    # that can be used in the build block due to method_missing magic.
-    #
-    # But just as the compiler has reset_regs, the builder has this reset button, to
-    # start fresh. Quite crude for now, and only used in allocate_int
-    #
-    # Compiler regs are reset as well
-    def reset_names
-      @names = {}
-      compiler.reset_regs
-    end
-
     # Build code using dsl (see __init__ or MessageSetup for examples).
     # Names (that ruby would resolve to a variable/method) are converted
     # to registers. << means assignment and [] is supported both on
@@ -134,6 +77,11 @@ module Risc
     #
     def build(&block)
       instance_eval(&block)
+    end
+
+    # make the message register available for the dsl
+    def message
+      Risc.message_named_reg.set_compiler(@compiler)
     end
 
     # add code straight to the compiler
@@ -178,23 +126,18 @@ module Risc
     #
     # Return RegisterValue(:r1) that will be named integer_tmp
     def allocate_int
-      compiler.reset_regs
-      integer = self.integer!
+      cont_label = Risc.label("continue int allocate" , "cont_label")
+      factory = load_object Parfait.object_space.get_factory_for(:Integer)
+      null = load_object Parfait.object_space.nil_object
       build do
-        factory! << Parfait.object_space.get_factory_for(:Integer)
-        integer << factory[:next_object]
-        object! << Parfait.object_space.nil_object
-        object - integer
+        null.op :- , factory[:next_object]
         if_not_zero cont_label
-        integer_2! << factory[:reserve]
-        factory[:next_object] << integer_2
+        factory[:next_object] << factory[:reserve]
         call_get_more
         integer << factory[:next_object]
         add_code cont_label
-        integer_2 << integer[:next_integer]
-        factory[:next_object] << integer_2
+        factory[:next_object] << integer[:next_integer]
       end
-      reset_names
       integer_tmp!
     end
 
@@ -207,15 +150,13 @@ module Risc
     # - issuing the call
     # These steps shadow the SlotMachineInstructions MessageSetup, ArgumentTransfer and SimpleCall
     def call_get_more
-      factory = Parfait.object_space.get_factory_for( :Integer )
-      calling = factory.get_type.get_method( :get_more )
+      int_factory = Parfait.object_space.get_factory_for(:Integer)
+      factory = load_object int_factory
+      calling = int_factory.get_type.get_method( :get_more )
       calling = Parfait.object_space.get_method!(:Space,:main) #until we actually parse Factory
       raise "no main defined" unless calling
       SlotMachine::MessageSetup.new( calling ).build_with( self )
-      self.build do
-        factory_reg! << factory
-        message[:receiver] << factory_reg
-      end
+      message[:receiver] << factory
       SlotMachine::SimpleCall.new(calling).to_risc(compiler)
     end
 

@@ -20,71 +20,10 @@ module Risc
     def test_has_attribute
       assert_nil @builder.built
     end
-    def test_alloc_space
-      reg = @builder.space!
-      assert_equal RegisterValue , reg.class
-      assert_equal :Space , reg.type.class_name
-    end
-    def test_not_alloc_space
-      assert_raises {@builder.space}
-    end
-    def test_reset
-      assert_equal :integer , @builder.integer!.symbol
-      @builder.reset_names
-      assert_equal :integer , @builder.integer!.symbol  # would raise if it existed
-    end
-    def test_next_message
-      reg = @builder.next_message!
-      assert_equal :next_message , reg.symbol
-      assert_equal :Message , reg.type.class_name
-    end
     def test_message
       reg = @builder.message
-      assert_equal :r0 , reg.symbol
+      assert_equal :message , reg.symbol
       assert_equal :Message , reg.type.class_name
-    end
-    def test_returns_built
-      r1 = RegisterValue.new(:r1 , :Space)
-      @builder.build{ space! << r1 }
-      assert_equal Transfer , built.class
-    end
-    def test_returns_two
-      r1 = RegisterValue.new(:r1 , :Space)
-      @builder.build{ space! << r1 ; space << r1}
-      assert_equal Transfer , built.next.class
-    end
-    def test_returns_slot
-      r2 = RegisterValue.new(:message , :Message).set_builder( @builder )
-      @builder.build{ r2 << factory![:next_object] }
-      assert_equal SlotToReg , built.class
-      assert_equal :factory , built.array.symbol
-    end
-    def pest_returns_slot_reverse
-      r2 = RegisterValue.new(:r2 , :Message).set_builder( @builder )
-      @builder.build{ r2 << factory![:next_object] }
-      assert_equal SlotToReg , built.class
-      assert_equal :factory , built.array.symbol
-    end
-    def test_reuses_names
-      r1 = RegisterValue.new(:r1 , :Space)
-      @builder.build{ space! << r1 ; space << r1}
-      assert_equal built.to.symbol , built.next.to.symbol
-    end
-    def test_uses_message_as_message
-      r1 = RegisterValue.new(:r1 , :Space)
-      @builder.build{ message[:receiver] << r1}
-      assert_equal RegToSlot , built.class
-      assert_equal :r0 , built.array.symbol
-    end
-    def test_label
-      label = @builder.exit_label
-      assert_equal Label , label.class
-      assert label.name.index("exit")
-    end
-    def test_two_label
-      label1 = @builder.exit_label
-      label2 = @builder.exit_label
-      assert_equal label1 , label2
     end
     def test_if_zero
       ret = @builder.if_zero @label
@@ -100,12 +39,6 @@ module Risc
       ret = @builder.branch @label
       assert_equal Branch , ret.class
       assert_equal @label , ret.label
-    end
-    def test_minus
-      op = @builder.build {space! - callable_method!}
-      assert_equal OperatorInstruction , op.class
-      assert_equal :- , op.operator
-      assert_equal :Space , op.left.type.class_name
     end
   end
 end
