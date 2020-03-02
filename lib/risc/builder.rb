@@ -24,27 +24,6 @@ module Risc
       @source_used = false
     end
 
-    # Infer the type from a symbol. In the simplest case the symbol is the class name.
-    # But in building, sometimes variations are needed, so next_message or caller work
-    # too (and both return "Message")
-    # A general "_reg"/"_obj"/"_const" or "_tmp" at the end of the name will be removed
-    # An error is raised if the symbol/object can not be inferred
-    def infer_type( name )
-      as_string = name.to_s
-      parts = as_string.split("_")
-      if( ["reg" , "obj" , "tmp" , "self" , "const", "1" , "2"].include?( parts.last ) )
-        parts.pop
-        as_string = parts.join("_")
-      end
-      as_string = "word" if as_string == "name"
-      as_string = "message" if as_string == "next_message"
-      as_string = "message" if as_string == "caller"
-      sym = as_string.camelise.to_sym
-      clazz = Parfait.object_space.get_class_by_name(sym)
-      raise "Not implemented/found object #{name}:#{sym}" unless clazz
-      return clazz.instance_type
-    end
-
     def if_zero( label )
       @source_used = true
       add_code Risc::IsZero.new(@source , label)
@@ -93,18 +72,17 @@ module Risc
     def load_object(object)
       @compiler.load_object(object)
     end
+
     # for some methods that return an integer it is beneficial to pre allocate the
     # integer and store it in the return value. That is what this function does.
     #
     # Those (builtin) methods, mostly syscall wrappers then go on to do this and that
     # clobbering registers and so the allocate and even move would be difficult.
     # We sidestep all that by pre-allocating.
+    #
+    # Note: this was pre register-allocate. clobbering is history, maybe revisit?
     def prepare_int_return
-      integer_tmp = allocate_int
-      reset_names
-      build do
-        message[:return_value] << integer_tmp
-      end
+      message[:return_value] << allocate_int
     end
 
     # allocate int fetches a new int, for sure. It is a builder method, rather than
@@ -129,16 +107,17 @@ module Risc
       cont_label = Risc.label("continue int allocate" , "cont_label")
       factory = load_object Parfait.object_space.get_factory_for(:Integer)
       null = load_object Parfait.object_space.nil_object
+      int = nil
       build do
         null.op :- , factory[:next_object]
         if_not_zero cont_label
         factory[:next_object] << factory[:reserve]
         call_get_more
-        integer << factory[:next_object]
         add_code cont_label
-        factory[:next_object] << integer[:next_integer]
+        int = factory[:next_object].to_reg
+        factory[:next_object] << int[:next_integer]
       end
-      integer_tmp!
+      int
     end
 
     # Call_get_more calls the method get_more on the factory (see there).
