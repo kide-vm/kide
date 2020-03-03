@@ -20,7 +20,7 @@ module SlotMachine
 
     def to_s
       str = "DynamicCall "
-      str += cache_entry.cached_method&.name if cache_entry
+      str += cache_entry.cached_method&.name if cache_entry and cache_entry.cached_method
       str
     end
 
@@ -31,17 +31,15 @@ module SlotMachine
     # Instead we need a DynamicJump instruction that explicitly takes a register as
     # a target (not a label)
     def to_risc(compiler)
-      entry = @cache_entry
-      compiler.add_constant( entry )
+      entry = compiler.load_object(@cache_entry)[:cached_method].to_reg
+      compiler.add_constant( @cache_entry)
       return_label = Risc.label(self, "continue_#{object_id}")
-      compiler.build("DynamicCall") do
-        return_address! << return_label
-        next_message! << message[:next_message]
-        next_message[:return_address] << return_address
+      return_address = compiler.load_object(return_label)
+
+      compiler.build(to_s) do
+        message[:next_message][:return_address] << return_address
         message << message[:next_message]
-        cache_entry! << entry
-        cache_entry << cache_entry[:cached_method]
-        add_code Risc::DynamicJump.new("DynamicCall", cache_entry )
+        add_code Risc::DynamicJump.new("DynamicCall", entry )
         add_code return_label
       end
     end

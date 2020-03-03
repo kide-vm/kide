@@ -9,26 +9,27 @@ module SlotMachine
       assert_equal 9 , all.length , all_str
     end
     def test_1_load
-      assert_load risc(1) , Risc::Label , :r1
-      assert_label risc(1).constant , "continue_" 
+      assert_load risc(1) , Parfait::CacheEntry , "id_"
     end
     def test_2_slot
-      assert_slot_to_reg risc(2) ,:r0 , 1 , :r2
+      assert_slot_to_reg risc(2) , "id_" , 2 , "id_.cached_method"
     end
-    def test_3_reg
-      assert_reg_to_slot risc(3) , :r1 , :r2 , 4
+    def test_3_load
+      assert_load risc(3) , Risc::Label , "id_"
+      assert_label risc(3).constant , "continue_"
     end
     def test_4_slot
-      assert_slot_to_reg risc(4) ,:r0 , 1 , :r0
+      assert_slot_to_reg risc(4) , :message , 1 , "message.next_message"
     end
-    def test_5_load
-      assert_load risc(5) , Parfait::CacheEntry , :r3
+    def test_5_reg
+      assert_reg_to_slot risc(5) , "id_" , "message.next_message" , 4
     end
     def test_6_slot
-      assert_slot_to_reg risc(6) ,:r3 , 2 , :r3
+      assert_slot_to_reg risc(6) , :message , 1 , :message
     end
     def test_7_jump
       assert_equal Risc::DynamicJump , risc(7).class
+      assert_register :jump , "id_.cached_method" , risc(7).register
     end
     def test_8_label
       assert_label risc(8) , "continue_"
