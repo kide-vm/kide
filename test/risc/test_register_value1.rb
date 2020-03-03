@@ -5,9 +5,9 @@ module Risc
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @r0 = RegisterValue.new(:message , :Message)
-      @r1 = RegisterValue.new(:id_1234 , :Space)
       @compiler = Risc.test_compiler
+      @r0 = RegisterValue.new(:message , :Message).set_compiler(@compiler)
+      @r1 = RegisterValue.new(:id_1234 , :Space).set_compiler(@compiler)
     end
 
     def test_resolves_index_ok
@@ -18,8 +18,10 @@ module Risc
     end
     def test_reduce_int
       ins = @r0.reduce_int
-      assert_equal SlotToReg , ins.class
-      assert_equal Parfait::Integer.integer_index , ins.index
+      assert_equal RegisterValue , ins.class
+      assert_equal SlotToReg , @compiler.current.class
+      assert_equal Parfait::Integer.integer_index , @compiler.current.index
+      assert_equal :message , ins.symbol
     end
     def test_get_new_left_0
       assert_equal RegisterValue , @r0.get_new_left(:caller , @compiler).class

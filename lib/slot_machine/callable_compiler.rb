@@ -69,7 +69,6 @@ module SlotMachine
       while( instruction )
         raise "whats this a #{instruction}" unless instruction.is_a?(SlotMachine::Instruction)
         #puts "adding slot #{instruction.to_s}:#{instruction.next.to_s}"
-        risc_compiler.reset_regs
         instruction.to_risc( risc_compiler )
         #puts "adding risc #{risc.to_s}:#{risc.next.to_s}"
         instruction = instruction.next

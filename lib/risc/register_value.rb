@@ -65,10 +65,13 @@ module Risc
     end
 
     # reduce integer to fixnum and add instruction if compiler is used
+    # TODO: checck type of self, should be integer
+    # TODO: find a type for the result, maybe fixnum , or data ?
+    # TODO also check types on reg_to_slot
     def reduce_int
       reduce = Risc::SlotToReg.new( "int -> fix" , self , Parfait::Integer.integer_index , self)
       compiler.add_code(reduce) if compiler
-      reduce
+      reduce.register
     end
 
     # when following variables in resolve_and_add, get a new RegisterValue
