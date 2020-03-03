@@ -21,12 +21,11 @@ module SlotMachine
     def to_risc(compiler)
       return_label = Risc.label("block_yield", "continue_#{object_id}")
       index = arg_index
-      compiler.build("BlockYield") do
-        next_message! << message[:next_message]
-        return_address! << return_label
-        next_message[:return_address] << return_address
+      return_address = compiler.load_object return_label
+      compiler.build(to_s) do
+        message[:next_message][:return_address] << return_address
 
-        block_reg! << message["arg#{index}".to_sym]
+        block_reg = message["arg#{index}".to_sym].to_reg
 
         message << message[:next_message]
         add_code Risc::DynamicJump.new("block_yield", block_reg )
