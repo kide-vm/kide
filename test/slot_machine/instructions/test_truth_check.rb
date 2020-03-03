@@ -1,7 +1,7 @@
 require_relative "helper"
 
 module SlotMachine
-  class TestSameCheck < SlotMachineInstructionTest
+  class TestTruthCheck < SlotMachineInstructionTest
     def instruction
       target = SlottedMessage.new( [:caller])
       TruthCheck.new(target , Label.new("ok" , "target"))

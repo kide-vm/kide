@@ -19,7 +19,8 @@ module SlotMachine
 
     def set_label(false_label)
       @false_label = false_label
-      raise "Jump target must be a label #{false_label}" unless false_label.is_a?(Label)    end
+      raise "Jump target must be a label #{false_label}" unless false_label.is_a?(Label)
+    end
   end
 
 end
