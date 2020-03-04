@@ -24,6 +24,20 @@ module Risc
       @source_used = false
     end
 
+    # especially for the macros (where register allocation is often manual)
+    # register need to be created. And since the code is "ported" we create
+    # them with the old names, which used the infer_type to infer the type
+    #
+    # Return the RegisterValue with given name and inferred type, compiler set
+    def register( name )
+      RegisterValue.new(name , infer_type(name) ).set_compiler(compiler)
+    end
+
+    # create an add a RegisterTransfer instruction with to and from
+    def transfer(to , from)
+      add_code Risc.transfer(@source, to , from)
+    end
+
     # Infer the type from a symbol. In the simplest case the symbol is the class name.
     # But in building, sometimes variations are needed, so next_message or caller work
     # too (and both return "Message")
@@ -90,8 +104,8 @@ module Risc
       return ins
     end
 
-    def load_object(object)
-      @compiler.load_object(object)
+    def load_object(object , into = nil)
+      @compiler.load_object(object , into)
     end
 
     # for some methods that return an integer it is beneficial to pre allocate the

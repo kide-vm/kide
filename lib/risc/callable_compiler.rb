@@ -93,8 +93,9 @@ module Risc
     # Load a constant, meaning create a LoadConstant instruction for the constant
     # add the instruction to the code and return the register_value that was created
     # for further use
-    def load_object( object )
-      ins = Risc.load_constant("load to #{object}" , object)
+    # register may be passed in (epecially in mcro building) as second arg
+    def load_object( object , into = nil)
+      ins = Risc.load_constant("load to #{object}" , object , into)
       ins.register.set_compiler(self)
       add_code ins
       # todo for constants (not objects)

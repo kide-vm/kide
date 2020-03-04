@@ -32,18 +32,21 @@ module Risc
       end
     end
   end
-  def self.load_constant( source , constant )
+
+  def self.load_constant( source , constant , register = nil)
     value = constant
-    case constant
-    when Parfait::Object
-      type = constant.get_type
-    when Label
-      type = constant.address.get_type
-    else
-      type = constant.ct_type
-      value = constant.value
+    unless register
+      case constant
+      when Parfait::Object
+        type = constant.get_type
+      when Label
+        type = constant.address.get_type
+      else
+        type = constant.ct_type
+        value = constant.value
+      end
+      register = RegisterValue.new( "id_#{value.object_id}".to_sym , type )
     end
-    register = RegisterValue.new( "id_#{value.object_id}".to_sym , type )
     LoadConstant.new( source , constant , register )
   end
 end

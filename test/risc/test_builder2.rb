@@ -10,6 +10,12 @@ module Risc
       @compiler = Risc::MethodCompiler.new( method, SlotMachine::Label.new( "source_name", "return_label") )
       @builder  = @compiler.builder(method)
     end
+    def test_register_creation
+      assert_equal RegisterValue , @builder.register(:name).class
+    end
+    def test_register_creation_compiler
+      assert @builder.register(:name).compiler
+    end
     def test_list
       assert_equal :List , @builder.infer_type(:list).class_name
     end

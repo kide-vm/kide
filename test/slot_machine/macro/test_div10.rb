@@ -14,7 +14,7 @@ module SlotMachine
         assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        assert_equal 70 , @method.to_risc.risc_instructions.length
+        assert_equal 69 , @method.to_risc.risc_instructions.length
       end
     end
   end
