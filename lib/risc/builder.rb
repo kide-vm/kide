@@ -24,6 +24,27 @@ module Risc
       @source_used = false
     end
 
+    # Infer the type from a symbol. In the simplest case the symbol is the class name.
+    # But in building, sometimes variations are needed, so next_message or caller work
+    # too (and both return "Message")
+    # A general "_reg"/"_obj"/"_const" or "_tmp" at the end of the name will be removed
+    # An error is raised if the symbol/object can not be inferred
+    def infer_type( name )
+      as_string = name.to_s
+      parts = as_string.split("_")
+      if( ["reg" , "obj" , "tmp" , "self" , "const", "1" , "2"].include?( parts.last ) )
+        parts.pop
+        as_string = parts.join("_")
+      end
+      as_string = "word" if as_string == "name"
+      as_string = "message" if as_string == "next_message"
+      as_string = "message" if as_string == "caller"
+      sym = as_string.camelise.to_sym
+      clazz = Parfait.object_space.get_class_by_name(sym)
+      raise "Not implemented/found object #{name}:#{sym}" unless clazz
+      return clazz.instance_type
+    end
+
     def if_zero( label )
       @source_used = true
       add_code Risc::IsZero.new(@source , label)
