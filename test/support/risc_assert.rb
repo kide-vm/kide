@@ -19,14 +19,23 @@ module Minitest
     def assert_slot_to_reg( slot , array = nil, index = nil , register = nil)
       assert_equal Risc::SlotToReg , slot.class
       assert_register( :source , array , slot.array)
-      assert_equal( index , slot.index, "wrong source index") if index
       assert_register( :destination , register , slot.register )
+      assert_index( :source , slot , index)
     end
     def assert_reg_to_slot( slot , register = nil, array = nil, index = nil )
       assert_equal Risc::RegToSlot , slot.class
       assert_register( :source , register , slot.register )
       assert_register( :destination , array , slot.array)
-      assert_equal( index , slot.index, "wrong destination index") if index
+      assert_index( :destination , slot , index)
+    end
+    def assert_index(kind , slot , index)
+      return unless index
+      if(slot.index.is_a?(Risc::RegisterValue))
+        assert_equal( Symbol , index.class, "wrong #{kind} index class")
+        assert_equal( index , slot.index.symbol, "wrong #{kind} index")
+      else
+        assert_equal( index , slot.index, "wrong #{kind} index")
+      end
     end
     def assert_load(load , clazz = nil , register = nil)
       assert_equal Risc::LoadConstant , load.class
@@ -61,6 +70,10 @@ module Minitest
       assert_register :right , right , ins.right
     end
     def assert_zero ins , label
+      assert_equal Risc::IsNotZero , ins.class
+      assert_label ins.label , label
+    end
+    def assert_not_zero ins , label
       assert_equal Risc::IsZero , ins.class
       assert_label ins.label , label
     end
@@ -68,6 +81,13 @@ module Minitest
       assert_equal Risc::Syscall , ins.class
       assert_equal ins.name , name
     end
-
+    def assert_minus ins , label
+      assert_equal Risc::IsMinus , ins.class
+      assert_label ins.label , label
+    end
+    def assert_data(ins , data)
+      assert_equal Risc::LoadData , ins.class
+      assert_equal data , ins.constant
+    end
   end
 end
