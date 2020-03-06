@@ -13,8 +13,8 @@ module SlotMachine
     def to_risc(compiler)
       builder = compiler.builder(compiler.source)
       operator = @operator # make accessible in block
-      false_label = Risc.label("false" , "false")
-      merge_label = Risc.label("merge" , "merge")
+      false_label = Risc.label("false" , "false_label_#{object_id}")
+      merge_label = Risc.label("merge" , "merge_label_#{object_id}")
       result = Risc::RegisterValue.new(:result , :Object)
       builder.build do
         left = message[:receiver].to_reg.reduce_int
@@ -26,7 +26,7 @@ module SlotMachine
           left.op :- , right
         end
         if_minus false_label
-        if_zero( false_label ) if operator.to_s.length == 1
+        if_not_zero( false_label ) if operator.to_s.length == 1
         add_code Risc::LoadConstant.new(to_s , Parfait.object_space.true_object, result)
         branch merge_label
         add_code false_label
