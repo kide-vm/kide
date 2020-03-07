@@ -10,19 +10,27 @@ module Minitest
       else
         is_parts = pattern.split(".")
         reg_parts = register.symbol.to_s.split(".")
-        assert_equal reg_parts.length , is_parts.length , "wrong dot length for #{pattern} , at:#{at}"
+        assert_equal reg_parts.length , is_parts.length , "wrong dot #{kind} length for #{pattern} , at:#{at}"
         is_parts.each_with_index do |part , index|
-          assert reg_parts[index].start_with?(part) , "wrong #{kind}, part:#{part} register:#{register}, at:#{at}"
+          assert reg_parts[index].start_with?(part) , "wrong #{kind} part(#{reg_parts[index]}), at index #{index}:#{part}, ins:#{at}"
         end
       end
     end
     def assert_slot_to_reg( slot_i , array = nil, index = nil , register = nil)
-      assert_equal Integer , slot_i.class , "assert_slot_to_reg #{slot_i}"
-      slot = risc(slot_i)
+      if(slot_i.is_a? Integer)
+        slot = risc(slot_i)
+      else
+        slot = slot_i
+        slot_i = :unknown
+      end
       assert_equal Risc::SlotToReg , slot.class , "Class at #{slot_i}"
       assert_register( :source , array , slot.array , slot_i)
+      if(slot_i == :unknown)
+        assert_index( :source , slot , index)
+      else
+        assert_index( :source , slot_i , index)
+      end
       assert_register( :destination , register , slot.register , slot_i )
-      assert_index( :source , slot_i , index)
     end
     def assert_reg_to_slot( slot_i , register = nil, array = nil, index = nil )
       assert_equal Integer , slot_i.class, "assert_reg_to_slot #{slot_i}"
@@ -34,8 +42,12 @@ module Minitest
     end
     def assert_index(kind , slot_i , index)
       return unless index
-      assert_equal Integer , slot_i.class , "assert_index #{slot_i}"
-      slot = risc(slot_i)
+      if(slot_i.is_a? Integer)
+        slot = risc(slot_i)
+      else
+        slot = slot_i
+        slot_i = :unknown
+      end
       if(slot.index.is_a?(Risc::RegisterValue))
         assert_equal( Symbol , index.class, "wrong #{kind} index class, at:#{slot_i}")
         assert_equal( index , slot.index.symbol, "wrong #{kind} index, at#{slot_i}")
@@ -83,8 +95,12 @@ module Minitest
       assert_label branch.label , label_name , "Label  at #{branch_i}"
     end
     def assert_operator ins_i , op , left , right
-      assert_equal Integer , ins_i.class, "assert_operator #{ins_i}"
-      ins = risc(ins_i)
+      if(ins_i.is_a?(Integer))
+        ins = risc(ins_i)
+      else
+        ins = ins_i
+        ins_i = :unknown
+      end
       assert_equal Risc::OperatorInstruction , ins.class , "Class at:#{ins_i}"
       assert_equal op , ins.operator
       assert_register :left , left , ins.left , ins_i

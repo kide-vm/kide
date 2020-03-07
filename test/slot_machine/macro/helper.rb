@@ -29,31 +29,29 @@ module SlotMachine
         assert_label at + 7 , "unreachable"
       end
       def assert_allocate
-        assert_load 1 , Parfait::Factory
-        assert_slot_to_reg 2 , :r2 , 2 , :r1
-        assert_load 3 , Parfait::NilClass
-        assert_operator 4 , :- , :r3 , :r1
-        assert_not_zero 5 , :label
-        assert risc(5).label.name.to_s.start_with?("cont_label")
-        assert_slot_to_reg 6 , :r2 , 3 , :r4
-        assert_reg_to_slot 7 ,:r4 , :r2 , 2
-        assert_load 8 , Parfait::CallableMethod
-        assert_slot_to_reg 9 , :r0 , 1 , :r6
-        assert_reg_to_slot 10 , :r5 , :r6 , 7
-        assert_load 11 , Parfait::Factory
-        assert_reg_to_slot 12 , :r7 , :r0 , 2
-        assert_load 13 , Risc::Label
-        assert_slot_to_reg 14 , :r0 , 1 , :r9
-        assert_slot_to_reg 14 ,:r0,1,:r9
-        assert_reg_to_slot 15 ,:r8,:r9,4
-        assert_slot_to_reg 16 ,:r0 , 1 , :r0
+        assert_load 1 , Parfait::Factory , "id_factory_"
+        assert_load 2 , Parfait::NilClass , "id_nilclass_"
+        assert_slot_to_reg 3 , "id_factory_" , 2 , "id_factory_.next_object"
+        assert_operator 4 , :- , "id_nilclass_" , "id_factory_.next_object"
+        assert_zero 5 , "cont_label"
+        assert_slot_to_reg 6 , "id_factory_" , 2 , "id_factory_.next_object"
+        assert_reg_to_slot 7 , "id_factory_.next_object" , "id_factory_" , 2
+        assert_load 8 , Parfait::Factory , "id_factory_"
+        assert_load 9 , Parfait::CallableMethod , "id_callablemethod"
+        assert_slot_to_reg 10 , :message , 1 , "message.next_message"
+        assert_reg_to_slot 11 , "id_callablemethod_" , "message.next_message" , 7
+        assert_reg_to_slot 12 , "id_factory_" , :message , 2
+        assert_load 13 , Risc::Label , "id_label"
+        assert_slot_to_reg 14 , :message , 1 , "message.next_message"
+        assert_reg_to_slot 15 , "id_label" , "message.next_message" , 4
+        assert_slot_to_reg 16 ,:message , 1 , :message
         assert_equal Risc::FunctionCall, risc(17).class
         assert_equal :main, risc(17).method.name
-        assert_label 18 , "continue_"
-        assert_slot_to_reg 19 , :r2 , 2 , :r1
-        assert_label 20 ,"cont_label_"
-        assert_slot_to_reg 21 , :r1 , 1 , :r4
-        assert_reg_to_slot 22 , :r4 , :r2 , 2
+        assert_label 18 , "after_main_"
+        assert_label 19 , "cont_label"
+        assert_slot_to_reg 20 , "id_factory_" , 2 , "id_factory_.next_object"
+        assert_slot_to_reg 21 , "id_factory_" , 2 , "id_factory_.next_object"
+        assert_reg_to_slot 22 , "id_factory_.next_object" , "id_factory_" , 2
       end
     end
   end
