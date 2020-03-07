@@ -8,6 +8,7 @@ module Risc
       @compiler = Risc.test_compiler
       @r0 = RegisterValue.new(:message , :Message).set_compiler(@compiler)
       @r1 = RegisterValue.new(:id_1234 , :Space).set_compiler(@compiler)
+      @int = RegisterValue.new(:id_456 , :Integer).set_compiler(@compiler)
     end
 
     def test_resolves_index_ok
@@ -17,11 +18,11 @@ module Risc
       assert_raises {@r0.resolve_index(:something)}
     end
     def test_reduce_int
-      ins = @r0.reduce_int
+      ins = @int.reduce_int
       assert_equal RegisterValue , ins.class
       assert_equal SlotToReg , @compiler.current.class
       assert_equal Parfait::Integer.integer_index , @compiler.current.index
-      assert_equal :message , ins.symbol
+      assert_equal :"id_456.data_1" , ins.symbol
     end
     def test_get_new_left_0
       assert_equal RegisterValue , @r0.get_new_left(:caller , @compiler).class

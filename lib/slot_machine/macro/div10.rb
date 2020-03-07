@@ -8,7 +8,7 @@ module SlotMachine
       integer_reg = builder.register( :integer_reg )
       integer_const = builder.register( :integer_const )
       builder.build do
-        integer_self = message[:receiver].to_reg.reduce_int
+        integer_self = message[:receiver].to_reg.reduce_int(false)
         transfer( integer_self , integer_1)
         transfer( integer_self , integer_reg)
 

@@ -65,11 +65,14 @@ module Risc
     end
 
     # reduce integer to fixnum and add instruction if compiler is used
-    # TODO: checck type of self, should be integer
+    # TODO: check type of self, should be integer, and ensure it is
     # TODO: find a type for the result, maybe fixnum , or data ?
     # TODO also check types on reg_to_slot
-    def reduce_int
-      reduce = Risc::SlotToReg.new( "int -> fix" , self , Parfait::Integer.integer_index , self)
+    def reduce_int(check = true)
+      raise "type not int #{type.name}" if check && type.name != "Integer_Type"
+      new_name = "#{@symbol}.data_1"
+      new_reg = RegisterValue.new( new_name.to_sym , :Integer , extra)
+      reduce = Risc::SlotToReg.new( "int -> fix" , self , Parfait::Integer.integer_index , new_reg)
       compiler.add_code(reduce) if compiler
       reduce.register
     end
