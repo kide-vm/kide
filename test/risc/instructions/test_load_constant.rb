@@ -5,22 +5,24 @@ module Risc
     def setup
       Parfait.boot!({})
     end
-    def load(const = SlotMachine::StringConstant.new("hi") )
+    def risc(i)
+      const = SlotMachine::StringConstant.new("hi")
       Risc.load_constant("source" , const)
     end
     def test_const
-      assert_load load , SlotMachine::StringConstant , "id_"
+      assert_load 1 , SlotMachine::StringConstant , "id_string_"
     end
   end
   class TestLoadConstant1 < MiniTest::Test
     def setup
       Parfait.boot!({})
     end
-    def  load(const = Parfait.new_word("hi") )
+    def risc(i)
+      const = Parfait.new_word("hi")
       Risc.load_constant("source" , const)
     end
     def test_parf
-      assert_load load , Parfait::Word , "id_"
+      assert_load 1 , Parfait::Word , "id_word_"
     end
   end
 end

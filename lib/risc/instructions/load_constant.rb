@@ -45,7 +45,8 @@ module Risc
         type = constant.ct_type
         value = constant.value
       end
-      register = RegisterValue.new( "id_#{value.object_id}".to_sym , type )
+      value_class = value.class.name.to_s.split("::").last.downcase
+      register = RegisterValue.new( "id_#{value_class}_#{value.object_id}".to_sym , type )
     end
     LoadConstant.new( source , constant , register )
   end
