@@ -31,5 +31,10 @@ module Risc
       assert_equal LoadConstant , @compiler.current.class
       assert_equal Parfait::Space , @compiler.current.constant.class
     end
+    def test_load_data
+      object = @compiler.load_object(1)
+      assert_equal LoadData , @compiler.current.class
+      assert_equal Integer , @compiler.current.constant.class
+    end
   end
 end

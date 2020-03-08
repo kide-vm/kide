@@ -12,7 +12,7 @@ module SlotMachine
         transfer( integer_self , integer_1)
         transfer( integer_self , integer_reg)
 
-        load_object( Parfait::Integer.new(1) , integer_const)
+        load_object( 1 , integer_const)
 
         integer_1.op :>> , integer_const
 

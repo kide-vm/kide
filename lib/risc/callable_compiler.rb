@@ -90,12 +90,19 @@ module Risc
       copied
     end
 
-    # Load a constant, meaning create a LoadConstant instruction for the constant
+    # Load a constant, meaning create a LoadConstant or LoadData instruction for the
+    # given constant. Integers create LoadData (meaning the integer is encoded into
+    # the actual instruction), Parfait::Objects create LoadConstant, where a pointer
+    # to the object is loaded.
     # add the instruction to the code and return the register_value that was created
     # for further use
     # register may be passed in (epecially in mcro building) as second arg
     def load_object( object , into = nil)
-      ins = Risc.load_constant("load to #{object}" , object , into)
+      if(object.is_a? Integer)
+        ins = Risc.load_data("load data #{object}" , object , into)
+      else
+        ins = Risc.load_constant("load to #{object}" , object , into)
+      end
       ins.register.set_compiler(self)
       add_code ins
       # todo for constants (not objects)

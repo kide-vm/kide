@@ -22,7 +22,10 @@ module Risc
     end
 
   end
-  def self.load_data( source , constant , register )
-    LoadData.new( source , constant , register)
+  def self.load_data( source , value , register = nil )
+    raise "can only load integers, not #{value}" unless value.is_a?(Integer)
+    type =  Parfait.object_space.get_type_by_class_name(:Integer)
+    register = RegisterValue.new( "fix_#{value}".to_sym , type ) unless register
+    LoadData.new( source , value , register)
   end
 end

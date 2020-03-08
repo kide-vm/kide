@@ -14,53 +14,54 @@ module SlotMachine
         assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        assert_equal 69 , @method.to_risc.risc_instructions.length
+        assert_equal 68 , @method.to_risc.risc_instructions.length
       end
       def test_allocate
         assert_allocate
       end
       def test_return
-        assert_return(61)
+        assert_return(60)
       end
       def test_all
-        assert_slot_to_reg risc(23) , :r0 , 2 , :r2
-        assert_slot_to_reg risc(24) , :r2 , 2 , :r2
-        assert_transfer risc(25) , :r2 , :r3
-        assert_transfer risc(26) , :r2 , :r4
-        assert_data risc(27) , 1
-        assert_operator risc(28) , :>> , :r3 , :r5
-        assert_data risc(29) , 2
-        assert_operator risc(30) , :>> , :r4 , :r5
-        assert_operator risc(31) , :+ , :r4 , :r3
-        assert_data risc(32) , 4
-        assert_transfer risc(33) , :r4 , :r3
-        assert_operator risc(34) , :>> , :r4 , :r3
-        assert_operator risc(35) , :+ , :r4 , :r3
-        assert_data risc(36) , 8
-        assert_transfer risc(37) , :r4 , :r3
-        assert_operator risc(38) , :>> , :r3 , :r5
-        assert_operator risc(39) , :+ , :r4 , :r3
-        assert_data risc(40) , 16
-        assert_transfer risc(41) , :r4 , :r3
-        assert_operator risc(42) , :>> , :r3 , :r5
-        assert_operator risc(43) , :+ , :r4 , :r3
-        assert_data risc(44) , 3
-        assert_operator risc(45) , :>> , :r4 , :r5
-        assert_data risc(46) , 10
-        assert_transfer risc(47) , :r4 , :r3
-        assert_operator risc(48) , :* , :r3 , :r5
-        assert_operator risc(49) , :- , :r2 , :r3
-        assert_transfer risc(50) , :r2 , :r3
-        assert_data risc(51) , 6
-        assert_operator risc(52) , :+ , :r3 , :r5
-        assert_data risc(53) , 4
-        assert_operator risc(54) , :>> , :r3 , :r5
-        assert_operator risc(55) , :+ , :r4 , :r3
-        assert_reg_to_slot risc(56) , :r4 , :r1 , 2
-        assert_reg_to_slot risc(57) , :r1 , :r0 , 5
-        assert_slot_to_reg risc(58),:r0 , 5 , :r2
-        assert_reg_to_slot risc(59) , :r2 , :r0 , 5
-        assert_branch risc(60) , "return_label"
+        assert_slot_to_reg 23 , "message" , 2 , "message.receiver"
+        assert_slot_to_reg 24 , "message.receiver" , 2 , "message.receiver.data_1"
+        assert_transfer 25 , "message.receiver.data_1" , "integer_1"
+        assert_transfer 26 , "message.receiver.data_1" , "integer_reg"
+        assert_data 27 , 1
+        assert_operator 28 , :>> , :integer_1 , :integer_const
+        assert_data 29 , 2
+        assert_operator 30 , :>> , :integer_reg , :integer_const
+        assert_operator 31 , :+ , :integer_reg , :integer_1
+        assert_data 32 , 4
+        assert_transfer 33 , :integer_reg , :integer_1
+        assert_operator 34 , :>> , :integer_reg , :integer_1
+        assert_operator 35 , :+ , :integer_reg , :integer_1
+        assert_data 36 , 8
+        assert_transfer 37 , :integer_reg , :integer_1
+        assert_operator 38 , :>> , :integer_1 , :integer_const
+        assert_operator 39 , :+ , :integer_reg , :integer_1
+        assert_data 40 , 16
+        assert_transfer 41 , :integer_reg , :integer_1
+        assert_operator 42 , :>> , :integer_1 , :integer_const
+        assert_operator 43 , :+ , :integer_reg , :integer_1
+        assert_data 44 , 3
+        assert_operator 45 , :>> , :integer_reg , :integer_const
+        assert_data 46 , 10
+        assert_transfer 47 , :integer_reg , :integer_1
+        assert_operator 48 , :* , :integer_1 , :integer_const
+        assert_transfer 49 , "message.receiver.data_1" , :integer_1
+        #        assert_operator 50 , :- , :r2 , :integer_1
+        assert_data 50 , 6
+        assert_operator 51 , :+ , :integer_1 , :integer_const
+        assert_data 52 , 4
+        assert_operator 53 , :>> , :integer_1 , :integer_const
+        assert_operator 54 , :+ , :integer_reg , :integer_1
+        assert_reg_to_slot 55 , :integer_reg , "id_factory_.next_object" , 2
+        assert_reg_to_slot 56 , "id_factory_.next_object" , :message , 5
+        assert_slot_to_reg 57 ,:message , 5 , "message.return_value"
+        assert_reg_to_slot 58 , "message.return_value" , :message , 5
+        assert_branch 59 , "return_label"
+        assert_label 60 , "return_label"
       end
     end
   end
