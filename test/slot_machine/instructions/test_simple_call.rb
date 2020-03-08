@@ -7,7 +7,7 @@ module SlotMachine
     def instruction
       SimpleCall.new( make_method )
     end
-    def est_len
+    def test_len
       assert_equal 7 , all.length , all_str
     end
     def test_1_load_return_label

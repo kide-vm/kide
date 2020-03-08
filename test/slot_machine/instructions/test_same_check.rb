@@ -20,8 +20,8 @@ module SlotMachine
     def test_3_op
       assert_operator 3, :- , "message.caller" , "message.next_message"
     end
-    def test_4_zero
-      assert_zero 4 , "target"
+    def test_4_not_zero
+      assert_not_zero 4 , "target"
     end
   end
 end
