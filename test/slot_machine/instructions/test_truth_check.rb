@@ -20,7 +20,7 @@ module SlotMachine
       assert_operator 3, :- , "id_" , "message.caller"
     end
     def test_4_zero
-      assert_not_zero  4  , "target"
+      assert_zero  4  , "target"
     end
     def test_5_load
       assert_load 5, Parfait::NilClass , "id_"
@@ -29,7 +29,7 @@ module SlotMachine
       assert_operator 6, :- , "id_", "message.caller"
     end
     def test_7_zero
-      assert_not_zero 7 , "target"
+      assert_zero 7 , "target"
     end
   end
 end

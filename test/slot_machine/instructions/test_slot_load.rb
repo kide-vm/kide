@@ -12,13 +12,5 @@ module SlotMachine
     def test_ins_fail1
       assert_raises {SlotLoad.new( "test",[:message, :caller] , nil )}
     end
-    def pest_fail_on_right
-      load = SlotLoad.new( "test",[:message, :caller] , [:message ,:receiver,:type] )
-      assert_raises {load.to_risc(Risc.test_compiler)}
-    end
-    def pest_fail_on_left_long
-      load = SlotLoad.new("test", [:message, :caller , :type , :type] , [:message,:type] )
-      assert_raises {load.to_risc(Risc.test_compiler)}
-    end
   end
 end

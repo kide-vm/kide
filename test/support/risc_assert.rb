@@ -109,16 +109,16 @@ module Minitest
     def assert_zero ins_i , label
       assert_equal Integer , ins_i.class, "assert_zero #{ins_i}"
       ins = risc(ins_i)
-      assert_equal Risc::IsNotZero , ins.class , "Class at:#{ins_i}"
+      assert_equal Risc::IsZero , ins.class , "Class at:#{ins_i}"
       assert_label ins.label , label , "Label at:#{ins_i}"
     end
     def assert_not_zero ins_i , label
       assert_equal Integer , ins_i.class, "assert_not_zero #{ins_i}"
       ins = risc(ins_i)
-      assert_equal Risc::IsZero , ins.class, "Class at:#{ins_i}"
+      assert_equal Risc::IsNotZero , ins.class, "Class at:#{ins_i}"
       assert_label ins.label , label, "Label at:#{ins_i}"
     end
-    def assert_syscall ins , name
+    def assert_syscall ins_i , name
       assert_equal Integer , ins_i.class, "assert_syscall #{ins_i}"
       ins = risc(ins_i)
       assert_equal Risc::Syscall , ins.class, "Class at:#{ins_i}"
