@@ -32,7 +32,6 @@ module SlotMachine
     # a target (not a label)
     def to_risc(compiler)
       entry = compiler.load_object(@cache_entry)[:cached_method].to_reg
-      compiler.add_constant( @cache_entry)
       return_label = Risc.label(self, "continue_#{object_id}")
       return_address = compiler.load_object(return_label)
 
