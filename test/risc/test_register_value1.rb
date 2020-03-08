@@ -20,6 +20,7 @@ module Risc
     def test_reduce_int
       ins = @int.reduce_int
       assert_equal RegisterValue , ins.class
+      assert ins.compiler
       assert_equal SlotToReg , @compiler.current.class
       assert_equal Parfait::Integer.integer_index , @compiler.current.index
       assert_equal :"id_456.data_1" , ins.symbol

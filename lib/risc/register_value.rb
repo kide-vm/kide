@@ -71,7 +71,7 @@ module Risc
     def reduce_int(check = true)
       raise "type not int #{type.name}" if check && type.name != "Integer_Type"
       new_name = "#{@symbol}.data_1"
-      new_reg = RegisterValue.new( new_name.to_sym , :Integer , extra)
+      new_reg = RegisterValue.new( new_name.to_sym , :Integer , extra).set_compiler(compiler)
       reduce = Risc::SlotToReg.new( "int -> fix" , self , Parfait::Integer.integer_index , new_reg)
       compiler.add_code(reduce) if compiler
       reduce.register

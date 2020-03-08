@@ -15,7 +15,7 @@ module SlotMachine
         assert_equal :div4 , @method.callable.name
       end
       def test_risc_length
-        assert_equal 41 , @method.to_risc.risc_instructions.length
+        assert_equal 40 , @method.to_risc.risc_instructions.length
       end
       def test_allocate
         assert_allocate
@@ -24,15 +24,15 @@ module SlotMachine
         assert_return(32)
       end
       def test_all
-        assert_slot_to_reg risc(23) , :r0 , 2 , :r2
-        assert_slot_to_reg risc(24) , :r2 , 2 , :r2
-        assert_data risc(25) , 2
-        assert_operator risc(26) , :>> , :r2 , :r3
-        assert_reg_to_slot risc(27) ,:r2 , :r1 , 2
-        assert_reg_to_slot risc(28) ,:r1 , :r0 , 5
-        assert_slot_to_reg risc(29) , :r0 , 5 , :r2
-        assert_reg_to_slot risc(30) ,:r2 , :r0 , 5
-        assert_branch risc(31) , "return_label"
+        assert_slot_to_reg 23 , :message , 2 , "message.receiver"
+        assert_slot_to_reg 24 , "message.receiver" , 2 , "message.receiver.data_1"
+        assert_data 25 , 2
+        assert_operator 26 , :>> , "message.receiver.data_1" , :integer_1
+        assert_reg_to_slot 27 ,"message.receiver.data_1" , "id_factory_.next_object" , 2
+        assert_reg_to_slot 28 ,"id_factory_.next_object" , :message , 5
+        assert_slot_to_reg 29 , :message , 5 , "message.return_value"
+        assert_reg_to_slot 30 , "message.return_value" , :message , 5
+        assert_branch 31 , "return_label"
       end
     end
   end
