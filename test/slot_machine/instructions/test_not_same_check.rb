@@ -11,16 +11,16 @@ module SlotMachine
       assert_equal 5 , all.length , all_str
     end
     def test_1_slot
-      assert_slot_to_reg risc(1) ,:message , 6 , :"message.caller"
+      assert_slot_to_reg 1,:message , 6 , :"message.caller"
     end
     def test_2_slot
-      assert_slot_to_reg risc(2) ,:message , 1 , :"message.next_message"
+      assert_slot_to_reg 2,:message , 1 , :"message.next_message"
     end
     def test_3_op
-      assert_operator risc(3) , :-, :"message.caller" , :"message.next_message"
+      assert_operator 3, :-, :"message.caller" , :"message.next_message"
     end
     def test_4_zero
-      assert_zero risc(4) , "target"
+      assert_not_zero 4, "target"
     end
   end
 end

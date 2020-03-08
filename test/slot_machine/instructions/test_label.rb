@@ -10,11 +10,11 @@ module SlotMachine
       assert_equal Risc::Label , all.first.class
     end
     def test_1_label
-      assert_equal Risc::Label , risc(1).class
+      assert_label 1 , "target"
     end
     def test_2_slot
       label = @instruction.risc_label( @compiler)
-      assert_equal risc(1) , label
+      assert_label label , "target" , 1
     end
   end
 end

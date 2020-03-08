@@ -25,7 +25,7 @@ module SlotMachine
     # return_address of the next_message, for the ReturnSequence to pick it up.
     def to_risc(compiler)
       method = @method
-      return_label = Risc.label(self,"continue_#{object_id}")
+      return_label = Risc.label(self,"after_#{@method.name}_#{object_id}")
       return_address = compiler.load_object( return_label )
       compiler.build(self.to_s) do
         message[:next_message][:return_address] << return_address
