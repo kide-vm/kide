@@ -37,35 +37,34 @@ module SlotMachine
     #
     # currently a fail results in sys exit
     def to_risc( compiler )
-      name_ = @name
-      cache_entry_ = @cache_entry
       builder = compiler.builder(self)
+      word = builder.load_object(Parfait.new_word(@name.to_s))
+      entry = builder.load_object(@cache_entry)
+      while_start_label = Risc.label(to_s, "while_start_label_#{object_id}")
+      ok_label = Risc.label(to_s, "ok_label_#{object_id}")
+      exit_label = Risc.label(to_s, "exit_label_#{object_id}")
       builder.build do
-        word! << name_
-        cache_entry! << cache_entry_
-
-        type! << cache_entry[:cached_type]
-        callable_method! << type[:methods]
+        callable_method = entry[:cached_type][:methods].to_reg
 
         add_code while_start_label
 
-        object! << Parfait.object_space.nil_object
-        object - callable_method
+        object = load_object Parfait.object_space.nil_object
+        object.op :- , callable_method
         if_zero exit_label
 
-        name! << callable_method[:name]
-        name - word
+        name = callable_method[:name].to_reg
+        name.op :- , word
 
         if_zero ok_label
 
-        callable_method << callable_method[:next_callable]
+        callable_method = callable_method[:next_callable].to_reg
         branch  while_start_label
 
         add_code exit_label
         MethodMissing.new(compiler.source_name , word.symbol).to_risc(compiler)
 
         add_code ok_label
-        cache_entry[:cached_method] << callable_method
+        entry[:cached_method] << callable_method
       end
     end
 
