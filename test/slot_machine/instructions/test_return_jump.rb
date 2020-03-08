@@ -9,7 +9,7 @@ module SlotMachine
       assert_equal 2 , all.length , all_str
     end
     def test_2_branch
-      assert_branch risc(1) ,"return"
+      assert_branch 1,"return"
     end
   end
 end

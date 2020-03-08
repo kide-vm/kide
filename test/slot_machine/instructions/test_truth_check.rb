@@ -11,27 +11,25 @@ module SlotMachine
       assert_equal Risc::Label , all.first.class
     end
     def test_1_slot
-      assert_slot_to_reg risc(1) ,:message , 6 , :"message.caller"
+      assert_slot_to_reg 1,:message , 6 , :"message.caller"
     end
     def test_2_load
-      assert_load risc(2) , Parfait::FalseClass, "id_"
+      assert_load 2, Parfait::FalseClass, "id_"
     end
     def test_3_op
-      assert_operator risc(3) , :- , "id_" , "message.caller"
+      assert_operator 3, :- , "id_" , "message.caller"
     end
     def test_4_zero
-      assert_equal Risc::IsZero , risc(4).class
-      assert_label risc(4).label , "target"
+      assert_not_zero  4  , "target"
     end
     def test_5_load
-      assert_load risc(5) , Parfait::NilClass , "id_"
+      assert_load 5, Parfait::NilClass , "id_"
     end
     def test_6_op
-      assert_operator risc(6), :- , "id_", "message.caller"
+      assert_operator 6, :- , "id_", "message.caller"
     end
     def test_7_zero
-      assert_equal Risc::IsZero , risc(7).class
-      assert_label risc(7).label , "target"
+      assert_not_zero 7 , "target"
     end
   end
 end

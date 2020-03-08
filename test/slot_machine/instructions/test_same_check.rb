@@ -12,17 +12,16 @@ module SlotMachine
       assert_equal Risc::Label , all.first.class
     end
     def test_1_slot
-      assert_slot_to_reg risc(1) ,:message , 6 , :"message.caller"
+      assert_slot_to_reg 1,:message , 6 , :"message.caller"
     end
     def test_2_slot
-      assert_slot_to_reg risc(2) ,:message , 1 , :"message.next_message"
+      assert_slot_to_reg 2,:message , 1 , :"message.next_message"
     end
     def test_3_op
-      assert_operator risc(3) , :- , "message.caller" , "message.next_message"
+      assert_operator 3, :- , "message.caller" , "message.next_message"
     end
     def test_4_zero
-      assert_equal Risc::IsNotZero , risc(4).class
-      assert_label risc(4).label , "target"
+      assert_zero 4 , "target"
     end
   end
 end
