@@ -12,10 +12,10 @@ module SlotMachine
       assert_slot_to_reg 1,:message , 6 , "message.caller"
     end
     def test_2_load_caller
-      assert_slot_to_reg 2,"message.caller" , 5 , "message.caller.return_value"
+      assert_slot_to_reg 2, "message" , 5 , "message.return_value"
     end
     def test_3_store_return_in_caller
-      assert_reg_to_slot 3, "message.caller.return_value" , "message.caller" , 5
+      assert_reg_to_slot 3, "message.return_value" , "message.caller" , 5
     end
     def test_4_load_return_address
       assert_slot_to_reg 4,:message , 4 , "message.return_address"

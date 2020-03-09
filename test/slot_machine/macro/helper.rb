@@ -21,8 +21,8 @@ module SlotMachine
       def assert_return(at)
         assert_label at , "return_label"
         assert_slot_to_reg at + 1 , :message , 6 , "message.caller"
-        assert_slot_to_reg at + 2 , "message.caller" , 5 , "message.caller.return_value"
-        assert_reg_to_slot at + 3 ,"message.caller.return_value" , "message.caller" , 5
+        assert_slot_to_reg at + 2 , "message" , 5 , "message.return_value"
+        assert_reg_to_slot at + 3 ,"message.return_value" , "message.caller" , 5
         assert_slot_to_reg at + 4 , :message , 4 , "message.return_address"
         assert_slot_to_reg at + 5 , :message , 6 , :message
         assert_equal Risc::FunctionReturn , risc(at + 6).class
