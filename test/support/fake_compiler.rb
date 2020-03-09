@@ -1,4 +1,12 @@
 module Risc
+  module HasCompiler
+    def risc(i)
+      assert @compiler , "no compiler"
+      instructions = @compiler.risc_instructions
+      return instructions if i == 0
+      instructions.next(i)
+    end
+  end
   class FakeCallable
     def self_type
       Parfait.object_space.types.values.first

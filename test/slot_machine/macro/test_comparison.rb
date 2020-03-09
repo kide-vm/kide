@@ -16,7 +16,6 @@ module SlotMachine
       def test_risc_length
         assert_equal 25 , @method.to_risc.risc_instructions.length
       end
-      #TODO, check the actual instructions, at least by class
     end
     class TestIntComp2Risc < BootTest
       def setup
@@ -34,12 +33,12 @@ module SlotMachine
       end
       def test_all
         assert_slot_to_reg 1 , :message , 2 , "message.receiver"
-        assert_slot_to_reg 2 , "message.receiver" , 2 , "message.receiver"
+        assert_slot_to_reg 2 , "message.receiver" , 2 , "message.receiver.data_1"
         assert_slot_to_reg 3 ,:message , 9 , "message.arg1"
-        assert_slot_to_reg 4 , "message.arg1" , 2 , "message.arg1"
-        assert_operator 5 , :- , "message.receiver" , "message.arg1"
+        assert_slot_to_reg 4 , "message.arg1" , 2 , "message.arg1.data_1"
+        assert_operator 5 , :- , "message.receiver.data_1" , "message.arg1.data_1"
         assert_minus 6 , "false_label_"
-        assert_zero 7 , "false_label_"
+        assert_not_zero 7 , "false_label_"
         assert_load 8 , Parfait::TrueClass , :result
         assert_branch 9 , "merge_label_"
         assert_label 10 , "false_label_"
