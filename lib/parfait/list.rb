@@ -53,6 +53,7 @@ module Parfait
     # set the value at index.
     # Lists start from index 0
     def get( index )
+      raise "Only integers, #{index.class}" unless index.is_a?(::Integer)
       raise "Only positive indexes, #{index}" if index < 0
       if index >= data_length
         return nil unless @next_list

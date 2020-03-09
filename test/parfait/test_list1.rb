@@ -32,6 +32,9 @@ module Parfait
       assert_equal 2 , @list.index_of( :three )
       assert_nil  @list.index_of( :four )
     end
+    def test_get_fail
+      assert_raises{ @list.get(:me) }
+    end
     def test_inspect
       assert @list.inspect.include?("one") , @list.inspect
       assert @list.inspect.include?("three") , @list.inspect
