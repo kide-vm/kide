@@ -21,7 +21,13 @@ module Risc
     raise "Register #{array}" if RegisterValue.look_like_reg(array.symbol)
     new_name = "#{array.symbol}.#{index.to_s.downcase}".to_sym
     index = array.resolve_index(index) if index.is_a?(Symbol)
-    type = array.type_at(index)
+    if( index.is_a?(Integer))
+      type = array.type_at(index)
+    else
+      raise "must be integer index #{index}" unless index.type.name == "Integer_Type"
+      type = Parfait.object_space.get_type_by_class_name(:Object)
+      new_name = "#{array.symbol}.indexed".to_sym
+    end
     #puts "Slot for #{array.symbol}@ index #{index} is #{type}"
     to = RegisterValue.new( new_name , type )
     SlotToReg.new( source , array , index , to)

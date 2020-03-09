@@ -23,15 +23,9 @@ module Risc
     # fullfil the objects purpose by creating a RegToSlot instruction from
     # itself (the slot) and the register given
     def <<( reg )
-      case reg
-      when RegisterValue
-        to_mem("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg)
-      when RegisterSlot
-        reg = to_reg()
-        to_mem("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg)
-      else
-        raise "not reg value or slot #{reg}"
-      end
+      reg = reg.to_reg() if reg.is_a?( RegisterSlot )
+      raise "not reg value or slot #{reg}" unless reg.is_a?(RegisterValue)
+      to_mem("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg)
     end
 
     # for chaining the array operator is defined here too.
@@ -59,7 +53,7 @@ module Risc
     # the register is created, and the slot_to_reg instruction added to the
     # compiler. the return is a bit like @register[@index]
     def to_reg()
-      source = "reduce #{@register.symbol}[@index]"
+      source = "reduce #{@register.symbol}[#{@index}]"
       slot_to_reg = Risc.slot_to_reg(source , register, index)
       if compiler
         compiler.add_code(slot_to_reg)
