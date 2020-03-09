@@ -45,5 +45,10 @@ module Risc
       # works with nil as compiler, because extra is used
       assert_equal :Message , @r1.get_new_left(:arguments , nil).type.class_name
     end
+    def test_type_setting
+      reg = @r0.known_type(:Integer)
+      assert_equal Parfait::Type , reg.type.class
+      assert_equal "Integer_Type" , reg.type.name
+    end
   end
 end

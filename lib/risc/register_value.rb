@@ -21,12 +21,10 @@ module Risc
     # for an XX instance
     def initialize( reg , type , extra = {})
       extra = {} unless extra
-      raise "Not Hash #{extra}"  unless extra.is_a?(Hash)
-      type = Parfait.object_space.get_type_by_class_name(type) if type.is_a?(Symbol)
-      raise "No type #{reg}" unless type
-      @type = type
-      @symbol = reg
       @extra = extra
+      @symbol = reg
+      raise "Not Hash #{extra}"  unless extra.is_a?(Hash)
+      known_type(type)
     end
 
     def class_name
@@ -39,6 +37,16 @@ module Risc
     # return the RegisterValue for chaining in assignment
     def set_compiler( compiler )
       @compiler = compiler
+      self
+    end
+
+    # basically set the type with the given symbol. Symbol is resolved to type
+    # just like in constructor
+    # return self for chaining
+    def known_type( type )
+      type = Parfait.object_space.get_type_by_class_name(type) if type.is_a?(Symbol)
+      raise "No type #{type} for #{self}" unless type
+      @type = type
       self
     end
 
