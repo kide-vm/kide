@@ -3,6 +3,8 @@ require_relative "../helper"
 module Risc
   class TestCompilerBuilder < MiniTest::Test
     include Parfait::MethodHelper
+    include HasCompiler
+
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @method = SlotMachine::SlotCollection.compiler_for( :Space , :main,{},{}).callable
@@ -18,7 +20,11 @@ module Risc
     end
     def test_allocate_len
       int = @builder.allocate_int
-      assert_equal 23 , @builder.compiler.risc_instructions.length
+      assert_equal 22 , @builder.compiler.risc_instructions.length
+    end
+    def test_allocate
+      int = @builder.allocate_int
+      assert_allocate
     end
   end
 end

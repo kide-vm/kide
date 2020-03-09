@@ -144,13 +144,13 @@ module Risc
       null = load_object Parfait.object_space.nil_object
       int = nil
       build do
-        int = factory[:next_object].to_reg
+        int = factory[:next_object].to_reg.known_type(:Integer)
         null.op :- , int
         if_not_zero cont_label
           factory[:next_object] << factory[:reserve]
           call_get_more
         add_code cont_label
-        factory[:next_object] << factory[:next_object][:next_integer]
+        factory[:next_object] << int[:next_integer]
       end
       int
     end
