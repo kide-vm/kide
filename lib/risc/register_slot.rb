@@ -72,6 +72,7 @@ module Risc
     # from itself (the slot) and the register given
     def <=( reg )
       raise "not reg #{reg}" unless reg.is_a?(RegisterValue)
+      raise "Index must be register #{index}" unless(index.is_a?(RegisterValue))
       reg_to_byte = Risc.reg_to_byte("#{reg.class_name} -> #{register.class_name}[#{index}]" , reg , register, index)
       compiler.add_code(reg_to_byte) if compiler
       reg_to_byte

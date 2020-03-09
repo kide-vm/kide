@@ -2,6 +2,7 @@ require_relative "../helper"
 
 module Risc
   class TestRegisterSlot1 < MiniTest::Test
+
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @compiler = Risc.test_compiler
@@ -73,6 +74,7 @@ module Risc
     end
   end
   class TestRegisterSlot4 < MiniTest::Test
+    include HasCompiler
     def setup
       Parfait.boot!(Parfait.default_test_options)
       @compiler = Risc.test_compiler
@@ -85,14 +87,12 @@ module Risc
       assert_equal NilClass ,  @compiler.risc_instructions.next(3).class
     end
     def test_slot_to
-      slot = @compiler.risc_instructions.next(1)
-      assert_slot_to_reg slot , :message, 1, :"message.next_message"
-      assert slot.register.compiler
+      assert_slot_to_reg 1 , :message, 1, :"message.next_message"
+      assert risc(1).register.compiler
     end
     def test_reg_to
-      reg = @compiler.risc_instructions.next(2)
-      assert_reg_to_slot reg , :message, :"message.next_message" , 4
-      assert reg.register.compiler
+      assert_reg_to_slot 2 , :message, :"message.next_message" , 4
+      assert risc(2).register.compiler
     end
   end
 end

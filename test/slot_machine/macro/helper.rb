@@ -33,7 +33,7 @@ module SlotMachine
         assert_load 2 , Parfait::NilClass , "id_nilclass_"
         assert_slot_to_reg 3 , "id_factory_" , 2 , "id_factory_.next_object"
         assert_operator 4 , :- , "id_nilclass_" , "id_factory_.next_object"
-        assert_zero 5 , "cont_label"
+        assert_not_zero 5 , "cont_label"
         assert_slot_to_reg 6 , "id_factory_" , 2 , "id_factory_.next_object"
         assert_reg_to_slot 7 , "id_factory_.next_object" , "id_factory_" , 2
         assert_load 8 , Parfait::Factory , "id_factory_"

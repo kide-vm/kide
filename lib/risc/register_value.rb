@@ -162,6 +162,7 @@ module Risc
     # since << covers all other cases, this must have a RegisterSlot as the right
     def <=( right )
       raise "not implemented for #{right.class}:#{right}" unless right.is_a?( RegisterSlot )
+      raise "Right index must be register #{right.index}" unless(right.index.is_a?(RegisterValue))
       ins = Risc.byte_to_reg("#{right.register.type}[#{right.index}] -> #{self.type}" , right.register , right.index , self)
       compiler.add_code(ins) if compiler
       return ins

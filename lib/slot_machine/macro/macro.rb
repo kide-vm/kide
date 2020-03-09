@@ -22,7 +22,7 @@ module SlotMachine
       save_message( builder )
       builder.build do
         message << message[:return_value]
-        message.reduce_int
+        message.reduce_int(false) #hack, noo type check
         add_code Risc::Syscall.new("emit_syscall(exit)", :exit )
       end
     end
@@ -32,7 +32,7 @@ module SlotMachine
     # This relies on linux to save and restore all registers
     #
     def self.save_message(builder)
-      r8 = Risc::RegisterValue.new( :r8 , :Message).set_builder(builder)
+      r8 = Risc::RegisterValue.new( :saved_message , :Message).set_compiler(builder.compiler)
       builder.build {r8 << message}
     end
 
@@ -42,7 +42,7 @@ module SlotMachine
     # so that the return value already has an integer instance
     # This instance is filled with os return value
     def self.restore_message(builder)
-      r8 = Risc::RegisterValue.new( :r8 , :Message)
+      r8 = Risc::RegisterValue.new( :saved_message , :Message).set_compiler(builder.compiler)
       builder.build do
         integer_reg! << message
         message << r8

@@ -14,13 +14,13 @@ module SlotMachine
         assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        assert_equal 68 , @method.to_risc.risc_instructions.length
+        assert_equal 69 , @method.to_risc.risc_instructions.length
       end
       def test_allocate
         assert_allocate
       end
       def test_return
-        assert_return(60)
+        assert_return(61)
       end
       def test_all
         assert_slot_to_reg 23 , "message" , 2 , "message.receiver"
@@ -49,19 +49,19 @@ module SlotMachine
         assert_data 46 , 10
         assert_transfer 47 , :integer_reg , :integer_1
         assert_operator 48 , :* , :integer_1 , :integer_const
-        assert_transfer 49 , "message.receiver.data_1" , :integer_1
-        #        assert_operator 50 , :- , :r2 , :integer_1
-        assert_data 50 , 6
-        assert_operator 51 , :+ , :integer_1 , :integer_const
-        assert_data 52 , 4
-        assert_operator 53 , :>> , :integer_1 , :integer_const
-        assert_operator 54 , :+ , :integer_reg , :integer_1
-        assert_reg_to_slot 55 , :integer_reg , "id_factory_.next_object" , 2
-        assert_reg_to_slot 56 , "id_factory_.next_object" , :message , 5
-        assert_slot_to_reg 57 ,:message , 5 , "message.return_value"
-        assert_reg_to_slot 58 , "message.return_value" , :message , 5
-        assert_branch 59 , "return_label"
-        assert_label 60 , "return_label"
+        assert_operator 49 , :- , "message.receiver.data_1" , :integer_1
+        assert_transfer 50 , "message.receiver.data_1" , :integer_1
+        assert_data 51 , 6
+        assert_operator 52 , :+ , :integer_1 , :integer_const
+        assert_data 53 , 4
+        assert_operator 54 , :>> , :integer_1 , :integer_const
+        assert_operator 55 , :+ , :integer_reg , :integer_1
+        assert_reg_to_slot 56 , :integer_reg , "id_factory_.next_object" , 2
+        assert_reg_to_slot 57 , "id_factory_.next_object" , :message , 5
+        assert_slot_to_reg 58 ,:message , 5 , "message.return_value"
+        assert_reg_to_slot 59 , "message.return_value" , :message , 5
+        assert_branch 60 , "return_label"
+        assert_label 61 , "return_label"
       end
     end
   end

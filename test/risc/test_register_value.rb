@@ -59,22 +59,22 @@ module Risc
       assert_operator ret , :<< , :message , "id_.type"
     end
     def test_byte_to_reg
-      instr = @r0 <= @r1[1]
+      instr = @r0 <= @r1[@r0]
       assert_equal ByteToReg , instr.class
       assert_equal @r1 , instr.array
       assert_equal @r0 , instr.register
-      assert_equal 1 , instr.index
+      assert_equal @r0 , instr.index
     end
     def test_slot_to_reg
       instr = @r0 << @r2[:next_object]
       assert_slot_to_reg instr , "id_" , 2 , :message
     end
     def test_reg_to_byte
-      instr = @r1[1] <= @r0
+      instr = @r1[@r0] <= @r0
       assert_equal RegToByte , instr.class
       assert_equal @r1 , instr.array
       assert_equal @r0 , instr.register
-      assert_equal 1 , instr.index
+      assert_equal @r0 , instr.index
     end
   end
 end
