@@ -14,7 +14,7 @@ module SlotMachine
         assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        assert_equal 42 , @method.to_risc.risc_instructions.length
+        assert_equal 40 , @method.to_risc.risc_instructions.length
       end
     end
     class TestIntOpMM < BootTest
@@ -29,26 +29,27 @@ module SlotMachine
         assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        assert_equal 42 , @method.to_risc.risc_instructions.length
+        assert_equal 40 , @method.to_risc.risc_instructions.length
       end
       def test_allocate
         assert_allocate
       end
       def test_all
-        assert_slot_to_reg risc(23),:r0 , 2 , :r2
-        assert_slot_to_reg risc(24),:r2 , 2 , :r2
-        assert_slot_to_reg risc(25),:r0 , 9 , :r3
-        assert_slot_to_reg risc(26),:r3 , 2 , :r3
-        assert_operator risc(27) , :| , :r2 , :r3
-        assert_reg_to_slot risc(28) , :r2  , :r1 , 2
-        assert_reg_to_slot risc(29) , :r1  , :r0 , 5
-        assert_slot_to_reg risc(30),:r0 , 5 , :r2
-        assert_reg_to_slot risc(31) , :r2  , :r0 , 5
-        assert_branch risc(32) , "return_label"
-        assert_label risc(33) , "return_label"
+        s = Risc.allocate_length
+        assert_slot_to_reg s + 1 ,:message , 2 , "message.receiver"
+        assert_slot_to_reg s + 2 ,"message.receiver" , 2 , "message.receiver.data_1"
+        assert_slot_to_reg s + 3 ,:message , 9 , "message.arg1"
+        assert_slot_to_reg s + 4 , "message.arg1" , 2 , "message.arg1.data_1"
+        assert_operator s + 5 , :| , "message.receiver.data_1" , "message.arg1.data_1"
+        assert_reg_to_slot s + 6 , "message.receiver.data_1"  , "id_factory_.next_object" , 2
+        assert_reg_to_slot s + 7 , "id_factory_.next_object"  , :message , 5
+        assert_slot_to_reg s + 8 ,:message , 5 , "message.return_value"
+        assert_reg_to_slot s + 9 , "message.return_value"  , :message , 5
+        assert_branch s + 10 , "return_label"
+        assert_label s + 11 , "return_label"
       end
       def test_return
-        assert_return(33)
+        assert_return(32)
       end
     end
   end
