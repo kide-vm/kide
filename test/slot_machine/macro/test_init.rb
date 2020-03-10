@@ -19,26 +19,25 @@ module SlotMachine
         assert_equal 19 , @method.to_risc.risc_instructions.length
       end
       def test_all
-        assert_load risc(1) , Parfait::Factory
-        assert_slot_to_reg risc(2) , :r1 , 2 , :r0
-        assert_slot_to_reg risc(3),:r0 , 1 , :r2
-        assert_reg_to_slot risc(4) , :r2 , :r1 , 2
-        assert_load risc(5) , Parfait::CallableMethod
-        assert_slot_to_reg risc(6),:r0 , 1 , :r2
-        assert_reg_to_slot risc(7) , :r1 , :r2 , 7
-        assert_slot_to_reg risc(8),:r0 , 1 , :r0
-        assert_load risc(9) , Parfait::Space
-        assert_reg_to_slot risc(10) , :r3 , :r0 , 2
-        assert_load risc(11) , Risc::Label
-        assert_reg_to_slot risc(12) , :r4 , :r0 , 4
+        assert_load 1 , Parfait::Factory , "id_factory_"
+        assert_slot_to_reg 2 , "id_factory_" , 2 , :message
+        assert_slot_to_reg 3 ,:message , 1 , "message.next_message"
+        assert_reg_to_slot 4 , "message.next_message" , "id_factory_" , 2
+        assert_load 5 , Parfait::CallableMethod , "id_callablemethod_"
+        assert_slot_to_reg 6 ,:message , 1 , "message.next_message"
+        assert_reg_to_slot 7 , "id_callablemethod_" , "message.next_message" , 7
+        assert_slot_to_reg 8 ,:message , 1 , :message
+        assert_load 9 , Parfait::Space , "id_space_"
+        assert_reg_to_slot 10 , "id_space_" , :message , 2
+        assert_load 11 , Risc::Label , "id_label_"
+        assert_reg_to_slot 12 , "id_label_" , :message , 4
         assert_equal Risc::FunctionCall, risc(13).class
         assert_equal :main, risc(13).method.name
-        assert_label risc(14) , "Object.__init__"
-        assert_transfer risc(15) , :r0 , :r8
-        assert_slot_to_reg risc(16),:r0 , 5 , :r0
-        assert_slot_to_reg risc(17),:r0 , 2 , :r0
-        assert_equal Risc::Syscall, risc(18).class
-        assert_equal :exit, risc(18).name
+        assert_label 14 , "Object.__init__"
+        assert_transfer 15 , :message , :saved_message
+        assert_slot_to_reg 16 ,:message , 5 , :message
+        assert_slot_to_reg 17 ,:message , 2 , "message.data_1"
+        assert_syscall 18, :exit
       end
     end
   end

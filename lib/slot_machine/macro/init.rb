@@ -13,29 +13,24 @@ module SlotMachine
       main = Parfait.object_space.get_method!(:Space, :main)
       # Set up the first message, but advance one, so main has somewhere to return to
       builder.build do
-        factory! << Parfait.object_space.get_factory_for(:Message)
+        factory = load_object Parfait.object_space.get_factory_for(:Message)
         message << factory[:next_object]
-        next_message! << message[:next_message]
-        factory[:next_object] << next_message
+        factory[:next_object] << message[:next_message]
       end
-      builder.reset_names
       # Set up the call to main, with space as receiver
       SlotMachine::MessageSetup.new(main).build_with( builder )
       builder.build do
         message << message[:next_message]
-        space? << Parfait.object_space
+        space = load_object Parfait.object_space
         message[:receiver] << space
       end
       # set up return address and jump to main
       exit_label = Risc.label(compiler.source , "#{compiler.receiver_type.object_class.name}.#{compiler.source.name}" )
-      ret_tmp = compiler.use_reg(:Label).set_builder(builder)
       builder.build do
-        ret_tmp << exit_label
-        message[:return_address] << ret_tmp
+        message[:return_address] << load_object(exit_label)
         add_code Risc.function_call( "__init__ issue call" ,  main)
         add_code exit_label
       end
-      compiler.reset_regs
       Macro.exit_sequence(builder)  # exit will use mains return_value as exit_code
       return compiler
     end
