@@ -24,8 +24,7 @@ module SlotMachine
       assert_slot_to_reg 4 ,:message , 1 , :message
     end
     def test_5_call
-      assert_equal Risc::FunctionCall , risc(5).class
-      assert_equal :meth , risc(5).method.name
+      assert_function_call 5 , :meth
     end
     def test_6_label
       assert_label 6 , "after_meth_"

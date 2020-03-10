@@ -31,8 +31,7 @@ module SlotMachine
         assert_reg_to_slot 10 , "id_space_" , :message , 2
         assert_load 11 , Risc::Label , "id_label_"
         assert_reg_to_slot 12 , "id_label_" , :message , 4
-        assert_equal Risc::FunctionCall, risc(13).class
-        assert_equal :main, risc(13).method.name
+        assert_function_call 13 , :main
         assert_label 14 , "Object.__init__"
         assert_transfer 15 , :message , :saved_message
         assert_slot_to_reg 16 ,:message , 5 , :message

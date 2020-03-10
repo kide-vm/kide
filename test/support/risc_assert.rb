@@ -124,6 +124,12 @@ module Minitest
       assert_equal Risc::Syscall , ins.class, "Class at:#{ins_i}"
       assert_equal ins.name , name
     end
+    def assert_function_call ins_i , name
+      assert_equal Integer , ins_i.class, "assert_function_call #{ins_i}"
+      ins = risc(ins_i)
+      assert_equal Risc::FunctionCall , ins.class, "Class at:#{ins_i}"
+      assert_equal name, ins.method.name , "Method name at #{ins_i}"
+    end
     def assert_minus ins_i , label
       assert_equal Integer , ins_i.class, "assert_minus #{ins_i}"
       ins = risc(ins_i)
@@ -164,8 +170,7 @@ module Minitest
       assert_slot_to_reg 14 , :message , 1 , "message.next_message"
       assert_reg_to_slot 15 , "id_label" , "message.next_message" , 4
       assert_slot_to_reg 16 ,:message , 1 , :message
-      assert_equal Risc::FunctionCall, risc(17).class
-      assert_equal :main, risc(17).method.name
+      assert_function_call 17 , :main
       assert_label 18 , "after_main_"
       assert_label 19 , "cont_label"
       assert_slot_to_reg 20 , "id_factory_.next_object" , 1 , "id_factory_.next_object.next_integer"
