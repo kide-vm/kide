@@ -2,10 +2,10 @@ module SlotMachine
   class Putstring < Macro
     def to_risc(compiler)
       builder = compiler.builder(compiler.source)
-      builder.prepare_int_return # makes integer_tmp variable as return
+      integer = builder.prepare_int_return # makes integer_tmp variable as return
       builder.build do
-        word! << message[:receiver]
-        integer! << word[Parfait::Word.get_length_index]
+        word = message[:receiver].to_reg.known_type(:Word)
+        integer << word[:char_length]
       end
       SlotMachine::Macro.emit_syscall( builder , :putstring )
       compiler

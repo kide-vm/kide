@@ -14,28 +14,29 @@ module SlotMachine
         assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        assert_equal 44 , @method.to_risc.risc_instructions.length
+        assert_equal 42 , @method.to_risc.risc_instructions.length
       end
       def test_allocate
         assert_allocate
       end
       def test_all
-        assert_reg_to_slot risc(23) , :r1  , :r0 , 5
-        assert_slot_to_reg risc(24),:r0 , 2 , :r1
-        assert_slot_to_reg risc(25),:r1 , 1 , :r2
-        assert_transfer risc(26) , :r0 , :r8
-        assert_equal Risc::Syscall, risc(27).class
-        assert_transfer risc(28) , :r0 , :r3
-        assert_transfer risc(29) , :r8 , :r0
-        assert_slot_to_reg risc(30),:r0 , 5 , :r4
-        assert_reg_to_slot risc(31) , :r3  , :r4 , 2
-        assert_slot_to_reg risc(32),:r0 , 5 , :r2
-        assert_reg_to_slot risc(33) , :r2  , :r0 , 5
-        assert_branch risc(34) , "return_label"
-        assert_label risc(35) , "return_label"
+        s = Risc.allocate_length
+        assert_reg_to_slot s + 1 , "id_factory_.next_object"  , :message , 5
+        assert_slot_to_reg s + 2 ,:message , 2 , "message.receiver"
+        assert_slot_to_reg s + 3 ,"message.receiver" , 1 , "id_factory_.next_object"
+        assert_transfer s + 4 , :message , :saved_message
+        assert_syscall s + 5 , :putstring
+        assert_transfer s + 6 , :message , :integer_tmp
+        assert_transfer s + 7 , :saved_message , :message
+        assert_slot_to_reg s + 8 ,:message , 5 , "message.return_value"
+        assert_reg_to_slot s + 9 , :integer_tmp  , "message.return_value" , 2
+        assert_slot_to_reg s + 10 ,:message , 5 , "message.return_value"
+        assert_reg_to_slot s + 11 , "message.return_value"  , :message , 5
+        assert_branch s + 12 , "return_label"
+        assert_label s + 13 , "return_label"
       end
       def test_return
-        assert_return(35)
+        assert_return(34)
       end
     end
   end

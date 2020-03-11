@@ -43,11 +43,11 @@ module SlotMachine
     # This instance is filled with os return value
     def self.restore_message(builder)
       r8 = Risc::RegisterValue.new( :saved_message , :Message).set_compiler(builder.compiler)
+      tmp = Risc::RegisterValue.new( :integer_tmp , :Integer).set_compiler(builder.compiler)
       builder.build do
-        integer_reg! << message
+        tmp << message
         message << r8
-        integer_2! << message[:return_value]
-        integer_2[Parfait::Integer.integer_index] << integer_reg
+        message[:return_value][Parfait::Integer.integer_index] << tmp
       end
     end
   end
