@@ -17,8 +17,8 @@ module SlotMachine
       merge_label = Risc.label("merge" , "merge_label_#{object_id}")
       result = Risc::RegisterValue.new(:result , :Object)
       builder.build do
-        left = message[:receiver].to_reg.reduce_int(false) #false == hack
-        right = message[:arg1].to_reg.reduce_int(false)
+        left = message[:receiver].reduce_int(false) #false == hack
+        right = message[:arg1].reduce_int(false)
 
         if(operator.to_s.start_with?('<') )
           right.op :- , left

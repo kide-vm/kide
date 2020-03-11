@@ -5,7 +5,7 @@ module SlotMachine
       integer_tmp = builder.allocate_int
       builder.build do
         object = message[:receiver].to_reg
-        integer = message[:arg1].to_reg.reduce_int(false)
+        integer = message[:arg1].reduce_int(false)
         object <= object[integer]
         integer_tmp[Parfait::Integer.integer_index] << object
         message[:return_value] << integer_tmp

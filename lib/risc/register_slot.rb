@@ -62,6 +62,13 @@ module Risc
       slot_to_reg.register
     end
 
+    # just pass the call through. That is we create the register (call to_reg)
+    # and call reduce_int on the result
+    # Just so the dsl code can be a bit shorter / less cluttered
+    def reduce_int(bool)
+      to_reg.reduce_int(bool)
+    end
+
     # similar to above (<< which produces reg_to_slot), this produces reg_to_byte
     # from itself (the slot) and the register given
     def <=( reg )
