@@ -5,7 +5,7 @@ module RubyX
     class TestIntegerSame < MiniTest::Test
       include MacroHelper
       def op ; :== ; end
-      def len ; 25 ; end
+      def len ; 24 ; end
       def source
         <<GET
         class Integer < Data4
@@ -31,11 +31,11 @@ GET
     end
     class TestIntegerLg < TestIntegerSame
       def op ; :> ; end
-      def len ; 26 ; end
+      def len ; 25 ; end
     end
     class TestIntegerSm < TestIntegerSame
       def op ; :< ; end
-      def len ; 26 ; end
+      def len ; 25 ; end
     end
     class TestIntegerLe < TestIntegerSame
       def op ; :>= ; end
