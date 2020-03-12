@@ -2,7 +2,7 @@ require_relative "helper"
 
 module SlotMachine
   module Builtin
-    class TestWordGetRisc < BootTest
+    class TestGetInternalByte < BootTest
       def setup
         super
         @method = get_compiler("Word",:get_byte)
