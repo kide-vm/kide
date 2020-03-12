@@ -2,10 +2,10 @@ require_relative "helper"
 
 module SlotMachine
   module Builtin
-    class TestWordSetRisc < BootTest
+    class TestSetInternalByte < BootTest
       def setup
         super
-        @method = get_compiler("Word",:set)
+        @method = get_compiler("Word",:set_byte)
       end
       def test_slot_length
         assert_equal :set_internal_byte , @method.callable.name

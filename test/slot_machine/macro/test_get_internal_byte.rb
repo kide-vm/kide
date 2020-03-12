@@ -5,7 +5,7 @@ module SlotMachine
     class TestWordGetRisc < BootTest
       def setup
         super
-        @method = get_compiler("Word",:get)
+        @method = get_compiler("Word",:get_byte)
       end
       def test_slot_length
         assert_equal :get_internal_byte , @method.callable.name

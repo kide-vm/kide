@@ -41,8 +41,10 @@ module Sol
         "Integer.ls" => "def <<; X.int_operator(:<<);end",
         "Integer.rs" => "def >>; X.int_operator(:>>);end",
         "Word.put" => "def putstring(at); X.putstring;end",
-        "Word.set" => "def set_internal_byte(at, val); X.set_internal_byte;end",
-        "Word.get" => "def get_internal_byte(at); X.get_internal_byte;end",
+        "Word.set" => "def set_internal_word(at, val); X.set_internal_word;end",
+        "Word.get" => "def get_internal_word(at); X.get_internal_word;end",
+        "Word.set_byte" => "def set_internal_byte(at, val); X.set_internal_byte;end",
+        "Word.get_byte" => "def get_internal_byte(at); X.get_internal_byte;end",
       }
     end
     def self.builtin_code
