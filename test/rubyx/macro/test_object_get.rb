@@ -23,7 +23,7 @@ GET
         assert_equal SlotMachine::GetInternalWord , compiler.slot_instructions.next.class
       end
       def test_risc
-        assert_equal 18 , compiler.to_risc.risc_instructions.length
+        assert_equal 17 , compiler.to_risc.risc_instructions.length
       end
     end
   end

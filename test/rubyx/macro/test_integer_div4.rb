@@ -23,7 +23,7 @@ GET
         assert_equal SlotMachine::Div4 , compiler.slot_instructions.next.class
       end
       def test_risc
-        assert_equal 41 , compiler.to_risc.risc_instructions.length
+        assert_equal 39 , compiler.to_risc.risc_instructions.length
       end
     end
   end

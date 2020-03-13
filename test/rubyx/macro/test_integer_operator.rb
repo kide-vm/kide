@@ -25,7 +25,7 @@ GET
         assert_equal op , compiler.slot_instructions.next.operator
       end
       def test_risc
-        assert_equal 42 , compiler.to_risc.risc_instructions.length
+        assert_equal 40 , compiler.to_risc.risc_instructions.length
       end
     end
     class TestIntegerMinus < TestIntegerPlus

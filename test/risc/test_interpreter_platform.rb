@@ -31,7 +31,7 @@ module Risc
 
     def test_load_translates_label
       label = Risc.label("test" , "test",nil)
-      load = Risc.load_constant("source" , label , :r1)
+      load = Risc.load_constant("source" , label )
       translated = @translator.translate(load)
       assert label != translated.constant
     end
