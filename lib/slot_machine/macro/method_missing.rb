@@ -11,7 +11,7 @@ module SlotMachine
 
     def to_risc(compiler)
       builder = compiler.builder(compiler.source_name)
-      from = compiler.load_object(Parfait.new_word(@name))
+      from = compiler.load_object(Parfait.new_word_max(@name))
       to = Risc::RegisterValue.new(:r1 , :Word)
       builder.add_code Risc::Transfer.new(self , from , to)
       builder.add_code Risc::Syscall.new(self, :died )

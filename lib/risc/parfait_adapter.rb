@@ -112,8 +112,14 @@ module Parfait
     list
   end
 
+  def self.new_word_max( string )
+    return self.new_word(string) if string.length < 20
+    self.new_word(string[0 ... 20])
+  end
+
   # Word from string
   def self.new_word( string )
+    #    puts "NEW #{string.length}=#{string}"
     string = string.to_s if string.is_a? Symbol
     word = Word.new( string.length )
     string.codepoints.each_with_index do |code , index |

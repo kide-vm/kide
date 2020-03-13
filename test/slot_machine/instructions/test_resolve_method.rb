@@ -9,8 +9,8 @@ module SlotMachine
       cache_entry = Parfait::CacheEntry.new(method.frame_type, method)
       ResolveMethod.new( "method" , :name , cache_entry )
     end
-    def est_len
-      assert_equal 19 , all.length , all_str
+    def test_len
+      assert_equal 20 , all.length , all_str
     end
     def test_1_load_name
       assert_load 1, Parfait::Word , "id_word_"
@@ -55,17 +55,20 @@ module SlotMachine
     def test_14_goto_exit
       assert_label 14, "exit_label_"
     end
-    def test_15_move_name
-      assert_transfer 15, "id_word_" , :r1
+    def test_15_load_name
+      assert_load 15, Parfait::Word , "id_word_"
     end
-    def test_16_die
-      assert_syscall 16, :died
+    def test_16_move_name
+      assert_transfer 16, "id_word_" , :r1
     end
-    def test_17_label
-      assert_label 17, "ok_label_"
+    def test_17_sys
+      assert_syscall 17, :died
     end
-    def test_18_load_method
-      assert_reg_to_slot 18 , "id_cacheentry_.cached_type.methods.next_callable" , "id_cacheentry_" , 2
+    def test_18_label
+      assert_label 18, "ok_label_"
+    end
+    def test_19_method
+      assert_reg_to_slot 19 , "id_cacheentry_.cached_type.methods.next_callable" , "id_cacheentry_" , 2
     end
   end
 end
