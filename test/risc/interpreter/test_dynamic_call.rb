@@ -11,7 +11,7 @@ module Risc
     end
 
     def test_chain
-      #show_main_ticks # get output of what is
+      show_main_ticks # get output of what is
       check_main_chain [LoadConstant, RegToSlot, LoadConstant, SlotToReg, SlotToReg, #5
                  SlotToReg, OperatorInstruction, IsZero, SlotToReg, SlotToReg, #10
                  LoadConstant, RegToSlot, LoadConstant, LoadConstant, SlotToReg, #15
@@ -31,12 +31,12 @@ module Risc
        assert_equal ::Integer , get_return.class
        assert_equal 1 , get_return
     end
-    def test_load_entry
+    def est_load_entry
       call_ins = main_ticks(3)
       assert_equal LoadConstant , call_ins.class
       assert_equal  Parfait::CacheEntry , call_ins.constant.class
     end
-    def test_dyn
+    def est_dyn
       cal = main_ticks(38)
       assert_equal DynamicJump ,  cal.class
     end

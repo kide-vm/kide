@@ -106,7 +106,7 @@ module Risc
       ins.register.set_compiler(self)
       add_code ins
       # todo for constants (not objects)
-      add_constant( object) if object.is_a?(Parfait::Object) 
+      add_constant( object) if object.is_a?(Parfait::Object)
       # add_constant(right) if compiler
       ins.register
     end

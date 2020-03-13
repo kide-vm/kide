@@ -10,23 +10,21 @@ module Risc
     end
 
     def test_chain
-      #show_main_ticks # get output of what is
+      # show_main_ticks # get output of what is
       check_main_chain [LoadConstant, RegToSlot, Branch, SlotToReg, SlotToReg, #5
-                 RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, #10
-                 Transfer, SlotToReg, SlotToReg, Syscall, NilClass,] #15
-      assert_equal 5 , get_return
+                 RegToSlot, SlotToReg, SlotToReg, FunctionReturn, Transfer, #10
+                 SlotToReg, SlotToReg, Syscall, NilClass,] #15
+      assert_equal 5 , get_return.value
     end
 
     def test_call_main
-      call_ins = ticks(main_at)
-      assert_equal FunctionCall , call_ins.class
-      assert  :main , call_ins.method.name
+      assert_function_call 0 , :main
     end
     def test_function_return
-      ret = main_ticks(10)
+      ret = main_ticks(9)
       assert_equal FunctionReturn ,  ret.class
       link = @interpreter.get_register( ret.register )
-      assert_equal ::Integer , link.class
+      assert_equal Parfait::ReturnAddress , link.class
     end
   end
 end

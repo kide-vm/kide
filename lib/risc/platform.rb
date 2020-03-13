@@ -17,7 +17,7 @@ module Risc
     # return the number of registers the platform supports
     def num_registers
     end
-    
+
     # Factory method to create a Platform object according to the platform
     # string given.
     # Currently only "Arm" and "Interpreter"

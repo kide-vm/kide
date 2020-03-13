@@ -48,8 +48,8 @@ module Risc
     end
 
     def get_return
-      assert_equal Parfait::Message , @interpreter.get_register(:r8).class
-      @interpreter.get_register(:r0)
+      assert_equal Parfait::Message , @interpreter.get_register(:saved_message).class
+      @interpreter.get_register(:message)
     end
 
     # do as many as given ticks in the main, ie main_at more
@@ -66,6 +66,7 @@ module Risc
       end
       return last
     end
+    alias :risc :main_ticks
 
     # collect the classes of all executed istructions
     def all_classes(max = 300)
