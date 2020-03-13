@@ -54,7 +54,7 @@ module Risc
     end
     def test_pc
       @interpreter.tick
-      assert_equal t = 36104 , @interpreter.pc
+      assert_equal t = 36136 , @interpreter.pc
       @interpreter.tick
       assert_equal t + 4 , @interpreter.pc
     end
@@ -67,16 +67,23 @@ module Risc
       @interpreter.tick
       assert_equal 3 , @interpreter.clock
     end
-    def ttest_tick_14_jump
-      30.times { @interpreter.tick ;puts @interpreter.instruction.class}
+    def test_tick_16_jump
+      #16.times { @interpreter.tick ;puts @interpreter.instruction.class}
+      ticks(16)
       assert_equal Branch , @interpreter.instruction.class
+      assert_equal "return_label" , @interpreter.instruction.label.name
     end
-    def ttest_tick_14_bin
-      29.times {@interpreter.tick}
-      binary_pos = binary_position
-      @interpreter.tick #jump has no listener
-      @interpreter.tick
-      assert binary_pos.at != binary_position.at , "#{binary_pos} == #{binary_position}"
+    def test_tick_26_exit
+      #      26.times { @interpreter.tick ;puts @interpreter.instruction.class}
+      ticks(26)
+      assert_equal Syscall , @interpreter.instruction.class
+      assert_equal :exit , @interpreter.instruction.name
+    end
+    def test_tick_13_bin
+      ticks(13)
+      bin_pos = binary_position
+      @interpreter.tick #jump into next binary
+      assert bin_pos.at != binary_position.at , "#{bin_pos} == #{binary_position}"
     end
     def binary_position
       pos = Position.get(@interpreter.instruction)
@@ -85,9 +92,9 @@ module Risc
       Position.get(list.binary)
     end
     def test_tick_15 #more than a binary code worth
-      31.times {@interpreter.tick}
+      15.times {@interpreter.tick}
     end
-    class TestInterpreterDies < MiniTest::Test
+    class TestInterpreterDies #< MiniTest::Test
       include Ticker
       def setup
         @string_input = as_main("random.call")

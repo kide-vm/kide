@@ -66,6 +66,7 @@ module Arm
     end
 
     def translate_FunctionReturn( code )
+      # FIXME reduce the int first, register contains a ReturnAddress
       ArmMachine.mov( :pc , code.register)
     end
     def translate_DynamicJump(code)

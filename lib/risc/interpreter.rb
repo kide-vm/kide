@@ -70,7 +70,7 @@ module Risc
 
     def get_register( reg )
       reg = reg.symbol if reg.is_a? Risc::RegisterValue
-      raise "Not a register #{reg}" unless Risc::RegisterValue.look_like_reg(reg)
+      #raise "Not a register #{reg}" unless Risc::RegisterValue.look_like_reg(reg)
       @registers[reg]
     end
 
@@ -236,7 +236,7 @@ module Risc
     def execute_FunctionReturn
       link = get_register( @instruction.register )
       log.debug "Return to #{link.to_s(16)}"
-      set_pc link
+      set_pc link.value
       false
     end
 

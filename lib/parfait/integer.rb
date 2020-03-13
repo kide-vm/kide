@@ -61,7 +61,7 @@ module Parfait
   # But the integer (address) needs to be adjusted by load address.
   class ReturnAddress < Integer
 
-    def to_s
+    def to_s(ignored = nil)
       "ReturnAddress 0x" + object_id.to_s(16) + ":" + value.to_s
     end
   end
