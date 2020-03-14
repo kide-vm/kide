@@ -57,7 +57,8 @@ module Parfait
       @method.name
     end
     def to_s
-      "Message:#{method_name}(#{@arguments_given})"
+      id = @method ? @method.name : object_id.to_s(16)
+      "Message:#{id}(#{@arguments_given.value})"
     end
 
     def _set_next_message(nekst)

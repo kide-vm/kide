@@ -15,7 +15,7 @@ module Risc
     # fire events for changed pc and register contents
     include Util::Eventable
     include Util::Logging
-    log_level :info
+    log_level :debug
 
     attr_reader :instruction , :clock , :pc  # current instruction and pc
     attr_reader :registers     # the registers, 16 (a hash, sym -> contents)
@@ -30,7 +30,7 @@ module Risc
       @flags = {  :zero => false , :plus => false ,
                   :minus => false , :overflow => false }
       (0...InterpreterPlatform.new.num_registers).each do |reg|
-        set_register "r#{reg}".to_sym , "r#{reg}:unknown"
+        #set_register "r#{reg}".to_sym , "r#{reg}:unknown"
       end
       @linker = linker
     end
@@ -75,7 +75,9 @@ module Risc
     end
 
     def set_register( reg , val )
-      old = get_register( reg ) # also ensures format
+      reg = reg.symbol if reg.is_a? Risc::RegisterValue
+      log.debug "setting #{reg} == #{val}"
+      old = get_register( reg )
       if val.is_a? ::Integer
         @flags[:zero] = (val == 0)
         @flags[:plus] = (val >= 0)
@@ -86,7 +88,6 @@ module Risc
         @flags[:minus] = false
       end
       return if old === val
-      reg = reg.symbol if reg.is_a? Risc::RegisterValue
       val = Parfait.object_space.nil_object if val.nil? #because that's what real code has
       @registers[reg] = val
       trigger(:register_changed, reg ,  old , val)
@@ -100,7 +101,7 @@ module Risc
       name = @instruction.class.name.split("::").last
       log.debug "#{@pc.to_s(16)}:#{@clock}: #{@instruction.to_s}"
       fetch = send "execute_#{name}"
-      log.debug register_dump
+      register_dump
       if fetch
         pc = @pc + @instruction.byte_length
         set_pc(pc)
@@ -113,6 +114,7 @@ module Risc
     # Instruction interpretation starts here
     def execute_DynamicJump
       method =  get_register(@instruction.register)
+      log.debug "Register at: #{@instruction.register} , has #{method.class}"
       pos = Position.get(method.binary)
       log.debug "Jump to binary at: #{pos} #{method.name}:#{method.binary.class}"
       raise "Invalid position for #{method.name}" unless pos.valid?
@@ -287,6 +289,8 @@ module Risc
         result = result.to_i
       end
       log.debug "#{@instruction} == #{result}(#{result.class})   (#{left}|#{right})"
+      # overwrites
+      left 
       right = set_register(@instruction.left , result)
       true
     end
@@ -336,6 +340,13 @@ module Risc
     end
 
     def register_dump
+      @registers.keys.sort.each do |reg|
+        value = @registers[reg]
+        log.debug "#{reg}:#{value.to_s[0..50]}"
+      end
+    end
+
+    def old_register_dump
       (0..7).collect do |reg|
         value = @registers["r#{reg}".to_sym]
         "#{reg}-" +

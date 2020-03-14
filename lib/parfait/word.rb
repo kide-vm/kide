@@ -182,6 +182,10 @@ module Parfait
       "'" + to_s + "'"
     end
 
+    def to_s
+      "Word:#{to_string}"
+    end
+
     def padded_length
       Object.padded( 4 * get_type().instance_length + @char_length  )
     end

@@ -119,5 +119,9 @@ module Parfait
       obj.set_type(type)
       obj
     end
+
+    def to_s
+      "Factory:#{for_type.name}"
+    end
   end
 end

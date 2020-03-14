@@ -19,6 +19,9 @@ module Parfait
     end
 
     def rxf_reference_name
+      to_s
+    end
+    def to_s
       "Method: " + @name.to_s
     end
 
