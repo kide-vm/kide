@@ -23,6 +23,7 @@ module Risc
       extra = {} unless extra
       @extra = extra
       @symbol = reg
+      raise "not Symbol #{symbol}:#{symbol.class}" unless symbol.is_a?(Symbol)
       raise "Not Hash #{extra}"  unless extra.is_a?(Hash)
       known_type(type)
     end

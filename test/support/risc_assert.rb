@@ -94,7 +94,7 @@ module Minitest
       assert_equal Risc::Branch , branch.class , "Class at:#{branch_i}"
       assert_label branch.label , label_name , "Label  at #{branch_i}"
     end
-    def assert_operator ins_i , op , left , right
+    def assert_operator ins_i , op , left , right , result
       if(ins_i.is_a?(Integer))
         ins = risc(ins_i)
       else
@@ -105,6 +105,7 @@ module Minitest
       assert_equal op , ins.operator
       assert_register :left , left , ins.left , ins_i
       assert_register :right , right , ins.right, ins_i
+      assert_register :result , result , ins.result, ins_i
     end
     def assert_zero ins_i , label
       assert_equal Integer , ins_i.class, "assert_zero #{ins_i}"
