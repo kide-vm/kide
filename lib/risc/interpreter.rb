@@ -15,7 +15,7 @@ module Risc
     # fire events for changed pc and register contents
     include Util::Eventable
     include Util::Logging
-    log_level :debug
+    log_level :info
 
     attr_reader :instruction , :clock , :pc  # current instruction and pc
     attr_reader :registers     # the registers, 16 (a hash, sym -> contents)
@@ -190,6 +190,7 @@ module Risc
         index = get_register(@instruction.index)
       end
       object.set_internal_word( index , value )
+      log.debug "RegToSlot #{object}[#{index}] == #{value}"
       trigger(:object_changed, @instruction.array , index)
       true
     end
@@ -289,9 +290,7 @@ module Risc
         result = result.to_i
       end
       log.debug "#{@instruction} == #{result}(#{result.class})   (#{left}|#{right})"
-      # overwrites
-      left 
-      right = set_register(@instruction.left , result)
+      set_register(@instruction.result , result)
       true
     end
 
