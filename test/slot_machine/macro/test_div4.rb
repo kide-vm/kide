@@ -28,8 +28,8 @@ module SlotMachine
         assert_slot_to_reg a + 1 , :message , 2 , "message.receiver"
         assert_slot_to_reg a + 2 , "message.receiver" , 2 , "message.receiver.data_1"
         assert_data a + 3 , 2
-        assert_operator a + 4 , :>> , "message.receiver.data_1" , :integer_1
-        assert_reg_to_slot a + 5 ,"message.receiver.data_1" , "id_factory_.next_object" , 2
+        assert_operator a + 4 , :>> , "message.receiver.data_1" , :integer_1 ,"op_>>_"
+        assert_reg_to_slot a + 5 ,"op_>>_" , "id_factory_.next_object" , 2
         assert_reg_to_slot a + 6 ,"id_factory_.next_object" , :message , 5
         assert_slot_to_reg a + 7 , :message , 5 , "message.return_value"
         assert_reg_to_slot a + 8 , "message.return_value" , :message , 5

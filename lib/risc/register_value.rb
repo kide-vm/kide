@@ -186,9 +186,11 @@ module Risc
 
     # create operator instruction for self and add
     # doesn't read quite as smoothly as one would like, but better than the compiler version
-    def op( operator , right)
+    # result, the third paraameter, may be nil, in which case a register will be generated
+    # (off coourse using the third parameter makes it look even worse TBC)
+    def op( operator , right , result = nil)
       right = right.to_reg() if(right.is_a?(RegisterSlot))
-      ret = Risc.op( "operator #{operator}" , operator , self , right)
+      ret = Risc.op( "operator #{operator}" , operator , self , right , result)
       compiler.add_code(ret) if compiler
       ret
     end

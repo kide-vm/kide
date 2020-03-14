@@ -32,7 +32,7 @@ module SlotMachine
       assert_load 6, Parfait::NilClass , "id_nilclass_"
     end
     def test_7_check_nil
-      assert_operator 7, :- , "id_nilclass_" , "id_cacheentry_.cached_type.methods"
+      assert_operator 7, :- , "id_nilclass_" , "id_cacheentry_.cached_type.methods" , "op_-_"
     end
     def test_8_nil_branch
       assert_zero 8, "exit_label_"
@@ -41,7 +41,7 @@ module SlotMachine
       assert_slot_to_reg 9, "id_cacheentry_.cached_type.methods" , 6 , "id_cacheentry_.cached_type.methods.name"
     end
     def test_10_check_name
-      assert_operator 10, :- , "id_cacheentry_.cached_type.methods.name" , "id_word_"
+      assert_operator 10, :- , "id_cacheentry_.cached_type.methods.name" , "id_word_" , "op_-_"
     end
     def test_11_nil_branch
       assert_zero 11, "ok_label_"

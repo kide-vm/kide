@@ -52,11 +52,11 @@ module Risc
     end
     def test_operator
       ret = @r0.op :<< , @r1
-      assert_operator ret , :<< , :message , "id_"
+      assert_operator ret , :<< , :message , "id_" , "op_<<_"
     end
     def test_operator_slot
       ret = @r0.op :<< , @r1[:type]
-      assert_operator ret , :<< , :message , "id_.type"
+      assert_operator ret , :<< , :message , "id_.type" , "op_<<_"
     end
     def test_byte_to_reg
       instr = @r0 <= @r1[@r0]

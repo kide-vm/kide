@@ -14,47 +14,47 @@ module SlotMachine
 
         load_object( 1 , integer_const)
 
-        integer_1.op :>> , integer_const
+        integer_1.op :>> , integer_const , integer_1
 
         integer_const << 2
-        integer_reg.op :>> , integer_const
-        integer_reg.op :+ , integer_1
+        integer_reg.op :>> , integer_const, integer_reg
+        integer_reg.op :+ , integer_1, integer_reg
 
         integer_const << 4
         integer_1 << integer_reg
-        integer_reg.op :>> , integer_1
+        integer_reg.op :>> , integer_1, integer_reg
 
-        integer_reg.op :+ , integer_1
+        integer_reg.op :+ , integer_1, integer_reg
 
         integer_const << 8
         integer_1 << integer_reg
-        integer_1.op :>> , integer_const
+        integer_1.op :>> , integer_const, integer_1
 
-        integer_reg.op :+ , integer_1
+        integer_reg.op :+ , integer_1, integer_reg
 
         integer_const << 16
         integer_1 << integer_reg
-        integer_1.op :>> , integer_const
+        integer_1.op :>> , integer_const, integer_1
 
-        integer_reg.op :+ , integer_1
+        integer_reg.op :+ , integer_1, integer_reg
 
         integer_const << 3
-        integer_reg.op :>> , integer_const
+        integer_reg.op :>> , integer_const, integer_reg
 
         integer_const << 10
         integer_1 << integer_reg
-        integer_1.op :* , integer_const
+        integer_1.op :* , integer_const, integer_1
 
-        integer_self.op :- , integer_1
+        integer_self.op :- , integer_1, integer_self
         integer_1 << integer_self
 
         integer_const << 6
-        integer_1.op :+ , integer_const
+        integer_1.op :+ , integer_const, integer_1
 
         integer_const << 4
-        integer_1.op :>> , integer_const
+        integer_1.op :>> , integer_const, integer_1
 
-        integer_reg.op :+ , integer_1
+        integer_reg.op :+ , integer_1, integer_reg
 
         integer_tmp[Parfait::Integer.integer_index] << integer_reg
         message[:return_value] << integer_tmp
