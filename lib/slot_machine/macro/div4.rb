@@ -9,7 +9,7 @@ module SlotMachine
         integer_self = message[:receiver].reduce_int(false)
         load_object( 2 , integer_1)
         result = integer_self.op :>> , integer_1
-        integer_tmp[Parfait::Integer.integer_index] << result.result
+        integer_tmp[Parfait::Integer.integer_index] << result
         message[:return_value] << integer_tmp
       end
       return compiler

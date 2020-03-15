@@ -25,22 +25,6 @@ module Risc
                  Syscall, NilClass,] #55
        assert_equal 10 , get_return
     end
-    def test_base
-      assert_function_call 0  , :main
-    end
-    def test_load_receiver
-      assert_slot_to_reg( 22 , :message , 2 , "message.receiver")
-    end
-    def test_reduce_receiver
-      assert_slot_to_reg( 23 , "message.receiver" , 2 , "message.receiver.data_1" )
-    end
-    def test_slot_args #load args from message
-      assert_slot_to_reg( 24 , :message , 9 , "message.arg1")
-    end
-    def test_reduce_arg
-      assert_slot_to_reg( 25 , "message.arg1" , 2 , "message.arg1.data_1")
-      assert_equal 5 , @interpreter.get_register(:"message.arg1.data_1")
-    end
     def test_op
       assert_operator 26, :+ ,  "message.receiver.data_1" ,  "message.arg1.data_1" , "op_+_"
       assert_equal 10 , @interpreter.get_register(@instruction.result.symbol)
