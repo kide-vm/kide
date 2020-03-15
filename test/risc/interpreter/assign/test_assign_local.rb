@@ -13,10 +13,10 @@ module Risc
       #show_main_ticks # get output of what is
       check_main_chain [LoadConstant, RegToSlot, SlotToReg, RegToSlot, Branch, #5
                  SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #10
-                 FunctionReturn, Transfer, SlotToReg, SlotToReg, Syscall, #15
-                 NilClass,] #20
-      assert_equal Parfait::Integer , get_return.class
-      assert_equal 15 , get_return.value
+                 FunctionReturn, Transfer, SlotToReg, SlotToReg, Transfer,
+                 Syscall, NilClass,] #20
+      assert_equal ::Integer , get_return.class
+      assert_equal 15 , get_return
     end
     def test_call_main
       call_ins = ticks(main_at)
@@ -40,7 +40,7 @@ module Risc
       assert_transfer 12 , :message , :saved_message
     end
     def test_sys
-      assert_syscall 15 , :exit
+      assert_syscall 16 , :exit
     end
   end
 end

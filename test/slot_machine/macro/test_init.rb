@@ -16,7 +16,7 @@ module SlotMachine
         assert_equal Risc::MethodCompiler , @method.to_risc.class
       end
       def test_risc_length
-        assert_equal 19 , @method.to_risc.risc_instructions.length
+        assert_equal 20 , @method.to_risc.risc_instructions.length
       end
       def test_all
         assert_load 1 , Parfait::Factory , "id_factory_"
@@ -36,7 +36,8 @@ module SlotMachine
         assert_transfer 15 , :message , :saved_message
         assert_slot_to_reg 16 ,:message , 5 , :message
         assert_slot_to_reg 17 ,:message , 2 , "message.data_1"
-        assert_syscall 18, :exit
+        assert_transfer 18 , "message.data_1" , :message
+        assert_syscall 19, :exit
       end
     end
   end

@@ -26,9 +26,9 @@ module Risc
                  Branch, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #60
                  FunctionReturn, SlotToReg, RegToSlot, Branch, SlotToReg, #65
                  SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn, #70
-                 Transfer, SlotToReg, SlotToReg, Syscall, NilClass,] #75
-       assert_equal Parfait::Integer , get_return.class
-       assert_equal 1 , get_return.value
+                 Transfer, SlotToReg, SlotToReg, Transfer ,Syscall, NilClass,] #75
+       assert_equal ::Integer , get_return.class
+       assert_equal 1 , get_return
     end
     def test_load_entry
       call_ins = main_ticks(3)

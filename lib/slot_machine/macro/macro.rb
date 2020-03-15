@@ -22,7 +22,8 @@ module SlotMachine
       save_message( builder )
       builder.build do
         message << message[:return_value]
-        message.reduce_int(false) #hack, noo type check
+        int = message.reduce_int(false) #hack, noo type check
+        message << int
         add_code Risc::Syscall.new("emit_syscall(exit)", :exit )
       end
     end
