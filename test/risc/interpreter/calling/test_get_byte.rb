@@ -5,7 +5,7 @@ module Risc
     include Ticker
 
     def setup
-      @preload = "Word.get"
+      @preload = "Word.get_byte"
       @string_input = as_main("return 'Hello'.get_internal_byte(0)")
       super
     end
@@ -14,13 +14,13 @@ module Risc
       check_main_chain [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant, #10
                  SlotToReg, RegToSlot, SlotToReg, FunctionCall, LoadConstant, #15
-                 SlotToReg, LoadConstant, OperatorInstruction, IsNotZero, SlotToReg, #20
+                 LoadConstant, SlotToReg, OperatorInstruction, IsNotZero, SlotToReg, #20
                  RegToSlot, SlotToReg, SlotToReg, SlotToReg, ByteToReg, #25
                  RegToSlot, RegToSlot, SlotToReg, RegToSlot, Branch, #30
-                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #35
+                 SlotToReg, Branch, SlotToReg, RegToSlot, SlotToReg, #35
                  SlotToReg, FunctionReturn, SlotToReg, RegToSlot, Branch, #40
                  SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #45
-                 SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg, #50
+                 FunctionReturn, Transfer, SlotToReg, SlotToReg, Transfer, #50
                  Syscall, NilClass,] #55
        assert_equal "H".ord , get_return
     end

@@ -27,11 +27,11 @@ module SlotMachine
 
         assert_equal Risc::ByteToReg , risc(25).class
         assert_equal :"message.receiver" , risc(25).array.symbol
-        assert_equal :"message.receiver" , risc(25).register.symbol
+        assert_equal :"integer_1" , risc(25).register.symbol
         assert_equal :"message.arg1.data_1" , risc(25).index.symbol
 
 
-        assert_reg_to_slot 26 , "message.receiver" , "id_factory_.next_object" , 2
+        assert_reg_to_slot 26 , "integer_1" , "id_factory_.next_object" , 2
         assert_reg_to_slot 27 , "id_factory_.next_object" , :message , 5
         assert_slot_to_reg 28 ,:message , 5 , "message.return_value"
         assert_reg_to_slot 29 , "message.return_value" , :message , 5
