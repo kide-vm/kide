@@ -51,11 +51,15 @@ module Risc
       assert_equal @r0 , message.register
     end
     def test_operator
-      ret = @r0.op :<< , @r1
+      @r0.set_compiler( fake = SuperFakeCompiler.new)
+      result = @r0.op :<< , @r1
+      ret = fake.code
       assert_operator ret , :<< , :message , "id_" , "op_<<_"
     end
     def test_operator_slot
-      ret = @r0.op :<< , @r1[:type]
+      @r0.set_compiler( fake = SuperFakeCompiler.new)
+      result = @r0.op :<< , @r1[:type]
+      ret = fake.code
       assert_operator ret , :<< , :message , "id_.type" , "op_<<_"
     end
     def test_byte_to_reg

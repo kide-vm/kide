@@ -13,8 +13,8 @@ module SlotMachine
       builder.build do
         integer = message[:receiver].reduce_int(false)
         integer_reg = message[:arg1].reduce_int(false)
-        integer.op operator , integer_reg
-        integer_tmp[Parfait::Integer.integer_index] << integer
+        result = integer.op operator , integer_reg
+        integer_tmp[Parfait::Integer.integer_index] << result
         message[:return_value] << integer_tmp
       end
       return compiler

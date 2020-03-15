@@ -192,7 +192,7 @@ module Risc
       right = right.to_reg() if(right.is_a?(RegisterSlot))
       ret = Risc.op( "operator #{operator}" , operator , self , right , result)
       compiler.add_code(ret) if compiler
-      ret
+      ret.result
     end
 
     # just capture the values in an intermediary object (RegisterSlot)
