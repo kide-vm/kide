@@ -44,7 +44,7 @@ module Risc
     # how many instruction up until the main starts, ie
     # ticks(main_at) will be the label for main
     def main_at
-      14
+      Risc.init_length
     end
 
     def get_return
@@ -66,7 +66,10 @@ module Risc
       end
       return last
     end
-    alias :risc :main_ticks
+    def risc(num)
+      return @instruction if @instruction
+      @instruction = main_ticks(num)
+    end
 
     # collect the classes of all executed istructions
     def all_classes(max = 300)

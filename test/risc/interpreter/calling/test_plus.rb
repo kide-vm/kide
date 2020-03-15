@@ -9,62 +9,47 @@ module Risc
       @string_input = as_main("return 5 + 5")
       super
     end
-#FIXME should be macro test, no need to interpret
+
     def test_chain
       #show_main_ticks # get output of what is
-      check_main_chain  [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
+      check_main_chain [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant, #10
                  SlotToReg, RegToSlot, SlotToReg, FunctionCall, LoadConstant, #15
-                 SlotToReg, LoadConstant, OperatorInstruction, IsNotZero, SlotToReg, #20
+                 LoadConstant, SlotToReg, OperatorInstruction, IsNotZero, SlotToReg, #20
                  RegToSlot, SlotToReg, SlotToReg, SlotToReg, SlotToReg, #25
                  OperatorInstruction, RegToSlot, RegToSlot, SlotToReg, RegToSlot, #30
-                 Branch, Branch, SlotToReg, SlotToReg, RegToSlot, #35
-                 SlotToReg, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, #40
-                 RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot, #45
-                 SlotToReg, SlotToReg, SlotToReg, FunctionReturn, Transfer, #50
-                 SlotToReg, SlotToReg, Syscall, NilClass,] #55
+                 Branch, SlotToReg, SlotToReg, RegToSlot, SlotToReg, #35
+                 SlotToReg, FunctionReturn, SlotToReg, RegToSlot, Branch, #40
+                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #45
+                 FunctionReturn, Transfer, SlotToReg, SlotToReg, Transfer, #50
+                 Syscall, NilClass,] #55
        assert_equal 10 , get_return
     end
-    def base_ticks(num)
-      main_ticks(14 + num)
-    end
     def test_base
-        cal = main_ticks( 14 )
-        assert_equal FunctionCall , cal.class
+      assert_function_call 0  , :main
     end
     def test_load_receiver
-      sl = base_ticks( 8 )
-      assert_slot_to_reg( sl , :r0 , 2 , :r2)
+      assert_slot_to_reg( 22 , :message , 2 , "message.receiver")
     end
     def test_reduce_receiver
-      sl = base_ticks( 9 )
-      assert_slot_to_reg( sl , :r2 , 2 , :r2)
+      assert_slot_to_reg( 23 , "message.receiver" , 2 , "message.receiver.data_1" )
     end
     def test_slot_args #load args from message
-      sl = base_ticks( 10 )
-      assert_slot_to_reg( sl , :r0 , 9 , :r3)
+      assert_slot_to_reg( 24 , :message , 9 , "message.arg1")
     end
     def test_reduce_arg
-      sl = base_ticks( 11 )
-      assert_slot_to_reg( sl , :r3 , 2 , :r3)
-      assert_equal 5 , @interpreter.get_register(:r3)
+      assert_slot_to_reg( 25 , "message.arg1" , 2 , "message.arg1.data_1")
+      assert_equal 5 , @interpreter.get_register(:"message.arg1.data_1")
     end
     def test_op
-      op = base_ticks(12)
-      assert_equal OperatorInstruction , op.class
-      assert_equal :+ , op.operator
-      assert_equal :r2 , op.left.symbol
-      assert_equal :r3 , op.right.symbol
-      assert_equal 10 , @interpreter.get_register(:r2)
-      assert_equal 5 , @interpreter.get_register(:r3)
+      assert_operator 26, :+ ,  "message.receiver.data_1" ,  "message.arg1.data_1" , "op_+_"
+      assert_equal 10 , @interpreter.get_register(@instruction.result.symbol)
     end
     def test_move_res_to_int
-      int = base_ticks( 13 )
-      assert_reg_to_slot( int , :r2 , :r1 , 2)
+      assert_reg_to_slot( 27 , "op_+_" , "id_factory_.next_object" , 2)
     end
     def test_move_int_to_reg
-      int = base_ticks( 14 )
-      assert_reg_to_slot( int , :r1 , :r0 , 5)
+      assert_reg_to_slot( 28 , "id_factory_.next_object" , :message , 5)
     end
   end
 end

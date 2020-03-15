@@ -182,3 +182,7 @@ end
 def Risc.allocate_length
   21
 end
+# see test in test/slot_machine/macro/test_init.rb
+def Risc.init_length
+  14 # initial label ignored in above test
+end
