@@ -39,7 +39,7 @@ module Risc
     # and then translating all methods
     def translate( platform_sym )
       platform_sym = platform_sym.to_s.capitalize
-      platform = Risc::Platform.for(platform_sym)
+      platform = Platform.for(platform_sym)
       assemblers = []
       @method_compilers.each_compiler do |compiler|
         compiler.translate_method( platform.translator , assemblers)

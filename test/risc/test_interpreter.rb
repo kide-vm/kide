@@ -75,7 +75,7 @@ module Risc
     end
     def test_tick_26_exit
       #      26.times { @interpreter.tick ;puts @interpreter.instruction.class}
-      ticks(27)
+      ticks(26)
       assert_equal Syscall , @interpreter.instruction.class
       assert_equal :exit , @interpreter.instruction.name
     end

@@ -203,10 +203,6 @@ module Risc
     end
   end
 
-  # The register we use to store the current message object is :r0
-  def self.message_reg
-    RegisterValue.new :r0 , :Message
-  end
   # a named version of the message register, called :message
   def self.message_named_reg
     RegisterValue.new :message , :Message
