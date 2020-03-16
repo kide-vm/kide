@@ -257,12 +257,12 @@ module Risc
       else
         raise "un-implemented syscall #{name}"
       end
-      set_register( :r0 , ret_value ) # syscalls return into r0 , usually some int
+      set_register( :syscall_1 , ret_value ) # syscalls return into syscall_1
       true
     end
 
     def handle_putstring
-      str = get_register( :r1 ) # should test length, ie r2
+      str = get_register( :"syscall_1" ) # should test length, ie r2
       case str
       when Symbol
         @stdout << str.to_s

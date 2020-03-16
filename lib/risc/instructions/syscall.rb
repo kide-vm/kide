@@ -19,6 +19,13 @@ module Risc
     def to_s
       class_source name
     end
+  end
 
+  # return the nth register that a sycall needs
+  # these map to different physical registers in the Platform
+  # first arg is (running 1..) integer, second (optional) type
+  def self.syscall_reg( number , type = nil)
+    type = :Integer unless type
+    RegisterValue.new("syscall_#{number}".to_sym , type)
   end
 end

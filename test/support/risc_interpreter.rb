@@ -49,7 +49,7 @@ module Risc
 
     def get_return
       assert_equal Parfait::Message , @interpreter.get_register(:saved_message).class
-      @interpreter.get_register(:message)
+      @interpreter.get_register(:syscall_1)
     end
 
     # do as many as given ticks in the main, ie main_at more
