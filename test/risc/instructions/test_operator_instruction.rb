@@ -8,7 +8,7 @@ module Risc
       @right = RegisterValue.new(:right , :Integer)
     end
     def risc(i)
-      @left.op :- , @right
+      OperatorInstruction.new( "source" , :- , @left , @right )
     end
     def test_min
       assert_operator 1 , :- , :left , :right , "op_-_"

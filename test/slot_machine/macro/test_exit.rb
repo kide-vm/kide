@@ -24,9 +24,9 @@ module SlotMachine
         a = Risc.allocate_length
         assert_reg_to_slot a + 1 , "id_factory_.next_object"  , :message , 5
         assert_transfer a + 2 , :message , :saved_message
-        assert_slot_to_reg a + 3 ,:message , 5 , :message
-        assert_slot_to_reg a + 4 ,:message , 2 , "message.data_1"
-        assert_transfer a + 5 , :"message.data_1" , :message
+        assert_slot_to_reg a + 3 ,:message , 5 , :"message.return_value"
+        assert_slot_to_reg a + 4 ,:"message.return_value" , 2 , "message.return_value.data_1"
+        assert_transfer a + 5 , :"message.return_value.data_1" , :syscall_1
         assert_syscall a + 6 , :exit
         assert_slot_to_reg a + 7 ,:message , 5 , "message.return_value"
         assert_reg_to_slot a + 8 , "message.return_value"  , :message , 5

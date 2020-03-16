@@ -12,7 +12,7 @@ module Risc
 
     def test_chain
       #show_main_ticks # get output of what is
-      check_main_chain  [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
+      check_main_chain [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, #10
                  FunctionCall, LoadConstant, LoadConstant, SlotToReg, OperatorInstruction, #15
                  IsNotZero, SlotToReg, RegToSlot, RegToSlot, SlotToReg, #20
@@ -22,7 +22,7 @@ module Risc
                  RegToSlot, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, #40
                  RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot, #45
                  SlotToReg, SlotToReg, FunctionReturn, Transfer, SlotToReg, #50
-                 SlotToReg, Syscall, NilClass,] #55
+                 SlotToReg, Transfer, Syscall, NilClass,] #55
        assert_equal "Hello again" , @interpreter.stdout
        assert_equal Integer , get_return.class
        assert_equal 11 , get_return #bytes written

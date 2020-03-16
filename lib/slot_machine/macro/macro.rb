@@ -20,7 +20,7 @@ module SlotMachine
     # Assumes int return value and extracts the fixnum for process exit code
     def self.exit_sequence(builder)
       save_message( builder )
-      unix_return = Risc.syscall_reg(1)
+      unix_return = Risc.syscall_reg(1).set_compiler(builder.compiler)
       builder.build do
         unix_return << message[:return_value].reduce_int(false) #hack, noo type check
         add_code Risc::Syscall.new("emit_syscall(exit)", :exit )

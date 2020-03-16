@@ -34,9 +34,9 @@ module SlotMachine
         assert_function_call 13 , :main
         assert_label 14 , "Object.__init__"
         assert_transfer 15 , :message , :saved_message
-        assert_slot_to_reg 16 ,:message , 5 , :message
-        assert_slot_to_reg 17 ,:message , 2 , "message.data_1"
-        assert_transfer 18 , "message.data_1" , :message
+        assert_slot_to_reg 16 ,:message , 5 , :"message.return_value"
+        assert_slot_to_reg 17 ,:"message.return_value" , 2 , "message.return_value.data_1"
+        assert_transfer 18 , "message.return_value.data_1" , :syscall_1
         assert_syscall 19, :exit
       end
     end
