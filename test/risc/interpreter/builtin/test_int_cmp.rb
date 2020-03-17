@@ -32,7 +32,6 @@ module Risc
         run_main_return "5 > 5"
         assert_equal Parfait::FalseClass , get_message_return.class
       end
-
       def test_smaller_or_true
         run_main_return "4 <= 5"
         assert_equal Parfait::TrueClass , get_message_return.class

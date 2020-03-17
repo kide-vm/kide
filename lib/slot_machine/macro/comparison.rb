@@ -32,7 +32,7 @@ module SlotMachine
           left.op :- , right
         end
         if_minus false_label
-        if_not_zero( false_label ) if operator.to_s.length == 1
+        if_zero( false_label ) if operator.to_s.length == 1
         add_code Risc::LoadConstant.new(to_s , Parfait.object_space.true_object, result)
         branch merge_label
         add_code false_label

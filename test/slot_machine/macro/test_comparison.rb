@@ -38,7 +38,7 @@ module SlotMachine
         assert_slot_to_reg 4 , "message.arg1" , 2 , "message.arg1.data_1"
         assert_operator 5 , :- , "message.receiver.data_1" , "message.arg1.data_1" ,"op_-_"
         assert_minus 6 , "false_label_"
-        assert_not_zero 7 , "false_label_"
+        assert_zero 7 , "false_label_"
         assert_load 8 , Parfait::TrueClass , :result
         assert_branch 9 , "merge_label_"
         assert_label 10 , "false_label_"
