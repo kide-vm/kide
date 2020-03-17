@@ -5,11 +5,13 @@ module Risc
   # upon request. they must be returned in order
   class Allocator
 
-    def initialize()
+    def initialize( compiler , platform)
+      @compiler = compiler
+      @platform = platform
       @regs = []
       reset_regs
     end
-    attr_reader :regs
+    attr_reader :regs , :compiler , :platform
 
     def regs_empty?
       @regs.empty?

@@ -18,10 +18,8 @@ module Risc
     def initialize( callable  , slot_label)
       raise "No method" unless callable
       @callable = callable
-      @allocator = Allocator.new
       @constants = []
       @current = @risc_instructions = slot_label.risc_label(self)
-      @allocator.reset_regs
     end
     attr_reader :risc_instructions , :constants , :callable , :current
 
@@ -137,11 +135,24 @@ module Risc
 
     # translate this method, which means the method itself and all blocks inside it
     # returns the array (of assemblers) that you pass in as collection
-    def translate_method(  translator , collection)
-      collection << translate_cpu( translator )
+    # first  arg is the platform object representing the platform that we
+    # translate to
+    #
+    # This calls allocate_regs first, to change register naming to the platform
+    #
+    def translate_method(  platform , collection)
+      allocate_regs( platform )
+      collection << translate_cpu( platform.translator )
       collection
     end
 
+    # allocate registers to the platform specific names (and amount)
+    # This is actually done by the Allocator , with the help of the Platform
+    # The Platform specifies how many registers there are, and the
+    # Allocator changes SSA names to allocated names
+    def allocate_regs(platform)
+      allocator = Allocator.new(self , platform)
+    end
   end
 end
 require_relative "allocator"

@@ -122,7 +122,7 @@ module Parfait
       List: {indexed_length: :Integer , next_list: :List} ,
       Message: { next_message: :Message,   receiver: :Object, frame: :Object ,
                  return_address: :Integer, return_value: :Object,
-                 caller: :Message , method: :TypedMethod ,
+                 caller: :Message , method: :CallableMethod ,
                  arguments_given: :Integer ,
                  arg1: :Object , arg2: :Object, arg3: :Object,
                  arg4: :Object,  arg5: :Object, arg6: :Object,

@@ -5,7 +5,7 @@ module Risc
 
     def setup
       Parfait.boot!(Parfait.default_test_options)
-      @allocator = Allocator.new
+      @allocator = Allocator.new(Risc.test_compiler , Platform.for(:arm))
     end
     def tmp_reg
       Risc.tmp_reg(:Type)
@@ -15,6 +15,13 @@ module Risc
     end
     def test_empty
       assert @allocator.regs_empty?
+    end
+    def test_compiler
+      assert_equal CallableCompiler , @allocator.compiler.class
+      assert_equal :fake_name , @allocator.compiler.callable.name
+    end
+    def test_platform
+      assert_equal Arm::ArmPlatform , @allocator.platform.class
     end
     def test_add_ok
       assert_equal Array, @allocator.add_reg(tmp_reg).class

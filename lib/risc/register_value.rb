@@ -29,7 +29,7 @@ module Risc
     end
 
     def class_name
-      return :fixnum unless @type
+      return :Integer unless @type
       @type.class_name
     end
 
