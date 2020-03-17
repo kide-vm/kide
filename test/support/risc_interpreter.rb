@@ -98,7 +98,7 @@ module Risc
     # get the return from the message (not exit code)
     # exit code must be int
     def get_message_return
-      @interpreter.get_register(:r8).return_value
+      @interpreter.get_register(:message).return_value
     end
 
     # wrap the input so it is a main, compile and run it

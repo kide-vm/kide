@@ -27,8 +27,7 @@ module Risc
     def initialize( linker , stdout = "")
       @stdout , @clock , @pc , @state = stdout, 0 , 0 , :stopped
       @registers = {}
-      @flags = {  :zero => false , :plus => false ,
-                  :minus => false , :overflow => false }
+      reset_flags
       (0...InterpreterPlatform.new.num_registers).each do |reg|
         #set_register "r#{reg}".to_sym , "r#{reg}:unknown"
       end
@@ -46,6 +45,12 @@ module Risc
       return if state == old
       @state = state
       trigger(:state_changed , old , state )
+    end
+
+    # set all flags to false
+    def reset_flags
+      @flags = {  :zero => false , :plus => false ,
+                  :minus => false , :overflow => false }
     end
 
     def set_pc( pos )
@@ -278,10 +283,10 @@ module Risc
     end
 
     def execute_OperatorInstruction
+      reset_flags
       left = get_register(@instruction.left) || 0
       rr = @instruction.right
       right = get_register(rr) || 0
-      @flags[:overflow] = false
       result = handle_operator(left,right)
       if( result > 2**32 )
         @flags[:overflow] = true
