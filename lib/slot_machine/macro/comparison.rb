@@ -1,10 +1,16 @@
 module SlotMachine
   class Comparison < Macro
+
+    def self.operators
+      [:<, :>, :>=, :<=]
+    end
+
     attr_reader :operator
+
     def initialize(name , operator)
       super(name)
-      #TODO check operator to be in valid range
-      @operator = operator.value
+      raise "unsuported operator :#{operator}:#{operator.class}:" unless self.class.operators.include?(operator)
+      @operator = operator
     end
 
     # basically use subtract to subtract left from right (or right from left)

@@ -73,7 +73,7 @@ module Sol
     # for loading into a slot, return the "slot_definition" that can be passed to
     # SlotLoad.
     def to_slot(compiler)
-      raise "not iplemented in #{self}"
+      raise "not implemented in #{self}:#{self.class}"
     end
 
   end
