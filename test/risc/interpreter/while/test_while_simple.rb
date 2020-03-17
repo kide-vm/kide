@@ -15,10 +15,10 @@ module Risc
                  IsZero, LoadConstant, OperatorInstruction, IsZero, LoadConstant, #10
                  RegToSlot, Branch, SlotToReg, LoadConstant, OperatorInstruction, #15
                  IsZero, SlotToReg, RegToSlot, Branch, SlotToReg, #20
-                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, SlotToReg, #25
-                 FunctionReturn, Transfer, SlotToReg, SlotToReg, Syscall, #30
+                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn, #25
+                 Transfer, SlotToReg, SlotToReg, Transfer, Syscall, #30
                  NilClass,] #35
-      assert_kind_of Parfait::NilClass , get_return
+      assert_kind_of NilClass , get_return
     end
     def test_load_false_const
       load = main_ticks(1)

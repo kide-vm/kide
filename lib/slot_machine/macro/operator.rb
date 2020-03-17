@@ -3,7 +3,7 @@ module SlotMachine
     attr_reader :operator
     def initialize(name , operator)
       super(name)
-      @operator = operator.value
+      @operator = operator
     end
 
     def to_risc(compiler)
