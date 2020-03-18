@@ -130,14 +130,6 @@ module Risc
       symbol == other.symbol
     end
 
-    #helper method to calculate with register symbols
-    def next_reg_use( type , extra = {} )
-      int = @symbol[1,3].to_i
-      raise "No more registers #{self}" if int > 11
-      sym = "r#{int + 1}".to_sym
-      RegisterValue.new( sym , type, extra)
-    end
-
     def rxf_reference_name
       @symbol
     end

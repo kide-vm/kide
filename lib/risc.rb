@@ -29,7 +29,7 @@ require_relative "risc/linker"
 require_relative "risc/callable_compiler"
 require_relative "risc/method_compiler"
 require_relative "risc/block_compiler"
-require_relative "risc/allocator"
+require_relative "risc/standard_allocator"
 require_relative "risc/assembler"
 require_relative "risc/risc_collection"
 

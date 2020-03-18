@@ -155,4 +155,3 @@ module Risc
     end
   end
 end
-require_relative "allocator"
