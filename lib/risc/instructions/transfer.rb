@@ -25,6 +25,11 @@ module Risc
     end
     attr_reader :from, :to
 
+    # return an array of names of registers that is used by the instruction
+    def register_names
+      [from.symbol , to.symbol]
+    end
+
     def to_s
       class_source "#{from} -> #{to}"
     end

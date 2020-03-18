@@ -11,6 +11,11 @@ module Risc
     end
     attr_reader :label
 
+    # return an array of names of registers that is used by the instruction
+    def register_names
+      []
+    end
+
     def to_s
       case label
       when Label

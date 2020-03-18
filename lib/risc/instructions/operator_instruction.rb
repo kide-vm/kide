@@ -32,6 +32,11 @@ module Risc
     end
     attr_reader :operator, :left , :right , :result
 
+    # return an array of names of registers that is used by the instruction
+    def register_names
+      [left.symbol , right.symbol, result.symbol]
+    end
+
     def to_s
       class_source "#{left} #{operator} #{right}"
     end

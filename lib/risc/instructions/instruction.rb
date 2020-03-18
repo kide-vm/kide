@@ -41,6 +41,11 @@ module Risc
     def precheck
     end
 
+    # return an array of names of registers that is used by the instruction
+    def register_names
+      raise "Not implemented in #{self.class}"
+    end
+
     def to_cpu( translator )
       translator.translate( self )
     end

@@ -23,6 +23,11 @@ module Risc
     end
     attr_reader :name , :address
 
+    # return an array of names of registers that is used by the instruction
+    def register_names
+      []
+    end
+
     def to_cpu(translator)
       @cpu_label ||= super
     end
