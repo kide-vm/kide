@@ -13,6 +13,7 @@ module Risc
       @compiler = compiler
       @platform = platform
       @used_regs = {}
+      @release_points = Hash.new( [] )
       @reg_names = (0 ... platform.num_registers).collect{|i| "r#{i-1}".to_sym }
     end
     attr_reader :used_regs , :compiler , :platform , :reg_names
@@ -23,7 +24,29 @@ module Risc
     # Ie on arm register names are r0 .. . r15 , so it keeps a list of unused
     # regs and frees regs according to live ranges
     def allocate_regs
+      determine_liveness
+    end
 
+    # determines when registers can be freed
+    #
+    # this is done by walking the instructions backwards and saving the first
+    # occurence of a register name. (The last, as we walk backwards)
+    def determine_liveness
+      walk_and_mark(@compiler.risc_instructions)
+    end
+
+    # First walk down, and on the way up mark register occurences, unless they
+    # have been marked already
+    def walk_and_mark(instruction)
+      released = []
+      released = walk_and_mark(instruction.next) if instruction.next
+      #puts instruction.class.name
+      instruction.register_names.each do |name|
+        next if released.include?(name)
+        @release_points[instruction] << name
+        released << name
+      end
+      released
     end
 
     def used_regs_empty?

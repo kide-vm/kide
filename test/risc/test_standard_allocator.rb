@@ -26,6 +26,13 @@ module Risc
     def test_platform
       assert_equal Arm::ArmPlatform , @allocator.platform.class
     end
+    def test_allocate_runs
+      assert @allocator.allocate_regs
+    end
+    def test_live
+      live = @allocator.determine_liveness
+      assert_equal 0 , live.length
+    end
     def test_add_ok
       assert_equal RegisterValue, @allocator.use_reg(tmp_reg).class
     end

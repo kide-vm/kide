@@ -4,7 +4,7 @@ module ScopeHelper
 
   def compiler_with_main(options = {})
     compiler = RubyX::RubyXCompiler.new(RubyX.default_test_options.merge(options))
-    compiler.ruby_to_sol( in_Space( as_main("return")) )
+    compiler.ruby_to_sol( as_main("return 5") )
     compiler
   end
   def in_Test(statements)
