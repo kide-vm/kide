@@ -13,9 +13,18 @@ module Risc
       @compiler = compiler
       @platform = platform
       @used_regs = {}
-      reset_used_regs
+      @reg_names = (0 ... platform.num_registers).collect{|i| "r#{i-1}".to_sym }
     end
-    attr_reader :used_regs , :compiler , :platform
+    attr_reader :used_regs , :compiler , :platform , :reg_names
+
+    # main entry point and the whole reason for the class.
+    # Allocate regs by changing the names of compiler instructions to
+    # register names according to platform.
+    # Ie on arm register names are r0 .. . r15 , so it keeps a list of unused
+    # regs and frees regs according to live ranges
+    def allocate_regs
+
+    end
 
     def used_regs_empty?
       @used_regs.empty?
@@ -43,25 +52,12 @@ module Risc
       RegisterValue.new( sym , type, extra)
     end
 
-    def copy( reg , source )
-      copied = use_reg reg.type
-      add_code Register.transfer( source , reg , copied )
-      copied
-    end
-
     # releasing a register (accuired by use_reg) makes it available for use again
     # thus avoiding possibly using too many registers
     def release_reg( reg )
       reg = reg.symbol if reg.is_a?(RegisterValue)
       raise "not symbol #{reg}:#{reg.class}" unless reg.is_a?(Symbol)
       @used_regs.delete(reg)
-    end
-
-    # reset the registers to be used. Start at r4 for next usage.
-    # Every statement starts with this, meaning each statement may use all registers, but none
-    # get saved. Statements have affect on objects.
-    def reset_used_regs
-      @used_regs.clear
     end
 
   end

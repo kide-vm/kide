@@ -151,7 +151,8 @@ module Risc
     # The Platform specifies how many registers there are, and the
     # Allocator changes SSA names to allocated names
     def allocate_regs(platform)
-      allocator = Allocator.new(self , platform)
+      allocator = platform.allocator(self)
+      allocator.allocate_regs
     end
   end
 end

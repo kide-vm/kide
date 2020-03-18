@@ -12,5 +12,9 @@ module Risc
     def test_factory_raise
       assert_raises{ Platform.for("NotArm")}
     end
+    def test_allocate
+      allocator = Platform.new.allocator(FakeCompiler.new)
+      assert_equal FakeCompiler , allocator.compiler.class
+    end
   end
 end

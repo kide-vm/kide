@@ -16,6 +16,9 @@ module Risc
     def test_empty
       assert @allocator.used_regs_empty?
     end
+    def test_reg_names
+      assert_equal 16 , @allocator.reg_names.length
+    end
     def test_compiler
       assert_equal CallableCompiler , @allocator.compiler.class
       assert_equal :fake_name , @allocator.compiler.callable.name
