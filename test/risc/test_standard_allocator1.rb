@@ -12,10 +12,11 @@ module Risc
       assert_equal :main , @compiler.callable.name
     end
     def test_allocate_runs
-      assert @allocator.allocate_regs
+      assert_nil @allocator.allocate_regs
+      assert_equal 10 , @allocator.used_regs.length
     end
     def test_live_length
-      live = @allocator.determine_liveness
+      live = @allocator.walk_and_mark(@compiler.risc_instructions)
       assert_equal 10 , live.length
     end
   end

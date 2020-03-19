@@ -27,29 +27,24 @@ module Risc
       assert_equal Arm::ArmPlatform , @allocator.platform.class
     end
     def test_allocate_runs
-      assert @allocator.allocate_regs
+      assert_nil @allocator.allocate_regs
     end
     def test_live
-      live = @allocator.determine_liveness
+      live = @allocator.walk_and_mark(@allocator.compiler.risc_instructions)
       assert_equal 0 , live.length
     end
     def test_add_ok
-      assert_equal RegisterValue, @allocator.use_reg(tmp_reg).class
+      assert_equal Symbol, @allocator.use_reg(:r1, :some).class
+      assert @allocator.used_regs.include?(:r1)
     end
     def test_add_fail
       assert_raises{ @allocator.use_reg(1)}
     end
     def test_release_reg
-      @allocator.use_reg(tmp_reg)
-      assert_equal RegisterValue , @allocator.release_reg(tmp_reg).class
-    end
-    def test_remove_symbol
-      @allocator.use_reg(tmp_reg)
-      assert_equal RegisterValue , @allocator.release_reg(tmp_reg.symbol).class
-    end
-    def test_clear
-      @allocator.clear_used_regs
-      assert @allocator.used_regs_empty?
+      @allocator.use_reg(:r1 , :some)
+      assert  @allocator.used_regs.include?(:r1)
+      assert_equal Symbol , @allocator.release_reg(tmp_reg).class
+      assert  !@allocator.used_regs.include?(:r1)
     end
   end
 end
