@@ -13,7 +13,7 @@ module Risc
       @compiler = compiler
       @platform = platform
       @used_regs = {}
-      @release_points = Hash.new( [] )
+      @release_points = Hash.new {|hash , key | hash[key] = [] }
       @reg_names = (0 ... platform.num_registers).collect{|i| "r#{i}".to_sym }
     end
     attr_reader :used_regs , :compiler , :platform , :reg_names
@@ -28,9 +28,23 @@ module Risc
       pointer = @compiler.risc_instructions
       while(pointer)
         names = assign(pointer)
-        names.each {|name| release_reg(name)}
+        names.each {|name| release_after(pointer, name)}
         pointer = pointer.next
       end
+    end
+
+    # if the instruction has a release point with the given name, release it
+    # Release points store the last use of a register (in ssa)
+    # This method is called after machine registers have been assigned,
+    # and give us the chance to reclaim any unsued machine regs
+    # (via the precalculated release_points)
+    def release_after(instruction , ssa_name)
+      release = @release_points[instruction]
+      return unless release
+      return unless release.include?(ssa_name)
+      #puts "ReleasePoint #{ssa_name} for #{instruction} #{release}"
+      pois = reverse_used(ssa_name)
+      release_reg( pois ) if pois
     end
 
     def assign(instruction)
@@ -52,10 +66,11 @@ module Risc
     def walk_and_mark(instruction)
       released = []
       released = walk_and_mark(instruction.next) if instruction.next
-      #puts instruction.class.name
+      #puts "Walking #{instruction}"
       instruction.register_names.each do |name|
         next if released.include?(name)
         @release_points[instruction] << name
+        #puts "ADDING #{name}"
         released << name
       end
       released
@@ -65,21 +80,32 @@ module Risc
       @used_regs.empty?
     end
 
-    def use_reg(reg , for_name)
+    # use the given reg (first) parameter and mark it as assigned to
+    # it's ssa form, the second parameter.
+    # forward check is trivial, and reverse_used provides reverse check
+    def use_reg(reg , ssa_name)
       reg = reg.symbol if reg.is_a?(RegisterValue)
       raise "Stupid error #{reg}" unless reg.is_a?(Symbol)
-      puts "Using #{reg} for #{for_name}"
-      @used_regs[reg] = for_name
+      #puts "Using #{reg} for #{ssa_name}"
+      @used_regs[reg] = ssa_name
     end
 
-    # if a register has been assigned to the given name, return that
+    # Check whether a register has been assigned to the given ssa form given.
+    # Ie a reverse check on the used_regs hash
+    def reverse_used( ssa_name )
+      @used_regs.each {|reg,name| return reg if ssa_name == name }
+      return nil
+    end
+
+    # if a register has been assigned to the given ssa name, return that
     #
     # otherwise find the first free register by going through the available names
     # and checking if it is used
-    def get_reg(for_name)
-      @used_regs.each {|reg,name| return reg if for_name == name }
+    def get_reg(ssa_name)
+      name = reverse_used( ssa_name )
+      return name if name
       @reg_names.each do |name|
-        return use_reg(name , for_name) unless @used_regs.has_key?(name)
+        return use_reg(name , ssa_name) unless @used_regs.has_key?(name)
       end
       raise "No more registers #{self}"
     end
@@ -89,6 +115,7 @@ module Risc
     def release_reg( reg )
       reg = reg.symbol if reg.is_a?(RegisterValue)
       raise "not symbol #{reg}:#{reg.class}" unless reg.is_a?(Symbol)
+      #puts "Releasing #{reg} "
       @used_regs.delete(reg)
     end
 

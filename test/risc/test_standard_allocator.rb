@@ -37,6 +37,10 @@ module Risc
       assert_equal Symbol, @allocator.use_reg(:r1, :some).class
       assert @allocator.used_regs.include?(:r1)
     end
+    def test_reverse_check
+      assert_equal Symbol, @allocator.use_reg(:r1, :some).class
+      assert_equal :r1 , @allocator.reverse_used(:some)
+    end
     def test_add_fail
       assert_raises{ @allocator.use_reg(1)}
     end

@@ -13,7 +13,7 @@ module Risc
     end
     def test_allocate_runs
       assert_nil @allocator.allocate_regs
-      assert_equal 10 , @allocator.used_regs.length
+      assert_equal 0 , @allocator.used_regs.length
     end
     def test_live_length
       live = @allocator.walk_and_mark(@compiler.risc_instructions)
