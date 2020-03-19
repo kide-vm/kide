@@ -14,7 +14,7 @@ module Risc
       @platform = platform
       @used_regs = {}
       @release_points = Hash.new {|hash , key | hash[key] = [] }
-      @reg_names = (0 ... platform.num_registers).collect{|i| "r#{i}".to_sym }
+      @reg_names = platform.register_names
     end
     attr_reader :used_regs , :compiler , :platform , :reg_names
 
@@ -49,9 +49,11 @@ module Risc
 
     def assign(instruction)
       names = instruction.register_names
-      names.each do |for_name|
-        new_reg = get_reg(for_name)
+      #puts "AT #{instruction}"
+      names.each do |ssa_name|
+        new_reg = get_reg(ssa_name)
         # swap name out
+        #puts "Assign #{new_reg} for #{ssa_name}"
       end
       names
     end
@@ -76,10 +78,6 @@ module Risc
       released
     end
 
-    def used_regs_empty?
-      @used_regs.empty?
-    end
-
     # use the given reg (first) parameter and mark it as assigned to
     # it's ssa form, the second parameter.
     # forward check is trivial, and reverse_used provides reverse check
@@ -88,6 +86,7 @@ module Risc
       raise "Stupid error #{reg}" unless reg.is_a?(Symbol)
       #puts "Using #{reg} for #{ssa_name}"
       @used_regs[reg] = ssa_name
+      reg
     end
 
     # Check whether a register has been assigned to the given ssa form given.
@@ -104,6 +103,12 @@ module Risc
     def get_reg(ssa_name)
       name = reverse_used( ssa_name )
       return name if name
+      get_next_free(ssa_name)
+    end
+
+    def get_next_free(ssa_name)
+      reg = platform.assign_reg?( ssa_name )
+      return use_reg(reg , ssa_name) if reg
       @reg_names.each do |name|
         return use_reg(name , ssa_name) unless @used_regs.has_key?(name)
       end

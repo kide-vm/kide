@@ -8,17 +8,19 @@ module Risc
     # return the translator instance that traslates risc intructions into
     # platform specific ones
     def translator
-      raise "not implemented"
+      raise "not implemented in #{self.class}"
     end
 
     # return an integer where the binary is loaded
     def loaded_at
-      raise "not implemented"
+      raise "not implemented in #{self.class}"
     end
 
-    # return the number of registers the platform supports
-    def num_registers
-      raise "not implemented"
+    # return an array of register names that should be used by the allocator
+    # does not include :message
+    # could be in interpreter and arm, but here for now
+    def register_names
+      (1 ... 16).collect{|i| "r#{i}".to_sym }
     end
 
     # return the Allocator for the platform
@@ -28,6 +30,19 @@ module Risc
     # Possibility to override and implemented different schemes
     def allocator(compiler)
       StandardAllocator.new(compiler , self )
+    end
+
+    def assign_reg?(name)
+      case name
+      when :message
+        :r0
+      when :syscall_1
+        :r0
+      when :syscall_2
+        :r1
+      else
+        nil
+      end
     end
 
     # Factory method to create a Platform object according to the platform

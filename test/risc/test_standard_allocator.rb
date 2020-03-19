@@ -13,11 +13,8 @@ module Risc
     def test_regs
       assert_equal Hash , @allocator.used_regs.class
     end
-    def test_empty
-      assert @allocator.used_regs_empty?
-    end
     def test_reg_names
-      assert_equal 16 , @allocator.reg_names.length
+      assert_equal 15 , @allocator.reg_names.length
     end
     def test_compiler
       assert_equal CallableCompiler , @allocator.compiler.class
