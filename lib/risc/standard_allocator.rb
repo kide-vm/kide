@@ -39,6 +39,7 @@ module Risc
     # and give us the chance to reclaim any unsued machine regs
     # (via the precalculated release_points)
     def release_after(instruction , ssa_name)
+      #puts "release request for #{ssa_name}"
       release = @release_points[instruction]
       return unless release
       return unless release.include?(ssa_name)
@@ -51,8 +52,13 @@ module Risc
       names = instruction.register_names
       #puts "AT #{instruction}"
       names.each do |ssa_name|
+        # BUG: clearly we do NOT do ssa, because some of the instances of
+        # RegisterValue are the same. This causes the symbols/names to
+        # have changed through the previous assign. Hence without next line check
+        # we assign risc regs to risc reg names. Easily avoided, but not clean
+        next if @reg_names.include?(ssa_name)
         new_reg = get_reg(ssa_name)
-        # swap name out
+        instruction.set_registers( ssa_name , new_reg)
         #puts "Assign #{new_reg} for #{ssa_name}"
       end
       names
@@ -69,11 +75,11 @@ module Risc
       released = []
       released = walk_and_mark(instruction.next) if instruction.next
       #puts "Walking #{instruction}"
-      instruction.register_names.each do |name|
-        next if released.include?(name)
-        @release_points[instruction] << name
-        #puts "ADDING #{name}"
-        released << name
+      instruction.register_names.each do |ssa_name|
+        next if released.include?(ssa_name)
+        @release_points[instruction] << ssa_name
+        #puts "ADDING #{ssa_name}"
+        released << ssa_name
       end
       released
     end
