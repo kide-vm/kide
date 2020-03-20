@@ -12,7 +12,7 @@ module Risc
     attr_reader :label
 
     # return an array of names of registers that is used by the instruction
-    def register_names
+    def register_attributes
       []
     end
 

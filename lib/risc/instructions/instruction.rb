@@ -42,8 +42,31 @@ module Risc
     end
 
     # return an array of names of registers that is used by the instruction
-    def register_names
+    def register_attributes
       raise "Not implemented in #{self.class}"
+    end
+
+    # return an array of names of registers that is used by the instruction
+    def register_names
+      register_attributes.collect {|attr| get_register(attr)}
+    end
+
+    # get the register value that has the name (ie attribute by that name)
+    # return the registers name ie RegisterValue's symbol
+    def get_register(name)
+      instance_variable_get("@#{name}".to_sym).symbol
+    end
+
+    # set all registers that has the name "name"
+    # going through the register_names and setting all where the
+    # get_register would return name
+    # Set to the value given as second arg.
+    def set_registers(name , value)
+      register_attributes.each do |attr|
+        reg = instance_variable_get("@#{attr}".to_sym)
+        next unless reg.symbol == name
+        reg.set_name(value)
+      end
     end
 
     def to_cpu( translator )

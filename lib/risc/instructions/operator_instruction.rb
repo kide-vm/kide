@@ -33,8 +33,8 @@ module Risc
     attr_reader :operator, :left , :right , :result
 
     # return an array of names of registers that is used by the instruction
-    def register_names
-      [left.symbol , right.symbol, result.symbol]
+    def register_attributes
+      [:left , :right, :result]
     end
 
     def to_s

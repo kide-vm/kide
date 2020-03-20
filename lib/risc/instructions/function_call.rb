@@ -11,7 +11,7 @@ module Risc
     attr_reader :method
 
     # return an array of names of registers that is used by the instruction
-    def register_names
+    def register_attributes
       []
     end
 

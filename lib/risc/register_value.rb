@@ -5,11 +5,15 @@ module Risc
   # The type is always known, and sometimes the value too
   # Or something about the value, like some instances types
   #
+  # During initial creation ssa-like names are given to the registers.
+  # Later the name is changed, with set_name. When that happens
+  # the original is retained as ssa attttribute for debugging.
+  #
   # When participating in the compiler dsl, a compiler may be set to get the
   # results of dsl operations (like <<) back to the compiler
   class RegisterValue
 
-    attr_reader :symbol , :type , :extra
+    attr_reader :symbol , :type , :extra , :ssa
 
     attr_reader :compiler
 
@@ -31,6 +35,17 @@ module Risc
     def class_name
       return :Integer unless @type
       @type.class_name
+    end
+
+    # During initial creation ssa-like names are given to the registers.
+    # Later the name is changed, with set_name. When that happens
+    # the original is retained as ssa attttribute for debugging.
+    def set_name( symbol )
+      raise "not Symbol #{symbol}:#{symbol.class}" unless symbol.is_a?(Symbol)
+      old = @symbol
+      @ssa = @symbol
+      @symbol = symbol
+      old
     end
 
     # allows to set the compiler, which is mainly done by the compiler

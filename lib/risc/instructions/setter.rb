@@ -28,9 +28,9 @@ module Risc
     attr_accessor :register , :array , :index
 
     # return an array of names of registers that is used by the instruction
-    def register_names
-      names = [array.symbol , register.symbol]
-      names << index.symbol if index.is_a?(RegisterValue)
+    def register_attributes
+      names = [:array , :register]
+      names << :index if index.is_a?(RegisterValue)
       names
     end
 
