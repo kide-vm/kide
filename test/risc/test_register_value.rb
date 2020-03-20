@@ -24,6 +24,11 @@ module Risc
     def test_r0
       assert_equal :message , @r0.symbol
     end
+    def test_dup
+      copy = @r0.dup( :r0 )
+      assert_equal :r0 , copy.symbol
+      assert_equal :message , copy.ssa
+    end
     def test_load_label
       label = Risc::Label.new("HI","ho" , FakeAddress.new(0))
       move = @r1 << label

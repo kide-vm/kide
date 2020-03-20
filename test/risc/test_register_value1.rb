@@ -53,12 +53,5 @@ module Risc
     def test_has_ssa
       assert_nil @r0.ssa
     end
-    def test_set_name
-      assert_equal :message , @r0.set_name(:r0)
-    end
-    def test_set_ssa
-      @r0.set_name(:r0)
-      assert_equal :message , @r0.ssa
-    end
   end
 end

@@ -60,12 +60,13 @@ module Risc
     # set all registers that has the name "name"
     # going through the register_names and setting all where the
     # get_register would return name
-    # Set to the value given as second arg.
+    # Create new RegisterValue with new name and swap the variable out
     def set_registers(name , value)
       register_attributes.each do |attr|
         reg = instance_variable_get("@#{attr}".to_sym)
         next unless reg.symbol == name
-        reg.set_name(value)
+        new_reg = reg.dup(value)
+        instance_variable_set("@#{attr}".to_sym , new_reg)
       end
     end
 

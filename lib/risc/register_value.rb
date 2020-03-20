@@ -23,13 +23,14 @@ module Risc
     # A third value may give extra information. This is a hash, where keys may
     # be :value, or :value_XX or :type_XX to indicate value or type information
     # for an XX instance
-    def initialize( reg , type , extra = {})
+    def initialize( reg , type , extra = {} , ssa = nil)
       extra = {} unless extra
-      @extra = extra
-      @symbol = reg
-      raise "not Symbol #{symbol}:#{symbol.class}" unless symbol.is_a?(Symbol)
       raise "Not Hash #{extra}"  unless extra.is_a?(Hash)
+      @extra = extra
+      raise "not Symbol #{reg}:#{reg.class}" unless reg.is_a?(Symbol)
+      @symbol = reg
       known_type(type)
+      @ssa = ssa
     end
 
     def class_name
@@ -37,16 +38,12 @@ module Risc
       @type.class_name
     end
 
-    # During initial creation ssa-like names are given to the registers.
-    # Later the name is changed, with set_name. When that happens
-    # the original is retained as ssa attttribute for debugging.
-    def set_name( symbol )
-      raise "not Symbol #{symbol}:#{symbol.class}" unless symbol.is_a?(Symbol)
-      old = @symbol
-      @ssa = @symbol
-      @symbol = symbol
-      old
+    # make a copy with a new register name (given arg)
+    # the copy will have the ssa set to the old name
+    def dup( reg )
+      RegisterValue.new(reg , @type , @extra , @symbol)
     end
+
 
     # allows to set the compiler, which is mainly done by the compiler
     # but sometimes, eg in exit, one nneds to create the reg by hand and set
