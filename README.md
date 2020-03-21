@@ -14,12 +14,12 @@ of the system, see below. The overhaul is done and rubyx produces working binari
 
 Processing goes through layers: Ruby --> Sol --> SlotMachine --> Risc --> Arm --> binary .
 
-Currently most basic constructs work to some (usable) degree, ie if, while,
+Currently most basic constructs work to some usable degree, ie if, while,
 assignment, ivars, calling and dynamic dispatch all work. Simple blocks, those
 that ruby passes implicitly also work (lambdas not).
 
-Work continues on memory management, which turns out to be pretty basic to do just about
-anything, even counting to a million.
+Work continues on memory management, which turns out to be pretty basic
+to do just about anything, even counting.
 
 ## Layers
 
@@ -83,26 +83,24 @@ Generating code (by descending above layers) is only half the story in an oo sys
 The other half is classes, types, constant objects and a minimal run-time. This is
 what is Parfait is.
 
-Parfait has basic clases like string/array/hash, and also anything that is really needed
+Parfait has basic classes like string/array/hash, and also anything that is really needed
 to express code, ie Class/Type/Method/Block.
 
 Parfait is used at compile time, and the objects get serialised into the executable to
 make up, or make up the executable, and are thus available at run time. Currently the
 methods are not parsed yet, so do not exist at runtime yet.
 
-### Builtin
+### Macros
 
 There are a small number of methods that can not be coded in ruby. For example an
 integer addition, or a instance variable access. These methods exists in any compiler,
-and are called builtin here.
+and are called macros here.
 
-Builtin methods are coded at the risc level with a dsl. Even though basically assembler,
+Macros are coded at the slot_machine level with a dsl. Even though basically assembler,
 they are
 ([quite readable](https://github.com/ruby-x/rubyx/blob/2f07cc34f3f56c72d05c7d822f40fa6c15fd6a08/lib/risc/builtin/object.rb#L48))
 through the ruby magic.
-
-I am in the process of converting builtin to a simple language on top of SlotMachine,  
-which i'm calling SlotLanguage. But this is wip.
+The Macros are found in lib/slot_machine/macro .
 
 ## Types and classes, static vs dynamic
 
@@ -145,6 +143,7 @@ commands that have a linux baked in, qemu-arm in case of arm. So running
 machine  where qemu is installed with *qemu-arm ./hello* .
 
 On my fedora, the package to install is "qemu", quite possible on mac with homebew, too.
+The web-page has some more [info](http://ruby-x.org/arm/qemu.html).
 
 ### Interpreter
 
@@ -161,7 +160,7 @@ out what is going on, and in finding bugs.
 
 The above architecture is implemented. At the top level the RubyXCompiler works
 pretty much as you'd expect, by falling down the layers. And when it get's
-to the Risc layer it slots the builtin in there as if is were just normal code.
+to the Slot layer it slots the macros in there as if is were just normal code.
 
 Specifically here is a list of what works:
 - if (with or without else)
@@ -175,7 +174,8 @@ Specifically here is a list of what works:
 
 ## Contributing to rubyx
 
-Probably best to talk to me, if it's not a typo or so.
+Probably best to talk to me, if it's not a typo or so. For beginners i have written a
+[BeginnersGuide](./BeginnersGuide.md) to start from zero.
 
 I've started to put some github issues out, some basic some not so. Also there is a todo
 for the adventurous (bigger things, no BIG things).
