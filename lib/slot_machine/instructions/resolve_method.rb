@@ -59,7 +59,7 @@ module SlotMachine
 
         next_method = callable_method[:next_callable].to_reg
         callable_method << next_method
-         
+
         branch  while_start_label
 
         add_code exit_label
