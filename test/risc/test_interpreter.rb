@@ -54,7 +54,7 @@ module Risc
     end
     def test_pc
       @interpreter.tick
-      assert_equal t = 36136 , @interpreter.pc
+      assert_equal t = 36104 , @interpreter.pc
       @interpreter.tick
       assert_equal t + 4 , @interpreter.pc
     end

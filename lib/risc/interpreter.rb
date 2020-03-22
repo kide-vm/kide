@@ -267,7 +267,7 @@ module Risc
     end
 
     def handle_putstring
-      str = get_register( :"syscall_1" ) # should test length, ie r2
+      str = get_register( :r0 ) # should test length, ie r2
       case str
       when Symbol
         @stdout << str.to_s

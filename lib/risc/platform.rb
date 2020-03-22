@@ -40,6 +40,8 @@ module Risc
         :r0
       when :syscall_2
         :r1
+      when :saved_message
+        :r15
       else
         nil
       end

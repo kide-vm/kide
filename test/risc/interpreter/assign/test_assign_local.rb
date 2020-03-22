@@ -24,7 +24,7 @@ module Risc
       assert  :main , call_ins.method.name
     end
     def test_load_15
-      assert_load 1 , Parfait::Integer , "id_integer_"
+      assert_load 1 , Parfait::Integer , :r1
       assert_equal 15 , @interpreter.get_register(@interpreter.instruction.register).value
     end
     def test_branch
@@ -37,7 +37,7 @@ module Risc
       assert_equal Parfait::ReturnAddress , link.class
     end
     def test_transfer
-      assert_transfer 12 , :message , :saved_message
+      assert_transfer 12 , :r0 , :r15
     end
     def test_sys
       assert_syscall 16 , :exit

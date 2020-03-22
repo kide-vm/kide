@@ -26,9 +26,9 @@ module Risc
     end
 
     def test_op
-      assert_operator 22 , :>>,  "message.receiver.data_1" , "integer_1" , "op_>>_"
-      assert_equal 2 , @interpreter.get_register(:integer_1)
-      assert_equal 9 , @interpreter.get_register(:"message.receiver.data_1")
+      assert_operator 22 , :>>,  :r2 , :r1 , :r4
+      assert_equal 2 , @interpreter.get_register(:r1)
+      assert_equal 9 , @interpreter.get_register(:r2)
     end
   end
 end

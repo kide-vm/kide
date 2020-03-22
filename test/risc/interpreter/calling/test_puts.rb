@@ -11,7 +11,7 @@ module Risc
     end
 
     def test_chain
-      #show_main_ticks # get output of what is
+      show_main_ticks # get output of what is
       check_main_chain [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, #10
                  FunctionCall, LoadConstant, LoadConstant, SlotToReg, OperatorInstruction, #15
@@ -48,7 +48,7 @@ module Risc
     end
 
     def test_move_sys_return
-      assert_transfer(26, :syscall_1 ,:integer_tmp)
+      assert_transfer(26, :r0 ,:r1)
       assert_equal 11 , @interpreter.get_register(:integer_tmp)
     end
     def test_restore_message
