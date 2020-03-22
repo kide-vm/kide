@@ -4,7 +4,7 @@ module RubyX
   module Macro
     class TestIntegerSame < MiniTest::Test
       include MacroHelper
-      def op ; :== ; end
+      def op ; :>= ; end # is == valid ??
       def len ; 24 ; end
       def source
         <<GET
@@ -24,9 +24,6 @@ GET
       def test_instr_op
         assert_equal SlotMachine::Comparison , compiler.slot_instructions.next.class
         assert_equal op , compiler.slot_instructions.next.operator
-      end
-      def test_risc
-        assert_equal len , compiler.to_risc.risc_instructions.length
       end
     end
     class TestIntegerLg < TestIntegerSame

@@ -22,9 +22,6 @@ GET
       def test_instr_get
         assert_equal SlotMachine::Putstring , compiler.slot_instructions.next.class
       end
-      def test_risc
-        assert_equal 42 , compiler.to_risc.risc_instructions.length
-      end
     end
   end
 end

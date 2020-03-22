@@ -24,9 +24,6 @@ GET
         assert_equal SlotMachine::IntOperator , compiler.slot_instructions.next.class
         assert_equal op , compiler.slot_instructions.next.operator
       end
-      def test_risc
-        assert_equal 40 , compiler.to_risc.risc_instructions.length
-      end
     end
     class TestIntegerMinus < TestIntegerPlus
       def op ; :- ; end

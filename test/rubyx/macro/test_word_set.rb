@@ -22,9 +22,6 @@ GET
       def test_instr_get
         assert_equal SlotMachine::SetInternalByte , compiler.slot_instructions.next.class
       end
-      def test_risc
-        assert_equal 20 , compiler.to_risc.risc_instructions.length
-      end
     end
   end
 end
