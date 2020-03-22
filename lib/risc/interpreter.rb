@@ -270,7 +270,7 @@ module Risc
       else
         raise "un-implemented syscall #{name}"
       end
-      set_register( :syscall_1 , ret_value ) # syscalls return into syscall_1
+      set_register( std_reg(:syscall_1) , ret_value ) # syscalls return into syscall_1
       true
     end
 

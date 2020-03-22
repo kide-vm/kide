@@ -28,10 +28,10 @@ module SlotMachine
         assert_transfer s + 5 , "id_factory_.next_object" , :syscall_2
         assert_transfer s + 6 , :message , :saved_message
         assert_syscall s + 7 , :putstring
-        assert_transfer s + 8 , :syscall_1 , :integer_tmp
+        assert_transfer s + 8 , :syscall_1 , :restore_integer_return
         assert_transfer s + 9 , :saved_message , :message
         assert_slot_to_reg s + 10 ,:message , 5 , "message.return_value"
-        assert_reg_to_slot s + 11 , :integer_tmp  , "message.return_value" , 2
+        assert_reg_to_slot s + 11 , :restore_integer_return  , "message.return_value" , 2
         assert_slot_to_reg s + 12 ,:message , 5 , "message.return_value"
         assert_reg_to_slot s + 13 , "message.return_value"  , :message , 5
         assert_branch s + 14 , "return_label"

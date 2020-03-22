@@ -25,7 +25,7 @@ module Risc
                  SlotToReg, Transfer, Syscall, NilClass,] #55
        assert_equal "Hello again" , @interpreter.stdout
        assert_equal Integer , get_return.class
-       assert_equal 11 , get_return.to_string #bytes written
+       assert_equal 11 , get_return #bytes written
     end
     def test_call
       cal =  main_ticks(11)
@@ -44,12 +44,12 @@ module Risc
       done = main_ticks(25)
       assert_equal Syscall ,  done.class
       assert_equal "Hello again" , @interpreter.stdout
-      assert_equal 11 , @interpreter.get_register(:syscall_1)
+      assert_equal 11 , @interpreter.get_register(@interpreter.std_reg(:syscall_1))
     end
 
     def test_move_sys_return
       assert_transfer(26, :r0 ,:r1)
-      assert_equal 11 , @interpreter.get_register(:integer_tmp)
+      assert_equal 11 , @interpreter.get_register(@interpreter.std_reg(:syscall_1))
     end
     def test_restore_message
       assert_transfer(27, :r14 ,:r13)
