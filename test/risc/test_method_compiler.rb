@@ -23,7 +23,7 @@ module Risc
       assert_equal :meth , cpu.callable.name
     end
     def test_translate_method
-      ass = @compiler.translate_method(Platform.for(:arm).translator , [])
+      ass = @compiler.translate_method(Platform.for(:arm) , [])
       assert_equal Array , ass.class
       assert_equal Assembler , ass.first.class
       assert_equal :meth , ass.first.callable.name

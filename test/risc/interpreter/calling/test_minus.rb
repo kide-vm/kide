@@ -26,15 +26,15 @@ module Risc
        assert_equal 1 , get_return
     end
     def test_op
-      assert_operator 26  , :- , :r2 , :r4 , :r1
+      assert_operator 26  , :- , :r1 , :r3 , :r0
       assert_equal 1 , @interpreter.get_register(@instruction.result)
-      assert_equal 6 , @interpreter.get_register(:r2)
-      assert_equal 5 , @interpreter.get_register(:r4)
+      assert_equal 6 , @interpreter.get_register(:r1)
+      assert_equal 5 , @interpreter.get_register(:r3)
     end
     def test_return
       ret = main_ticks(46)
       assert_equal FunctionReturn ,  ret.class
-      assert_equal :r1 ,  ret.register.symbol
+      assert_equal :r0 ,  ret.register.symbol
       assert_equal 36540 ,  @interpreter.get_register(ret.register).value
     end
   end

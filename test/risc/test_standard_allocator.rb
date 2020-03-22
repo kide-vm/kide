@@ -14,7 +14,7 @@ module Risc
       assert_equal Hash , @allocator.used_regs.class
     end
     def test_reg_names
-      assert_equal 15 , @allocator.reg_names.length
+      assert_equal 13 , @allocator.reg_names.length
     end
     def test_compiler
       assert_equal CallableCompiler , @allocator.compiler.class

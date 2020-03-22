@@ -26,14 +26,14 @@ module Risc
        assert_equal 10 , get_return
     end
     def test_op
-      assert_operator 26, :+ ,  :r2 ,  :r4 , :r1
+      assert_operator 26, :+ ,  :r1 ,  :r3 , :r0
       assert_equal 10 , @interpreter.get_register(@instruction.result.symbol)
     end
     def test_move_res_to_int
-      assert_reg_to_slot( 27 , :r1 , :r3 , 2)
+      assert_reg_to_slot( 27 , :r0 , :r2 , 2)
     end
     def test_move_int_to_reg
-      assert_reg_to_slot( 28 , :r3 , :r0 , 5)
+      assert_reg_to_slot( 28 , :r2 , :r13 , 5)
     end
   end
 end

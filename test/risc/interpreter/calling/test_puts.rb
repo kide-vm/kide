@@ -11,7 +11,7 @@ module Risc
     end
 
     def test_chain
-      show_main_ticks # get output of what is
+      #show_main_ticks # get output of what is
       check_main_chain [LoadConstant, SlotToReg, RegToSlot, LoadConstant, SlotToReg, #5
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, SlotToReg, #10
                  FunctionCall, LoadConstant, LoadConstant, SlotToReg, OperatorInstruction, #15
@@ -25,7 +25,7 @@ module Risc
                  SlotToReg, Transfer, Syscall, NilClass,] #55
        assert_equal "Hello again" , @interpreter.stdout
        assert_equal Integer , get_return.class
-       assert_equal 11 , get_return #bytes written
+       assert_equal 11 , get_return.to_string #bytes written
     end
     def test_call
       cal =  main_ticks(11)
@@ -35,9 +35,9 @@ module Risc
 
     def test_pre_sys
       done = main_ticks(24)
-      assert_equal Parfait::Word , @interpreter.get_register(:syscall_1).class
-      assert_equal "Hello again" , @interpreter.get_register(:syscall_1).to_string
-      assert_equal 11 , @interpreter.get_register(:syscall_2)
+      assert_equal Parfait::Word , @interpreter.get_register(:r0).class
+      assert_equal "Hello again" , @interpreter.get_register(:r0).to_string
+      assert_equal 11 , @interpreter.get_register(:r1)
     end
 
     def test_sys
@@ -52,8 +52,8 @@ module Risc
       assert_equal 11 , @interpreter.get_register(:integer_tmp)
     end
     def test_restore_message
-      assert_transfer(27, :saved_message ,:message)
-      assert_equal Parfait::Message , @interpreter.get_register(:message).class
+      assert_transfer(27, :r14 ,:r13)
+      assert_equal Parfait::Message , @interpreter.get_register(:r13).class
     end
     def test_return
       done = main_ticks(48)

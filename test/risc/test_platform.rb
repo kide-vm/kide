@@ -17,7 +17,7 @@ module Risc
       assert_equal FakeCompiler , allocator.compiler.class
     end
     def test_map_message
-      assert_equal :r0 , Platform.new.assign_reg?(:message)
+      assert_equal :r13 , Platform.new.assign_reg?(:message)
     end
     def test_map_sys
       assert_equal :r0 , Platform.new.assign_reg?(:syscall_1)
@@ -26,7 +26,7 @@ module Risc
       assert_nil Platform.new.assign_reg?(:id_some_id)
     end
     def test_names_len
-      assert_equal 15 , Platform.new.register_names.length
+      assert_equal 13 , Platform.new.register_names.length
     end
     def test_names_r
       assert_equal "r" , Platform.new.register_names.first.to_s[0]

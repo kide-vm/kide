@@ -47,6 +47,14 @@ module Risc
       trigger(:state_changed , old , state )
     end
 
+    # return the name of the register  that the argument is mapped to
+    # this info is in the Platform object in the linker instance
+    # eg: syscall_1 maps to :r0 , and :message to :r13
+    # So as not to hardcode values (as used to )
+    def std_reg(name)
+      @linker.platform.assign_reg?(name)
+    end
+
     # set all flags to false
     def reset_flags
       @flags = {  :zero => false , :plus => false ,
@@ -258,7 +266,7 @@ module Risc
         set_instruction(nil)
         return false
       when :died
-        raise "Method #{@registers[:r1]} not found for #{@registers[:r0].receiver}"
+        raise "Method #{@registers[std_reg(:syscall_2)]} not found for #{@registers[std_reg(:syscall_2)]}"
       else
         raise "un-implemented syscall #{name}"
       end

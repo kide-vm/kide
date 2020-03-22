@@ -26,9 +26,9 @@ module Risc
     end
 
     def test_op
-      assert_operator 22 , :>>,  :r2 , :r1 , :r4
-      assert_equal 2 , @interpreter.get_register(:r1)
-      assert_equal 9 , @interpreter.get_register(:r2)
+      assert_operator 22 , :>>,  :r1 , :r0 , :r3
+      assert_equal 2 , @interpreter.get_register(:r0)
+      assert_equal 9 , @interpreter.get_register(:r1)
     end
   end
 end

@@ -30,9 +30,9 @@ module Risc
       assert @interpreter.flags[:zero]
     end
     def test_op
-      assert_operator 26 , :*,  :r2 , :r4 , :r1
-      assert_equal 2147483648 , @interpreter.get_register(:r4)
-      assert_equal 2147483648 , @interpreter.get_register(:r2)
+      assert_operator 26 , :*,  :r1 , :r3 , :r0
+      assert_equal 2147483648 , @interpreter.get_register(:r3)
+      assert_equal 2147483648 , @interpreter.get_register(:r1)
     end
     def test_overflow
       main_ticks( 26 )

@@ -45,6 +45,10 @@ module Risc
       @string_input = as_main("return 5")
       super
     end
+    def test_mapping
+      assert_equal :r0 , @interpreter.std_reg(:syscall_1)
+      assert_equal :r13 , @interpreter.std_reg(:message)
+    end
     def test_tick1
       assert_equal 2 , @interpreter.tick
     end

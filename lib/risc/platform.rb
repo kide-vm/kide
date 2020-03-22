@@ -20,7 +20,7 @@ module Risc
     # does not include :message
     # could be in interpreter and arm, but here for now
     def register_names
-      (1 ... 16).collect{|i| "r#{i}".to_sym }
+      (0 .. 12).collect{|i| "r#{i}".to_sym }
     end
 
     # return the Allocator for the platform
@@ -35,13 +35,13 @@ module Risc
     def assign_reg?(name)
       case name
       when :message
-        :r0
+        :r13
       when :syscall_1
         :r0
       when :syscall_2
         :r1
       when :saved_message
-        :r15
+        :r14
       else
         nil
       end

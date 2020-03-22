@@ -15,21 +15,20 @@ module Risc
                  RegToSlot, LoadConstant, SlotToReg, RegToSlot, LoadConstant, #10
                  SlotToReg, RegToSlot, SlotToReg, FunctionCall, LoadConstant, #15
                  SlotToReg, OperatorInstruction, IsZero, SlotToReg, SlotToReg, #20
-                 RegToSlot, SlotToReg, SlotToReg, RegToSlot, SlotToReg, #25
-                 LoadConstant, RegToSlot, SlotToReg, SlotToReg, DynamicJump, #30
+                 RegToSlot, SlotToReg, SlotToReg, RegToSlot, LoadConstant, #25
+                 SlotToReg, RegToSlot, SlotToReg, SlotToReg, DynamicJump, #30
                  LoadConstant, RegToSlot, Branch, SlotToReg, SlotToReg, #35
-                 RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, #40
-                 SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, #45
-                 RegToSlot, SlotToReg, SlotToReg, SlotToReg, FunctionReturn, #50
-                 SlotToReg, RegToSlot, SlotToReg, RegToSlot, Branch, #55
-                 SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #60
-                 SlotToReg, FunctionReturn, Transfer, SlotToReg, SlotToReg, #65
-                 Syscall, NilClass,] #70
+                 RegToSlot, SlotToReg, SlotToReg, FunctionReturn, SlotToReg, #40
+                 RegToSlot, Branch, SlotToReg, SlotToReg, RegToSlot, #45
+                 SlotToReg, SlotToReg, FunctionReturn, SlotToReg, RegToSlot, #50
+                 SlotToReg, RegToSlot, Branch, SlotToReg, SlotToReg, #55
+                 RegToSlot, SlotToReg, SlotToReg, FunctionReturn, Transfer, #60
+                 SlotToReg, SlotToReg, Transfer, Syscall, NilClass,] #65
       assert_equal 15 , get_return
     end
 
     def test_load_return
-      load_ins = main_ticks(26)
+      load_ins = main_ticks(25)
       assert_equal LoadConstant ,  load_ins.class
       assert_equal Parfait::ReturnAddress , @interpreter.get_register(load_ins.register).class
     end

@@ -28,17 +28,17 @@ module Risc
     end
 
     def test_load_factory
-      assert_load( 15 , Parfait::Factory , :r1)
+      assert_load( 15 , Parfait::Factory , :r0)
       assert_equal :next_integer , @instruction.constant.attribute_name
     end
     def test_load_nil
-      assert_load( 16 , Parfait::NilClass , :r2)
+      assert_load( 16 , Parfait::NilClass , :r1)
     end
     def test_slot_receiver #load next_object from factory
-      assert_slot_to_reg( 17 , :r1 , 2 , :r3)
+      assert_slot_to_reg( 17 , :r0 , 2 , :r2)
     end
     def test_nil_check
-      assert_operator 18 , :- ,  :r2 , :r3 , :r4
+      assert_operator 18 , :- ,  :r1 , :r2 , :r3
       value = @interpreter.get_register(@instruction.result)
       assert_equal ::Integer , value.class
       assert 0 != value
@@ -47,10 +47,10 @@ module Risc
       assert_not_zero 19 , "cont_label"
     end
     def test_load_next_int
-      assert_slot_to_reg( 20 , :r3 , 1 , :r2)
+      assert_slot_to_reg( 20 , :r2 , 1 , :r1)
     end
     def test_move_next_back_to_factory
-      assert_reg_to_slot( 21 , :r2 , :r1 , 2)
+      assert_reg_to_slot( 21 , :r1 , :r0 , 2)
     end
   end
 end
