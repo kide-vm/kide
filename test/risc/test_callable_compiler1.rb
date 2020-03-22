@@ -10,12 +10,19 @@ module Risc
     end
     def test_init
       @compiler.risc_instructions.each do |ins|
-        puts ins.to_s
+        ins.register_names.each do |name|
+          assert ! RegisterValue.look_like_reg(name)
+        end
       end
     end
 
     def test_1
       @compiler.translate_method( @platform , [])
+      @compiler.risc_instructions.each do |ins|
+        ins.register_names.each do |name|
+          assert RegisterValue.look_like_reg(name)
+        end
+      end
     end
   end
 end
