@@ -10,7 +10,7 @@ module SlotMachine
       ResolveMethod.new( "method" , :name , cache_entry )
     end
     def test_len
-      assert_equal 21 , all.length , all_str
+      assert_equal 20 , all.length , all_str
     end
     def test_load_name
       assert_load 1, Parfait::Word , "id_word_"
@@ -58,21 +58,17 @@ module SlotMachine
     def test_goto_exit
       assert_label 15, "exit_label_"
     end
-    def test_load_name2
-      assert_load 16, Parfait::Word , "id_word_"
-      assert_equal "name" , risc(1).constant.to_string
-    end
     def test_move_name
-      assert_transfer 17, "id_word_" , :r1
+      assert_transfer 16, "id_word_" , :r1
     end
     def test_sys
-      assert_syscall 18, :died
+      assert_syscall 17, :died
     end
     def test_label
-      assert_label 19, "ok_label_"
+      assert_label 18, "ok_label_"
     end
     def test_method
-      assert_reg_to_slot 20 , "id_cacheentry_.cached_type.methods" , "id_cacheentry_" , 2
+      assert_reg_to_slot 19 , "id_cacheentry_.cached_type.methods" , "id_cacheentry_" , 2
     end
   end
 end

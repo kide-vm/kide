@@ -16,7 +16,7 @@ module Risc
                  SlotToReg, OperatorInstruction, IsZero, SlotToReg, SlotToReg, #10
                  LoadConstant, RegToSlot, LoadConstant, LoadConstant, SlotToReg, #15
                  SlotToReg, LoadConstant, OperatorInstruction, IsZero, SlotToReg, #20
-                 OperatorInstruction, IsZero, RegToSlot, Branch, LoadConstant, #25
+                 OperatorInstruction, IsZero, RegToSlot, LoadConstant, Branch, #25
                  SlotToReg, SlotToReg, RegToSlot, SlotToReg, SlotToReg, #30
                  RegToSlot, LoadConstant, SlotToReg, LoadConstant, SlotToReg, #35
                  RegToSlot, SlotToReg, DynamicJump, LoadConstant, LoadConstant, #40

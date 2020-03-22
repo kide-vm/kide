@@ -266,7 +266,7 @@ module Risc
         set_instruction(nil)
         return false
       when :died
-        raise "Method #{@registers[std_reg(:syscall_2)]} not found for #{@registers[std_reg(:syscall_2)]}"
+        raise "Method #{@registers[:r1].to_string} not found for #{@registers[std_reg(:syscall_1)]}"
       else
         raise "un-implemented syscall #{name}"
       end
