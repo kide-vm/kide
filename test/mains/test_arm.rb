@@ -8,13 +8,13 @@ require_relative 'helper'
 
 module Mains
   class TestArm < MiniTest::Test
-    @Qemu = "qemu-arm"
-    @Linker = "arm-linux-gnueabi-ld"
+    @qemu = "qemu-arm"
+    @linker = "arm-linux-gnueabi-ld"
     def self.Linker
-      @Linker
+      @linker
     end
     def self.Qemu
-      @Qemu
+      @qemu
     end
 
     # runnable_methods is called by minitest to determine which tests to run
@@ -39,12 +39,12 @@ module Mains
 
     def self.has_qemu
       if `uname -a`.include?("torsten")
-        @Linker = "arm-linux-gnu-ld"  #on fedora
+        @linker = "arm-linux-gnu-ld"  #on fedora
       end
-      return false unless ENV["TEST_ARM"]
+      return false #Disabling for a moment unless ENV["TEST_ARM"]
       begin
-        `#{@Qemu} -version`
-        `#{@Linker} -v`
+        `#{@qemu} -version`
+        `#{@linker} -v`
       rescue => e
         puts e
         return false
