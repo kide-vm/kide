@@ -40,9 +40,9 @@ module SlotMachine
       builder = compiler.builder(self)
       word = builder.load_object(Parfait.new_word(@name.to_s))
       entry = builder.load_object(@cache_entry)
-      while_start_label = Risc.label(to_s, "while_start_label_#{object_id}")
-      ok_label = Risc.label(to_s, "ok_label_#{object_id}")
-      exit_label = Risc.label(to_s, "exit_label_#{object_id}")
+      while_start_label = Risc.label(to_s, "resolve_#{name}_#{object_id}")
+      ok_label = Risc.label(to_s, "ok_resolve_#{name}_#{object_id}")
+      exit_label = Risc.label(to_s, "exit_resolve_#{name}_#{object_id}")
       builder.build do
         callable_method = entry[:cached_type][:methods].to_reg
 

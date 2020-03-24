@@ -66,8 +66,11 @@ module Arm
     end
 
     def translate_FunctionReturn( code )
-      # FIXME reduce the int first, register contains a ReturnAddress
-      ArmMachine.mov( :pc , code.register)
+      reduce = arm_index(Parfait::Integer.integer_index)
+      # reduce the int first, register contains a ReturnAddress
+      codes = ArmMachine.ldr( code.register , code.register ,  reduce  )
+      codes << ArmMachine.mov( :pc , code.register)
+      codes
     end
     def translate_DynamicJump(code)
       index = Parfait.object_space.get_type_by_class_name(:CallableMethod).variable_index(:binary)

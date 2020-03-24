@@ -87,7 +87,7 @@ module Sol
     # if not, change and find method for the type (simple_call to resolve_method)
     # conceptually easy in ruby, but we have to compile that "easy" ruby
     def cache_check(compiler)
-      ok = SlotMachine::Label.new(self,"cache_ok_#{self.object_id}")
+      ok = SlotMachine::Label.new(self,"send_cache_#{@name}_ok_#{self.object_id}")
       check = build_condition(ok, compiler)      # if cached_type != current_type
       check << SlotMachine::SlotLoad.new(self,[dynamic_call.cache_entry, :cached_type] , receiver_type_definition(compiler))
       check << SlotMachine::ResolveMethod.new(self, @name , dynamic_call.cache_entry )
