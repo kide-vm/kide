@@ -37,10 +37,10 @@ module Elf
         meth = asm.callable
         asm.instructions.each do |label|
           next unless label.is_a?(Risc::Label)
-          add_symbol "#{meth.self_type.name}@#{meth.name}:Label=#{label.name}" , Risc::Position.get(label).at
+          add_symbol "#{meth.self_type.name}_#{meth.name}:Label=#{label.name}" , Risc::Position.get(label).at
         end
         meth.binary.each_block do |code|
-          label = "BinaryCode@#{meth.name}"
+          label = "BinaryCode_#{meth.name}"
           add_symbol label , Risc::Position.get(code).at
         end
       end
