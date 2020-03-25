@@ -40,6 +40,8 @@ module Risc
         :r0
       when :syscall_2
         :r1
+      when :syscall_3
+        :r2
       when :saved_message
         :r14
       else

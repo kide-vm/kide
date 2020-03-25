@@ -275,7 +275,8 @@ module Risc
     end
 
     def handle_putstring
-      str = get_register( :r0 ) # should test length, ie r2
+      # should test length, syscall_3  (syscall_1 is file_descriptor, ie stdout)
+      str = get_register( std_reg(:syscall_2) )
       case str
       when Symbol
         @stdout << str.to_s

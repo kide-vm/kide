@@ -24,8 +24,8 @@ module SlotMachine
         assert_reg_to_slot s + 1 , "id_factory_.next_object"  , :message , 5
         assert_slot_to_reg s + 2 ,:message , 2 , "message.receiver"
         assert_slot_to_reg s + 3 ,"message.receiver" , 1 , "id_factory_.next_object"
-        assert_transfer s + 4 , :"message.receiver" , :syscall_1
-        assert_transfer s + 5 , "id_factory_.next_object" , :syscall_2
+        assert_transfer s + 4 , :"message.receiver" , :syscall_2
+        assert_transfer s + 5 , "id_factory_.next_object" , :syscall_3
         assert_transfer s + 6 , :message , :saved_message
         assert_syscall s + 7 , :putstring
         assert_transfer s + 8 , :syscall_1 , :restore_integer_return

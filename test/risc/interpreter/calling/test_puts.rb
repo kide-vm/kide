@@ -35,9 +35,9 @@ module Risc
 
     def test_pre_sys
       done = main_ticks(24)
-      assert_equal Parfait::Word , @interpreter.get_register(:r0).class
-      assert_equal "Hello again" , @interpreter.get_register(:r0).to_string
-      assert_equal 11 , @interpreter.get_register(:r1)
+      assert_equal Parfait::Word , @interpreter.get_register(@interpreter.std_reg(:syscall_2)).class
+      assert_equal "Hello again" , @interpreter.get_register(@interpreter.std_reg(:syscall_2)).to_string
+      assert_equal 11 , @interpreter.get_register(@interpreter.std_reg(:syscall_3))
     end
 
     def test_sys

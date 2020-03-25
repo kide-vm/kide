@@ -26,5 +26,10 @@ module Risc
       int = @builder.allocate_int
       assert_allocate
     end
+    def test_compiler
+      int = @builder.allocate_int
+      assert int.compiler
+      assert int.symbol.to_s.start_with?("id_fac")
+    end
   end
 end
