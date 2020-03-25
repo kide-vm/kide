@@ -38,7 +38,7 @@ module SlotMachine
     # currently a fail results in sys exit
     def to_risc( compiler )
       builder = compiler.builder(self)
-      word = builder.load_object(Parfait.new_word(@name.to_s))
+      word = builder.load_object(@name)
       entry = builder.load_object(@cache_entry)
       while_start_label = Risc.label(to_s, "resolve_#{name}_#{object_id}")
       ok_label = Risc.label(to_s, "ok_resolve_#{name}_#{object_id}")

@@ -13,8 +13,8 @@ module SlotMachine
       assert_equal 20 , all.length , all_str
     end
     def test_load_name
-      assert_load 1, Parfait::Word , "id_word_"
-      assert_equal "name" , risc(1).constant.to_string
+      assert_load 1, Symbol , "id_symbol_"
+      assert_equal "name" , risc(1).constant.to_s
     end
     def test_load_cache
       assert_load 2, Parfait::CacheEntry , "id_cacheentry_"
@@ -26,7 +26,7 @@ module SlotMachine
       assert_slot_to_reg 4 , "id_cacheentry_.cached_type" , 4 , "id_cacheentry_.cached_type.methods"
     end
     def test_start_label
-      assert_label 5 , "while_start_"
+      assert_label 5 , "resolve_"
     end
     def test_load_nil
       assert_load 6, Parfait::NilClass , "id_nilclass_"
@@ -41,10 +41,10 @@ module SlotMachine
       assert_slot_to_reg 9, "id_cacheentry_.cached_type.methods" , 6 , "id_cacheentry_.cached_type.methods.name"
     end
     def test_check_name
-      assert_operator 10, :- , "id_cacheentry_.cached_type.methods.name" , "id_word_" , "op_-_"
+      assert_operator 10, :- , "id_cacheentry_.cached_type.methods.name" , "id_symbol_" , "op_-_"
     end
     def test_nil_branch
-      assert_zero 11, "ok_label_"
+      assert_zero 11, "ok_resolve_name_"
     end
     def test_get_next_method
       assert_slot_to_reg 12, "id_cacheentry_.cached_type.methods" , 2 , "id_cacheentry_.cached_type.methods.next_callable"
@@ -53,19 +53,19 @@ module SlotMachine
       assert_transfer 13 , "id_cacheentry_.cached_type.methods.next" , "id_cacheentry_.cached_type.methods"
     end
     def test_continue_while
-      assert_branch 14, "while_start_"
+      assert_branch 14, "resolve_"
     end
     def test_goto_exit
-      assert_label 15, "exit_label_"
+      assert_label 15, "exit_resolve_name_"
     end
     def test_move_name
-      assert_transfer 16, "id_word_" , :r1
+      assert_transfer 16, "id_symbol_" , :r1
     end
     def test_sys
       assert_syscall 17, :died
     end
     def test_label
-      assert_label 18, "ok_label_"
+      assert_label 18, "ok_resolve_name_"
     end
     def test_method
       assert_reg_to_slot 19 , "id_cacheentry_.cached_type.methods" , "id_cacheentry_" , 2

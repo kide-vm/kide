@@ -72,7 +72,7 @@ module Sol
     end
     def test_check_label
       assert_equal NotSameCheck, @ins.class
-      assert @ins.false_label.name.start_with?("cache_ok_") , @ins.false_label.name
+      assert @ins.false_label.name.start_with?("send_cache_some_ok_") , @ins.false_label.name
     end
     def test_array
       check_array [NotSameCheck, SlotLoad, ResolveMethod, Label, MessageSetup ,

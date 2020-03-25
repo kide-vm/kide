@@ -140,6 +140,10 @@ class Symbol
     #puts "LL #{l.class}"
     l
   end
+  alias :ct_type :get_type
+  def value
+    self
+  end
   def padded_length
     Parfait::Object.padded( to_s.length + 4)
   end

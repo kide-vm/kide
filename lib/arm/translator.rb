@@ -72,6 +72,7 @@ module Arm
       codes << ArmMachine.mov( :pc , code.register)
       codes
     end
+    
     def translate_DynamicJump(code)
       index = Parfait.object_space.get_type_by_class_name(:CallableMethod).variable_index(:binary)
       codes = ArmMachine.ldr( code.register ,  code.register  , arm_index(index) )
