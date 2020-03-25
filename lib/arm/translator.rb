@@ -72,7 +72,7 @@ module Arm
       codes << ArmMachine.mov( :pc , code.register)
       codes
     end
-    
+
     def translate_DynamicJump(code)
       index = Parfait.object_space.get_type_by_class_name(:CallableMethod).variable_index(:binary)
       codes = ArmMachine.ldr( code.register ,  code.register  , arm_index(index) )
@@ -93,21 +93,22 @@ module Arm
     def translate_OperatorInstruction( code )
       left = code.left
       right = code.right
+      result = code.result
       case code.operator.to_s
       when "+"
-        c = ArmMachine.add(left , left , right)
+        c = ArmMachine.add(result , left , right)
       when "-"
-        c = ArmMachine.sub(left , left , right)
+        c = ArmMachine.sub(result , left , right)
       when "&"
-        c = ArmMachine.and(left , left , right)
+        c = ArmMachine.and(result , left , right)
       when "|"
-        c = ArmMachine.orr(left , left , right)
+        c = ArmMachine.orr(result , left , right)
       when "*"
-        c = ArmMachine.mul(left , right , left) #arm rule about left not being result, lukily commutative
+        c = ArmMachine.mul(result , right , left) #arm rule about left not being result, lukily commutative
       when ">>"
-        c = ArmMachine.mov(left , left , :shift_asr => right) #arm rule about left not being result, lukily commutative
+        c = ArmMachine.mov(result , left , :shift_asr => right) #arm rule about left not being result, lukily commutative
       when "<<"
-        c = ArmMachine.mov(left , left , :shift_lsl => right) #arm rule about left not being result, lukily commutative
+        c = ArmMachine.mov(result , left , :shift_lsl => right) #arm rule about left not being result, lukily commutative
       else
         raise "unimplemented  '#{code.operator}' #{code}"
       end
