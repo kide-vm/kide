@@ -4,7 +4,7 @@ require_relative 'helper'
 # mains dir.
 # If you just pop a file in the source directory, all tests will run.
 # This is fine if all is fine. But if all is fine, you are not developing, just playing.
-# So when you really need to itereate editing this gives guard auto-run and just of that
+# So when you really need to iterate editing this gives guard auto-run and just of that
 # one test that you work on.
 
 # After getting the test to run, copy paste the whole code into a file in source and revert

@@ -41,7 +41,7 @@ module Mains
       if `uname -a`.include?("torsten")
         @linker = "arm-linux-gnu-ld"  #on fedora
       end
-      return false #Disabling for a moment unless ENV["TEST_ARM"]
+      return unless ENV["TEST_ARM"] or ENV["TEST_ALL"]
       begin
         `#{@qemu} -version`
         `#{@linker} -v`
