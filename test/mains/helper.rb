@@ -6,8 +6,8 @@ module Mains
     include ScopeHelper
 
     def setup
-      @qemu = ENV["qemu-arm"] || "qemu-arm"
-      @linker = ENV["arm-linux-gnu-ld"] || "arm-linux-gnu-ld"  #on fedora
+      @qemu = ENV["QEMU_ARM"] || "qemu-arm"
+      @linker = ENV["ARM_LINKER"] || "arm-linux-gnu-ld"  #on fedora
       @arm = ENV["TEST_ARM"] or ENV["TEST_ALL"]
       #@linker = "arm-linux-gnueabi-ld"  # on ubuntu
       # ENV["TEST_ARM"] = "DEBUG"
