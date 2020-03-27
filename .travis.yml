@@ -1,12 +1,13 @@
 before_install:
   - sudo apt-get install -y qemu
   - sudo apt-get install -y binutils-arm-linux-gnueabi
-  - gem install bundler --version '2.0.1'
+  - gem install bundler --version '2.1.4'
 language: ruby
 script:
   - ruby test/test_all.rb
   - bundle exec codeclimate-test-reporter
 rvm:
-  - 2.4.6
-  - 2.5.5
-  - 2.6.3
+  - 2.4.9
+  - 2.5.7
+  - 2.6.5
+  - 2.7.0
