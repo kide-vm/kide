@@ -6,6 +6,11 @@ module Parfait
       super
       @word = Parfait::Word.new(5)
     end
+    def test_start_with
+      assert_equal true , @word.start_with("hello","hell")
+      assert_equal true , @word.start_with("Adbfgsj","Adbf")
+      assert_equal false , @word.start_with("Vanila","van")
+    end
     def test_len
       assert_equal 5 , @word.length
     end
