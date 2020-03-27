@@ -48,9 +48,7 @@ module Arm
     end
 
     def byte_args_for( code )
-        args = slot_args_for( code )
-        args.pop if(code.index.is_a? Numeric)
-        args
+      [ code.register ,  code.array  , code.index ]
     end
 
     def translate_ByteToReg( code )
