@@ -13,7 +13,8 @@ module Parfait
   # Object length is measured in non-type cells though
 
   class Word < Data8
-    attr_reader :char_length , :next_word
+    attr_reader :char_length , :str, :prefix ,:next_word
+
 
     def self.type_length
       3    # 0 type , 1 char_length , next_word
@@ -27,6 +28,8 @@ module Parfait
     def initialize( len )
       super()
       @char_length = 0
+      #@str=str1
+      #@prefix=prefix1
       raise "Must init with int, not #{len.class}" unless len.kind_of? ::Integer
       raise "Must init with positive, not #{len}" if len < 0
       fill_to( len , 32 ) unless len == 0 #32 being ascii space
@@ -189,7 +192,19 @@ module Parfait
     def padded_length
       Object.padded( 4 * get_type().instance_length + @char_length  )
     end
-
+    def start_with(str1,prefix1)
+        @str=str1
+        @prefix=prefix1
+        s = @str.size()
+        temp=""
+        for i in 0..s-1
+          temp=temp+@str[i]
+          if temp==@prefix
+            return true
+          end
+        end
+        return false
+      end
     private
     def check_length
       raise "Length out of bounds #{char_length}" if @char_length > 1000
