@@ -193,16 +193,14 @@ module Parfait
     def start_with(other)
       return false if other.length > self.length
         s = other.length
-        temp = Word.new(other.length)
         i=0
         while i<=s-1
-          temp.set_char(i,self.get_char(i))
-          if temp.compare(other)
-            return true
+          if other.get_char(i) != self.get_char(i)
+            return false
           end
           i=i+1
         end
-        return false
+        return true
       end
     private
     def check_length
