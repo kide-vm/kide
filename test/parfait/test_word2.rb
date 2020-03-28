@@ -6,6 +6,7 @@ module Parfait
       super
       @word = Parfait::Word.new(5)
     end
+
     def test_len
       assert_equal 5 , @word.length
     end
@@ -83,6 +84,28 @@ module Parfait
       two = Parfait.new_word("one")
       assert one.compare(two)
     end
+
+    def test_start_with1
+      one = Parfait.new_word("Hello")
+      two = Parfait.new_word("Hel")
+      assert one.start_with(two)
+    end
+    def test_start_with2
+      one = Parfait.new_word("Vanilla")
+      two = Parfait.new_word("Va")
+      assert one.start_with(two)
+    end
+    def test_start_with3
+      one = Parfait.new_word("hello")
+      two = Parfait.new_word("hellooo")
+      assert_equal false, one.start_with(two)
+    end
+    def test_start_with4
+      one = Parfait.new_word("bajjs")
+      two = Parfait.new_word("bgjj")
+      assert_equal false, one.start_with(two)
+    end
+
     def test_first_char
       one = Parfait.new_word("one")
       one.set_char(0 , "T".ord)
