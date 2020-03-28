@@ -194,14 +194,12 @@ module Parfait
     end
     def start_with(other)
       return false if other.length > self.length
-        str=self.to_string
-        prefix=other.to_string
-        s = str.size()
-        temp=""
+        s = other.length
+        temp = Word.new(other.length)
         i=0
         while i<=s-1
-          temp=temp+str[i]
-          if temp==prefix
+          temp.set_char(i,self.get_char(i))
+          if temp.compare(other)
             return true
           end
           i=i+1
