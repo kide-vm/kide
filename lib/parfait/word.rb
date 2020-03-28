@@ -139,7 +139,7 @@ module Parfait
 #      index = self.length + at if at < 0
       raise "index not integer #{at.class}" unless at.is_a?(::Integer)
       raise "index must be positive , not #{at}" if (index < 0)
-      raise "index too large #{at} > #{self.length}" if (index >= self.length )
+      raise "index too large #{at} >= #{self.length}" if (index >= self.length )
       return index + Word.type_length * 4
     end
 
@@ -190,31 +190,29 @@ module Parfait
     def padded_length
       Object.padded( 4 * get_type().instance_length + @char_length  )
     end
-    
+
+    # copy a chunk from the given word, to the current one
+    # start at to index at self
+    # start at from index at the given word
+    # copy length amount of characters
+    def copy_to_from(to , word , from , len)
+      raise "from not in range #{from}:#{len}" if (from + len) > word.length
+      raise "to not in range #{to}:#{len}" if (to + len) > self.length
+      while( len > 0)
+        len -= 1
+        set_char( to + len , word.get_char(from + len))
+      end
+      self
+    end
+
+    # insert the string other, at index index
+    # index may be negative in which case it counts from the end
     def insert(index, other)
-      if index<0
-        index = length+1+index
-      end
-      cpy = Word.new( length+other.length )
-      cpy_ind=0
-      str_ind=0
-      while ( str_ind<index )
-        cpy.set_char(cpy_ind,get_char(str_ind))
-	      cpy_ind=cpy_ind+1
-	      str_ind=str_ind+1
-      end
-      oth_ind=0
-      while ( oth_ind<other.length )
-	      cpy.set_char(cpy_ind,other.get_char(oth_ind))
-	      cpy_ind=cpy_ind+1
-	      oth_ind=oth_ind+1
-      end
-      while ( str_ind<length )
-	      cpy.set_char(cpy_ind,get_char(str_ind))
-	      str_ind=str_ind+1
-	      cpy_ind=cpy_ind+1
-      end  
-      cpy
+      index += (length + 1) if index < 0
+      copy = Word.new( length + other.length )
+      copy.copy_to_from(0 , self , 0 , index )
+      copy.copy_to_from(index , other , 0 , other.length)
+      copy.copy_to_from(index + other.length  , self , index , copy.length - index - other.length)
     end
 
     def start_with(other)
@@ -229,7 +227,7 @@ module Parfait
         end
         return true
       end
-    
+
     private
     def check_length
       raise "Length out of bounds #{char_length}" if @char_length > 1000

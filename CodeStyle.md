@@ -10,9 +10,24 @@ While the days of 80 are over, too big steps seems difficult. I've settled on 90
 
 ### Brackets
 
-While ruby allows the omission of brackets even with arguments, i try to avoid that because
-of readability. There may be an exception for an assignment, a single call with a single arg.
+While ruby allows the omission of brackets even with arguments, i try to avoid that
+because of readability. There may be an exception for an assignment, a single call
+with a single arg.
 Brackets without arguments look funny though.
+
+### Spacing and indent
+
+Indent at 2 Spaces (no tabs, not 4 spaces)
+
+Space around things, like assignment, operators
+
+### Single line versions
+
+Ruby has single line versions for mny things, like if and while. Use them if
+the code fits comfortably on the line. Eg "return true if(somthing)".
+
+Each is used a lot in ruby, and for each/collect etc and other block passing
+the convention is to use curly braces for one-liners, and do-end for multi-line.
 
 ### Method length
 
