@@ -192,24 +192,24 @@ module Parfait
     
     def insert(index, other)
 		if index<0
-			index = self.length()+1+index
+			index = length+1+index
 		end
-		cpy = Word.new( self.length()+other.length() )
+		cpy = Word.new( length+other.length )
 		cpy_ind=0
 		str_ind=0
 		while ( str_ind<index )
-			cpy.set_char(cpy_ind,self.get_char(str_ind))
+			cpy.set_char(cpy_ind,get_char(str_ind))
 			cpy_ind=cpy_ind+1
 			str_ind=str_ind+1
 		end
 		oth_ind=0
-		while ( oth_ind<other.length() )
+		while ( oth_ind<other.length )
 			cpy.set_char(cpy_ind,other.get_char(oth_ind))
 			cpy_ind=cpy_ind+1
 			oth_ind=oth_ind+1
 		end
-		while ( str_ind<self.length() )
-			cpy.set_char(cpy_ind,self.get_char(str_ind))
+		while ( str_ind<length )
+			cpy.set_char(cpy_ind,get_char(str_ind))
 			str_ind=str_ind+1
 			cpy_ind=cpy_ind+1
 		end
