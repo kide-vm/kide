@@ -13,7 +13,7 @@ module Parfait
   # Object length is measured in non-type cells though
 
   class Word < Data8
-    attr_reader :char_length , :str, :prefix ,:next_word
+    attr_reader :char_length ,:next_word
 
 
     def self.type_length
@@ -194,14 +194,14 @@ module Parfait
     end
     def start_with(other)
       return false if other.length > self.length
-        @str=self.to_string
-        @prefix=other.to_string
-        s = @str.size()
+        str=self.to_string
+        prefix=other.to_string
+        s = str.size()
         temp=""
         i=0
         while i<=s-1
-          temp=temp+@str[i]
-          if temp==@prefix
+          temp=temp+str[i]
+          if temp==prefix
             return true
           end
           i=i+1

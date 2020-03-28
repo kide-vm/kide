@@ -85,29 +85,27 @@ module Parfait
       assert one.compare(two)
     end
 
-    def test_start_with
+    def test_start_with1
       one = Parfait.new_word("Hello")
       two = Parfait.new_word("Hel")
       assert one.start_with(two)
+    end
+    def test_start_with2
       one = Parfait.new_word("Vanilla")
       two = Parfait.new_word("Va")
       assert one.start_with(two)
+    end
+    def test_start_with3
       one = Parfait.new_word("hello")
       two = Parfait.new_word("hellooo")
       assert_equal false, one.start_with(two)
+    end
+    def test_start_with4
       one = Parfait.new_word("bajjs")
       two = Parfait.new_word("bgjj")
       assert_equal false, one.start_with(two)
-      #one = Parfait.new_word("hel")
-      #two = Parfait.new_word("hellooo")
-      #assert_equal false, one.start_with(two)
-      #one = Parfait.new_word("Vanilla")
-      #two = Parfait.new_word("vani")
-      #assert one.start_with(two)
-      #assert_equal true , @word.start_with("hello","hell")
-      #assert_equal true , @word.start_with("Adbfgsj","Adbf")
-      #assert_equal false , @word.start_with("Vanila","van")
     end
+
     def test_first_char
       one = Parfait.new_word("one")
       one.set_char(0 , "T".ord)
