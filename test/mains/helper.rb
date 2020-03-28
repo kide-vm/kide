@@ -74,6 +74,9 @@ module Mains
       return ret , interpreter.stdout
     end
 
+    def run_main_return( code )
+      @input = as_main "return #{code}"
+    end
   end
 
 end
