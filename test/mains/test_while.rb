@@ -18,7 +18,7 @@ module Mains
 
     def test_while_simple
       @input = as_main 'a = true; while( a ); a = false;end;return a'
-#      assert_result 4 , ""
+      assert_result 0 , ""
     end
 
   end

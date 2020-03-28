@@ -256,6 +256,7 @@ module Risc
       false
     end
 
+    # execute the given system call, only putstring and exit really
     def execute_Syscall
       name = @instruction.name
       ret_value = 0
@@ -274,8 +275,12 @@ module Risc
       true
     end
 
+    # get the return after system exit. exit_sequence expects the last return to
+    # be an int and reduces that, so that is returned
+    # the value is reduced to 8 bits, because that is what linux does
     def get_sys_return
       val = get_register( std_reg(:syscall_1) ) # syscalls return into syscall_1
+      val & 0xFF
     end
 
     def run_all

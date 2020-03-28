@@ -2,34 +2,45 @@
 
 Test methods by their output and exit codes (return, since it is the main).
 
-There are only two tests here (plus one, see below), one for interpreter, one for arm.
-Both run the same tests. The actual ruby code that is run is in the source dir.
-Test methods are generated, one for each source file.
+Every test here is tested first as an Interpreter test, and then as binary (arm).
 
-## Files
 
-File names follow [order,name,stdout,exitcode] joined by _ pattern.
-Stdout may be left blank, but exit code must be supplied.
+## Setup and assert
 
-The order number is some number giving the difficulty of the test, higher is more.
-The first digit represents how many external methods the code relies on, the second
-is some general indicator, ie recursive is more difficult than not, syscalls more than
-normal calls, if or while more than nothing etc.
+The setup require the @input variable to hold the code. This is usually renerated with
+as_main or similar helper.
 
-## Arm
+The @preload may be set to load any of the Macros, so one can actually use methods.
+Otherwise the only methods are the ones you code
 
-Obviously the arm tests need an arm platform. This may be defined by ARM_HOST,
-eg for simulated ARM_HOST=localhost
+The assert_result takes the exit code and std out. It runs both interpreter and arm,
+in that order.
 
-Also port and user may be specified with ARM_PORT and ARM_USER , they default to
-2222 and pi if left blank.
-SSH keys must be set up so no passwords are required (and the users private key may
-  not be password protected)
+### Interpreter
 
-## Developing
+The interpreter is for the most part like another platform. Everything up to the
+creation of binaries is the same. The Linker object get's passed to the
+Interpreter which runs the code to the end, and returns return code and stdout.
 
-Since the Framework always runs all tests, it is a little cumbersome for developing
-a single new test. Since all get run and it is slow.
+If this passes, arm is run.
 
-To develop the next test, one can edit test_new.rb . Once it runs on the interpreter,
-move the changes to a source file and revert test_new changes.
+### Arm
+
+Arm is actually only run if:
+- you set TEST_ALL  (as is done in test/test_all)
+- you set TEST_ARM
+
+AND it requires that you have qemu set up correctly. But given all that, it:
+- creates a binary from the code (mains.o), which is linked to a.out
+- runs the binary
+- captures return code and stdout and returns
+
+Obviously Interpreter AND Arm need to return same codes, the one the assert specifies.
+
+## Status
+
+I have moved most of the risc/interpreter code here, which means we now have over 50
+binary tests.
+
+Next i will recreate the file based tests in a better way to integrate with the
+current style.

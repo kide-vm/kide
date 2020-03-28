@@ -18,7 +18,7 @@ module Mains
       def test_minus_neg
         @preload = "Integer.minus"
         run_main_return "5 - 15"
-#        assert_result( -10 , "")
+        assert_result( 246 , "")
       end
       def test_rshift
         @preload = "Integer.rs"
@@ -28,7 +28,7 @@ module Mains
       def test_lshift
         @preload = "Integer.ls"
         run_main_return "#{2**8} << 3"
-#        assert_result 2**11 , ""
+        assert_result 0 , ""
       end
       def test_div10
         @preload = "Integer.div10"

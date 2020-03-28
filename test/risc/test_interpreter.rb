@@ -43,6 +43,17 @@ module Risc
       assert_equal 5 , @interpreter.get_sys_return
     end
   end
+  class TestInterpreterRetBig < MiniTest::Test
+    include Ticker
+    def setup
+      @string_input = as_main("return 257")
+      super
+    end
+    def test_return_value
+      @interpreter.run_all
+      assert_equal 1 , @interpreter.get_sys_return
+    end
+  end
   class TestInterpreterTicks < MiniTest::Test
     include Ticker
     def setup

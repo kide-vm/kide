@@ -18,7 +18,7 @@ module Risc
                  SlotToReg, RegToSlot, SlotToReg, SlotToReg, FunctionReturn, #25
                  Transfer, SlotToReg, SlotToReg, Transfer, Syscall, #30
                  NilClass,] #35
-      assert_kind_of Parfait::NilClass , get_return
+      assert_equal 0 , get_return
     end
     def test_load_false_const
       load = main_ticks(1)
