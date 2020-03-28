@@ -28,8 +28,6 @@ module Parfait
     def initialize( len )
       super()
       @char_length = 0
-      #@str=str1
-      #@prefix=prefix1
       raise "Must init with int, not #{len.class}" unless len.kind_of? ::Integer
       raise "Must init with positive, not #{len}" if len < 0
       fill_to( len , 32 ) unless len == 0 #32 being ascii space
