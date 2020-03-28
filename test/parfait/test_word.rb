@@ -26,15 +26,19 @@ module Parfait
         @word.set_char(1 , 32)
       end
     end
-    def test_insert
+    def test_insert_1
       a = Parfait.new_word("abc")
       b = Parfait.new_word("d")
       ans = Parfait.new_word("abcd")
       assert_equal ans, a.insert(-1,b)
+    end
+    def test_insert_2   
       a1 = Parfait.new_word("what name")
       b1 = Parfait.new_word("is your ")
       ans = Parfait.new_word("what is your name")
       assert_equal ans, a1.insert(5, b1)
+    end
+    def test_insert_3
       a2 = Parfait.new_word("life")
       b2 = Parfait.new_word("sad ")
       ans = Parfait.new_word("sad life")
