@@ -6,11 +6,7 @@ module Parfait
       super
       @word = Parfait::Word.new(5)
     end
-    def test_start_with
-      assert_equal true , @word.start_with("hello","hell")
-      assert_equal true , @word.start_with("Adbfgsj","Adbf")
-      assert_equal false , @word.start_with("Vanila","van")
-    end
+
     def test_len
       assert_equal 5 , @word.length
     end
@@ -87,6 +83,30 @@ module Parfait
       one = Parfait.new_word("one")
       two = Parfait.new_word("one")
       assert one.compare(two)
+    end
+
+    def test_start_with
+      one = Parfait.new_word("Hello")
+      two = Parfait.new_word("Hel")
+      assert one.start_with(two)
+      one = Parfait.new_word("Vanilla")
+      two = Parfait.new_word("Va")
+      assert one.start_with(two)
+      one = Parfait.new_word("hello")
+      two = Parfait.new_word("hellooo")
+      assert_equal false, one.start_with(two)
+      one = Parfait.new_word("bajjs")
+      two = Parfait.new_word("bgjj")
+      assert_equal false, one.start_with(two)
+      #one = Parfait.new_word("hel")
+      #two = Parfait.new_word("hellooo")
+      #assert_equal false, one.start_with(two)
+      #one = Parfait.new_word("Vanilla")
+      #two = Parfait.new_word("vani")
+      #assert one.start_with(two)
+      #assert_equal true , @word.start_with("hello","hell")
+      #assert_equal true , @word.start_with("Adbfgsj","Adbf")
+      #assert_equal false , @word.start_with("Vanila","van")
     end
     def test_first_char
       one = Parfait.new_word("one")
