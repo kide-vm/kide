@@ -13,7 +13,8 @@ module Parfait
   # Object length is measured in non-type cells though
 
   class Word < Data8
-    attr_reader :char_length , :next_word
+    attr_reader :char_length ,:next_word
+
 
     def self.type_length
       3    # 0 type , 1 char_length , next_word
@@ -199,23 +200,36 @@ module Parfait
       str_ind=0
       while ( str_ind<index )
         cpy.set_char(cpy_ind,get_char(str_ind))
-	cpy_ind=cpy_ind+1
-	str_ind=str_ind+1
+	      cpy_ind=cpy_ind+1
+	      str_ind=str_ind+1
       end
       oth_ind=0
       while ( oth_ind<other.length )
-	cpy.set_char(cpy_ind,other.get_char(oth_ind))
-	cpy_ind=cpy_ind+1
-	oth_ind=oth_ind+1
+	      cpy.set_char(cpy_ind,other.get_char(oth_ind))
+	      cpy_ind=cpy_ind+1
+	      oth_ind=oth_ind+1
       end
       while ( str_ind<length )
-	cpy.set_char(cpy_ind,get_char(str_ind))
-	str_ind=str_ind+1
-	cpy_ind=cpy_ind+1
+	      cpy.set_char(cpy_ind,get_char(str_ind))
+	      str_ind=str_ind+1
+	      cpy_ind=cpy_ind+1
       end  
       cpy
     end
 
+    def start_with(other)
+      return false if other.length > self.length
+        s = other.length
+        i=0
+        while i<=s-1
+          if other.get_char(i) != self.get_char(i)
+            return false
+          end
+          i=i+1
+        end
+        return true
+      end
+    
     private
     def check_length
       raise "Length out of bounds #{char_length}" if @char_length > 1000
