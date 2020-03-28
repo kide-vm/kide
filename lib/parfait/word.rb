@@ -192,16 +192,19 @@ module Parfait
     def padded_length
       Object.padded( 4 * get_type().instance_length + @char_length  )
     end
-    def start_with(str1,prefix1)
-        @str=str1
-        @prefix=prefix1
+    def start_with(other)
+      return false if other.length > self.length
+        @str=self.to_string
+        @prefix=other.to_string
         s = @str.size()
         temp=""
-        for i in 0..s-1
+        i=0
+        while i<=s-1
           temp=temp+@str[i]
           if temp==@prefix
             return true
           end
+          i=i+1
         end
         return false
       end
