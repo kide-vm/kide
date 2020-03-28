@@ -155,7 +155,17 @@ module Risc
     def write_data4( code )
       write_ref_for( code.get_type )
       write_ref_for( code.get_type )
-      write_ref_for( code.get_type )
+      case code
+      when Parfait::NilClass , nil
+        fake_int = 0
+      when Parfait::TrueClass , true
+        fake_int = 1
+      when Parfait::FalseClass , false
+        fake_int = 0
+      else
+        fake_int = code.get_type
+      end
+      write_ref_for( fake_int )
       write_ref_for( code.get_type )
       log.debug "Data4 witten stream 0x#{@stream.length.to_s(16)}"
     end
@@ -202,15 +212,19 @@ module Risc
 
     # write means we write the resulting address straight into the assembler stream
     # object means the object of which we write the address
-    def write_ref_for object
+    def write_ref_for( object )
+      if(object.is_a?( ::Integer) )
+        return @stream.write_signed_int_32(object)
+      end
       case object
       when nil
-        @stream.write_signed_int_32(0)
-      when ::Integer
-        @stream.write_signed_int_32(object)
-      else
-        @stream.write_signed_int_32(Position.get(object) + @linker.platform.loaded_at)
+        object = Parfait.object_space.nil_object
+      when true
+        object = Parfait.object_space.true_object
+      when false
+        object = Parfait.object_space.nil_object
       end
+      @stream.write_signed_int_32(Position.get(object) + @linker.platform.loaded_at)
     end
 
     # pad_after is always in bytes and pads (writes 0's) up to the next 8 word boundary
