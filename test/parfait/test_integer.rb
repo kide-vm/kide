@@ -54,5 +54,20 @@ module Parfait
       assert_equal 33 , addr.value
     end
   end
-
+  class TrueTest < MiniTest::Test
+    def test_true
+      assert TrueClass.new
+    end
+    def test_set
+      tru = TrueClass.new
+      assert_equal 20 , tru.set_internal_word( Integer.integer_index , 20 )
+      assert_equal 20 , tru.get_internal_word( Integer.integer_index )
+    end
+    def test_get_true
+      assert_equal 1 , TrueClass.new.get_internal_word( Integer.integer_index )
+    end
+    def test_get_false
+      assert_equal 0 , FalseClass.new.get_internal_word( Integer.integer_index )
+    end
+  end
 end

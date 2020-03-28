@@ -69,7 +69,7 @@ module Mains
       interpreter.tick while(interpreter.instruction)
       saved_in = interpreter.std_reg(:saved_message)
       assert_equal Parfait::Message , interpreter.get_register(saved_in).class
-      ret = interpreter.get_register(interpreter.std_reg(:syscall_1))
+      ret = interpreter.get_sys_return
       puts "Interpret #{interpreter.stdout} #{ret}" if ENV["TEST_ARM"] == "DEBUG"
       return ret , interpreter.stdout
     end

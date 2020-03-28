@@ -38,6 +38,10 @@ module Risc
     def test_pos
       assert_equal 1 , @interpreter.clock
     end
+    def test_return_value
+      @interpreter.run_all
+      assert_equal 5 , @interpreter.get_sys_return
+    end
   end
   class TestInterpreterTicks < MiniTest::Test
     include Ticker
@@ -98,7 +102,7 @@ module Risc
     def test_tick_15 #more than a binary code worth
       15.times {@interpreter.tick}
     end
-    class TestInterpreterDies #< MiniTest::Test
+    class TestInterpreterDies < MiniTest::Test
       include Ticker
       def setup
         @string_input = as_main("random.call")

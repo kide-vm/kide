@@ -71,6 +71,7 @@ module Parfait
     #FIXME: this is "just" for compilation
     def initialize
       super
+      set_internal_word( Integer.integer_index , 0 )
     end
     def self.type_length
       1    # 0 type
@@ -80,6 +81,7 @@ module Parfait
     #FIXME: this is "just" for compilation
     def initialize
       super
+      set_internal_word( Integer.integer_index , 1 )
     end
     def self.type_length
       1    # 0 type
@@ -89,6 +91,7 @@ module Parfait
     #FIXME: this is "just" for compilation
     def initialize
       super
+      set_internal_word( Integer.integer_index , 0 )
     end
     def self.type_length
       1    # 0 type
