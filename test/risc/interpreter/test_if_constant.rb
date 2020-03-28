@@ -1,4 +1,4 @@
-require_relative "../helper"
+require_relative "helper"
 
 module Risc
   class InterpreterIfConstant < MiniTest::Test
