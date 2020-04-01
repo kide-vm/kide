@@ -17,6 +17,7 @@ group :test do
   gem "minitest-color"
   gem 'minitest-fail-fast'
   gem 'minitest-profile'
+  gem "minitest-parallel_fork" , require: false
 end
 
 group :development do
