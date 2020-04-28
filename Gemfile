@@ -11,7 +11,6 @@ gem "rx-file" , git: "https://github.com/ruby-x/rx-file"
 group :test do
 # reporter and parallel dont work together
 #  gem "minitest-reporters"
-  gem "minitest-parallel_fork"
   gem "codeclimate-test-reporter" , require: false
   gem "simplecov"
   gem "minitest-color"
