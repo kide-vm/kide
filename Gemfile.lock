@@ -50,6 +50,8 @@ GEM
       minitest (~> 5)
     minitest-parallel_fork (1.1.2)
     minitest-profile (0.0.2)
+    mry (0.78.0.0)
+      rubocop (>= 0.41.0)
     nenv (0.3.0)
     notiffany (0.1.3)
       nenv (~> 0.1)
@@ -96,6 +98,7 @@ DEPENDENCIES
   minitest-fail-fast
   minitest-parallel_fork
   minitest-profile
+  mry
   rake
   rb-readline
   rubocop
