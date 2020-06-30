@@ -23,4 +23,6 @@ group :development do
   gem 'guard' # NOTE: this is necessary in newer versions
   gem 'guard-minitest'
   gem "rb-readline"
+  gem "rubocop", require: false
+  gem "mry"
 end
