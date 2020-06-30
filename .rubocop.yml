@@ -94,12 +94,6 @@ Lint/SuppressedException:
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#dont-hide-exceptions'
   Enabled: true
 
-Lint/InvalidCharacterLiteral:
-  Description: >-
-                 Checks for invalid character literals with a non-escaped
-                 whitespace character.
-  Enabled: true
-
 Lint/LiteralAsCondition:
   Description: 'Checks of literals used in conditions.'
   Enabled: true
@@ -680,13 +674,13 @@ Layout/IndentationWidth:
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#spaces-indentation'
   Enabled: false
 
-Layout/IndentArray:
+Layout/FirstArrayElementIdentation:
   Description: >-
                  Checks the indentation of the first element in an array
                  literal.
   Enabled: false
 
-Layout/IndentHash:
+Layout/FirstHashElementIdentation:
   Description: 'Checks the indentation of the first key in a hash literal.'
   Enabled: false
 
@@ -1084,7 +1078,12 @@ Style/TrailingCommaInArguments:
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#no-trailing-params-comma'
   Enabled: false
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
+  Description: 'Checks for trailing comma in literals.'
+  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#no-trailing-array-commas'
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
   Description: 'Checks for trailing comma in literals.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#no-trailing-array-commas'
   Enabled: false
